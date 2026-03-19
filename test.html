@@ -8,28 +8,65 @@
 
 <h2>Mock Test</h2>
 
-<p>Q1: What is Torque?</p>
+<form id="testForm">
 
-<input type="radio" name="q1" value="a"> Force × Distance<br>
-<input type="radio" name="q1" value="b"> Mass × Velocity<br>
-<input type="radio" name="q1" value="c"> Work done<br>
+<!-- Physics -->
+<p>Q1 (Physics - Rotation): Torque formula?</p>
+<input type="radio" name="q1" value="a"> r × F<br>
+<input type="radio" name="q1" value="b"> m × v<br>
+<input type="radio" name="q1" value="c"> F / r<br>
 
-<button onclick="submitTest()">Submit</button>
+<!-- Chemistry -->
+<p>Q2 (Chemistry - Organic): CH4 is?</p>
+<input type="radio" name="q2" value="a"> Alkane<br>
+<input type="radio" name="q2" value="b"> Alkene<br>
+<input type="radio" name="q2" value="c"> Alcohol<br>
+
+<!-- Math -->
+<p>Q3 (Math - Algebra): 2+2=?</p>
+<input type="radio" name="q3" value="a"> 3<br>
+<input type="radio" name="q3" value="b"> 4<br>
+<input type="radio" name="q3" value="c"> 5<br>
+
+<button type="button" onclick="submitTest()">Submit</button>
+
+</form>
 
 <script>
 function submitTest() {
-  let answer = document.querySelector('input[name="q1"]:checked');
 
   let score = 0;
 
-  if (answer && answer.value === "a") {
+  // Get answers
+  let q1 = document.querySelector('input[name="q1"]:checked');
+  let q2 = document.querySelector('input[name="q2"]:checked');
+  let q3 = document.querySelector('input[name="q3"]:checked');
+
+  // Correct answers
+  if (q1 && q1.value === "a") {
     score++;
     localStorage.setItem("rotation", "strong");
   } else {
     localStorage.setItem("rotation", "weak");
   }
 
+  if (q2 && q2.value === "a") {
+    score++;
+    localStorage.setItem("organic", "strong");
+  } else {
+    localStorage.setItem("organic", "weak");
+  }
+
+  if (q3 && q3.value === "b") {
+    score++;
+    localStorage.setItem("algebra", "strong");
+  } else {
+    localStorage.setItem("algebra", "weak");
+  }
+
   localStorage.setItem("testScore", score);
+
+  alert("Your Score: " + score + "/3");
 
   window.location.href = "dashboard.html";
 }
