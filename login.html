@@ -58,10 +58,20 @@
     <input type="text" placeholder="Enter Email">
     <input type="password" placeholder="Enter Password">
 
-    <a href="dashboard.html">
-  <button>Login</button>
-</a>
+    <button onclick="loginUser()">Login</button>
   </div>
+<script>
+function loginUser() {
+    let email = document.querySelector('input[type="text"]').value;
+    let password = document.querySelector('input[type="password"]').value;
 
+    if (email && password) {
+        localStorage.setItem("user", email);
+        window.location.href = "dashboard.html";
+    } else {
+        alert("Please enter details");
+    }
+}
+</script>
 </body>
 </html>
