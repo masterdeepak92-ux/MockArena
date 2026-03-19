@@ -78,7 +78,33 @@
   </div>
 
 <script>
+<script>
 function updateScores() {
+  let phy = prompt("Enter Physics score:");
+  let chem = prompt("Enter Chemistry score:");
+  let math = prompt("Enter Math score:");
+
+  // Save in local storage
+  localStorage.setItem("physics", phy);
+  localStorage.setItem("chemistry", chem);
+  localStorage.setItem("math", math);
+
+  showScores();
+}
+
+function showScores() {
+  let phy = localStorage.getItem("physics") || 0;
+  let chem = localStorage.getItem("chemistry") || 0;
+  let math = localStorage.getItem("math") || 0;
+
+  document.getElementById("physics").innerText = "Score: " + phy + "%";
+  document.getElementById("chemistry").innerText = "Score: " + chem + "%";
+  document.getElementById("math").innerText = "Score: " + math + "%";
+}
+
+// Run automatically when page loads
+window.onload = showScores;
+</script>
   let phy = prompt("Enter Physics score:");
   let chem = prompt("Enter Chemistry score:");
   let math = prompt("Enter Math score:");
