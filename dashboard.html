@@ -131,28 +131,30 @@ function showScores() {
   // 🔥 Recommendation System
 
 let recommendation = "<br><br><b>Recommendation:</b><br>";
-
-// Priority logic
 if (rotation === "weak") {
   recommendation += "Focus on Rotation (High Priority) 🔥<br>";
 }
+
 if (organic === "weak") {
   recommendation += "Revise Organic Chemistry ⚠️<br>";
 }
+
 if (algebra === "weak") {
   recommendation += "Practice Algebra daily 📘<br>";
 }
 
-// Strong areas (ignore or maintain)
 if (rotation === "strong") {
   recommendation += "Rotation is strong (Revise occasionally) ✅<br>";
 }
+
 if (organic === "strong") {
   recommendation += "Organic Chemistry is strong ✅<br>";
 }
+
 if (algebra === "strong") {
   recommendation += "Algebra is strong ✅<br>";
 }
+
 
 // Final output
 document.getElementById("analysis").innerHTML =
