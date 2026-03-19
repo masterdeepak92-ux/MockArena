@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Mock Test</title>
+</head>
+
+<body style="background:black;color:white;font-family:Arial">
+
+<h2>Mock Test</h2>
+
+<p>Q1: What is Torque?</p>
+
+<input type="radio" name="q1" value="a"> Force × Distance<br>
+<input type="radio" name="q1" value="b"> Mass × Velocity<br>
+<input type="radio" name="q1" value="c"> Work done<br>
+
+<button onclick="submitTest()">Submit</button>
+
+<script>
+function submitTest() {
+  let answer = document.querySelector('input[name="q1"]:checked');
+
+  let score = 0;
+
+  if (answer && answer.value === "a") {
+    score++;
+    localStorage.setItem("rotation", "strong");
+  } else {
+    localStorage.setItem("rotation", "weak");
+  }
+
+  localStorage.setItem("testScore", score);
+
+  window.location.href = "dashboard.html";
+}
+</script>
+
+</body>
+</html>
