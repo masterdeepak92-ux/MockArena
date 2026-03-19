@@ -76,8 +76,8 @@
       </div>
     </div>
   </div>
-
-<script>
+<h2>Analysis</h2>
+<p id="analysis"></p>
 <script>
 function updateScores() {
   let phy = prompt("Enter Physics score:");
@@ -93,25 +93,29 @@ function updateScores() {
 }
 
 function showScores() {
-  let phy = localStorage.getItem("physics") || 0;
-  let chem = localStorage.getItem("chemistry") || 0;
-  let math = localStorage.getItem("math") || 0;
+  let phy = parseInt(localStorage.getItem("physics")) || 0;
+  let chem = parseInt(localStorage.getItem("chemistry")) || 0;
+  let math = parseInt(localStorage.getItem("math")) || 0;
 
   document.getElementById("physics").innerText = "Score: " + phy + "%";
   document.getElementById("chemistry").innerText = "Score: " + chem + "%";
   document.getElementById("math").innerText = "Score: " + math + "%";
+
+  // 🔥 Analysis Logic
+  let analysis = "";
+
+  if (phy < 50) analysis += "Physics is weak ❌<br>";
+  if (chem < 50) analysis += "Chemistry is weak ❌<br>";
+  if (math < 50) analysis += "Mathematics is weak ❌<br>";
+
+  if (phy > 80) analysis += "Physics is strong 💪<br>";
+  if (chem > 80) analysis += "Chemistry is strong 💪<br>";
+  if (math > 80) analysis += "Mathematics is strong 💪<br>";
+
+  document.getElementById("analysis").innerHTML =
+    analysis || "Balanced performance 👍";
 }
 
-// Run automatically when page loads
 window.onload = showScores;
 </script>
-  let phy = prompt("Enter Physics score:");
-  let chem = prompt("Enter Chemistry score:");
-  let math = prompt("Enter Math score:");
 
-  document.getElementById("physics").innerText = "Score: " + phy + "%";
-  document.getElementById("chemistry").innerText = "Score: " + chem + "%";
-  document.getElementById("math").innerText = "Score: " + math + "%";
-}
-</script>
-</html>
