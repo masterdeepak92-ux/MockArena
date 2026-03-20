@@ -2,6 +2,9 @@
 <html>
 <head>
   <title>Dashboard - MockArena</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
   <style>
     body {
       margin: 0;
@@ -57,10 +60,12 @@
   </div>
 
   <div class="container">
+    
     <button onclick="updateScores()">Update Scores</button>
 <a href="test.html">
   <button>Start Test</button>
 </a>
+    <canvas id="performanceChart" width="300" height="200"> </canvas>
     <div class="cards">
       <div class="card">
         <h2>Physics</h2>
@@ -177,8 +182,9 @@ if (organic === "strong") {
 
 if (algebra === "strong") {
   recommendation += "Algebra is strong ✅<br>";
-}let priority = "<br><br><b>Priority Plan:</b><br>";
-
+}        
+  let priority = "<br><br><b>Priority Plan:</b><br>";
+                                                                                                                                                                                                  
 // 🔥 HIGH PRIORITY
 if (rotationScore < 40) {
   priority += "🔥 HIGH: Rotation (Focus immediately)<br>";
@@ -212,7 +218,46 @@ if (kinematicsScore > 70) {
   priority += "✅ LOW: Kinematics<br>";
 }
 
+// 🔥 Performance Graph (FINAL VERSION)
 
+let ctx = document.getElementById('performanceChart').getContext('2d');
+
+// Destroy old chart if already exists (prevents duplicate graphs)
+if (window.myChart) {
+  window.myChart.destroy();
+}
+
+// Create new chart
+window.myChart = new Chart(ctx, {
+  type: 'bar',
+  data: {
+    labels: ['Physics', 'Chemistry', 'Math'],
+    datasets: [{
+      label: 'Performance %',
+      data: [phy, chem, math],
+      backgroundColor: [
+        'rgba(255, 99, 132, 0.7)',   // red
+        'rgba(54, 162, 235, 0.7)',   // blue
+        'rgba(75, 192, 192, 0.7)'    // green
+      ],
+      borderRadius: 8
+    }]
+  },
+  options: {
+    responsive: true,
+    plugins: {
+      legend: {
+        display: true
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        max: 100
+      }
+    }
+  }
+});
 // Final output
 document.getElementById("analysis").innerHTML =
   analysis + recommendation + topicAnalysis + priority;
