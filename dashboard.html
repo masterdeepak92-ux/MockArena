@@ -99,12 +99,16 @@ function updateScores() {
   let phy = prompt("Enter Physics score:");
   let chem = prompt("Enter Chemistry score:");
   let math = prompt("Enter Math score:");
-
+let rotation = prompt("Enter Rotation score:");
+let thermo = prompt("Enter Thermodynamics score:");
+let kinematics = prompt("Enter Kinematics score:");
   // Save in local storage
   localStorage.setItem("physics", phy);
   localStorage.setItem("chemistry", chem);
   localStorage.setItem("math", math);
-
+localStorage.setItem("rotation", rotation);
+localStorage.setItem("thermo", thermo);
+localStorage.setItem("kinematics", kinematics);
   showScores();
 }
 
@@ -112,7 +116,9 @@ function showScores() {
   let phy = parseInt(localStorage.getItem("physics")) || 0;
   let chem = parseInt(localStorage.getItem("chemistry")) || 0;
   let math = parseInt(localStorage.getItem("math")) || 0;
-
+let rotationScore = parseInt(localStorage.getItem("rotation")) || 0;
+let thermoScore = parseInt(localStorage.getItem("thermo")) || 0;
+let kinematicsScore = parseInt(localStorage.getItem("kinematics")) || 0;
   document.getElementById("physics").innerText = "Score: " + phy + "%";
   document.getElementById("chemistry").innerText = "Score: " + chem + "%";
   document.getElementById("math").innerText = "Score: " + math + "%";
