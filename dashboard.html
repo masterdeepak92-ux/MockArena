@@ -177,12 +177,45 @@ if (organic === "strong") {
 
 if (algebra === "strong") {
   recommendation += "Algebra is strong ✅<br>";
+}let priority = "<br><br><b>Priority Plan:</b><br>";
+
+// 🔥 HIGH PRIORITY
+if (rotationScore < 40) {
+  priority += "🔥 HIGH: Rotation (Focus immediately)<br>";
+}
+if (thermoScore < 40) {
+  priority += "🔥 HIGH: Thermodynamics<br>";
+}
+if (kinematicsScore < 40) {
+  priority += "🔥 HIGH: Kinematics<br>";
+}
+
+// ⚠️ MEDIUM PRIORITY
+if (rotationScore >= 40 && rotationScore <= 70) {
+  priority += "⚠️ MEDIUM: Rotation<br>";
+}
+if (thermoScore >= 40 && thermoScore <= 70) {
+  priority += "⚠️ MEDIUM: Thermodynamics<br>";
+}
+if (kinematicsScore >= 40 && kinematicsScore <= 70) {
+  priority += "⚠️ MEDIUM: Kinematics<br>";
+}
+
+// ✅ LOW PRIORITY
+if (rotationScore > 70) {
+  priority += "✅ LOW: Rotation (Maintain)<br>";
+}
+if (thermoScore > 70) {
+  priority += "✅ LOW: Thermodynamics<br>";
+}
+if (kinematicsScore > 70) {
+  priority += "✅ LOW: Kinematics<br>";
 }
 
 
 // Final output
 document.getElementById("analysis").innerHTML =
-  analysis + recommendation + topicAnalysis;
+  analysis + recommendation + topicAnalysis + priority;
 }
 
 window.onload = showScores;
