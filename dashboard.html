@@ -125,7 +125,25 @@ let kinematicsScore = parseInt(localStorage.getItem("kinematics")) || 0;
 
   // 🔥 Analysis Logic
   let analysis = "";
+let topicAnalysis = "<br><br><b>Topic Analysis:</b><br>";
 
+if (rotationScore < 50) {
+  topicAnalysis += "Rotation is weak ❌ (Practice more)<br>";
+} else if (rotationScore > 80) {
+  topicAnalysis += "Rotation is strong 💪<br>";
+}
+
+if (thermoScore < 50) {
+  topicAnalysis += "Thermodynamics is weak ❌<br>";
+} else if (thermoScore > 80) {
+  topicAnalysis += "Thermodynamics is strong 💪<br>";
+}
+
+if (kinematicsScore < 50) {
+  topicAnalysis += "Kinematics is weak ❌<br>";
+} else if (kinematicsScore > 80) {
+  topicAnalysis += "Kinematics is strong 💪<br>";
+}
   if (phy < 50) analysis += "Physics is weak ❌<br>";
   if (chem < 50) analysis += "Chemistry is weak ❌<br>";
   if (math < 50) analysis += "Mathematics is weak ❌<br>";
@@ -164,7 +182,7 @@ if (algebra === "strong") {
 
 // Final output
 document.getElementById("analysis").innerHTML =
-  analysis + recommendation;
+  analysis + recommendation + topicAnalysis;
 }
 
 window.onload = showScores;
