@@ -66,6 +66,7 @@
   <button>Start Test</button>
 </a>
     <canvas id="performanceChart" width="300" height="200"> </canvas>
+    <canvas id="progressChart" width="300" height="200"></canvas>
     <div class="cards">
       <div class="card">
         <h2>Physics</h2>
@@ -107,6 +108,20 @@ function updateScores() {
 let rotation = prompt("Enter Rotation score:");
 let thermo = prompt("Enter Thermodynamics score:");
 let kinematics = prompt("Enter Kinematics score:");
+  // 🔥 Save Test History
+let history = JSON.parse(localStorage.getItem("testHistory")) || [];
+
+history.push({
+  physics: phy,
+  chemistry: chem,
+  math: math,
+  rotation: rotation,
+  thermo: thermo,
+  kinematics: kinematics,
+  date: new Date().toLocaleDateString()
+});
+
+localStorage.setItem("testHistory", JSON.stringify(history));
   // Save in local storage
   localStorage.setItem("physics", phy);
   localStorage.setItem("chemistry", chem);
@@ -130,8 +145,116 @@ let kinematicsScore = parseInt(localStorage.getItem("kinematics")) || 0;
 
   // 🔥 Analysis Logic
   let analysis = "";
-let topicAnalysis = "<br><br><b>Topic Analysis:</b><br>";
+  // 🔥 Test Count
+let history = JSON.parse(localStorage.getItem("testHistory")) || [];
+let totalTests = history.length;
 
+analysis += "<br><b>Total Tests Taken:</b> " + totalTests + "<br>";
+  // 🔥 Average Score Calculation
+let totalPhy = 0;
+let totalChem = 0;
+let totalMath = 0;
+
+for (let i = 0; i < history.length; i++) {
+  totalPhy += parseInt(history[i].physics);
+  totalChem += parseInt(history[i].chemistry);
+  totalMath += parseInt(history[i].math);
+}
+
+let avgPhy = history.length ? (totalPhy / history.length).toFixed(1) : 0;
+let avgChem = history.length ? (totalChem / history.length).toFixed(1) : 0;
+let avgMath = history.length ? (totalMath / history.length).toFixed(1) : 0;
+let overallAvg = ((parseFloat(avgPhy) + parseFloat(avgChem) + parseFloat(avgMath)) / 3).toFixed(1);
+// Average Scores
+analysis += "<br><b>Average Scores:</b><br>";
+analysis += "Physics Avg: " + avgPhy + "<br>";
+analysis += "Chemistry Avg: " + avgChem + "<br>";
+analysis += "Math Avg: " + avgMath + "<br>";
+analysis += "Overall Avg: " + overallAvg + "<br>";
+
+// Performance Level
+analysis += "<br><b>Performance Level:</b><br>";
+
+if (overallAvg >= 85) {
+  analysis += "Level: Top Performer 🏆<br>";
+}
+else if (overallAvg >= 70) {
+  analysis += "Level: Good 👍<br>";
+}
+else if (overallAvg >= 50) {
+  analysis += "Level: Average 🙂<br>";
+}
+else {
+  analysis += "Level: Needs Improvement ⚠️<br>";
+}
+// 📊 Percentile & Rank Predictor
+let percentile = Math.min(99, (overallAvg * 1.25)).toFixed(1);
+let rank = Math.floor(100000 - (percentile * 1000));
+
+analysis += "<br><b>Predicted Performance:</b><br>";
+analysis += "Estimated Percentile: " + percentile + "<br>";
+analysis += "Estimated Rank: " + rank + "<br>";
+analysis += "<br><b>Weak Topic Analysis:</b><br>";
+analysis += "Rotation Weak Count: " + weakRotation + "<br>";
+analysis += "Thermodynamics Weak Count: " + weakThermo + "<br>";
+analysis += "Kinematics Weak Count: " + weakKinematics + "<br>";
+
+let maxWeak = Math.max(weakRotation, weakThermo, weakKinematics);
+
+if (maxWeak === weakRotation) {
+  analysis += "<b>Most Weak Topic: Rotation</b><br>";
+}
+else if (maxWeak === weakThermo) {
+  analysis += "<b>Most Weak Topic: Thermodynamics</b><br>";
+}
+else {
+  analysis += "<b>Most Weak Topic: Kinematics</b><br>";
+}
+let topicAnalysis = "<br><br><b>Topic Analysis:</b><br>";
+// 📅 Study Plan Generator
+let studyPlan = "<br><br><b>Study Plan:</b><br>";
+
+if (weakRotation >= 2) {
+  studyPlan += "Rotation – 2 hrs practice<br>";
+} else {
+  studyPlan += "Rotation – Revise formulas<br>";
+}
+
+if (weakThermo >= 2) {
+  studyPlan += "Thermodynamics – 2 hrs numericals<br>";
+} else {
+  studyPlan += "Thermodynamics – Revise theory<br>";
+}
+
+if (weakKinematics >= 2) {
+  studyPlan += "Kinematics – Practice questions<br>";
+} else {
+  studyPlan += "Kinematics – Maintain level<br>";
+}
+
+analysis += studyPlan;
+  // 📈 Progress Tracker
+if (history.length >= 2) {
+  let last = history[history.length - 1];
+  let prev = history[history.length - 2];
+
+  analysis += "<br><b>Progress Analysis:</b><br>";
+
+  if (last.physics > prev.physics)
+    analysis += "Physics: Improving 📈<br>";
+  else
+    analysis += "Physics: Needs Improvement 📉<br>";
+
+  if (last.chemistry > prev.chemistry)
+    analysis += "Chemistry: Improving 📈<br>";
+  else
+    analysis += "Chemistry: Needs Improvement 📉<br>";
+
+  if (last.math > prev.math)
+    analysis += "Math: Improving 📈<br>";
+  else
+    analysis += "Math: Needs Improvement 📉<br>";
+}
 if (rotationScore < 50) {
   topicAnalysis += "Rotation is weak ❌ (Practice more)<br>";
 } else if (rotationScore > 80) {
@@ -220,43 +343,118 @@ if (kinematicsScore > 70) {
 
 // 🔥 Performance Graph (FINAL VERSION)
 
-let ctx = document.getElementById('performanceChart').getContext('2d');
 
-// Destroy old chart if already exists (prevents duplicate graphs)
-if (window.myChart) {
-  window.myChart.destroy();
+// Create Progress Chart
+let ctx2 = document.getElementById('progressChart').getContext('2d');
+
+if (window.progressChart) {
+    window.progressChart.destroy();
 }
 
-// Create new chart
-window.myChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Physics', 'Chemistry', 'Math'],
-    datasets: [{
-      label: 'Performance %',
-      data: [phy, chem, math],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.7)',   // red
-        'rgba(54, 162, 235, 0.7)',   // blue
-        'rgba(75, 192, 192, 0.7)'    // green
-      ],
-      borderRadius: 8
-    }]
-  },
-  options: {
-    responsive: true,
-    plugins: {
-      legend: {
-        display: true
-      }
+window.progressChart = new Chart(ctx2, {
+    type: 'line',
+    data: {
+        labels: progressLabels,
+        datasets: [{
+            label: 'Average Score Progress',
+            data: progressData,
+            borderColor: 'yellow',
+            backgroundColor: 'rgba(255,255,0,0.2)',
+            tension: 0.3,
+            fill: true
+        }]
     },
-    scales: {
-      y: {
-        beginAtZero: true,
-        max: 100
-      }
+    options: {
+        responsive: true,
+        scales: {
+            y: {
+                beginAtZero: true,
+                max: 100
+            }
+        }
     }
-  }
+});
+  // =======================
+// 📊 Graphs Section
+// =======================
+
+let history = JSON.parse(localStorage.getItem("testHistory")) || [];
+
+// Performance Graph
+let labels = [];
+let physicsData = [];
+let chemistryData = [];
+let mathData = [];
+
+for (let i = 0; i < history.length; i++) {
+    labels.push("Test " + (i + 1));
+    physicsData.push(history[i].physics);
+    chemistryData.push(history[i].chemistry);
+    mathData.push(history[i].math);
+}
+
+let ctx = document.getElementById('performanceChart').getContext('2d');
+
+if (window.myChart) {
+    window.myChart.destroy();
+}
+
+window.myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: labels,
+        datasets: [
+            { label: 'Physics', data: physicsData, borderColor: 'red', fill: false },
+            { label: 'Chemistry', data: chemistryData, borderColor: 'blue', fill: false },
+            { label: 'Math', data: mathData, borderColor: 'green', fill: false }
+        ]
+    },
+    options: {
+        scales: {
+            y: { beginAtZero: true, max: 100 }
+        }
+    }
+});
+
+// Progress Graph
+let progressLabels = [];
+let progressData = [];
+
+for (let i = 0; i < history.length; i++) {
+    progressLabels.push("Test " + (i + 1));
+
+    let avgScore =
+        (parseInt(history[i].physics) +
+         parseInt(history[i].chemistry) +
+         parseInt(history[i].math)) / 3;
+
+    progressData.push(avgScore);
+}
+
+let ctx2 = document.getElementById('progressChart').getContext('2d');
+
+if (window.progressChart) {
+    window.progressChart.destroy();
+}
+
+window.progressChart = new Chart(ctx2, {
+    type: 'line',
+    data: {
+        labels: progressLabels,
+        datasets: [{
+            label: 'Average Score Progress',
+            data: progressData,
+            borderColor: 'yellow',
+            backgroundColor: 'rgba(255,255,0,0.2)',
+            tension: 0.3,
+            fill: true
+        }]
+    },
+    options: {
+        scales: {
+            y: { beginAtZero: true, max: 100 }
+        }
+    }
 });
 // Final output
 document.getElementById("analysis").innerHTML =
