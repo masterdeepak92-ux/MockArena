@@ -45,7 +45,18 @@
       border-radius: 10px;
       width: 250px;
     }
+.dark {
+    background: #111;
+    color: white;
+}
 
+.dark .card {
+    background: #1e1e1e;
+}
+
+.dark .navbar {
+    background: black;
+}
     h2 {
       margin-bottom: 10px;
     }
@@ -57,6 +68,7 @@
   <div class="navbar">
     <div class="logo">Mock<span>Arena</span></div>
     <div>Dashboard</div>
+    <button onclick="toggleDarkMode()" style="margin-left:20px;">Dark Mode</button>
   </div>
 
   <div class="container">
@@ -492,7 +504,20 @@ document.getElementById("leaderboard").innerHTML = boardHTML;
 document.getElementById("analysis").innerHTML =
   analysis + recommendation + topicAnalysis + priority;
 }
+function toggleDarkMode() {
+    document.body.classList.toggle("dark");
 
+    if (document.body.classList.contains("dark")) {
+        localStorage.setItem("darkMode", "true");
+    } else {
+        localStorage.setItem("darkMode", "false");
+    }
+}
+
+// Load dark mode when page opens
+if (localStorage.getItem("darkMode") === "true") {
+    document.body.classList.add("dark");
+}
 window.onload = showScores;
 </script>
 
