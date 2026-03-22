@@ -60,7 +60,7 @@
   </div>
 
   <div class="container">
-    
+    <h2 id="welcomeUser">Welcome</h2>
     <button onclick="updateScores()">Update Scores</button>
 <a href="test.html">
   <button>Start Test</button>
@@ -133,6 +133,10 @@ localStorage.setItem("kinematics", kinematics);
 }
 
 function showScores() {
+  let user = localStorage.getItem("mockUser");
+if(user){
+    document.getElementById("welcomeUser").innerText = "Welcome, " + user;
+}
   let phy = parseInt(localStorage.getItem("physics")) || 0;
   let chem = parseInt(localStorage.getItem("chemistry")) || 0;
   let math = parseInt(localStorage.getItem("math")) || 0;
