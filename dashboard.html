@@ -73,6 +73,13 @@
 
   <div class="container">
     <h2 id="welcomeUser">Welcome</h2>
+   <div class="card">
+    <h2>Statistics</h2>
+    <p id="totalTests">Total Tests: 0</p>
+    <p id="avgScore">Average Score: 0</p>
+    <p id="bestScore">Best Score: 0</p>
+    <p id="lastScore">Last Score: 0</p>
+</div> 
     <a href="planner.html">
 <button>Study Planner</button>
 </a>
@@ -521,6 +528,30 @@ function toggleDarkMode() {
 if (localStorage.getItem("darkMode") === "true") {
     document.body.classList.add("dark");
 }
-window.onload = showScores;
+  function loadStats() {
+    let history = JSON.parse(localStorage.getItem("testHistory")) || [];
+    let lastScore = localStorage.getItem("testScore") || 0;
+
+    let total = history.length;
+    let sum = 0;
+    let best = 0;
+
+    for (let i = 0; i < history.length; i++) {
+        let avg = (parseInt(history[i].physics) + parseInt(history[i].chemistry) + parseInt(history[i].math)) / 3;
+        sum += avg;
+        if (avg > best) best = avg;
+    }
+
+    let average = total ? (sum / total).toFixed(1) : 0;
+
+    document.getElementById("totalTests").innerText = "Total Tests: " + total;
+    document.getElementById("avgScore").innerText = "Average Score: " + average;
+    document.getElementById("bestScore").innerText = "Best Score: " + best;
+    document.getElementById("lastScore").innerText = "Last Score: " + lastScore;
+  }
+window.onload = function() {
+    showScores();
+    loadStats();
+};
 </script>
 
