@@ -85,7 +85,10 @@
     </div>
   </div>
 <h2>Analysis</h2>
-<p id="analysis"></p>// 🔥 Topic Analysis
+<p id="analysis"></p>// 
+  <h2>Leaderboard</h2>
+<div id="leaderboard"></div>
+  🔥 Topic Analysis
 let rotation = localStorage.getItem("rotation");
 let organic = localStorage.getItem("organic");
 let algebra = localStorage.getItem("algebra");
@@ -460,6 +463,31 @@ window.progressChart = new Chart(ctx2, {
         }
     }
 });
+  // Leaderboard System
+let leaderboard = JSON.parse(localStorage.getItem("leaderboard")) || [];
+
+let userName = localStorage.getItem("mockUser") || "Student";
+let avgScore = ((phy + chem + math) / 3).toFixed(1);
+
+// Add current user score
+leaderboard.push({
+    name: userName,
+    score: avgScore
+});
+
+// Sort leaderboard
+leaderboard.sort((a, b) => b.score - a.score);
+
+// Save leaderboard
+localStorage.setItem("leaderboard", JSON.stringify(leaderboard));
+
+// Display leaderboard
+let boardHTML = "";
+for(let i = 0; i < leaderboard.length && i < 5; i++){
+    boardHTML += (i+1) + ". " + leaderboard[i].name + " — " + leaderboard[i].score + "%<br>";
+}
+
+document.getElementById("leaderboard").innerHTML = boardHTML;
 // Final output
 document.getElementById("analysis").innerHTML =
   analysis + recommendation + topicAnalysis + priority;
