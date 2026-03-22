@@ -7,7 +7,7 @@
 <body style="background:black;color:white;font-family:Arial">
 
 <h2>Mock Test</h2>
-
+<h3>Time Left: <span id="timer">60</span> sec</h3>
 <form id="testForm">
 
 <!-- Physics -->
@@ -33,6 +33,20 @@
 </form>
 
 <script>
+  let timeLeft = 60;
+
+function startTimer() {
+    let timer = setInterval(function() {
+        timeLeft--;
+        document.getElementById("timer").innerText = timeLeft;
+
+        if(timeLeft <= 0) {
+            clearInterval(timer);
+            alert("Time Up! Test submitted.");
+            submitTest();
+        }
+    }, 1000);
+}
 function submitTest() {
 
   let score = 0;
@@ -63,13 +77,17 @@ function submitTest() {
   } else {
     localStorage.setItem("algebra", "weak");
   }
-
   localStorage.setItem("testScore", score);
 
-  alert("Your Score: " + score + "/3");
+alert("Your Score: " + score + "/3");
 
-  window.location.href = "dashboard.html";
+window.location.href = "dashboard.html";
 }
+
+// Start timer when page loads
+window.onload = function() {
+    startTimer();
+};
 </script>
 
 </body>
