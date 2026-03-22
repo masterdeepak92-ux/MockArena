@@ -80,6 +80,10 @@ background: black;
 </div><div class="hero">
   <h1>Welcome to <span>MockArena</span></h1>
   <p>Your Practice Arena for Success 🚀</p>
+  <div style="margin-bottom:10px;">
+    <input type="text" id="username" placeholder="Enter Your Name">
+    <button onclick="saveName()">Save Name</button>
+</div>
   <button class="btn">Start Practicing</button>
 </div><div class="features">
   <div class="card">
@@ -96,4 +100,18 @@ background: black;
   </div>
 </div><div class="footer">
   <p>© 2026 MockArena</p>
-</div></body></html>
+</div>
+  <script>
+function saveName() {
+    let name = document.getElementById("username").value;
+
+    if(name == ""){
+        alert("Please enter your name");
+        return;
+    }
+
+    localStorage.setItem("mockUser", name);
+    alert("Name saved successfully!");
+}
+</script>
+</body></html>
