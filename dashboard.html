@@ -107,10 +107,22 @@
     </div>
   </div>
 <h2>Analysis</h2>
-<p id="analysis"></p>// 
-  <div class="card">
+<p id="analysis"></p>
+
+<div class="card">
     <h2>AI Performance Report</h2>
     <p id="aiReport"></p>
+</div>
+
+<div class="card">
+    <h2>Rank Prediction</h2>
+    <p id="rankReport"></p>
+</div>
+
+<div class="card">
+    <h2>Performance Intelligence</h2>
+    <p id="performanceReport"></p>
+</div>
 </div>
   <h2>Leaderboard</h2>
 <div id="leaderboard"></div>
@@ -569,6 +581,71 @@ else{
 }
 
 document.getElementById("aiReport").innerHTML = aiText;
+  // Rank Prediction System
+let avgScore = (phy + chem + math) / 3;
+
+let rankText = "";
+
+if(avgScore > 85){
+    rankText = "Predicted Rank: Top 5% 🚀";
+}
+else if(avgScore > 70){
+    rankText = "Predicted Rank: Top 15% 📈";
+}
+else if(avgScore > 60){
+    rankText = "Predicted Rank: Top 30% 👍";
+}
+else{
+    rankText = "Predicted Rank: Below Top 30% ⚠ Improve more";
+}
+
+document.getElementById("rankReport").innerHTML = rankText;
+// ================= PERFORMANCE INTELLIGENCE =================
+let scores = [];
+
+for (let i = 0; i < history.length; i++) {
+    let avg = (
+        parseFloat(history[i].physics) +
+        parseFloat(history[i].chemistry) +
+        parseFloat(history[i].math)
+    ) / 3;
+    scores.push(avg);
+}
+
+// Consistency score
+let consistencyScore = 100;
+for (let i = 1; i < scores.length; i++) {
+    consistencyScore -= Math.abs(scores[i] - scores[i - 1]);
+}
+if (consistencyScore < 0) consistencyScore = 0;
+
+// Trend detection
+let trend = "Stable";
+if (scores.length > 1) {
+    if (scores[scores.length - 1] > scores[scores.length - 2]) {
+        trend = "Improving 📈";
+    } else if (scores[scores.length - 1] < scores[scores.length - 2]) {
+        trend = "Declining 📉";
+    }
+}
+
+// Growth rate
+let growth = scores.length > 1
+    ? (scores[scores.length - 1] - scores[0]) / scores.length
+    : 0;
+
+// Future prediction
+let futureScore = (lastScore + growth * 5).toFixed(1);
+
+// Final text
+let perfText = `
+<b>Consistency Score:</b> ${consistencyScore.toFixed(1)}%<br>
+<b>Performance Trend:</b> ${trend}<br>
+<b>Score Growth Rate:</b> ${growth.toFixed(2)} per test<br>
+<b>Expected Score After 5 Tests:</b> ${futureScore}
+`;
+
+document.getElementById("performanceReport").innerHTML = perfText;
 // Final output
 document.getElementById("analysis").innerHTML =
   analysis + recommendation + topicAnalysis + priority;
