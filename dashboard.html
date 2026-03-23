@@ -108,6 +108,10 @@
   </div>
 <h2>Analysis</h2>
 <p id="analysis"></p>// 
+  <div class="card">
+    <h2>AI Performance Report</h2>
+    <p id="aiReport"></p>
+</div>
   <h2>Leaderboard</h2>
 <div id="leaderboard"></div>
   🔥 Topic Analysis
@@ -510,6 +514,61 @@ for(let i = 0; i < leaderboard.length && i < 5; i++){
 }
 
 document.getElementById("leaderboard").innerHTML = boardHTML;
+  // ================= AI PERFORMANCE ENGINE =================
+
+let history = JSON.parse(localStorage.getItem("testHistory")) || [];
+
+let lastScore = parseFloat(localStorage.getItem("testScore")) || 0;
+
+let previousScore = lastScore;
+if (history.length > 1) {
+    let prev = history[history.length - 2];
+    previousScore = (parseFloat(prev.physics) + parseFloat(prev.chemistry) + parseFloat(prev.math)) / 3;
+}
+
+let improvement = (lastScore - previousScore).toFixed(1);
+
+// Average Score
+let avgScore = 0;
+for (let i = 0; i < history.length; i++) {
+    avgScore += (parseFloat(history[i].physics) +
+                 parseFloat(history[i].chemistry) +
+                 parseFloat(history[i].math)) / 3;
+}
+avgScore = history.length ? (avgScore / history.length).toFixed(1) : lastScore;
+
+// Predicted Score
+let predictedScore = (parseFloat(lastScore) + parseFloat(improvement)).toFixed(1);
+
+// Exam Readiness
+let readiness = (avgScore * 0.6 + lastScore * 0.4).toFixed(1);
+
+// Consistency (based on score variation)
+let consistency = "Medium";
+if (improvement > 5) consistency = "Improving";
+if (improvement < -5) consistency = "Dropping";
+
+// AI Report Text
+let aiText = `
+<b>Average Score:</b> ${avgScore}%<br>
+<b>Last Score:</b> ${lastScore}%<br>
+<b>Improvement Rate:</b> ${improvement}<br>
+<b>Predicted Next Score:</b> ${predictedScore}%<br>
+<b>Exam Readiness:</b> ${readiness}%<br>
+<b>Consistency:</b> ${consistency}<br>
+`;
+
+if(readiness < 40){
+    aiText += "<b>Status:</b> Not Ready – Focus on weak subjects.<br>";
+}
+else if(readiness < 70){
+    aiText += "<b>Status:</b> Moderate Preparation – Practice more tests.<br>";
+}
+else{
+    aiText += "<b>Status:</b> Exam Ready – Keep revising and testing.<br>";
+}
+
+document.getElementById("aiReport").innerHTML = aiText;
 // Final output
 document.getElementById("analysis").innerHTML =
   analysis + recommendation + topicAnalysis + priority;
