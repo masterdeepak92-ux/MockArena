@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
   <title>Dashboard - MockArena</title>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
   <style>
     body {
-      margin: 0;
-      font-family: Arial;
-      background: #0d0d0d;
-      color: white;
-    }
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: #0d0d0d;
+    color: white;
+}
 
     .navbar {
       display: flex;
@@ -40,11 +41,17 @@
     }
 
     .card {
-      background: #1a1a1a;
-      padding: 20px;
-      border-radius: 10px;
-      width: 250px;
-    }
+    background: #1a1a1a;
+    padding: 20px;
+    border-radius: 12px;
+    width: 250px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
 .dark {
     background: #111;
     color: white;
@@ -60,16 +67,67 @@
     h2 {
       margin-bottom: 10px;
     }
+    .container {
+    padding: 30px;
+}
+
+.cards {
+    margin-top: 20px;
+}
+
+h2 {
+    margin-bottom: 10px;
+}
+
+canvas {
+    background: #1a1a1a;
+    border-radius: 10px;
+    padding: 10px;
+    margin-top: 20px;
+}
+    sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 220px;
+    height: 100%;
+    background: #111;
+    padding: 20px;
+}
+
+.sidebar h2 {
+    color: orange;
+}
+
+.sidebar a {
+    display: block;
+    color: white;
+    padding: 10px;
+    text-decoration: none;
+    margin-top: 10px;
+}
+
+.sidebar a:hover {
+    background: #1a1a1a;
+    border-radius: 8px;
+}
+
+.main {
+    margin-left: 240px;
+    padding: 20px;
+}
   </style>
 </head>
 
 <body>
+  <div class="sidebar">
+    <h2>MockArena</h2>
+    <a href="dashboard.html">Dashboard</a>
+    <a href="test.html">Start Test</a>
+    <a href="planner.html">Study Planner</a>
+</div>
 
-  <div class="navbar">
-    <div class="logo">Mock<span>Arena</span></div>
-    <div>Dashboard</div>
-    <button onclick="toggleDarkMode()" style="margin-left:20px;">Dark Mode</button>
-  </div>
+<div class="main">
 
   <div class="container">
     <h2 id="welcomeUser">Welcome</h2>
@@ -101,9 +159,13 @@
       </div>
 
       <div class="card">
-        <h2>Mathematics</h2>
-        <p id="math">Score: 80%</p>
-      </div>
+    <h2>Mathematics</h2>
+    <p id="math">Score: 80%</p>
+</div>
+
+<div class="card">
+    <h2>Exam Readiness</h2>
+    <p id="readiness">Calculating...</p>
     </div>
   </div>
 <h2>Analysis</h2>
@@ -690,4 +752,5 @@ window.onload = function() {
     loadStats();
 };
 </script>
+    </div>
 
