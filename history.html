@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Test History</title>
+<style>
+body{
+    background:#0d0d0d;
+    color:white;
+    font-family:Arial;
+    padding:20px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th, td{
+    border:1px solid white;
+    padding:10px;
+    text-align:center;
+}
+
+h1{
+    color:orange;
+}
+</style>
+</head>
+<body>
+
+<h1>Test History</h1>
+
+<table id="historyTable">
+<tr>
+<th>Test No</th>
+<th>Score</th>
+<th>Date</th>
+</tr>
+</table>
+
+<script>
+let history = JSON.parse(localStorage.getItem("testHistory")) || [];
+
+let table = document.getElementById("historyTable");
+
+for(let i=0; i<history.length; i++){
+    let row = table.insertRow();
+    row.insertCell(0).innerHTML = i+1;
+    row.insertCell(1).innerHTML = history[i].score;
+    row.insertCell(2).innerHTML = history[i].date;
+}
+</script>
+
+</body>
+</html>
