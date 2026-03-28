@@ -78,7 +78,16 @@ function submitTest() {
     localStorage.setItem("algebra", "weak");
   }
   localStorage.setItem("testScore", score);
+// Save test history
+let history = JSON.parse(localStorage.getItem("testHistory")) || [];
 
+let testData = {
+    score: score,
+    date: new Date().toLocaleDateString()
+};
+
+history.push(testData);
+localStorage.setItem("testHistory", JSON.stringify(history));
 alert("Your Score: " + score + "/3");
 
 window.location.href = "dashboard.html";
