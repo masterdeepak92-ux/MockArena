@@ -189,21 +189,24 @@ canvas {
 </div>
   <h2>Leaderboard</h2>
 <div id="leaderboard"></div>
-  🔥 Topic Analysis
+// Topic Analysis
 let rotation = localStorage.getItem("rotation");
 let organic = localStorage.getItem("organic");
 let algebra = localStorage.getItem("algebra");
 
-analysis += "<br><br><b>Topic Analysis:</b><br>";
+let analysis = "<br><br><b>Topic Analysis:</b><br>";
 
-if (rotation === "weak") analysis += "Rotation is weak ❌<br>";
-if (rotation === "strong") analysis += "Rotation is strong 💪<br>";
+if(rotation == "weak") analysis += "Rotation is weak ❌<br>";
+if(rotation == "strong") analysis += "Rotation is strong 💪<br>";
 
-if (organic === "weak") analysis += "Organic Chemistry is weak ❌<br>";
-if (organic === "strong") analysis += "Organic Chemistry is strong 💪<br>";
+if(organic == "weak") analysis += "Organic Chemistry is weak ❌<br>";
+if(organic == "strong") analysis += "Organic Chemistry is strong 💪<br>";
 
-if (algebra === "weak") analysis += "Algebra is weak ❌<br>";
-if (algebra === "strong") analysis += "Algebra is strong 💪<br>";
+if(algebra == "weak") analysis += "Algebra is weak ❌<br>";
+if(algebra == "strong") analysis += "Algebra is strong 💪<br>";
+
+document.getElementById("analysis").innerHTML = analysis;
+  
 <script>
 function updateScores() {
   let phy = prompt("Enter Physics score:");
