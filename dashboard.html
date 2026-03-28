@@ -742,6 +742,16 @@ if (localStorage.getItem("darkMode") === "true") {
     }
 
     let average = total ? (sum / total).toFixed(1) : 0;
+    // Exam Readiness Score
+let readiness = 0;
+
+if(total >= 1) readiness += 20;
+if(total >= 3) readiness += 20;
+if(average >= 1) readiness += 20;
+if(average >= 2) readiness += 20;
+if(average >= 2.5) readiness += 20;
+
+document.getElementById("readiness").innerText = "Exam Readiness: " + readiness + "%";
 
     document.getElementById("totalTests").innerText = "Total Tests: " + total;
     document.getElementById("avgScore").innerText = "Average Score: " + average;
