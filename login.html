@@ -1,77 +1,47 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Login - MockArena</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial;
-      background: #0d0d0d;
-      color: white;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-
-    .login-box {
-      background: #1a1a1a;
-      padding: 30px;
-      border-radius: 10px;
-      width: 300px;
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 5px;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background: orange;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: darkorange;
-    }
-  </style>
+    <title>MockArena Login</title>
 </head>
-
 <body>
 
-  <div class="login-box">
     <h2>Login to MockArena</h2>
 
-    <input type="text" placeholder="Enter Email">
-    <input type="password" placeholder="Enter Password">
+    <button onclick="googleLogin()">Login with Google</button>
 
-    <button onclick="loginUser()">Login</button>
-  </div>
-<script>
-function loginUser() {
-    let email = document.querySelector('input[type="text"]').value;
-    let password = document.querySelector('input[type="password"]').value;
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 
-    if (email && password) {
-        localStorage.setItem("user", email);
-        window.location.href = "dashboard.html";
-    } else {
-        alert("Please enter details");
-    }
-}
-</script>
+    <script>
+      // 🔥 PASTE YOUR FIREBASE CONFIG HERE
+      const firebaseConfig = {
+        apiKey: "PASTE_API_KEY",
+        authDomain: "mockarena-c18c4.firebaseapp.com",
+        projectId: "mockarena-c18c4",
+        storageBucket: "mockarena-c18c4.appspot.com",
+        messagingSenderId: "861067164791",
+        appId: "PASTE_APP_ID"
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+      const auth = firebase.auth();
+
+      // Google Login Function
+      function googleLogin() {
+          const provider = new firebase.auth.GoogleAuthProvider();
+
+          auth.signInWithPopup(provider)
+          .then((result) => {
+              alert("Login Successful");
+              window.location.href = "dashboard.html";
+          })
+          .catch((error) => {
+              alert(error.message);
+          });
+      }
+    </script>
+
 </body>
 </html>
