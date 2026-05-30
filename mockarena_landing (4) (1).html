@@ -1,0 +1,2085 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena – India's Premier Exam Prep Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    /* Core palette — deep slate + electric violet */
+    --ink: #0d0f1a;
+    --ink-soft: #1a1d2e;
+    --ink-muted: #5a5f7a;
+    --ink-faint: #9499b8;
+    --paper: #f4f5fb;
+    --paper-warm: #eceef8;
+    --paper-card: #ffffff;
+
+    /* Primary accent — electric indigo */
+    --accent: #4f46e5;
+    --accent-hover: #4338ca;
+    --accent-light: rgba(79,70,229,0.08);
+    --accent-glow: rgba(79,70,229,0.25);
+
+    /* Secondary accents */
+    --accent-2: #7c3aed;          /* violet */
+    --accent-cool: #0ea5e9;       /* sky blue */
+    --accent-green: #10b981;      /* emerald */
+    --accent-amber: #f59e0b;      /* amber */
+    --accent-rose: #f43f5e;       /* rose */
+    --gold: #eab308;
+
+    /* Borders */
+    --border: rgba(13,15,26,0.07);
+    --border-strong: rgba(13,15,26,0.13);
+
+    /* Radii */
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 22px;
+    --radius-xl: 34px;
+
+    /* Fonts */
+    --font-display: 'Manrope', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Shadows */
+    --shadow-card: 0 2px 16px rgba(13,15,26,0.06), 0 1px 3px rgba(13,15,26,0.04);
+    --shadow-hover: 0 16px 56px rgba(79,70,229,0.14), 0 2px 8px rgba(13,15,26,0.06);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--paper);
+    color: var(--ink);
+    overflow-x: hidden;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  /* ─── NAV ─── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(244,245,251,0.93);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 6%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 68px;
+  }
+
+  .nav-logo {
+    font-family: var(--font-display);
+    font-size: 1.45rem; font-weight: 800;
+    letter-spacing: -0.03em;
+    color: var(--ink);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .nav-logo .logo-mark {
+    width: 36px; height: 36px;
+    background: var(--accent);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    color: white; font-size: 0.95rem; font-weight: 800;
+    font-family: var(--font-display);
+    letter-spacing: -0.03em;
+    flex-shrink: 0;
+  }
+
+  .nav-links {
+    display: flex; align-items: center; gap: 2rem;
+    list-style: none;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem; font-weight: 500;
+    color: var(--ink-muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--ink); }
+
+  .nav-cta {
+    display: flex; align-items: center; gap: 12px;
+  }
+
+  .btn-ghost {
+    font-family: var(--font-body);
+    font-size: 0.88rem; font-weight: 600;
+    color: var(--ink-muted);
+    background: none; border: none;
+    cursor: pointer; padding: 8px 16px;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s;
+    text-decoration: none; display: inline-flex; align-items: center;
+  }
+  .btn-ghost:hover { color: var(--ink); background: var(--border); }
+
+  .btn-primary {
+    font-family: var(--font-body);
+    font-size: 0.88rem; font-weight: 600;
+    color: white; background: var(--accent);
+    border: none; cursor: pointer;
+    padding: 9px 20px;
+    border-radius: var(--radius-sm);
+    transition: all 0.2s;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow); }
+
+  /* ─── HERO ─── */
+  .hero {
+    min-height: 100vh;
+    padding: 120px 6% 80px;
+    position: relative;
+    overflow: hidden;
+    display: flex; align-items: center;
+  }
+
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+  }
+
+  .hero-accent-blob {
+    position: absolute;
+    width: 600px; height: 600px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(79,70,229,0.10) 0%, transparent 70%);
+    top: -100px; right: -100px;
+    pointer-events: none;
+  }
+  .hero-accent-blob-2 {
+    position: absolute;
+    width: 400px; height: 400px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%);
+    bottom: -50px; left: 10%;
+    pointer-events: none;
+  }
+
+  .hero-inner {
+    position: relative; z-index: 1;
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 80px; align-items: center;
+  }
+
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(79,70,229,0.08);
+    border: 1px solid rgba(79,70,229,0.20);
+    border-radius: 100px;
+    padding: 6px 14px 6px 8px;
+    font-size: 0.8rem; font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero-eyebrow .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%; background: var(--accent);
+    animation: pulse-dot 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-dot {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.7); }
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2.6rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 em {
+    font-style: normal;
+    color: var(--accent);
+    position: relative;
+  }
+
+  .hero h1 em::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; left: 0; right: 0;
+    height: 3px;
+    background: var(--accent);
+    border-radius: 2px;
+    opacity: 0.25;
+  }
+
+  .hero-sub {
+    font-size: 1.1rem; font-weight: 400;
+    color: var(--ink-muted);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    max-width: 480px;
+  }
+
+  .hero-actions {
+    display: flex; align-items: center; gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 3rem;
+  }
+
+  .btn-hero {
+    font-family: var(--font-body);
+    font-size: 1rem; font-weight: 600;
+    color: white; background: var(--ink);
+    border: none; cursor: pointer;
+    padding: 14px 28px;
+    border-radius: var(--radius-md);
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    position: relative; overflow: hidden;
+  }
+  .btn-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 100%);
+  }
+  .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(13,15,26,0.22); }
+
+  .btn-hero-outline {
+    font-family: var(--font-body);
+    font-size: 1rem; font-weight: 600;
+    color: var(--ink); background: transparent;
+    border: 1.5px solid var(--border-strong); cursor: pointer;
+    padding: 14px 28px;
+    border-radius: var(--radius-md);
+    transition: all 0.25s;
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-hero-outline:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .hero-trust {
+    display: flex; align-items: center; gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .trust-stat {
+    display: flex; flex-direction: column;
+  }
+  .trust-stat .num {
+    font-family: var(--font-display);
+    font-size: 1.35rem; font-weight: 800;
+    color: var(--ink);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+  .trust-stat .lbl {
+    font-size: 0.75rem; font-weight: 500;
+    color: var(--ink-faint);
+    margin-top: 2px;
+  }
+
+  .trust-divider {
+    width: 1px; height: 36px;
+    background: var(--border-strong);
+  }
+
+  /* ─── HERO CARD STACK ─── */
+  .hero-visual {
+    position: relative;
+  }
+
+  .hero-card-main {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 28px;
+    box-shadow: var(--shadow-hover);
+    position: relative; z-index: 2;
+  }
+
+  .hero-card-back {
+    position: absolute;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    width: 90%; height: 100%;
+    top: -16px; right: -16px;
+    z-index: 1;
+    box-shadow: var(--shadow-card);
+  }
+
+  .hcm-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .hcm-title {
+    font-family: var(--font-display);
+    font-size: 0.95rem; font-weight: 700;
+    color: var(--ink);
+    letter-spacing: -0.02em;
+  }
+
+  .hcm-badge {
+    background: rgba(13,158,92,0.1);
+    color: var(--accent-green);
+    font-size: 0.72rem; font-weight: 600;
+    padding: 4px 10px; border-radius: 100px;
+    border: 1px solid rgba(13,158,92,0.2);
+  }
+
+  .hcm-timer {
+    background: var(--paper-warm);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 16px;
+    margin-bottom: 20px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .timer-label { font-size: 0.75rem; color: var(--ink-faint); font-weight: 500; }
+  .timer-value {
+    font-family: var(--font-mono);
+    font-size: 1.5rem; font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.02em;
+  }
+
+  .hcm-question {
+    font-size: 0.9rem; font-weight: 500;
+    color: var(--ink);
+    line-height: 1.5;
+    margin-bottom: 16px;
+    padding: 12px;
+    background: var(--paper);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--accent);
+  }
+
+  .hcm-options {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-bottom: 20px;
+  }
+
+  .hcm-option {
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem; font-weight: 500;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex; align-items: center; gap: 10px;
+    color: var(--ink-soft);
+  }
+  .hcm-option.selected {
+    background: rgba(79,70,229,0.07);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+  .hcm-option.correct {
+    background: rgba(13,158,92,0.06);
+    border-color: var(--accent-green);
+    color: var(--accent-green);
+  }
+
+  .opt-key {
+    width: 22px; height: 22px;
+    border: 1px solid currentColor;
+    border-radius: 4px;
+    font-size: 0.7rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    opacity: 0.6;
+  }
+
+  .hcm-progress {
+    display: flex; flex-direction: column; gap: 6px;
+  }
+  .progress-info {
+    display: flex; justify-content: space-between;
+    font-size: 0.75rem; color: var(--ink-faint);
+  }
+  .progress-bar {
+    height: 5px; background: var(--border);
+    border-radius: 10px; overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%; width: 37%;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    border-radius: 10px;
+    animation: progress-anim 3s ease-in-out infinite alternate;
+  }
+  @keyframes progress-anim { from { width: 35%; } to { width: 40%; } }
+
+  /* ─── FLOATING BADGES ─── */
+  .hero-badge {
+    position: absolute;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 10px;
+    z-index: 10;
+    animation: float-badge 4s ease-in-out infinite alternate;
+  }
+  .hero-badge.b1 {
+    bottom: -20px; left: -30px;
+    animation-delay: -1s;
+  }
+  .hero-badge.b2 {
+    top: 10px; right: -20px;
+    animation-delay: -2.5s;
+  }
+  @keyframes float-badge {
+    from { transform: translateY(0px); }
+    to { transform: translateY(-6px); }
+  }
+
+  .badge-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; flex-shrink: 0;
+  }
+  .badge-text .title { font-size: 0.8rem; font-weight: 600; color: var(--ink); }
+  .badge-text .sub { font-size: 0.7rem; color: var(--ink-faint); }
+
+  /* ─── SECTION WRAPPER ─── */
+  .section {
+    padding: 100px 6%;
+  }
+
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem; font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .section-tag::before {
+    content: '';
+    display: inline-block;
+    width: 20px; height: 2px;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+
+  .section-h {
+    font-family: var(--font-display);
+    font-size: clamp(1.9rem, 3.2vw, 2.8rem);
+    font-weight: 800;
+    letter-spacing: -0.04em;
+    color: var(--ink);
+    line-height: 1.12;
+    margin-bottom: 1rem;
+  }
+
+  .section-sub {
+    font-size: 1.05rem;
+    color: var(--ink-muted);
+    max-width: 560px;
+    line-height: 1.7;
+    margin-bottom: 3.5rem;
+  }
+
+  /* ─── EXAMS STRIP ─── */
+  .exams-section {
+    padding: 20px 6% 60px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .exams-inner {
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .exams-label {
+    font-size: 0.78rem; font-weight: 600;
+    color: var(--ink-faint);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 20px;
+  }
+
+  .exams-grid {
+    display: flex; flex-wrap: wrap; gap: 12px;
+  }
+
+  .exam-pill {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 8px 18px;
+    font-size: 0.85rem; font-weight: 600;
+    color: var(--ink-soft);
+    display: flex; align-items: center; gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-decoration: none;
+  }
+  .exam-pill:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(255,77,28,0.04);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(255,77,28,0.12);
+  }
+
+  .exam-pill .pill-icon {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; font-weight: 800;
+    flex-shrink: 0;
+  }
+
+  /* ─── FEATURES ─── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .feature-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .feature-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: transparent;
+  }
+  .feature-card:hover::before { opacity: 1; }
+
+  .fc-1::before { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+  .fc-2::before { background: linear-gradient(90deg, var(--accent-cool), #06b6d4); }
+  .fc-3::before { background: linear-gradient(90deg, var(--accent-green), #34d399); }
+  .fc-4::before { background: linear-gradient(90deg, var(--accent-2), #a855f7); }
+  .fc-5::before { background: linear-gradient(90deg, var(--accent-amber), #fbbf24); }
+  .fc-6::before { background: linear-gradient(90deg, var(--accent-rose), #fb7185); }
+
+  .feature-icon {
+    width: 48px; height: 48px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem;
+    margin-bottom: 16px;
+  }
+
+  .feature-card h3 {
+    font-family: var(--font-display);
+    font-size: 1rem; font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.03em;
+  }
+
+  .feature-card p {
+    font-size: 0.875rem;
+    color: var(--ink-muted);
+    line-height: 1.6;
+    margin-bottom: 16px;
+  }
+
+  .feature-tags {
+    display: flex; flex-wrap: wrap; gap: 6px;
+  }
+
+  .ftag {
+    font-size: 0.7rem; font-weight: 600;
+    padding: 3px 9px; border-radius: 100px;
+    background: var(--paper-warm);
+    color: var(--ink-muted);
+    border: 1px solid var(--border);
+  }
+
+  /* ─── EXAM PROGRAMS ─── */
+  .programs-section {
+    background: linear-gradient(155deg, #0d0f1a 0%, #13143a 50%, #0d1025 100%);
+    color: white;
+  }
+
+  .programs-inner {
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .programs-section .section-tag { color: #a78bfa; }
+  .programs-section .section-tag::before { background: #a78bfa; }
+  .programs-section .section-h { color: white; }
+  .programs-section .section-sub { color: rgba(255,255,255,0.45); }
+
+  .programs-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .program-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .program-card:hover {
+    background: rgba(255,255,255,0.08);
+    border-color: rgba(255,255,255,0.2);
+    transform: translateY(-4px);
+  }
+
+  .program-card.featured {
+    background: rgba(79,70,229,0.14);
+    border-color: rgba(79,70,229,0.35);
+  }
+  .program-card.featured:hover {
+    background: rgba(79,70,229,0.22);
+    border-color: var(--accent);
+  }
+
+  .prog-top {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 20px;
+  }
+
+  .prog-icon {
+    width: 52px; height: 52px;
+    border-radius: var(--radius-md);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .prog-badge {
+    font-size: 0.7rem; font-weight: 600;
+    padding: 4px 10px; border-radius: 100px;
+    background: rgba(255,255,255,0.08);
+    color: rgba(255,255,255,0.6);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .program-card.featured .prog-badge {
+    background: var(--accent); color: white; border-color: var(--accent);
+  }
+
+  .program-card h3 {
+    font-family: var(--font-display);
+    font-size: 1.15rem; font-weight: 700;
+    color: white;
+    margin-bottom: 8px;
+    letter-spacing: -0.03em;
+  }
+
+  .program-card p {
+    font-size: 0.875rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+
+  .prog-subjects {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-bottom: 24px;
+  }
+
+  .prog-subject {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.85rem; font-weight: 500;
+    color: rgba(255,255,255,0.7);
+  }
+  .prog-subject::before {
+    content: '';
+    width: 6px; height: 6px; border-radius: 50%;
+    background: #a78bfa;
+    flex-shrink: 0;
+  }
+
+  .prog-cta {
+    font-size: 0.85rem; font-weight: 600;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none;
+    display: flex; align-items: center; gap: 6px;
+    transition: color 0.2s;
+    background: none; border: none; cursor: pointer;
+    padding: 0;
+    font-family: var(--font-body);
+  }
+  .program-card:hover .prog-cta { color: white; }
+  .program-card.featured .prog-cta { color: #a78bfa; }
+
+  /* ─── HOW IT WORKS ─── */
+  .steps-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 0;
+    position: relative;
+  }
+
+  .steps-grid::before {
+    content: '';
+    position: absolute;
+    top: 40px; left: 12.5%; right: 12.5%;
+    height: 1px;
+    background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 8px, transparent 8px, transparent 16px);
+    z-index: 0;
+  }
+
+  .step-item {
+    text-align: center;
+    padding: 0 24px;
+    position: relative; z-index: 1;
+  }
+
+  .step-num {
+    width: 80px; height: 80px;
+    background: var(--paper-card);
+    border: 1.5px solid var(--border-strong);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 20px;
+    font-family: var(--font-display);
+    font-size: 1.5rem; font-weight: 800;
+    color: var(--ink);
+    transition: all 0.3s;
+  }
+  .step-item:hover .step-num {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+    transform: scale(1.05);
+  }
+
+  .step-item h4 {
+    font-family: var(--font-display);
+    font-size: 1rem; font-weight: 700;
+    color: var(--ink);
+    margin-bottom: 8px;
+    letter-spacing: -0.03em;
+  }
+
+  .step-item p {
+    font-size: 0.85rem; color: var(--ink-muted);
+    line-height: 1.6;
+  }
+
+  /* ─── ANALYTICS PREVIEW ─── */
+  .analytics-section {
+    background: linear-gradient(145deg, var(--paper-warm) 0%, var(--paper) 100%);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .analytics-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1.2fr;
+    gap: 80px; align-items: center;
+  }
+
+  .analytics-cards {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .analytics-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s;
+  }
+  .analytics-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .analytics-card.wide {
+    grid-column: 1 / -1;
+  }
+
+  .ac-label {
+    font-size: 0.72rem; font-weight: 600;
+    color: var(--ink-faint);
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-bottom: 8px;
+  }
+
+  .ac-value {
+    font-family: var(--font-display);
+    font-size: 1.75rem; font-weight: 800;
+    color: var(--ink);
+    line-height: 1;
+    margin-bottom: 4px;
+    letter-spacing: -0.04em;
+  }
+
+  .ac-delta {
+    font-size: 0.75rem; font-weight: 600;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .ac-delta.up { color: var(--accent-green); }
+  .ac-delta.down { color: var(--accent); }
+
+  .mini-bars {
+    display: flex; align-items: flex-end; gap: 3px;
+    height: 40px; margin-top: 12px;
+  }
+
+  .mini-bar {
+    flex: 1;
+    border-radius: 2px 2px 0 0;
+    background: var(--border);
+    transition: all 0.3s;
+  }
+  .mini-bar.active { background: var(--accent); }
+  .mini-bar.best { background: var(--accent-2); }
+
+  .rank-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .rank-row:last-child { border-bottom: none; }
+
+  .rank-pos {
+    font-family: var(--font-mono);
+    font-size: 0.75rem; font-weight: 500;
+    color: var(--ink-faint);
+    width: 20px;
+  }
+  .rank-name { font-size: 0.82rem; font-weight: 600; color: var(--ink); flex: 1; }
+  .rank-score {
+    font-family: var(--font-mono);
+    font-size: 0.8rem; font-weight: 500;
+    color: var(--accent);
+  }
+
+  /* ─── TESTIMONIALS ─── */
+  .testimonials-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .testimonial-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    box-shadow: var(--shadow-card);
+    transition: all 0.3s;
+  }
+  .testimonial-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .tc-stars {
+    color: var(--gold);
+    font-size: 0.9rem;
+    margin-bottom: 12px;
+    letter-spacing: 2px;
+  }
+
+  .tc-quote {
+    font-size: 0.9rem;
+    color: var(--ink-soft);
+    line-height: 1.7;
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .tc-author {
+    display: flex; align-items: center; gap: 12px;
+    border-top: 1px solid var(--border);
+    padding-top: 16px;
+  }
+
+  .tc-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
+  }
+
+  .tc-name { font-size: 0.85rem; font-weight: 600; color: var(--ink); }
+  .tc-meta { font-size: 0.75rem; color: var(--ink-faint); }
+
+  /* ─── PRICING ─── */
+  .pricing-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    max-width: 960px; margin: 0 auto;
+  }
+
+  .pricing-card {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
+    padding: 36px;
+    position: relative;
+    transition: all 0.3s;
+  }
+  .pricing-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+  }
+
+  .pricing-card.popular {
+    background: linear-gradient(155deg, #13143a 0%, #1e1060 100%);
+    border-color: rgba(79,70,229,0.5);
+    color: white;
+    transform: scale(1.04) translateY(-4px);
+    box-shadow: 0 20px 60px rgba(79,70,229,0.30), 0 4px 12px rgba(13,15,26,0.2);
+  }
+  .pricing-card.popular:hover {
+    transform: scale(1.04) translateY(-8px);
+  }
+
+  .popular-badge {
+    position: absolute;
+    top: -14px; left: 50%;
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    color: white;
+    font-size: 0.72rem; font-weight: 700;
+    padding: 5px 16px; border-radius: 100px;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    text-transform: uppercase;
+  }
+
+  .plan-name {
+    font-family: var(--font-display);
+    font-size: 0.78rem; font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 12px;
+  }
+  .pricing-card.popular .plan-name { color: rgba(255,255,255,0.5); }
+
+  .plan-price {
+    display: flex; align-items: baseline; gap: 4px;
+    margin-bottom: 6px;
+  }
+  .price-curr { font-size: 1.2rem; font-weight: 600; color: var(--ink-muted); margin-top: 4px; }
+  .price-num {
+    font-family: var(--font-display);
+    font-size: 3rem; font-weight: 800;
+    color: var(--ink); line-height: 1;
+    letter-spacing: -0.05em;
+  }
+  .price-period { font-size: 0.85rem; color: var(--ink-faint); }
+  .pricing-card.popular .price-curr,
+  .pricing-card.popular .price-num { color: white; }
+  .pricing-card.popular .price-period { color: rgba(255,255,255,0.4); }
+
+  .plan-desc {
+    font-size: 0.82rem; color: var(--ink-muted);
+    margin-bottom: 24px; line-height: 1.5;
+  }
+  .pricing-card.popular .plan-desc { color: rgba(255,255,255,0.5); }
+
+  .plan-features {
+    list-style: none; display: flex; flex-direction: column; gap: 10px;
+    margin-bottom: 28px;
+  }
+  .plan-features li {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 0.87rem; color: var(--ink-soft);
+  }
+  .pricing-card.popular .plan-features li { color: rgba(255,255,255,0.75); }
+
+  .check-icon {
+    width: 18px; height: 18px; border-radius: 50%;
+    background: rgba(13,158,92,0.1);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; font-size: 0.65rem; color: var(--accent-green);
+    border: 1px solid rgba(13,158,92,0.2);
+  }
+  .pricing-card.popular .check-icon {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.8);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  .plan-btn {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 0.9rem; font-weight: 600;
+    padding: 13px 24px;
+    border-radius: var(--radius-md);
+    border: 1.5px solid var(--border-strong);
+    background: transparent; color: var(--ink);
+    cursor: pointer; transition: all 0.2s;
+    text-decoration: none;
+    display: flex; align-items: center; justify-content: center; gap: 8px;
+  }
+  .plan-btn:hover { background: var(--ink); color: white; border-color: var(--ink); }
+
+  .plan-btn.primary-plan {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: white;
+    border-color: transparent;
+  }
+  .plan-btn.primary-plan:hover { background: linear-gradient(135deg, var(--accent-hover), #6d28d9); }
+
+  /* ─── FAQ ─── */
+  .faq-grid {
+    max-width: 800px; margin: 0 auto;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+
+  .faq-item {
+    background: var(--paper-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .faq-q {
+    padding: 20px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    cursor: pointer;
+    transition: background 0.2s;
+    user-select: none;
+  }
+  .faq-q:hover { background: var(--paper-warm); }
+
+  .faq-q span {
+    font-size: 0.95rem; font-weight: 600;
+    color: var(--ink);
+  }
+
+  .faq-toggle {
+    width: 28px; height: 28px;
+    border: 1.5px solid var(--border-strong);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1rem; color: var(--ink-muted);
+    transition: all 0.3s;
+    flex-shrink: 0;
+  }
+  .faq-item.open .faq-toggle {
+    background: var(--accent); border-color: var(--accent); color: white;
+    transform: rotate(45deg);
+  }
+
+  .faq-a {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.35s ease, padding 0.3s ease;
+    font-size: 0.875rem; color: var(--ink-muted); line-height: 1.7;
+    padding: 0 24px;
+  }
+  .faq-item.open .faq-a {
+    max-height: 300px;
+    padding: 0 24px 20px;
+  }
+
+  /* ─── CTA BANNER ─── */
+  .cta-section {
+    padding: 100px 6%;
+    background: linear-gradient(155deg, #0d0f1a 0%, #13143a 60%, #1e1060 100%);
+    text-align: center;
+  }
+
+  .cta-inner {
+    max-width: 700px; margin: 0 auto;
+  }
+
+  .cta-section .section-tag { color: #a78bfa; justify-content: center; }
+  .cta-section .section-tag::before { background: #a78bfa; }
+
+  .cta-h {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 3.8vw, 3.2rem);
+    font-weight: 800; letter-spacing: -0.04em;
+    color: white; line-height: 1.08;
+    margin-bottom: 1.2rem;
+  }
+
+  .cta-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.5);
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  .cta-btns {
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-white {
+    font-family: var(--font-body);
+    font-size: 1rem; font-weight: 600;
+    background: white; color: var(--ink);
+    border: none; cursor: pointer;
+    padding: 14px 28px; border-radius: var(--radius-md);
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: all 0.2s;
+  }
+  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,255,255,0.2); }
+
+  .btn-outline-white {
+    font-family: var(--font-body);
+    font-size: 1rem; font-weight: 600;
+    background: transparent; color: white;
+    border: 1.5px solid rgba(255,255,255,0.25); cursor: pointer;
+    padding: 14px 28px; border-radius: var(--radius-md);
+    text-decoration: none;
+    display: inline-flex; align-items: center; gap: 8px;
+    transition: all 0.2s;
+  }
+  .btn-outline-white:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    background: #090b18;
+    color: rgba(255,255,255,0.5);
+    padding: 60px 6% 32px;
+  }
+
+  .footer-inner {
+    max-width: 1200px; margin: 0 auto;
+  }
+
+  .footer-top {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 60px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    margin-bottom: 32px;
+  }
+
+  .footer-brand .nav-logo {
+    color: white; margin-bottom: 16px;
+    display: inline-flex;
+  }
+  .footer-brand p {
+    font-size: 0.87rem; line-height: 1.7;
+    color: rgba(255,255,255,0.45);
+    margin-bottom: 20px;
+  }
+
+  .footer-social {
+    display: flex; gap: 10px;
+  }
+  .social-btn {
+    width: 36px; height: 36px;
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: var(--radius-sm);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.8rem; color: rgba(255,255,255,0.5);
+    text-decoration: none; cursor: pointer;
+    transition: all 0.2s;
+    background: none;
+  }
+  .social-btn:hover { border-color: rgba(255,255,255,0.3); color: white; }
+
+  .footer-col h5 {
+    font-family: var(--font-display);
+    font-size: 0.8rem; font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+    margin-bottom: 16px;
+  }
+
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+  .footer-col ul li a {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.4);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-col ul li a:hover { color: rgba(255,255,255,0.9); }
+
+  .footer-bottom {
+    display: flex; justify-content: space-between; align-items: center;
+    flex-wrap: wrap; gap: 12px;
+  }
+
+  .footer-copy { font-size: 0.8rem; }
+
+  .footer-legal {
+    display: flex; gap: 20px;
+  }
+  .footer-legal a {
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.3);
+    text-decoration: none; transition: color 0.2s;
+  }
+  .footer-legal a:hover { color: rgba(255,255,255,0.7); }
+
+  /* ─── ANNOUNCE BAR ─── */
+  .announce-bar {
+    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
+    color: white;
+    text-align: center;
+    padding: 10px 6%;
+    font-size: 0.8rem; font-weight: 600;
+    letter-spacing: 0.01em;
+  }
+  .announce-bar a {
+    color: white; text-decoration: underline; margin-left: 8px;
+    opacity: 0.85; transition: opacity 0.2s;
+  }
+  .announce-bar a:hover { opacity: 1; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .fade-in { animation: fadeInUp 0.7s ease forwards; }
+  .fade-in-d1 { animation: fadeInUp 0.7s 0.1s ease forwards; opacity: 0; }
+  .fade-in-d2 { animation: fadeInUp 0.7s 0.2s ease forwards; opacity: 0; }
+  .fade-in-d3 { animation: fadeInUp 0.7s 0.3s ease forwards; opacity: 0; }
+  .fade-in-d4 { animation: fadeInUp 0.7s 0.4s ease forwards; opacity: 0; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 1024px) {
+    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    .hero-visual { display: none; }
+    .features-grid { grid-template-columns: repeat(2, 1fr); }
+    .programs-grid { grid-template-columns: repeat(2, 1fr); }
+    .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+    .steps-grid::before { display: none; }
+    .analytics-inner { grid-template-columns: 1fr; }
+    .testimonials-grid { grid-template-columns: 1fr; }
+    .pricing-grid { grid-template-columns: 1fr; }
+    .pricing-card.popular { transform: none; }
+    .footer-top { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .features-grid { grid-template-columns: 1fr; }
+    .programs-grid { grid-template-columns: 1fr; }
+    .footer-top { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ANNOUNCE BAR -->
+<div class="announce-bar">
+  🎉 MockArena Beta Launch — Free access for first 500 students!
+  <a href="#pricing">Claim your spot →</a>
+</div>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="logo-mark">MA</div>
+    MockArena
+  </a>
+  <ul class="nav-links">
+    <li><a href="#features">Features</a></li>
+    <li><a href="#programs">Programs</a></li>
+    <li><a href="#analytics">Analytics</a></li>
+    <li><a href="#pricing">Pricing</a></li>
+    <li><a href="#faq">FAQ</a></li>
+  </ul>
+  <div class="nav-cta">
+    <a href="#" class="btn-ghost">Log In</a>
+    <a href="#pricing" class="btn-primary">Start Free Trial →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-accent-blob"></div>
+  <div class="hero-accent-blob-2"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow fade-in">
+        <div class="dot"></div>
+        India's smartest exam prep platform
+      </div>
+      <h1 class="fade-in-d1">
+        Crack <em>IIT JEE</em>,<br>NEET &amp; Board<br>Exams. Together.
+      </h1>
+      <p class="hero-sub fade-in-d2">
+        MockArena brings adaptive mock tests, AI-powered analytics, live leaderboards, and expert content for Class 9–12, JEE Foundation, JEE Mains &amp; Advanced, and NEET — all under one roof.
+      </p>
+      <div class="hero-actions fade-in-d3">
+        <a href="#pricing" class="btn-hero">Start Free Trial <span>→</span></a>
+        <a href="#features" class="btn-hero-outline">Explore Platform</a>
+      </div>
+      <div class="hero-trust fade-in-d4">
+        <div class="trust-stat">
+          <span class="num">50K+</span>
+          <span class="lbl">Students Enrolled</span>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-stat">
+          <span class="num">10K+</span>
+          <span class="lbl">Practice Questions</span>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-stat">
+          <span class="num">98%</span>
+          <span class="lbl">Satisfaction Rate</span>
+        </div>
+        <div class="trust-divider"></div>
+        <div class="trust-stat">
+          <span class="num">340+</span>
+          <span class="lbl">IIT &amp; NEET Selections</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- HERO VISUAL: MOCK TEST CARD -->
+    <div class="hero-visual fade-in-d2">
+      <div class="hero-card-back"></div>
+      <div class="hero-card-main">
+        <div class="hcm-header">
+          <div class="hcm-title">JEE Advanced Mock · Full Syllabus</div>
+          <div class="hcm-badge">● Live Now</div>
+        </div>
+        <div class="hcm-timer">
+          <div>
+            <div class="timer-label">TIME REMAINING</div>
+            <div class="timer-value" id="hero-timer">02:47:33</div>
+          </div>
+          <div style="text-align:right">
+            <div class="timer-label">QUESTION</div>
+            <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:800;color:var(--ink);">23 / 62</div>
+          </div>
+        </div>
+        <div class="hcm-question">
+          A particle moves along a straight line. Its velocity at time t is v = (3t² − 6t) m/s. Find the acceleration at t = 2s.
+        </div>
+        <div class="hcm-options">
+          <div class="hcm-option"><span class="opt-key">A</span>0 m/s²</div>
+          <div class="hcm-option selected"><span class="opt-key">B</span>6 m/s²</div>
+          <div class="hcm-option"><span class="opt-key">C</span>12 m/s²</div>
+          <div class="hcm-option correct"><span class="opt-key">D</span>3 m/s²</div>
+        </div>
+        <div class="hcm-progress">
+          <div class="progress-info">
+            <span>Progress</span>
+            <span>23 of 62 answered</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill"></div></div>
+        </div>
+      </div>
+      <!-- FLOATING BADGES -->
+      <div class="hero-badge b1">
+        <div class="badge-icon" style="background:rgba(16,185,129,0.1);">🏆</div>
+        <div class="badge-text">
+          <div class="title">Rank #3 in Class</div>
+          <div class="sub">Physics · Top 5%</div>
+        </div>
+      </div>
+      <div class="hero-badge b2">
+        <div class="badge-icon" style="background:rgba(79,70,229,0.1);">📈</div>
+        <div class="badge-text">
+          <div class="title">+18% Accuracy</div>
+          <div class="sub">vs last test</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXAM PROGRAMS STRIP -->
+<div class="exams-section">
+  <div class="exams-inner">
+    <div class="exams-label">We cover all major exams</div>
+    <div class="exams-grid">
+      <a href="#programs" class="exam-pill">
+        <div class="pill-icon" style="background:rgba(79,70,229,0.1);color:var(--accent);">J</div>
+        JEE Advanced
+      </a>
+      <a href="#programs" class="exam-pill">
+        <div class="pill-icon" style="background:rgba(14,165,233,0.1);color:var(--accent-cool);">J</div>
+        JEE Mains
+      </a>
+      <a href="#programs" class="exam-pill">
+        <div class="pill-icon" style="background:rgba(16,185,129,0.1);color:var(--accent-green);">N</div>
+        NEET UG
+      </a>
+      <a href="#programs" class="exam-pill">
+        <div class="pill-icon" style="background:rgba(124,58,237,0.1);color:var(--accent-2);">F</div>
+        JEE Foundation (9–10)
+      </a>
+      <a href="#programs" class="exam-pill">
+        <div class="pill-icon" style="background:rgba(245,158,11,0.1);color:var(--accent-amber);">F</div>
+        NEET Foundation (9–10)
+      </a>
+      <a href="#programs" class="exam-pill">
+        <div class="pill-icon" style="background:rgba(244,63,94,0.1);color:var(--accent-rose);">B</div>
+        Class 11–12 Boards
+      </a>
+      <a href="#programs" class="exam-pill">
+        <div class="pill-icon" style="background:rgba(16,185,129,0.1);color:var(--accent-green);">B</div>
+        Class 9–10 Boards
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FEATURES SECTION -->
+<section class="section" id="features">
+  <div class="section-inner">
+    <div class="section-tag">Platform Features</div>
+    <h2 class="section-h">Everything a serious<br>student needs.</h2>
+    <p class="section-sub">From adaptive mock tests to real-time leaderboards, MockArena is built around how toppers actually prepare.</p>
+    <div class="features-grid">
+
+      <div class="feature-card fc-1">
+        <div class="feature-icon" style="background:rgba(79,70,229,0.08);">📝</div>
+        <h3>Adaptive Mock Tests</h3>
+        <p>Full-length and chapter-wise tests that adapt to your performance. Covers NTA, CBSE, and IIT-style question patterns with negative marking support.</p>
+        <div class="feature-tags">
+          <span class="ftag">Full Syllabus</span>
+          <span class="ftag">Chapter-wise</span>
+          <span class="ftag">Part Tests</span>
+          <span class="ftag">Previous Year Papers</span>
+        </div>
+      </div>
+
+      <div class="feature-card fc-2">
+        <div class="feature-icon" style="background:rgba(14,165,233,0.08);">📊</div>
+        <h3>Deep Performance Analytics</h3>
+        <p>Subject-wise accuracy, time-per-question heat maps, weak area detection, and comparative rank among all MockArena students.</p>
+        <div class="feature-tags">
+          <span class="ftag">Rank Analysis</span>
+          <span class="ftag">Time Analysis</span>
+          <span class="ftag">Error Logs</span>
+          <span class="ftag">Percentile</span>
+        </div>
+      </div>
+
+      <div class="feature-card fc-3">
+        <div class="feature-icon" style="background:rgba(13,158,92,0.08);">🏆</div>
+        <h3>Live Leaderboards</h3>
+        <p>Real-time competitive rankings across batches, cities, and nationally. Weekly challenges and special contest tests with rewards.</p>
+        <div class="feature-tags">
+          <span class="ftag">City Rank</span>
+          <span class="ftag">National Rank</span>
+          <span class="ftag">Weekly Contests</span>
+        </div>
+      </div>
+
+      <div class="feature-card fc-4">
+        <div class="feature-icon" style="background:rgba(124,58,237,0.08);">🤖</div>
+        <h3>AI-Powered Study Planner</h3>
+        <p>Personalized study schedules based on your exam date, weak topics, and daily availability. Smart reminders and revision nudges included.</p>
+        <div class="feature-tags">
+          <span class="ftag">Smart Schedule</span>
+          <span class="ftag">Topic Prioritizer</span>
+          <span class="ftag">Revision Alerts</span>
+        </div>
+      </div>
+
+      <div class="feature-card fc-5">
+        <div class="feature-icon" style="background:rgba(245,158,11,0.08);">📚</div>
+        <h3>Expert Video Solutions</h3>
+        <p>Step-by-step video and text solutions for every question in every test, curated by experienced IIT and NEET faculty.</p>
+        <div class="feature-tags">
+          <span class="ftag">Video Solutions</span>
+          <span class="ftag">Shortcut Methods</span>
+          <span class="ftag">Concept Links</span>
+        </div>
+      </div>
+
+      <div class="feature-card fc-6">
+        <div class="feature-icon" style="background:rgba(244,63,94,0.08);">📋</div>
+        <h3>Digital Answer Sheets</h3>
+        <p>View your OMR-style answer sheets, question-by-question breakdown, attempted vs unattempted stats, and re-attempt analysis after every test.</p>
+        <div class="feature-tags">
+          <span class="ftag">OMR View</span>
+          <span class="ftag">Question Review</span>
+          <span class="ftag">Re-attempt</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMS SECTION -->
+<section class="section programs-section" id="programs">
+  <div class="programs-inner">
+    <div class="section-tag">Exam Programs</div>
+    <h2 class="section-h">Pick your battle.<br>We'll train you for it.</h2>
+    <p class="section-sub">Structured programs for every stage, from Class 9 foundation to JEE Advanced and NEET final push.</p>
+    <div class="programs-grid">
+
+      <div class="program-card featured">
+        <div class="prog-top">
+          <div class="prog-icon" style="background:rgba(79,70,229,0.22);">⚛️</div>
+          <div class="prog-badge">Most Popular</div>
+        </div>
+        <h3>JEE Advanced</h3>
+        <p>India's most challenging engineering exam. Full-length tests, integer type, match the column, and assertion-reason questions.</p>
+        <div class="prog-subjects">
+          <div class="prog-subject">Physics — Mechanics, Electromagnetism, Modern Physics</div>
+          <div class="prog-subject">Chemistry — Physical, Organic, Inorganic</div>
+          <div class="prog-subject">Mathematics — Calculus, Algebra, Coordinate Geometry</div>
+        </div>
+        <button class="prog-cta">Explore Program →</button>
+      </div>
+
+      <div class="program-card">
+        <div class="prog-top">
+          <div class="prog-icon" style="background:rgba(14,165,233,0.15);">🎯</div>
+          <div class="prog-badge">NTA Pattern</div>
+        </div>
+        <h3>JEE Mains</h3>
+        <p>NTA-style CBT tests with Section A (MCQ) and Section B (integer) questions. Full syllabus and subject-wise tests.</p>
+        <div class="prog-subjects">
+          <div class="prog-subject">75 questions, 3-hour timed tests</div>
+          <div class="prog-subject">Detailed percentile &amp; rank analysis</div>
+          <div class="prog-subject">Chapter-wise question bank (4000+ Qs)</div>
+        </div>
+        <button class="prog-cta">Explore Program →</button>
+      </div>
+
+      <div class="program-card">
+        <div class="prog-top">
+          <div class="prog-icon" style="background:rgba(13,158,92,0.15);">🧬</div>
+          <div class="prog-badge">NTA NEET Pattern</div>
+        </div>
+        <h3>NEET UG</h3>
+        <p>Complete 720-mark mock tests and chapter tests in Physics, Chemistry, and Biology aligned to the NTA NEET pattern.</p>
+        <div class="prog-subjects">
+          <div class="prog-subject">Biology (Botany + Zoology) — 360 marks</div>
+          <div class="prog-subject">Physics &amp; Chemistry — 180 marks each</div>
+          <div class="prog-subject">NCERT-mapped question bank</div>
+        </div>
+        <button class="prog-cta">Explore Program →</button>
+      </div>
+
+      <div class="program-card">
+        <div class="prog-top">
+          <div class="prog-icon" style="background:rgba(124,58,237,0.15);">🧲</div>
+          <div class="prog-badge">Class 9–10</div>
+        </div>
+        <h3>JEE Foundation</h3>
+        <p>Build strong conceptual foundations from Class 9 &amp; 10 that give a head start for JEE preparation in higher classes.</p>
+        <div class="prog-subjects">
+          <div class="prog-subject">Physics &amp; Math foundations</div>
+          <div class="prog-subject">NTSE, Olympiad-level problem sets</div>
+          <div class="prog-subject">CBSE curriculum integration</div>
+        </div>
+        <button class="prog-cta">Explore Program →</button>
+      </div>
+
+      <div class="program-card">
+        <div class="prog-top">
+          <div class="prog-icon" style="background:rgba(245,158,11,0.15);">🔬</div>
+          <div class="prog-badge">Class 9–10</div>
+        </div>
+        <h3>NEET Foundation</h3>
+        <p>Early Biology and Science preparation from Class 9, aligned with NCERT and designed for NEET readiness.</p>
+        <div class="prog-subjects">
+          <div class="prog-subject">Life Science, Cell Biology, Genetics basics</div>
+          <div class="prog-subject">NTSE &amp; Science Olympiad prep</div>
+          <div class="prog-subject">NCERT + reference material</div>
+        </div>
+        <button class="prog-cta">Explore Program →</button>
+      </div>
+
+      <div class="program-card">
+        <div class="prog-top">
+          <div class="prog-icon" style="background:rgba(244,63,94,0.15);">📖</div>
+          <div class="prog-badge">Class 11–12</div>
+        </div>
+        <h3>CBSE / State Boards</h3>
+        <p>Board exam preparation with chapter tests, full syllabus mocks, and sample paper practice for Class 11 &amp; 12.</p>
+        <div class="prog-subjects">
+          <div class="prog-subject">PCM &amp; PCB subject-wise tests</div>
+          <div class="prog-subject">CBSE sample papers &amp; previous years</div>
+          <div class="prog-subject">Detailed marking scheme analysis</div>
+        </div>
+        <button class="prog-cta">Explore Program →</button>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how-it-works" style="background:var(--paper-warm); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
+  <div class="section-inner">
+    <div style="text-align:center; max-width:600px; margin:0 auto 60px;">
+      <div class="section-tag" style="justify-content:center">How It Works</div>
+      <h2 class="section-h">From signup to topper<br>in four steps.</h2>
+    </div>
+    <div class="steps-grid">
+      <div class="step-item">
+        <div class="step-num">01</div>
+        <h4>Create Your Profile</h4>
+        <p>Select your exam goal, class, and target year. MockArena personalizes your entire dashboard around your goals.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">02</div>
+        <h4>Take a Diagnostic Test</h4>
+        <p>A free diagnostic test maps your current strengths and weaknesses across every chapter and subject.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">03</div>
+        <h4>Follow Your Study Plan</h4>
+        <p>AI assigns a daily study plan with mock tests, practice sets, and revision reminders based on your progress.</p>
+      </div>
+      <div class="step-item">
+        <div class="step-num">04</div>
+        <h4>Analyse &amp; Improve</h4>
+        <p>After every test, deep analytics reveal exactly where you lost marks and what to study next. Repeat and rank up.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANALYTICS SECTION -->
+<section class="section analytics-section" id="analytics">
+  <div class="analytics-inner">
+    <div>
+      <div class="section-tag">Student Analytics</div>
+      <h2 class="section-h">Know exactly where<br>you stand.</h2>
+      <p class="section-sub">Unlike generic test portals, MockArena shows you real insights — not just scores. Understand your accuracy trends, time efficiency, and where you rank in real time.</p>
+      <ul style="list-style:none; display:flex; flex-direction:column; gap:14px; margin-bottom:2rem;">
+        <li style="display:flex;gap:12px;align-items:flex-start;font-size:0.9rem;color:var(--ink-soft);">
+          <span style="margin-top:2px;font-size:1rem;">✅</span>
+          <span><strong>Subject &amp; topic-level accuracy</strong> — see exactly which chapters drag your rank down</span>
+        </li>
+        <li style="display:flex;gap:12px;align-items:flex-start;font-size:0.9rem;color:var(--ink-soft);">
+          <span style="margin-top:2px;font-size:1rem;">✅</span>
+          <span><strong>Attempt rate &amp; time-per-question</strong> — identify where you're too slow or guessing blindly</span>
+        </li>
+        <li style="display:flex;gap:12px;align-items:flex-start;font-size:0.9rem;color:var(--ink-soft);">
+          <span style="margin-top:2px;font-size:1rem;">✅</span>
+          <span><strong>Predicted AIR &amp; College Predictor</strong> — estimate your likely JEE/NEET rank based on your test performance</span>
+        </li>
+        <li style="display:flex;gap:12px;align-items:flex-start;font-size:0.9rem;color:var(--ink-soft);">
+          <span style="margin-top:2px;font-size:1rem;">✅</span>
+          <span><strong>Progress over time</strong> — visual graphs showing your 30-day improvement trajectory</span>
+        </li>
+      </ul>
+      <a href="#pricing" class="btn-hero">See Your Dashboard →</a>
+    </div>
+
+    <div class="analytics-cards">
+      <div class="analytics-card">
+        <div class="ac-label">Overall Score</div>
+        <div class="ac-value">247 / 300</div>
+        <div class="ac-delta up">↑ +23 pts from last test</div>
+        <div class="mini-bars">
+          <div class="mini-bar" style="height:40%"></div>
+          <div class="mini-bar" style="height:55%"></div>
+          <div class="mini-bar" style="height:50%"></div>
+          <div class="mini-bar active" style="height:65%"></div>
+          <div class="mini-bar active" style="height:72%"></div>
+          <div class="mini-bar best" style="height:82%"></div>
+        </div>
+      </div>
+
+      <div class="analytics-card">
+        <div class="ac-label">Accuracy Rate</div>
+        <div class="ac-value">78.4%</div>
+        <div class="ac-delta up">↑ +6.2% improvement</div>
+        <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--ink-faint);margin-bottom:4px;"><span>Physics</span><span>82%</span></div>
+            <div class="progress-bar" style="height:4px;"><div class="progress-fill" style="width:82%;background:var(--accent);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--ink-faint);margin-bottom:4px;"><span>Chemistry</span><span>75%</span></div>
+            <div class="progress-bar" style="height:4px;"><div class="progress-fill" style="width:75%;background:var(--accent-green);"></div></div>
+          </div>
+          <div>
+            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--ink-faint);margin-bottom:4px;"><span>Maths</span><span>68%</span></div>
+            <div class="progress-bar" style="height:4px;"><div class="progress-fill" style="width:68%;background:var(--accent-2);"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="analytics-card wide">
+        <div class="ac-label" style="margin-bottom:12px;">Live Leaderboard — JEE Advanced Mock #14</div>
+        <div class="rank-row">
+          <div class="rank-pos">1</div>
+          <div class="rank-name">Aryan S.</div>
+          <div class="rank-score">271</div>
+        </div>
+        <div class="rank-row">
+          <div class="rank-pos">2</div>
+          <div class="rank-name">Priya M.</div>
+          <div class="rank-score">264</div>
+        </div>
+        <div class="rank-row" style="background:rgba(79,70,229,0.06);border-radius:6px;">
+          <div class="rank-pos" style="color:var(--accent);">3</div>
+          <div class="rank-name" style="color:var(--accent);font-weight:700;">You (Rahul K.) 🎯</div>
+          <div class="rank-score" style="color:var(--accent-2);">247</div>
+        </div>
+        <div class="rank-row">
+          <div class="rank-pos">4</div>
+          <div class="rank-name">Shreya B.</div>
+          <div class="rank-score">238</div>
+        </div>
+        <div class="rank-row">
+          <div class="rank-pos">5</div>
+          <div class="rank-name">Kunal T.</div>
+          <div class="rank-score">231</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section" id="testimonials">
+  <div class="section-inner">
+    <div class="section-tag">Student Stories</div>
+    <h2 class="section-h">Real students. Real results.</h2>
+    <p class="section-sub">Hear from students who used MockArena to level up their preparation and crack their dream exams.</p>
+    <div class="testimonials-grid">
+      <div class="testimonial-card">
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-quote">"MockArena's analytics showed me I was spending too long on organic chemistry at the cost of Physics mechanics — fixing that boosted my score by 40 marks in 3 weeks."</p>
+        <div class="tc-author">
+          <div class="tc-avatar" style="background:rgba(79,70,229,0.1);color:var(--accent);">AK</div>
+          <div>
+            <div class="tc-name">Ankit Kumar</div>
+            <div class="tc-meta">JEE Advanced 2024 — AIR 847</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-quote">"The live leaderboard kept me competitive all through my preparation. Seeing my rank improve week-over-week was genuinely motivating. I attempted NEET with full confidence."</p>
+        <div class="tc-author">
+          <div class="tc-avatar" style="background:rgba(16,185,129,0.1);color:var(--accent-green);">PS</div>
+          <div>
+            <div class="tc-name">Pooja Sharma</div>
+            <div class="tc-meta">NEET UG 2024 — Score: 680/720</div>
+          </div>
+        </div>
+      </div>
+      <div class="testimonial-card">
+        <div class="tc-stars">★★★★★</div>
+        <p class="tc-quote">"I started JEE Foundation in Class 10 on MockArena. By the time I reached Class 11, I was already comfortable with topics most of my classmates were struggling with."</p>
+        <div class="tc-author">
+          <div class="tc-avatar" style="background:rgba(124,58,237,0.1);color:var(--accent-2);">RM</div>
+          <div>
+            <div class="tc-name">Rohan Mehta</div>
+            <div class="tc-meta">JEE Foundation Student · Class 11</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section class="section" id="pricing" style="background:var(--paper-warm); border-top:1px solid var(--border);">
+  <div class="section-inner">
+    <div style="text-align:center; max-width:600px; margin:0 auto 60px;">
+      <div class="section-tag" style="justify-content:center">Pricing</div>
+      <h2 class="section-h">Invest in your future.<br>Not a fortune.</h2>
+      <p class="section-sub" style="margin-bottom:0;">All plans include a 7-day free trial. Cancel anytime. No hidden fees.</p>
+    </div>
+    <div class="pricing-grid">
+
+      <div class="pricing-card">
+        <div class="plan-name">Explorer</div>
+        <div class="plan-price">
+          <span class="price-curr">₹</span>
+          <span class="price-num">0</span>
+          <span class="price-period">/ month</span>
+        </div>
+        <p class="plan-desc">For students who want to try before they commit.</p>
+        <ul class="plan-features">
+          <li><div class="check-icon">✓</div>5 free mock tests per month</li>
+          <li><div class="check-icon">✓</div>Basic performance report</li>
+          <li><div class="check-icon">✓</div>Access to leaderboard</li>
+          <li><div class="check-icon">✓</div>2 previous year papers</li>
+          <li><div class="check-icon">✓</div>Mobile app access</li>
+        </ul>
+        <a href="#" class="plan-btn">Get Started Free</a>
+      </div>
+
+      <div class="pricing-card popular">
+        <div class="popular-badge">⭐ Most Popular</div>
+        <div class="plan-name">Scholar</div>
+        <div class="plan-price">
+          <span class="price-curr">₹</span>
+          <span class="price-num">499</span>
+          <span class="price-period">/ month</span>
+        </div>
+        <p class="plan-desc">Everything you need to rank in the top 10%.</p>
+        <ul class="plan-features">
+          <li><div class="check-icon">✓</div>Unlimited mock tests</li>
+          <li><div class="check-icon">✓</div>Full analytics dashboard</li>
+          <li><div class="check-icon">✓</div>Video solutions for all questions</li>
+          <li><div class="check-icon">✓</div>AI study planner</li>
+          <li><div class="check-icon">✓</div>All previous year papers</li>
+          <li><div class="check-icon">✓</div>Predicted rank &amp; AIR estimator</li>
+          <li><div class="check-icon">✓</div>Priority email support</li>
+        </ul>
+        <a href="#" class="plan-btn primary-plan">Start Free Trial →</a>
+      </div>
+
+      <div class="pricing-card">
+        <div class="plan-name">Elite</div>
+        <div class="plan-price">
+          <span class="price-curr">₹</span>
+          <span class="price-num">999</span>
+          <span class="price-period">/ month</span>
+        </div>
+        <p class="plan-desc">For serious aspirants targeting top 1000 AIR.</p>
+        <ul class="plan-features">
+          <li><div class="check-icon">✓</div>Everything in Scholar</li>
+          <li><div class="check-icon">✓</div>Live test series with analysis sessions</li>
+          <li><div class="check-icon">✓</div>Expert doubt resolution (24h)</div></li>
+          <li><div class="check-icon">✓</div>Personalized mentor calls (monthly)</div></li>
+          <li><div class="check-icon">✓</div>Early access to new features</div></li>
+          <li><div class="check-icon">✓</div>Dedicated WhatsApp support</div></li>
+        </ul>
+        <a href="#" class="plan-btn">Start Free Trial →</a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section" id="faq">
+  <div class="section-inner">
+    <div style="text-align:center; max-width:600px; margin:0 auto 48px;">
+      <div class="section-tag" style="justify-content:center">FAQ</div>
+      <h2 class="section-h">Questions? Answered.</h2>
+    </div>
+    <div class="faq-grid">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Is MockArena suitable for Class 9 and 10 students?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Yes! MockArena has dedicated Foundation programs for Class 9 and 10 students preparing for JEE and NEET. The content is aligned with CBSE curriculum while introducing competitive exam concepts early, giving students a significant head start.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>How is MockArena different from other test prep platforms?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">MockArena is built around deep analytics and competitive ranking, not just test delivery. After every test, you get question-level time analysis, chapter-wise accuracy, AIR prediction, and a clear action plan. Most platforms show you scores; we show you exactly how to improve them.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Are the test questions original or copied from other sources?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Our question bank includes a mix of original questions crafted by IIT alumni and experienced faculty, previous year questions from JEE and NEET (with detailed solutions), and curated practice questions. Every question is reviewed for accuracy and exam relevance.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Can I use MockArena on my phone?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Absolutely. MockArena is available on web browsers and as dedicated iOS and Android apps. Your progress syncs across all devices seamlessly, so you can study on the go and take tests on a full screen when needed.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>What happens after my 7-day free trial?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">After the 7-day trial, you can choose the Explorer (free) plan or upgrade to Scholar or Elite. You won't be charged automatically — we'll ask you to choose a plan. Your test history and analytics are preserved regardless of the plan you choose.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)">
+          <span>Does MockArena cover CBSE boards alongside competitive prep?</span>
+          <div class="faq-toggle">+</div>
+        </div>
+        <div class="faq-a">Yes. We understand that Class 11 and 12 students need to simultaneously prepare for boards and competitive exams. MockArena offers CBSE-pattern chapter tests, sample papers, and a dedicated board module that runs alongside your JEE or NEET preparation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA BANNER -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <div class="section-tag">Join MockArena</div>
+    <h2 class="cta-h">Your rank is waiting.<br>Go claim it.</h2>
+    <p class="cta-sub">Join 50,000+ students already using MockArena to prepare smarter, track progress precisely, and reach their dream colleges.</p>
+    <div class="cta-btns">
+      <a href="#pricing" class="btn-white">Start Free Trial →</a>
+      <a href="#programs" class="btn-outline-white">Explore Programs</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">
+          <div class="logo-mark">MA</div>
+          MockArena
+        </a>
+        <p>India's most advanced student evaluation and mock test platform for JEE, NEET, and Board exam aspirants from Class 9 to 12.</p>
+        <div class="footer-social">
+          <a href="#" class="social-btn">tw</a>
+          <a href="#" class="social-btn">yt</a>
+          <a href="#" class="social-btn">ig</a>
+          <a href="#" class="social-btn">tg</a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h5>Platform</h5>
+        <ul>
+          <li><a href="#">Mock Tests</a></li>
+          <li><a href="#">Analytics</a></li>
+          <li><a href="#">Leaderboards</a></li>
+          <li><a href="#">Study Planner</a></li>
+          <li><a href="#">Video Solutions</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Programs</h5>
+        <ul>
+          <li><a href="#">JEE Advanced</a></li>
+          <li><a href="#">JEE Mains</a></li>
+          <li><a href="#">NEET UG</a></li>
+          <li><a href="#">JEE Foundation</a></li>
+          <li><a href="#">NEET Foundation</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Classes</h5>
+        <ul>
+          <li><a href="#">Class 9</a></li>
+          <li><a href="#">Class 10</a></li>
+          <li><a href="#">Class 11</a></li>
+          <li><a href="#">Class 12</a></li>
+          <li><a href="#">Dropper Batch</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Careers</a></li>
+          <li><a href="#">Contact</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Partnerships</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2025 MockArena · mockarena.com · All rights reserved.</div>
+      <div class="footer-legal">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Refund Policy</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Live timer countdown
+  let seconds = 2 * 3600 + 47 * 60 + 33;
+  const timerEl = document.getElementById('hero-timer');
+  if (timerEl) {
+    setInterval(() => {
+      if (seconds > 0) seconds--;
+      const h = Math.floor(seconds / 3600);
+      const m = Math.floor((seconds % 3600) / 60);
+      const s = seconds % 60;
+      timerEl.textContent =
+        String(h).padStart(2, '0') + ':' +
+        String(m).padStart(2, '0') + ':' +
+        String(s).padStart(2, '0');
+    }, 1000);
+  }
+
+  // FAQ accordion
+  function toggleFaq(btn) {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Smooth scroll for nav links
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Nav scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    nav.style.borderBottomColor = window.scrollY > 60 ? 'var(--border-strong)' : 'var(--border)';
+  });
+
+  // Animate cards on scroll
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.feature-card, .program-card, .testimonial-card, .analytics-card, .pricing-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s, border-color 0.3s';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>

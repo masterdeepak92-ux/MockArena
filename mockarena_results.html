@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena – Results & Analytics Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink: #0d0f1a; --ink-soft: #1a1d2e; --ink-muted: #5a5f7a; --ink-faint: #9499b8;
+    --paper: #f4f5fb; --paper-warm: #eceef8; --paper-card: #ffffff;
+    --accent: #4f46e5; --accent-hover: #4338ca;
+    --accent-light: rgba(79,70,229,0.08); --accent-glow: rgba(79,70,229,0.22);
+    --accent-2: #7c3aed; --accent-green: #10b981; --accent-green-light: rgba(16,185,129,0.09);
+    --accent-rose: #f43f5e; --accent-rose-light: rgba(244,63,94,0.08);
+    --accent-amber: #f59e0b; --accent-amber-light: rgba(245,158,11,0.09);
+    --accent-sky: #0ea5e9; --accent-sky-light: rgba(14,165,233,0.09);
+    --border: rgba(13,15,26,0.08); --border-strong: rgba(13,15,26,0.13);
+    --radius-sm: 8px; --radius-md: 14px; --radius-lg: 20px; --radius-xl: 28px;
+    --font-display: 'Manrope', sans-serif; --font-body: 'Inter', sans-serif; --font-mono: 'JetBrains Mono', monospace;
+    --shadow-card: 0 2px 12px rgba(13,15,26,0.06), 0 1px 3px rgba(13,15,26,0.04);
+    --shadow-hover: 0 12px 40px rgba(79,70,229,0.13), 0 2px 8px rgba(13,15,26,0.06);
+    --nav-h: 64px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-body);background:var(--paper);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+  /* ── NAV ── */
+  .nav{position:fixed;top:0;left:0;right:0;z-index:100;height:var(--nav-h);
+    background:rgba(244,245,251,0.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:16px;}
+  .nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;}
+  .nav-logo .lm{width:34px;height:34px;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    border-radius:9px;display:flex;align-items:center;justify-content:center;
+    font-family:var(--font-display);font-size:0.82rem;font-weight:800;color:white;flex-shrink:0;}
+  .nav-logo span{font-family:var(--font-display);font-size:1.15rem;font-weight:800;color:var(--ink);letter-spacing:-0.03em;}
+  .nav-div{width:1px;height:24px;background:var(--border-strong);}
+  .nav-breadcrumb{font-size:0.82rem;font-weight:500;color:var(--ink-muted);}
+  .nav-breadcrumb span{color:var(--ink);font-weight:600;}
+  .nav-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+  .btn-back{font-family:var(--font-body);font-size:0.82rem;font-weight:600;
+    color:var(--ink-muted);background:none;border:1.5px solid var(--border-strong);
+    padding:7px 16px;border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+  .btn-back:hover{border-color:var(--accent);color:var(--accent);}
+  .btn-share{font-family:var(--font-body);font-size:0.82rem;font-weight:600;
+    color:white;background:linear-gradient(135deg,var(--accent),var(--accent-2));
+    border:none;padding:8px 18px;border-radius:var(--radius-sm);cursor:pointer;
+    transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+  .btn-share:hover{box-shadow:0 4px 14px var(--accent-glow);transform:translateY(-1px);}
+
+  /* ── LAYOUT ── */
+  .page{padding:calc(var(--nav-h) + 28px) 28px 60px;max-width:1280px;margin:0 auto;}
+
+  /* ── HERO RESULT BAND ── */
+  .result-hero{
+    background:linear-gradient(145deg,#0d0f1a 0%,#13143a 55%,#1e1060 100%);
+    border-radius:var(--radius-xl);padding:36px 40px;margin-bottom:24px;
+    display:grid;grid-template-columns:auto 1fr auto;gap:40px;align-items:center;
+    position:relative;overflow:hidden;}
+  .rh-grid-bg{position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);
+    background-size:48px 48px;pointer-events:none;}
+  .rh-orb{position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;}
+  .rh-orb-1{width:300px;height:300px;background:rgba(79,70,229,0.2);top:-80px;right:80px;}
+  .rh-orb-2{width:200px;height:200px;background:rgba(124,58,237,0.15);bottom:-40px;left:40%;}
+
+  /* Score ring */
+  .score-ring-wrap{position:relative;width:130px;height:130px;flex-shrink:0;z-index:1;}
+  .sr-svg{position:absolute;inset:0;transform:rotate(-90deg);}
+  .sr-bg{fill:none;stroke:rgba(255,255,255,0.07);stroke-width:8;}
+  .sr-fill{fill:none;stroke:url(#rGrad);stroke-width:8;stroke-linecap:round;
+    stroke-dasharray:352;stroke-dashoffset:352;transition:stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1);}
+  .sr-inner{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .sr-score{font-family:var(--font-display);font-size:1.75rem;font-weight:800;color:white;letter-spacing:-0.05em;line-height:1;}
+  .sr-total{font-size:0.7rem;font-weight:600;color:rgba(255,255,255,0.35);margin-top:2px;}
+
+  /* Hero info */
+  .rh-info{z-index:1;}
+  .rh-tag{display:inline-flex;align-items:center;gap:7px;
+    background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);
+    border-radius:100px;padding:4px 12px;
+    font-family:var(--font-mono);font-size:0.68rem;font-weight:500;
+    color:rgba(255,255,255,0.5);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;}
+  .rh-title{font-family:var(--font-display);font-size:1.4rem;font-weight:800;
+    color:white;letter-spacing:-0.04em;margin-bottom:6px;line-height:1.15;}
+  .rh-sub{font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:16px;}
+  .rh-chips{display:flex;flex-wrap:wrap;gap:8px;}
+  .rh-chip{display:flex;align-items:center;gap:6px;
+    background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+    border-radius:100px;padding:5px 12px;
+    font-size:0.76rem;font-weight:600;color:rgba(255,255,255,0.7);}
+  .rh-chip.good{background:rgba(16,185,129,0.12);border-color:rgba(16,185,129,0.25);color:#6ee7b7;}
+  .rh-chip.warn{background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.25);color:#fcd34d;}
+
+  /* Hero right stats */
+  .rh-stats{display:flex;flex-direction:column;gap:12px;z-index:1;min-width:180px;}
+  .rhs-item{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+    border-radius:var(--radius-md);padding:12px 16px;display:flex;align-items:center;gap:12px;}
+  .rhs-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+  .rhs-text{}
+  .rhs-num{font-family:var(--font-display);font-size:1.1rem;font-weight:800;color:white;line-height:1;letter-spacing:-0.03em;}
+  .rhs-lbl{font-size:0.68rem;font-weight:600;color:rgba(255,255,255,0.35);text-transform:uppercase;letter-spacing:0.04em;}
+
+  /* ── SECTION TITLE ── */
+  .sec-title{font-family:var(--font-display);font-size:0.95rem;font-weight:800;
+    color:var(--ink);letter-spacing:-0.03em;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .sec-title::before{content:'';width:3px;height:18px;background:linear-gradient(180deg,var(--accent),var(--accent-2));
+    border-radius:2px;display:inline-block;}
+
+  /* ── GRID HELPERS ── */
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:24px;}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:24px;}
+  .grid-2-1{display:grid;grid-template-columns:2fr 1fr;gap:14px;margin-bottom:24px;}
+  .grid-1-2{display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:24px;}
+
+  /* ── CARD BASE ── */
+  .card{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:22px;box-shadow:var(--shadow-card);transition:box-shadow .25s,transform .25s;}
+  .card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px);}
+
+  /* ── STAT CARDS ── */
+  .stat-card{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:20px;box-shadow:var(--shadow-card);transition:all .25s;position:relative;overflow:hidden;}
+  .stat-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px);}
+  .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;}
+  .sc-correct::before{background:linear-gradient(90deg,var(--accent-green),#34d399);}
+  .sc-wrong::before{background:linear-gradient(90deg,var(--accent-rose),#fb7185);}
+  .sc-skip::before{background:linear-gradient(90deg,var(--ink-faint),#c4c9e0);}
+  .sc-accuracy::before{background:linear-gradient(90deg,var(--accent),var(--accent-2));}
+  .sc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:12px;}
+  .sc-num{font-family:var(--font-display);font-size:1.8rem;font-weight:800;color:var(--ink);letter-spacing:-0.05em;line-height:1;margin-bottom:3px;}
+  .sc-lbl{font-size:0.72rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px;}
+  .sc-delta{font-size:0.75rem;font-weight:600;display:flex;align-items:center;gap:3px;}
+  .sc-delta.up{color:var(--accent-green);}
+  .sc-delta.down{color:var(--accent-rose);}
+  .sc-delta.neutral{color:var(--ink-faint);}
+
+  /* ── SUBJECT CARDS ── */
+  .subj-card{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--radius-lg);
+    padding:22px;box-shadow:var(--shadow-card);transition:all .25s;}
+  .subj-card:hover{box-shadow:var(--shadow-hover);transform:translateY(-2px);}
+  .subj-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+  .subj-name{font-family:var(--font-display);font-size:1rem;font-weight:800;color:var(--ink);letter-spacing:-0.03em;}
+  .subj-score-badge{font-family:var(--font-mono);font-size:0.78rem;font-weight:500;
+    padding:4px 10px;border-radius:100px;border:1px solid;}
+  .subj-bar-wrap{margin-bottom:14px;}
+  .subj-bar-label{display:flex;justify-content:space-between;font-size:0.72rem;font-weight:600;color:var(--ink-faint);margin-bottom:6px;}
+  .bar-track{height:8px;background:var(--paper-warm);border-radius:10px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:10px;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+  .subj-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+  .ss-item{background:var(--paper);border-radius:var(--radius-sm);padding:8px 10px;text-align:center;}
+  .ss-num{font-family:var(--font-display);font-size:1rem;font-weight:800;line-height:1;margin-bottom:2px;}
+  .ss-lbl{font-size:0.65rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.04em;}
+
+  /* ── CHART AREAS ── */
+  .chart-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+  .chart-title{font-family:var(--font-display);font-size:0.9rem;font-weight:800;color:var(--ink);letter-spacing:-0.03em;}
+  .chart-sub{font-size:0.72rem;color:var(--ink-faint);margin-top:2px;}
+  .chart-legend{display:flex;gap:12px;flex-wrap:wrap;}
+  .cl-item{display:flex;align-items:center;gap:5px;font-size:0.72rem;font-weight:600;color:var(--ink-muted);}
+  .cl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+
+  /* Bar chart */
+  .bar-chart{display:flex;align-items:flex-end;gap:6px;height:160px;padding-bottom:28px;position:relative;}
+  .bc-bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:0;position:relative;}
+  .bc-bars{display:flex;gap:3px;align-items:flex-end;width:100%;}
+  .bc-bar{flex:1;border-radius:4px 4px 0 0;transition:height 1.2s cubic-bezier(.4,0,.2,1);cursor:pointer;position:relative;}
+  .bc-bar:hover::after{content:attr(data-val);position:absolute;top:-22px;left:50%;transform:translateX(-50%);
+    background:var(--ink);color:white;font-size:0.65rem;font-weight:600;padding:2px 6px;border-radius:4px;white-space:nowrap;}
+  .bc-label{font-size:0.65rem;font-weight:600;color:var(--ink-faint);text-align:center;position:absolute;bottom:-22px;left:0;right:0;}
+  .bc-grid{position:absolute;left:0;right:0;top:0;bottom:28px;display:flex;flex-direction:column;justify-content:space-between;pointer-events:none;}
+  .bc-grid-line{border-top:1px dashed var(--border);position:relative;}
+  .bc-grid-line span{position:absolute;right:calc(100% + 6px);top:-8px;font-size:0.6rem;color:var(--ink-faint);font-family:var(--font-mono);white-space:nowrap;}
+
+  /* Line chart (SVG) */
+  .line-chart-wrap{position:relative;height:160px;}
+  .lc-svg{width:100%;height:100%;overflow:visible;}
+  .lc-area{opacity:0.12;}
+  .lc-line{fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;}
+  .lc-dot{transition:r .15s;}
+  .lc-dot:hover{r:5;}
+  .lc-labels{display:flex;justify-content:space-between;margin-top:6px;}
+  .lc-label{font-size:0.65rem;font-weight:600;color:var(--ink-faint);text-align:center;}
+
+  /* Donut chart */
+  .donut-wrap{display:flex;align-items:center;gap:20px;}
+  .donut-svg-wrap{position:relative;width:120px;height:120px;flex-shrink:0;}
+  .donut-svg{transform:rotate(-90deg);}
+  .d-bg{fill:none;stroke:var(--paper-warm);stroke-width:16;}
+  .d-seg{fill:none;stroke-width:16;stroke-linecap:butt;transition:stroke-dashoffset 1.4s cubic-bezier(.4,0,.2,1);}
+  .donut-center{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .dc-num{font-family:var(--font-display);font-size:1.2rem;font-weight:800;color:var(--ink);letter-spacing:-0.04em;line-height:1;}
+  .dc-lbl{font-size:0.62rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:0.04em;}
+  .donut-legend{flex:1;display:flex;flex-direction:column;gap:8px;}
+  .dl-item{display:flex;align-items:center;justify-content:space-between;}
+  .dl-left{display:flex;align-items:center;gap:7px;}
+  .dl-color{width:10px;height:10px;border-radius:3px;flex-shrink:0;}
+  .dl-name{font-size:0.78rem;font-weight:600;color:var(--ink-muted);}
+  .dl-val{font-family:var(--font-mono);font-size:0.75rem;font-weight:500;color:var(--ink);}
+  .dl-bar{width:60px;height:4px;background:var(--paper-warm);border-radius:3px;overflow:hidden;margin-top:3px;}
+  .dl-bar-fill{height:100%;border-radius:3px;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+
+  /* Heatmap */
+  .heatmap-grid{display:flex;flex-direction:column;gap:6px;}
+  .hm-row{display:flex;align-items:center;gap:6px;}
+  .hm-label{font-size:0.7rem;font-weight:600;color:var(--ink-muted);width:80px;flex-shrink:0;text-align:right;}
+  .hm-cells{display:flex;gap:4px;flex-wrap:nowrap;}
+  .hm-cell{width:28px;height:28px;border-radius:5px;display:flex;align-items:center;justify-content:center;
+    font-size:0.6rem;font-weight:700;cursor:pointer;transition:transform .15s;position:relative;}
+  .hm-cell:hover{transform:scale(1.15);z-index:10;}
+  .hm-cell:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 5px);left:50%;transform:translateX(-50%);
+    background:var(--ink);color:white;font-size:0.65rem;padding:3px 7px;border-radius:4px;white-space:nowrap;z-index:20;}
+  .hm-0{background:var(--paper-warm);color:var(--ink-faint);}
+  .hm-1{background:rgba(79,70,229,0.12);color:var(--accent);}
+  .hm-2{background:rgba(79,70,229,0.25);color:var(--accent);}
+  .hm-3{background:rgba(79,70,229,0.42);color:white;}
+  .hm-4{background:var(--accent);color:white;}
+  .hm-wrong{background:rgba(244,63,94,0.18);color:var(--accent-rose);}
+
+  /* Rank / leaderboard */
+  .rank-table{width:100%;border-collapse:collapse;}
+  .rank-table th{font-size:0.68rem;font-weight:700;color:var(--ink-faint);text-transform:uppercase;
+    letter-spacing:0.06em;padding:0 12px 10px;text-align:left;}
+  .rank-table td{padding:9px 12px;font-size:0.82rem;color:var(--ink-soft);border-top:1px solid var(--border);}
+  .rank-table tr.me td{background:var(--accent-light);font-weight:600;}
+  .rank-table tr.me td:first-child{border-radius:var(--radius-sm) 0 0 var(--radius-sm);}
+  .rank-table tr.me td:last-child{border-radius:0 var(--radius-sm) var(--radius-sm) 0;}
+  .rank-pos{font-family:var(--font-mono);font-size:0.75rem;font-weight:600;}
+  .rank-avatar{width:28px;height:28px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;
+    font-size:0.68rem;font-weight:800;flex-shrink:0;}
+  .rank-name-cell{display:flex;align-items:center;gap:8px;}
+  .score-mono{font-family:var(--font-mono);font-size:0.78rem;font-weight:500;}
+  .acc-badge{font-size:0.7rem;font-weight:600;padding:2px 8px;border-radius:100px;}
+
+  /* Time analysis */
+  .time-grid{display:flex;flex-direction:column;gap:8px;}
+  .tg-row{display:flex;align-items:center;gap:10px;}
+  .tg-label{font-size:0.75rem;font-weight:600;color:var(--ink-muted);width:100px;flex-shrink:0;}
+  .tg-bar-wrap{flex:1;height:10px;background:var(--paper-warm);border-radius:6px;overflow:hidden;}
+  .tg-fill{height:100%;border-radius:6px;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+  .tg-val{font-family:var(--font-mono);font-size:0.72rem;font-weight:500;color:var(--ink-muted);width:48px;text-align:right;flex-shrink:0;}
+
+  /* Comparison cards */
+  .compare-row{display:flex;flex-direction:column;gap:10px;}
+  .cmp-item{display:flex;align-items:center;gap:10px;}
+  .cmp-label{font-size:0.75rem;font-weight:600;color:var(--ink-muted);width:90px;flex-shrink:0;}
+  .cmp-bars{flex:1;display:flex;flex-direction:column;gap:3px;}
+  .cmp-bar-row{display:flex;align-items:center;gap:6px;}
+  .cmp-who{font-size:0.65rem;font-weight:600;color:var(--ink-faint);width:30px;flex-shrink:0;}
+  .cmp-bar-wrap{flex:1;height:7px;background:var(--paper-warm);border-radius:4px;overflow:hidden;}
+  .cmp-fill{height:100%;border-radius:4px;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+  .cmp-val{font-family:var(--font-mono);font-size:0.68rem;font-weight:500;color:var(--ink-muted);width:36px;text-align:right;}
+
+  /* AIR predictor */
+  .air-card{background:linear-gradient(135deg,#0d0f1a 0%,#13143a 100%);border-radius:var(--radius-lg);
+    padding:24px;position:relative;overflow:hidden;}
+  .air-bg-orb{position:absolute;width:200px;height:200px;border-radius:50%;
+    background:rgba(79,70,229,0.2);filter:blur(50px);top:-50px;right:-30px;pointer-events:none;}
+  .air-tag{font-family:var(--font-mono);font-size:0.65rem;font-weight:500;color:#a78bfa;
+    text-transform:uppercase;letter-spacing:0.1em;margin-bottom:10px;}
+  .air-rank{font-family:var(--font-display);font-size:2.4rem;font-weight:800;color:white;
+    letter-spacing:-0.05em;line-height:1;margin-bottom:4px;}
+  .air-sub{font-size:0.8rem;color:rgba(255,255,255,0.4);margin-bottom:16px;}
+  .air-range{display:flex;align-items:center;gap:8px;margin-bottom:18px;}
+  .air-range-bar{flex:1;height:6px;background:rgba(255,255,255,0.08);border-radius:4px;overflow:hidden;}
+  .air-range-fill{height:100%;background:linear-gradient(90deg,var(--accent-green),var(--accent));border-radius:4px;width:62%;}
+  .air-range-labels{display:flex;justify-content:space-between;font-size:0.65rem;color:rgba(255,255,255,0.3);font-family:var(--font-mono);}
+  .air-colleges{display:flex;flex-direction:column;gap:6px;}
+  .air-college-item{display:flex;align-items:center;justify-content:space-between;
+    background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+    border-radius:var(--radius-sm);padding:8px 12px;}
+  .aci-name{font-size:0.75rem;font-weight:600;color:rgba(255,255,255,0.75);}
+  .aci-chance{font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+  .chance-high{background:rgba(16,185,129,0.15);color:#6ee7b7;}
+  .chance-med{background:rgba(245,158,11,0.15);color:#fcd34d;}
+  .chance-low{background:rgba(244,63,94,0.15);color:#fca5a5;}
+
+  /* Improvement tips */
+  .tips-list{display:flex;flex-direction:column;gap:10px;}
+  .tip-item{display:flex;gap:12px;padding:14px;background:var(--paper);border:1px solid var(--border);
+    border-radius:var(--radius-md);transition:all .2s;cursor:pointer;}
+  .tip-item:hover{border-color:var(--accent);background:var(--accent-light);}
+  .tip-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+  .tip-text{}
+  .tip-title{font-size:0.82rem;font-weight:700;color:var(--ink);margin-bottom:3px;}
+  .tip-desc{font-size:0.75rem;color:var(--ink-muted);line-height:1.5;}
+  .tip-badge{display:inline-block;font-size:0.65rem;font-weight:700;padding:2px 8px;border-radius:100px;margin-top:5px;}
+
+  /* Q review table */
+  .q-review-table{width:100%;border-collapse:collapse;}
+  .q-review-table th{font-size:0.68rem;font-weight:700;color:var(--ink-faint);text-transform:uppercase;
+    letter-spacing:0.06em;padding:0 12px 10px;text-align:left;}
+  .q-review-table td{padding:10px 12px;font-size:0.8rem;color:var(--ink-soft);border-top:1px solid var(--border);}
+  .q-review-table tr:hover td{background:var(--paper);}
+  .q-status-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;}
+  .tab-bar{display:flex;gap:4px;background:var(--paper-warm);border-radius:var(--radius-sm);padding:3px;margin-bottom:18px;width:fit-content;}
+  .tab-btn{font-family:var(--font-body);font-size:0.78rem;font-weight:600;color:var(--ink-muted);
+    background:none;border:none;padding:7px 14px;border-radius:6px;cursor:pointer;transition:all .2s;}
+  .tab-btn.active{background:white;color:var(--ink);box-shadow:0 1px 4px rgba(13,15,26,0.08);}
+
+  /* Download btn */
+  .btn-download{font-family:var(--font-body);font-size:0.8rem;font-weight:600;
+    color:var(--ink-muted);background:none;border:1.5px solid var(--border-strong);
+    padding:6px 14px;border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;}
+  .btn-download:hover{border-color:var(--accent);color:var(--accent);}
+
+  /* Scrollbar */
+  ::-webkit-scrollbar{width:4px;}
+  ::-webkit-scrollbar-track{background:transparent;}
+  ::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:4px;}
+
+  @keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+  .fade-up{animation:fadeUp .5s ease forwards;}
+  .fu-d1{animation-delay:.05s;opacity:0;}
+  .fu-d2{animation-delay:.1s;opacity:0;}
+  .fu-d3{animation-delay:.15s;opacity:0;}
+  .fu-d4{animation-delay:.2s;opacity:0;}
+  .fu-d5{animation-delay:.25s;opacity:0;}
+
+  @media(max-width:1024px){
+    .grid-4{grid-template-columns:repeat(2,1fr);}
+    .grid-3{grid-template-columns:1fr 1fr;}
+    .grid-2-1,.grid-1-2{grid-template-columns:1fr;}
+  }
+  @media(max-width:640px){
+    .grid-4,.grid-3,.grid-2{grid-template-columns:1fr;}
+    .result-hero{grid-template-columns:1fr;gap:24px;}
+    .page{padding:calc(var(--nav-h)+16px) 14px 40px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="mockarena_landing.html" class="nav-logo">
+    <div class="lm">MA</div>
+    <span>MockArena</span>
+  </a>
+  <div class="nav-div"></div>
+  <div class="nav-breadcrumb">Results &amp; Analytics &nbsp;/&nbsp; <span>JEE Advanced Mock #4</span></div>
+  <div class="nav-right">
+    <button class="btn-download">⬇ Download Report</button>
+    <a href="mockarena_mocktest.html" class="btn-back">← Back to Test</a>
+    <button class="btn-share">↗ Share Result</button>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- ── HERO RESULT BAND ── -->
+  <div class="result-hero fade-up">
+    <div class="rh-grid-bg"></div>
+    <div class="rh-orb rh-orb-1"></div>
+    <div class="rh-orb rh-orb-2"></div>
+
+    <div class="score-ring-wrap">
+      <svg class="sr-svg" viewBox="0 0 120 120">
+        <defs>
+          <linearGradient id="rGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" style="stop-color:#4f46e5"/>
+            <stop offset="100%" style="stop-color:#7c3aed"/>
+          </linearGradient>
+        </defs>
+        <circle class="sr-bg" cx="60" cy="60" r="56"/>
+        <circle class="sr-fill" id="score-ring" cx="60" cy="60" r="56"/>
+      </svg>
+      <div class="sr-inner">
+        <div class="sr-score">247</div>
+        <div class="sr-total">/ 300</div>
+      </div>
+    </div>
+
+    <div class="rh-info">
+      <div class="rh-tag">📅 Attempted on 25 May 2026 · 2h 47m used</div>
+      <div class="rh-title">JEE Advanced 2026 — Full Syllabus Mock Test #4</div>
+      <div class="rh-sub">Physics · Chemistry · Mathematics &nbsp;|&nbsp; 60 questions each &nbsp;|&nbsp; 300 marks</div>
+      <div class="rh-chips">
+        <div class="rh-chip good">🏆 Rank #312 / 4,821</div>
+        <div class="rh-chip good">📈 Top 6.4%</div>
+        <div class="rh-chip">🎯 84% Accuracy</div>
+        <div class="rh-chip warn">⚠ Weak: Organic Chemistry</div>
+        <div class="rh-chip warn">⚠ Weak: Integral Calculus</div>
+      </div>
+    </div>
+
+    <div class="rh-stats">
+      <div class="rhs-item">
+        <div class="rhs-icon" style="background:rgba(16,185,129,0.15);">✓</div>
+        <div class="rhs-text">
+          <div class="rhs-num">42</div>
+          <div class="rhs-lbl">Correct</div>
+        </div>
+      </div>
+      <div class="rhs-item">
+        <div class="rhs-icon" style="background:rgba(244,63,94,0.15);">✕</div>
+        <div class="rhs-text">
+          <div class="rhs-num">8</div>
+          <div class="rhs-lbl">Wrong (−8 pts)</div>
+        </div>
+      </div>
+      <div class="rhs-item">
+        <div class="rhs-icon" style="background:rgba(148,153,184,0.12);">—</div>
+        <div class="rhs-text">
+          <div class="rhs-num">10</div>
+          <div class="rhs-lbl">Skipped</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── STAT CARDS ── -->
+  <div class="grid-4 fu-d1 fade-up">
+    <div class="stat-card sc-correct">
+      <div class="sc-icon" style="background:var(--accent-green-light);">✅</div>
+      <div class="sc-num" style="color:var(--accent-green);">42</div>
+      <div class="sc-lbl">Correct Answers</div>
+      <div class="sc-delta up">↑ +6 from last test</div>
+    </div>
+    <div class="stat-card sc-wrong">
+      <div class="sc-icon" style="background:var(--accent-rose-light);">❌</div>
+      <div class="sc-num" style="color:var(--accent-rose);">8</div>
+      <div class="sc-lbl">Wrong Answers</div>
+      <div class="sc-delta down">↓ −2 from last test</div>
+    </div>
+    <div class="stat-card sc-skip">
+      <div class="sc-icon" style="background:var(--paper-warm);">⏭</div>
+      <div class="sc-num" style="color:var(--ink-faint);">10</div>
+      <div class="sc-lbl">Skipped</div>
+      <div class="sc-delta neutral">Same as last test</div>
+    </div>
+    <div class="stat-card sc-accuracy">
+      <div class="sc-icon" style="background:var(--accent-light);">🎯</div>
+      <div class="sc-num" style="color:var(--accent);">84%</div>
+      <div class="sc-lbl">Accuracy Rate</div>
+      <div class="sc-delta up">↑ +6.2% from last test</div>
+    </div>
+  </div>
+
+  <!-- ── SUBJECT PERFORMANCE ── -->
+  <div class="sec-title fade-up fu-d2">Subject-wise Performance</div>
+  <div class="grid-3 fade-up fu-d2">
+
+    <div class="subj-card">
+      <div class="subj-top">
+        <div>
+          <div class="subj-name">⚛️ Physics</div>
+          <div style="font-size:0.72rem;color:var(--ink-faint);margin-top:2px;">20 questions attempted</div>
+        </div>
+        <div class="subj-score-badge" style="background:var(--accent-light);color:var(--accent);border-color:rgba(79,70,229,0.2);">89 / 100</div>
+      </div>
+      <div class="subj-bar-wrap">
+        <div class="subj-bar-label"><span>Score</span><span>89%</span></div>
+        <div class="bar-track"><div class="bar-fill" id="bf-phy" style="width:0%;background:linear-gradient(90deg,#4f46e5,#7c3aed);"></div></div>
+      </div>
+      <div class="subj-stats">
+        <div class="ss-item">
+          <div class="ss-num" style="color:var(--accent-green);">17</div>
+          <div class="ss-lbl">Correct</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num" style="color:var(--accent-rose);">1</div>
+          <div class="ss-lbl">Wrong</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num" style="color:var(--ink-faint);">2</div>
+          <div class="ss-lbl">Skipped</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subj-card">
+      <div class="subj-top">
+        <div>
+          <div class="subj-name">🧪 Chemistry</div>
+          <div style="font-size:0.72rem;color:var(--ink-faint);margin-top:2px;">18 questions attempted</div>
+        </div>
+        <div class="subj-score-badge" style="background:var(--accent-sky-light);color:var(--accent-sky);border-color:rgba(14,165,233,0.2);">76 / 100</div>
+      </div>
+      <div class="subj-bar-wrap">
+        <div class="subj-bar-label"><span>Score</span><span>76%</span></div>
+        <div class="bar-track"><div class="bar-fill" id="bf-chem" style="width:0%;background:linear-gradient(90deg,#0ea5e9,#06b6d4);"></div></div>
+      </div>
+      <div class="subj-stats">
+        <div class="ss-item">
+          <div class="ss-num" style="color:var(--accent-green);">14</div>
+          <div class="ss-lbl">Correct</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num" style="color:var(--accent-rose);">4</div>
+          <div class="ss-lbl">Wrong</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num" style="color:var(--ink-faint);">2</div>
+          <div class="ss-lbl">Skipped</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="subj-card">
+      <div class="subj-top">
+        <div>
+          <div class="subj-name">📐 Mathematics</div>
+          <div style="font-size:0.72rem;color:var(--ink-faint);margin-top:2px;">22 questions attempted</div>
+        </div>
+        <div class="subj-score-badge" style="background:var(--accent-green-light);color:#047857;border-color:rgba(16,185,129,0.2);">82 / 100</div>
+      </div>
+      <div class="subj-bar-wrap">
+        <div class="subj-bar-label"><span>Score</span><span>82%</span></div>
+        <div class="bar-track"><div class="bar-fill" id="bf-math" style="width:0%;background:linear-gradient(90deg,#10b981,#34d399);"></div></div>
+      </div>
+      <div class="subj-stats">
+        <div class="ss-item">
+          <div class="ss-num" style="color:var(--accent-green);">18</div>
+          <div class="ss-lbl">Correct</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num" style="color:var(--accent-rose);">2</div>
+          <div class="ss-lbl">Wrong</div>
+        </div>
+        <div class="ss-item">
+          <div class="ss-num" style="color:var(--ink-faint);">2</div>
+          <div class="ss-lbl">Skipped</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SCORE TREND + DONUT ── -->
+  <div class="grid-2 fade-up fu-d3">
+
+    <!-- Score Trend -->
+    <div class="card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Score Trend — Last 8 Tests</div>
+          <div class="chart-sub">Your score trajectory over recent mocks</div>
+        </div>
+        <div class="chart-legend">
+          <div class="cl-item"><div class="cl-dot" style="background:var(--accent);"></div>Your Score</div>
+          <div class="cl-item"><div class="cl-dot" style="background:var(--accent-green);"></div>Topper Avg</div>
+        </div>
+      </div>
+      <div class="line-chart-wrap">
+        <svg class="lc-svg" viewBox="0 0 480 140" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="lineGrad1" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:#4f46e5;stop-opacity:1"/>
+              <stop offset="100%" style="stop-color:#4f46e5;stop-opacity:0"/>
+            </linearGradient>
+            <linearGradient id="lineGrad2" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:#10b981;stop-opacity:0.8"/>
+              <stop offset="100%" style="stop-color:#10b981;stop-opacity:0"/>
+            </linearGradient>
+          </defs>
+          <!-- Grid lines -->
+          <line x1="0" y1="20" x2="480" y2="20" stroke="#eceef8" stroke-width="1"/>
+          <line x1="0" y1="50" x2="480" y2="50" stroke="#eceef8" stroke-width="1"/>
+          <line x1="0" y1="80" x2="480" y2="80" stroke="#eceef8" stroke-width="1"/>
+          <line x1="0" y1="110" x2="480" y2="110" stroke="#eceef8" stroke-width="1"/>
+          <!-- Y labels -->
+          <text x="0" y="18" font-size="9" fill="#9499b8" font-family="JetBrains Mono">300</text>
+          <text x="0" y="48" font-size="9" fill="#9499b8" font-family="JetBrains Mono">230</text>
+          <text x="0" y="78" font-size="9" fill="#9499b8" font-family="JetBrains Mono">160</text>
+          <text x="0" y="108" font-size="9" fill="#9499b8" font-family="JetBrains Mono">80</text>
+          <!-- Topper area -->
+          <path class="lc-area" fill="url(#lineGrad2)"
+            d="M30,45 L90,40 L150,38 L210,35 L270,32 L330,28 L390,26 L450,22 L450,140 L30,140 Z"/>
+          <!-- Topper line -->
+          <polyline class="lc-line" stroke="#10b981" stroke-dasharray="4 3"
+            points="30,45 90,40 150,38 210,35 270,32 330,28 390,26 450,22"/>
+          <!-- My score area -->
+          <path class="lc-area" fill="url(#lineGrad1)"
+            d="M30,100 L90,92 L150,85 L210,78 L270,65 L330,58 L390,48 L450,38 L450,140 L30,140 Z"/>
+          <!-- My score line -->
+          <polyline class="lc-line" stroke="#4f46e5"
+            points="30,100 90,92 150,85 210,78 270,65 330,58 390,48 450,38"/>
+          <!-- Dots -->
+          <circle cx="30" cy="100" r="3.5" fill="#4f46e5"/>
+          <circle cx="90" cy="92" r="3.5" fill="#4f46e5"/>
+          <circle cx="150" cy="85" r="3.5" fill="#4f46e5"/>
+          <circle cx="210" cy="78" r="3.5" fill="#4f46e5"/>
+          <circle cx="270" cy="65" r="3.5" fill="#4f46e5"/>
+          <circle cx="330" cy="58" r="3.5" fill="#4f46e5"/>
+          <circle cx="390" cy="48" r="3.5" fill="#4f46e5"/>
+          <circle cx="450" cy="38" r="4.5" fill="#4f46e5" stroke="white" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="lc-labels">
+        <span class="lc-label">Mock 1</span><span class="lc-label">Mock 2</span>
+        <span class="lc-label">Mock 3</span><span class="lc-label">Mock 4</span>
+        <span class="lc-label">Mock 5</span><span class="lc-label">Mock 6</span>
+        <span class="lc-label">Mock 7</span><span class="lc-label">Mock 8 ★</span>
+      </div>
+    </div>
+
+    <!-- Donut - Attempt breakdown -->
+    <div class="card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Attempt Breakdown</div>
+          <div class="chart-sub">Distribution of 60 questions</div>
+        </div>
+      </div>
+      <div class="donut-wrap">
+        <div class="donut-svg-wrap">
+          <svg class="donut-svg" width="120" height="120" viewBox="0 0 120 120">
+            <!-- bg circle -->
+            <circle class="d-bg" cx="60" cy="60" r="48"/>
+            <!-- answered: 70% of circumference = 301.6 -->
+            <circle class="d-seg" cx="60" cy="60" r="48"
+              stroke="#4f46e5" stroke-dasharray="0 301.59"
+              id="d-answered"/>
+            <!-- wrong: 13.3% = 40.2 -->
+            <circle class="d-seg" cx="60" cy="60" r="48"
+              stroke="#f43f5e" stroke-dasharray="0 301.59"
+              id="d-wrong"/>
+            <!-- skipped: 16.7% = 50.3 -->
+            <circle class="d-seg" cx="60" cy="60" r="48"
+              stroke="#9499b8" stroke-dasharray="0 301.59"
+              id="d-skip"/>
+          </svg>
+          <div class="donut-center">
+            <div class="dc-num">60</div>
+            <div class="dc-lbl">Total</div>
+          </div>
+        </div>
+        <div class="donut-legend">
+          <div class="dl-item">
+            <div class="dl-left">
+              <div class="dl-color" style="background:var(--accent);"></div>
+              <div>
+                <div class="dl-name">Correct</div>
+                <div class="dl-bar"><div class="dl-bar-fill" id="dlb-correct" style="width:0%;background:var(--accent);"></div></div>
+              </div>
+            </div>
+            <div class="dl-val">42 / 70%</div>
+          </div>
+          <div class="dl-item">
+            <div class="dl-left">
+              <div class="dl-color" style="background:var(--accent-rose);"></div>
+              <div>
+                <div class="dl-name">Wrong</div>
+                <div class="dl-bar"><div class="dl-bar-fill" id="dlb-wrong" style="width:0%;background:var(--accent-rose);"></div></div>
+              </div>
+            </div>
+            <div class="dl-val">8 / 13%</div>
+          </div>
+          <div class="dl-item">
+            <div class="dl-left">
+              <div class="dl-color" style="background:var(--ink-faint);"></div>
+              <div>
+                <div class="dl-name">Skipped</div>
+                <div class="dl-bar"><div class="dl-bar-fill" id="dlb-skip" style="width:0%;background:var(--ink-faint);"></div></div>
+              </div>
+            </div>
+            <div class="dl-val">10 / 17%</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── HEATMAP + TIME ── -->
+  <div class="grid-2 fade-up fu-d3">
+
+    <!-- Chapter Heatmap -->
+    <div class="card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Chapter-wise Accuracy Heatmap</div>
+          <div class="chart-sub">Darker = higher accuracy &nbsp;·&nbsp; Red = wrong answers</div>
+        </div>
+      </div>
+      <div class="heatmap-grid">
+        <div class="hm-row">
+          <div class="hm-label">Kinematics</div>
+          <div class="hm-cells">
+            <div class="hm-cell hm-4" data-tip="Q1 · Correct · 1m 20s">✓</div>
+            <div class="hm-cell hm-4" data-tip="Q2 · Correct · 0m 55s">✓</div>
+            <div class="hm-cell hm-3" data-tip="Q3 · Correct · 2m 10s">✓</div>
+            <div class="hm-cell hm-wrong" data-tip="Q4 · Wrong · 3m 40s">✕</div>
+            <div class="hm-cell hm-4" data-tip="Q5 · Correct · 1m 05s">✓</div>
+          </div>
+        </div>
+        <div class="hm-row">
+          <div class="hm-label">Electrostatics</div>
+          <div class="hm-cells">
+            <div class="hm-cell hm-4" data-tip="Q11 · Correct · 1m 30s">✓</div>
+            <div class="hm-cell hm-3" data-tip="Q12 · Correct · 2m 00s">✓</div>
+            <div class="hm-cell hm-4" data-tip="Q13 · Correct · 0m 50s">✓</div>
+            <div class="hm-cell hm-2" data-tip="Q14 · Correct · 4m 10s">✓</div>
+            <div class="hm-cell hm-0" data-tip="Q15 · Skipped">—</div>
+          </div>
+        </div>
+        <div class="hm-row">
+          <div class="hm-label">Org. Chemistry</div>
+          <div class="hm-cells">
+            <div class="hm-cell hm-wrong" data-tip="Q21 · Wrong · 2m 30s">✕</div>
+            <div class="hm-cell hm-1" data-tip="Q22 · Correct · 5m 10s">✓</div>
+            <div class="hm-cell hm-wrong" data-tip="Q23 · Wrong · 3m 00s">✕</div>
+            <div class="hm-cell hm-0" data-tip="Q24 · Skipped">—</div>
+            <div class="hm-cell hm-wrong" data-tip="Q25 · Wrong · 2m 45s">✕</div>
+          </div>
+        </div>
+        <div class="hm-row">
+          <div class="hm-label">Phys. Chemistry</div>
+          <div class="hm-cells">
+            <div class="hm-cell hm-4" data-tip="Q31 · Correct · 1m 15s">✓</div>
+            <div class="hm-cell hm-4" data-tip="Q32 · Correct · 1m 40s">✓</div>
+            <div class="hm-cell hm-3" data-tip="Q33 · Correct · 2m 20s">✓</div>
+            <div class="hm-cell hm-4" data-tip="Q34 · Correct · 0m 55s">✓</div>
+            <div class="hm-cell hm-2" data-tip="Q35 · Correct · 3m 30s">✓</div>
+          </div>
+        </div>
+        <div class="hm-row">
+          <div class="hm-label">Calculus</div>
+          <div class="hm-cells">
+            <div class="hm-cell hm-3" data-tip="Q41 · Correct · 2m 00s">✓</div>
+            <div class="hm-cell hm-wrong" data-tip="Q42 · Wrong · 4m 20s">✕</div>
+            <div class="hm-cell hm-1" data-tip="Q43 · Correct · 5m 30s">✓</div>
+            <div class="hm-cell hm-0" data-tip="Q44 · Skipped">—</div>
+            <div class="hm-cell hm-2" data-tip="Q45 · Correct · 3m 10s">✓</div>
+          </div>
+        </div>
+        <div class="hm-row">
+          <div class="hm-label">Algebra</div>
+          <div class="hm-cells">
+            <div class="hm-cell hm-4" data-tip="Q51 · Correct · 1m 05s">✓</div>
+            <div class="hm-cell hm-4" data-tip="Q52 · Correct · 1m 25s">✓</div>
+            <div class="hm-cell hm-4" data-tip="Q53 · Correct · 0m 50s">✓</div>
+            <div class="hm-cell hm-3" data-tip="Q54 · Correct · 2m 15s">✓</div>
+            <div class="hm-cell hm-4" data-tip="Q55 · Correct · 1m 00s">✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Time Analysis -->
+    <div class="card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Time Spent Analysis</div>
+          <div class="chart-sub">Total time used: 2h 47m of 3h</div>
+        </div>
+      </div>
+      <div class="time-grid">
+        <div class="tg-row">
+          <div class="tg-label">Physics</div>
+          <div class="tg-bar-wrap"><div class="tg-fill" id="tf-phy" style="width:0%;background:linear-gradient(90deg,var(--accent),var(--accent-2));"></div></div>
+          <div class="tg-val">58 min</div>
+        </div>
+        <div class="tg-row">
+          <div class="tg-label">Chemistry</div>
+          <div class="tg-bar-wrap"><div class="tg-fill" id="tf-chem" style="width:0%;background:linear-gradient(90deg,var(--accent-sky),#06b6d4);"></div></div>
+          <div class="tg-val">52 min</div>
+        </div>
+        <div class="tg-row">
+          <div class="tg-label">Mathematics</div>
+          <div class="tg-bar-wrap"><div class="tg-fill" id="tf-math" style="width:0%;background:linear-gradient(90deg,var(--accent-green),#34d399);"></div></div>
+          <div class="tg-val">57 min</div>
+        </div>
+        <div style="border-top:1px solid var(--border);margin:4px 0;"></div>
+        <div class="tg-row">
+          <div class="tg-label">Avg / Question</div>
+          <div class="tg-bar-wrap"><div class="tg-fill" id="tf-avg" style="width:0%;background:linear-gradient(90deg,var(--accent-amber),#fbbf24);"></div></div>
+          <div class="tg-val">2m 47s</div>
+        </div>
+        <div class="tg-row">
+          <div class="tg-label">Fastest Answer</div>
+          <div class="tg-bar-wrap"><div class="tg-fill" style="width:8%;background:var(--accent-green);"></div></div>
+          <div class="tg-val">0m 28s</div>
+        </div>
+        <div class="tg-row">
+          <div class="tg-label">Slowest Answer</div>
+          <div class="tg-bar-wrap"><div class="tg-fill" style="width:95%;background:var(--accent-rose);"></div></div>
+          <div class="tg-val">7m 12s</div>
+        </div>
+      </div>
+
+      <!-- Bar chart: time per section -->
+      <div style="margin-top:20px;">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--ink-faint);margin-bottom:10px;text-transform:uppercase;letter-spacing:.04em;">Score vs Time Efficiency</div>
+        <div class="bar-chart">
+          <div class="bc-grid">
+            <div class="bc-grid-line"><span>100%</span></div>
+            <div class="bc-grid-line"><span>75%</span></div>
+            <div class="bc-grid-line"><span>50%</span></div>
+            <div class="bc-grid-line"><span>25%</span></div>
+          </div>
+          <div class="bc-bar-group">
+            <div class="bc-bars">
+              <div class="bc-bar" id="bcb-phy" data-val="89%" style="background:var(--accent);height:0%;"></div>
+            </div>
+            <div class="bc-label">Physics</div>
+          </div>
+          <div class="bc-bar-group">
+            <div class="bc-bars">
+              <div class="bc-bar" id="bcb-chem" data-val="76%" style="background:var(--accent-sky);height:0%;"></div>
+            </div>
+            <div class="bc-label">Chemistry</div>
+          </div>
+          <div class="bc-bar-group">
+            <div class="bc-bars">
+              <div class="bc-bar" id="bcb-math" data-val="82%" style="background:var(--accent-green);height:0%;"></div>
+            </div>
+            <div class="bc-label">Mathematics</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── LEADERBOARD + AIR ── -->
+  <div class="grid-2-1 fade-up fu-d4">
+
+    <!-- Leaderboard -->
+    <div class="card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">Live Leaderboard — Mock Test #4</div>
+          <div class="chart-sub">4,821 students attempted · Your rank: #312</div>
+        </div>
+        <button class="btn-download">View Full</button>
+      </div>
+      <table class="rank-table">
+        <thead>
+          <tr>
+            <th>Rank</th><th>Student</th><th>Score</th><th>Accuracy</th><th>Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="rank-pos" style="color:var(--accent-amber);">🥇 1</span></td>
+            <td><div class="rank-name-cell"><div class="rank-avatar" style="background:rgba(245,158,11,0.15);color:#b45309;">AS</div>Aryan Sharma</div></td>
+            <td><span class="score-mono">281</span></td>
+            <td><span class="acc-badge" style="background:var(--accent-green-light);color:#047857;">93.6%</span></td>
+            <td><span class="score-mono" style="color:var(--ink-faint);">2h 41m</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-pos" style="color:var(--ink-faint);">🥈 2</span></td>
+            <td><div class="rank-name-cell"><div class="rank-avatar" style="background:rgba(14,165,233,0.12);color:#0369a1;">PM</div>Priya Mehta</div></td>
+            <td><span class="score-mono">274</span></td>
+            <td><span class="acc-badge" style="background:var(--accent-green-light);color:#047857;">91.3%</span></td>
+            <td><span class="score-mono" style="color:var(--ink-faint);">2h 55m</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-pos" style="color:#b45309;">🥉 3</span></td>
+            <td><div class="rank-name-cell"><div class="rank-avatar" style="background:rgba(124,58,237,0.12);color:var(--accent-2);">RK</div>Rohit Kumar</div></td>
+            <td><span class="score-mono">268</span></td>
+            <td><span class="acc-badge" style="background:var(--accent-green-light);color:#047857;">89.3%</span></td>
+            <td><span class="score-mono" style="color:var(--ink-faint);">2h 38m</span></td>
+          </tr>
+          <tr><td colspan="5" style="text-align:center;color:var(--ink-faint);font-size:0.72rem;padding:6px;">· · · 308 more students · · ·</td></tr>
+          <tr class="me">
+            <td><span class="rank-pos" style="color:var(--accent);">⭐ 312</span></td>
+            <td><div class="rank-name-cell"><div class="rank-avatar" style="background:var(--accent-light);color:var(--accent);">RK</div>Rahul Kumar (You)</div></td>
+            <td><span class="score-mono" style="color:var(--accent);font-weight:700;">247</span></td>
+            <td><span class="acc-badge" style="background:var(--accent-light);color:var(--accent);">84.0%</span></td>
+            <td><span class="score-mono" style="color:var(--ink-faint);">2h 47m</span></td>
+          </tr>
+          <tr>
+            <td><span class="rank-pos">313</span></td>
+            <td><div class="rank-name-cell"><div class="rank-avatar" style="background:rgba(16,185,129,0.1);color:#047857;">SB</div>Sneha Bose</div></td>
+            <td><span class="score-mono">246</span></td>
+            <td><span class="acc-badge" style="background:var(--paper-warm);color:var(--ink-faint);">83.0%</span></td>
+            <td><span class="score-mono" style="color:var(--ink-faint);">2h 52m</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- AIR Predictor -->
+    <div class="air-card">
+      <div class="air-bg-orb"></div>
+      <div class="air-tag">🤖 AI Rank Predictor</div>
+      <div class="air-rank">~1,200 – 2,400</div>
+      <div class="air-sub">Predicted JEE Advanced AIR based on this test</div>
+      <div class="air-range">
+        <div style="font-size:.65rem;color:rgba(255,255,255,.3);font-family:var(--font-mono);">1</div>
+        <div class="air-range-bar"><div class="air-range-fill"></div></div>
+        <div style="font-size:.65rem;color:rgba(255,255,255,.3);font-family:var(--font-mono);">50K</div>
+      </div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-bottom:16px;">
+        Based on 4,821 students' data. Consistent improvement needed to reach top 1000.
+      </div>
+      <div style="font-size:.75rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;">College Chances</div>
+      <div class="air-colleges">
+        <div class="air-college-item">
+          <span class="aci-name">IIT Bombay — CS (AIR &lt;100)</span>
+          <span class="aci-chance chance-low">Low</span>
+        </div>
+        <div class="air-college-item">
+          <span class="aci-name">IIT Delhi — Electrical (AIR &lt;500)</span>
+          <span class="aci-chance chance-low">Low</span>
+        </div>
+        <div class="air-college-item">
+          <span class="aci-name">IIT Roorkee — CS (AIR &lt;2000)</span>
+          <span class="aci-chance chance-med">Medium</span>
+        </div>
+        <div class="air-college-item">
+          <span class="aci-name">IIT Kanpur — Mech (AIR &lt;3000)</span>
+          <span class="aci-chance chance-high">High</span>
+        </div>
+        <div class="air-college-item">
+          <span class="aci-name">IIT Kharagpur — Civil (AIR &lt;5000)</span>
+          <span class="aci-chance chance-high">High</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── COMPARISON + TIPS ── -->
+  <div class="grid-2 fade-up fu-d4">
+
+    <!-- vs Topper -->
+    <div class="card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">You vs Topper Comparison</div>
+          <div class="chart-sub">Your performance against Rank #1 this test</div>
+        </div>
+      </div>
+      <div class="compare-row">
+        <div class="cmp-item">
+          <div class="cmp-label">Overall Score</div>
+          <div class="cmp-bars">
+            <div class="cmp-bar-row">
+              <div class="cmp-who">You</div>
+              <div class="cmp-bar-wrap"><div class="cmp-fill" id="cmp-me-score" style="width:0%;background:var(--accent);"></div></div>
+              <div class="cmp-val">247</div>
+            </div>
+            <div class="cmp-bar-row">
+              <div class="cmp-who">Top</div>
+              <div class="cmp-bar-wrap"><div class="cmp-fill" id="cmp-top-score" style="width:0%;background:var(--accent-green);"></div></div>
+              <div class="cmp-val">281</div>
+            </div>
+          </div>
+        </div>
+        <div class="cmp-item">
+          <div class="cmp-label">Physics</div>
+          <div class="cmp-bars">
+            <div class="cmp-bar-row">
+              <div class="cmp-who">You</div>
+              <div class="cmp-bar-wrap"><div class="cmp-fill" id="cmp-me-phy" style="width:0%;background:var(--accent);"></div></div>
+              <div class="cmp-val">89</div>
+            </div>
+            <div class="cmp-bar-row">
+              <div class="cmp-who">Top</div>
+              <div class="cmp-bar-wrap"><div class="cmp-fill" id="cmp-top-phy" style="width:0%;background:var(--accent-green);"></div></div>
+              <div class="cmp-val">98</div>
+            </div>
+          </div>
+        </div>
+        <div class="cmp-item">
+          <div class="cmp-label">Chemistry</div>
+          <div class="cmp-bars">
+            <div class="cmp-bar-row">
+              <div class="cmp-who">You</div>
+              <div class="cmp-bar-wrap"><div class="cmp-fill" id="cmp-me-chem" style="width:0%;background:var(--accent);"></div></div>
+              <div class="cmp-val">76</div>
+            </div>
+            <div class="cmp-bar-row">
+              <div class="cmp-who">Top</div>
+              <div class="cmp-bar-wrap"><div class="cmp-fill" id="cmp-top-chem" style="width:0%;background:var(--accent-green);"></div></div>
+              <div class="cmp-val">94</div>
+            </div>
+          </div>
+        </div>
+        <div class="cmp-item">
+          <div class="cmp-label">Mathematics</div>
+          <div class="cmp-bars">
+            <div class="cmp-bar-row">
+              <div class="cmp-who">You</div>
+              <div class="cmp-bar-wrap"><div class="cmp-fill" id="cmp-me-math" style="width:0%;background:var(--accent);"></div></div>
+              <div class="cmp-val">82</div>
+            </div>
+            <div class="cmp-bar-row">
+              <div class="cmp-who">Top</div>
+              <div class="cmp-bar-wrap"><div class="cmp-fill" id="cmp-top-math" style="width:0%;background:var(--accent-green);"></div></div>
+              <div class="cmp-val">89</div>
+            </div>
+          </div>
+        </div>
+        <div class="cmp-item">
+          <div class="cmp-label">Accuracy</div>
+          <div class="cmp-bars">
+            <div class="cmp-bar-row">
+              <div class="cmp-who">You</div>
+              <div class="cmp-bar-wrap"><div class="cmp-fill" id="cmp-me-acc" style="width:0%;background:var(--accent);"></div></div>
+              <div class="cmp-val">84%</div>
+            </div>
+            <div class="cmp-bar-row">
+              <div class="cmp-who">Top</div>
+              <div class="cmp-bar-wrap"><div class="cmp-fill" id="cmp-top-acc" style="width:0%;background:var(--accent-green);"></div></div>
+              <div class="cmp-val">93%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- AI Improvement Tips -->
+    <div class="card">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">🤖 AI Improvement Tips</div>
+          <div class="chart-sub">Personalised based on your performance</div>
+        </div>
+      </div>
+      <div class="tips-list">
+        <div class="tip-item">
+          <div class="tip-icon" style="background:rgba(244,63,94,0.1);">🧪</div>
+          <div class="tip-text">
+            <div class="tip-title">Revise Organic Chemistry Mechanisms</div>
+            <div class="tip-desc">You got 3 out of 5 Org. Chem questions wrong. Focus on named reactions: Aldol, Cannizzaro, and Beckmann rearrangement.</div>
+            <span class="tip-badge" style="background:rgba(244,63,94,0.1);color:var(--accent-rose);">🔴 High Priority</span>
+          </div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon" style="background:rgba(245,158,11,0.1);">📐</div>
+          <div class="tip-text">
+            <div class="tip-title">Practice Definite Integrals Daily</div>
+            <div class="tip-desc">Your Integral Calculus accuracy dropped to 60%. Solve 10 integration problems daily from DPP sheets.</div>
+            <span class="tip-badge" style="background:var(--accent-amber-light);color:#b45309;">🟡 Medium Priority</span>
+          </div>
+        </div>
+        <div class="tip-item">
+          <div class="tip-icon" style="background:rgba(79,70,229,0.1);">⏱</div>
+          <div class="tip-text">
+            <div class="tip-title">Improve Time Management</div>
+            <div class="tip-desc">You spent 7+ minutes on 3 questions. Practice leaving tough questions and returning at end. Target ≤4 min per Q.</div>
+            <span class="tip-badge" style="background:var(--accent-light);color:var(--accent);">🔵 Recommended</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── QUESTION REVIEW TABLE ── -->
+  <div class="card fade-up fu-d5" style="margin-bottom:24px;">
+    <div class="chart-header">
+      <div>
+        <div class="chart-title">Question-wise Review</div>
+        <div class="chart-sub">All 60 questions with your answers and correct answers</div>
+      </div>
+      <button class="btn-download">⬇ Export CSV</button>
+    </div>
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="filterQ('all',this)">All (60)</button>
+      <button class="tab-btn" onclick="filterQ('correct',this)">✓ Correct (42)</button>
+      <button class="tab-btn" onclick="filterQ('wrong',this)">✕ Wrong (8)</button>
+      <button class="tab-btn" onclick="filterQ('skipped',this)">— Skipped (10)</button>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="q-review-table" id="q-review-table">
+        <thead>
+          <tr>
+            <th>Q#</th><th>Subject</th><th>Topic</th><th>Type</th>
+            <th>Your Answer</th><th>Correct</th><th>Marks</th><th>Time</th><th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="q-review-body">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+// ── INIT ANIMATIONS ──
+function animate() {
+  // Score ring
+  setTimeout(() => {
+    document.getElementById('score-ring').style.strokeDashoffset = 352 - (352 * 247/300);
+  }, 300);
+
+  // Subject bars
+  const bars = [
+    ['bf-phy','89%'], ['bf-chem','76%'], ['bf-math','82%'],
+    ['tf-phy','54%'], ['tf-chem','49%'], ['tf-math','53%'], ['tf-avg','46%'],
+    ['bcb-phy','89%'], ['bcb-chem','76%'], ['bcb-math','82%'],
+    ['cmp-me-score','82.3%'], ['cmp-top-score','93.6%'],
+    ['cmp-me-phy','89%'], ['cmp-top-phy','98%'],
+    ['cmp-me-chem','76%'], ['cmp-top-chem','94%'],
+    ['cmp-me-math','82%'], ['cmp-top-math','89%'],
+    ['cmp-me-acc','84%'], ['cmp-top-acc','93%'],
+    ['dlb-correct','70%'], ['dlb-wrong','13%'], ['dlb-skip','17%'],
+  ];
+  setTimeout(() => {
+    bars.forEach(([id, w]) => {
+      const el = document.getElementById(id);
+      if (el) el.style.width = w;
+    });
+  }, 500);
+
+  // Bar chart heights
+  setTimeout(() => {
+    const bcBars = [['bcb-phy','89%'],['bcb-chem','76%'],['bcb-math','82%']];
+    bcBars.forEach(([id, h]) => {
+      const el = document.getElementById(id);
+      if (el) el.style.height = h;
+    });
+  }, 500);
+
+  // Donut chart
+  setTimeout(() => {
+    const r = 48, circ = 2 * Math.PI * r; // 301.59
+    const pcts = [42/60, 8/60, 10/60];
+    const colors = ['#4f46e5','#f43f5e','#9499b8'];
+    const ids = ['d-answered','d-wrong','d-skip'];
+    let offset = 0;
+    ids.forEach((id, i) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      const seg = circ * pcts[i];
+      el.style.strokeDasharray = `${seg} ${circ - seg}`;
+      el.style.strokeDashoffset = -offset;
+      offset += seg;
+    });
+  }, 600);
+}
+
+// ── Q REVIEW DATA ──
+const reviewData = [
+  {q:1,subj:'Physics',topic:'Kinematics',type:'MCQ',yours:'A',correct:'A',marks:'+4',time:'1m 20s',status:'correct'},
+  {q:2,subj:'Physics',topic:'Newton\'s Laws',type:'MCQ',yours:'B',correct:'B',marks:'+4',time:'0m 55s',status:'correct'},
+  {q:3,subj:'Physics',topic:'Work & Energy',type:'Integer',yours:'1',correct:'1',marks:'+4',time:'2m 10s',status:'correct'},
+  {q:4,subj:'Physics',topic:'Rotational Motion',type:'Multi',yours:'A,C',correct:'A,C',marks:'+4',time:'3m 40s',status:'correct'},
+  {q:5,subj:'Physics',topic:'Thermodynamics',type:'MCQ',yours:'D',correct:'C',marks:'−1',time:'2m 15s',status:'wrong'},
+  {q:6,subj:'Chemistry',topic:'Atomic Structure',type:'MCQ',yours:'B',correct:'B',marks:'+4',time:'1m 30s',status:'correct'},
+  {q:7,subj:'Chemistry',topic:'Chemical Bonding',type:'MCQ',yours:'—',correct:'C',marks:'0',time:'—',status:'skipped'},
+  {q:8,subj:'Chemistry',topic:'Organic Chemistry',type:'MCQ',yours:'A',correct:'C',marks:'−1',time:'2m 30s',status:'wrong'},
+  {q:9,subj:'Chemistry',topic:'Organic Chemistry',type:'MCQ',yours:'B',correct:'A',marks:'−1',time:'3m 00s',status:'wrong'},
+  {q:10,subj:'Mathematics',topic:'Calculus',type:'MCQ',yours:'B',correct:'B',marks:'+4',time:'1m 50s',status:'correct'},
+  {q:11,subj:'Mathematics',topic:'Algebra',type:'MCQ',yours:'A',correct:'A',marks:'+4',time:'1m 05s',status:'correct'},
+  {q:12,subj:'Mathematics',topic:'Integration',type:'MCQ',yours:'C',correct:'B',marks:'−1',time:'4m 20s',status:'wrong'},
+  {q:13,subj:'Mathematics',topic:'Coordinate Geo.',type:'MCQ',yours:'—',correct:'C',marks:'0',time:'—',status:'skipped'},
+];
+
+function renderReview(filter) {
+  const tbody = document.getElementById('q-review-body');
+  const data = filter === 'all' ? reviewData : reviewData.filter(r => r.status === filter);
+  const colors = {correct:var_('--accent-green'),wrong:var_('--accent-rose'),skipped:var_('--ink-faint')};
+  const bg = {correct:'var(--accent-green-light)',wrong:'var(--accent-rose-light)',skipped:'var(--paper-warm)'};
+  const icons = {correct:'✓',wrong:'✕',skipped:'—'};
+  tbody.innerHTML = data.map(r => `
+    <tr>
+      <td><span style="font-family:var(--font-mono);font-size:.75rem;font-weight:600;color:var(--ink-muted);">${String(r.q).padStart(2,'0')}</span></td>
+      <td><span style="font-size:.78rem;font-weight:600;">${r.subj}</span></td>
+      <td><span style="font-size:.75rem;color:var(--ink-muted);">${r.topic}</span></td>
+      <td><span style="font-size:.68rem;font-weight:600;padding:2px 8px;border-radius:100px;background:var(--paper-warm);color:var(--ink-faint);">${r.type}</span></td>
+      <td><span style="font-family:var(--font-mono);font-size:.78rem;font-weight:600;color:${r.status==='wrong'?'var(--accent-rose)':r.status==='skipped'?'var(--ink-faint)':'var(--ink)'};">${r.yours}</span></td>
+      <td><span style="font-family:var(--font-mono);font-size:.78rem;font-weight:600;color:var(--accent-green);">${r.correct}</span></td>
+      <td><span style="font-family:var(--font-mono);font-size:.78rem;font-weight:700;color:${r.marks.startsWith('+')?'var(--accent-green)':r.marks==='0'?'var(--ink-faint)':'var(--accent-rose)'};">${r.marks}</span></td>
+      <td><span style="font-family:var(--font-mono);font-size:.72rem;color:var(--ink-faint);">${r.time}</span></td>
+      <td><span style="font-size:.72rem;font-weight:700;padding:2px 9px;border-radius:100px;background:${bg[r.status]};color:${r.status==='correct'?'#047857':r.status==='wrong'?'var(--accent-rose)':'var(--ink-faint)'};">${icons[r.status]} ${r.status}</span></td>
+    </tr>`).join('');
+}
+
+function var_(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function filterQ(type, btn) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderReview(type);
+}
+
+// init
+renderReview('all');
+window.addEventListener('load', animate);
+setTimeout(animate, 100);
+</script>
+</body>
+</html>

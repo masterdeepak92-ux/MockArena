@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena – Doubt & Q&A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0d0f1a; --ink-soft:#1a1d2e; --ink-muted:#5a5f7a; --ink-faint:#9499b8;
+  --paper:#f4f5fb; --paper-warm:#eceef8; --paper-card:#ffffff;
+  --accent:#4f46e5; --accent-2:#7c3aed;
+  --accent-l:rgba(79,70,229,0.08); --accent-glow:rgba(79,70,229,0.22);
+  --green:#10b981; --green-l:rgba(16,185,129,0.09);
+  --rose:#f43f5e; --rose-l:rgba(244,63,94,0.08);
+  --amber:#f59e0b; --amber-l:rgba(245,158,11,0.09);
+  --sky:#0ea5e9; --sky-l:rgba(14,165,233,0.09);
+  --border:rgba(13,15,26,0.08); --border-s:rgba(13,15,26,0.13);
+  --r-sm:8px; --r-md:14px; --r-lg:20px; --r-xl:28px;
+  --fd:'Manrope',sans-serif; --fb:'Inter',sans-serif; --fm:'JetBrains Mono',monospace;
+  --sh:0 2px 12px rgba(13,15,26,.06),0 1px 3px rgba(13,15,26,.04);
+  --sh-h:0 8px 28px rgba(79,70,229,.12),0 2px 8px rgba(13,15,26,.06);
+  --sw:240px; --th:64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--paper);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;display:flex;}
+
+/* ─── SIDEBAR ─── */
+.sidebar{width:var(--sw);flex-shrink:0;background:var(--ink-soft);height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;z-index:200;}
+.sidebar::-webkit-scrollbar{width:3px;}.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:4px;}
+.sb-logo{padding:20px 20px 16px;display:flex;align-items:center;gap:10px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.06);}
+.sb-lm{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent-2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.88rem;font-weight:800;color:white;flex-shrink:0;box-shadow:0 4px 12px rgba(79,70,229,.4);}
+.sb-brand{font-family:var(--fd);font-size:1.1rem;font-weight:800;color:white;letter-spacing:-.03em;}
+.sb-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;}
+.sb-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.82rem;font-weight:800;color:white;flex-shrink:0;}
+.sb-uname{font-size:.8rem;font-weight:700;color:white;}.sb-umeta{font-size:.66rem;color:rgba(255,255,255,.35);margin-top:2px;}
+.sb-streak{display:inline-flex;align-items:center;gap:4px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.25);border-radius:100px;padding:2px 7px;font-size:.6rem;font-weight:700;color:#6ee7b7;margin-top:4px;}
+.sb-lbl{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.18);text-transform:uppercase;letter-spacing:.1em;padding:14px 20px 5px;}
+.sb-nav{list-style:none;padding:0 10px;}
+.sb-nav li{margin-bottom:2px;}
+.sb-nav a{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:var(--r-sm);text-decoration:none;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.45);transition:all .18s;}
+.sb-nav a:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85);}
+.sb-nav a.active{background:rgba(79,70,229,.22);color:white;border:1px solid rgba(79,70,229,.35);}
+.sb-nav .ni{width:17px;text-align:center;font-size:.88rem;flex-shrink:0;}
+.sb-nav .nb{margin-left:auto;font-size:.6rem;font-weight:700;background:var(--rose);color:white;padding:1px 6px;border-radius:100px;}
+.sb-foot{margin-top:auto;padding:14px 10px 20px;border-top:1px solid rgba(255,255,255,.06);}
+.sb-foot a{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:var(--r-sm);text-decoration:none;font-size:.76rem;font-weight:600;color:rgba(255,255,255,.3);transition:all .2s;}
+.sb-foot a:hover{color:rgba(255,255,255,.65);background:rgba(255,255,255,.05);}
+
+/* ─── MAIN ─── */
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-width:0;}
+
+/* ─── TOPBAR ─── */
+.topbar{height:var(--th);background:rgba(244,245,251,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:14px;position:sticky;top:0;z-index:100;}
+.tb-left{display:flex;flex-direction:column;}
+.tb-title{font-family:var(--fd);font-size:.95rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+.tb-bc{font-size:.7rem;color:var(--ink-faint);}
+.tb-bc span{color:var(--accent);font-weight:600;}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:9px;}
+.btn-primary{font-family:var(--fb);font-size:.8rem;font-weight:700;color:white;background:linear-gradient(135deg,var(--accent),var(--accent-2));border:none;padding:9px 18px;border-radius:var(--r-sm);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary:hover{box-shadow:0 4px 14px var(--accent-glow);transform:translateY(-1px);}
+.btn-ghost{font-family:var(--fb);font-size:.8rem;font-weight:600;color:var(--ink-muted);background:none;border:1.5px solid var(--border-s);padding:8px 15px;border-radius:var(--r-sm);cursor:pointer;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);}
+.tb-notif{width:36px;height:36px;border-radius:var(--r-sm);border:1.5px solid var(--border-s);background:white;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;position:relative;}
+.tb-notif .dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:var(--rose);border-radius:50%;border:1.5px solid var(--paper);}
+
+/* ════════════════════════════════════════
+   TWO VIEWS: LIST and DETAIL
+════════════════════════════════════════ */
+.list-view{display:block;}
+.list-view.hidden{display:none;}
+.detail-view{display:none;}
+.detail-view.open{display:grid;grid-template-columns:1fr 340px;min-height:calc(100vh - var(--th));}
+
+/* ════════════════════════════════════════
+   LIST VIEW — clean forum
+════════════════════════════════════════ */
+.list-page{padding:28px;}
+
+/* Search + ask bar */
+.ask-bar{display:flex;gap:10px;margin-bottom:24px;align-items:center;}
+.search-wrap{flex:1;display:flex;align-items:center;gap:10px;background:white;border:1.5px solid var(--border-s);border-radius:var(--r-md);padding:12px 18px;transition:all .2s;}
+.search-wrap:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-l);}
+.search-wrap input{flex:1;border:none;outline:none;font-family:var(--fb);font-size:.88rem;color:var(--ink);background:transparent;}
+.search-wrap input::placeholder{color:var(--ink-faint);}
+
+/* Subject + filter strip */
+.filter-strip{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.fs-chip{font-size:.75rem;font-weight:700;padding:7px 14px;border-radius:100px;border:1.5px solid var(--border-s);background:white;color:var(--ink-muted);cursor:pointer;transition:all .18s;white-space:nowrap;}
+.fs-chip:hover{border-color:var(--accent);color:var(--accent);}
+.fs-chip.active{background:var(--accent-l);color:var(--accent);border-color:rgba(79,70,229,.25);}
+.fs-chip.phy.active{background:var(--sky-l);color:#0369a1;border-color:rgba(14,165,233,.3);}
+.fs-chip.che.active{background:var(--green-l);color:#047857;border-color:rgba(16,185,129,.3);}
+.fs-chip.mat.active{background:var(--accent-l);color:var(--accent);border-color:rgba(79,70,229,.25);}
+.fs-chip.bio.active{background:var(--amber-l);color:#92400e;border-color:rgba(245,158,11,.3);}
+.fs-divider{width:1px;height:22px;background:var(--border-s);}
+.fs-sel{font-family:var(--fb);font-size:.74rem;font-weight:600;color:var(--ink-muted);border:1.5px solid var(--border-s);background:white;border-radius:var(--r-sm);padding:7px 11px;cursor:pointer;outline:none;transition:border-color .2s;}
+.fs-sel:focus{border-color:var(--accent);}
+
+/* Stats row */
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px;}
+.stat-mini{background:white;border:1px solid var(--border);border-radius:var(--r-md);padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh);transition:all .2s;}
+.stat-mini:hover{box-shadow:var(--sh-h);transform:translateY(-1px);}
+.sm-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.sm-val{font-family:var(--fd);font-size:1.3rem;font-weight:800;color:var(--ink);letter-spacing:-.04em;line-height:1;}
+.sm-lbl{font-size:.65rem;font-weight:600;color:var(--ink-muted);margin-top:2px;text-transform:uppercase;letter-spacing:.04em;}
+
+/* Question cards — CLEAN, focused */
+.q-list{display:flex;flex-direction:column;gap:10px;}
+.q-card{background:white;border:1px solid var(--border);border-radius:var(--r-lg);padding:20px 22px;box-shadow:var(--sh);cursor:pointer;transition:all .25s;position:relative;overflow:hidden;}
+.q-card::after{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 2px 2px 0;background:transparent;transition:background .2s;}
+.q-card:hover{box-shadow:var(--sh-h);transform:translateY(-1px);}
+.q-card:hover::after{background:var(--accent);}
+.q-card.answered::after{background:var(--green);}
+.q-card.unanswered::after{background:var(--amber);}
+
+/* Card top row: subject tag + badge + time */
+.qc-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.qtag{font-size:.64rem;font-weight:800;padding:3px 9px;border-radius:100px;}
+.t-phy{background:var(--sky-l);color:#0369a1;border:1px solid rgba(14,165,233,.2);}
+.t-che{background:var(--green-l);color:#047857;border:1px solid rgba(16,185,129,.2);}
+.t-mat{background:var(--accent-l);color:var(--accent);border:1px solid rgba(79,70,229,.2);}
+.t-bio{background:var(--amber-l);color:#92400e;border:1px solid rgba(245,158,11,.2);}
+.t-gen{background:var(--paper-warm);color:var(--ink-muted);border:1px solid var(--border-s);}
+.status-badge{font-size:.62rem;font-weight:800;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.04em;}
+.sb-ans{background:var(--green-l);color:#047857;border:1px solid rgba(16,185,129,.2);}
+.sb-unans{background:var(--amber-l);color:#92400e;border:1px solid rgba(245,158,11,.2);}
+.sb-expert{background:rgba(124,58,237,.08);color:var(--accent-2);border:1px solid rgba(124,58,237,.2);}
+.qc-time{font-size:.66rem;color:var(--ink-faint);margin-left:auto;}
+
+/* Card title — the one thing that matters */
+.qc-title{font-family:var(--fd);font-size:.92rem;font-weight:700;color:var(--ink);line-height:1.45;letter-spacing:-.02em;margin-bottom:8px;transition:color .2s;}
+.q-card:hover .qc-title{color:var(--accent);}
+
+/* Card bottom: author + stats */
+.qc-bottom{display:flex;align-items:center;gap:14px;}
+.qc-author{display:flex;align-items:center;gap:6px;}
+.qca-av{width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:800;color:white;flex-shrink:0;}
+.qca-name{font-size:.7rem;font-weight:600;color:var(--ink-muted);}
+.qc-stat{display:flex;align-items:center;gap:4px;font-size:.68rem;font-weight:600;color:var(--ink-faint);}
+.qc-stat.green{color:var(--green);}
+.qc-stat-div{width:3px;height:3px;border-radius:50%;background:var(--border-s);}
+/* Best answer preview — minimal */
+.qc-preview{font-size:.76rem;color:var(--ink-muted);line-height:1.55;margin:8px 0;padding:10px 12px;background:var(--green-l);border-left:3px solid var(--green);border-radius:0 var(--r-sm) var(--r-sm) 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+
+/* Empty state */
+.empty-state{text-align:center;padding:60px 20px;color:var(--ink-muted);}
+.es-icon{font-size:3rem;margin-bottom:12px;}
+.es-title{font-family:var(--fd);font-size:1rem;font-weight:800;color:var(--ink);margin-bottom:6px;}
+.es-sub{font-size:.8rem;line-height:1.6;}
+
+/* ════════════════════════════════════════
+   DETAIL VIEW — focused Q&A
+   Left: question + answer flow
+   Right: minimal sidebar (3 things only)
+════════════════════════════════════════ */
+
+/* LEFT PANEL */
+.detail-left{overflow-y:auto;max-height:calc(100vh - var(--th));padding:28px;}
+.detail-right{overflow-y:auto;max-height:calc(100vh - var(--th));padding:20px;background:white;border-left:1px solid var(--border);}
+
+/* Back button */
+.back-btn{display:inline-flex;align-items:center;gap:7px;font-size:.78rem;font-weight:600;color:var(--ink-muted);background:white;border:1.5px solid var(--border-s);padding:7px 14px;border-radius:var(--r-sm);cursor:pointer;transition:all .2s;margin-bottom:20px;text-decoration:none;}
+.back-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ── QUESTION BLOCK ── */
+.q-block{background:white;border:1px solid var(--border);border-radius:var(--r-xl);padding:28px;margin-bottom:20px;box-shadow:var(--sh);}
+.qb-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.qb-title{font-family:var(--fd);font-size:1.15rem;font-weight:800;color:var(--ink);line-height:1.4;letter-spacing:-.03em;margin-bottom:12px;}
+.qb-body{font-size:.86rem;line-height:1.8;color:var(--ink-muted);margin-bottom:16px;}
+.qb-body p{margin-bottom:10px;}
+.qb-formula{font-family:var(--fm);font-size:.82rem;background:var(--ink-soft);color:#a5b4fc;border-radius:var(--r-sm);padding:14px 18px;margin:12px 0;line-height:1.8;overflow-x:auto;display:block;}
+/* Question actions — only 3, clean */
+.qb-actions{display:flex;align-items:center;gap:8px;padding-top:16px;border-top:1px solid var(--border);}
+.qa-btn{display:inline-flex;align-items:center;gap:5px;font-size:.75rem;font-weight:700;padding:7px 13px;border-radius:var(--r-sm);border:1.5px solid var(--border-s);background:var(--paper);color:var(--ink-muted);cursor:pointer;transition:all .18s;}
+.qa-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-l);}
+.qa-btn.active{border-color:var(--green);color:var(--green);background:var(--green-l);}
+.qa-btn.saved{border-color:var(--amber);color:var(--amber);background:var(--amber-l);}
+.qa-author{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.qa-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:800;color:white;flex-shrink:0;}
+.qa-name{font-size:.72rem;font-weight:600;color:var(--ink-muted);}
+.qa-time{font-size:.64rem;color:var(--ink-faint);}
+
+/* ── HINT STRIP — single collapsible row ── */
+.hint-strip{background:linear-gradient(135deg,rgba(79,70,229,.05),rgba(124,58,237,.03));border:1.5px solid rgba(79,70,229,.15);border-radius:var(--r-md);margin-bottom:20px;overflow:hidden;}
+.hs-trigger{display:flex;align-items:center;gap:10px;padding:13px 18px;cursor:pointer;user-select:none;}
+.hs-icon{width:32px;height:32px;border-radius:8px;background:var(--accent-l);display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
+.hs-label{font-size:.8rem;font-weight:700;color:var(--accent);flex:1;}
+.hs-sub{font-size:.68rem;color:var(--ink-faint);}
+.hs-arrow{font-size:.75rem;color:var(--ink-faint);transition:transform .25s;}
+.hs-arrow.open{transform:rotate(180deg);}
+.hint-body{display:none;padding:0 18px 14px;}
+.hint-body.open{display:block;}
+.hint-steps{display:flex;flex-direction:column;gap:8px;}
+.hint-step{display:flex;gap:10px;align-items:flex-start;}
+.hint-num{width:22px;height:22px;border-radius:50%;background:var(--accent-l);border:1.5px solid rgba(79,70,229,.2);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;color:var(--accent);flex-shrink:0;margin-top:1px;}
+.hint-text{font-size:.8rem;line-height:1.65;color:var(--ink-muted);}
+.hint-text strong{color:var(--ink);}
+.hint-inline-formula{font-family:var(--fm);font-size:.74rem;background:var(--accent-l);color:var(--accent);padding:2px 8px;border-radius:4px;display:inline-block;margin:2px 0;}
+.hint-locked{display:flex;align-items:center;gap:10px;padding:9px 12px;background:white;border:1.5px dashed var(--border-s);border-radius:var(--r-sm);cursor:pointer;transition:all .2s;}
+.hint-locked:hover{border-color:var(--accent);background:var(--accent-l);}
+.hl-text{font-size:.76rem;font-weight:600;color:var(--ink-muted);flex:1;}
+.hl-xp{font-size:.62rem;font-weight:800;color:var(--amber);background:var(--amber-l);padding:2px 7px;border-radius:100px;border:1px solid rgba(245,158,11,.2);}
+
+/* ── ANSWERS ── */
+.answers-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ah-count{font-family:var(--fd);font-size:.95rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+.ah-sort{margin-left:auto;font-family:var(--fb);font-size:.73rem;color:var(--ink-muted);border:1.5px solid var(--border-s);background:white;padding:6px 11px;border-radius:var(--r-sm);cursor:pointer;outline:none;}
+
+/* Answer card — clean, focused */
+.answer-card{background:white;border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;margin-bottom:12px;box-shadow:var(--sh);position:relative;transition:box-shadow .2s;}
+.answer-card:hover{box-shadow:var(--sh-h);}
+.answer-card.best{border-color:rgba(16,185,129,.3);background:linear-gradient(135deg,rgba(16,185,129,.02),white);}
+.answer-card.best::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--green),#059669);border-radius:0 2px 2px 0;}
+.best-tag{display:inline-flex;align-items:center;gap:5px;background:var(--green-l);border:1px solid rgba(16,185,129,.2);color:#047857;font-size:.64rem;font-weight:800;padding:3px 9px;border-radius:100px;text-transform:uppercase;letter-spacing:.04em;margin-bottom:12px;}
+
+/* Author row */
+.ans-author{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.ans-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;color:white;flex-shrink:0;}
+.ans-name{font-size:.82rem;font-weight:700;color:var(--ink);}
+.ans-role{font-size:.65rem;color:var(--ink-faint);margin-top:2px;}
+.mentor-tag{font-size:.58rem;font-weight:800;background:linear-gradient(135deg,var(--amber),#d97706);color:white;padding:1px 6px;border-radius:100px;text-transform:uppercase;margin-left:4px;}
+.iit-tag{font-size:.58rem;font-weight:800;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;padding:1px 6px;border-radius:100px;margin-left:4px;}
+.ans-time{margin-left:auto;font-size:.66rem;color:var(--ink-faint);}
+
+/* Answer body */
+.ans-body{font-size:.84rem;line-height:1.8;color:var(--ink-muted);}
+.ans-body p{margin-bottom:10px;}
+.ans-body strong{color:var(--ink);font-weight:700;}
+.ans-formula{font-family:var(--fm);font-size:.8rem;background:var(--ink-soft);color:#a5b4fc;border-radius:var(--r-sm);padding:14px 18px;margin:12px 0;line-height:1.8;overflow-x:auto;display:block;}
+.step-row{display:flex;gap:11px;margin-bottom:11px;}
+.step-circle{width:24px;height:24px;border-radius:50%;background:var(--accent-l);border:1.5px solid rgba(79,70,229,.2);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:800;color:var(--accent);flex-shrink:0;margin-top:2px;}
+.step-body{font-size:.82rem;line-height:1.7;color:var(--ink-muted);}
+.step-body strong{color:var(--ink);}
+
+/* Answer actions — 3 max */
+.ans-actions{display:flex;align-items:center;gap:8px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border);}
+
+/* ── CONFIDENCE CHECK — shown BEFORE answer, hidden after ── */
+.confidence-check{background:white;border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;margin-bottom:20px;box-shadow:var(--sh);}
+.cc-title{font-family:var(--fd);font-size:.85rem;font-weight:800;color:var(--ink);margin-bottom:4px;}
+.cc-sub{font-size:.72rem;color:var(--ink-muted);margin-bottom:14px;line-height:1.5;}
+.cc-buttons{display:flex;gap:8px;}
+.cc-btn{flex:1;padding:10px 6px;border-radius:var(--r-sm);border:1.5px solid var(--border-s);background:var(--paper);cursor:pointer;text-align:center;transition:all .2s;font-family:var(--fd);}
+.cc-btn:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(0,0,0,.07);}
+.cc-btn .em{font-size:1.25rem;display:block;margin-bottom:3px;}
+.cc-btn .lb{font-size:.62rem;font-weight:700;color:var(--ink-muted);}
+.cc-btn.picked-1{border-color:var(--rose);background:var(--rose-l);}
+.cc-btn.picked-2{border-color:var(--amber);background:var(--amber-l);}
+.cc-btn.picked-3{border-color:var(--amber);background:var(--amber-l);}
+.cc-btn.picked-4{border-color:var(--green);background:var(--green-l);}
+.cc-btn.picked-5{border-color:var(--accent);background:var(--accent-l);}
+
+/* ── WRITE ANSWER ── */
+.write-section{background:white;border:1px solid var(--border);border-radius:var(--r-lg);padding:22px;margin-top:20px;box-shadow:var(--sh);}
+.ws-title{font-family:var(--fd);font-size:.88rem;font-weight:800;color:var(--ink);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.ws-title::before{content:'';width:3px;height:16px;background:linear-gradient(180deg,var(--accent),var(--accent-2));border-radius:2px;display:inline-block;}
+/* Simple toolbar — only what students actually need */
+.ws-toolbar{display:flex;gap:4px;margin-bottom:8px;flex-wrap:wrap;}
+.ws-tb-btn{height:28px;border-radius:5px;border:1.5px solid transparent;background:var(--paper);font-size:.7rem;font-weight:700;color:var(--ink-muted);cursor:pointer;padding:0 9px;transition:all .18s;display:inline-flex;align-items:center;gap:4px;}
+.ws-tb-btn:hover{border-color:var(--border-s);background:white;color:var(--ink);}
+.ws-ta{width:100%;font-family:var(--fb);font-size:.84rem;color:var(--ink);border:1.5px solid var(--border-s);background:var(--paper);border-radius:var(--r-md);padding:13px;outline:none;resize:vertical;min-height:130px;line-height:1.7;transition:border-color .2s;}
+.ws-ta:focus{border-color:var(--accent);}
+.ws-footer{display:flex;align-items:center;gap:9px;margin-top:11px;}
+.ws-note{font-size:.66rem;color:var(--ink-faint);flex:1;line-height:1.5;}
+
+/* ── REFLECTION (appears after reading answer) ── */
+.reflection-box{background:var(--accent-l);border:1.5px solid rgba(79,70,229,.18);border-radius:var(--r-lg);padding:18px;margin-top:12px;display:none;}
+.reflection-box.show{display:block;animation:fadeUp .35s ease;}
+.rb-title{font-size:.82rem;font-weight:800;color:var(--accent);margin-bottom:4px;}
+.rb-sub{font-size:.7rem;color:var(--ink-muted);margin-bottom:12px;}
+.rb-row{display:flex;gap:7px;}
+.rb-btn{flex:1;padding:8px 4px;border-radius:var(--r-sm);border:1.5px solid rgba(79,70,229,.15);background:white;cursor:pointer;text-align:center;transition:all .2s;}
+.rb-btn:hover{transform:translateY(-2px);}
+.rb-btn .em{font-size:1.1rem;display:block;margin-bottom:2px;}
+.rb-btn .lb{font-size:.6rem;font-weight:700;color:var(--ink-muted);}
+.rb-btn.picked{border-color:var(--accent);background:white;box-shadow:0 0 0 3px var(--accent-l);}
+.rb-result{margin-top:10px;padding:10px 12px;background:white;border-radius:var(--r-sm);border:1px solid var(--border);font-size:.76rem;line-height:1.6;color:var(--ink-muted);display:none;}
+.rb-result.show{display:block;}
+
+/* ════ RIGHT SIDEBAR — 3 sections only ════ */
+.rs-section{margin-bottom:18px;}
+.rs-title{font-family:var(--fd);font-size:.8rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;margin-bottom:10px;display:flex;align-items:center;gap:7px;}
+.rs-title::before{content:'';width:3px;height:14px;background:linear-gradient(180deg,var(--accent),var(--accent-2));border-radius:2px;display:inline-block;}
+
+/* 1. Question stats */
+.qs-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.qs-item{background:var(--paper);border-radius:var(--r-sm);padding:10px;text-align:center;}
+.qs-val{font-family:var(--fd);font-size:1.1rem;font-weight:800;color:var(--ink);letter-spacing:-.04em;}
+.qs-lbl{font-size:.6rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.04em;margin-top:2px;}
+
+/* 2. Similar questions */
+.similar-item{padding:9px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.similar-item:last-child{border-bottom:none;}
+.si-title{font-size:.76rem;font-weight:700;color:var(--ink);line-height:1.4;transition:color .2s;}
+.similar-item:hover .si-title{color:var(--accent);}
+.si-meta{font-size:.62rem;color:var(--ink-faint);margin-top:3px;display:flex;gap:6px;}
+.si-match{font-size:.6rem;font-weight:700;color:var(--green);background:var(--green-l);padding:1px 6px;border-radius:100px;border:1px solid rgba(16,185,129,.2);}
+
+/* 3. Your progress on this concept */
+.concept-bar{margin-bottom:6px;}
+.cb-row{display:flex;justify-content:space-between;align-items:center;font-size:.7rem;font-weight:600;color:var(--ink-muted);margin-bottom:4px;}
+.cb-val{color:var(--ink);font-weight:700;}
+.cb-track{height:6px;background:var(--paper-warm);border-radius:3px;overflow:hidden;}
+.cb-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--accent-2));transition:width 1.2s cubic-bezier(.4,0,.2,1);}
+
+/* ── ASK MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(13,15,26,.6);backdrop-filter:blur(6px);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .25s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:white;border-radius:var(--r-xl);padding:32px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;box-shadow:0 32px 80px rgba(13,15,26,.22);transform:scale(.97) translateY(14px);transition:transform .3s cubic-bezier(.4,0,.2,1);}
+.modal-overlay.open .modal{transform:scale(1) translateY(0);}
+.modal-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;}
+.modal-title{font-family:var(--fd);font-size:1.1rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+.modal-close{width:30px;height:30px;border-radius:7px;border:1.5px solid var(--border-s);background:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--ink-muted);transition:all .2s;}
+.modal-close:hover{border-color:var(--rose);color:var(--rose);}
+.form-group{margin-bottom:16px;}
+.form-label{font-size:.76rem;font-weight:700;color:var(--ink);display:block;margin-bottom:6px;}
+.form-label span{color:var(--rose);}
+.form-input{width:100%;font-family:var(--fb);font-size:.84rem;color:var(--ink);border:1.5px solid var(--border-s);background:var(--paper);border-radius:var(--r-sm);padding:10px 13px;outline:none;transition:border-color .2s;}
+.form-input:focus{border-color:var(--accent);}
+.form-textarea{width:100%;font-family:var(--fb);font-size:.84rem;color:var(--ink);border:1.5px solid var(--border-s);background:var(--paper);border-radius:var(--r-sm);padding:10px 13px;outline:none;resize:vertical;min-height:100px;line-height:1.65;transition:border-color .2s;}
+.form-textarea:focus{border-color:var(--accent);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-select{width:100%;font-family:var(--fb);font-size:.84rem;color:var(--ink);border:1.5px solid var(--border-s);background:var(--paper);border-radius:var(--r-sm);padding:10px 13px;outline:none;cursor:pointer;transition:border-color .2s;}
+.form-select:focus{border-color:var(--accent);}
+.modal-footer{display:flex;align-items:center;gap:9px;margin-top:20px;padding-top:18px;border-top:1px solid var(--border);}
+.mf-note{font-size:.68rem;color:var(--ink-faint);flex:1;}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--ink-soft);color:white;padding:12px 18px;border-radius:var(--r-md);font-size:.8rem;font-weight:600;z-index:9999;box-shadow:0 8px 32px rgba(13,15,26,.3);display:flex;align-items:center;gap:9px;transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.4,0,.2,1);max-width:320px;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.fu{opacity:0;animation:fadeUp .45s ease forwards;}
+.fu-1{animation-delay:.05s}.fu-2{animation-delay:.1s}.fu-3{animation-delay:.15s}.fu-4{animation-delay:.2s}.fu-5{animation-delay:.25s}
+
+@media(max-width:1100px){.detail-view.open{grid-template-columns:1fr;}.detail-right{border-left:none;border-top:1px solid var(--border);}}
+@media(max-width:768px){.sidebar{transform:translateX(-100%)}.main{margin-left:0}.stats-row{grid-template-columns:1fr 1fr}.form-row{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR ── -->
+<aside class="sidebar">
+  <a href="mockarena_dashboard.html" class="sb-logo">
+    <div class="sb-lm">MA</div>
+    <span class="sb-brand">MockArena</span>
+  </a>
+  <div class="sb-user">
+    <div class="sb-av">RK</div>
+    <div>
+      <div class="sb-uname">Rahul Kumar</div>
+      <div class="sb-umeta">JEE Advanced · Class 12</div>
+      <div class="sb-streak">🔥 12-day streak</div>
+    </div>
+  </div>
+  <div class="sb-lbl">Main</div>
+  <ul class="sb-nav">
+    <li><a href="mockarena_dashboard.html"><span class="ni">🏠</span> Dashboard</a></li>
+    <li><a href="mockarena_mocktest.html"><span class="ni">📝</span> Mock Tests</a></li>
+    <li><a href="mockarena_results.html"><span class="ni">📊</span> My Results</a></li>
+    <li><a href="#"><span class="ni">📅</span> Study Planner</a></li>
+  </ul>
+  <div class="sb-lbl">Resources</div>
+  <ul class="sb-nav">
+    <li><a href="#"><span class="ni">📄</span> Previous Year Papers</a></li>
+    <li><a href="mockarena_video_solutions.html"><span class="ni">🎬</span> Video Solutions</a></li>
+    <li><a href="mockarena_doubt_qa.html" class="active"><span class="ni">💬</span> Doubt & Q&A <span class="nb">6</span></a></li>
+    <li><a href="#"><span class="ni">📖</span> Notes & Formulas</a></li>
+  </ul>
+  <div class="sb-lbl">Performance</div>
+  <ul class="sb-nav">
+    <li><a href="mockarena_leaderboard.html"><span class="ni">🏆</span> Leaderboard</a></li>
+    <li><a href="#"><span class="ni">🎯</span> Analytics</a></li>
+  </ul>
+  <div class="sb-foot">
+    <a href="#">⚙️ Settings</a>
+    <a href="mockarena_login.html">🚪 Sign Out</a>
+  </div>
+</aside>
+
+<!-- ── MAIN ── -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-left">
+      <div class="tb-title">Doubt & Q&A</div>
+      <div class="tb-bc">Resources → <span>Doubt & Q&A</span></div>
+    </div>
+    <div class="tb-r">
+      <div class="tb-notif"><div class="dot"></div>🔔</div>
+      <button class="btn-primary" onclick="openAskModal()">✏️ Ask a Doubt</button>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       LIST VIEW
+  ════════════════════════════════ -->
+  <div class="list-view" id="listView">
+    <div class="list-page">
+
+      <!-- Ask bar + Search -->
+      <div class="ask-bar fu fu-1">
+        <div class="search-wrap">
+          <span style="color:var(--ink-faint);font-size:.95rem;">🔍</span>
+          <input type="text" placeholder="Search doubts — try 'Biot-Savart' or 'King's property'…" oninput="searchQ(this.value)">
+        </div>
+        <button class="btn-primary" onclick="openAskModal()">✏️ Ask a Doubt</button>
+      </div>
+
+      <!-- Subject filter + sort — ONLY what matters -->
+      <div class="filter-strip fu fu-2">
+        <div class="fs-chip active" onclick="setFilter(this,'all')">All</div>
+        <div class="fs-chip phy" onclick="setFilter(this,'physics')">⚛️ Physics</div>
+        <div class="fs-chip che" onclick="setFilter(this,'chemistry')">🧪 Chemistry</div>
+        <div class="fs-chip mat" onclick="setFilter(this,'maths')">📐 Maths</div>
+        <div class="fs-chip bio" onclick="setFilter(this,'biology')">🌱 Biology</div>
+        <div class="fs-divider"></div>
+        <div class="fs-chip" onclick="setFilter(this,'mine')">My Doubts</div>
+        <div class="fs-chip" onclick="setFilter(this,'unanswered')">Unanswered</div>
+        <select class="fs-sel" onchange="sortQ(this.value)">
+          <option value="latest">Latest First</option>
+          <option value="votes">Most Helpful</option>
+          <option value="unanswered">Unanswered</option>
+        </select>
+      </div>
+
+      <!-- 4 clean stats -->
+      <div class="stats-row fu fu-2">
+        <div class="stat-mini">
+          <div class="sm-icon" style="background:var(--accent-l);">💬</div>
+          <div><div class="sm-val">12,847</div><div class="sm-lbl">Questions</div></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sm-icon" style="background:var(--green-l);">✅</div>
+          <div><div class="sm-val">94%</div><div class="sm-lbl">Answered</div></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sm-icon" style="background:var(--amber-l);">⚡</div>
+          <div><div class="sm-val">2.4h</div><div class="sm-lbl">Avg Response</div></div>
+        </div>
+        <div class="stat-mini">
+          <div class="sm-icon" style="background:var(--sky-l);">👨‍🏫</div>
+          <div><div class="sm-val">48</div><div class="sm-lbl">Expert Mentors</div></div>
+        </div>
+      </div>
+
+      <!-- Question list -->
+      <div class="q-list" id="qList">
+
+        <!-- Q1 -->
+        <div class="q-card answered fu fu-3" data-subject="physics" data-id="q1" onclick="openQuestion('q1')">
+          <div class="qc-top">
+            <span class="qtag t-phy">⚛️ Physics</span>
+            <span class="qtag t-gen">JEE Advanced</span>
+            <span class="qtag t-gen">PYQ 2023</span>
+            <span class="status-badge sb-ans">✓ Answered</span>
+            <span class="status-badge sb-expert">⭐ Expert</span>
+            <span class="qc-time">2h ago</span>
+          </div>
+          <div class="qc-title">Why does Ampère's Law fail to give the magnetic field for a single rotating charged ring, even though it always holds in principle?</div>
+          <div class="qc-preview">Ampère's Law always holds — the issue is symmetry, not the law itself. For a single ring, the magnetic field is not uniform along any circular Amperian loop you can draw, so you cannot factor B out of the line integral…</div>
+          <div class="qc-bottom">
+            <div class="qc-author">
+              <div class="qca-av" style="background:linear-gradient(135deg,var(--accent),var(--accent-2));">RK</div>
+              <span class="qca-name">Rahul Kumar</span>
+            </div>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat green">💬 23 answers</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">👁 4,102 views</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">⬆ 142 votes</span>
+          </div>
+        </div>
+
+        <!-- Q2 -->
+        <div class="q-card answered fu fu-3" data-subject="chemistry" data-id="q2" onclick="openQuestion('q2')">
+          <div class="qc-top">
+            <span class="qtag t-che">🧪 Chemistry</span>
+            <span class="qtag t-gen">JEE Mains</span>
+            <span class="qtag t-gen">Organic</span>
+            <span class="status-badge sb-ans">✓ Answered</span>
+            <span class="qc-time">5h ago</span>
+          </div>
+          <div class="qc-title">Why does anti-Markovnikov addition work with HBr + peroxides, but NOT with HCl or HI under the same conditions?</div>
+          <div class="qc-preview">Only HBr has the right radical reactivity — it's a Goldilocks situation. HCl's Cl• radical is too reactive and adds non-selectively. HI's I• radical is too unreactive — the chain propagation step is endothermic…</div>
+          <div class="qc-bottom">
+            <div class="qc-author">
+              <div class="qca-av" style="background:linear-gradient(135deg,var(--green),#059669);">PM</div>
+              <span class="qca-name">Priya Mehta</span>
+            </div>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat green">💬 11 answers</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">👁 2,340 views</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">⬆ 87 votes</span>
+          </div>
+        </div>
+
+        <!-- Q3 — unanswered -->
+        <div class="q-card unanswered fu fu-4" data-subject="maths" data-id="q3" onclick="openQuestion('q3')">
+          <div class="qc-top">
+            <span class="qtag t-mat">📐 Maths</span>
+            <span class="qtag t-gen">JEE Advanced</span>
+            <span class="qtag t-gen">Integration</span>
+            <span class="status-badge sb-unans">⏳ Unanswered</span>
+            <span class="qc-time">1h ago</span>
+          </div>
+          <div class="qc-title">Evaluating ∫₀^π x·sin(x)/(1+cos²x) dx using King's property — I keep getting two different answers (π²/4 and π/4). Which is correct?</div>
+          <div class="qc-bottom">
+            <div class="qc-author">
+              <div class="qca-av" style="background:linear-gradient(135deg,var(--amber),#d97706);">AS</div>
+              <span class="qca-name">Aryan Shah</span>
+            </div>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">💬 0 answers</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">👁 891 views</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">⬆ 56 votes</span>
+          </div>
+        </div>
+
+        <!-- Q4 -->
+        <div class="q-card answered fu fu-4" data-subject="biology" data-id="q4" onclick="openQuestion('q4')">
+          <div class="qc-top">
+            <span class="qtag t-bio">🌱 Biology</span>
+            <span class="qtag t-gen">NEET 2022</span>
+            <span class="status-badge sb-ans">✓ Answered</span>
+            <span class="status-badge sb-expert">⭐ Expert</span>
+            <span class="qc-time">Yesterday</span>
+          </div>
+          <div class="qc-title">What is the difference between the G₂/M checkpoint and the spindle assembly checkpoint? NEET 2022 marks them as different but they seem identical to me.</div>
+          <div class="qc-preview">They are related but distinct. The G₂/M checkpoint (also called the DNA damage checkpoint) operates before mitosis begins, ensuring DNA is fully repaired. The spindle assembly checkpoint (SAC) operates during mitosis itself…</div>
+          <div class="qc-bottom">
+            <div class="qc-author">
+              <div class="qca-av" style="background:linear-gradient(135deg,var(--rose),#be123c);">NK</div>
+              <span class="qca-name">Neha Krishnan</span>
+            </div>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat green">💬 7 answers</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">👁 5,677 views</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">⬆ 203 votes</span>
+          </div>
+        </div>
+
+        <!-- Q5 -->
+        <div class="q-card answered fu fu-5" data-subject="physics" data-id="q5" onclick="openQuestion('q5')">
+          <div class="qc-top">
+            <span class="qtag t-phy">⚛️ Physics</span>
+            <span class="qtag t-gen">JEE Mains</span>
+            <span class="qtag t-gen">Optics</span>
+            <span class="status-badge sb-ans">✓ Answered</span>
+            <span class="qc-time">3h ago</span>
+          </div>
+          <div class="qc-title">In YDSE, fringe width β = λD/d is constant — but intensity varies sinusoidally. Doesn't constant fringe width contradict varying intensity?</div>
+          <div class="qc-bottom">
+            <div class="qca-av" style="background:linear-gradient(135deg,var(--sky),var(--accent));width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:800;color:white;">VR</div>
+            <span class="qca-name" style="font-size:.7rem;color:var(--ink-muted);margin-left:6px;">Vikram Rao</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat green">💬 5 answers</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">👁 1,203 views</span>
+          </div>
+        </div>
+
+        <!-- Q6 unanswered -->
+        <div class="q-card unanswered fu fu-5" data-subject="maths" data-id="q6" onclick="openQuestion('q6')">
+          <div class="qc-top">
+            <span class="qtag t-mat">📐 Maths</span>
+            <span class="qtag t-gen">Probability</span>
+            <span class="status-badge sb-unans">⏳ Unanswered</span>
+            <span class="qc-time">30 min ago</span>
+          </div>
+          <div class="qc-title">P(A|B) vs P(B|A) — I keep confusing them in JEE problems. Can someone give an intuitive explanation and a solved numerical?</div>
+          <div class="qc-bottom">
+            <div class="qca-av" style="background:linear-gradient(135deg,var(--accent-2),var(--accent));width:22px;height:22px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:800;color:white;">SK</div>
+            <span class="qca-name" style="font-size:.7rem;color:var(--ink-muted);margin-left:6px;">Siddharth K</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">💬 0 answers</span>
+            <span class="qc-stat-div"></span>
+            <span class="qc-stat">👁 445 views</span>
+          </div>
+        </div>
+
+      </div><!-- /q-list -->
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════
+       DETAIL VIEW
+  ════════════════════════════════ -->
+  <div class="detail-view" id="detailView">
+
+    <!-- LEFT: question + answer flow -->
+    <div class="detail-left">
+      <button class="back-btn" onclick="closeQuestion()">← Back to all doubts</button>
+
+      <!-- QUESTION BLOCK -->
+      <div class="q-block">
+        <div class="qb-meta" id="detailMeta"></div>
+        <div class="qb-title" id="detailTitle"></div>
+        <div id="detailBody"></div>
+        <div class="qb-actions">
+          <button class="qa-btn" id="upvoteBtn" onclick="toggleUpvote()">⬆ Helpful <span id="upvoteCount">142</span></button>
+          <button class="qa-btn" id="saveBtn" onclick="toggleSave()">🔖 Save</button>
+          <button class="qa-btn" onclick="shareQ()">🔗 Share</button>
+          <div class="qa-author">
+            <div class="qa-av" id="detailAv" style="background:linear-gradient(135deg,var(--accent),var(--accent-2));">RK</div>
+            <div>
+              <div class="qa-name" id="detailAuthor">Rahul Kumar</div>
+              <div class="qa-time" id="detailTime">2 hours ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONFIDENCE CHECK — shown before seeing answer -->
+      <div class="confidence-check" id="confCheck">
+        <div class="cc-title">🧠 How confident are you about this topic?</div>
+        <div class="cc-sub">Rate yourself before reading the answer. This helps MockArena personalise your revision schedule.</div>
+        <div class="cc-buttons">
+          <div class="cc-btn" onclick="pickConf(1,this)"><span class="em">😰</span><span class="lb">No idea</span></div>
+          <div class="cc-btn" onclick="pickConf(2,this)"><span class="em">😟</span><span class="lb">Confused</span></div>
+          <div class="cc-btn" onclick="pickConf(3,this)"><span class="em">🤔</span><span class="lb">Partial</span></div>
+          <div class="cc-btn" onclick="pickConf(4,this)"><span class="em">😊</span><span class="lb">Mostly</span></div>
+          <div class="cc-btn" onclick="pickConf(5,this)"><span class="em">🤩</span><span class="lb">Certain</span></div>
+        </div>
+      </div>
+
+      <!-- HINT STRIP — collapsed by default -->
+      <div class="hint-strip" id="hintStrip" style="display:none;">
+        <div class="hs-trigger" onclick="toggleHints()">
+          <div class="hs-icon">🤖</div>
+          <div style="flex:1;">
+            <div class="hs-label">Stuck? Get a hint — don't see the answer yet</div>
+            <div class="hs-sub">3 progressive hints available · Each costs 5 XP</div>
+          </div>
+          <span class="hs-arrow" id="hsArrow">▼</span>
+        </div>
+        <div class="hint-body" id="hintBody">
+          <div class="hint-steps" id="hintSteps">
+            <!-- Injected per question -->
+          </div>
+        </div>
+      </div>
+
+      <!-- ANSWERS -->
+      <div id="answersSection">
+        <div class="answers-head">
+          <div class="ah-count" id="ansCount">23 Answers</div>
+          <select class="ah-sort" onchange="sortAnswers(this.value)">
+            <option>Best Answer First</option>
+            <option>Newest</option>
+            <option>Most Votes</option>
+          </select>
+        </div>
+        <div id="answersContainer"></div>
+      </div>
+
+      <!-- REFLECTION — appears after reading best answer -->
+      <div class="reflection-box" id="reflectBox">
+        <div class="rb-title">How well do you understand this now?</div>
+        <div class="rb-sub">Your before/after gap is automatically tracked. Weak areas are added to your revision plan.</div>
+        <div class="rb-row">
+          <div class="rb-btn" onclick="pickReflect(1,this)"><span class="em">😰</span><span class="lb">Still lost</span></div>
+          <div class="rb-btn" onclick="pickReflect(2,this)"><span class="em">😟</span><span class="lb">A bit</span></div>
+          <div class="rb-btn" onclick="pickReflect(3,this)"><span class="em">🤔</span><span class="lb">Getting it</span></div>
+          <div class="rb-btn" onclick="pickReflect(4,this)"><span class="em">😊</span><span class="lb">Solid</span></div>
+          <div class="rb-btn" onclick="pickReflect(5,this)"><span class="em">🤩</span><span class="lb">Crystal clear</span></div>
+        </div>
+        <div class="rb-result" id="reflectResult"></div>
+      </div>
+
+      <!-- WRITE ANSWER — clean, not overwhelming -->
+      <div class="write-section">
+        <div class="ws-title">Write Your Answer</div>
+        <div class="ws-toolbar">
+          <button class="ws-tb-btn"><b>B</b></button>
+          <button class="ws-tb-btn"><i>I</i></button>
+          <button class="ws-tb-btn">∑ Formula</button>
+          <button class="ws-tb-btn">📋 Steps</button>
+          <button class="ws-tb-btn">📷 Image</button>
+        </div>
+        <textarea class="ws-ta" placeholder="Write a clear, step-by-step explanation. Use formulas where helpful. The best answers break the solution into numbered steps."></textarea>
+        <div class="ws-footer">
+          <span class="ws-note">💡 Step-by-step answers earn 3× more upvotes</span>
+          <button class="btn-ghost" onclick="saveDraft()">Save Draft</button>
+          <button class="btn-primary" onclick="postAnswer()">🚀 Post Answer</button>
+        </div>
+      </div>
+
+    </div><!-- /detail-left -->
+
+    <!-- RIGHT: 3 sections only -->
+    <div class="detail-right">
+
+      <!-- 1. Quick stats -->
+      <div class="rs-section">
+        <div class="rs-title">Question Stats</div>
+        <div class="qs-grid">
+          <div class="qs-item"><div class="qs-val" style="color:var(--accent);">4,102</div><div class="qs-lbl">Views</div></div>
+          <div class="qs-item"><div class="qs-val" style="color:var(--green);">23</div><div class="qs-lbl">Answers</div></div>
+          <div class="qs-item"><div class="qs-val" style="color:var(--amber);">142</div><div class="qs-lbl">Votes</div></div>
+          <div class="qs-item"><div class="qs-val" style="color:var(--rose);">89</div><div class="qs-lbl">Saved</div></div>
+        </div>
+      </div>
+
+      <!-- 2. Your concept progress -->
+      <div class="rs-section">
+        <div class="rs-title">Your Progress on This Topic</div>
+        <div class="concept-bar">
+          <div class="cb-row"><span>Magnetism accuracy</span><span class="cb-val">61%</span></div>
+          <div class="cb-track"><div class="cb-fill" style="width:61%"></div></div>
+        </div>
+        <div class="concept-bar">
+          <div class="cb-row"><span>Biot-Savart questions</span><span class="cb-val" style="color:var(--amber);">4 / 12 correct</span></div>
+          <div class="cb-track"><div class="cb-fill" style="width:33%;background:linear-gradient(90deg,var(--amber),#d97706)"></div></div>
+        </div>
+        <div style="margin-top:9px;padding:8px 10px;background:var(--amber-l);border:1px solid rgba(245,158,11,.2);border-radius:var(--r-sm);font-size:.7rem;font-weight:600;color:#92400e;">
+          ⚠ Weak area — 5 similar questions recommended
+        </div>
+      </div>
+
+      <!-- 3. Similar questions -->
+      <div class="rs-section">
+        <div class="rs-title">Similar Questions</div>
+        <div class="similar-item" onclick="openQuestion('q5')">
+          <div class="si-title">Magnetic field at centre of semicircular wire carrying current I</div>
+          <div class="si-meta"><span class="qtag t-phy" style="font-size:.58rem;padding:2px 6px;">Physics</span><span class="si-match">92% match</span></div>
+        </div>
+        <div class="similar-item" onclick="openQuestion('q1')">
+          <div class="si-title">Gyromagnetic ratio — why does it equal Q/2m for any rotating charged body?</div>
+          <div class="si-meta"><span class="qtag t-phy" style="font-size:.58rem;padding:2px 6px;">Physics</span><span class="si-match">87% match</span></div>
+        </div>
+        <div class="similar-item" onclick="showToast('Opening question…','💬')">
+          <div class="si-title">Conditions for Ampère's law to be directly usable — how to identify in MCQ</div>
+          <div class="si-meta"><span class="qtag t-phy" style="font-size:.58rem;padding:2px 6px;">Physics</span><span class="si-match">81% match</span></div>
+        </div>
+        <div class="similar-item" onclick="showToast('Opening question…','💬')">
+          <div class="si-title">Sphere with surface charge σ rotating about diameter — find B at centre</div>
+          <div class="si-meta"><span class="qtag t-phy" style="font-size:.58rem;padding:2px 6px;">Physics</span><span class="si-match">76% match</span></div>
+        </div>
+      </div>
+
+    </div><!-- /detail-right -->
+
+  </div><!-- /detail-view -->
+
+</div><!-- /main -->
+
+<!-- ASK MODAL — clean, minimal -->
+<div class="modal-overlay" id="askModal" onclick="closeModalOutside(event)">
+  <div class="modal">
+    <div class="modal-head">
+      <div class="modal-title">✏️ Ask a Doubt</div>
+      <button class="modal-close" onclick="closeAskModal()">✕</button>
+    </div>
+    <div class="form-group">
+      <label class="form-label">Your question <span>*</span></label>
+      <input class="form-input" type="text" placeholder="Be specific — e.g. 'Why does Ampère's Law fail for a single ring?'" id="askTitle">
+    </div>
+    <div class="form-row">
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Subject <span>*</span></label>
+        <select class="form-select">
+          <option value="">Select…</option>
+          <option>⚛️ Physics</option>
+          <option>🧪 Chemistry</option>
+          <option>📐 Maths</option>
+          <option>🌱 Biology</option>
+        </select>
+      </div>
+      <div class="form-group" style="margin-bottom:0">
+        <label class="form-label">Exam</label>
+        <select class="form-select">
+          <option>JEE Advanced</option>
+          <option>JEE Mains</option>
+          <option>NEET</option>
+          <option>CBSE</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group" style="margin-top:14px">
+      <label class="form-label">What have you tried? Where are you stuck? <span>*</span></label>
+      <textarea class="form-textarea" placeholder="Include what you already understand, what you tried, and exactly where you got confused. The more detail, the faster you'll get a great answer."></textarea>
+    </div>
+    <div class="modal-footer">
+      <span class="mf-note">📌 Detailed questions get answered 3× faster</span>
+      <button class="btn-ghost" onclick="closeAskModal()">Cancel</button>
+      <button class="btn-primary" onclick="submitDoubt()">🚀 Post Doubt</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- ─── DATA & LOGIC ─── -->
+<script>
+// ── Question data ──
+const qData = {
+  q1: {
+    subject:'physics', title:'Why does Ampère\'s Law fail to give the magnetic field for a single rotating charged ring, even though it always holds in principle?',
+    tags:['⚛️ Physics','JEE Advanced','PYQ 2023'],
+    tagClasses:['t-phy','t-gen','t-gen'],
+    body:`<div class="qb-body">
+      <p>I understand that Ampère's Law ∮ B⃗·dl⃗ = μ₀I_enc always holds. But when I try to use it to find the field at the centre of a rotating charged ring, I get a wrong answer. My working:</p>
+    </div>
+    <code class="qb-formula">I_eff = Qω/2π
+Drawing Amperian circle of radius R in plane of ring:
+∮ B⃗·dl⃗ = B·2πR = μ₀·I_eff
+→ B = μ₀·I_eff / (2πR) = μ₀Qω / (4π²R)
+
+But correct answer is B = μ₀Qω / (4πR)
+My answer has an extra π. Where is the error?</code>
+    <div class="qb-body"><p>I know Biot-Savart gives the right answer but I can't figure out what's conceptually wrong with my Ampère approach. Is it a symmetry issue?</p></div>`,
+    author:'Rahul Kumar', authorInit:'RK', authorGrad:'135deg,var(--accent),var(--accent-2)',
+    time:'2 hours ago', votes:142,
+    hints:[
+      {text:`Ask yourself: for Ampère's Law to give you B directly, what must be true about B along your chosen loop? It's not enough for the law to hold — B must be <strong>constant and parallel</strong> to dl everywhere on the path.`},
+      {text:`Draw your Amperian circle in the plane of the ring. Is the field B truly the same magnitude at every point on that circle? Think about points directly "above" a current element vs points "between" two elements. <span class="hint-inline-formula">∮B·dl ≠ B·2πr unless B is constant</span>`},
+      {text:`Since B varies around the circle, you cannot pull it out of the integral. Biot-Savart works because at the <strong>centre specifically</strong>, every dl is equidistant (r = R) and perpendicular (sin θ = 1), so integration simplifies perfectly. <span class="hint-inline-formula">dB = μ₀I·dl / 4πR² → B = μ₀I/2R</span>`}
+    ],
+    answerCount:23,
+    answers:[
+      {
+        best:true,
+        author:'Prof. Arvind Sharma', role:'IIT-Bombay · Physics · Expert Mentor',
+        av:'AS', avGrad:'135deg,#f59e0b,#ef4444',
+        time:'1 hour ago', votes:98, mentor:true, iit:true,
+        body:`<div class="ans-body">
+          <p>Excellent question — this is one of the most instructive conceptual gaps in JEE preparation. Let me explain precisely why your Ampère attempt fails.</p>
+          <div class="step-row"><div class="step-circle">1</div><div class="step-body"><strong>Ampère's Law is always valid.</strong> The equation ∮B⃗·dl⃗ = μ₀I_enc is an exact law — it never gives wrong answers. But "valid" and "useful for calculation" are two different things.</div></div>
+          <div class="step-row"><div class="step-circle">2</div><div class="step-body"><strong>The symmetry requirement.</strong> To extract B from the integral, you need B to be <em>constant in magnitude and parallel to dl</em> everywhere on your chosen path. Your Amperian circle in the plane of the ring doesn't satisfy this — B varies from point to point on it.</div></div>
+          <code class="ans-formula">∮ B⃗·dl⃗ = μ₀I_enc  [always true]
+But: ∮B⃗·dl⃗ ≠ B·2πR  (unless B is constant — which it's NOT for a single ring)
+
+The integral on the left is a complex path integral you can't evaluate easily.
+Your step B·2πR = μ₀I_eff is the error — you assumed B is constant when it isn't.</code>
+          <div class="step-row"><div class="step-circle">3</div><div class="step-body"><strong>Why Biot-Savart works at the centre.</strong> The centre is special: every current element is at exactly distance R, and the angle between dl and r̂ is exactly 90° everywhere. So sin θ = 1 throughout, and the integral collapses cleanly.</div></div>
+          <code class="ans-formula">B = (μ₀I_eff)/(4πR²) · ∮dl = (μ₀I_eff)/(4πR²) · 2πR = μ₀I_eff/(2R)
+
+Substituting I_eff = Qω/2π:
+B = μ₀Qω / (4πR)  ← correct answer</code>
+          <div class="step-row"><div class="step-circle">4</div><div class="step-body"><strong>Memory rule for JEE:</strong> Ampère gives you B directly only for infinite solenoid, infinite straight wire, and toroid. For anything else — use Biot-Savart.</div></div>
+        </div>`
+      },
+      {
+        best:false,
+        author:'Rohan Verma', role:'JEE Advanced AIR 47 · 2023',
+        av:'RV', avGrad:'135deg,#7c3aed,#4f46e5',
+        time:'45 min ago', votes:34, mentor:false, iit:false,
+        body:`<div class="ans-body">
+          <p>Adding a quick exam shortcut to Prof. Sharma's answer:</p>
+          <p><strong>3-second Ampère test:</strong> Ask "Is this an infinite wire, solenoid, or toroid?" If no → use Biot-Savart. A single ring is none of these, so Biot-Savart is the only clean path.</p>
+          <code class="ans-formula">Ampère gives B directly when: A → Axis (solenoid/toroid), C → Cylindrical (infinite wire)
+Single ring: neither → Biot-Savart only</code>
+          <p>The gyromagnetic ratio connection (μ/L = Q/2m) is also worth noting — JEE 2023 tested this explicitly in Q14.</p>
+        </div>`
+      }
+    ]
+  },
+  q2: {
+    subject:'chemistry', title:'Why does anti-Markovnikov addition work with HBr + peroxides, but NOT with HCl or HI under the same conditions?',
+    tags:['🧪 Chemistry','JEE Mains','Organic'],tagClasses:['t-che','t-gen','t-gen'],
+    body:`<div class="qb-body"><p>My textbook says HBr + peroxides gives anti-Markovnikov addition via a radical mechanism. But I tested HCl and HI with peroxides in problems and they still give Markovnikov products. Why is HBr special here?</p><p>I know it must relate to bond energies and radical stability, but I can't piece together a clear 3-step argument for the exam.</p></div>
+    <code class="qb-formula">HBr + ROOR → anti-Markovnikov ✓
+HCl + ROOR → Markovnikov ✗ (why?)
+HI  + ROOR → Markovnikov ✗ (why?)</code>`,
+    author:'Priya Mehta', authorInit:'PM', authorGrad:'135deg,var(--green),#059669',
+    time:'5 hours ago', votes:87,
+    hints:[
+      {text:`The radical mechanism has two propagation steps. Step 1: halogen radical adds to the double bond. Step 2: H is transferred to complete the addition. The selectivity depends on <strong>which step controls the regiochemistry</strong>.`},
+      {text:`For HCl: Cl• is so highly reactive it adds to whichever carbon it encounters first — no selectivity. The radical chain still gives Markovnikov because the more stable radical (at the more substituted carbon) forms in step 1. <strong>But Cl• is so reactive it doesn't even care about stability.</strong>`},
+      {text:`For HI: The step <strong>I• + alkene → carbon radical</strong> is <em>endothermic</em> (ΔH > 0). A radical chain only propagates when propagation steps are exothermic. So HI simply cannot propagate the radical chain. <span class="hint-inline-formula">HBr is the Goldilocks case — Br• reactive enough to add, but selective.</span>`}
+    ],
+    answerCount:11,
+    answers:[
+      {
+        best:true,
+        author:'Dr. Meena Joshi', role:'IIT-Delhi · Organic Chemistry',
+        av:'MJ', avGrad:'135deg,#10b981,#0ea5e9',
+        time:'4 hours ago', votes:72, mentor:true, iit:true,
+        body:`<div class="ans-body">
+          <p>The key is the <strong>thermodynamics of radical propagation steps</strong>. Let me build the argument clearly:</p>
+          <div class="step-row"><div class="step-circle">1</div><div class="step-body"><strong>The radical mechanism has two propagation steps.</strong> Step A: X• adds to the alkene (forms C–X bond, breaks π bond). Step B: HX reacts with the carbon radical (breaks H–X bond, forms C–H bond).</div></div>
+          <div class="step-row"><div class="step-circle">2</div><div class="step-body"><strong>For HCl:</strong> Cl• is extremely reactive. Step A is fast but non-selective — Cl• adds randomly without caring about radical stability. Also, ionic Markovnikov addition is still faster. Result: Markovnikov product.</div></div>
+          <div class="step-row"><div class="step-circle">3</div><div class="step-body"><strong>For HI:</strong> Step A (I• + alkene) is <em>endothermic</em> because the C–I bond formed is weak. An endothermic propagation step kills the radical chain entirely. No anti-Markovnikov product is possible.</div></div>
+          <div class="step-row"><div class="step-circle">4</div><div class="step-body"><strong>For HBr (Goldilocks):</strong> Br• is reactive enough to add to the alkene (Step A is exothermic), but selective enough to prefer the less hindered carbon → gives the less stable primary radical BUT that's the kinetically preferred site. Final product: Br at less substituted end = anti-Markovnikov.</div></div>
+          <code class="ans-formula">HCl → Cl• too reactive → no selectivity → Markovnikov wins
+HI  → I• too unreactive → endothermic step A → chain fails
+HBr → Br• just right → selective addition → anti-Markovnikov</code>
+        </div>`
+      }
+    ]
+  },
+  q3: {
+    subject:'maths', title:'Evaluating ∫₀^π x·sin(x)/(1+cos²x) dx using King\'s property — I keep getting two different answers (π²/4 and π/4). Which is correct?',
+    tags:['📐 Maths','JEE Advanced','Integration'],tagClasses:['t-mat','t-gen','t-gen'],
+    body:`<div class="qb-body"><p>When I apply King's property and add both forms, I get I = π/2 · ∫₀^π sin(x)/(1+cos²x) dx. Then substituting t = cos(x), I get π²/4. But a classmate got π/4 using a different substitution. Which is right and where is the error?</p></div>
+    <code class="qb-formula">I = ∫₀^π x·sin(x)/(1+cos²x) dx
+
+King's: I = ∫₀^π (π−x)·sin(x)/(1+cos²x) dx
+Adding: 2I = π · ∫₀^π sin(x)/(1+cos²x) dx
+→ I = π/2 · ∫₀^π sin(x)/(1+cos²x) dx
+
+Let t = cos x, dt = −sin x dx, limits: x=0→t=1, x=π→t=−1
+= π/2 · ∫₁^{-1} −dt/(1+t²) = π/2 · [arctan t]_{-1}^{1}
+= π/2 · (π/4 − (−π/4)) = π/2 · π/2 = π²/4 ✓ or ✗ ?</code>`,
+    author:'Aryan Shah', authorInit:'AS', authorGrad:'135deg,var(--amber),#d97706',
+    time:'1 hour ago', votes:56,
+    hints:[
+      {text:`Check your King's property application. King's property states: ∫ₐ^b f(x)dx = ∫ₐ^b f(a+b−x)dx. For limits 0 to π, that means replacing x with <strong>(0+π−x) = (π−x)</strong>. Check: sin(π−x) = sin x. Check: cos(π−x) = −cos x. So 1+cos²(π−x) = 1+cos²x. ✓`},
+      {text:`Your King's step is correct. Now for the substitution: t = cos x, so dt = −sin x dx. Limits: x=0 → t=cos(0) = 1. x=π → t=cos(π) = −1. So ∫₀^π sin(x)/(1+cos²x) dx = ∫₁^{−1} −dt/(1+t²) = ∫_{−1}^{1} dt/(1+t²). This equals [arctan t]_{-1}^{1} = π/4 − (−π/4) = π/2.`},
+      {text:`So I = π/2 · π/2 = <strong>π²/4</strong>. This is correct. Your classmate's answer of π/4 is wrong — they likely forgot the factor of π/2 from the King's step, or made an error in the arctan limits. Check if they wrote [arctan t]_{-1}^{1} = π/4 instead of π/2.`}
+    ],
+    answerCount:0, answers:[]
+  },
+  q4: {
+    subject:'biology', title:'What is the difference between the G₂/M checkpoint and the spindle assembly checkpoint? NEET 2022 marks them as different but they seem identical to me.',
+    tags:['🌱 Biology','NEET 2022'],tagClasses:['t-bio','t-gen'],
+    body:`<div class="qb-body"><p>Both seem to prevent mitosis from proceeding if something is wrong. NCERT Chapter 10 mentions G₂/M but doesn't clearly explain the SAC. The NEET 2022 answer key separates them but I can't see the distinction.</p></div>`,
+    author:'Neha Krishnan', authorInit:'NK', authorGrad:'135deg,var(--rose),#be123c',
+    time:'Yesterday', votes:203,
+    hints:[
+      {text:`Think about <strong>timing</strong>. The G₂/M checkpoint occurs <em>before</em> mitosis begins (at the end of G₂ phase). The spindle assembly checkpoint (SAC) occurs <em>during</em> mitosis itself (specifically at metaphase). They're in different phases of the cell cycle.`},
+      {text:`Think about <strong>what they're checking</strong>. G₂/M: checks that DNA replication is complete and DNA damage is repaired before the cell enters mitosis. SAC: checks that <em>all chromosomes are properly attached to spindle fibres</em> before anaphase begins.`},
+      {text:`NEET exam tip: G₂/M = "Is the DNA ready to divide?" (pre-mitosis). SAC = "Are the chromosomes properly lined up?" (during mitosis). Two different questions → two different checkpoints.`}
+    ],
+    answerCount:7,
+    answers:[
+      {
+        best:true,
+        author:'Dr. Nidhi Khanna', role:'AIIMS Delhi · Cell Biology',
+        av:'NK2', avGrad:'135deg,#10b981,#0284c7',
+        time:'20 hours ago', votes:88, mentor:true, iit:false,
+        body:`<div class="ans-body">
+          <p>This is one of the most commonly confused pairs in NEET biology. Here's the exact distinction:</p>
+          <div class="step-row"><div class="step-circle">1</div><div class="step-body"><strong>G₂/M Checkpoint (DNA Damage Checkpoint):</strong> Located at the end of G₂ phase, just before mitosis starts. Checks: Has DNA replication completed correctly? Is there any unrepaired DNA damage? If yes → cell cycle arrested, repair happens before mitosis begins.</div></div>
+          <div class="step-row"><div class="step-circle">2</div><div class="step-body"><strong>Spindle Assembly Checkpoint (SAC):</strong> Located at metaphase, during mitosis. Checks: Are all chromosomes properly bioriented on the spindle — i.e., is each chromosome attached to fibres from both poles? If any chromosome is unattached → anaphase is blocked.</div></div>
+          <code class="ans-formula">G₂/M: G₂ phase → before mitosis → checks DNA integrity
+SAC:  Metaphase → during mitosis → checks chromosome attachment
+
+Think of it as:
+G₂/M = "Is the DNA ready?" (before entering the exam hall)
+SAC   = "Is everyone seated?" (before the exam paper is distributed)</code>
+          <p>NEET 2022 tested the <strong>timing difference</strong>, not the mechanism. Remember: G₂/M is pre-mitotic; SAC is intra-mitotic.</p>
+        </div>`
+      }
+    ]
+  }
+};
+
+let confPre = 0;
+
+// ── OPEN / CLOSE QUESTION ──
+function openQuestion(id) {
+  const q = qData[id];
+  if (!q) { showToast('Opening question…','💬'); return; }
+
+  // Hide list, show detail
+  document.getElementById('listView').classList.add('hidden');
+  const dv = document.getElementById('detailView');
+  dv.classList.add('open');
+
+  // Populate meta
+  let metaHtml = q.tags.map((t,i) => `<span class="qtag ${q.tagClasses[i]}">${t}</span>`).join('');
+  document.getElementById('detailMeta').innerHTML = metaHtml;
+  document.getElementById('detailTitle').textContent = q.title;
+  document.getElementById('detailBody').innerHTML = q.body;
+  document.getElementById('upvoteCount').textContent = q.votes;
+  document.getElementById('detailAv').textContent = q.authorInit;
+  document.getElementById('detailAv').style.background = `linear-gradient(${q.authorGrad})`;
+  document.getElementById('detailAuthor').textContent = q.author;
+  document.getElementById('detailTime').textContent = q.time;
+
+  // Reset confidence
+  document.getElementById('confCheck').style.display = 'block';
+  document.getElementById('hintStrip').style.display = 'none';
+  document.getElementById('reflectBox').classList.remove('show');
+  document.getElementById('reflectResult').classList.remove('show');
+  document.querySelectorAll('.cc-btn').forEach(b => b.className = 'cc-btn');
+  document.querySelectorAll('.rb-btn').forEach(b => b.className = 'rb-btn');
+  confPre = 0;
+
+  // Populate hints
+  document.getElementById('hintSteps').innerHTML = q.hints.map((h,i) => `
+    <div class="hint-step">
+      <div class="hint-num">${i+1}</div>
+      <div class="hint-text">${h.text}</div>
+    </div>
+  `).join('') + (q.hints.length ? `<div style="margin-top:8px;font-size:.7rem;color:var(--ink-faint);font-style:italic;">Hints revealed — now try to solve it before scrolling to the answer.</div>` : '');
+
+  // Answer count
+  document.getElementById('ansCount').textContent = `${q.answerCount} Answer${q.answerCount !== 1 ? 's' : ''}`;
+
+  // Render answers
+  const ac = document.getElementById('answersContainer');
+  if (!q.answers.length) {
+    ac.innerHTML = `<div style="text-align:center;padding:36px 20px;background:white;border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);margin-bottom:12px;">
+      <div style="font-size:2rem;margin-bottom:10px;">🤔</div>
+      <div style="font-family:var(--fd);font-weight:800;color:var(--ink);margin-bottom:5px;">No answers yet</div>
+      <div style="font-size:.78rem;color:var(--ink-muted);">Be the first to answer and earn reputation points!</div>
+    </div>`;
+  } else {
+    ac.innerHTML = q.answers.map(a => `
+      <div class="answer-card ${a.best ? 'best' : ''}">
+        ${a.best ? '<div class="best-tag">✅ Best Answer · Verified</div>' : ''}
+        <div class="ans-author">
+          <div class="ans-av" style="background:linear-gradient(${a.avGrad});">${a.av}</div>
+          <div>
+            <div class="ans-name">${a.author}${a.mentor ? '<span class="mentor-tag">Mentor</span>' : ''}${a.iit ? '<span class="iit-tag">IIT</span>' : ''}</div>
+            <div class="ans-role">${a.role}</div>
+          </div>
+          <div class="ans-time">${a.time}</div>
+        </div>
+        ${a.body}
+        <div class="ans-actions">
+          <button class="qa-btn" onclick="this.classList.toggle('active');updateVote(this,${a.votes})">⬆ Helpful <span>${a.votes}</span></button>
+          <button class="qa-btn" onclick="this.classList.toggle('saved')">🔖 Save</button>
+          <button class="qa-btn" onclick="showToast('Link copied!','🔗')">🔗 Share</button>
+          ${a.best ? '<button class="qa-btn" style="margin-left:auto" onclick="showReflect()">🧠 I\'ve read this</button>' : ''}
+        </div>
+      </div>
+    `).join('');
+  }
+
+  window.scrollTo(0, 0);
+}
+
+function closeQuestion() {
+  document.getElementById('detailView').classList.remove('open');
+  document.getElementById('listView').classList.remove('hidden');
+  window.scrollTo(0, 0);
+}
+
+// ── CONFIDENCE ──
+function pickConf(val, btn) {
+  document.querySelectorAll('.cc-btn').forEach(b => b.className = 'cc-btn');
+  btn.classList.add(`picked-${val}`);
+  confPre = val;
+  // Show hint strip after confidence is rated
+  document.getElementById('hintStrip').style.display = 'block';
+  showToast('Confidence noted. Want a hint before reading the answer?', '🧠');
+}
+
+// ── HINTS ──
+function toggleHints() {
+  const body = document.getElementById('hintBody');
+  const arrow = document.getElementById('hsArrow');
+  const open = body.classList.toggle('open');
+  arrow.classList.toggle('open', open);
+}
+
+// ── REFLECTION ──
+function showReflect() {
+  const rb = document.getElementById('reflectBox');
+  rb.classList.add('show');
+  rb.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+function pickReflect(val, btn) {
+  document.querySelectorAll('.rb-btn').forEach(b => b.className = 'rb-btn');
+  btn.classList.add('picked');
+  const gap = val - confPre;
+  const msgs = {
+    big: { text: '🎯 Great learning! Your understanding improved significantly. This topic is now strengthened in your revision plan.', color: '#047857' },
+    small: { text: '📈 Small improvement noted. Consider revisiting the key formula once more.', color: '#0369a1' },
+    same: { text: '💡 No change — either you already knew it, or the gap is deeper. Scheduled for reinforcement in 3 days.', color: '#92400e' },
+    drop: { text: '⚠ Your confidence dropped — the answer revealed a gap you didn\'t know existed. This topic is flagged for Priority Review.', color: '#be123c' }
+  };
+  const type = gap >= 2 ? 'big' : gap === 1 ? 'small' : gap === 0 ? 'same' : 'drop';
+  const m = msgs[type];
+  const rr = document.getElementById('reflectResult');
+  rr.innerHTML = `<span style="color:${m.color};font-weight:700;">${m.text}</span><br><br><span style="font-size:.68rem;color:var(--ink-faint);">Before: ${confPre}/5 → After: ${val}/5 · Gap: ${gap >= 0 ? '+' : ''}${gap}</span>`;
+  rr.classList.add('show');
+  showToast('Learning data saved to your profile 📊', '✅');
+}
+
+// ── VOTES / ACTIONS ──
+function toggleUpvote() {
+  const btn = document.getElementById('upvoteBtn');
+  const count = document.getElementById('upvoteCount');
+  const active = btn.classList.toggle('active');
+  count.textContent = parseInt(count.textContent) + (active ? 1 : -1);
+  showToast(active ? 'Marked as helpful!' : 'Vote removed', active ? '⬆' : '↩');
+}
+function toggleSave() {
+  const btn = document.getElementById('saveBtn');
+  const saved = btn.classList.toggle('saved');
+  showToast(saved ? 'Saved to your library 🔖' : 'Removed from saved', saved ? '🔖' : '📌');
+}
+function shareQ() { showToast('Link copied! Share anywhere.', '🔗'); }
+function updateVote(btn, base) {
+  const span = btn.querySelector('span');
+  span.textContent = btn.classList.contains('active') ? base + 1 : base;
+}
+function sortAnswers(v) { showToast(`Sorted: ${v}`, '↕'); }
+
+// ── FILTERS ──
+function setFilter(el, subject) {
+  document.querySelectorAll('.fs-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('.q-card').forEach(card => {
+    const s = card.dataset.subject;
+    const show = subject === 'all' || s === subject || subject === 'mine' || subject === 'unanswered';
+    if (subject === 'unanswered') {
+      card.style.display = card.classList.contains('unanswered') ? '' : 'none';
+    } else {
+      card.style.display = (subject === 'all' || subject === 'mine' || s === subject) ? '' : 'none';
+    }
+  });
+}
+function sortQ(v) { showToast(`Sorted: ${v}`, '↕'); }
+function searchQ(q) {
+  document.querySelectorAll('.q-card').forEach(card => {
+    const text = card.querySelector('.qc-title').textContent.toLowerCase();
+    card.style.display = (!q || text.includes(q.toLowerCase())) ? '' : 'none';
+  });
+}
+
+// ── MODAL ──
+function openAskModal() { document.getElementById('askModal').classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeAskModal() { document.getElementById('askModal').classList.remove('open'); document.body.style.overflow = ''; }
+function closeModalOutside(e) { if (e.target.id === 'askModal') closeAskModal(); }
+function submitDoubt() {
+  const title = document.getElementById('askTitle').value.trim();
+  if (!title) { showToast('Please enter your question first', '⚠'); return; }
+  closeAskModal();
+  showToast('Doubt posted! You\'ll get a reply within 2 hours. 🎓', '✅');
+}
+
+// ── WRITE ANSWER ──
+function saveDraft() { showToast('Draft saved automatically 💾', '💾'); }
+function postAnswer() { showToast('Answer posted! +15 Rep points earned 🚀', '🚀'); }
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg, icon = '✅') {
+  const t = document.getElementById('toast');
+  t.innerHTML = `<span style="font-size:1.05rem">${icon}</span> ${msg}`;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ── INIT ──
+window.addEventListener('load', () => {
+  setTimeout(() => {
+    document.querySelectorAll('.cb-fill').forEach(el => {
+      const w = el.style.width; el.style.width = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => { el.style.width = w; }));
+    });
+  }, 400);
+});
+</script>
+</body>
+</html>

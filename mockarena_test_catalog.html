@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena – Test Series Catalog</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0d0f1a;--ink-soft:#1a1d2e;--ink-muted:#5a5f7a;--ink-faint:#9499b8;
+    --paper:#f4f5fb;--paper-warm:#eceef8;--paper-card:#ffffff;
+    --accent:#4f46e5;--accent-hover:#4338ca;
+    --accent-light:rgba(79,70,229,0.08);--accent-glow:rgba(79,70,229,0.22);
+    --accent-2:#7c3aed;--accent-green:#10b981;--accent-green-l:rgba(16,185,129,0.09);
+    --accent-rose:#f43f5e;--accent-rose-l:rgba(244,63,94,0.08);
+    --accent-amber:#f59e0b;--accent-amber-l:rgba(245,158,11,0.09);
+    --accent-sky:#0ea5e9;--accent-sky-l:rgba(14,165,233,0.09);
+    --border:rgba(13,15,26,0.08);--border-strong:rgba(13,15,26,0.13);
+    --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
+    --font-d:'Manrope',sans-serif;--font-b:'Inter',sans-serif;--font-m:'JetBrains Mono',monospace;
+    --sh-card:0 2px 12px rgba(13,15,26,0.06),0 1px 3px rgba(13,15,26,0.04);
+    --sh-hover:0 12px 40px rgba(79,70,229,0.13),0 2px 8px rgba(13,15,26,0.06);
+    --sidebar-w:240px;--topbar-h:64px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:var(--font-b);background:var(--paper);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;display:flex;}
+
+  /* ════ SIDEBAR ════ */
+  .sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--ink-soft);height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;z-index:200;}
+  .sidebar::-webkit-scrollbar{width:3px;}
+  .sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:4px;}
+  .sb-logo{padding:20px 20px 16px;display:flex;align-items:center;gap:10px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.06);}
+  .sb-mock{font-family:var(--font-d);font-size:1.15rem;font-weight:900;color:#ffffff;letter-spacing:-0.5px;}
+  .sb-arena{font-family:var(--font-d);font-size:1.15rem;font-weight:900;color:var(--accent);letter-spacing:-0.5px;}
+  .sb-user{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:10px;}
+  .sb-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:0.85rem;font-weight:800;color:white;flex-shrink:0;}
+  .sb-uname{font-size:0.82rem;font-weight:700;color:white;line-height:1.2;}
+  .sb-umeta{font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:2px;}
+  .sb-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.25);border-radius:100px;padding:2px 7px;font-size:0.62rem;font-weight:700;color:#6ee7b7;margin-top:4px;}
+  .sb-section-label{font-size:0.62rem;font-weight:700;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:0.1em;padding:16px 20px 6px;}
+  .sb-nav{list-style:none;padding:0 10px;}
+  .sb-nav li{margin-bottom:2px;}
+  .sb-nav a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);text-decoration:none;font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.5);transition:all .18s;}
+  .sb-nav a:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85);}
+  .sb-nav a.active{background:rgba(79,70,229,0.22);color:white;border:1px solid rgba(79,70,229,0.35);}
+  .sb-nav a .nav-icon{width:18px;text-align:center;font-size:0.9rem;flex-shrink:0;}
+  .sb-nav a .nav-badge{margin-left:auto;font-size:0.62rem;font-weight:700;background:var(--accent-rose);color:white;padding:1px 6px;border-radius:100px;}
+  .sb-bottom{margin-top:auto;padding:16px 10px 20px;border-top:1px solid rgba(255,255,255,0.06);}
+  .sb-bottom a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);text-decoration:none;font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.4);transition:all .18s;}
+  .sb-bottom a:hover{color:rgba(255,255,255,0.75);background:rgba(255,255,255,0.05);}
+
+  /* ════ MAIN ════ */
+  .main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+
+  /* TOPBAR */
+  .topbar{height:var(--topbar-h);background:rgba(244,245,251,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:100;}
+  .tb-title{font-family:var(--font-d);font-size:1rem;font-weight:800;color:var(--ink);letter-spacing:-0.03em;}
+  .tb-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+  .tb-search{display:flex;align-items:center;gap:8px;background:white;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);padding:8px 14px;font-size:0.82rem;color:var(--ink-faint);cursor:text;width:220px;transition:all .2s;}
+  .tb-search:hover{border-color:var(--accent);}
+  .tb-search input{border:none;outline:none;font-family:var(--font-b);font-size:0.82rem;color:var(--ink);background:transparent;width:100%;}
+  .tb-search input::placeholder{color:var(--ink-faint);}
+  .tb-icon-btn{width:36px;height:36px;border-radius:var(--radius-sm);background:white;border:1.5px solid var(--border-strong);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all .2s;position:relative;}
+  .tb-icon-btn:hover{border-color:var(--accent);}
+  .tb-notif-dot{position:absolute;top:6px;right:6px;width:7px;height:7px;border-radius:50%;background:var(--accent-rose);border:1.5px solid white;}
+
+  /* CONTENT */
+  .content{padding:28px;flex:1;}
+
+  /* WELCOME BANNER */
+  .welcome-banner{background:linear-gradient(145deg,#0d0f1a 0%,#13143a 55%,#1e1060 100%);border-radius:var(--radius-xl);padding:32px 36px;margin-bottom:24px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;position:relative;overflow:hidden;}
+  .wb-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;}
+  .wb-orb1{position:absolute;width:280px;height:280px;border-radius:50%;background:rgba(79,70,229,0.2);filter:blur(55px);top:-60px;right:120px;pointer-events:none;}
+  .wb-orb2{position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(124,58,237,0.15);filter:blur(40px);bottom:-30px;left:30%;pointer-events:none;}
+  .wb-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:4px 12px;font-family:var(--font-m);font-size:0.65rem;font-weight:500;color:rgba(255,255,255,0.45);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;width:fit-content;position:relative;z-index:1;}
+  .wb-dot{width:5px;height:5px;border-radius:50%;background:#a78bfa;animation:blink 2s ease-in-out infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .wb-title{font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:white;letter-spacing:-0.04em;line-height:1.2;margin-bottom:6px;position:relative;z-index:1;}
+  .wb-title span{background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .wb-sub{font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:20px;position:relative;z-index:1;}
+  .wb-actions{display:flex;gap:10px;position:relative;z-index:1;}
+  .btn-wb-primary{font-family:var(--font-d);font-size:0.82rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;border:none;padding:9px 20px;border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none;}
+  .btn-wb-primary:hover{box-shadow:0 4px 16px var(--accent-glow);transform:translateY(-1px);}
+  .btn-wb-outline{font-family:var(--font-d);font-size:0.82rem;font-weight:700;background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.15);padding:9px 20px;border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:6px;}
+  .btn-wb-outline:hover{background:rgba(255,255,255,0.12);}
+  .wb-stats{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;min-width:180px;}
+  .wb-stat-item{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.09);border-radius:var(--radius-md);padding:12px 16px;display:flex;align-items:center;gap:12px;}
+  .wb-stat-icon{font-size:1.3rem;}
+  .wb-stat-num{font-family:var(--font-d);font-size:1.2rem;font-weight:800;color:white;letter-spacing:-0.04em;line-height:1;}
+  .wb-stat-lbl{font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:2px;}
+
+  /* STAT CARDS */
+  .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+  .stat-card{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--sh-card);transition:all .25s;position:relative;overflow:hidden;}
+  .stat-card:hover{box-shadow:var(--sh-hover);transform:translateY(-2px);}
+  .stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;}
+  .sc1::before{background:linear-gradient(90deg,var(--accent),var(--accent-2));}
+  .sc2::before{background:linear-gradient(90deg,var(--accent-green),#34d399);}
+  .sc3::before{background:linear-gradient(90deg,var(--accent-amber),#fbbf24);}
+  .sc4::before{background:linear-gradient(90deg,var(--accent-sky),#06b6d4);}
+  .sc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+  .sc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+  .sc-num{font-family:var(--font-d);font-size:1.7rem;font-weight:800;color:var(--ink);letter-spacing:-0.05em;line-height:1;margin-bottom:3px;}
+  .sc-label{font-size:0.72rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
+  .sc-delta{font-size:0.73rem;font-weight:600;display:flex;align-items:center;gap:3px;}
+  .delta-up{color:var(--accent-green);}
+  .delta-neu{color:var(--ink-faint);}
+
+  /* FILTER BAR */
+  .filter-bar{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:16px 20px;margin-bottom:24px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;box-shadow:var(--sh-card);}
+  .filter-label{font-size:0.75rem;font-weight:700;color:var(--ink-muted);white-space:nowrap;}
+  .filter-chips{display:flex;gap:8px;flex-wrap:wrap;flex:1;}
+  .chip{font-size:0.75rem;font-weight:600;padding:6px 14px;border-radius:100px;cursor:pointer;transition:all .18s;border:1.5px solid var(--border-strong);color:var(--ink-muted);background:var(--paper);white-space:nowrap;}
+  .chip:hover{border-color:var(--accent);color:var(--accent);}
+  .chip.active{background:var(--accent);color:white;border-color:var(--accent);}
+  .filter-sep{width:1px;height:24px;background:var(--border-strong);}
+  .filter-right{display:flex;align-items:center;gap:8px;margin-left:auto;}
+  .sort-select{font-family:var(--font-b);font-size:0.75rem;font-weight:600;color:var(--ink-muted);border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);padding:6px 10px;background:var(--paper);cursor:pointer;outline:none;}
+  .sort-select:focus{border-color:var(--accent);}
+  .view-btn{width:32px;height:32px;border-radius:var(--radius-sm);border:1.5px solid var(--border-strong);background:var(--paper);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.85rem;transition:all .18s;color:var(--ink-muted);}
+  .view-btn.active,.view-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
+
+  /* SEC HEADING */
+  .sec-h{font-family:var(--font-d);font-size:0.88rem;font-weight:800;color:var(--ink);letter-spacing:-0.03em;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .sec-h::before{content:'';width:3px;height:16px;background:linear-gradient(180deg,var(--accent),var(--accent-2));border-radius:2px;}
+  .sec-h-count{font-size:0.72rem;font-weight:600;color:var(--ink-faint);background:var(--paper-warm);padding:2px 8px;border-radius:100px;}
+  .sec-h-action{margin-left:auto;font-size:0.75rem;font-weight:600;color:var(--accent);text-decoration:none;display:flex;align-items:center;gap:4px;cursor:pointer;}
+
+  /* FEATURED BANNER */
+  .featured-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
+  .featured-card{border-radius:var(--radius-xl);padding:28px;position:relative;overflow:hidden;cursor:pointer;transition:all .25s;min-height:180px;display:flex;flex-direction:column;justify-content:space-between;}
+  .featured-card:hover{transform:translateY(-3px);box-shadow:0 20px 50px rgba(0,0,0,0.15);}
+  .fc-jee{background:linear-gradient(135deg,#1e1060 0%,#2d1b69 50%,#4f46e5 100%);}
+  .fc-neet{background:linear-gradient(135deg,#064e3b 0%,#065f46 50%,#059669 100%);}
+  .fc-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.12);border:1px solid rgba(255,255,255,0.2);border-radius:100px;padding:4px 12px;font-size:0.65rem;font-weight:700;color:rgba(255,255,255,0.8);text-transform:uppercase;letter-spacing:0.08em;width:fit-content;margin-bottom:10px;}
+  .fc-title{font-family:var(--font-d);font-size:1.3rem;font-weight:800;color:white;letter-spacing:-0.03em;line-height:1.2;margin-bottom:6px;}
+  .fc-sub{font-size:0.78rem;color:rgba(255,255,255,0.5);margin-bottom:0;}
+  .fc-footer{display:flex;align-items:center;justify-content:space-between;}
+  .fc-meta{display:flex;gap:14px;}
+  .fc-m-item{display:flex;align-items:center;gap:5px;font-size:0.72rem;color:rgba(255,255,255,0.5);}
+  .fc-m-val{font-weight:700;color:rgba(255,255,255,0.85);}
+  .fc-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);color:white;font-family:var(--font-d);font-size:0.75rem;font-weight:700;padding:7px 16px;border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;}
+  .fc-btn:hover{background:rgba(255,255,255,0.25);}
+  .fc-orb{position:absolute;border-radius:50%;filter:blur(40px);pointer-events:none;}
+  .fc-jee .fc-orb{width:200px;height:200px;background:rgba(167,139,250,0.2);top:-40px;right:-40px;}
+  .fc-neet .fc-orb{width:200px;height:200px;background:rgba(52,211,153,0.15);top:-40px;right:-40px;}
+
+  /* TEST CARDS GRID */
+  .tests-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+
+  .test-card{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--sh-card);transition:all .25s;cursor:pointer;display:flex;flex-direction:column;}
+  .test-card:hover{box-shadow:var(--sh-hover);transform:translateY(-3px);border-color:rgba(79,70,229,0.2);}
+
+  .tc-top{padding:18px 18px 14px;flex:1;}
+  .tc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+  .tc-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+  .tc-pills{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end;}
+  .tc-pill{font-size:0.6rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+  .tp-free{background:var(--accent-green-l);color:#047857;border:1px solid rgba(16,185,129,0.2);}
+  .tp-pro{background:var(--accent-amber-l);color:#b45309;border:1px solid rgba(245,158,11,0.2);}
+  .tp-new{background:var(--accent-light);color:var(--accent);border:1px solid rgba(79,70,229,0.2);}
+  .tp-hot{background:var(--accent-rose-l);color:var(--accent-rose);border:1px solid rgba(244,63,94,0.2);}
+  .tp-live{background:rgba(244,63,94,0.1);color:var(--accent-rose);border:1px solid rgba(244,63,94,0.2);}
+  .tc-name{font-family:var(--font-d);font-size:0.9rem;font-weight:800;color:var(--ink);letter-spacing:-0.02em;margin-bottom:5px;line-height:1.3;}
+  .tc-desc{font-size:0.75rem;color:var(--ink-faint);line-height:1.5;margin-bottom:14px;}
+  .tc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px;}
+  .tc-tag{font-size:0.65rem;font-weight:600;padding:3px 9px;border-radius:6px;background:var(--paper-warm);color:var(--ink-muted);}
+  .tc-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;}
+  .tc-stat{text-align:center;background:var(--paper);border-radius:var(--radius-sm);padding:8px 4px;}
+  .tc-stat-val{font-family:var(--font-d);font-size:0.85rem;font-weight:800;color:var(--ink);letter-spacing:-0.03em;}
+  .tc-stat-lbl{font-size:0.6rem;font-weight:600;color:var(--ink-faint);margin-top:2px;text-transform:uppercase;letter-spacing:.04em;}
+
+  .tc-footer{border-top:1px solid var(--border);padding:12px 18px;display:flex;align-items:center;justify-content:space-between;background:var(--paper);}
+  .tc-price{font-family:var(--font-d);font-size:0.95rem;font-weight:800;color:var(--ink);}
+  .tc-price-free{color:var(--accent-green);}
+  .tc-enroll{font-family:var(--font-d);font-size:0.75rem;font-weight:700;padding:7px 16px;border-radius:var(--radius-sm);border:none;cursor:pointer;transition:all .2s;}
+  .tc-enroll-accent{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;}
+  .tc-enroll-accent:hover{box-shadow:0 4px 12px var(--accent-glow);transform:translateY(-1px);}
+  .tc-enroll-outline{background:none;border:1.5px solid var(--border-strong);color:var(--ink-muted);}
+  .tc-enroll-outline:hover{border-color:var(--accent);color:var(--accent);}
+  .tc-enrolled{background:var(--accent-green-l);border:1.5px solid rgba(16,185,129,0.3);color:#047857;}
+
+  /* PROGRESS RING */
+  .tc-progress{display:flex;align-items:center;gap:6px;}
+  .prog-ring{width:28px;height:28px;}
+  .prog-ring circle{fill:none;stroke-width:3;}
+  .prog-track{stroke:var(--paper-warm);}
+  .prog-fill{stroke:var(--accent-green);stroke-linecap:round;transform:rotate(-90deg);transform-origin:50% 50%;transition:stroke-dashoffset 1s ease;}
+  .prog-pct{font-family:var(--font-m);font-size:0.68rem;font-weight:500;color:var(--ink-muted);}
+
+  /* SECTION DIVIDER */
+  .sec-divider{height:1px;background:var(--border);margin:4px 0 20px;}
+
+  /* ANIMATIONS */
+  @keyframes fu{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+  .fu{animation:fu .5s ease both;}
+  .fu1{animation-delay:.04s;}.fu2{animation-delay:.08s;}.fu3{animation-delay:.12s;}
+  .fu4{animation-delay:.16s;}.fu5{animation-delay:.20s;}.fu6{animation-delay:.24s;}
+
+  /* BUNDLE CARD */
+  .bundle-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:28px;}
+  .bundle-card{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--sh-card);transition:all .25s;cursor:pointer;display:flex;gap:16px;align-items:center;}
+  .bundle-card:hover{box-shadow:var(--sh-hover);transform:translateY(-2px);}
+  .bundle-icon{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+  .bundle-info{flex:1;}
+  .bundle-name{font-family:var(--font-d);font-size:0.88rem;font-weight:800;color:var(--ink);letter-spacing:-0.02em;margin-bottom:4px;}
+  .bundle-desc{font-size:0.72rem;color:var(--ink-faint);margin-bottom:8px;line-height:1.4;}
+  .bundle-meta{display:flex;gap:10px;align-items:center;}
+  .bundle-tests{font-size:0.7rem;font-weight:700;color:var(--ink-muted);}
+  .bundle-price-wrap{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+  .bundle-price{font-family:var(--font-d);font-size:1rem;font-weight:800;color:var(--ink);}
+  .bundle-old{font-size:0.7rem;color:var(--ink-faint);text-decoration:line-through;}
+  .bundle-save{font-size:0.65rem;font-weight:700;color:#047857;background:var(--accent-green-l);padding:2px 7px;border-radius:100px;}
+  .bundle-btn{font-family:var(--font-d);font-size:0.72rem;font-weight:700;padding:6px 14px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;border:none;cursor:pointer;margin-top:4px;transition:all .2s;}
+  .bundle-btn:hover{box-shadow:0 3px 10px var(--accent-glow);}
+
+  /* PAGINATION */
+  .pagination{display:flex;align-items:center;justify-content:center;gap:6px;margin-top:8px;padding-bottom:8px;}
+  .pg-btn{width:34px;height:34px;border-radius:var(--radius-sm);border:1.5px solid var(--border-strong);background:var(--paper-card);color:var(--ink-muted);font-size:0.8rem;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+  .pg-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .pg-btn.active{background:var(--accent);border-color:var(--accent);color:white;}
+
+  /* ENROLL MODAL */
+  .modal-overlay{position:fixed;inset:0;background:rgba(13,15,26,0.6);backdrop-filter:blur(4px);z-index:500;display:none;align-items:center;justify-content:center;}
+  .modal-overlay.open{display:flex;}
+  .modal{background:var(--paper-card);border-radius:var(--radius-xl);padding:32px;width:100%;max-width:480px;box-shadow:0 24px 80px rgba(13,15,26,0.2);animation:fu .3s ease both;}
+  .modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;}
+  .modal-title{font-family:var(--font-d);font-size:1.1rem;font-weight:800;color:var(--ink);letter-spacing:-0.03em;}
+  .modal-close{width:32px;height:32px;border-radius:var(--radius-sm);border:1.5px solid var(--border-strong);background:none;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;color:var(--ink-muted);transition:all .18s;}
+  .modal-close:hover{border-color:var(--accent-rose);color:var(--accent-rose);}
+  .modal-body{display:flex;flex-direction:column;gap:14px;}
+  .modal-test-info{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-md);padding:16px;display:flex;gap:12px;align-items:center;}
+  .modal-test-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.4rem;flex-shrink:0;}
+  .modal-test-name{font-family:var(--font-d);font-size:0.9rem;font-weight:800;color:var(--ink);margin-bottom:4px;}
+  .modal-test-meta{font-size:0.72rem;color:var(--ink-faint);}
+  .modal-features{display:flex;flex-direction:column;gap:8px;}
+  .modal-feature{display:flex;align-items:center;gap:10px;font-size:0.8rem;color:var(--ink-muted);}
+  .modal-feature-icon{width:22px;height:22px;border-radius:6px;background:var(--accent-green-l);display:flex;align-items:center;justify-content:center;font-size:0.75rem;flex-shrink:0;}
+  .modal-price-row{display:flex;align-items:center;justify-content:space-between;background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px 16px;}
+  .modal-price-lbl{font-size:0.78rem;color:var(--ink-faint);}
+  .modal-price-val{font-family:var(--font-d);font-size:1.3rem;font-weight:800;color:var(--ink);}
+  .modal-cta{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;border:none;border-radius:var(--radius-md);padding:14px;font-family:var(--font-d);font-size:0.9rem;font-weight:700;cursor:pointer;transition:all .2s;width:100%;}
+  .modal-cta:hover{box-shadow:0 6px 20px var(--accent-glow);transform:translateY(-1px);}
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════
+     SIDEBAR
+════════════════════════════════ -->
+<aside class="sidebar">
+  <a class="sb-logo" href="#">
+    <span class="sb-mock">Mock</span><span class="sb-arena">Arena</span>
+  </a>
+  <div class="sb-user">
+    <div class="sb-avatar">AR</div>
+    <div>
+      <div class="sb-uname">Arjun Sharma</div>
+      <div class="sb-umeta">JEE Advanced 2025</div>
+      <div class="sb-badge">🔥 42 Day Streak</div>
+    </div>
+  </div>
+
+  <div class="sb-section-label">Main Menu</div>
+  <ul class="sb-nav">
+    <li><a href="mockarena_dashboard.html"><span class="nav-icon">🏠</span>Dashboard</a></li>
+    <li><a href="mockarena_mocktest.html"><span class="nav-icon">📝</span>Mock Tests <span class="nav-badge">Live</span></a></li>
+    <li><a href="mockarena_results.html"><span class="nav-icon">📊</span>My Results</a></li>
+    <li><a href="#" class="active"><span class="nav-icon">📚</span>Test Series</a></li>
+    <li><a href="mockarena_leaderboard.html"><span class="nav-icon">🏆</span>Leaderboard</a></li>
+    <li><a href="mockarena_video_solutions.html"><span class="nav-icon">🎬</span>Video Solutions</a></li>
+    <li><a href="mockarena_doubt_qa_v2.html"><span class="nav-icon">💬</span>Doubt Q&amp;A</a></li>
+  </ul>
+
+  <div class="sb-section-label">Study Tools</div>
+  <ul class="sb-nav">
+    <li><a href="#"><span class="nav-icon">📅</span>Study Planner</a></li>
+    <li><a href="#"><span class="nav-icon">📋</span>Notes &amp; Formulas</a></li>
+    <li><a href="#"><span class="nav-icon">📈</span>Analytics</a></li>
+    <li><a href="#"><span class="nav-icon">🏅</span>Achievements</a></li>
+  </ul>
+
+  <div class="sb-bottom">
+    <a href="#"><span class="nav-icon">👤</span>Profile</a>
+    <a href="#"><span class="nav-icon">⚙️</span>Settings</a>
+    <a href="mockarena_login.html"><span class="nav-icon">🚪</span>Logout</a>
+  </div>
+</aside>
+
+<!-- ════════════════════════════════
+     MAIN
+════════════════════════════════ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div class="tb-title">Test Series Catalog</div>
+    <div class="tb-right">
+      <div class="tb-search">
+        <span>🔍</span>
+        <input type="text" placeholder="Search test series…" oninput="filterTests(this.value)">
+      </div>
+      <div class="tb-icon-btn">🔔<span class="tb-notif-dot"></span></div>
+      <div class="tb-icon-btn">👤</div>
+    </div>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+
+    <!-- WELCOME BANNER -->
+    <div class="welcome-banner fu fu1">
+      <div class="wb-grid"></div>
+      <div class="wb-orb1"></div>
+      <div class="wb-orb2"></div>
+      <div>
+        <div class="wb-tag"><span class="wb-dot"></span>350+ Tests Available</div>
+        <div class="wb-title">Find Your Perfect<br><span>Test Series</span></div>
+        <div class="wb-sub">JEE · NEET · Class 10 · Foundation — curated by top educators</div>
+        <div class="wb-actions">
+          <button class="btn-wb-primary">🎯 Explore All</button>
+          <button class="btn-wb-outline">🎁 Free Tests</button>
+        </div>
+      </div>
+      <div class="wb-stats">
+        <div class="wb-stat-item">
+          <span class="wb-stat-icon">📝</span>
+          <div>
+            <div class="wb-stat-num">12</div>
+            <div class="wb-stat-lbl">Enrolled</div>
+          </div>
+        </div>
+        <div class="wb-stat-item">
+          <span class="wb-stat-icon">✅</span>
+          <div>
+            <div class="wb-stat-num">7</div>
+            <div class="wb-stat-lbl">Completed</div>
+          </div>
+        </div>
+        <div class="wb-stat-item">
+          <span class="wb-stat-icon">⏳</span>
+          <div>
+            <div class="wb-stat-num">3</div>
+            <div class="wb-stat-lbl">In Progress</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAT CARDS -->
+    <div class="grid-4 fu fu2">
+      <div class="stat-card sc1">
+        <div class="sc-top">
+          <div>
+            <div class="sc-label">Total Tests</div>
+            <div class="sc-num">350+</div>
+          </div>
+          <div class="sc-icon" style="background:var(--accent-light)">📚</div>
+        </div>
+        <div class="sc-delta delta-up">↑ 24 added this month</div>
+      </div>
+      <div class="stat-card sc2">
+        <div class="sc-top">
+          <div>
+            <div class="sc-label">Free Tests</div>
+            <div class="sc-num">80+</div>
+          </div>
+          <div class="sc-icon" style="background:var(--accent-green-l)">🎁</div>
+        </div>
+        <div class="sc-delta delta-up">↑ Always free, no login</div>
+      </div>
+      <div class="stat-card sc3">
+        <div class="sc-top">
+          <div>
+            <div class="sc-label">Avg Accuracy</div>
+            <div class="sc-num">73%</div>
+          </div>
+          <div class="sc-icon" style="background:var(--accent-amber-l)">🎯</div>
+        </div>
+        <div class="sc-delta delta-up">↑ 5% vs last month</div>
+      </div>
+      <div class="stat-card sc4">
+        <div class="sc-top">
+          <div>
+            <div class="sc-label">Students</div>
+            <div class="sc-num">2.8L+</div>
+          </div>
+          <div class="sc-icon" style="background:var(--accent-sky-l)">👨‍🎓</div>
+        </div>
+        <div class="sc-delta delta-neu">Active this week</div>
+      </div>
+    </div>
+
+    <!-- FILTER BAR -->
+    <div class="filter-bar fu fu3">
+      <span class="filter-label">Filter:</span>
+      <div class="filter-chips" id="examChips">
+        <div class="chip active" onclick="setChip(this,'exam')">All Exams</div>
+        <div class="chip" onclick="setChip(this,'exam')">JEE Main</div>
+        <div class="chip" onclick="setChip(this,'exam')">JEE Advanced</div>
+        <div class="chip" onclick="setChip(this,'exam')">NEET UG</div>
+        <div class="chip" onclick="setChip(this,'exam')">Class 10</div>
+        <div class="chip" onclick="setChip(this,'exam')">Foundation</div>
+      </div>
+      <div class="filter-sep"></div>
+      <div class="filter-chips" id="typeChips">
+        <div class="chip active" onclick="setChip(this,'type')">All Types</div>
+        <div class="chip" onclick="setChip(this,'type')">Free 🎁</div>
+        <div class="chip" onclick="setChip(this,'type')">Full Length</div>
+        <div class="chip" onclick="setChip(this,'type')">Chapter Wise</div>
+        <div class="chip" onclick="setChip(this,'type')">Crash Course</div>
+      </div>
+      <div class="filter-sep"></div>
+      <div class="filter-right">
+        <select class="sort-select" onchange="sortTests(this.value)">
+          <option value="popular">Most Popular</option>
+          <option value="newest">Newest First</option>
+          <option value="price-low">Price: Low to High</option>
+          <option value="rating">Top Rated</option>
+        </select>
+        <div class="view-btn active" onclick="setView('grid',this)">⊞</div>
+        <div class="view-btn" onclick="setView('list',this)">☰</div>
+      </div>
+    </div>
+
+    <!-- FEATURED SERIES -->
+    <div class="sec-h fu fu3">Featured Series <span class="sec-h-count">2 Mega Packs</span></div>
+    <div class="featured-grid fu fu3">
+      <div class="featured-card fc-jee" onclick="openModal('jee-mega')">
+        <div class="fc-orb"></div>
+        <div>
+          <div class="fc-badge">⚡ Best Seller</div>
+          <div class="fc-title">JEE Mega Pack<br>2025</div>
+          <div class="fc-sub">100 Full-length · 200 Chapter tests · PYQs included</div>
+        </div>
+        <div class="fc-footer">
+          <div class="fc-meta">
+            <div class="fc-m-item">📝 <span class="fc-m-val">300</span> Tests</div>
+            <div class="fc-m-item">👥 <span class="fc-m-val">1.2L</span> Students</div>
+            <div class="fc-m-item">⭐ <span class="fc-m-val">4.9</span></div>
+          </div>
+          <button class="fc-btn">View Pack →</button>
+        </div>
+      </div>
+      <div class="featured-card fc-neet" onclick="openModal('neet-mega')">
+        <div class="fc-orb"></div>
+        <div>
+          <div class="fc-badge">🏥 Top Rated</div>
+          <div class="fc-title">NEET Mega Pack<br>2025</div>
+          <div class="fc-sub">80 Full-length · 150 Chapter tests · NCERT based</div>
+        </div>
+        <div class="fc-footer">
+          <div class="fc-meta">
+            <div class="fc-m-item">📝 <span class="fc-m-val">230</span> Tests</div>
+            <div class="fc-m-item">👥 <span class="fc-m-val">98K</span> Students</div>
+            <div class="fc-m-item">⭐ <span class="fc-m-val">4.8</span></div>
+          </div>
+          <button class="fc-btn">View Pack →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ALL TEST SERIES -->
+    <div class="sec-h fu fu4">All Test Series <span class="sec-h-count" id="testCount">9 series</span>
+      <a class="sec-h-action" href="#">View All →</a>
+    </div>
+
+    <div class="tests-grid" id="testsGrid">
+
+      <!-- CARD 1 -->
+      <div class="test-card fu fu4" data-name="JEE Main Full Test Series" data-exam="JEE Main" data-type="Full Length">
+        <div class="tc-top">
+          <div class="tc-header">
+            <div class="tc-icon" style="background:var(--accent-light)">⚛️</div>
+            <div class="tc-pills">
+              <span class="tc-pill tp-hot">🔥 Hot</span>
+              <span class="tc-pill tp-pro">Pro</span>
+            </div>
+          </div>
+          <div class="tc-name">JEE Main Full Test Series</div>
+          <div class="tc-desc">40 full-length mock tests exactly as per NTA pattern with detailed analysis.</div>
+          <div class="tc-tags">
+            <span class="tc-tag">Physics</span>
+            <span class="tc-tag">Chemistry</span>
+            <span class="tc-tag">Maths</span>
+            <span class="tc-tag">NTA Pattern</span>
+          </div>
+          <div class="tc-stats">
+            <div class="tc-stat"><div class="tc-stat-val">40</div><div class="tc-stat-lbl">Tests</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">4.9⭐</div><div class="tc-stat-lbl">Rating</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">54K</div><div class="tc-stat-lbl">Students</div></div>
+          </div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-price">₹499</div>
+          <button class="tc-enroll tc-enroll-accent" onclick="openModal('jee-main')">Enroll Now</button>
+        </div>
+      </div>
+
+      <!-- CARD 2 -->
+      <div class="test-card fu fu4" data-name="NEET Chapter Wise Series" data-exam="NEET UG" data-type="Chapter Wise">
+        <div class="tc-top">
+          <div class="tc-header">
+            <div class="tc-icon" style="background:var(--accent-green-l)">🧬</div>
+            <div class="tc-pills">
+              <span class="tc-pill tp-free">🎁 Free</span>
+              <span class="tc-pill tp-new">New</span>
+            </div>
+          </div>
+          <div class="tc-name">NEET Chapter Wise Series</div>
+          <div class="tc-desc">120 chapter-based tests covering all NCERT topics for Biology, Physics & Chemistry.</div>
+          <div class="tc-tags">
+            <span class="tc-tag">Biology</span>
+            <span class="tc-tag">Physics</span>
+            <span class="tc-tag">Chemistry</span>
+            <span class="tc-tag">NCERT</span>
+          </div>
+          <div class="tc-stats">
+            <div class="tc-stat"><div class="tc-stat-val">120</div><div class="tc-stat-lbl">Tests</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">4.8⭐</div><div class="tc-stat-lbl">Rating</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">38K</div><div class="tc-stat-lbl">Students</div></div>
+          </div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-price tc-price-free">FREE</div>
+          <button class="tc-enroll tc-enroll-accent" onclick="openModal('neet-chapter')">Enroll Now</button>
+        </div>
+      </div>
+
+      <!-- CARD 3 — ENROLLED -->
+      <div class="test-card fu fu4" data-name="JEE Advanced Previous Year Papers" data-exam="JEE Advanced" data-type="Full Length">
+        <div class="tc-top">
+          <div class="tc-header">
+            <div class="tc-icon" style="background:#f0f4ff">🏆</div>
+            <div class="tc-pills">
+              <span class="tc-pill tp-live">● Live</span>
+              <span class="tc-pill tp-pro">Pro</span>
+            </div>
+          </div>
+          <div class="tc-name">JEE Advanced PYQ Series</div>
+          <div class="tc-desc">25 years of JEE Advanced previous year papers with video solutions.</div>
+          <div class="tc-tags">
+            <span class="tc-tag">PYQ</span>
+            <span class="tc-tag">Advanced</span>
+            <span class="tc-tag">25 Years</span>
+          </div>
+          <div class="tc-stats">
+            <div class="tc-stat"><div class="tc-stat-val">50</div><div class="tc-stat-lbl">Tests</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">5.0⭐</div><div class="tc-stat-lbl">Rating</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">29K</div><div class="tc-stat-lbl">Students</div></div>
+          </div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-progress">
+            <svg class="prog-ring" viewBox="0 0 28 28">
+              <circle class="prog-track" cx="14" cy="14" r="11"/>
+              <circle class="prog-fill" cx="14" cy="14" r="11" stroke-dasharray="69.1" stroke-dashoffset="28"/>
+            </svg>
+            <span class="prog-pct">60% done</span>
+          </div>
+          <button class="tc-enroll tc-enrolled">✓ Enrolled</button>
+        </div>
+      </div>
+
+      <!-- CARD 4 -->
+      <div class="test-card fu fu5" data-name="NEET Full Mock Test Series" data-exam="NEET UG" data-type="Full Length">
+        <div class="tc-top">
+          <div class="tc-header">
+            <div class="tc-icon" style="background:var(--accent-green-l)">🏥</div>
+            <div class="tc-pills">
+              <span class="tc-pill tp-hot">🔥 Hot</span>
+            </div>
+          </div>
+          <div class="tc-name">NEET Full Mock Test Series</div>
+          <div class="tc-desc">35 full mock tests with OMR simulation and rank predictor tool.</div>
+          <div class="tc-tags">
+            <span class="tc-tag">Biology</span>
+            <span class="tc-tag">Physics</span>
+            <span class="tc-tag">Chemistry</span>
+            <span class="tc-tag">OMR</span>
+          </div>
+          <div class="tc-stats">
+            <div class="tc-stat"><div class="tc-stat-val">35</div><div class="tc-stat-lbl">Tests</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">4.7⭐</div><div class="tc-stat-lbl">Rating</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">41K</div><div class="tc-stat-lbl">Students</div></div>
+          </div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-price">₹399</div>
+          <button class="tc-enroll tc-enroll-accent" onclick="openModal('neet-full')">Enroll Now</button>
+        </div>
+      </div>
+
+      <!-- CARD 5 -->
+      <div class="test-card fu fu5" data-name="Physics Crash Course Tests" data-exam="JEE Main" data-type="Crash Course">
+        <div class="tc-top">
+          <div class="tc-header">
+            <div class="tc-icon" style="background:var(--accent-amber-l)">⚡</div>
+            <div class="tc-pills">
+              <span class="tc-pill tp-new">New</span>
+              <span class="tc-pill tp-free">🎁 Free</span>
+            </div>
+          </div>
+          <div class="tc-name">Physics Crash Course Tests</div>
+          <div class="tc-desc">30-day crash course with daily tests covering high-weightage JEE Physics chapters.</div>
+          <div class="tc-tags">
+            <span class="tc-tag">Physics</span>
+            <span class="tc-tag">30 Days</span>
+            <span class="tc-tag">Crash Course</span>
+          </div>
+          <div class="tc-stats">
+            <div class="tc-stat"><div class="tc-stat-val">30</div><div class="tc-stat-lbl">Tests</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">4.6⭐</div><div class="tc-stat-lbl">Rating</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">22K</div><div class="tc-stat-lbl">Students</div></div>
+          </div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-price tc-price-free">FREE</div>
+          <button class="tc-enroll tc-enroll-accent" onclick="openModal('physics-crash')">Start Free</button>
+        </div>
+      </div>
+
+      <!-- CARD 6 -->
+      <div class="test-card fu fu5" data-name="Class 10 Board Series" data-exam="Class 10" data-type="Full Length">
+        <div class="tc-top">
+          <div class="tc-header">
+            <div class="tc-icon" style="background:var(--accent-sky-l)">📐</div>
+            <div class="tc-pills">
+              <span class="tc-pill tp-new">New</span>
+            </div>
+          </div>
+          <div class="tc-name">Class 10 Board Series</div>
+          <div class="tc-desc">50 board pattern tests for CBSE Class 10 covering all subjects with marking scheme.</div>
+          <div class="tc-tags">
+            <span class="tc-tag">CBSE</span>
+            <span class="tc-tag">Class 10</span>
+            <span class="tc-tag">All Subjects</span>
+          </div>
+          <div class="tc-stats">
+            <div class="tc-stat"><div class="tc-stat-val">50</div><div class="tc-stat-lbl">Tests</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">4.5⭐</div><div class="tc-stat-lbl">Rating</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">18K</div><div class="tc-stat-lbl">Students</div></div>
+          </div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-price">₹299</div>
+          <button class="tc-enroll tc-enroll-accent" onclick="openModal('class10')">Enroll Now</button>
+        </div>
+      </div>
+
+      <!-- CARD 7 -->
+      <div class="test-card fu fu6" data-name="Chemistry Chapter Tests" data-exam="JEE Main" data-type="Chapter Wise">
+        <div class="tc-top">
+          <div class="tc-header">
+            <div class="tc-icon" style="background:#fff0f3">🧪</div>
+            <div class="tc-pills">
+              <span class="tc-pill tp-free">🎁 Free</span>
+            </div>
+          </div>
+          <div class="tc-name">Chemistry Chapter Tests</div>
+          <div class="tc-desc">Chapter-wise tests for JEE & NEET Chemistry with detailed concept notes.</div>
+          <div class="tc-tags">
+            <span class="tc-tag">Organic</span>
+            <span class="tc-tag">Inorganic</span>
+            <span class="tc-tag">Physical</span>
+          </div>
+          <div class="tc-stats">
+            <div class="tc-stat"><div class="tc-stat-val">60</div><div class="tc-stat-lbl">Tests</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">4.7⭐</div><div class="tc-stat-lbl">Rating</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">31K</div><div class="tc-stat-lbl">Students</div></div>
+          </div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-price tc-price-free">FREE</div>
+          <button class="tc-enroll tc-enroll-accent" onclick="openModal('chemistry')">Start Free</button>
+        </div>
+      </div>
+
+      <!-- CARD 8 -->
+      <div class="test-card fu fu6" data-name="Foundation Series Class 9" data-exam="Foundation" data-type="Chapter Wise">
+        <div class="tc-top">
+          <div class="tc-header">
+            <div class="tc-icon" style="background:#f0fff4">🌱</div>
+            <div class="tc-pills">
+              <span class="tc-pill tp-new">New</span>
+              <span class="tc-pill tp-pro">Pro</span>
+            </div>
+          </div>
+          <div class="tc-name">Foundation Series Class 9</div>
+          <div class="tc-desc">Early preparation for JEE & NEET with concept-building tests for Class 9.</div>
+          <div class="tc-tags">
+            <span class="tc-tag">Class 9</span>
+            <span class="tc-tag">Foundation</span>
+            <span class="tc-tag">IIT Prep</span>
+          </div>
+          <div class="tc-stats">
+            <div class="tc-stat"><div class="tc-stat-val">45</div><div class="tc-stat-lbl">Tests</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">4.6⭐</div><div class="tc-stat-lbl">Rating</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">9K</div><div class="tc-stat-lbl">Students</div></div>
+          </div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-price">₹349</div>
+          <button class="tc-enroll tc-enroll-accent" onclick="openModal('foundation')">Enroll Now</button>
+        </div>
+      </div>
+
+      <!-- CARD 9 -->
+      <div class="test-card fu fu6" data-name="Biology NEET Mastery" data-exam="NEET UG" data-type="Chapter Wise">
+        <div class="tc-top">
+          <div class="tc-header">
+            <div class="tc-icon" style="background:var(--accent-green-l)">🦠</div>
+            <div class="tc-pills">
+              <span class="tc-pill tp-hot">🔥 Hot</span>
+              <span class="tc-pill tp-pro">Pro</span>
+            </div>
+          </div>
+          <div class="tc-name">Biology NEET Mastery</div>
+          <div class="tc-desc">70 Biology topic tests covering Botany & Zoology as per NEET syllabus 2025.</div>
+          <div class="tc-tags">
+            <span class="tc-tag">Botany</span>
+            <span class="tc-tag">Zoology</span>
+            <span class="tc-tag">NCERT</span>
+          </div>
+          <div class="tc-stats">
+            <div class="tc-stat"><div class="tc-stat-val">70</div><div class="tc-stat-lbl">Tests</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">4.9⭐</div><div class="tc-stat-lbl">Rating</div></div>
+            <div class="tc-stat"><div class="tc-stat-val">27K</div><div class="tc-stat-lbl">Students</div></div>
+          </div>
+        </div>
+        <div class="tc-footer">
+          <div class="tc-price">₹449</div>
+          <button class="tc-enroll tc-enroll-accent" onclick="openModal('bio-neet')">Enroll Now</button>
+        </div>
+      </div>
+
+    </div><!-- /tests-grid -->
+
+    <!-- BUNDLES -->
+    <div class="sec-h">Value Bundles <span class="sec-h-count">Save up to 40%</span></div>
+    <div class="bundle-row">
+      <div class="bundle-card">
+        <div class="bundle-icon" style="background:var(--accent-light)">🎯</div>
+        <div class="bundle-info">
+          <div class="bundle-name">JEE Complete Bundle</div>
+          <div class="bundle-desc">JEE Main + Advanced + PYQ + Crash Course — everything in one pack.</div>
+          <div class="bundle-meta">
+            <span class="bundle-tests">📝 420 Tests</span>
+            <span class="tc-pill tp-hot" style="font-size:0.62rem;padding:2px 8px;">Save 40%</span>
+          </div>
+        </div>
+        <div class="bundle-price-wrap">
+          <div class="bundle-old">₹1,997</div>
+          <div class="bundle-price">₹999</div>
+          <div class="bundle-save">Save ₹998</div>
+          <button class="bundle-btn" onclick="openModal('jee-bundle')">Get Bundle</button>
+        </div>
+      </div>
+      <div class="bundle-card">
+        <div class="bundle-icon" style="background:var(--accent-green-l)">🏥</div>
+        <div class="bundle-info">
+          <div class="bundle-name">NEET Complete Bundle</div>
+          <div class="bundle-desc">NEET Full Mocks + Chapter Wise + Biology Mastery — complete NEET prep.</div>
+          <div class="bundle-meta">
+            <span class="bundle-tests">📝 320 Tests</span>
+            <span class="tc-pill tp-hot" style="font-size:0.62rem;padding:2px 8px;">Save 35%</span>
+          </div>
+        </div>
+        <div class="bundle-price-wrap">
+          <div class="bundle-old">₹1,248</div>
+          <div class="bundle-price">₹799</div>
+          <div class="bundle-save">Save ₹449</div>
+          <button class="bundle-btn" onclick="openModal('neet-bundle')">Get Bundle</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination">
+      <button class="pg-btn">‹</button>
+      <button class="pg-btn active">1</button>
+      <button class="pg-btn">2</button>
+      <button class="pg-btn">3</button>
+      <button class="pg-btn">…</button>
+      <button class="pg-btn">12</button>
+      <button class="pg-btn">›</button>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<!-- ════ ENROLL MODAL ════ -->
+<div class="modal-overlay" id="enrollModal" onclick="closeModal(event)">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="modalTitle">Enroll in Test Series</div>
+      <button class="modal-close" onclick="closeModalBtn()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-test-info">
+        <div class="modal-test-icon" id="modalIcon" style="background:var(--accent-light)">📝</div>
+        <div>
+          <div class="modal-test-name" id="modalName">Test Series Name</div>
+          <div class="modal-test-meta" id="modalMeta">40 Tests · 4.9⭐ · 54K students</div>
+        </div>
+      </div>
+      <div class="modal-features">
+        <div class="modal-feature"><div class="modal-feature-icon">✅</div>Unlimited attempts for all tests</div>
+        <div class="modal-feature"><div class="modal-feature-icon">📊</div>Detailed performance analytics after each test</div>
+        <div class="modal-feature"><div class="modal-feature-icon">🎬</div>Video solutions for every question</div>
+        <div class="modal-feature"><div class="modal-feature-icon">🏆</div>All-India rank on every mock test</div>
+        <div class="modal-feature"><div class="modal-feature-icon">📱</div>Access on web & mobile app</div>
+      </div>
+      <div class="modal-price-row">
+        <div>
+          <div class="modal-price-lbl">Total Price</div>
+          <div class="modal-price-val" id="modalPrice">₹499</div>
+        </div>
+        <div style="text-align:right">
+          <div class="modal-price-lbl">Valid for</div>
+          <div style="font-family:var(--font-d);font-weight:800;font-size:0.9rem;color:var(--ink)">12 Months</div>
+        </div>
+      </div>
+      <button class="modal-cta">🎯 Enroll Now — Start Practicing</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const modalData = {
+    'jee-main':      { title:'JEE Main Full Test Series', icon:'⚛️', bg:'var(--accent-light)', meta:'40 Tests · 4.9⭐ · 54K students', price:'₹499' },
+    'neet-chapter':  { title:'NEET Chapter Wise Series', icon:'🧬', bg:'var(--accent-green-l)', meta:'120 Tests · 4.8⭐ · 38K students', price:'FREE' },
+    'jee-advanced':  { title:'JEE Advanced PYQ Series', icon:'🏆', bg:'#f0f4ff', meta:'50 Tests · 5.0⭐ · 29K students', price:'₹599' },
+    'neet-full':     { title:'NEET Full Mock Test Series', icon:'🏥', bg:'var(--accent-green-l)', meta:'35 Tests · 4.7⭐ · 41K students', price:'₹399' },
+    'physics-crash': { title:'Physics Crash Course Tests', icon:'⚡', bg:'var(--accent-amber-l)', meta:'30 Tests · 4.6⭐ · 22K students', price:'FREE' },
+    'class10':       { title:'Class 10 Board Series', icon:'📐', bg:'var(--accent-sky-l)', meta:'50 Tests · 4.5⭐ · 18K students', price:'₹299' },
+    'chemistry':     { title:'Chemistry Chapter Tests', icon:'🧪', bg:'#fff0f3', meta:'60 Tests · 4.7⭐ · 31K students', price:'FREE' },
+    'foundation':    { title:'Foundation Series Class 9', icon:'🌱', bg:'#f0fff4', meta:'45 Tests · 4.6⭐ · 9K students', price:'₹349' },
+    'bio-neet':      { title:'Biology NEET Mastery', icon:'🦠', bg:'var(--accent-green-l)', meta:'70 Tests · 4.9⭐ · 27K students', price:'₹449' },
+    'jee-mega':      { title:'JEE Mega Pack 2025', icon:'⚡', bg:'var(--accent-light)', meta:'300 Tests · 4.9⭐ · 1.2L students', price:'₹999' },
+    'neet-mega':     { title:'NEET Mega Pack 2025', icon:'🏥', bg:'var(--accent-green-l)', meta:'230 Tests · 4.8⭐ · 98K students', price:'₹799' },
+    'jee-bundle':    { title:'JEE Complete Bundle', icon:'🎯', bg:'var(--accent-light)', meta:'420 Tests · Save 40%', price:'₹999' },
+    'neet-bundle':   { title:'NEET Complete Bundle', icon:'🏥', bg:'var(--accent-green-l)', meta:'320 Tests · Save 35%', price:'₹799' },
+  };
+
+  function openModal(key) {
+    const d = modalData[key] || {};
+    document.getElementById('modalTitle').textContent = 'Enroll — ' + (d.title || 'Test Series');
+    document.getElementById('modalIcon').textContent = d.icon || '📝';
+    document.getElementById('modalIcon').style.background = d.bg || 'var(--accent-light)';
+    document.getElementById('modalName').textContent = d.title || '';
+    document.getElementById('modalMeta').textContent = d.meta || '';
+    document.getElementById('modalPrice').textContent = d.price || '';
+    document.getElementById('enrollModal').classList.add('open');
+  }
+
+  function closeModal(e) { if (e.target === document.getElementById('enrollModal')) closeModalBtn(); }
+  function closeModalBtn() { document.getElementById('enrollModal').classList.remove('open'); }
+
+  function setChip(el, group) {
+    document.querySelectorAll('#' + (group === 'exam' ? 'examChips' : 'typeChips') + ' .chip').forEach(c => c.classList.remove('active'));
+    el.classList.add('active');
+    applyFilters();
+  }
+
+  function applyFilters() {
+    const examActive = document.querySelector('#examChips .chip.active')?.textContent.trim();
+    const typeActive = document.querySelector('#typeChips .chip.active')?.textContent.trim();
+    let visible = 0;
+    document.querySelectorAll('.test-card').forEach(card => {
+      const exam = card.dataset.exam;
+      const type = card.dataset.type;
+      const examMatch = examActive === 'All Exams' || exam === examActive;
+      const typeMatch = typeActive === 'All Types' || type === typeActive || typeActive.includes('Free') && card.querySelector('.tp-free');
+      card.style.display = (examMatch && typeMatch) ? '' : 'none';
+      if (examMatch && typeMatch) visible++;
+    });
+    document.getElementById('testCount').textContent = visible + ' series';
+  }
+
+  function filterTests(val) {
+    let visible = 0;
+    document.querySelectorAll('.test-card').forEach(card => {
+      const name = card.dataset.name?.toLowerCase() || '';
+      const show = name.includes(val.toLowerCase());
+      card.style.display = show ? '' : 'none';
+      if (show) visible++;
+    });
+    document.getElementById('testCount').textContent = visible + ' series';
+  }
+
+  function sortTests(val) { /* UI feedback only */ }
+
+  function setView(view, el) {
+    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+    el.classList.add('active');
+    const grid = document.getElementById('testsGrid');
+    if (view === 'list') {
+      grid.style.gridTemplateColumns = '1fr';
+    } else {
+      grid.style.gridTemplateColumns = 'repeat(3,1fr)';
+    }
+  }
+
+  // Pagination click
+  document.querySelectorAll('.pg-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      document.querySelectorAll('.pg-btn').forEach(b => b.classList.remove('active'));
+      if (!['‹','›','…'].includes(this.textContent)) this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

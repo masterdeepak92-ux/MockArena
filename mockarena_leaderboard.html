@@ -1,0 +1,1026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena – Leaderboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   MOCKARENA DESIGN SYSTEM — LEADERBOARD
+═══════════════════════════════════════════ */
+:root {
+  --ink:#0d0f1a; --ink-soft:#1a1d2e; --ink-mid:#2a2d42; --ink-muted:#5a5f7a; --ink-faint:#9499b8;
+  --paper:#f4f5fb; --paper-warm:#eceef8; --paper-card:#ffffff;
+  --accent:#4f46e5; --accent-h:#4338ca;
+  --accent-l:rgba(79,70,229,0.08); --accent-glow:rgba(79,70,229,0.22);
+  --a2:#7c3aed;
+  --green:#10b981; --green-l:rgba(16,185,129,0.09);
+  --rose:#f43f5e; --rose-l:rgba(244,63,94,0.08);
+  --amber:#f59e0b; --amber-l:rgba(245,158,11,0.09);
+  --sky:#0ea5e9; --sky-l:rgba(14,165,233,0.09);
+  --gold:#eab308; --silver:#94a3b8; --bronze:#b45309;
+  --border:rgba(13,15,26,0.08); --border-s:rgba(13,15,26,0.13);
+  --r-sm:8px; --r-md:14px; --r-lg:20px; --r-xl:28px;
+  --fd:'Manrope',sans-serif; --fb:'Inter',sans-serif; --fm:'JetBrains Mono',monospace;
+  --sh:0 2px 12px rgba(13,15,26,.06),0 1px 3px rgba(13,15,26,.04);
+  --sh-h:0 12px 40px rgba(79,70,229,.13),0 2px 8px rgba(13,15,26,.06);
+  --sw:240px; --th:64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fb);background:var(--paper);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;display:flex;overflow-x:hidden;}
+
+/* ══ SIDEBAR ══ */
+.sidebar{width:var(--sw);flex-shrink:0;background:var(--ink-soft);height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;z-index:200;}
+.sidebar::-webkit-scrollbar{width:3px;} .sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:4px;}
+.sb-logo{padding:20px 20px 16px;display:flex;align-items:center;gap:10px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.06);}
+.sb-lm{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--a2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.88rem;font-weight:800;color:white;flex-shrink:0;box-shadow:0 4px 12px rgba(79,70,229,.4);}
+.sb-brand{font-family:var(--fd);font-size:1.1rem;font-weight:800;color:white;letter-spacing:-.03em;}
+.sb-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;}
+.sb-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--a2));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.82rem;font-weight:800;color:white;flex-shrink:0;}
+.sb-uname{font-size:.8rem;font-weight:700;color:white;} .sb-umeta{font-size:.66rem;color:rgba(255,255,255,.35);margin-top:2px;}
+.sb-streak{display:inline-flex;align-items:center;gap:4px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.25);border-radius:100px;padding:2px 7px;font-size:.6rem;font-weight:700;color:#6ee7b7;margin-top:4px;}
+.sb-lbl{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.18);text-transform:uppercase;letter-spacing:.1em;padding:14px 20px 5px;}
+.sb-nav{list-style:none;padding:0 10px;}
+.sb-nav li{margin-bottom:2px;}
+.sb-nav a{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:var(--r-sm);text-decoration:none;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.45);transition:all .18s;}
+.sb-nav a:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85);}
+.sb-nav a.active{background:rgba(79,70,229,.22);color:white;border:1px solid rgba(79,70,229,.35);}
+.sb-nav .ni{width:17px;text-align:center;font-size:.88rem;flex-shrink:0;}
+.sb-nav .nb{margin-left:auto;font-size:.6rem;font-weight:700;background:var(--rose);color:white;padding:1px 6px;border-radius:100px;}
+.sb-foot{margin-top:auto;padding:14px 10px 20px;border-top:1px solid rgba(255,255,255,.06);}
+.sb-foot a{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:var(--r-sm);text-decoration:none;font-size:.76rem;font-weight:600;color:rgba(255,255,255,.3);transition:all .2s;}
+.sb-foot a:hover{color:rgba(255,255,255,.65);background:rgba(255,255,255,.05);}
+
+/* ══ MAIN ══ */
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-width:0;}
+
+/* ══ TOPBAR ══ */
+.topbar{height:var(--th);background:rgba(244,245,251,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:14px;position:sticky;top:0;z-index:100;}
+.tb-title{font-family:var(--fd);font-size:.95rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+.tb-bc{font-size:.72rem;color:var(--ink-faint);}
+.tb-bc span{color:var(--accent);font-weight:600;}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:9px;}
+.btn-p{font-family:var(--fb);font-size:.8rem;font-weight:700;color:white;background:linear-gradient(135deg,var(--accent),var(--a2));border:none;padding:8px 16px;border-radius:var(--r-sm);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-p:hover{box-shadow:0 4px 14px var(--accent-glow);transform:translateY(-1px);}
+.btn-g{font-family:var(--fb);font-size:.8rem;font-weight:600;color:var(--ink-muted);background:none;border:1.5px solid var(--border-s);padding:7px 14px;border-radius:var(--r-sm);cursor:pointer;transition:all .2s;}
+.btn-g:hover{border-color:var(--accent);color:var(--accent);}
+.tb-ic{width:36px;height:36px;border-radius:var(--r-sm);border:1.5px solid var(--border-s);background:white;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;position:relative;transition:all .2s;}
+.tb-ic:hover{border-color:var(--accent);}
+.tb-ic .dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:var(--rose);border-radius:50%;border:1.5px solid var(--paper);}
+
+/* ══ PAGE ══ */
+.page{padding:28px;display:flex;flex-direction:column;gap:20px;}
+
+/* ══ HERO BANNER ══ */
+.lb-hero{background:linear-gradient(150deg,#090c1a 0%,#11133a 45%,#1c0e5c 100%);border-radius:var(--r-xl);padding:32px 36px;position:relative;overflow:hidden;}
+.lbh-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;}
+.lbh-orb1{position:absolute;width:360px;height:360px;border-radius:50%;background:radial-gradient(circle,rgba(79,70,229,.18),transparent 70%);top:-80px;right:-40px;pointer-events:none;}
+.lbh-orb2{position:absolute;width:220px;height:220px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.12),transparent 70%);bottom:-40px;left:30%;pointer-events:none;}
+.lbh-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;}
+.lbh-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:4px 13px;font-family:var(--fm);font-size:.64rem;color:rgba(255,255,255,.45);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;}
+.lbh-live{width:6px;height:6px;border-radius:50%;background:var(--rose);animation:pulse-live 1.5s infinite;}
+@keyframes pulse-live{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(244,63,94,.4)}50%{opacity:.7;box-shadow:0 0 0 5px rgba(244,63,94,0)}}
+.lbh-title{font-family:var(--fd);font-size:1.75rem;font-weight:800;color:white;letter-spacing:-.04em;line-height:1.15;margin-bottom:8px;}
+.lbh-title span{background:linear-gradient(90deg,#fcd34d,#fb923c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.lbh-sub{font-size:.84rem;color:rgba(255,255,255,.4);margin-bottom:20px;line-height:1.6;}
+.lbh-stats{display:flex;gap:20px;flex-wrap:wrap;}
+.lbs{display:flex;align-items:center;gap:7px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.35);}
+.lbs .v{color:rgba(255,255,255,.8);font-weight:700;font-family:var(--fd);}
+.lbs-div{width:1px;height:16px;background:rgba(255,255,255,.1);}
+
+/* My rank cards */
+.my-ranks{display:flex;flex-direction:column;gap:10px;min-width:220px;}
+.my-rank-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:var(--r-md);padding:12px 16px;display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;}
+.my-rank-card:hover{background:rgba(255,255,255,.09);border-color:rgba(255,255,255,.2);}
+.my-rank-card.highlight{border-color:rgba(79,70,229,.5);background:rgba(79,70,229,.12);}
+.mrc-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.mrc-info{flex:1;}
+.mrc-label{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.mrc-rank{font-family:var(--fd);font-size:1.15rem;font-weight:800;color:white;letter-spacing:-.04em;line-height:1;}
+.mrc-sub{font-size:.62rem;color:rgba(255,255,255,.35);margin-top:2px;}
+.mrc-delta{display:flex;align-items:center;gap:3px;font-size:.68rem;font-weight:700;}
+.delta-up{color:#6ee7b7;} .delta-down{color:#fca5a5;} .delta-same{color:rgba(255,255,255,.3);}
+
+/* ══ SCOPE TABS ══ */
+.scope-bar{display:flex;background:white;border:1px solid var(--border);border-radius:var(--r-lg);padding:4px;box-shadow:var(--sh);gap:3px;}
+.scope-tab{flex:1;padding:11px 16px;border-radius:12px;font-family:var(--fd);font-size:.82rem;font-weight:700;color:var(--ink-muted);cursor:pointer;text-align:center;transition:all .22s;display:flex;align-items:center;justify-content:center;gap:7px;border:none;background:none;}
+.scope-tab:hover{color:var(--ink);background:var(--paper);}
+.scope-tab.active{background:linear-gradient(135deg,var(--accent),var(--a2));color:white;box-shadow:0 4px 14px var(--accent-glow);}
+.scope-tab .st-count{font-size:.64rem;font-weight:800;background:rgba(255,255,255,.2);padding:2px 7px;border-radius:100px;}
+.scope-tab:not(.active) .st-count{background:var(--accent-l);color:var(--accent);}
+
+/* ══ CONTROLS ROW ══ */
+.controls-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.filter-select{font-family:var(--fb);font-size:.78rem;font-weight:600;color:var(--ink-muted);border:1.5px solid var(--border-s);background:white;border-radius:var(--r-sm);padding:8px 12px;cursor:pointer;outline:none;transition:border-color .2s;}
+.filter-select:focus{border-color:var(--accent);}
+.search-box{display:flex;align-items:center;gap:8px;background:white;border:1.5px solid var(--border-s);border-radius:var(--r-sm);padding:8px 13px;flex:1;max-width:280px;transition:all .2s;}
+.search-box:focus-within{border-color:var(--accent);}
+.search-box input{border:none;outline:none;font-family:var(--fb);font-size:.78rem;color:var(--ink);background:transparent;width:100%;}
+.search-box input::placeholder{color:var(--ink-faint);}
+.time-chips{display:flex;gap:5px;}
+.tc{font-size:.72rem;font-weight:700;padding:7px 13px;border-radius:100px;border:1.5px solid var(--border-s);background:white;color:var(--ink-muted);cursor:pointer;transition:all .18s;white-space:nowrap;}
+.tc:hover{border-color:var(--accent);color:var(--accent);}
+.tc.active{background:var(--accent-l);color:var(--accent);border-color:rgba(79,70,229,.25);}
+.refresh-btn{width:36px;height:36px;border-radius:var(--r-sm);border:1.5px solid var(--border-s);background:white;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.9rem;transition:all .2s;color:var(--ink-muted);}
+.refresh-btn:hover{border-color:var(--accent);color:var(--accent);}
+
+/* ══ MAIN LAYOUT ══ */
+.lb-layout{display:grid;grid-template-columns:1fr 300px;gap:20px;align-items:start;}
+
+/* ══ PODIUM ══ */
+.podium-section{background:white;border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;margin-bottom:18px;box-shadow:var(--sh);}
+.podium-header{background:linear-gradient(135deg,#090c1a,#1a1060);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;}
+.ph-title{font-family:var(--fd);font-size:.9rem;font-weight:800;color:white;letter-spacing:-.02em;}
+.ph-scope{font-size:.7rem;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.12);padding:4px 12px;border-radius:100px;}
+.podium{display:flex;align-items:flex-end;justify-content:center;gap:0;padding:28px 24px 0;background:linear-gradient(180deg,#090c1a,#1a1060);position:relative;overflow:hidden;}
+.podium::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;}
+.podium-spot{display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;}
+.podium-spot.p1{order:2;margin:0 4px;}
+.podium-spot.p2{order:1;margin:0 4px;}
+.podium-spot.p3{order:3;margin:0 4px;}
+.pod-avatar-wrap{position:relative;margin-bottom:10px;}
+.pod-avatar{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:1.1rem;font-weight:800;color:white;border:3px solid rgba(255,255,255,.1);}
+.p1 .pod-avatar{width:76px;height:76px;font-size:1.3rem;border-color:rgba(234,179,8,.5);box-shadow:0 0 0 6px rgba(234,179,8,.12);}
+.p2 .pod-avatar{border-color:rgba(148,163,184,.4);box-shadow:0 0 0 4px rgba(148,163,184,.1);}
+.p3 .pod-avatar{border-color:rgba(180,83,9,.4);box-shadow:0 0 0 4px rgba(180,83,9,.1);}
+.pod-crown{position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-size:1.4rem;animation:float-crown 3s ease-in-out infinite;}
+@keyframes float-crown{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
+.pod-medal{position:absolute;bottom:-4px;right:-4px;width:22px;height:22px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.75rem;border:2px solid rgba(0,0,0,.3);}
+.pod-name{font-family:var(--fd);font-size:.78rem;font-weight:800;color:white;text-align:center;margin-bottom:2px;white-space:nowrap;}
+.pod-school{font-size:.62rem;color:rgba(255,255,255,.4);text-align:center;margin-bottom:6px;white-space:nowrap;max-width:100px;overflow:hidden;text-overflow:ellipsis;}
+.pod-score{font-family:var(--fm);font-size:.72rem;font-weight:600;color:rgba(255,255,255,.6);text-align:center;margin-bottom:8px;}
+.pod-loc{font-size:.6rem;color:rgba(255,255,255,.3);text-align:center;display:flex;align-items:center;justify-content:center;gap:3px;margin-bottom:10px;}
+.pod-block{border-radius:10px 10px 0 0;width:100px;display:flex;align-items:center;justify-content:center;}
+.p1 .pod-block{height:80px;background:linear-gradient(180deg,rgba(234,179,8,.25),rgba(234,179,8,.1));}
+.p2 .pod-block{height:58px;background:linear-gradient(180deg,rgba(148,163,184,.2),rgba(148,163,184,.08));}
+.p3 .pod-block{height:44px;background:linear-gradient(180deg,rgba(180,83,9,.2),rgba(180,83,9,.08));}
+.pod-rank{font-family:var(--fd);font-size:1.1rem;font-weight:900;color:rgba(255,255,255,.3);}
+.p1 .pod-rank{color:rgba(234,179,8,.7);font-size:1.3rem;}
+
+/* ══ LEADERBOARD TABLE ══ */
+.lb-table-wrap{background:white;border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--sh);}
+.lbt-head{display:grid;grid-template-columns:56px 1fr 110px 110px 90px 80px 60px;align-items:center;padding:12px 20px;background:var(--paper);border-bottom:1px solid var(--border);gap:8px;}
+.lbt-th{font-size:.64rem;font-weight:800;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.07em;cursor:pointer;display:flex;align-items:center;gap:4px;user-select:none;transition:color .2s;}
+.lbt-th:hover{color:var(--accent);}
+.lbt-th.sorted{color:var(--accent);}
+.lbt-rows{display:flex;flex-direction:column;}
+.lb-row{display:grid;grid-template-columns:56px 1fr 110px 110px 90px 80px 60px;align-items:center;padding:13px 20px;border-bottom:1px solid var(--border);gap:8px;cursor:pointer;transition:all .18s;position:relative;}
+.lb-row:last-child{border-bottom:none;}
+.lb-row:hover{background:var(--paper);}
+.lb-row.me{background:linear-gradient(135deg,var(--accent-l),rgba(124,58,237,.04));border-left:3px solid var(--accent);}
+.lb-row.me:hover{background:linear-gradient(135deg,rgba(79,70,229,.12),rgba(124,58,237,.06));}
+.lb-row.gold-row{background:linear-gradient(135deg,rgba(234,179,8,.06),rgba(234,179,8,.02));}
+.lb-row.silver-row{background:linear-gradient(135deg,rgba(148,163,184,.06),rgba(148,163,184,.02));}
+.lb-row.bronze-row{background:linear-gradient(135deg,rgba(180,83,9,.06),rgba(180,83,9,.02));}
+
+/* Rank cell */
+.rank-cell{display:flex;align-items:center;justify-content:center;}
+.rank-num{font-family:var(--fm);font-size:.78rem;font-weight:700;color:var(--ink-muted);width:28px;text-align:center;}
+.rank-num.r1{color:var(--gold);font-size:.9rem;}
+.rank-num.r2{color:var(--silver);font-size:.85rem;}
+.rank-num.r3{color:var(--bronze);font-size:.82rem;}
+.rank-badge{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+.rank-move{display:flex;flex-direction:column;align-items:center;gap:0;}
+.rm-arrow{font-size:.55rem;font-weight:900;line-height:1;}
+.rm-num{font-size:.54rem;font-weight:700;line-height:1;}
+.rm-up{color:var(--green);}  .rm-down{color:var(--rose);}  .rm-same{color:var(--ink-faint);}
+
+/* User cell */
+.user-cell{display:flex;align-items:center;gap:10px;}
+.uc-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.75rem;font-weight:800;color:white;flex-shrink:0;}
+.uc-info{flex:1;min-width:0;}
+.uc-name{font-size:.82rem;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-row.me .uc-name{color:var(--accent);}
+.uc-you-badge{font-size:.55rem;font-weight:800;background:var(--accent);color:white;padding:1px 6px;border-radius:100px;margin-left:4px;text-transform:uppercase;letter-spacing:.04em;}
+.uc-meta{font-size:.64rem;color:var(--ink-faint);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.uc-tags{display:flex;gap:4px;margin-top:2px;}
+.uc-tag{font-size:.58rem;font-weight:700;padding:1px 6px;border-radius:100px;}
+
+/* Score cells */
+.score-cell{font-family:var(--fm);font-size:.82rem;font-weight:600;color:var(--ink);}
+.acc-cell{display:flex;align-items:center;gap:6px;}
+.acc-bar{flex:1;height:5px;background:var(--paper-warm);border-radius:3px;overflow:hidden;}
+.acc-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--green),#059669);}
+.acc-val{font-size:.72rem;font-weight:700;color:var(--ink-muted);white-space:nowrap;}
+.streak-cell{display:flex;align-items:center;gap:4px;font-size:.75rem;font-weight:700;color:var(--amber);}
+.location-cell{font-size:.72rem;color:var(--ink-muted);display:flex;align-items:center;gap:3px;}
+
+/* "You are here" sticky row */
+.you-here-divider{background:var(--accent-l);border-left:3px solid var(--accent);padding:8px 20px;font-size:.72rem;font-weight:700;color:var(--accent);display:flex;align-items:center;gap:8px;}
+.scroll-dots{display:flex;gap:3px;align-items:center;}
+.sd{width:3px;height:3px;border-radius:50%;background:var(--accent);opacity:.4;}
+
+/* ══ SIDE PANELS ══ */
+.side-stack{display:flex;flex-direction:column;gap:14px;}
+.sp{background:white;border:1px solid var(--border);border-radius:var(--r-lg);box-shadow:var(--sh);overflow:hidden;}
+.sp-head{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.sp-title{font-family:var(--fd);font-size:.84rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;}
+.sp-title::before{content:'';display:inline-block;width:3px;height:14px;background:linear-gradient(180deg,var(--accent),var(--a2));border-radius:2px;margin-right:6px;vertical-align:middle;}
+.sp-body{padding:14px 18px;}
+
+/* My rank summary card */
+.my-rank-summary{background:linear-gradient(150deg,#090c1a,#1a1060);border-radius:var(--r-lg);overflow:hidden;position:relative;}
+.mrs-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:28px 28px;pointer-events:none;}
+.mrs-inner{position:relative;z-index:1;padding:18px;}
+.mrs-label{font-size:.62rem;font-weight:700;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+.mrs-name{font-family:var(--fd);font-size:.92rem;font-weight:800;color:white;margin-bottom:12px;}
+.mrs-ranks{display:flex;flex-direction:column;gap:8px;}
+.mrs-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--r-sm);cursor:pointer;transition:all .2s;}
+.mrs-row:hover{background:rgba(255,255,255,.1);}
+.mrs-row.active-scope{border-color:rgba(79,70,229,.5);background:rgba(79,70,229,.12);}
+.mrs-scope-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;}
+.mrs-scope-label{flex:1;font-size:.7rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.04em;}
+.mrs-rank-val{font-family:var(--fd);font-size:1rem;font-weight:800;color:white;letter-spacing:-.03em;}
+.mrs-delta{font-size:.62rem;font-weight:700;display:flex;align-items:center;gap:2px;}
+
+/* Nearby rivals */
+.rival-item{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.rival-item:last-child{border-bottom:none;}
+.ri-pos{font-family:var(--fm);font-size:.68rem;font-weight:700;color:var(--ink-faint);width:24px;flex-shrink:0;text-align:center;}
+.ri-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.64rem;font-weight:800;color:white;flex-shrink:0;}
+.ri-info{flex:1;min-width:0;}
+.ri-name{font-size:.76rem;font-weight:700;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ri-meta{font-size:.62rem;color:var(--ink-faint);margin-top:1px;}
+.ri-score{font-family:var(--fm);font-size:.72rem;color:var(--ink-muted);}
+.ri-gap{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:100px;}
+.ri-gap.above{background:var(--rose-l);color:var(--rose);border:1px solid rgba(244,63,94,.2);}
+.ri-gap.below{background:var(--green-l);color:var(--green);border:1px solid rgba(16,185,129,.2);}
+.ri-gap.you{background:var(--accent-l);color:var(--accent);border:1px solid rgba(79,70,229,.2);}
+
+/* State map mini */
+.state-map-mini{background:var(--paper);border-radius:var(--r-md);padding:14px;text-align:center;position:relative;}
+.smm-label{font-size:.7rem;font-weight:700;color:var(--ink-muted);margin-bottom:10px;}
+.india-svg{width:100%;max-width:160px;}
+.state-highlight{fill:var(--accent);opacity:.8;}
+.state-dim{fill:var(--paper-warm);}
+/* Rank change chart (sparkline) */
+.spark-wrap{position:relative;height:60px;margin:8px 0;}
+.spark-svg{width:100%;height:100%;}
+
+/* Subject leaderboard mini */
+.subj-lb-item{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);}
+.subj-lb-item:last-child{border-bottom:none;}
+.sli-icon{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.8rem;flex-shrink:0;}
+.sli-info{flex:1;}
+.sli-name{font-size:.74rem;font-weight:700;color:var(--ink);}
+.sli-bar-wrap{height:4px;background:var(--paper-warm);border-radius:2px;margin-top:4px;overflow:hidden;}
+.sli-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--a2));}
+.sli-rank{font-family:var(--fm);font-size:.72rem;font-weight:700;color:var(--accent);}
+
+/* Achievement badges in sidebar */
+.badge-row{display:flex;gap:6px;flex-wrap:wrap;}
+.badge-chip{display:flex;align-items:center;gap:4px;font-size:.65rem;font-weight:700;padding:4px 8px;border-radius:100px;border:1px solid var(--border);}
+
+/* Pagination */
+.pagination{display:flex;align-items:center;justify-content:center;gap:5px;padding:14px;border-top:1px solid var(--border);}
+.page-btn{width:34px;height:34px;border-radius:var(--r-sm);border:1.5px solid var(--border-s);background:white;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:700;color:var(--ink-muted);cursor:pointer;transition:all .18s;}
+.page-btn:hover{border-color:var(--accent);color:var(--accent);}
+.page-btn.active{background:var(--accent);color:white;border-color:var(--accent);}
+.page-btn.disabled{opacity:.35;cursor:not-allowed;}
+
+/* Toast */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--ink-soft);color:white;padding:13px 18px;border-radius:var(--r-md);font-size:.8rem;font-weight:600;z-index:9999;box-shadow:0 8px 32px rgba(13,15,26,.3);display:flex;align-items:center;gap:9px;transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.4,0,.2,1);max-width:340px;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+/* Animations */
+@keyframes fadeInUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.fu{opacity:0;animation:fadeInUp .5s ease forwards;}
+.fu-1{animation-delay:.05s}.fu-2{animation-delay:.12s}.fu-3{animation-delay:.19s}.fu-4{animation-delay:.26s}
+.sr{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease;}
+.sr.vis{opacity:1;transform:translateY(0);}
+
+/* Row entry animation */
+@keyframes rowIn{from{opacity:0;transform:translateX(-12px)}to{opacity:1;transform:translateX(0)}}
+.lb-row{animation:rowIn .35s ease forwards;opacity:0;}
+
+@media(max-width:1200px){.lb-layout{grid-template-columns:1fr;}.side-stack{display:grid;grid-template-columns:1fr 1fr;gap:14px;}}
+@media(max-width:900px){.lbt-head,.lb-row{grid-template-columns:48px 1fr 90px 80px 60px;} .lbt-th:nth-child(4),.lb-row .streak-cell,.lbt-th:nth-child(6){display:none;} }
+@media(max-width:768px){.sidebar{transform:translateX(-100%)}.main{margin-left:0}.scope-bar{flex-wrap:wrap}.lbh-inner{grid-template-columns:1fr}.my-ranks{display:none}}
+</style>
+</head>
+<body>
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<aside class="sidebar">
+  <a href="mockarena_dashboard.html" class="sb-logo">
+    <div class="sb-lm">MA</div>
+    <span class="sb-brand">MockArena</span>
+  </a>
+  <div class="sb-user">
+    <div class="sb-av">RK</div>
+    <div>
+      <div class="sb-uname">Rahul Kumar</div>
+      <div class="sb-umeta">JEE Advanced · Class 12</div>
+      <div class="sb-streak">🔥 12-day streak</div>
+    </div>
+  </div>
+  <div class="sb-lbl">Main</div>
+  <ul class="sb-nav">
+    <li><a href="mockarena_dashboard.html"><span class="ni">🏠</span> Dashboard</a></li>
+    <li><a href="mockarena_mocktest.html"><span class="ni">📝</span> Mock Tests</a></li>
+    <li><a href="mockarena_results.html"><span class="ni">📊</span> My Results</a></li>
+    <li><a href="#"><span class="ni">📅</span> Study Planner</a></li>
+  </ul>
+  <div class="sb-lbl">Performance</div>
+  <ul class="sb-nav">
+    <li><a href="mockarena_leaderboard.html" class="active"><span class="ni">🏆</span> Leaderboard</a></li>
+    <li><a href="#"><span class="ni">🎯</span> Analytics</a></li>
+    <li><a href="#"><span class="ni">🏅</span> Achievements</a></li>
+    <li><a href="#"><span class="ni">👤</span> My Profile</a></li>
+  </ul>
+  <div class="sb-lbl">Resources</div>
+  <ul class="sb-nav">
+    <li><a href="#"><span class="ni">📄</span> Previous Year Papers</a></li>
+    <li><a href="mockarena_video_solutions.html"><span class="ni">🎬</span> Video Solutions</a></li>
+    <li><a href="mockarena_doubt_forum.html"><span class="ni">💬</span> Doubt Forum <span class="nb">14</span></a></li>
+    <li><a href="mockarena_advanced_qa.html"><span class="ni">⚡</span> Advanced Q&A</a></li>
+  </ul>
+  <div class="sb-foot">
+    <a href="#">⚙️ Settings</a>
+    <a href="#">❓ Help</a>
+    <a href="mockarena_login.html">🚪 Sign Out</a>
+  </div>
+</aside>
+
+<!-- ══════════ MAIN ══════════ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div>
+      <div class="tb-title">Leaderboard</div>
+      <div class="tb-bc">Performance → <span>Leaderboard</span></div>
+    </div>
+    <div class="tb-r">
+      <div class="tb-ic"><div class="dot"></div>🔔</div>
+      <button class="btn-g" onclick="shareRank()">↗ Share My Rank</button>
+      <button class="btn-p" onclick="window.location='mockarena_mocktest.html'">📝 Attempt Mock → Climb</button>
+    </div>
+  </div>
+
+  <div class="page">
+
+    <!-- ══ HERO BANNER ══ -->
+    <div class="lb-hero fu fu-1">
+      <div class="lbh-grid"></div>
+      <div class="lbh-orb1"></div><div class="lbh-orb2"></div>
+      <div class="lbh-inner">
+        <div>
+          <div class="lbh-tag"><div class="lbh-live"></div>Live Rankings · Updates every 15 mins</div>
+          <div class="lbh-title">India's Most Competitive<br><span>JEE & NEET Rankings</span></div>
+          <div class="lbh-sub">From your school block to all of India — see exactly where you stand at every level. District, State, and National rankings updated in real time after every mock test.</div>
+          <div class="lbh-stats">
+            <span class="lbs"><span class="v">2,84,194</span> Students</span>
+            <div class="lbs-div"></div>
+            <span class="lbs"><span class="v">29</span> States</span>
+            <div class="lbs-div"></div>
+            <span class="lbs"><span class="v">612</span> Districts</span>
+            <div class="lbs-div"></div>
+            <span class="lbs">Last updated <span class="v">4 min ago</span></span>
+          </div>
+        </div>
+        <div class="my-ranks">
+          <div class="my-rank-card highlight" onclick="switchScope('district')">
+            <div class="mrc-icon" style="background:var(--green-l);">🏘️</div>
+            <div class="mrc-info">
+              <div class="mrc-label">District Rank · Patna</div>
+              <div class="mrc-rank">#14</div>
+              <div class="mrc-sub">Out of 2,841 students</div>
+            </div>
+            <div class="mrc-delta delta-up">↑8</div>
+          </div>
+          <div class="my-rank-card" onclick="switchScope('state')">
+            <div class="mrc-icon" style="background:var(--sky-l);">🗺️</div>
+            <div class="mrc-info">
+              <div class="mrc-label">State Rank · Bihar</div>
+              <div class="mrc-rank">#187</div>
+              <div class="mrc-sub">Out of 48,210 students</div>
+            </div>
+            <div class="mrc-delta delta-up">↑23</div>
+          </div>
+          <div class="my-rank-card" onclick="switchScope('national')">
+            <div class="mrc-icon" style="background:var(--amber-l);">🇮🇳</div>
+            <div class="mrc-info">
+              <div class="mrc-label">National Rank · All India</div>
+              <div class="mrc-rank">#312</div>
+              <div class="mrc-sub">Out of 2,84,194 students</div>
+            </div>
+            <div class="mrc-delta delta-up">↑890</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ SCOPE SELECTOR ══ -->
+    <div class="scope-bar fu fu-2" id="scopeBar">
+      <button class="scope-tab" id="tab-district" onclick="switchScope('district')">
+        🏘️ District <span class="st-count">2,841</span>
+      </button>
+      <button class="scope-tab" id="tab-state" onclick="switchScope('state')">
+        🗺️ State <span class="st-count">48,210</span>
+      </button>
+      <button class="scope-tab active" id="tab-national" onclick="switchScope('national')">
+        🇮🇳 National <span class="st-count">2,84,194</span>
+      </button>
+      <button class="scope-tab" id="tab-test" onclick="switchScope('test')">
+        📝 This Mock <span class="st-count">4,821</span>
+      </button>
+      <button class="scope-tab" id="tab-school" onclick="switchScope('school')">
+        🏫 My School <span class="st-count">312</span>
+      </button>
+    </div>
+
+    <!-- ══ CONTROLS ══ -->
+    <div class="controls-row fu fu-2">
+      <div class="search-box">
+        <span style="color:var(--ink-faint);">🔍</span>
+        <input type="text" placeholder="Search student name, city…" oninput="searchStudents(this.value)" id="searchInput">
+      </div>
+      <select class="filter-select" onchange="filterExam(this.value)">
+        <option value="all">All Exams</option>
+        <option value="jee_adv">JEE Advanced</option>
+        <option value="jee_main">JEE Mains</option>
+        <option value="neet">NEET UG</option>
+        <option value="boards">CBSE Boards</option>
+      </select>
+      <select class="filter-select" onchange="filterClass(this.value)">
+        <option value="all">All Classes</option>
+        <option value="12">Class 12</option>
+        <option value="11">Class 11</option>
+        <option value="drop">Dropper</option>
+      </select>
+      <select class="filter-select" id="locationFilter">
+        <option>All of India</option>
+        <option>Bihar</option>
+        <option>Maharashtra</option>
+        <option>Rajasthan</option>
+        <option>UP</option>
+        <option>Delhi</option>
+        <option>Tamil Nadu</option>
+        <option>Karnataka</option>
+        <option>AP / Telangana</option>
+      </select>
+      <div class="time-chips">
+        <div class="tc active" onclick="setTimeFilter(this,'week')">This Week</div>
+        <div class="tc" onclick="setTimeFilter(this,'month')">This Month</div>
+        <div class="tc" onclick="setTimeFilter(this,'alltime')">All Time</div>
+      </div>
+      <div class="refresh-btn" onclick="refreshData()" title="Refresh rankings">↻</div>
+    </div>
+
+    <!-- ══ MAIN 2-COL ══ -->
+    <div class="lb-layout sr">
+
+      <!-- LEFT: TABLE -->
+      <div>
+
+        <!-- PODIUM (top 3) -->
+        <div class="podium-section" id="podiumSection">
+          <div class="podium-header">
+            <div class="ph-title">🏆 Top 3 — <span id="podiumScope">National · All India · This Week</span></div>
+            <div class="ph-scope" id="podiumScopeChip">🇮🇳 National</div>
+          </div>
+          <div class="podium" id="podiumEl">
+            <!-- #2 -->
+            <div class="podium-spot p2">
+              <div class="pod-avatar-wrap">
+                <div class="pod-avatar" style="background:linear-gradient(135deg,#64748b,#94a3b8);">PM</div>
+                <div class="pod-medal" style="background:var(--silver);">🥈</div>
+              </div>
+              <div class="pod-name">Priya Mehta</div>
+              <div class="pod-school">DPS, Rajkot</div>
+              <div class="pod-score">274 pts · 94.2%</div>
+              <div class="pod-loc">📍 Gujarat</div>
+              <div class="pod-block"><div class="pod-rank">#2</div></div>
+            </div>
+            <!-- #1 -->
+            <div class="podium-spot p1">
+              <div class="pod-avatar-wrap">
+                <div class="pod-crown">👑</div>
+                <div class="pod-avatar" style="background:linear-gradient(135deg,#b45309,#d97706);">AS</div>
+                <div class="pod-medal" style="background:var(--gold);">🥇</div>
+              </div>
+              <div class="pod-name">Aryan Sharma</div>
+              <div class="pod-school">Resonance, Kota</div>
+              <div class="pod-score">281 pts · 96.8%</div>
+              <div class="pod-loc">📍 Rajasthan</div>
+              <div class="pod-block"><div class="pod-rank">#1</div></div>
+            </div>
+            <!-- #3 -->
+            <div class="podium-spot p3">
+              <div class="pod-avatar-wrap">
+                <div class="pod-avatar" style="background:linear-gradient(135deg,#92400e,#b45309);">RK2</div>
+                <div class="pod-medal" style="background:var(--bronze);">🥉</div>
+              </div>
+              <div class="pod-name">Rohan Kumar</div>
+              <div class="pod-school">Allen, Kota</div>
+              <div class="pod-score">268 pts · 92.1%</div>
+              <div class="pod-loc">📍 Rajasthan</div>
+              <div class="pod-block"><div class="pod-rank">#3</div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLE -->
+        <div class="lb-table-wrap">
+          <div class="lbt-head">
+            <div class="lbt-th" onclick="sortBy('rank')"># Rank ↕</div>
+            <div class="lbt-th">Student</div>
+            <div class="lbt-th sorted" onclick="sortBy('score')">Score ↓</div>
+            <div class="lbt-th" onclick="sortBy('accuracy')">Accuracy</div>
+            <div class="lbt-th" onclick="sortBy('streak')">Streak 🔥</div>
+            <div class="lbt-th" onclick="sortBy('tests')">Tests</div>
+            <div class="lbt-th">Move</div>
+          </div>
+
+          <div class="lbt-rows" id="lbRows">
+            <!-- Rows injected by JS -->
+          </div>
+
+          <!-- Pagination -->
+          <div class="pagination">
+            <div class="page-btn disabled">‹</div>
+            <div class="page-btn active" onclick="goPage(1)">1</div>
+            <div class="page-btn" onclick="goPage(2)">2</div>
+            <div class="page-btn" onclick="goPage(3)">3</div>
+            <div style="font-size:.78rem;color:var(--ink-faint);padding:0 6px;">…</div>
+            <div class="page-btn" onclick="goPage(48)">48</div>
+            <div class="page-btn" onclick="goPage(2)">›</div>
+          </div>
+        </div>
+
+      </div><!-- /left -->
+
+      <!-- RIGHT SIDE PANELS -->
+      <div class="side-stack">
+
+        <!-- My Rank Summary -->
+        <div class="my-rank-summary sp">
+          <div class="mrs-grid"></div>
+          <div class="mrs-inner">
+            <div class="mrs-label">Your Rankings</div>
+            <div class="mrs-name">Rahul Kumar · JEE Advanced</div>
+            <div class="mrs-ranks">
+              <div class="mrs-row" onclick="switchScope('district')">
+                <div class="mrs-scope-icon" style="background:rgba(16,185,129,.15);">🏘️</div>
+                <div class="mrs-scope-label">District · Patna</div>
+                <div class="mrs-rank-val">#14</div>
+                <div class="mrs-delta delta-up">↑8</div>
+              </div>
+              <div class="mrs-row" onclick="switchScope('state')">
+                <div class="mrs-scope-icon" style="background:rgba(14,165,233,.15);">🗺️</div>
+                <div class="mrs-scope-label">State · Bihar</div>
+                <div class="mrs-rank-val">#187</div>
+                <div class="mrs-delta delta-up">↑23</div>
+              </div>
+              <div class="mrs-row active-scope" onclick="switchScope('national')">
+                <div class="mrs-scope-icon" style="background:rgba(245,158,11,.15);">🇮🇳</div>
+                <div class="mrs-scope-label">National</div>
+                <div class="mrs-rank-val">#312</div>
+                <div class="mrs-delta delta-up">↑890</div>
+              </div>
+              <div class="mrs-row" onclick="switchScope('test')">
+                <div class="mrs-scope-icon" style="background:rgba(79,70,229,.15);">📝</div>
+                <div class="mrs-scope-label">This Mock</div>
+                <div class="mrs-rank-val">#41</div>
+                <div class="mrs-delta delta-up">↑12</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Rank Trend Sparkline -->
+        <div class="sp">
+          <div class="sp-head"><div class="sp-title">📈 National Rank Trend</div></div>
+          <div class="sp-body">
+            <div style="font-size:.7rem;color:var(--ink-muted);margin-bottom:8px;">Last 8 mock tests:</div>
+            <div class="spark-wrap">
+              <svg class="spark-svg" viewBox="0 0 260 60" preserveAspectRatio="none">
+                <defs>
+                  <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stop-color="#4f46e5" stop-opacity=".25"/>
+                    <stop offset="100%" stop-color="#4f46e5" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+                <!-- Y axis inverted: lower rank = higher on chart -->
+                <path d="M0,50 L32,46 L65,40 L97,38 L130,34 L162,28 L195,22 L227,16 L260,10" fill="url(#sg)" stroke="none"/>
+                <path d="M0,50 L32,46 L65,40 L97,38 L130,34 L162,28 L195,22 L227,16 L260,10" fill="none" stroke="#4f46e5" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="260" cy="10" r="4" fill="#4f46e5"/>
+              </svg>
+            </div>
+            <div style="display:flex;justify-content:space-between;font-size:.62rem;color:var(--ink-faint);font-family:var(--fm);">
+              <span>#1,202</span><span>#947</span><span>#680</span><span>#422</span><span>#312</span>
+            </div>
+            <div style="margin-top:10px;padding:9px 12px;background:var(--green-l);border:1px solid rgba(16,185,129,.2);border-radius:var(--r-sm);font-size:.72rem;font-weight:700;color:#047857;">
+              ↑ Improved 890 places in 8 mocks 🚀
+            </div>
+          </div>
+        </div>
+
+        <!-- Nearby Rivals -->
+        <div class="sp">
+          <div class="sp-head">
+            <div class="sp-title">⚔️ Your Rivals</div>
+            <div style="margin-left:auto;font-size:.68rem;font-weight:600;color:var(--accent);cursor:pointer;">National</div>
+          </div>
+          <div class="sp-body" style="padding-top:6px;padding-bottom:6px;">
+            <div class="rival-item">
+              <div class="ri-pos">#309</div>
+              <div class="ri-av" style="background:linear-gradient(135deg,#f59e0b,#d97706);">VK</div>
+              <div class="ri-info">
+                <div class="ri-name">Vikram Khanna</div>
+                <div class="ri-meta">Delhi · 278 pts</div>
+              </div>
+              <div class="ri-gap above">3 pts ahead</div>
+            </div>
+            <div class="rival-item">
+              <div class="ri-pos">#310</div>
+              <div class="ri-av" style="background:linear-gradient(135deg,#0ea5e9,#4f46e5);">SP</div>
+              <div class="ri-info">
+                <div class="ri-name">Sneha Patel</div>
+                <div class="ri-meta">Gujarat · 277 pts</div>
+              </div>
+              <div class="ri-gap above">2 pts ahead</div>
+            </div>
+            <div class="rival-item">
+              <div class="ri-pos">#311</div>
+              <div class="ri-av" style="background:linear-gradient(135deg,#10b981,#059669);">NK</div>
+              <div class="ri-info">
+                <div class="ri-name">Nikhil Kapoor</div>
+                <div class="ri-meta">Maharashtra · 276 pts</div>
+              </div>
+              <div class="ri-gap above">1 pt ahead</div>
+            </div>
+            <!-- YOU -->
+            <div class="rival-item" style="background:var(--accent-l);border-radius:var(--r-sm);padding:9px 0 9px 8px;margin:2px 0;">
+              <div class="ri-pos" style="color:var(--accent);">#312</div>
+              <div class="ri-av" style="background:linear-gradient(135deg,var(--accent),var(--a2));">RK</div>
+              <div class="ri-info">
+                <div class="ri-name" style="color:var(--accent);">You — Rahul Kumar</div>
+                <div class="ri-meta">Bihar · 247 pts</div>
+              </div>
+              <div class="ri-gap you">YOU</div>
+            </div>
+            <div class="rival-item">
+              <div class="ri-pos">#313</div>
+              <div class="ri-av" style="background:linear-gradient(135deg,#a21caf,#7c3aed);">AJ</div>
+              <div class="ri-info">
+                <div class="ri-name">Arjun Joshi</div>
+                <div class="ri-meta">Karnataka · 246 pts</div>
+              </div>
+              <div class="ri-gap below">1 pt behind</div>
+            </div>
+            <div class="rival-item">
+              <div class="ri-pos">#314</div>
+              <div class="ri-av" style="background:linear-gradient(135deg,#f43f5e,#e11d48);">RS</div>
+              <div class="ri-info">
+                <div class="ri-name">Riya Singh</div>
+                <div class="ri-meta">UP · 245 pts</div>
+              </div>
+              <div class="ri-gap below">2 pts behind</div>
+            </div>
+            <div style="margin-top:10px;padding:8px 10px;background:var(--amber-l);border:1px solid rgba(245,158,11,.2);border-radius:var(--r-sm);font-size:.7rem;font-weight:700;color:#92400e;">
+              💡 Score 31+ on your next mock to break into Top 300!
+            </div>
+          </div>
+        </div>
+
+        <!-- Subject-wise Ranks -->
+        <div class="sp">
+          <div class="sp-head"><div class="sp-title">📚 Subject Rankings</div></div>
+          <div class="sp-body" style="padding-top:8px;padding-bottom:8px;">
+            <div class="subj-lb-item">
+              <div class="sli-icon" style="background:var(--sky-l);">⚛️</div>
+              <div class="sli-info">
+                <div class="sli-name">Physics</div>
+                <div class="sli-bar-wrap"><div class="sli-bar-fill" style="width:82%"></div></div>
+              </div>
+              <div class="sli-rank">#208</div>
+            </div>
+            <div class="subj-lb-item">
+              <div class="sli-icon" style="background:var(--green-l);">🧪</div>
+              <div class="sli-info">
+                <div class="sli-name">Chemistry</div>
+                <div class="sli-bar-wrap"><div class="sli-bar-fill" style="width:48%;background:linear-gradient(90deg,var(--amber),#d97706)"></div></div>
+              </div>
+              <div class="sli-rank" style="color:var(--amber);">#891</div>
+            </div>
+            <div class="subj-lb-item">
+              <div class="sli-icon" style="background:var(--accent-l);">📐</div>
+              <div class="sli-info">
+                <div class="sli-name">Mathematics</div>
+                <div class="sli-bar-wrap"><div class="sli-bar-fill" style="width:76%"></div></div>
+              </div>
+              <div class="sli-rank">#312</div>
+            </div>
+            <div style="margin-top:10px;padding:8px 10px;background:var(--rose-l);border:1px solid rgba(244,63,94,.2);border-radius:var(--r-sm);font-size:.7rem;font-weight:700;color:#be123c;">
+              ⚠ Chemistry is your weakest subject in the rankings. <a href="mockarena_video_solutions.html" style="color:var(--rose);text-decoration:underline;">Watch solutions →</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Districts (mini leaderboard) -->
+        <div class="sp">
+          <div class="sp-head"><div class="sp-title">🏘️ Top Districts This Week</div></div>
+          <div class="sp-body" style="padding-top:8px;padding-bottom:8px;">
+            <div class="rival-item">
+              <div class="ri-pos" style="color:var(--gold);">🥇</div>
+              <div class="sli-icon" style="background:var(--amber-l);width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75rem;">🏙️</div>
+              <div class="ri-info"><div class="ri-name">Kota, Rajasthan</div><div class="ri-meta">Avg score: 261 · 4,821 students</div></div>
+            </div>
+            <div class="rival-item">
+              <div class="ri-pos" style="color:var(--silver);">🥈</div>
+              <div class="sli-icon" style="background:var(--sky-l);width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75rem;">🏙️</div>
+              <div class="ri-info"><div class="ri-name">Mumbai Suburban</div><div class="ri-meta">Avg score: 248 · 6,102 students</div></div>
+            </div>
+            <div class="rival-item">
+              <div class="ri-pos" style="color:var(--bronze);">🥉</div>
+              <div class="sli-icon" style="background:var(--green-l);width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75rem;">🏙️</div>
+              <div class="ri-info"><div class="ri-name">Chennai, Tamil Nadu</div><div class="ri-meta">Avg score: 244 · 3,890 students</div></div>
+            </div>
+            <div class="rival-item" style="background:var(--accent-l);border-radius:var(--r-sm);padding:7px 0 7px 8px;">
+              <div class="ri-pos" style="color:var(--accent);">#18</div>
+              <div class="sli-icon" style="background:var(--accent-l);width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.75rem;">📍</div>
+              <div class="ri-info"><div class="ri-name" style="color:var(--accent);">Patna, Bihar (You)</div><div class="ri-meta">Avg score: 218 · 2,841 students</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /side-stack -->
+
+    </div><!-- /lb-layout -->
+
+  </div><!-- /page -->
+</div><!-- /main -->
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── DATA ───
+const scopeData = {
+  national: {
+    label:'🇮🇳 National · All India',
+    chip:'🇮🇳 National',
+    total:'2,84,194',
+    podium:[
+      {init:'AS',name:'Aryan Sharma',school:'Resonance, Kota',score:281,acc:96.8,loc:'Rajasthan',grad:'135deg,#b45309,#d97706'},
+      {init:'PM',name:'Priya Mehta',school:'DPS, Rajkot',score:274,acc:94.2,loc:'Gujarat',grad:'135deg,#64748b,#94a3b8'},
+      {init:'RK2',name:'Rohan Kumar',school:'Allen, Kota',score:268,acc:92.1,loc:'Rajasthan',grad:'135deg,#92400e,#b45309'}
+    ],
+    myRank:312, myRankLabel:'National',
+    students:[
+      {rank:1,init:'AS',name:'Aryan Sharma',meta:'Resonance, Kota · Rajasthan',score:281,acc:96.8,streak:28,tests:18,move:2,loc:'Rajasthan',grad:'135deg,#b45309,#d97706'},
+      {rank:2,init:'PM',name:'Priya Mehta',meta:'DPS, Rajkot · Gujarat',score:274,acc:94.2,streak:21,tests:16,move:-1,loc:'Gujarat',grad:'135deg,#64748b,#94a3b8'},
+      {rank:3,init:'RK2',name:'Rohan Kumar',meta:'Allen, Kota · Rajasthan',score:268,acc:92.1,streak:15,tests:14,move:5,loc:'Rajasthan',grad:'135deg,#92400e,#b45309'},
+      {rank:4,init:'NK',name:'Nidhi Khanna',meta:'FIITJEE, Delhi · Delhi',score:265,acc:91.4,streak:19,tests:17,move:3,loc:'Delhi',grad:'135deg,#0ea5e9,#0284c7'},
+      {rank:5,init:'SK',name:'Siddharth Kulkarni',meta:'Vidyalankar, Mumbai · Maharashtra',score:262,acc:90.8,streak:14,tests:15,move:-2,loc:'Maharashtra',grad:'135deg,#7c3aed,#4f46e5'},
+      {rank:6,init:'AT',name:'Aditya Tiwari',meta:'Motion, Kota · Rajasthan',score:259,acc:89.9,streak:22,tests:19,move:8,loc:'Rajasthan',grad:'135deg,#10b981,#059669'},
+      {rank:7,init:'RS',name:'Ritu Sharma',meta:'Narayana, Hyderabad · Telangana',score:257,acc:89.3,streak:11,tests:13,move:-3,loc:'Telangana',grad:'135deg,#f43f5e,#e11d48'},
+      {rank:8,init:'VK',name:'Vikram Khanna',meta:'Brilliant Study Centre, Delhi',score:255,acc:88.7,streak:17,tests:16,move:4,loc:'Delhi',grad:'135deg,#f59e0b,#d97706'},
+      {rank:9,init:'SP',name:'Sneha Patel',meta:'Ahmedabad · Gujarat',score:253,acc:87.9,streak:9,tests:12,move:0,loc:'Gujarat',grad:'135deg,#06b6d4,#0ea5e9'},
+      {rank:10,init:'GR',name:'Gaurav Rathore',meta:'Bansal Classes, Kota · Rajasthan',score:251,acc:87.2,streak:13,tests:14,move:-5,loc:'Rajasthan',grad:'135deg,#a21caf,#7c3aed'},
+      // You are here
+      {rank:312,init:'RK',name:'Rahul Kumar',meta:'Patna · Bihar',score:247,acc:84.1,streak:12,tests:24,move:890,loc:'Bihar',me:true,grad:'135deg,#4f46e5,#7c3aed'},
+    ]
+  },
+  state: {
+    label:'🗺️ State · Bihar',
+    chip:'🗺️ Bihar',
+    total:'48,210',
+    myRank:187, myRankLabel:'State',
+    students:[
+      {rank:1,init:'AK',name:'Amit Kumar',meta:'Patna Science College · Patna',score:278,acc:95.1,streak:24,tests:20,move:0,loc:'Patna',grad:'135deg,#b45309,#d97706'},
+      {rank:2,init:'PK',name:'Pooja Kumari',meta:'Notre Dame Academy · Patna',score:271,acc:93.4,streak:18,tests:17,move:3,loc:'Patna',grad:'135deg,#64748b,#94a3b8'},
+      {rank:3,init:'SS',name:'Shubham Singh',meta:'FIITJEE · Patna',score:264,acc:91.2,streak:16,tests:15,move:-1,loc:'Patna',grad:'135deg,#92400e,#b45309'},
+      {rank:4,init:'MK',name:'Manish Kumar',meta:'Gaya · Bihar',score:261,acc:90.4,streak:20,tests:18,move:5,loc:'Gaya',grad:'135deg,#0ea5e9,#0284c7'},
+      {rank:5,init:'NS',name:'Neha Singh',meta:'Muzaffarpur · Bihar',score:258,acc:89.7,streak:14,tests:14,move:2,loc:'Muzaffarpur',grad:'135deg,#7c3aed,#4f46e5'},
+      {rank:6,init:'RP',name:'Rahul Prasad',meta:'Bhagalpur · Bihar',score:254,acc:88.9,streak:11,tests:13,move:-4,loc:'Bhagalpur',grad:'135deg,#10b981,#059669'},
+      {rank:7,init:'SR',name:'Sonal Roy',meta:'Darbhanga · Bihar',score:252,acc:88.1,streak:8,tests:11,move:6,loc:'Darbhanga',grad:'135deg,#f43f5e,#e11d48'},
+      {rank:8,init:'AJ',name:'Akash Jha',meta:'Patna · Bihar',score:250,acc:87.5,streak:15,tests:15,move:1,loc:'Patna',grad:'135deg,#f59e0b,#d97706'},
+      {rank:9,init:'VR',name:'Vikash Raj',meta:'Purnia · Bihar',score:249,acc:87.0,streak:10,tests:12,move:-2,loc:'Purnia',grad:'135deg,#06b6d4,#0ea5e9'},
+      {rank:10,init:'SC',name:'Swati Chaudhary',meta:'Siwan · Bihar',score:248,acc:86.5,streak:13,tests:14,move:7,loc:'Siwan',grad:'135deg,#a21caf,#7c3aed'},
+      {rank:187,init:'RK',name:'Rahul Kumar',meta:'Patna · Bihar',score:247,acc:84.1,streak:12,tests:24,move:23,loc:'Patna',me:true,grad:'135deg,#4f46e5,#7c3aed'},
+    ]
+  },
+  district: {
+    label:'🏘️ District · Patna, Bihar',
+    chip:'🏘️ Patna',
+    total:'2,841',
+    myRank:14, myRankLabel:'District',
+    students:[
+      {rank:1,init:'AK',name:'Amit Kumar',meta:'Patna Science College',score:278,acc:95.1,streak:24,tests:20,move:0,loc:'Patna',grad:'135deg,#b45309,#d97706'},
+      {rank:2,init:'PK',name:'Pooja Kumari',meta:'Notre Dame Academy',score:271,acc:93.4,streak:18,tests:17,move:2,loc:'Patna',grad:'135deg,#64748b,#94a3b8'},
+      {rank:3,init:'AJ',name:'Akash Jha',meta:'FIITJEE Patna',score:264,acc:91.2,streak:16,tests:15,move:-1,loc:'Patna',grad:'135deg,#92400e,#b45309'},
+      {rank:4,init:'VR',name:'Vikash Raj',meta:'DPS Patna',score:261,acc:90.4,streak:20,tests:18,move:4,loc:'Patna',grad:'135deg,#0ea5e9,#0284c7'},
+      {rank:5,init:'SC',name:'Swati Chaudhary',meta:'BN College, Patna',score:258,acc:89.7,streak:14,tests:14,move:1,loc:'Patna',grad:'135deg,#7c3aed,#4f46e5'},
+      {rank:6,init:'AR',name:'Ankit Raj',meta:'Kendriya Vidyalaya, Patna',score:254,acc:88.9,streak:11,tests:13,move:-3,loc:'Patna',grad:'135deg,#10b981,#059669'},
+      {rank:7,init:'MP',name:'Meena Prasad',meta:'St Michaels High School',score:252,acc:88.1,streak:8,tests:11,move:5,loc:'Patna',grad:'135deg,#f43f5e,#e11d48'},
+      {rank:8,init:'SK2',name:'Sanjay Kumar',meta:'Miller High School, Patna',score:250,acc:87.5,streak:15,tests:15,move:0,loc:'Patna',grad:'135deg,#f59e0b,#d97706'},
+      {rank:9,init:'PP',name:'Puja Pandey',meta:'Gyan Niketan, Patna',score:249,acc:87.0,streak:10,tests:12,move:-1,loc:'Patna',grad:'135deg,#06b6d4,#0ea5e9'},
+      {rank:10,init:'NR',name:'Nikhil Ranjan',meta:'Loyola High School, Patna',score:248,acc:86.5,streak:13,tests:14,move:7,loc:'Patna',grad:'135deg,#a21caf,#7c3aed'},
+      {rank:11,init:'AS2',name:'Amita Sinha',meta:'Sanatan Dharma College',score:248,acc:86.2,streak:9,tests:13,move:2,loc:'Patna',grad:'135deg,#10b981,#059669'},
+      {rank:12,init:'RC',name:'Rajan Chandra',meta:'Patna Collegiate School',score:248,acc:86.0,streak:7,tests:11,move:-2,loc:'Patna',grad:'135deg,#64748b,#94a3b8'},
+      {rank:13,init:'KS',name:'Kavita Singh',meta:'St Josephs Convent',score:247,acc:85.8,streak:11,tests:12,move:4,loc:'Patna',grad:'135deg,#f43f5e,#be123c'},
+      {rank:14,init:'RK',name:'Rahul Kumar',meta:'FIITJEE Patna · Your School',score:247,acc:84.1,streak:12,tests:24,move:8,loc:'Patna',me:true,grad:'135deg,#4f46e5,#7c3aed'},
+      {rank:15,init:'DK',name:'Deepak Kumar',meta:'Patna Don Bosco School',score:246,acc:84.0,streak:6,tests:10,move:-3,loc:'Patna',grad:'135deg,#b45309,#92400e'},
+    ]
+  },
+  test: {
+    label:'📝 JEE Advanced Mock #4 · All Students',
+    chip:'📝 Mock #4',
+    total:'4,821',
+    myRank:41, myRankLabel:'This Mock',
+    students:[
+      {rank:1,init:'AS',name:'Aryan Sharma',meta:'Resonance, Kota',score:281,acc:96.8,streak:28,tests:18,move:0,loc:'Rajasthan',grad:'135deg,#b45309,#d97706'},
+      {rank:2,init:'PM',name:'Priya Mehta',meta:'DPS, Rajkot · Gujarat',score:274,acc:94.2,streak:21,tests:16,move:1,loc:'Gujarat',grad:'135deg,#64748b,#94a3b8'},
+      {rank:3,init:'NK',name:'Nidhi Khanna',meta:'FIITJEE, Delhi',score:271,acc:93.8,streak:19,tests:17,move:-1,loc:'Delhi',grad:'135deg,#0ea5e9,#0284c7'},
+      {rank:4,init:'AT',name:'Aditya Tiwari',meta:'Motion, Kota',score:268,acc:92.4,streak:22,tests:19,move:4,loc:'Rajasthan',grad:'135deg,#10b981,#059669'},
+      {rank:5,init:'SK',name:'Supriya Krishnan',meta:'Narayana, Chennai',score:265,acc:91.7,streak:17,tests:16,move:2,loc:'Tamil Nadu',grad:'135deg,#7c3aed,#4f46e5'},
+      {rank:6,init:'RV',name:'Rohan Verma',meta:'Allen, Kota',score:263,acc:91.0,streak:14,tests:15,move:-2,loc:'Rajasthan',grad:'135deg,#f59e0b,#d97706'},
+      {rank:7,init:'GN',name:'Gaurav Naik',meta:'Bangalore · Karnataka',score:260,acc:90.2,streak:12,tests:14,move:5,loc:'Karnataka',grad:'135deg,#a21caf,#7c3aed'},
+      {rank:8,init:'KP',name:'Kanika Prasad',meta:'Lucknow · UP',score:258,acc:89.6,streak:16,tests:15,move:0,loc:'UP',grad:'135deg,#f43f5e,#e11d48'},
+      {rank:9,init:'MS',name:'Mihir Shah',meta:'Surat · Gujarat',score:255,acc:88.9,streak:10,tests:12,move:3,loc:'Gujarat',grad:'135deg,#06b6d4,#0ea5e9'},
+      {rank:10,init:'AR',name:'Anjali Reddy',meta:'Hyderabad · Telangana',score:253,acc:88.2,streak:9,tests:11,move:-4,loc:'Telangana',grad:'135deg,#b45309,#92400e'},
+      {rank:41,init:'RK',name:'Rahul Kumar',meta:'Patna · Bihar',score:247,acc:84.1,streak:12,tests:24,move:12,loc:'Bihar',me:true,grad:'135deg,#4f46e5,#7c3aed'},
+    ]
+  },
+  school: {
+    label:'🏫 FIITJEE Patna · School Rankings',
+    chip:'🏫 FIITJEE Patna',
+    total:'312',
+    myRank:4, myRankLabel:'School',
+    students:[
+      {rank:1,init:'AK',name:'Amit Kumar',meta:'Class 12 · JEE Advanced',score:278,acc:95.1,streak:24,tests:20,move:0,loc:'Class 12',grad:'135deg,#b45309,#d97706'},
+      {rank:2,init:'AJ',name:'Akash Jha',meta:'Class 12 · JEE Advanced',score:264,acc:91.2,streak:16,tests:15,move:1,loc:'Class 12',grad:'135deg,#64748b,#94a3b8'},
+      {rank:3,init:'KS',name:'Kavita Singh',meta:'Class 12 · JEE Mains',score:252,acc:87.8,streak:11,tests:14,move:-1,loc:'Class 12',grad:'135deg,#10b981,#059669'},
+      {rank:4,init:'RK',name:'Rahul Kumar',meta:'Class 12 · JEE Advanced',score:247,acc:84.1,streak:12,tests:24,move:2,loc:'Class 12',me:true,grad:'135deg,#4f46e5,#7c3aed'},
+      {rank:5,init:'NR',name:'Nikhil Ranjan',meta:'Class 12 · JEE Advanced',score:248,acc:86.5,streak:13,tests:14,move:-1,loc:'Class 12',grad:'135deg,#a21caf,#7c3aed'},
+      {rank:6,init:'MP',name:'Mita Pandey',meta:'Class 11 · JEE Advanced',score:241,acc:83.4,streak:9,tests:18,move:3,loc:'Class 11',grad:'135deg,#f43f5e,#e11d48'},
+      {rank:7,init:'SB',name:'Suraj Bharti',meta:'Class 12 · JEE Mains',score:238,acc:82.7,streak:7,tests:11,move:0,loc:'Class 12',grad:'135deg,#06b6d4,#0ea5e9'},
+      {rank:8,init:'RD',name:'Rohini Das',meta:'Class 11 · JEE Advanced',score:235,acc:81.9,streak:15,tests:16,move:4,loc:'Class 11',grad:'135deg,#b45309,#d97706'},
+    ]
+  }
+};
+
+let currentScope = 'national';
+let currentData = scopeData.national.students;
+let sortField = 'rank';
+let sortDir = 1;
+
+function switchScope(scope) {
+  currentScope = scope;
+  document.querySelectorAll('.scope-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + scope)?.classList.add('active');
+
+  const data = scopeData[scope];
+  currentData = [...data.students];
+
+  // Update podium header
+  const ph = document.getElementById('podiumScope');
+  const pc = document.getElementById('podiumScopeChip');
+  if (ph) ph.textContent = data.label;
+  if (pc) pc.textContent = data.chip;
+
+  // Update my rank summary active state
+  document.querySelectorAll('.mrs-row').forEach(r => r.classList.remove('active-scope'));
+
+  renderTable(currentData);
+  showToast(`Showing ${data.label} — ${data.total} students`, '🏆');
+}
+
+function renderTable(students) {
+  const container = document.getElementById('lbRows');
+  let html = '';
+  let meShown = false;
+  const top10 = students.filter(s => s.rank <= 10);
+  const me = students.find(s => s.me);
+  const showGap = me && me.rank > 15;
+
+  students.forEach((s, i) => {
+    const rowClass = s.me ? 'lb-row me' : s.rank === 1 ? 'lb-row gold-row' : s.rank === 2 ? 'lb-row silver-row' : s.rank === 3 ? 'lb-row bronze-row' : 'lb-row';
+    const rankClass = s.rank === 1 ? 'rank-num r1' : s.rank === 2 ? 'rank-num r2' : s.rank === 3 ? 'rank-num r3' : 'rank-num';
+    const rankDisplay = s.rank <= 3 ? ['🥇','🥈','🥉'][s.rank-1] : '#' + s.rank;
+    const moveHtml = s.move > 0
+      ? `<div class="rank-move rm-up"><div class="rm-arrow">▲</div><div class="rm-num">${s.move}</div></div>`
+      : s.move < 0
+      ? `<div class="rank-move rm-down"><div class="rm-arrow">▼</div><div class="rm-num">${Math.abs(s.move)}</div></div>`
+      : `<div class="rank-move rm-same"><div class="rm-arrow">—</div></div>`;
+    const accPct = Math.round(s.acc);
+    const accColor = accPct >= 90 ? '#10b981' : accPct >= 75 ? '#f59e0b' : '#f43f5e';
+    const streakColor = s.streak >= 20 ? '#f43f5e' : s.streak >= 10 ? '#f59e0b' : '#9499b8';
+    const delay = Math.min(i, 14) * 0.04;
+
+    // Insert "you are here" gap indicator
+    if (showGap && s.me && !meShown) {
+      html += `<div class="you-here-divider"><span>· · ·</span><span>${s.rank - 10} positions below the top</span><div class="scroll-dots"><div class="sd"></div><div class="sd"></div><div class="sd"></div></div></div>`;
+      meShown = true;
+    }
+
+    html += `<div class="${rowClass}" style="animation-delay:${delay}s" onclick="viewProfile('${s.name}')">
+      <div class="rank-cell"><span class="${rankClass}">${rankDisplay}</span></div>
+      <div class="user-cell">
+        <div class="uc-av" style="background:linear-gradient(${s.grad});">${s.init}</div>
+        <div class="uc-info">
+          <div class="uc-name">${s.name}${s.me ? '<span class="uc-you-badge">YOU</span>' : ''}</div>
+          <div class="uc-meta">${s.meta}</div>
+        </div>
+      </div>
+      <div class="score-cell">${s.score} <span style="font-size:.65rem;color:var(--ink-faint);font-family:var(--fb);">pts</span></div>
+      <div class="acc-cell">
+        <div class="acc-bar"><div class="acc-fill" style="width:${s.acc}%;background:linear-gradient(90deg,${accColor},${accColor}cc)"></div></div>
+        <span class="acc-val" style="color:${accColor}">${s.acc}%</span>
+      </div>
+      <div class="streak-cell" style="color:${streakColor}">🔥 ${s.streak}d</div>
+      <div class="score-cell" style="font-size:.74rem;color:var(--ink-muted);">${s.tests}</div>
+      <div>${moveHtml}</div>
+    </div>`;
+  });
+  container.innerHTML = html;
+}
+
+function sortBy(field) {
+  if (sortField === field) sortDir *= -1; else { sortField = field; sortDir = -1; }
+  const fieldMap = { rank: 'rank', score: 'score', accuracy: 'acc', streak: 'streak', tests: 'tests' };
+  const key = fieldMap[field] || 'rank';
+  currentData.sort((a, b) => (a[key] - b[key]) * sortDir);
+  renderTable(currentData);
+  document.querySelectorAll('.lbt-th').forEach(th => th.classList.remove('sorted'));
+  event.target.closest('.lbt-th')?.classList.add('sorted');
+}
+
+function searchStudents(q) {
+  const all = scopeData[currentScope].students;
+  const filtered = !q ? all : all.filter(s =>
+    s.name.toLowerCase().includes(q.toLowerCase()) ||
+    s.meta.toLowerCase().includes(q.toLowerCase()) ||
+    s.loc.toLowerCase().includes(q.toLowerCase())
+  );
+  renderTable(filtered);
+}
+
+function filterExam(val) {
+  showToast(`Filtered: ${val === 'all' ? 'All Exams' : val.toUpperCase()}`, '📝');
+  renderTable(scopeData[currentScope].students);
+}
+function filterClass(val) {
+  showToast(`Filtered: ${val === 'all' ? 'All Classes' : 'Class ' + val}`, '📚');
+}
+function setTimeFilter(el, period) {
+  document.querySelectorAll('.tc').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  const labels = { week: 'This Week', month: 'This Month', alltime: 'All Time' };
+  showToast(`Showing ${labels[period]} rankings`, '📅');
+}
+function refreshData() {
+  const btn = document.querySelector('.refresh-btn');
+  btn.style.transform = 'rotate(360deg)';
+  btn.style.transition = 'transform .5s ease';
+  setTimeout(() => { btn.style.transform = ''; btn.style.transition = ''; }, 500);
+  showToast('Rankings refreshed — 4 minutes ago', '↻');
+}
+function viewProfile(name) {
+  showToast(`Viewing profile: ${name}`, '👤');
+}
+function shareRank() {
+  showToast('Rank card copied — share on Instagram, WhatsApp or LinkedIn!', '↗');
+}
+function goPage(n) {
+  document.querySelectorAll('.page-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  showToast(`Page ${n} of leaderboard`, '📄');
+}
+
+// ─── TOAST ───
+let toastTimer;
+function showToast(msg, icon = '✅') {
+  const t = document.getElementById('toast');
+  t.innerHTML = `<span style="font-size:1.1rem">${icon}</span> ${msg}`;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+// ─── SCROLL REVEAL ───
+const sro = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); });
+}, { threshold: 0.07 });
+document.querySelectorAll('.sr').forEach(el => sro.observe(el));
+
+// ─── INIT ───
+window.addEventListener('load', () => {
+  switchScope('national');
+  // animate progress bars
+  setTimeout(() => {
+    document.querySelectorAll('.sli-bar-fill,.acc-fill').forEach(el => {
+      const w = el.style.width; el.style.width = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => { el.style.width = w; }));
+    });
+  }, 400);
+});
+</script>
+</body>
+</html>

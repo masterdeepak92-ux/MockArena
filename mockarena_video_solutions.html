@@ -1,0 +1,1376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena – Video Solutions</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════
+   MOCKARENA — VIDEO SOLUTIONS
+   Design System: Slate + Electric Indigo
+═══════════════════════════════════════════ */
+:root {
+  --ink:#0d0f1a; --ink-soft:#1a1d2e; --ink-mid:#2a2d42; --ink-muted:#5a5f7a; --ink-faint:#9499b8;
+  --paper:#f4f5fb; --paper-warm:#eceef8; --paper-card:#ffffff;
+  --accent:#4f46e5; --accent-h:#4338ca;
+  --accent-l:rgba(79,70,229,0.08); --accent-glow:rgba(79,70,229,0.22);
+  --a2:#7c3aed;
+  --green:#10b981; --green-l:rgba(16,185,129,0.09);
+  --rose:#f43f5e; --rose-l:rgba(244,63,94,0.08);
+  --amber:#f59e0b; --amber-l:rgba(245,158,11,0.09);
+  --sky:#0ea5e9; --sky-l:rgba(14,165,233,0.09);
+  --gold:#eab308;
+  --border:rgba(13,15,26,0.08); --border-s:rgba(13,15,26,0.13);
+  --r-sm:8px; --r-md:14px; --r-lg:20px; --r-xl:28px; --r-2xl:36px;
+  --fd:'Manrope',sans-serif; --fb:'Inter',sans-serif; --fm:'JetBrains Mono',monospace;
+  --sh:0 2px 12px rgba(13,15,26,.06),0 1px 3px rgba(13,15,26,.04);
+  --sh-h:0 12px 40px rgba(79,70,229,.13),0 2px 8px rgba(13,15,26,.06);
+  --sh-dark:0 20px 60px rgba(0,0,0,.4);
+  --sw:240px; --th:64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;height:100%;}
+body{font-family:var(--fb);background:var(--paper);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;display:flex;overflow-x:hidden;}
+
+/* ══════════════════ SIDEBAR ══════════════════ */
+.sidebar{width:var(--sw);flex-shrink:0;background:var(--ink-soft);height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;z-index:300;}
+.sidebar::-webkit-scrollbar{width:3px;} .sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,.07);border-radius:4px;}
+.sb-logo{padding:20px 20px 16px;display:flex;align-items:center;gap:10px;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.06);}
+.sb-lm{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--a2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.88rem;font-weight:800;color:white;flex-shrink:0;box-shadow:0 4px 12px rgba(79,70,229,.4);}
+.sb-brand{font-family:var(--fd);font-size:1.1rem;font-weight:800;color:white;letter-spacing:-.03em;}
+.sb-user{padding:14px 20px;border-bottom:1px solid rgba(255,255,255,.06);display:flex;align-items:center;gap:10px;}
+.sb-av{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--a2));display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.82rem;font-weight:800;color:white;flex-shrink:0;}
+.sb-uname{font-size:.8rem;font-weight:700;color:white;}
+.sb-umeta{font-size:.66rem;color:rgba(255,255,255,.35);margin-top:2px;}
+.sb-streak{display:inline-flex;align-items:center;gap:4px;background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.25);border-radius:100px;padding:2px 7px;font-size:.6rem;font-weight:700;color:#6ee7b7;margin-top:4px;}
+.sb-lbl{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.18);text-transform:uppercase;letter-spacing:.1em;padding:14px 20px 5px;}
+.sb-nav{list-style:none;padding:0 10px;}
+.sb-nav li{margin-bottom:2px;}
+.sb-nav a{display:flex;align-items:center;gap:9px;padding:8px 12px;border-radius:var(--r-sm);text-decoration:none;font-size:.8rem;font-weight:600;color:rgba(255,255,255,.45);transition:all .18s;}
+.sb-nav a:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.85);}
+.sb-nav a.active{background:rgba(79,70,229,.22);color:white;border:1px solid rgba(79,70,229,.35);}
+.sb-nav .ni{width:17px;text-align:center;font-size:.88rem;flex-shrink:0;}
+.sb-nav .nb{margin-left:auto;font-size:.6rem;font-weight:700;background:var(--rose);color:white;padding:1px 6px;border-radius:100px;}
+.sb-foot{margin-top:auto;padding:14px 10px 20px;border-top:1px solid rgba(255,255,255,.06);}
+.sb-foot a{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:var(--r-sm);text-decoration:none;font-size:.76rem;font-weight:600;color:rgba(255,255,255,.3);transition:all .2s;}
+.sb-foot a:hover{color:rgba(255,255,255,.65);background:rgba(255,255,255,.05);}
+
+/* ══════════════════ MAIN ══════════════════ */
+.main{margin-left:var(--sw);flex:1;display:flex;flex-direction:column;min-width:0;}
+
+/* ══════════════════ TOPBAR ══════════════════ */
+.topbar{height:var(--th);background:rgba(244,245,251,.96);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:14px;position:sticky;top:0;z-index:200;}
+.tb-title{font-family:var(--fd);font-size:.95rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;}
+.tb-bc{font-size:.72rem;color:var(--ink-faint);}
+.tb-bc span{color:var(--accent);font-weight:600;}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:9px;}
+.search-pill{display:flex;align-items:center;gap:8px;background:white;border:1.5px solid var(--border-s);border-radius:var(--r-sm);padding:7px 14px;width:240px;transition:all .2s;}
+.search-pill:focus-within{border-color:var(--accent);}
+.search-pill input{border:none;outline:none;font-family:var(--fb);font-size:.8rem;color:var(--ink);background:transparent;width:100%;}
+.search-pill input::placeholder{color:var(--ink-faint);}
+.btn-p{font-family:var(--fb);font-size:.8rem;font-weight:700;color:white;background:linear-gradient(135deg,var(--accent),var(--a2));border:none;padding:8px 16px;border-radius:var(--r-sm);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-p:hover{box-shadow:0 4px 14px var(--accent-glow);transform:translateY(-1px);}
+.btn-g{font-family:var(--fb);font-size:.8rem;font-weight:600;color:var(--ink-muted);background:none;border:1.5px solid var(--border-s);padding:7px 14px;border-radius:var(--r-sm);cursor:pointer;transition:all .2s;}
+.btn-g:hover{border-color:var(--accent);color:var(--accent);}
+.tb-ic{width:36px;height:36px;border-radius:var(--r-sm);border:1.5px solid var(--border-s);background:white;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.95rem;position:relative;transition:all .2s;}
+.tb-ic:hover{border-color:var(--accent);}
+.tb-ic .dot{position:absolute;top:7px;right:7px;width:7px;height:7px;background:var(--rose);border-radius:50%;border:1.5px solid var(--paper);}
+
+/* ══════════════════ PAGE LAYOUT ══════════════════ */
+/* Two modes: library view and player view */
+.library-view{display:block;}
+.player-view{display:none;}
+.player-view.open{display:grid;grid-template-columns:1fr 380px;grid-template-rows:auto 1fr;min-height:calc(100vh - var(--th));}
+.library-view.hidden{display:none;}
+
+/* ══════════════════ LIBRARY: HERO BANNER ══════════════════ */
+.lib-hero{background:linear-gradient(150deg,#090c1a 0%,#11133a 45%,#1c0e5c 100%);padding:36px 32px;position:relative;overflow:hidden;}
+.lh-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;}
+.lh-orb1{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(79,70,229,.18),transparent 70%);top:-100px;right:-60px;pointer-events:none;}
+.lh-orb2{position:absolute;width:250px;height:250px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.12),transparent 70%);bottom:-50px;left:25%;pointer-events:none;}
+.lh-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;align-items:center;gap:40px;}
+.lh-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:4px 13px;font-family:var(--fm);font-size:.64rem;font-weight:500;color:rgba(255,255,255,.45);letter-spacing:.09em;text-transform:uppercase;margin-bottom:10px;}
+.lh-dot{width:5px;height:5px;border-radius:50%;background:#a78bfa;animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.lh-title{font-family:var(--fd);font-size:1.8rem;font-weight:800;color:white;letter-spacing:-.04em;line-height:1.15;margin-bottom:8px;}
+.lh-title span{background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.lh-sub{font-size:.84rem;color:rgba(255,255,255,.4);margin-bottom:22px;line-height:1.6;}
+.lh-stats{display:flex;gap:20px;flex-wrap:wrap;}
+.lhs{display:flex;align-items:center;gap:7px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.35);}
+.lhs .v{color:rgba(255,255,255,.8);font-weight:700;font-family:var(--fd);}
+.lhs-div{width:1px;height:16px;background:rgba(255,255,255,.1);}
+/* Progress ring */
+.lh-ring{flex-shrink:0;text-align:center;}
+.ring-svg{transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:rgba(255,255,255,.07);stroke-width:8;}
+.ring-fill{fill:none;stroke:url(#ringGrad);stroke-width:8;stroke-linecap:round;stroke-dasharray:440;transition:stroke-dashoffset 1.8s cubic-bezier(.4,0,.2,1);}
+.ring-text{position:relative;margin-top:-8px;}
+.ring-pct{font-family:var(--fd);font-size:1.5rem;font-weight:800;color:white;letter-spacing:-.04em;line-height:1;}
+.ring-lbl{font-size:.64rem;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+
+/* ══════════════════ FILTER BAR ══════════════════ */
+.filter-bar{background:white;border-bottom:1px solid var(--border);padding:0 32px;display:flex;align-items:center;gap:0;overflow-x:auto;position:sticky;top:var(--th);z-index:100;}
+.filter-bar::-webkit-scrollbar{height:0;}
+.fb-tab{flex-shrink:0;padding:16px 18px;font-size:.8rem;font-weight:600;color:var(--ink-muted);cursor:pointer;border-bottom:2.5px solid transparent;transition:all .2s;white-space:nowrap;display:flex;align-items:center;gap:6px;}
+.fb-tab:hover{color:var(--ink);}
+.fb-tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+.fb-tab .cnt{font-size:.62rem;font-weight:700;background:var(--accent-l);color:var(--accent);padding:1px 6px;border-radius:100px;}
+.fb-sep{width:1px;height:20px;background:var(--border);margin:0 8px;flex-shrink:0;align-self:center;}
+.fb-filters{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;padding:8px 0;}
+.fb-sel{font-family:var(--fb);font-size:.74rem;font-weight:600;color:var(--ink-muted);border:1.5px solid var(--border-s);background:var(--paper);border-radius:var(--r-sm);padding:6px 10px;cursor:pointer;outline:none;transition:border-color .2s;}
+.fb-sel:focus{border-color:var(--accent);}
+
+/* ══════════════════ LIBRARY CONTENT ══════════════════ */
+.lib-content{padding:28px 32px;}
+
+/* Section heading */
+.sec-h{font-family:var(--fd);font-size:.9rem;font-weight:800;color:var(--ink);letter-spacing:-.03em;margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.sec-h::before{content:'';width:3px;height:16px;background:linear-gradient(180deg,var(--accent),var(--a2));border-radius:2px;flex-shrink:0;}
+.sec-h-r{margin-left:auto;font-size:.74rem;font-weight:600;color:var(--accent);cursor:pointer;display:flex;align-items:center;gap:4px;}
+
+/* ── FEATURED VIDEO ROW ── */
+.featured-row{display:grid;grid-template-columns:2fr 1fr 1fr;gap:16px;margin-bottom:32px;}
+.vid-card{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--sh);cursor:pointer;transition:all .3s;position:relative;}
+.vid-card:hover{box-shadow:var(--sh-h);transform:translateY(-3px);}
+.vid-thumb{position:relative;overflow:hidden;background:var(--ink-soft);}
+.vid-card.featured .vid-thumb{height:200px;}
+.vid-card:not(.featured) .vid-thumb{height:130px;}
+.thumb-grad{position:absolute;inset:0;background:linear-gradient(135deg,#0d0f1a,#1a1060);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:8px;}
+.thumb-formula{font-family:var(--fm);font-size:.72rem;color:rgba(165,180,252,.7);text-align:center;padding:0 16px;line-height:1.6;}
+.vid-card.featured .thumb-formula{font-size:.85rem;}
+.play-overlay{width:52px;height:52px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;font-size:1.1rem;border:1.5px solid rgba(255,255,255,.2);transition:all .2s;flex-shrink:0;}
+.vid-card.featured .play-overlay{width:64px;height:64px;font-size:1.4rem;}
+.vid-card:hover .play-overlay{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 8px rgba(79,70,229,.2);}
+.thumb-duration{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.7);color:white;font-family:var(--fm);font-size:.65rem;font-weight:500;padding:3px 8px;border-radius:5px;}
+.thumb-new{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,var(--rose),#e11d48);color:white;font-size:.6rem;font-weight:800;padding:3px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.04em;}
+.thumb-hot{position:absolute;top:10px;left:10px;background:linear-gradient(135deg,var(--amber),#d97706);color:white;font-size:.6rem;font-weight:800;padding:3px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.04em;}
+.thumb-progress{position:absolute;bottom:0;left:0;right:0;height:3px;background:rgba(255,255,255,.1);}
+.thumb-progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--a2));transition:width .3s;}
+.vid-info{padding:14px 16px;}
+.vid-card.featured .vid-info{padding:18px 20px;}
+.vid-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px;}
+.vt{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:100px;}
+.vt-phy{background:var(--sky-l);color:#0369a1;border:1px solid rgba(14,165,233,.2);}
+.vt-che{background:var(--green-l);color:#047857;border:1px solid rgba(16,185,129,.2);}
+.vt-mat{background:var(--accent-l);color:var(--accent);border:1px solid rgba(79,70,229,.2);}
+.vt-bio{background:var(--amber-l);color:#92400e;border:1px solid rgba(245,158,11,.2);}
+.vt-jee{background:rgba(124,58,237,.08);color:var(--a2);border:1px solid rgba(124,58,237,.2);}
+.vt-neet{background:var(--rose-l);color:#be123c;border:1px solid rgba(244,63,94,.2);}
+.vid-title{font-family:var(--fd);font-size:.85rem;font-weight:800;color:var(--ink);line-height:1.4;letter-spacing:-.02em;margin-bottom:6px;transition:color .2s;}
+.vid-card.featured .vid-title{font-size:1rem;}
+.vid-card:hover .vid-title{color:var(--accent);}
+.vid-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+.vm-item{font-size:.66rem;font-weight:600;color:var(--ink-faint);display:flex;align-items:center;gap:3px;}
+.vm-div{width:3px;height:3px;border-radius:50%;background:var(--border-s);}
+.vid-instructor{display:flex;align-items:center;gap:7px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);}
+.vi-av{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.55rem;font-weight:800;color:white;flex-shrink:0;}
+.vi-name{font-size:.7rem;font-weight:700;color:var(--ink-muted);}
+.vi-badge{font-size:.58rem;font-weight:800;background:linear-gradient(135deg,var(--amber),#d97706);color:white;padding:1px 6px;border-radius:100px;text-transform:uppercase;}
+.vid-rating{margin-left:auto;display:flex;align-items:center;gap:3px;font-size:.68rem;font-weight:700;color:var(--gold);}
+
+/* ── VIDEO GRID ── */
+.vid-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:32px;}
+.vid-grid-card{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;box-shadow:var(--sh);cursor:pointer;transition:all .3s;}
+.vid-grid-card:hover{box-shadow:var(--sh-h);transform:translateY(-3px);}
+.vgc-thumb{height:120px;background:var(--ink-soft);position:relative;overflow:hidden;}
+.vgc-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
+.vgc-po{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:.9rem;transition:all .2s;}
+.vid-grid-card:hover .vgc-po{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 6px rgba(79,70,229,.2);}
+.vgc-dur{position:absolute;bottom:7px;right:8px;background:rgba(0,0,0,.7);color:white;font-family:var(--fm);font-size:.62rem;padding:2px 7px;border-radius:4px;}
+.vgc-prog{position:absolute;bottom:0;left:0;right:0;height:2.5px;background:rgba(255,255,255,.1);}
+.vgc-pf{height:100%;background:linear-gradient(90deg,var(--accent),var(--a2));}
+.vgc-info{padding:11px 12px;}
+.vgc-title{font-size:.78rem;font-weight:700;color:var(--ink);line-height:1.4;letter-spacing:-.01em;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;transition:color .2s;}
+.vid-grid-card:hover .vgc-title{color:var(--accent);}
+.vgc-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.vgc-tag{font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:100px;}
+.vgc-views{font-size:.62rem;color:var(--ink-faint);margin-left:auto;}
+
+/* ── CHAPTER TRACK ── */
+.chapter-track{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--r-lg);padding:20px;margin-bottom:28px;box-shadow:var(--sh);}
+.ct-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.ct-title{font-family:var(--fd);font-size:.88rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;}
+.ct-progress{font-size:.72rem;color:var(--ink-muted);}
+.ct-progress strong{color:var(--accent);font-weight:700;}
+.chapters-scroll{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;}
+.chapters-scroll::-webkit-scrollbar{height:4px;} .chapters-scroll::-webkit-scrollbar-thumb{background:var(--border-s);border-radius:4px;}
+.chapter-pill{flex-shrink:0;background:var(--paper);border:1.5px solid var(--border-s);border-radius:var(--r-md);padding:12px 16px;cursor:pointer;transition:all .2s;text-align:center;min-width:110px;}
+.chapter-pill:hover{border-color:var(--accent);background:var(--accent-l);}
+.chapter-pill.done{border-color:rgba(16,185,129,.3);background:var(--green-l);}
+.chapter-pill.current{border-color:var(--accent);background:var(--accent-l);box-shadow:0 4px 12px var(--accent-glow);}
+.chapter-pill.locked{opacity:.5;cursor:not-allowed;}
+.cp-icon{font-size:1.2rem;margin-bottom:5px;}
+.cp-name{font-size:.72rem;font-weight:700;color:var(--ink);line-height:1.3;}
+.cp-count{font-size:.62rem;color:var(--ink-faint);margin-top:2px;}
+.cp-bar{height:3px;border-radius:2px;background:var(--paper-warm);margin-top:7px;overflow:hidden;}
+.cp-bar-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--a2));}
+.chapter-pill.done .cp-bar-fill{background:linear-gradient(90deg,var(--green),#059669);}
+
+/* ══════════════════ PLAYER VIEW ══════════════════ */
+/* Left col: player + content */
+.player-left{display:flex;flex-direction:column;border-right:1px solid var(--border);overflow-y:auto;max-height:calc(100vh - var(--th));}
+/* Right col: tabs panel */
+.player-right{overflow-y:auto;max-height:calc(100vh - var(--th));background:var(--paper-card);}
+
+/* ── VIDEO PLAYER ── */
+.video-player-wrap{background:#000;position:relative;width:100%;}
+.vp-screen{position:relative;background:var(--ink-soft);aspect-ratio:16/9;overflow:hidden;cursor:pointer;}
+.vp-screen-inner{width:100%;height:100%;display:flex;align-items:center;justify-content:center;flex-direction:column;background:linear-gradient(150deg,#090c1a,#1a1060);}
+.vp-formula-display{font-family:var(--fm);font-size:1.1rem;color:#a5b4fc;text-align:center;padding:0 40px;line-height:2;opacity:.9;}
+.vp-big-play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transition:opacity .2s;}
+.vp-big-play-btn{width:72px;height:72px;border-radius:50%;background:rgba(79,70,229,.85);display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:white;cursor:pointer;transition:all .2s;border:2px solid rgba(255,255,255,.2);backdrop-filter:blur(4px);}
+.vp-big-play-btn:hover{background:var(--accent);transform:scale(1.08);box-shadow:0 0 0 12px rgba(79,70,229,.2);}
+.vp-playing .vp-big-play{opacity:0;pointer-events:none;}
+/* Bookmark markers on timeline */
+.bookmark-marker{position:absolute;top:-4px;width:3px;height:18px;background:var(--amber);border-radius:2px;transform:translateX(-50%);cursor:pointer;z-index:5;}
+.bookmark-marker::after{content:attr(data-label);position:absolute;bottom:calc(100% + 4px);left:50%;transform:translateX(-50%);background:var(--ink-soft);color:white;font-size:.6rem;font-weight:600;padding:3px 7px;border-radius:5px;white-space:nowrap;display:none;pointer-events:none;}
+.bookmark-marker:hover::after{display:block;}
+/* Custom controls */
+.vp-controls{background:linear-gradient(transparent,rgba(0,0,0,.85));padding:16px 18px 14px;position:absolute;bottom:0;left:0;right:0;transition:opacity .2s;}
+.vp-timeline-wrap{position:relative;margin-bottom:12px;}
+.vp-timeline{height:4px;border-radius:2px;background:rgba(255,255,255,.15);cursor:pointer;position:relative;transition:height .15s;}
+.vp-timeline:hover{height:7px;}
+.vp-tl-buffered{position:absolute;inset:0;border-radius:2px;background:rgba(255,255,255,.25);}
+.vp-tl-played{position:absolute;top:0;left:0;bottom:0;border-radius:2px;background:linear-gradient(90deg,var(--accent),var(--a2));pointer-events:none;}
+.vp-tl-thumb{position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;background:white;box-shadow:0 2px 6px rgba(0,0,0,.4);pointer-events:none;opacity:0;transition:opacity .15s;}
+.vp-timeline:hover .vp-tl-thumb{opacity:1;}
+.vp-ctrl-row{display:flex;align-items:center;gap:10px;}
+.vc-btn{width:34px;height:34px;border-radius:8px;background:transparent;border:none;color:rgba(255,255,255,.8);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all .18s;}
+.vc-btn:hover{background:rgba(255,255,255,.1);color:white;}
+.vc-btn.active{color:var(--accent);}
+.vc-play{font-size:1.1rem;}
+.vc-time{font-family:var(--fm);font-size:.72rem;color:rgba(255,255,255,.7);white-space:nowrap;}
+.vc-vol-wrap{display:flex;align-items:center;gap:6px;}
+.vc-vol-slider{-webkit-appearance:none;width:70px;height:3px;border-radius:2px;background:rgba(255,255,255,.2);cursor:pointer;outline:none;}
+.vc-vol-slider::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:white;}
+.vc-spacer{flex:1;}
+.speed-btn{font-family:var(--fm);font-size:.7rem;font-weight:700;color:rgba(255,255,255,.7);background:rgba(255,255,255,.1);border:none;border-radius:6px;padding:4px 9px;cursor:pointer;transition:all .18s;}
+.speed-btn:hover{background:rgba(255,255,255,.18);color:white;}
+.speed-btn.active{background:var(--accent);color:white;}
+/* Chapter popover on timeline */
+.chapter-popover{position:absolute;bottom:calc(100% + 10px);background:var(--ink-soft);border-radius:7px;padding:5px 10px;font-size:.68rem;font-weight:700;color:white;white-space:nowrap;transform:translateX(-50%);pointer-events:none;display:none;}
+
+/* ── PLAYER INFO SECTION ── */
+.player-info{padding:22px 24px;border-bottom:1px solid var(--border);}
+.pi-tags{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
+.pi-title{font-family:var(--fd);font-size:1.1rem;font-weight:800;color:var(--ink);line-height:1.4;letter-spacing:-.03em;margin-bottom:10px;}
+.pi-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:14px;}
+.pi-stat{font-size:.72rem;font-weight:600;color:var(--ink-muted);display:flex;align-items:center;gap:4px;}
+.pi-actions{display:flex;gap:8px;flex-wrap:wrap;}
+.pa-btn{display:inline-flex;align-items:center;gap:6px;font-size:.76rem;font-weight:700;padding:8px 14px;border-radius:var(--r-sm);border:1.5px solid var(--border-s);background:var(--paper);color:var(--ink-muted);cursor:pointer;transition:all .18s;}
+.pa-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-l);}
+.pa-btn.active{border-color:var(--amber);color:var(--amber);background:var(--amber-l);}
+
+/* ── INSTRUCTOR STRIP ── */
+.instructor-strip{padding:16px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,rgba(79,70,229,.03),rgba(124,58,237,.02));}
+.is-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--amber),#d97706);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.95rem;font-weight:800;color:white;flex-shrink:0;box-shadow:0 4px 12px rgba(245,158,11,.3);}
+.is-name{font-family:var(--fd);font-size:.9rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;}
+.is-role{font-size:.7rem;color:var(--ink-muted);margin-top:2px;}
+.is-chips{display:flex;gap:5px;margin-top:4px;flex-wrap:wrap;}
+.is-chip{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:100px;}
+.follow-btn{margin-left:auto;font-size:.76rem;font-weight:700;padding:8px 16px;border-radius:var(--r-sm);background:linear-gradient(135deg,var(--accent),var(--a2));color:white;border:none;cursor:pointer;transition:all .2s;flex-shrink:0;}
+.follow-btn:hover{box-shadow:0 4px 14px var(--accent-glow);transform:translateY(-1px);}
+
+/* ── CHAPTER LIST (in player) ── */
+.chapter-list{padding:18px 24px;border-bottom:1px solid var(--border);}
+.cl-title{font-family:var(--fd);font-size:.82rem;font-weight:800;color:var(--ink);letter-spacing:-.02em;margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.cl-title::before{content:'';width:3px;height:14px;background:linear-gradient(180deg,var(--accent),var(--a2));border-radius:2px;display:inline-block;}
+.chapter-item{display:flex;align-items:center;gap:12px;padding:9px 11px;border-radius:var(--r-sm);cursor:pointer;transition:all .18s;margin-bottom:3px;}
+.chapter-item:hover{background:var(--paper);}
+.chapter-item.active{background:var(--accent-l);border:1px solid rgba(79,70,229,.15);}
+.ci-num{font-family:var(--fm);font-size:.64rem;font-weight:600;color:var(--ink-faint);width:18px;flex-shrink:0;}
+.ci-dot{width:8px;height:8px;border-radius:50%;border:1.5px solid var(--border-s);flex-shrink:0;}
+.chapter-item.done .ci-dot{background:var(--green);border-color:var(--green);}
+.chapter-item.active .ci-dot{background:var(--accent);border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,.2);}
+.ci-info{flex:1;min-width:0;}
+.ci-name{font-size:.78rem;font-weight:700;color:var(--ink);line-height:1.3;}
+.chapter-item.active .ci-name{color:var(--accent);}
+.ci-sub{font-size:.64rem;color:var(--ink-faint);margin-top:1px;}
+.ci-dur{font-family:var(--fm);font-size:.66rem;color:var(--ink-faint);flex-shrink:0;}
+
+/* ══════════════════ RIGHT PANEL TABS ══════════════════ */
+.panel-tabs{display:flex;background:var(--paper);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10;}
+.pt{flex:1;padding:13px 6px;font-size:.72rem;font-weight:700;color:var(--ink-muted);text-align:center;cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;}
+.pt:hover{color:var(--ink);}
+.pt.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--paper-card);}
+.panel-body{padding:16px;}
+
+/* ── TRANSCRIPT PANEL ── */
+.transcript-panel{display:block;}
+.transcript-search{display:flex;align-items:center;gap:8px;background:var(--paper);border:1.5px solid var(--border-s);border-radius:var(--r-sm);padding:8px 12px;margin-bottom:12px;}
+.transcript-search:focus-within{border-color:var(--accent);}
+.transcript-search input{border:none;background:none;outline:none;font-family:var(--fb);font-size:.78rem;color:var(--ink);flex:1;}
+.transcript-line{display:flex;gap:10px;padding:9px 10px;border-radius:var(--r-sm);cursor:pointer;transition:all .18s;margin-bottom:2px;}
+.transcript-line:hover{background:var(--paper);}
+.transcript-line.active{background:var(--accent-l);border-left:3px solid var(--accent);}
+.tl-time{font-family:var(--fm);font-size:.64rem;font-weight:600;color:var(--accent);flex-shrink:0;width:36px;padding-top:1px;}
+.tl-text{font-size:.76rem;line-height:1.6;color:var(--ink-muted);}
+.transcript-line.active .tl-text{color:var(--ink);font-weight:500;}
+.transcript-line.formula-line .tl-text{font-family:var(--fm);font-size:.7rem;color:var(--accent);background:var(--accent-l);padding:3px 7px;border-radius:4px;}
+
+/* ── NOTES PANEL ── */
+.notes-panel{display:none;}
+.note-item{display:flex;gap:10px;background:var(--paper);border:1px solid var(--border);border-radius:var(--r-sm);padding:10px 12px;margin-bottom:8px;cursor:pointer;transition:all .2s;}
+.note-item:hover{border-color:var(--accent);}
+.ni-ts{font-family:var(--fm);font-size:.62rem;font-weight:700;color:var(--accent);flex-shrink:0;background:var(--accent-l);padding:2px 7px;border-radius:4px;height:fit-content;}
+.ni-text{font-size:.76rem;line-height:1.6;color:var(--ink-muted);flex:1;}
+.ni-text strong{color:var(--ink);}
+.add-note-wrap{display:flex;flex-direction:column;gap:8px;margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
+.note-input{font-family:var(--fb);font-size:.78rem;color:var(--ink);border:1.5px solid var(--border-s);background:var(--paper);border-radius:var(--r-sm);padding:10px 12px;resize:none;outline:none;min-height:80px;line-height:1.6;transition:border-color .2s;}
+.note-input:focus{border-color:var(--accent);}
+.note-input::placeholder{color:var(--ink-faint);}
+.note-ts-label{font-size:.7rem;font-weight:600;color:var(--ink-muted);display:flex;align-items:center;gap:6px;}
+.note-ts-badge{font-family:var(--fm);font-size:.66rem;background:var(--accent-l);color:var(--accent);border:1px solid rgba(79,70,229,.2);padding:2px 8px;border-radius:4px;}
+
+/* ── BOOKMARKS PANEL ── */
+.bookmarks-panel{display:none;}
+.bm-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .2s;}
+.bm-item:last-child{border-bottom:none;}
+.bm-item:hover .bm-title{color:var(--accent);}
+.bm-thumb{width:80px;height:48px;border-radius:7px;background:var(--ink-soft);flex-shrink:0;overflow:hidden;display:flex;align-items:center;justify-content:center;font-size:1rem;position:relative;}
+.bm-ts{position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.7);color:white;font-family:var(--fm);font-size:.55rem;padding:1px 5px;border-radius:3px;}
+.bm-info{flex:1;min-width:0;}
+.bm-title{font-size:.76rem;font-weight:700;color:var(--ink);line-height:1.4;transition:color .2s;}
+.bm-sub{font-size:.64rem;color:var(--ink-faint);margin-top:2px;}
+
+/* ── UP NEXT PANEL ── */
+.upnext-panel{display:none;}
+.un-item{display:flex;gap:10px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .2s;}
+.un-item:last-child{border-bottom:none;}
+.un-item:hover .un-title{color:var(--accent);}
+.un-thumb{width:90px;height:56px;border-radius:7px;background:var(--ink-soft);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.9rem;position:relative;overflow:hidden;}
+.un-dur{position:absolute;bottom:4px;right:4px;background:rgba(0,0,0,.7);color:white;font-family:var(--fm);font-size:.56rem;padding:1px 5px;border-radius:3px;}
+.un-weak{position:absolute;top:4px;left:4px;background:var(--rose);color:white;font-size:.54rem;font-weight:800;padding:1px 5px;border-radius:3px;text-transform:uppercase;}
+.un-info{flex:1;}
+.un-title{font-size:.76rem;font-weight:700;color:var(--ink);line-height:1.35;transition:color .2s;}
+.un-meta{font-size:.63rem;color:var(--ink-faint);margin-top:3px;}
+.un-reason{font-size:.62rem;font-weight:700;color:var(--rose);margin-top:3px;}
+
+/* ── WATCH PARTY PANEL ── */
+.wp-panel{display:none;}
+.wp-status{background:linear-gradient(135deg,rgba(79,70,229,.06),rgba(124,58,237,.03));border:1.5px solid rgba(79,70,229,.15);border-radius:var(--r-md);padding:14px;margin-bottom:14px;}
+.wp-title{font-family:var(--fd);font-size:.84rem;font-weight:800;color:var(--ink);margin-bottom:4px;}
+.wp-sub{font-size:.7rem;color:var(--ink-muted);margin-bottom:12px;line-height:1.5;}
+.wp-code{display:flex;align-items:center;gap:8px;background:var(--paper-card);border:1.5px solid var(--border-s);border-radius:var(--r-sm);padding:8px 12px;margin-bottom:10px;}
+.wp-code-val{font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--accent);letter-spacing:.1em;flex:1;}
+.wp-copy{font-size:.68rem;font-weight:700;color:var(--ink-muted);background:var(--paper);border:1px solid var(--border-s);border-radius:5px;padding:3px 8px;cursor:pointer;transition:all .2s;}
+.wp-copy:hover{border-color:var(--accent);color:var(--accent);}
+.wp-members{display:flex;flex-direction:column;gap:8px;}
+.wp-member{display:flex;align-items:center;gap:9px;}
+.wp-mav{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.64rem;font-weight:800;color:white;flex-shrink:0;}
+.wp-mname{font-size:.76rem;font-weight:700;color:var(--ink);flex:1;}
+.wp-mstatus{font-size:.62rem;font-weight:600;display:flex;align-items:center;gap:4px;}
+.wp-sync{font-size:.62rem;font-weight:700;color:var(--green);background:var(--green-l);padding:2px 7px;border-radius:100px;border:1px solid rgba(16,185,129,.2);}
+
+/* ══════════════════ TOAST & ANIMATIONS ══════════════════ */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--ink-soft);color:white;padding:13px 18px;border-radius:var(--r-md);font-size:.8rem;font-weight:600;z-index:9999;box-shadow:0 8px 32px rgba(13,15,26,.3);display:flex;align-items:center;gap:9px;transform:translateY(80px);opacity:0;transition:all .35s cubic-bezier(.4,0,.2,1);max-width:340px;}
+.toast.show{transform:translateY(0);opacity:1;}
+
+@keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.fu{opacity:0;animation:fadeInUp .5s ease forwards;}
+.fu-1{animation-delay:.05s}.fu-2{animation-delay:.12s}.fu-3{animation-delay:.19s}.fu-4{animation-delay:.26s}.fu-5{animation-delay:.33s}
+.sr{opacity:0;transform:translateY(12px);transition:opacity .4s ease,transform .4s ease;}
+.sr.vis{opacity:1;transform:translateY(0);}
+
+@media(max-width:1200px){.featured-row{grid-template-columns:1fr 1fr;}.vid-grid{grid-template-columns:repeat(3,1fr);}
+  .player-view.open{grid-template-columns:1fr;}}
+@media(max-width:900px){.vid-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){.sidebar{transform:translateX(-100%)}.main{margin-left:0}.vid-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════ SIDEBAR ══════════════════ -->
+<aside class="sidebar">
+  <a href="mockarena_dashboard.html" class="sb-logo">
+    <div class="sb-lm">MA</div>
+    <span class="sb-brand">MockArena</span>
+  </a>
+  <div class="sb-user">
+    <div class="sb-av">RK</div>
+    <div>
+      <div class="sb-uname">Rahul Kumar</div>
+      <div class="sb-umeta">JEE Advanced · Class 12</div>
+      <div class="sb-streak">🔥 12-day streak</div>
+    </div>
+  </div>
+  <div class="sb-lbl">Main</div>
+  <ul class="sb-nav">
+    <li><a href="mockarena_dashboard.html"><span class="ni">🏠</span> Dashboard</a></li>
+    <li><a href="mockarena_mocktest.html"><span class="ni">📝</span> Mock Tests</a></li>
+    <li><a href="mockarena_results.html"><span class="ni">📊</span> My Results</a></li>
+    <li><a href="#"><span class="ni">📅</span> Study Planner</a></li>
+  </ul>
+  <div class="sb-lbl">Resources</div>
+  <ul class="sb-nav">
+    <li><a href="#"><span class="ni">📄</span> Previous Year Papers</a></li>
+    <li><a href="mockarena_video_solutions.html" class="active"><span class="ni">🎬</span> Video Solutions</a></li>
+    <li><a href="mockarena_doubt_forum.html"><span class="ni">💬</span> Doubt Forum <span class="nb">14</span></a></li>
+    <li><a href="mockarena_advanced_qa.html"><span class="ni">⚡</span> Advanced Q&A</a></li>
+    <li><a href="#"><span class="ni">📖</span> Notes & Formulas</a></li>
+  </ul>
+  <div class="sb-lbl">Performance</div>
+  <ul class="sb-nav">
+    <li><a href="#"><span class="ni">🏆</span> Leaderboard</a></li>
+    <li><a href="#"><span class="ni">🎯</span> Analytics</a></li>
+    <li><a href="#"><span class="ni">🏅</span> Achievements</a></li>
+  </ul>
+  <div class="sb-foot">
+    <a href="#">⚙️ Settings</a>
+    <a href="#">❓ Help</a>
+    <a href="mockarena_login.html">🚪 Sign Out</a>
+  </div>
+</aside>
+
+<!-- ══════════════════ MAIN ══════════════════ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="topbar">
+    <div>
+      <div class="tb-title">Video Solutions</div>
+      <div class="tb-bc">Resources → <span>Video Solutions</span></div>
+    </div>
+    <div class="tb-r">
+      <div class="search-pill">
+        <span style="color:var(--ink-faint);font-size:.9rem;">🔍</span>
+        <input type="text" placeholder="Search videos — e.g. 'Rotational Motion JEE'…" id="vidSearch" oninput="searchVideos(this.value)">
+      </div>
+      <div class="tb-ic"><div class="dot"></div>🔔</div>
+      <button class="btn-g" onclick="openWatchParty()">👥 Watch Party</button>
+      <button class="btn-p" onclick="resumeLastVideo()">▶ Resume Last</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════
+       LIBRARY VIEW
+  ══════════════════════════════════════ -->
+  <div class="library-view" id="libraryView">
+
+    <!-- HERO BANNER -->
+    <div class="lib-hero fu fu-1">
+      <div class="lh-grid"></div>
+      <div class="lh-orb1"></div><div class="lh-orb2"></div>
+      <div class="lh-inner">
+        <div>
+          <div class="lh-tag"><div class="lh-dot"></div>Personalised to your weak areas</div>
+          <div class="lh-title">Master JEE Advanced with<br><span>Expert Video Solutions</span></div>
+          <div class="lh-sub">IIT alumni & top-rank faculty explain every concept, step by step. Synced transcript, timestamped notes, Watch Party — all in one place.</div>
+          <div class="lh-stats">
+            <span class="lhs"><span class="v">2,400+</span> Videos</span>
+            <div class="lhs-div"></div>
+            <span class="lhs"><span class="v">48</span> Expert Instructors</span>
+            <div class="lhs-div"></div>
+            <span class="lhs">Covers <span class="v">JEE · NEET · Boards</span></span>
+            <div class="lhs-div"></div>
+            <span class="lhs"><span class="v">94%</span> Satisfaction</span>
+          </div>
+        </div>
+        <div class="lh-ring">
+          <svg class="ring-svg" width="120" height="120" viewBox="0 0 120 120">
+            <defs>
+              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#4f46e5"/>
+                <stop offset="100%" stop-color="#7c3aed"/>
+              </linearGradient>
+            </defs>
+            <circle class="ring-bg" cx="60" cy="60" r="52"/>
+            <circle class="ring-fill" cx="60" cy="60" r="52" id="ringFill" style="stroke-dashoffset:176;"/>
+          </svg>
+          <div class="ring-text">
+            <div class="ring-pct">60%</div>
+            <div class="ring-lbl">Course Complete</div>
+          </div>
+          <div style="margin-top:10px;font-size:.68rem;color:rgba(255,255,255,.3);text-align:center;">148 / 248 watched</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FILTER TABS -->
+    <div class="filter-bar fu fu-2">
+      <div class="fb-tab active" onclick="setSubTab(this,'all')">All Subjects</div>
+      <div class="fb-tab" onclick="setSubTab(this,'physics')">⚛️ Physics <span class="cnt">840</span></div>
+      <div class="fb-tab" onclick="setSubTab(this,'chemistry')">🧪 Chemistry <span class="cnt">720</span></div>
+      <div class="fb-tab" onclick="setSubTab(this,'maths')">📐 Maths <span class="cnt">660</span></div>
+      <div class="fb-tab" onclick="setSubTab(this,'biology')">🌱 Biology <span class="cnt">180</span></div>
+      <div class="fb-sep"></div>
+      <div class="fb-tab" onclick="setSubTab(this,'pyq')">📄 PYQ Solutions</div>
+      <div class="fb-tab" onclick="setSubTab(this,'shorts')">⚡ Quick Clips</div>
+      <div class="fb-tab" onclick="setSubTab(this,'new')">🆕 New</div>
+      <div class="fb-filters">
+        <select class="fb-sel" onchange="filterSort(this.value)">
+          <option>Sort: Recommended</option>
+          <option>Sort: Most Watched</option>
+          <option>Sort: Newest First</option>
+          <option>Sort: Shortest First</option>
+          <option>Sort: Highest Rated</option>
+        </select>
+        <select class="fb-sel">
+          <option>All Classes</option>
+          <option>Class 11</option>
+          <option>Class 12</option>
+          <option>Dropper</option>
+        </select>
+        <select class="fb-sel">
+          <option>All Exams</option>
+          <option>JEE Advanced</option>
+          <option>JEE Mains</option>
+          <option>NEET</option>
+          <option>CBSE Boards</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="lib-content">
+
+      <!-- CHAPTER TRACK -->
+      <div class="chapter-track fu fu-2">
+        <div class="ct-header">
+          <div class="ct-title">📚 Your Physics Learning Track</div>
+          <div class="ct-progress">Progress: <strong>7 / 12 chapters</strong> · 58% complete</div>
+        </div>
+        <div class="chapters-scroll">
+          <div class="chapter-pill done" onclick="openPlayer('electrostatics')">
+            <div class="cp-icon">⚡</div>
+            <div class="cp-name">Electrostatics</div>
+            <div class="cp-count">18 videos</div>
+            <div class="cp-bar"><div class="cp-bar-fill" style="width:100%"></div></div>
+          </div>
+          <div class="chapter-pill done" onclick="openPlayer('current')">
+            <div class="cp-icon">🔋</div>
+            <div class="cp-name">Current Electricity</div>
+            <div class="cp-count">14 videos</div>
+            <div class="cp-bar"><div class="cp-bar-fill" style="width:100%"></div></div>
+          </div>
+          <div class="chapter-pill done" onclick="openPlayer('magnetism')">
+            <div class="cp-icon">🧲</div>
+            <div class="cp-name">Magnetism</div>
+            <div class="cp-count">16 videos</div>
+            <div class="cp-bar"><div class="cp-bar-fill" style="width:100%"></div></div>
+          </div>
+          <div class="chapter-pill current" onclick="openPlayer('em_induction')">
+            <div class="cp-icon">🌀</div>
+            <div class="cp-name">EM Induction</div>
+            <div class="cp-count">12 videos</div>
+            <div class="cp-bar"><div class="cp-bar-fill" style="width:42%"></div></div>
+          </div>
+          <div class="chapter-pill" onclick="openPlayer('waves')">
+            <div class="cp-icon">🌊</div>
+            <div class="cp-name">Waves & Sound</div>
+            <div class="cp-count">20 videos</div>
+            <div class="cp-bar"><div class="cp-bar-fill" style="width:0%"></div></div>
+          </div>
+          <div class="chapter-pill" onclick="openPlayer('optics')">
+            <div class="cp-icon">🔭</div>
+            <div class="cp-name">Optics</div>
+            <div class="cp-count">22 videos</div>
+            <div class="cp-bar"><div class="cp-bar-fill" style="width:0%"></div></div>
+          </div>
+          <div class="chapter-pill locked">
+            <div class="cp-icon">🔒</div>
+            <div class="cp-name">Modern Physics</div>
+            <div class="cp-count">Scholar plan</div>
+            <div class="cp-bar"><div class="cp-bar-fill" style="width:0%"></div></div>
+          </div>
+          <div class="chapter-pill locked">
+            <div class="cp-icon">🔒</div>
+            <div class="cp-name">Thermodynamics</div>
+            <div class="cp-count">Scholar plan</div>
+            <div class="cp-bar"><div class="cp-bar-fill" style="width:0%"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURED VIDEOS -->
+      <div class="sec-h fu fu-3">🎯 Recommended for You — Based on Your Weak Areas <span class="sec-h-r" onclick="shuffleRecs()">Refresh ↻</span></div>
+      <div class="featured-row fu fu-3" id="featuredRow">
+
+        <div class="vid-card featured" onclick="openPlayer('rotating_ring')">
+          <div class="vid-thumb">
+            <div class="thumb-grad">
+              <div class="thumb-formula">B = μ₀Qω / (4πR)<br>μ = QωR² / 2<br>γ = Q / 2m</div>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="thumb-hot">🔥 Trending</div>
+            <div class="thumb-duration">24:38</div>
+            <div class="thumb-progress"><div class="thumb-progress-fill" style="width:35%"></div></div>
+          </div>
+          <div class="vid-info">
+            <div class="vid-tags"><span class="vt vt-phy">⚛️ Physics</span><span class="vt vt-jee">JEE Advanced</span><span class="vt" style="background:var(--amber-l);color:#92400e;border:1px solid rgba(245,158,11,.2);">PYQ 2023</span></div>
+            <div class="vid-title">Rotating Charged Ring — Magnetic Field, Moment & Gyromagnetic Ratio (Full Derivation)</div>
+            <div class="vid-meta">
+              <span class="vm-item">⭐ 4.9</span><div class="vm-div"></div>
+              <span class="vm-item">👁 18,420 views</span><div class="vm-div"></div>
+              <span class="vm-item">📚 6 chapters</span><div class="vm-div"></div>
+              <span class="vm-item">🔥 Most saved this week</span>
+            </div>
+            <div class="vid-instructor">
+              <div class="vi-av" style="background:linear-gradient(135deg,#f59e0b,#ef4444);">AS</div>
+              <div class="vi-name">Prof. Arvind Sharma</div>
+              <span class="vi-badge">IIT-B</span>
+              <div class="vid-rating">⭐ 4.9</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="vid-card" onclick="openPlayer('ampere')">
+          <div class="vid-thumb">
+            <div class="thumb-grad">
+              <div class="thumb-formula">∮B⃗·dl⃗ = μ₀I_enc<br>When does it work?</div>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="thumb-duration">18:12</div>
+            <div class="thumb-progress"><div class="thumb-progress-fill" style="width:0%"></div></div>
+          </div>
+          <div class="vid-info">
+            <div class="vid-tags"><span class="vt vt-phy">⚛️ Physics</span><span class="vt vt-jee">JEE</span></div>
+            <div class="vid-title">Ampère's Law — When It Works & When It Fails</div>
+            <div class="vid-meta"><span class="vm-item">⭐ 4.8</span><div class="vm-div"></div><span class="vm-item">👁 9,210</span></div>
+            <div class="vid-instructor">
+              <div class="vi-av" style="background:linear-gradient(135deg,#4f46e5,#7c3aed);">RV</div>
+              <div class="vi-name">Rohan Verma</div>
+              <span class="vi-badge">AIR 47</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="vid-card" onclick="openPlayer('integration')">
+          <div class="vid-thumb">
+            <div class="thumb-grad">
+              <div class="thumb-formula">∫₀^π x·sin(x)/(1+cos²x)dx<br>King's Property</div>
+              <div class="play-overlay">▶</div>
+            </div>
+            <div class="thumb-new">New</div>
+            <div class="thumb-duration">31:45</div>
+            <div class="thumb-progress"><div class="thumb-progress-fill" style="width:0%"></div></div>
+          </div>
+          <div class="vid-info">
+            <div class="vid-tags"><span class="vt vt-mat">📐 Maths</span><span class="vt vt-jee">JEE</span></div>
+            <div class="vid-title">Definite Integrals — King's Property & 7 PYQ Problems Solved</div>
+            <div class="vid-meta"><span class="vm-item">⭐ 4.9</span><div class="vm-div"></div><span class="vm-item">👁 14,300</span></div>
+            <div class="vid-instructor">
+              <div class="vi-av" style="background:linear-gradient(135deg,#10b981,#0ea5e9);">NK</div>
+              <div class="vi-name">Nidhi Khanna</div>
+              <span class="vi-badge">IIT-D</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ALL VIDEOS GRID -->
+      <div class="sec-h sr">🎬 Continue Watching & All Videos <span class="sec-h-r">View All →</span></div>
+      <div class="vid-grid sr" id="vidGrid">
+
+        <div class="vid-grid-card" onclick="openPlayer('biot_savart')">
+          <div class="vgc-thumb" style="background:linear-gradient(135deg,#0d0f1a,#1a1060);">
+            <div class="vgc-play"><div class="vgc-po">▶</div></div>
+            <div style="font-family:var(--fm);font-size:.6rem;color:#a5b4fc;text-align:center;padding:0 12px;position:absolute;">dB = μ₀Idl/4πr²</div>
+            <div class="vgc-dur">22:14</div>
+            <div class="vgc-prog"><div class="vgc-pf" style="width:68%"></div></div>
+          </div>
+          <div class="vgc-info">
+            <div class="vgc-title">Biot-Savart Law — Complete Derivation & All Configurations</div>
+            <div class="vgc-meta"><span class="vgc-tag vt-phy vt">⚛️</span><span class="vgc-tag vt-jee vt">JEE</span><span class="vgc-views">👁 22k</span></div>
+          </div>
+        </div>
+
+        <div class="vid-grid-card" onclick="openPlayer('markovnikov')">
+          <div class="vgc-thumb" style="background:linear-gradient(135deg,#0a1a0e,#0d2a16);">
+            <div class="vgc-play"><div class="vgc-po">▶</div></div>
+            <div style="font-family:var(--fm);font-size:.58rem;color:#6ee7b7;text-align:center;padding:0 10px;position:absolute;">HBr + ROOR →<br>anti-Markov</div>
+            <div class="vgc-dur">17:30</div>
+            <div class="vgc-prog"><div class="vgc-pf" style="width:0%"></div></div>
+          </div>
+          <div class="vgc-info">
+            <div class="vgc-title">Anti-Markovnikov Addition — Radical Mechanism Explained</div>
+            <div class="vgc-meta"><span class="vgc-tag vt-che vt">🧪</span><span class="vgc-tag vt-jee vt">JEE</span><span class="vgc-views">👁 11k</span></div>
+          </div>
+        </div>
+
+        <div class="vid-grid-card" onclick="openPlayer('bayes')">
+          <div class="vgc-thumb" style="background:linear-gradient(135deg,#0d0f1a,#161060);">
+            <div class="vgc-play"><div class="vgc-po">▶</div></div>
+            <div style="font-family:var(--fm);font-size:.6rem;color:#a5b4fc;text-align:center;padding:0 12px;position:absolute;">P(A|B) = P(A∩B)/P(B)</div>
+            <div class="vgc-dur">14:55</div>
+            <div class="vgc-prog"><div class="vgc-pf" style="width:0%"></div></div>
+          </div>
+          <div class="vgc-info">
+            <div class="vgc-title">Bayes' Theorem — Intuition, Proof & 5 JEE Problems</div>
+            <div class="vgc-meta"><span class="vgc-tag vt-mat vt">📐</span><span class="vgc-tag vt-jee vt">JEE</span><span class="vgc-views">👁 8.4k</span></div>
+          </div>
+        </div>
+
+        <div class="vid-grid-card" onclick="openPlayer('ydse')">
+          <div class="vgc-thumb" style="background:linear-gradient(135deg,#0d0c1a,#1a0c30);">
+            <div class="vgc-play"><div class="vgc-po">▶</div></div>
+            <div style="font-family:var(--fm);font-size:.6rem;color:#c4b5fd;text-align:center;padding:0 12px;position:absolute;">β = λD/d<br>I = 4I₀cos²(δ/2)</div>
+            <div class="vgc-dur">28:04</div>
+            <div class="vgc-prog"><div class="vgc-pf" style="width:22%"></div></div>
+          </div>
+          <div class="vgc-info">
+            <div class="vgc-title">Young's Double Slit — Fringe Width, Intensity & PYQ 2022</div>
+            <div class="vgc-meta"><span class="vgc-tag vt-phy vt">⚛️</span><span class="vgc-tag vt-jee vt">JEE</span><span class="vgc-views">👁 16k</span></div>
+          </div>
+        </div>
+
+        <div class="vid-grid-card" onclick="openPlayer('cell_cycle')">
+          <div class="vgc-thumb" style="background:linear-gradient(135deg,#0a1a0a,#1a2a0a);">
+            <div class="vgc-play"><div class="vgc-po">▶</div></div>
+            <div style="font-family:var(--fm);font-size:.58rem;color:#6ee7b7;text-align:center;padding:0 12px;position:absolute;">G₁→S→G₂→M<br>Cell Cycle Checkpoints</div>
+            <div class="vgc-dur">19:22</div>
+            <div class="vgc-prog"><div class="vgc-pf" style="width:0%"></div></div>
+          </div>
+          <div class="vgc-info">
+            <div class="vgc-title">Cell Cycle & Checkpoints — NEET 2022 Full Solution</div>
+            <div class="vgc-meta"><span class="vgc-tag vt-bio vt">🌱</span><span class="vgc-tag vt-neet vt">NEET</span><span class="vgc-views">👁 7.1k</span></div>
+          </div>
+        </div>
+
+        <div class="vid-grid-card" onclick="openPlayer('rotational')">
+          <div class="vgc-thumb" style="background:linear-gradient(135deg,#0d0f1a,#1a1060);">
+            <div class="vgc-play"><div class="vgc-po">▶</div></div>
+            <div style="font-family:var(--fm);font-size:.6rem;color:#a5b4fc;text-align:center;padding:0 12px;position:absolute;">τ = Iα<br>L = Iω</div>
+            <div class="vgc-dur">35:17</div>
+            <div class="vgc-prog"><div class="vgc-pf" style="width:0%"></div></div>
+          </div>
+          <div class="vgc-info">
+            <div class="vgc-title">Rotational Motion — Torque, MOI, Angular Momentum Masterclass</div>
+            <div class="vgc-meta"><span class="vgc-tag vt-phy vt">⚛️</span><span class="vgc-tag vt-jee vt">JEE</span><span class="vgc-views">👁 31k</span></div>
+          </div>
+        </div>
+
+        <div class="vid-grid-card" onclick="openPlayer('organic_named')">
+          <div class="vgc-thumb" style="background:linear-gradient(135deg,#0a1a0e,#0d2a16);">
+            <div class="vgc-play"><div class="vgc-po">▶</div></div>
+            <div style="font-family:var(--fm);font-size:.58rem;color:#6ee7b7;text-align:center;padding:0 10px;position:absolute;">Aldol · Cannizzaro<br>Clemmensen · Wolf-K</div>
+            <div class="vgc-dur">42:10</div>
+            <div class="vgc-prog"><div class="vgc-pf" style="width:0%"></div></div>
+          </div>
+          <div class="vgc-info">
+            <div class="vgc-title">All 18 Named Reactions — Complete JEE Organic Masterclass</div>
+            <div class="vgc-meta"><span class="vgc-tag vt-che vt">🧪</span><span class="vgc-tag vt-jee vt">JEE</span><span class="vgc-views">👁 44k</span></div>
+          </div>
+        </div>
+
+        <div class="vid-grid-card" onclick="openPlayer('limit_squeeze')">
+          <div class="vgc-thumb" style="background:linear-gradient(135deg,#0d0f1a,#161060);">
+            <div class="vgc-play"><div class="vgc-po">▶</div></div>
+            <div style="font-family:var(--fm);font-size:.6rem;color:#a5b4fc;text-align:center;padding:0 12px;position:absolute;">lim(sinx/x)=1<br>Sandwich Theorem</div>
+            <div class="vgc-dur">20:08</div>
+            <div class="vgc-prog"><div class="vgc-pf" style="width:0%"></div></div>
+          </div>
+          <div class="vgc-info">
+            <div class="vgc-title">Limits — L'Hôpital vs Sandwich Theorem (When to Use Which)</div>
+            <div class="vgc-meta"><span class="vgc-tag vt-mat vt">📐</span><span class="vgc-tag vt-jee vt">JEE</span><span class="vgc-views">👁 13k</span></div>
+          </div>
+        </div>
+
+      </div><!-- /vid-grid -->
+
+      <!-- QUICK CLIPS ROW -->
+      <div class="sec-h sr">⚡ Quick Clips — Under 5 Minutes <span class="sec-h-r">See All →</span></div>
+      <div style="display:flex;gap:12px;overflow-x:auto;padding-bottom:8px;margin-bottom:32px;" class="sr">
+        <style>.qc{flex-shrink:0;width:200px;background:var(--paper-card);border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;cursor:pointer;transition:all .25s;box-shadow:var(--sh);}
+        .qc:hover{box-shadow:var(--sh-h);transform:translateY(-2px);}
+        .qc-thumb{height:90px;background:var(--ink-soft);display:flex;align-items:center;justify-content:center;position:relative;font-size:.85rem;flex-direction:column;gap:4px;}
+        .qc-dur{position:absolute;bottom:5px;right:6px;background:rgba(0,0,0,.7);color:white;font-family:var(--fm);font-size:.58rem;padding:2px 6px;border-radius:3px;}
+        .qc-info{padding:10px 11px;}
+        .qc-title{font-size:.72rem;font-weight:700;color:var(--ink);line-height:1.4;margin-bottom:4px;}
+        .qc-sub{font-size:.62rem;color:var(--ink-faint);}</style>
+        <div class="qc" onclick="openPlayer('quick1')"><div class="qc-thumb" style="background:linear-gradient(135deg,#0d0f1a,#1a1060);"><span style="font-family:var(--fm);font-size:.65rem;color:#a5b4fc;">E = -dV/dr</span><div class="qc-dur">3:42</div></div><div class="qc-info"><div class="qc-title">Why E = −dV/dr always points from high to low V</div><div class="qc-sub">⚛️ Physics · 4.2k views</div></div></div>
+        <div class="qc" onclick="openPlayer('quick2')"><div class="qc-thumb" style="background:linear-gradient(135deg,#0a1a0e,#0d2a16);"><span style="font-family:var(--fm);font-size:.65rem;color:#6ee7b7;">sp³d² vs d²sp³</span><div class="qc-dur">4:15</div></div><div class="qc-info"><div class="qc-title">sp³d² vs d²sp³ — 30-second trick to never confuse them</div><div class="qc-sub">🧪 Chemistry · 8.1k views</div></div></div>
+        <div class="qc" onclick="openPlayer('quick3')"><div class="qc-thumb" style="background:linear-gradient(135deg,#0d0f1a,#161060);"><span style="font-family:var(--fm);font-size:.65rem;color:#a5b4fc;">nCr = nC(n-r)</span><div class="qc-dur">2:58</div></div><div class="qc-info"><div class="qc-title">Symmetry property of combinations — 3 JEE tricks</div><div class="qc-sub">📐 Maths · 6.7k views</div></div></div>
+        <div class="qc" onclick="openPlayer('quick4')"><div class="qc-thumb" style="background:linear-gradient(135deg,#0a1a0e,#1a2a0a);"><span style="font-family:var(--fm);font-size:.65rem;color:#6ee7b7;">G₂/M vs SAC</span><div class="qc-dur">3:20</div></div><div class="qc-info"><div class="qc-title">G₂/M checkpoint vs Spindle Assembly — the difference in 3 min</div><div class="qc-sub">🌱 Biology · 3.9k views</div></div></div>
+        <div class="qc" onclick="openPlayer('quick5')"><div class="qc-thumb" style="background:linear-gradient(135deg,#0d0f1a,#1a1060);"><span style="font-family:var(--fm);font-size:.65rem;color:#a5b4fc;">F = qv×B</span><div class="qc-dur">4:50</div></div><div class="qc-info"><div class="qc-title">Lorentz Force direction — right-hand rule never fails again</div><div class="qc-sub">⚛️ Physics · 12k views</div></div></div>
+        <div class="qc" onclick="openPlayer('quick6')"><div class="qc-thumb" style="background:linear-gradient(135deg,#0d0f1a,#161060);"><span style="font-family:var(--fm);font-size:.65rem;color:#a5b4fc;">King's Property</span><div class="qc-dur">3:05</div></div><div class="qc-info"><div class="qc-title">King's Property — when to use it and when NOT to</div><div class="qc-sub">📐 Maths · 9.2k views</div></div></div>
+      </div>
+
+    </div><!-- /lib-content -->
+  </div><!-- /library-view -->
+
+  <!-- ══════════════════════════════════════
+       PLAYER VIEW
+  ══════════════════════════════════════ -->
+  <div class="player-view" id="playerView">
+
+    <!-- ── LEFT: PLAYER + METADATA ── -->
+    <div class="player-left">
+
+      <!-- VIDEO PLAYER -->
+      <div class="video-player-wrap">
+        <div class="vp-screen" id="vpScreen" onclick="togglePlayPause()">
+          <div class="vp-screen-inner" id="vpScreenInner">
+            <div class="vp-formula-display" id="vpFormula">
+              B = μ₀Qω / (4πR)<br>
+              At centre of rotating charged ring<br>
+              <span style="font-size:.75rem;color:rgba(165,180,252,.5);">▶ Playing — Chapter 3: Biot-Savart at Centre</span>
+            </div>
+          </div>
+          <div class="vp-big-play" id="bigPlay">
+            <div class="vp-big-play-btn" id="bigPlayBtn">▶</div>
+          </div>
+          <!-- Bookmark markers on timeline will be injected by JS -->
+        </div>
+
+        <!-- CONTROLS -->
+        <div class="vp-controls" id="vpControls">
+          <div class="vp-timeline-wrap">
+            <div class="vp-timeline" id="vpTimeline" onclick="seekVideo(event)" onmousemove="showChapterPopover(event)" onmouseleave="hideChapterPopover()">
+              <div class="vp-tl-buffered" style="width:70%"></div>
+              <div class="vp-tl-played" id="vpPlayed" style="width:28%"></div>
+              <div class="vp-tl-thumb" id="vpThumb" style="left:28%"></div>
+              <div id="bmMarkersContainer"></div>
+              <div class="chapter-popover" id="chapterPop"></div>
+            </div>
+          </div>
+          <div class="vp-ctrl-row">
+            <button class="vc-btn" onclick="skipBack()" title="Skip back 10s">⏮</button>
+            <button class="vc-btn vc-play" id="playPauseBtn" onclick="togglePlayPause()">▶</button>
+            <button class="vc-btn" onclick="skipForward()" title="Skip forward 10s">⏭</button>
+            <div class="vc-vol-wrap">
+              <button class="vc-btn" onclick="toggleMute()" id="muteBtn">🔊</button>
+              <input type="range" class="vc-vol-slider" min="0" max="100" value="80" oninput="setVolume(this.value)">
+            </div>
+            <span class="vc-time"><span id="currentTime">07:08</span> / <span id="totalTime">24:38</span></span>
+            <span class="vc-spacer"></span>
+            <button class="vc-btn" onclick="addBookmark()" title="Bookmark this moment" style="font-size:.85rem;">🔖</button>
+            <button class="vc-btn" onclick="addNote()" title="Take a note here" style="font-size:.85rem;">📝</button>
+            <button class="vc-btn vc-btn" id="skipSilenceBtn" onclick="toggleSkipSilence()" title="Skip silence" style="font-size:.7rem;font-weight:700;color:rgba(255,255,255,.5);">⏩SIL</button>
+            <!-- Speed buttons -->
+            <span class="speed-btn" onclick="setSpeed(.75,this)">0.75×</span>
+            <span class="speed-btn active" onclick="setSpeed(1,this)">1×</span>
+            <span class="speed-btn" onclick="setSpeed(1.5,this)">1.5×</span>
+            <span class="speed-btn" onclick="setSpeed(2,this)">2×</span>
+            <button class="vc-btn" onclick="toggleTheatre()" title="Theatre mode" style="font-size:.85rem;">⛶</button>
+            <button class="vc-btn" onclick="closePIP()" title="Picture-in-picture" style="font-size:.82rem;">⧉</button>
+            <button class="vc-btn" onclick="backToLibrary()" title="Back to library" style="font-size:.8rem;">✕</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIDEO INFO -->
+      <div class="player-info">
+        <div class="pi-tags">
+          <span class="vt vt-phy">⚛️ Physics</span>
+          <span class="vt vt-jee">JEE Advanced</span>
+          <span class="vt" style="background:var(--amber-l);color:#92400e;border:1px solid rgba(245,158,11,.2);">PYQ 2023</span>
+          <span class="vt" style="background:var(--green-l);color:#047857;border:1px solid rgba(16,185,129,.2);">⭐ 4.9 · 18,420 views</span>
+        </div>
+        <div class="pi-title" id="playerTitle">Rotating Charged Ring — Magnetic Field, Moment & Gyromagnetic Ratio (Full Derivation)</div>
+        <div class="pi-meta">
+          <span class="pi-stat">👁 18,420 views</span>
+          <span class="pi-stat">📅 Added May 2025</span>
+          <span class="pi-stat">⏱ 24 min 38 sec</span>
+          <span class="pi-stat">📚 6 chapters</span>
+          <span class="pi-stat" style="color:var(--amber);font-weight:700;">⭐ 4.9 / 5 (1,240 ratings)</span>
+        </div>
+        <div class="pi-actions">
+          <button class="pa-btn" id="likeBtn" onclick="toggleLike()">👍 Like <span id="likeCount">2,840</span></button>
+          <button class="pa-btn" id="saveBtn" onclick="toggleSave()">🔖 Save</button>
+          <button class="pa-btn" onclick="shareVideo()">🔗 Share</button>
+          <button class="pa-btn" onclick="downloadNotes()">📥 Download Notes</button>
+          <button class="pa-btn" onclick="reportVideo()">🚩 Report</button>
+          <button class="pa-btn" onclick="openWatchParty()" style="margin-left:auto;border-color:var(--a2);color:var(--a2);">👥 Watch Party</button>
+        </div>
+      </div>
+
+      <!-- INSTRUCTOR -->
+      <div class="instructor-strip">
+        <div class="is-av">AS</div>
+        <div>
+          <div class="is-name">Prof. Arvind Sharma</div>
+          <div class="is-role">IIT-Bombay · Physics Dept · 18 yrs experience · 4,821 videos</div>
+          <div class="is-chips">
+            <span class="is-chip" style="background:var(--amber-l);color:#92400e;border:1px solid rgba(245,158,11,.2);">IIT-B Alumni</span>
+            <span class="is-chip" style="background:var(--accent-l);color:var(--accent);border:1px solid rgba(79,70,229,.2);">JEE Expert</span>
+            <span class="is-chip" style="background:var(--green-l);color:#047857;border:1px solid rgba(16,185,129,.2);">98% Helpful</span>
+          </div>
+        </div>
+        <button class="follow-btn">+ Follow · 24.2k</button>
+      </div>
+
+      <!-- CHAPTER NAVIGATION -->
+      <div class="chapter-list">
+        <div class="cl-title">Video Chapters</div>
+        <div class="chapter-item done" onclick="jumpToChapter(0)">
+          <span class="ci-num">01</span><div class="ci-dot"></div>
+          <div class="ci-info"><div class="ci-name">Introduction & Problem Statement</div><div class="ci-sub">What the JEE examiner expects</div></div>
+          <span class="ci-dur">0:00</span>
+        </div>
+        <div class="chapter-item done" onclick="jumpToChapter(1)">
+          <span class="ci-num">02</span><div class="ci-dot"></div>
+          <div class="ci-info"><div class="ci-name">Effective Current from Rotating Charge</div><div class="ci-sub">I_eff = Qω/2π — why this formula</div></div>
+          <span class="ci-dur">3:20</span>
+        </div>
+        <div class="chapter-item active" onclick="jumpToChapter(2)">
+          <span class="ci-num">03</span><div class="ci-dot"></div>
+          <div class="ci-info"><div class="ci-name">Biot-Savart at the Centre — Full Derivation</div><div class="ci-sub">Why sin θ = 1 makes it clean</div></div>
+          <span class="ci-dur">7:05</span>
+        </div>
+        <div class="chapter-item" onclick="jumpToChapter(3)">
+          <span class="ci-num">04</span><div class="ci-dot"></div>
+          <div class="ci-info"><div class="ci-name">Why Ampère's Law Fails Here</div><div class="ci-sub">Symmetry requirements explained</div></div>
+          <span class="ci-dur">12:40</span>
+        </div>
+        <div class="chapter-item" onclick="jumpToChapter(4)">
+          <span class="ci-num">05</span><div class="ci-dot"></div>
+          <div class="ci-info"><div class="ci-name">Magnetic Moment & Direction</div><div class="ci-sub">μ = QωR²/2 and gyromagnetic ratio</div></div>
+          <span class="ci-dur">17:55</span>
+        </div>
+        <div class="chapter-item" onclick="jumpToChapter(5)">
+          <span class="ci-num">06</span><div class="ci-dot"></div>
+          <div class="ci-info"><div class="ci-name">JEE Exam Strategy & Common Mistakes</div><div class="ci-sub">3 tricks that save 2 minutes</div></div>
+          <span class="ci-dur">21:30</span>
+        </div>
+      </div>
+
+    </div><!-- /player-left -->
+
+    <!-- ── RIGHT: TABBED PANEL ── -->
+    <div class="player-right">
+      <div class="panel-tabs">
+        <div class="pt active" onclick="switchPanel(this,'transcript')">📄 Transcript</div>
+        <div class="pt" onclick="switchPanel(this,'notes')">📝 Notes</div>
+        <div class="pt" onclick="switchPanel(this,'bookmarks')">🔖 Bookmarks</div>
+        <div class="pt" onclick="switchPanel(this,'upnext')">▶ Up Next</div>
+        <div class="pt" onclick="switchPanel(this,'watchparty')">👥 Party</div>
+      </div>
+
+      <div class="panel-body" id="panelBody">
+
+        <!-- ── TRANSCRIPT ── -->
+        <div class="transcript-panel" id="transcriptPanel">
+          <div class="transcript-search">
+            <span style="color:var(--ink-faint);font-size:.85rem;">🔍</span>
+            <input type="text" placeholder="Search transcript…" oninput="searchTranscript(this.value)">
+          </div>
+          <div id="transcriptLines">
+            <div class="transcript-line" onclick="seekTo(0)"><span class="tl-time">0:00</span><span class="tl-text">Welcome to this comprehensive solution of the JEE Advanced 2023 question on rotating charged rings. This is one of the most conceptually rich problems in electromagnetism.</span></div>
+            <div class="transcript-line" onclick="seekTo(28)"><span class="tl-time">0:28</span><span class="tl-text">Let's first state the problem precisely. We have a non-conducting ring of radius R carrying total charge Q, uniformly distributed, rotating with angular velocity ω.</span></div>
+            <div class="transcript-line" onclick="seekTo(65)"><span class="tl-time">1:05</span><span class="tl-text">The first and most important step is to realise that this rotating charge creates an effective current. Think about it — charge is moving, and moving charge is current by definition.</span></div>
+            <div class="transcript-line formula-line" onclick="seekTo(112)"><span class="tl-time">1:52</span><span class="tl-text">I_eff = Q × (ω / 2π) = Q × frequency</span></div>
+            <div class="transcript-line" onclick="seekTo(145)"><span class="tl-time">2:25</span><span class="tl-text">Many students make the mistake here of writing I = Qω instead of Qω/2π. Remember — ω is in radians per second, and one full revolution is 2π radians. So the frequency is ω/2π.</span></div>
+            <div class="transcript-line" onclick="seekTo(200)"><span class="tl-time">3:20</span><span class="tl-text">Now we need to find the magnetic field at the centre. The key question is: which law do we use — Biot-Savart or Ampère's Law?</span></div>
+            <div class="transcript-line active" onclick="seekTo(428)"><span class="tl-time">7:08</span><span class="tl-text">At the centre of the ring, every current element dl is at the same distance R from the centre. And critically, the angle between dl and the position vector r is exactly 90 degrees everywhere.</span></div>
+            <div class="transcript-line formula-line" onclick="seekTo(465)"><span class="tl-time">7:45</span><span class="tl-text">dB = (μ₀/4π) × I × dl / R²</span></div>
+            <div class="transcript-line" onclick="seekTo(490)"><span class="tl-time">8:10</span><span class="tl-text">Since sin θ equals 1 everywhere, we can integrate around the entire ring. The total circumference is 2πR, and the field at the centre is simply μ₀I divided by 2R.</span></div>
+            <div class="transcript-line formula-line" onclick="seekTo(540)"><span class="tl-time">9:00</span><span class="tl-text">B = μ₀ × I_eff / (2R) = μ₀Qω / (4πR)</span></div>
+            <div class="transcript-line" onclick="seekTo(590)"><span class="tl-time">9:50</span><span class="tl-text">Now let me explain why Ampère's Law cannot give you this answer numerically, even though it always holds in principle.</span></div>
+            <div class="transcript-line" onclick="seekTo(640)"><span class="tl-time">10:40</span><span class="tl-text">For Ampère's Law to let you calculate B directly, you need the field to be constant in magnitude and direction along your entire Amperian loop. A single ring does not provide that symmetry.</span></div>
+            <div class="transcript-line" onclick="seekTo(760)"><span class="tl-time">12:40</span><span class="tl-text">Now for the magnetic moment. This is where students often lose 2 marks unnecessarily. The formula is μ = I × A, where A is the area enclosed by the current loop.</span></div>
+            <div class="transcript-line formula-line" onclick="seekTo(810)"><span class="tl-time">13:30</span><span class="tl-text">μ = I_eff × πR² = (Qω/2π) × πR² = QωR²/2</span></div>
+            <div class="transcript-line" onclick="seekTo(870)"><span class="tl-time">14:30</span><span class="tl-text">And notice what happens when you take the ratio of μ to L, the angular momentum. This gives you the gyromagnetic ratio γ = Q/2m.</span></div>
+            <div class="transcript-line" onclick="seekTo(1075)"><span class="tl-time">17:55</span><span class="tl-text">This is the classical gyromagnetic ratio, and it appears in quantum mechanics too when we talk about orbital magnetic moments of electrons. JEE Advanced 2023 tested exactly this connection.</span></div>
+            <div class="transcript-line" onclick="seekTo(1290)"><span class="tl-time">21:30</span><span class="tl-text">Let me now give you the three exam tricks that can save you at least 2 minutes on this type of question in the actual exam.</span></div>
+          </div>
+        </div>
+
+        <!-- ── NOTES ── -->
+        <div class="notes-panel" id="notesPanel">
+          <div id="notesList">
+            <div class="note-item" onclick="seekTo(112)">
+              <div class="ni-ts">1:52</div>
+              <div class="ni-text"><strong>I_eff formula:</strong> Always I = Qω/2π, NOT Qω. The /2π converts from radians/sec to revolutions/sec (actual frequency).</div>
+            </div>
+            <div class="note-item" onclick="seekTo(428)">
+              <div class="ni-ts">7:08</div>
+              <div class="ni-text"><strong>Biot-Savart centre trick:</strong> At centre, every element is equidistant (R) AND perpendicular (θ=90°) → sin θ = 1 → integral simplifies to just circumference × dB formula.</div>
+            </div>
+            <div class="note-item" onclick="seekTo(590)">
+              <div class="ni-ts">9:50</div>
+              <div class="ni-text"><strong>Ampère limitation:</strong> Works calculationally ONLY for infinite solenoid, infinite wire, toroid — NOT for finite objects like a single ring.</div>
+            </div>
+          </div>
+          <div class="add-note-wrap">
+            <div class="note-ts-label">📍 Adding note at: <span class="note-ts-badge" id="noteTimestamp">7:08</span></div>
+            <textarea class="note-input" id="noteInput" placeholder="Type your note here… e.g. 'Key formula for magnetic moment derivation'"></textarea>
+            <button class="btn-p" style="align-self:flex-end;" onclick="saveNote()">💾 Save Note</button>
+          </div>
+        </div>
+
+        <!-- ── BOOKMARKS ── -->
+        <div class="bookmarks-panel" id="bookmarksPanel">
+          <div style="font-size:.72rem;color:var(--ink-muted);margin-bottom:12px;line-height:1.5;">Click 🔖 in the player or tap any transcript line to bookmark key moments. Visible as markers on the timeline.</div>
+          <div id="bookmarksList">
+            <div class="bm-item" onclick="seekTo(112)">
+              <div class="bm-thumb" style="background:linear-gradient(135deg,#0d0f1a,#1a1060);font-size:.6rem;color:#a5b4fc;font-family:var(--fm);"><div class="bm-ts">1:52</div>I_eff formula</div>
+              <div class="bm-info"><div class="bm-title">Key formula: I_eff = Qω/2π derivation moment</div><div class="bm-sub">Chapter 2 · 1 min 52 sec</div></div>
+            </div>
+            <div class="bm-item" onclick="seekTo(540)">
+              <div class="bm-thumb" style="background:linear-gradient(135deg,#0d0f1a,#1a1060);font-size:.6rem;color:#a5b4fc;font-family:var(--fm);"><div class="bm-ts">9:00</div>B formula</div>
+              <div class="bm-info"><div class="bm-title">Final B = μ₀Qω/(4πR) result arrived at</div><div class="bm-sub">Chapter 3 · 9 min 00 sec</div></div>
+            </div>
+            <div class="bm-item" onclick="seekTo(810)">
+              <div class="bm-thumb" style="background:linear-gradient(135deg,#0d0f1a,#1a1060);font-size:.6rem;color:#a5b4fc;font-family:var(--fm);"><div class="bm-ts">13:30</div>μ formula</div>
+              <div class="bm-info"><div class="bm-title">Magnetic moment μ = QωR²/2 derived</div><div class="bm-sub">Chapter 5 · 13 min 30 sec</div></div>
+            </div>
+          </div>
+          <button class="btn-g" style="width:100%;justify-content:center;margin-top:12px;" onclick="addBookmark()">+ Add Bookmark at Current Time</button>
+        </div>
+
+        <!-- ── UP NEXT ── -->
+        <div class="upnext-panel" id="upnextPanel">
+          <div style="font-size:.7rem;font-weight:700;color:var(--rose);background:var(--rose-l);border:1px solid rgba(244,63,94,.2);border-radius:var(--r-sm);padding:8px 12px;margin-bottom:12px;">⚠ Weak area detected — videos below are prioritised for your gaps</div>
+          <div class="un-item" onclick="openPlayer('ampere_deep')">
+            <div class="un-thumb" style="background:linear-gradient(135deg,#0d0f1a,#1a1060);">▶<div class="un-dur">18:12</div><div class="un-weak">WEAK</div></div>
+            <div class="un-info">
+              <div class="un-title">Ampère's Law — When It Works & When It Fails (Deep Dive)</div>
+              <div class="un-meta">⚛️ Physics · 18 min · ⭐ 4.8</div>
+              <div class="un-reason">⚠ You got Ampère questions wrong in last 2 mocks</div>
+            </div>
+          </div>
+          <div class="un-item" onclick="openPlayer('magnetism_2')">
+            <div class="un-thumb" style="background:linear-gradient(135deg,#0d0f1a,#1a1060);">▶<div class="un-dur">24:05</div></div>
+            <div class="un-info">
+              <div class="un-title">Magnetism Full Chapter — JEE Advanced Complete Revision</div>
+              <div class="un-meta">⚛️ Physics · 24 min · ⭐ 4.9</div>
+            </div>
+          </div>
+          <div class="un-item" onclick="openPlayer('gyromagnetic')">
+            <div class="un-thumb" style="background:linear-gradient(135deg,#0d0f1a,#1a1060);">▶<div class="un-dur">15:40</div><div class="un-weak">WEAK</div></div>
+            <div class="un-info">
+              <div class="un-title">Gyromagnetic Ratio — Classical vs Quantum (JEE Level)</div>
+              <div class="un-meta">⚛️ Physics · 15 min · ⭐ 4.7</div>
+              <div class="un-reason">⚠ Never watched — high exam frequency topic</div>
+            </div>
+          </div>
+          <div class="un-item" onclick="openPlayer('ydse_full')">
+            <div class="un-thumb" style="background:linear-gradient(135deg,#0d0c1a,#1a0c30);">▶<div class="un-dur">28:04</div></div>
+            <div class="un-info">
+              <div class="un-title">YDSE — Fringe Width, Intensity & 6 PYQ Problems</div>
+              <div class="un-meta">⚛️ Physics · 28 min · ⭐ 4.9</div>
+            </div>
+          </div>
+          <div class="un-item" onclick="openPlayer('modern_physics')">
+            <div class="un-thumb" style="background:linear-gradient(135deg,#0d0f1a,#1a1060);">▶<div class="un-dur">40:12</div></div>
+            <div class="un-info">
+              <div class="un-title">Modern Physics — Photoelectric, Bohr Model, de Broglie</div>
+              <div class="un-meta">⚛️ Physics · 40 min · ⭐ 4.9</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ── WATCH PARTY ── -->
+        <div class="wp-panel" id="watchpartyPanel">
+          <div class="wp-status">
+            <div class="wp-title">👥 Watch Party — Study Together</div>
+            <div class="wp-sub">Invite up to 4 friends to watch this video in sync. Everyone's player is kept in sync automatically. Chat alongside the video.</div>
+            <div class="wp-code">
+              <span class="wp-code-val">MA-7842-XK</span>
+              <button class="wp-copy" onclick="copyCode()">Copy</button>
+            </div>
+            <div style="font-size:.7rem;color:var(--ink-muted);margin-bottom:10px;">Share this code with friends → they join at mockarena.com/party</div>
+            <div class="wp-members">
+              <div class="wp-member">
+                <div class="wp-mav" style="background:linear-gradient(135deg,var(--accent),var(--a2));">RK</div>
+                <div class="wp-mname">You (Host)</div>
+                <span class="wp-sync">● In Sync</span>
+              </div>
+              <div class="wp-member">
+                <div class="wp-mav" style="background:linear-gradient(135deg,var(--green),#059669);">PM</div>
+                <div class="wp-mname">Priya Mehta</div>
+                <span class="wp-sync">● In Sync</span>
+              </div>
+              <div class="wp-member">
+                <div class="wp-mav" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.4);border:1px dashed rgba(255,255,255,.2);">+</div>
+                <div class="wp-mname" style="color:var(--ink-faint);">Waiting for more…</div>
+                <span style="font-size:.62rem;color:var(--ink-faint);">2 slots open</span>
+              </div>
+            </div>
+          </div>
+          <div style="background:var(--paper);border:1px solid var(--border);border-radius:var(--r-md);overflow:hidden;">
+            <div style="padding:10px 14px;border-bottom:1px solid var(--border);font-size:.72rem;font-weight:700;color:var(--ink-muted);display:flex;align-items:center;gap:6px;">💬 Party Chat <span style="font-size:.6rem;background:var(--rose-l);color:var(--rose);padding:1px 6px;border-radius:100px;border:1px solid rgba(244,63,94,.2);">LIVE</span></div>
+            <div style="padding:10px 14px;height:180px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;" id="partyChat">
+              <div style="display:flex;gap:7px;"><div style="width:22px;height:22px;border-radius:50%;background:linear-gradient(135deg,var(--green),#059669);display:flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:800;color:white;flex-shrink:0;">PM</div><div style="background:white;border:1px solid var(--border);border-radius:0 7px 7px 7px;padding:6px 9px;font-size:.72rem;color:var(--ink-muted);max-width:200px;"><strong style="color:var(--ink);font-size:.68rem;">Priya</strong> at 7:08<br>omg the sin θ = 1 explanation just clicked! Why don't teachers say this in class 😭</div></div>
+              <div style="display:flex;gap:7px;justify-content:flex-end;"><div style="background:var(--accent-l);border:1px solid rgba(79,70,229,.2);border-radius:7px 0 7px 7px;padding:6px 9px;font-size:.72rem;color:var(--accent);max-width:200px;"><strong style="font-size:.68rem;">You</strong><br>right?? pause at 9:00 for the final formula</div></div>
+            </div>
+            <div style="padding:8px 14px;border-top:1px solid var(--border);display:flex;gap:6px;">
+              <input type="text" id="chatInput" placeholder="Message the party…" style="flex:1;font-family:var(--fb);font-size:.76rem;border:1.5px solid var(--border-s);background:var(--paper);border-radius:var(--r-sm);padding:7px 10px;outline:none;" onkeydown="if(event.key==='Enter')sendChat()">
+              <button class="btn-p" style="padding:7px 12px;" onclick="sendChat()">→</button>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /panel-body -->
+    </div><!-- /player-right -->
+
+  </div><!-- /player-view -->
+
+</div><!-- /main -->
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── TOAST ───
+let toastTimer;
+function showToast(msg,icon='✅'){
+  const t=document.getElementById('toast');
+  t.innerHTML=`<span style="font-size:1.1rem">${icon}</span> ${msg}`;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+// ─── LIBRARY ↔ PLAYER ───
+function openPlayer(id){
+  document.getElementById('libraryView').classList.add('hidden');
+  document.getElementById('playerView').classList.add('open');
+  window.scrollTo(0,0);
+  startVideoProgress();
+  showToast('Video loaded! Use 🔖 to bookmark, 📝 to take notes.','🎬');
+}
+function backToLibrary(){
+  document.getElementById('playerView').classList.remove('open');
+  document.getElementById('libraryView').classList.remove('hidden');
+  clearInterval(progressInterval);
+  showToast('Saved your progress. Resume anytime.','✅');
+}
+function resumeLastVideo(){ openPlayer('rotating_ring'); }
+
+// ─── SIMULATED VIDEO PROGRESS ───
+let progress=28,isPlaying=false,progressInterval=null,speed=1;
+const chapterTimes=[0,200,425,760,1075,1290];
+const chapterNames=['Introduction','Effective Current','Biot-Savart at Centre','Ampère Limitation','Magnetic Moment','Exam Strategy'];
+const formulas=[
+  'I_eff = Q × (ω / 2π)',
+  'I_eff = Q × (ω / 2π) = Q × frequency',
+  'dB = (μ₀/4π) × I × dl / R²\nB = μ₀ × I_eff / (2R) = μ₀Qω / (4πR)',
+  '∮B⃗·dl⃗ = μ₀I_enc\n(Cannot extract B for single ring)',
+  'μ = I_eff × πR² = QωR²/2\nγ = μ/L = Q/2m',
+  'JEE Exam Strategy:\n3 tricks · 2 minutes saved'
+];
+
+function updateProgress(p){
+  progress=Math.max(0,Math.min(100,p));
+  const pPct=progress+'%';
+  document.getElementById('vpPlayed').style.width=pPct;
+  document.getElementById('vpThumb').style.left=pPct;
+  const totalSec=1478;
+  const currentSec=Math.floor(totalSec*progress/100);
+  document.getElementById('currentTime').textContent=formatTime(currentSec);
+  // highlight active transcript
+  document.querySelectorAll('.transcript-line').forEach(l=>{
+    const ts=l.querySelector('.tl-time').textContent;
+    const sec=timeToSec(ts);
+    l.classList.toggle('active',sec<=currentSec && (sec+30)>currentSec);
+  });
+  // update active chapter
+  const chapterIdx=chapterTimes.reduce((acc,t,i)=>{ if(currentSec>=t) return i; return acc; },0);
+  document.querySelectorAll('.chapter-item').forEach((ci,i)=>{
+    ci.classList.toggle('active',i===chapterIdx);
+    ci.classList.toggle('done',i<chapterIdx);
+  });
+  // update formula display
+  document.getElementById('vpFormula').innerHTML=formulas[chapterIdx].replace(/\n/g,'<br>')+`<br><span style="font-size:.72rem;color:rgba(165,180,252,.45);">▶ Chapter ${chapterIdx+1}: ${chapterNames[chapterIdx]}</span>`;
+}
+function formatTime(s){return Math.floor(s/60)+':'+String(s%60).padStart(2,'0');}
+function timeToSec(ts){const[m,s]=ts.split(':').map(Number);return(m||0)*60+(s||0);}
+function startVideoProgress(){
+  updateProgress(28);
+  if(progressInterval) clearInterval(progressInterval);
+}
+function togglePlayPause(){
+  isPlaying=!isPlaying;
+  const btn=document.getElementById('playPauseBtn');
+  const bigBtn=document.getElementById('bigPlayBtn');
+  const screen=document.getElementById('vpScreen');
+  btn.textContent=isPlaying?'⏸':'▶';
+  bigBtn.textContent=isPlaying?'⏸':'▶';
+  screen.classList.toggle('vp-playing',isPlaying);
+  if(isPlaying){
+    progressInterval=setInterval(()=>{
+      progress+=speed*(100/1478)*0.5;
+      if(progress>=100){clearInterval(progressInterval);isPlaying=false;btn.textContent='▶';bigBtn.textContent='▶';screen.classList.remove('vp-playing');showToast('Video complete! +50 XP earned 🎉','🏆');}
+      else updateProgress(progress);
+    },500);
+  } else {
+    clearInterval(progressInterval);
+  }
+}
+function seekVideo(e){
+  const tl=document.getElementById('vpTimeline');
+  const rect=tl.getBoundingClientRect();
+  const pct=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));
+  updateProgress(pct*100);
+}
+function seekTo(sec){ updateProgress(sec/1478*100); }
+function skipBack(){ updateProgress(Math.max(0,progress-10/1478*100)); showToast('⏮ Back 10 seconds','⏮'); }
+function skipForward(){ updateProgress(Math.min(100,progress+10/1478*100)); showToast('⏭ Forward 10 seconds','⏭'); }
+function setSpeed(s,el){
+  speed=s;
+  document.querySelectorAll('.speed-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  showToast(`Speed set to ${s}×`,'⚡');
+}
+
+let bookmarks=[{time:112,label:'I_eff formula'},{time:540,label:'B formula'},{time:810,label:'μ formula'}];
+function addBookmark(){
+  const currentSec=Math.floor(1478*progress/100);
+  const label=prompt('Label this bookmark:',`At ${formatTime(currentSec)}`)||`Chapter at ${formatTime(currentSec)}`;
+  if(!label) return;
+  bookmarks.push({time:currentSec,label});
+  renderBookmarkMarkers();
+  showToast(`Bookmark added at ${formatTime(currentSec)} 🔖`,'🔖');
+}
+function renderBookmarkMarkers(){
+  const c=document.getElementById('bmMarkersContainer');
+  c.innerHTML='';
+  bookmarks.forEach(b=>{
+    const m=document.createElement('div');
+    m.className='bookmark-marker';
+    m.style.left=(b.time/1478*100)+'%';
+    m.setAttribute('data-label',b.label);
+    m.onclick=(e)=>{e.stopPropagation();seekTo(b.time);};
+    c.appendChild(m);
+  });
+}
+
+function addNote(){
+  const currentSec=Math.floor(1478*progress/100);
+  document.getElementById('noteTimestamp').textContent=formatTime(currentSec);
+  switchPanel(document.querySelectorAll('.pt')[1],'notes');
+  document.getElementById('noteInput').focus();
+}
+function saveNote(){
+  const text=document.getElementById('noteInput').value.trim();
+  if(!text) return;
+  const ts=document.getElementById('noteTimestamp').textContent;
+  const sec=timeToSec(ts);
+  const nl=document.getElementById('notesList');
+  const div=document.createElement('div');
+  div.className='note-item'; div.onclick=()=>seekTo(sec);
+  div.innerHTML=`<div class="ni-ts">${ts}</div><div class="ni-text">${text}</div>`;
+  nl.appendChild(div);
+  document.getElementById('noteInput').value='';
+  showToast(`Note saved at ${ts} 📝`,'📝');
+}
+function jumpToChapter(idx){
+  seekTo(chapterTimes[idx]);
+  showToast(`Jumped to: ${chapterNames[idx]}`,'📚');
+}
+function showChapterPopover(e){
+  const tl=document.getElementById('vpTimeline');
+  const rect=tl.getBoundingClientRect();
+  const pct=(e.clientX-rect.left)/rect.width;
+  const sec=Math.floor(pct*1478);
+  const cIdx=chapterTimes.reduce((acc,t,i)=>{ if(sec>=t) return i; return acc; },0);
+  const pop=document.getElementById('chapterPop');
+  pop.textContent=chapterNames[cIdx]+' · '+formatTime(sec);
+  pop.style.left=(e.clientX-rect.left)+'px';
+  pop.style.display='block';
+}
+function hideChapterPopover(){ document.getElementById('chapterPop').style.display='none'; }
+
+let skipSilence=false;
+function toggleSkipSilence(){
+  skipSilence=!skipSilence;
+  document.getElementById('skipSilenceBtn').style.color=skipSilence?'var(--accent)':'rgba(255,255,255,.5)';
+  showToast(skipSilence?'Skip Silence ON — jumping over pauses':'Skip Silence OFF',skipSilence?'⏩':'⏸');
+}
+
+// ─── PANEL SWITCHER ───
+function switchPanel(tab,name){
+  document.querySelectorAll('.pt').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active');
+  document.querySelectorAll('#panelBody > div').forEach(p=>p.style.display='none');
+  const map={transcript:'transcriptPanel',notes:'notesPanel',bookmarks:'bookmarksPanel',upnext:'upnextPanel',watchparty:'watchpartyPanel'};
+  const el=document.getElementById(map[name]);
+  if(el) el.style.display='block';
+}
+
+// ─── TRANSCRIPT SEARCH ───
+function searchTranscript(q){
+  document.querySelectorAll('.transcript-line').forEach(l=>{
+    const text=l.querySelector('.tl-text').textContent.toLowerCase();
+    l.style.display=(!q||text.includes(q.toLowerCase()))?'':'none';
+  });
+}
+
+// ─── VIDEO SEARCH ───
+function searchVideos(q){
+  document.querySelectorAll('.vid-grid-card,.vid-card,.qc').forEach(card=>{
+    const text=card.textContent.toLowerCase();
+    card.style.display=(!q||text.includes(q.toLowerCase()))?'':'none';
+  });
+}
+
+// ─── FILTER TABS ───
+function setSubTab(el,sub){
+  document.querySelectorAll('.fb-tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  showToast(`Showing ${el.textContent.replace(/\d+/g,'').trim()} videos`,'🎬');
+}
+function filterSort(v){ showToast(`Sorted by: ${v.replace('Sort: ','')}`,'↕'); }
+
+// ─── ACTIONS ───
+function toggleLike(){
+  const btn=document.getElementById('likeBtn');
+  const cnt=document.getElementById('likeCount');
+  const liked=btn.classList.toggle('active');
+  cnt.textContent=liked?2841:2840;
+  showToast(liked?'Added to liked videos ❤️':'Removed from liked',liked?'❤️':'👍');
+}
+function toggleSave(){
+  const btn=document.getElementById('saveBtn');
+  const saved=btn.classList.toggle('active');
+  showToast(saved?'Saved to your library 🔖':'Removed from saved',saved?'🔖':'📌');
+}
+function shareVideo(){ showToast('Link copied to clipboard: mockarena.com/v/rotating-ring','🔗'); }
+function downloadNotes(){ showToast('Notes & transcript downloading as PDF…','📥'); }
+function reportVideo(){ showToast('Report submitted. Our team will review.','🚩'); }
+function toggleMute(){
+  const btn=document.getElementById('muteBtn');
+  btn.textContent=btn.textContent==='🔊'?'🔇':'🔊';
+}
+function setVolume(v){ if(parseInt(v)===0) document.getElementById('muteBtn').textContent='🔇'; else document.getElementById('muteBtn').textContent='🔊'; }
+function toggleTheatre(){ showToast('Theatre mode — maximised player','⛶'); }
+function closePIP(){ showToast('Picture-in-picture mode activated','⧉'); }
+
+// ─── WATCH PARTY ───
+function openWatchParty(){
+  if(document.getElementById('playerView').classList.contains('open')){
+    switchPanel(document.querySelectorAll('.pt')[4],'watchparty');
+  } else {
+    openPlayer('rotating_ring');
+    setTimeout(()=>switchPanel(document.querySelectorAll('.pt')[4],'watchparty'),300);
+  }
+}
+function copyCode(){ showToast('Party code MA-7842-XK copied!','📋'); }
+function sendChat(){
+  const inp=document.getElementById('chatInput');
+  const msg=inp.value.trim();
+  if(!msg) return;
+  const currentSec=Math.floor(1478*progress/100);
+  const chat=document.getElementById('partyChat');
+  const div=document.createElement('div');
+  div.style.cssText='display:flex;gap:7px;justify-content:flex-end;';
+  div.innerHTML=`<div style="background:var(--accent-l);border:1px solid rgba(79,70,229,.2);border-radius:7px 0 7px 7px;padding:6px 9px;font-size:.72rem;color:var(--accent);max-width:200px;"><strong style="font-size:.68rem;">You</strong> at ${formatTime(currentSec)}<br>${msg}</div>`;
+  chat.appendChild(div);
+  chat.scrollTop=chat.scrollHeight;
+  inp.value='';
+}
+
+// ─── MISC ───
+function shuffleRecs(){ showToast('Recommendations refreshed based on latest weak areas','🎯'); }
+
+// ─── SCROLL REVEAL ───
+const sro=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add('vis');});},{threshold:.07});
+document.querySelectorAll('.sr').forEach(el=>sro.observe(el));
+
+// ─── INIT ───
+window.addEventListener('load',()=>{
+  renderBookmarkMarkers();
+  // animate progress ring
+  setTimeout(()=>{
+    const fill=document.getElementById('ringFill');
+    if(fill) fill.style.strokeDashoffset=440*(1-0.60);
+  },500);
+});
+</script>
+</body>
+</html>
