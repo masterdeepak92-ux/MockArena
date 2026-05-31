@@ -70,33 +70,35 @@
   /* ─── NAV ─── */
   nav {
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(244,245,251,0.93);
+    background: rgba(255,255,255,0.95);
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid rgba(13,15,26,0.08);
     padding: 0 6%;
     display: flex; align-items: center; justify-content: space-between;
     height: 68px;
   }
 
   .nav-logo {
-    font-family: var(--font-display);
-    font-size: 1.45rem; font-weight: 800;
-    letter-spacing: -0.03em;
-    color: var(--ink);
+    font-family: 'Manrope', sans-serif;
+    font-size: 1.35rem; font-weight: 900;
+    letter-spacing: -0.05em;
     text-decoration: none;
-    display: flex; align-items: center; gap: 10px;
+    display: inline-flex; align-items: baseline; gap: 0;
+    line-height: 1;
+    flex-shrink: 0;
   }
 
-  .nav-logo .logo-mark {
-    width: 36px; height: 36px;
-    background: var(--accent);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    color: white; font-size: 0.95rem; font-weight: 800;
-    font-family: var(--font-display);
-    letter-spacing: -0.03em;
-    flex-shrink: 0;
+  .nav-logo .logo-mock {
+    color: #0d0f1a;
+    -webkit-text-fill-color: #0d0f1a;
+  }
+
+  .nav-logo .logo-arena {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .nav-links {
@@ -1178,6 +1180,18 @@
     padding: 60px 6% 32px;
   }
 
+  /* Footer logo — white + indigo gradient on dark bg */
+  footer .nav-logo .logo-mock {
+    color: #ffffff;
+    -webkit-text-fill-color: #ffffff;
+  }
+  footer .nav-logo .logo-arena {
+    background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
   .footer-inner {
     max-width: 1200px; margin: 0 auto;
   }
@@ -1276,26 +1290,233 @@
   .fade-in-d3 { animation: fadeInUp 0.7s 0.3s ease forwards; opacity: 0; }
   .fade-in-d4 { animation: fadeInUp 0.7s 0.4s ease forwards; opacity: 0; }
 
-  /* ─── RESPONSIVE ─── */
+  /* ══════════════════════════════
+     HAMBURGER MENU
+  ══════════════════════════════ */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 40px; height: 40px;
+    background: none; border: none;
+    cursor: pointer; padding: 6px;
+    border-radius: var(--radius-sm);
+    transition: background .2s;
+  }
+  .hamburger:hover { background: var(--accent-light); }
+  .hamburger span {
+    display: block;
+    width: 100%; height: 2px;
+    background: var(--ink);
+    border-radius: 2px;
+    transition: all .3s cubic-bezier(.16,1,.3,1);
+    transform-origin: center;
+  }
+  .hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+  .hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    top: 68px; left: 0; right: 0;
+    background: rgba(255,255,255,0.98);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(13,15,26,0.08);
+    padding: 16px 5% 24px;
+    z-index: 99;
+    flex-direction: column;
+    gap: 4px;
+    transform: translateY(-8px);
+    opacity: 0;
+    pointer-events: none;
+    transition: all .25s ease;
+  }
+  .mobile-nav.is-open {
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
+  }
+  .mobile-nav a {
+    font-family: var(--font-body);
+    font-size: 1rem; font-weight: 600;
+    color: var(--ink-muted);
+    text-decoration: none;
+    padding: 12px 16px;
+    border-radius: var(--radius-sm);
+    transition: all .18s;
+  }
+  .mobile-nav a:hover { background: var(--accent-light); color: var(--accent); }
+  .mobile-nav .mn-divider { height: 1px; background: var(--border-strong); margin: 8px 0; }
+  .mobile-nav .mn-cta {
+    background: var(--accent);
+    color: white;
+    border-radius: var(--radius-md);
+    text-align: center;
+    padding: 14px;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-top: 4px;
+  }
+  .mobile-nav .mn-cta:hover { background: var(--accent-hover); color: white; }
+
+  /* ══════════════════════════════
+     RESPONSIVE — TABLET 1024px
+  ══════════════════════════════ */
   @media (max-width: 1024px) {
-    .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+    nav { padding: 0 4%; }
+
+    .hero { padding: 108px 4% 64px; }
+    .hero-inner {
+      grid-template-columns: 1fr;
+      gap: 0;
+      max-width: 680px;
+      margin: 0 auto;
+    }
     .hero-visual { display: none; }
+    .hero h1 { font-size: clamp(2.2rem, 4.5vw, 3rem); }
+    .hero-sub { max-width: 560px; }
+
+    .exams-section { padding: 16px 4% 48px; }
+    .section { padding: 72px 4%; }
+    .section-inner { max-width: 100%; }
+
     .features-grid { grid-template-columns: repeat(2, 1fr); }
     .programs-grid { grid-template-columns: repeat(2, 1fr); }
     .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
     .steps-grid::before { display: none; }
+
     .analytics-inner { grid-template-columns: 1fr; }
-    .testimonials-grid { grid-template-columns: 1fr; }
-    .pricing-grid { grid-template-columns: 1fr; }
+    .analytics-visual { display: none; }
+
+    .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .pricing-grid {
+      grid-template-columns: repeat(2, 1fr);
+      max-width: 680px;
+      margin: 0 auto;
+    }
     .pricing-card.popular { transform: none; }
-    .footer-top { grid-template-columns: 1fr 1fr; }
+
+    .footer-inner { padding: 56px 4% 28px; }
+    .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
+    .footer-brand { grid-column: span 2; }
+
+    .cta-inner { padding: 56px 5%; }
   }
 
-  @media (max-width: 640px) {
+  /* ══════════════════════════════
+     RESPONSIVE — MOBILE 768px
+  ══════════════════════════════ */
+  @media (max-width: 768px) {
+    /* Nav */
     .nav-links { display: none; }
-    .features-grid { grid-template-columns: 1fr; }
-    .programs-grid { grid-template-columns: 1fr; }
-    .footer-top { grid-template-columns: 1fr; }
+    .nav-cta { display: none; }
+    .hamburger { display: flex; }
+    nav { padding: 0 5%; height: 64px; }
+
+    /* Announce bar */
+    .announce-bar { font-size: 0.7rem; padding: 8px 5%; }
+    .announce-bar a { display: block; margin: 2px 0 0; }
+
+    /* Hero */
+    .hero { padding: 88px 5% 56px; min-height: auto; }
+    .hero-inner { gap: 0; }
+    .hero-eyebrow { font-size: 0.72rem; padding: 5px 10px 5px 6px; }
+    .hero h1 {
+      font-size: clamp(1.9rem, 7.5vw, 2.6rem);
+      letter-spacing: -0.03em;
+      margin-bottom: 1.2rem;
+    }
+    .hero-sub { font-size: 0.95rem; margin-bottom: 2rem; }
+    .hero-actions {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+      margin-bottom: 2rem;
+    }
+    .btn-hero, .btn-hero-outline {
+      width: 100%;
+      justify-content: center;
+      padding: 15px 24px;
+      font-size: 0.95rem;
+    }
+    .hero-trust { gap: 16px; flex-wrap: wrap; }
+    .trust-divider { display: none; }
+    .trust-stat .num { font-size: 1.15rem; }
+
+    /* Exam pills */
+    .exams-section { padding: 12px 5% 36px; }
+    .exam-pill { font-size: 0.78rem; padding: 6px 12px; }
+
+    /* Sections */
+    .section { padding: 52px 5%; }
+    .section-h { font-size: clamp(1.55rem, 6.5vw, 2.1rem); }
+    .section-sub { font-size: 0.92rem; margin-bottom: 2rem; }
+
+    /* Features */
+    .features-grid { grid-template-columns: 1fr; gap: 12px; }
+    .feature-card { padding: 22px 20px; }
+    .feature-card h3 { font-size: 0.95rem; }
+
+    /* Programs */
+    .programs-grid { grid-template-columns: 1fr; gap: 12px; }
+    .program-card { padding: 22px 20px; }
+    .programs-section .section { padding: 52px 5%; }
+
+    /* Steps */
+    .steps-grid { grid-template-columns: 1fr; gap: 20px; }
+    .step-item { padding: 20px; }
+
+    /* Analytics */
+    .analytics-inner { grid-template-columns: 1fr; }
+
+    /* Testimonials */
+    .testimonials-grid { grid-template-columns: 1fr; gap: 12px; }
+
+    /* Pricing */
+    .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+    .pricing-card.popular { transform: none; }
+    .pricing-card { padding: 24px 22px; }
+
+    /* FAQ */
+    .faq-q { padding: 16px 18px; font-size: 0.88rem; }
+    .faq-a { padding: 0 18px; }
+
+    /* CTA */
+    .cta-section { padding: 0; }
+    .cta-inner { padding: 48px 5%; border-radius: 0; }
+    .cta-h { font-size: clamp(1.7rem, 6vw, 2.2rem); }
+    .cta-sub { font-size: 0.92rem; }
+    .cta-btns { flex-direction: column; align-items: center; gap: 12px; }
+    .btn-white, .btn-outline-white {
+      width: 100%; max-width: 320px;
+      justify-content: center;
+      padding: 14px 24px;
+    }
+
+    /* Footer */
+    .footer-inner { padding: 40px 5% 24px; }
+    .footer-top { grid-template-columns: 1fr; gap: 28px; }
+    .footer-brand { grid-column: span 1; }
+    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .footer-legal { flex-wrap: wrap; gap: 12px; }
+    .footer-copy { font-size: 0.75rem; }
+  }
+
+  /* ══════════════════════════════
+     RESPONSIVE — SMALL 480px
+  ══════════════════════════════ */
+  @media (max-width: 480px) {
+    .hero h1 { font-size: 1.75rem; }
+    .hero-trust { gap: 12px; }
+    .trust-stat { flex: 1; min-width: 70px; }
+    .trust-stat .num { font-size: 1rem; }
+    .pricing-grid { max-width: 100%; }
+    .exams-grid { gap: 6px; }
   }
 </style>
 </head>
@@ -1308,10 +1529,9 @@
 </div>
 
 <!-- NAV -->
-<nav>
+<nav id="mainNav">
   <a href="#" class="nav-logo">
-    <div class="logo-mark">MA</div>
-    MockArena
+    <span class="logo-mock">Mock</span><span class="logo-arena">Arena</span>
   </a>
   <ul class="nav-links">
     <li><a href="#features">Features</a></li>
@@ -1321,10 +1541,25 @@
     <li><a href="#faq">FAQ</a></li>
   </ul>
   <div class="nav-cta">
-    <a href="#" class="btn-ghost">Log In</a>
+    <a href="mockarena_login.html" class="btn-ghost">Log In</a>
     <a href="#pricing" class="btn-primary">Start Free Trial →</a>
   </div>
+  <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" onclick="toggleMobileNav()">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE NAV -->
+<div class="mobile-nav" id="mobileNav">
+  <a href="#features" onclick="closeMobileNav()">📝 Features</a>
+  <a href="#programs" onclick="closeMobileNav()">🎯 Programs</a>
+  <a href="#analytics" onclick="closeMobileNav()">📊 Analytics</a>
+  <a href="#pricing" onclick="closeMobileNav()">💰 Pricing</a>
+  <a href="#faq" onclick="closeMobileNav()">❓ FAQ</a>
+  <div class="mn-divider"></div>
+  <a href="mockarena_login.html" onclick="closeMobileNav()" style="color:var(--ink-muted);">Log In</a>
+  <a href="#pricing" onclick="closeMobileNav()" class="mn-cta">Start Free Trial →</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -1959,8 +2194,7 @@
     <div class="footer-top">
       <div class="footer-brand">
         <a href="#" class="nav-logo">
-          <div class="logo-mark">MA</div>
-          MockArena
+          <span class="logo-mock">Mock</span><span class="logo-arena">Arena</span>
         </a>
         <p>India's most advanced student evaluation and mock test platform for JEE, NEET, and Board exam aspirants from Class 9 to 12.</p>
         <div class="footer-social">
@@ -2012,7 +2246,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">© 2025 MockArena · mockarena.com · All rights reserved.</div>
+      <div class="footer-copy">© 2025 MockArena · mockarena.co.in · All rights reserved.</div>
       <div class="footer-legal">
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
@@ -2023,6 +2257,31 @@
 </footer>
 
 <script>
+  // Mobile Nav
+  function toggleMobileNav() {
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('hamburgerBtn');
+    const isOpen = nav.classList.contains('is-open');
+    if (isOpen) {
+      nav.classList.remove('is-open');
+      btn.classList.remove('is-open');
+    } else {
+      nav.classList.add('is-open');
+      btn.classList.add('is-open');
+    }
+  }
+  function closeMobileNav() {
+    document.getElementById('mobileNav').classList.remove('is-open');
+    document.getElementById('hamburgerBtn').classList.remove('is-open');
+  }
+  document.addEventListener('click', e => {
+    const nav = document.getElementById('mobileNav');
+    const btn = document.getElementById('hamburgerBtn');
+    if (nav.classList.contains('is-open') && !nav.contains(e.target) && !btn.contains(e.target)) {
+      closeMobileNav();
+    }
+  });
+
   // Live timer countdown
   let seconds = 2 * 3600 + 47 * 60 + 33;
   const timerEl = document.getElementById('hero-timer');
