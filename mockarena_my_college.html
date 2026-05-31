@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena — My College Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf9f5;--cream-warm:#f5f3ec;--cream-card:#ffffff;
+  --forest:#1a2618;--forest-soft:#243422;--forest-muted:#3d5239;
+  --sage:#6b8f5e;--sage-light:rgba(107,143,94,0.1);--sage-glow:rgba(107,143,94,0.2);
+  --gold:#c8962a;--gold-light:rgba(200,150,42,0.1);--gold-dim:rgba(200,150,42,0.08);
+  --rose:#c84b4b;--rose-light:rgba(200,75,75,0.09);
+  --sky:#3b82c4;--sky-light:rgba(59,130,196,0.09);
+  --amber:#b87333;--amber-light:rgba(184,115,51,0.09);
+  --purple:#7c5cbf;--purple-light:rgba(124,92,191,0.09);
+  --border:rgba(26,38,24,0.08);--border-med:rgba(26,38,24,0.13);--border-strong:rgba(26,38,24,0.2);
+  --font-d:'Outfit',sans-serif;--font-b:'Outfit',sans-serif;--font-m:'IBM Plex Mono',monospace;
+  --sh:0 1px 3px rgba(26,38,24,0.06),0 4px 16px rgba(26,38,24,0.04);
+  --sh-hover:0 8px 32px rgba(107,143,94,0.15),0 2px 8px rgba(26,38,24,0.06);
+  --sh-deep:0 20px 60px rgba(26,38,24,0.12);
+  --sbw:256px;--tbh:62px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font-b);background:var(--cream);color:var(--forest);display:flex;-webkit-font-smoothing:antialiased;}
+
+/* ═══ SIDEBAR ═══ */
+.sb{width:var(--sbw);flex-shrink:0;background:var(--forest);height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;z-index:300;border-right:1px solid rgba(255,255,255,0.04);}
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px;}
+.sb-logo{padding:20px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.06);text-decoration:none;}
+.sb-lm{width:36px;height:36px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.82rem;font-weight:800;color:white;flex-shrink:0;box-shadow:0 0 18px var(--sage-glow);}
+.sb-b1{font-family:var(--font-d);font-size:1rem;font-weight:700;color:white;letter-spacing:-.02em;}
+.sb-b2{font-size:.56rem;font-weight:500;color:rgba(255,255,255,.28);letter-spacing:.1em;text-transform:uppercase;}
+.sb-student{margin:12px 14px;background:rgba(107,143,94,.15);border:1px solid rgba(107,143,94,.25);border-radius:12px;padding:12px;}
+.sb-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.88rem;font-weight:800;color:white;margin-bottom:8px;box-shadow:0 0 14px rgba(200,150,42,.3);}
+.sb-sname{font-size:.8rem;font-weight:700;color:white;}
+.sb-srole{font-size:.62rem;color:rgba(255,255,255,.35);margin-top:1px;}
+.sb-sbadge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;background:rgba(200,150,42,.15);border:1px solid rgba(200,150,42,.25);border-radius:100px;padding:2px 9px;font-size:.6rem;font-weight:600;color:var(--gold);}
+.sb-college-block{margin:0 14px 6px;background:rgba(59,130,196,.1);border:1px solid rgba(59,130,196,.2);border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:9px;}
+.sb-ci{font-size:1.3rem;flex-shrink:0;}
+.sb-cn{font-size:.74rem;font-weight:700;color:white;}
+.sb-cs{font-size:.6rem;color:rgba(255,255,255,.3);margin-top:1px;}
+.sb-grp{padding:14px 18px 4px;font-size:.56rem;font-weight:600;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.12em;}
+.sb-ul{list-style:none;padding:0 8px;}
+.sb-ul li{margin-bottom:1px;}
+.sb-nav{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;text-decoration:none;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.42);transition:all .18s;cursor:pointer;background:none;border:none;width:100%;font-family:var(--font-b);text-align:left;}
+.sb-nav:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8);}
+.sb-nav.active{background:rgba(107,143,94,.2);color:white;border:1px solid rgba(107,143,94,.3);}
+.sb-nav.active .si{color:var(--sage);}
+.si{width:16px;text-align:center;font-size:.82rem;flex-shrink:0;color:rgba(255,255,255,.25);}
+.snb{margin-left:auto;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:100px;background:var(--rose);color:white;}
+.snb-g{background:var(--sage);}
+.sb-foot{margin-top:auto;padding:10px 8px 18px;border-top:1px solid rgba(255,255,255,.06);}
+
+/* ═══ MAIN ═══ */
+.main{margin-left:var(--sbw);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.tb{height:var(--tbh);background:rgba(250,249,245,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:12px;flex-shrink:0;}
+.tb-title{font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;}
+.tb-crumb{font-size:.64rem;color:rgba(26,38,24,.4);}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.tb-pill{display:inline-flex;align-items:center;gap:5px;background:var(--sky-light);border:1px solid rgba(59,130,196,.2);border-radius:100px;padding:4px 12px;font-size:.7rem;font-weight:600;color:var(--sky);}
+.tb-ib{width:36px;height:36px;border-radius:9px;background:var(--cream-warm);border:1.5px solid var(--border-med);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.88rem;transition:all .2s;position:relative;color:var(--forest-muted);}
+.tb-ib:hover{border-color:var(--sage);background:var(--sage-light);}
+.tb-ib .dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--rose);border:1.5px solid var(--cream);}
+.btn{font-family:var(--font-b);font-size:.76rem;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;border:none;}
+.btn-ghost{background:var(--cream-warm);border:1.5px solid var(--border-med);color:var(--forest-muted);}
+.btn-ghost:hover{border-color:var(--sage);color:var(--sage);}
+.btn-sage{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;box-shadow:0 2px 8px var(--sage-glow);}
+.btn-sage:hover{box-shadow:0 4px 16px var(--sage-glow);transform:translateY(-1px);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#e8a830);color:white;}
+.stabs{height:44px;background:var(--cream-card);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:2px;flex-shrink:0;overflow-x:auto;}
+.stabs::-webkit-scrollbar{display:none;}
+.stab{font-family:var(--font-b);font-size:.74rem;font-weight:600;color:rgba(26,38,24,.4);background:none;border:none;border-bottom:2px solid transparent;padding:0 13px;height:44px;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.stab:hover{color:var(--forest);}
+.stab.active{color:var(--sage);border-bottom-color:var(--sage);}
+.content{flex:1;overflow-y:auto;padding:22px 24px 40px;}
+.content::-webkit-scrollbar{width:3px;}
+.content::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+/* ═══ GRIDS ═══ */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-bottom:20px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:20px;}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:13px;margin-bottom:20px;}
+
+/* ═══ KPI ═══ */
+.kpi{background:var(--cream-card);border:1px solid var(--border);border-radius:16px;padding:18px;transition:all .25s;position:relative;overflow:hidden;}
+.kpi:hover{box-shadow:var(--sh-hover);transform:translateY(-2px);}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:16px 16px 0 0;}
+.kpi-sg::after{background:linear-gradient(90deg,var(--sage),#8fb87f);}
+.kpi-gd::after{background:linear-gradient(90deg,var(--gold),#e8a830);}
+.kpi-ro::after{background:linear-gradient(90deg,var(--rose),#e06b6b);}
+.kpi-sk::after{background:linear-gradient(90deg,var(--sky),#60a5e8);}
+.kpi-am::after{background:linear-gradient(90deg,var(--amber),#d4844a);}
+.kpi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.kpi-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+.kpi-delta{font-size:.62rem;font-weight:600;padding:2px 7px;border-radius:100px;}
+.delta-up{background:rgba(107,143,94,.12);color:var(--sage);}
+.delta-dn{background:var(--rose-light);color:var(--rose);}
+.kpi-n{font-family:var(--font-d);font-size:1.6rem;font-weight:700;color:var(--forest);letter-spacing:-.04em;line-height:1;margin-bottom:3px;}
+.kpi-l{font-size:.66rem;font-weight:600;color:rgba(26,38,24,.45);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.kpi-s{font-size:.66rem;color:rgba(26,38,24,.35);}
+
+/* ═══ CARD ═══ */
+.card{background:var(--cream-card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--sh);transition:box-shadow .25s;}
+.card:hover{box-shadow:var(--sh-hover);}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.ct{font-family:var(--font-d);font-size:.84rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;}
+.cs{font-size:.65rem;color:rgba(26,38,24,.4);margin-top:2px;}
+.sh{font-family:var(--font-d);font-size:.84rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;margin-bottom:13px;display:flex;align-items:center;gap:8px;}
+.sh::before{content:'';width:3px;height:15px;background:linear-gradient(180deg,var(--sage),#4a7a3d);border-radius:2px;box-shadow:0 0 6px var(--sage-glow);}
+
+/* ═══ BADGES ═══ */
+.badge{font-size:.62rem;font-weight:600;padding:2px 9px;border-radius:100px;white-space:nowrap;display:inline-flex;align-items:center;gap:3px;}
+.bg{background:var(--sage-light);color:var(--sage);border:1px solid rgba(107,143,94,.2);}
+.br{background:var(--rose-light);color:var(--rose);border:1px solid rgba(200,75,75,.2);}
+.ba{background:var(--amber-light);color:var(--amber);border:1px solid rgba(184,115,51,.2);}
+.bb{background:var(--sky-light);color:var(--sky);border:1px solid rgba(59,130,196,.2);}
+.bgd{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(200,150,42,.2);}
+.bp{background:var(--purple-light);color:var(--purple);border:1px solid rgba(124,92,191,.2);}
+
+/* ═══ PROGRESS BAR ═══ */
+.pb{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.pb-l{font-size:.7rem;font-weight:600;color:var(--forest-muted);width:110px;flex-shrink:0;}
+.pb-t{flex:1;height:6px;background:var(--cream-warm);border-radius:5px;overflow:hidden;border:1px solid var(--border);}
+.pb-f{height:100%;border-radius:5px;transition:width 1.5s cubic-bezier(.4,0,.2,1);}
+.pb-v{font-family:var(--font-m);font-size:.67rem;color:var(--forest-muted);width:32px;text-align:right;}
+
+/* ═══ TABLE ═══ */
+table{width:100%;border-collapse:collapse;}
+thead th{font-size:.62rem;font-weight:700;color:rgba(26,38,24,.35);text-transform:uppercase;letter-spacing:.07em;padding:0 12px 9px;text-align:left;white-space:nowrap;}
+tbody td{padding:9px 12px;font-size:.78rem;color:var(--forest-muted);border-top:1px solid var(--border);white-space:nowrap;}
+tbody tr:hover td{background:var(--cream-warm);}
+.mono{font-family:var(--font-m);font-size:.7rem;}
+.bold{font-weight:700;color:var(--forest);}
+.avc{display:flex;align-items:center;gap:8px;}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;}
+.av-sg{background:var(--sage-light);color:var(--sage);}
+.av-gd{background:var(--gold-dim);color:var(--gold);}
+.av-ro{background:var(--rose-light);color:var(--rose);}
+.av-sk{background:var(--sky-light);color:var(--sky);}
+.av-pr{background:var(--purple-light);color:var(--purple);}
+
+/* ═══ METRIC ROW ═══ */
+.mr{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
+.mr:last-child{border-bottom:none;}
+.mr-l{font-size:.73rem;font-weight:500;color:var(--forest-muted);}
+.mr-v{font-family:var(--font-m);font-size:.73rem;font-weight:500;color:var(--forest);}
+
+/* ═══ ACTIVITY ═══ */
+.af-i{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.af-i:last-child{border-bottom:none;}
+.af-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.af-t{font-size:.74rem;font-weight:600;color:var(--forest);margin-bottom:2px;}
+.af-m{font-size:.63rem;color:rgba(26,38,24,.4);}
+
+/* ═══ NOTICE ═══ */
+.notice{display:flex;gap:10px;padding:12px 14px;border-radius:11px;margin-bottom:8px;}
+.notice-sg{background:var(--sage-light);border:1px solid rgba(107,143,94,.2);}
+.notice-gd{background:var(--gold-dim);border:1px solid rgba(200,150,42,.2);}
+.notice-ro{background:var(--rose-light);border:1px solid rgba(200,75,75,.15);}
+.notice-sk{background:var(--sky-light);border:1px solid rgba(59,130,196,.2);}
+.n-icon{font-size:.9rem;flex-shrink:0;margin-top:1px;}
+.n-title{font-size:.75rem;font-weight:700;color:var(--forest);margin-bottom:2px;}
+.n-desc{font-size:.68rem;color:var(--forest-muted);line-height:1.5;}
+
+/* ═══ TEST ROW ═══ */
+.test-row{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:12px;border:1px solid var(--border);background:var(--cream);transition:all .2s;margin-bottom:8px;cursor:pointer;}
+.test-row:hover{background:var(--cream-card);box-shadow:var(--sh);border-color:rgba(107,143,94,.2);}
+.tr-ic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.tr-name{font-size:.8rem;font-weight:600;color:var(--forest);margin-bottom:4px;}
+.tr-meta{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+.tr-score{text-align:right;flex-shrink:0;}
+.tr-sn{font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest);}
+.tr-sl{font-size:.6rem;color:rgba(26,38,24,.35);}
+
+/* ═══ LEADERBOARD ═══ */
+.lb-row{display:flex;align-items:center;gap:11px;padding:9px 12px;border-radius:10px;border:1px solid var(--border);background:var(--cream);transition:all .18s;margin-bottom:5px;cursor:pointer;}
+.lb-row:hover{background:var(--cream-card);box-shadow:var(--sh);}
+.lb-row.me{background:linear-gradient(135deg,var(--sage-light),rgba(107,143,94,.03));border-color:rgba(107,143,94,.25);}
+.lb-rank{font-family:var(--font-d);font-size:.82rem;font-weight:700;width:26px;text-align:center;flex-shrink:0;}
+.r-gold{color:var(--gold);}
+.r-silver{color:rgba(26,38,24,.4);}
+.r-bronze{color:var(--amber);}
+.r-me{color:var(--sage);}
+.lb-name{font-size:.78rem;font-weight:600;color:var(--forest);flex:1;}
+.lb-you{font-size:.58rem;font-weight:700;background:var(--sage-light);color:var(--sage);padding:1px 6px;border-radius:100px;margin-left:6px;border:1px solid rgba(107,143,94,.2);}
+.lb-score{font-family:var(--font-m);font-size:.74rem;color:var(--forest);}
+.lb-d{font-size:.64rem;font-weight:600;}
+.ld-u{color:var(--sage);}
+.ld-d{color:var(--rose);}
+
+/* ═══ CLASSMATES ═══ */
+.cm-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+.cm-card{background:var(--cream);border:1px solid var(--border);border-radius:12px;padding:14px 10px;text-align:center;cursor:pointer;transition:all .2s;}
+.cm-card:hover{background:var(--cream-card);box-shadow:var(--sh);border-color:rgba(107,143,94,.2);}
+.cm-card.me{background:var(--sage-light);border-color:rgba(107,143,94,.25);}
+.cm-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;margin:0 auto 7px;color:white;position:relative;}
+.cm-online{width:8px;height:8px;border-radius:50%;background:#22c55e;border:1.5px solid white;position:absolute;bottom:0;right:0;}
+.cm-name{font-size:.7rem;font-weight:600;color:var(--forest);line-height:1.3;}
+.cm-rank{font-size:.6rem;color:rgba(26,38,24,.35);margin-top:2px;}
+
+/* ═══ TEACHER CARD ═══ */
+.tc{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--cream);border:1px solid var(--border);border-radius:10px;margin-bottom:7px;cursor:pointer;transition:all .18s;}
+.tc:hover{background:var(--cream-card);box-shadow:var(--sh);}
+.tc-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:white;flex-shrink:0;}
+.tc-name{font-size:.76rem;font-weight:600;color:var(--forest);}
+.tc-sub{font-size:.62rem;color:rgba(26,38,24,.35);}
+.tc-btn{margin-left:auto;font-size:.7rem;font-weight:600;padding:4px 10px;border-radius:7px;border:1px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;transition:all .2s;}
+.tc-btn:hover{border-color:var(--sage);color:var(--sage);}
+
+/* ═══════════════════════════════════
+   COLLEGE HERO — DPS style header
+   Logo left · Name centre · Stats right
+═══════════════════════════════════ */
+.college-hero{
+  background:linear-gradient(145deg,var(--forest) 0%,var(--forest-soft) 60%,#1e3318 100%);
+  border-radius:18px;padding:0;margin-bottom:20px;
+  position:relative;overflow:hidden;
+  box-shadow:var(--sh-deep);
+}
+.ch-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(rgba(107,143,94,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(107,143,94,.04) 1px,transparent 1px);
+  background-size:36px 36px;pointer-events:none;
+}
+.ch-orb{position:absolute;width:280px;height:280px;border-radius:50%;background:rgba(107,143,94,.1);filter:blur(55px);top:-60px;right:40px;pointer-events:none;}
+.ch-orb2{position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(200,150,42,.07);filter:blur(40px);bottom:-30px;left:20%;pointer-events:none;}
+
+/* Top strip — school identity */
+.ch-school{
+  position:relative;z-index:1;
+  display:flex;align-items:center;
+  padding:22px 28px 18px;
+  gap:18px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.ch-school-emblem{
+  width:56px;height:56px;border-radius:50%;
+  background:rgba(255,255,255,.08);
+  border:2px solid rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.9rem;flex-shrink:0;
+  box-shadow:0 0 0 3px rgba(255,255,255,.04);
+}
+.ch-school-text{flex:1;}
+.ch-name-row{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:6px;
+}
+.ch-school-name{
+  font-family:var(--font-d);
+  font-size:1.55rem;font-weight:900;
+  color:white;
+  letter-spacing:-.03em;
+  line-height:1;
+  white-space:nowrap;
+}
+.ch-school-location{
+  font-size:.7rem;font-weight:500;
+  color:rgba(255,255,255,.4);
+  letter-spacing:.03em;
+  display:flex;align-items:center;gap:5px;
+  margin-bottom:6px;
+}
+.ch-school-location::before{content:'📍';font-size:.62rem;}
+.ch-school-tags{
+  display:flex;gap:6px;margin-top:8px;flex-wrap:wrap;
+}
+.ch-tag{
+  display:inline-flex;align-items:center;gap:4px;
+  background:rgba(107,143,94,.15);border:1px solid rgba(107,143,94,.25);
+  border-radius:100px;padding:3px 10px;
+  font-size:.61rem;font-weight:600;color:rgba(255,255,255,.6);
+}
+.ch-school-stats{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:8px;
+  min-width:210px;flex-shrink:0;
+}
+.ch-stat{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.07);
+  border-radius:10px;padding:11px 10px;text-align:center;
+}
+.ch-sn{font-family:var(--font-d);font-size:1.15rem;font-weight:700;color:white;letter-spacing:-.03em;line-height:1;}
+.ch-sl{font-size:.55rem;font-weight:500;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.06em;margin-top:3px;}
+
+/* Bottom strip — powered by MockArena */
+.ch-powered-bar{
+  position:relative;z-index:1;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px 28px 13px;
+  background:rgba(0,0,0,.18);
+  border-top:1px solid rgba(255,255,255,.05);
+}
+.ch-powered-label{
+  font-size:.62rem;font-weight:500;
+  color:rgba(255,255,255,.3);letter-spacing:.05em;
+}
+.ch-powered-logo{
+  display:inline-flex;align-items:baseline;gap:0;
+  font-family:'Manrope','Outfit',sans-serif;
+  font-size:1rem;font-weight:900;
+  letter-spacing:-.03em;
+  line-height:1;
+}
+.ch-pm{
+  color:#ffffff;
+  -webkit-text-fill-color:#ffffff;
+}
+.ch-pa{
+  background:linear-gradient(135deg,#4f46e5,#7c3aed);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+}
+.ch-powered-sep{color:rgba(255,255,255,.15);font-size:.6rem;margin:0 2px;}
+.ch-powered-sub{font-size:.58rem;font-weight:500;color:rgba(255,255,255,.2);letter-spacing:.07em;text-transform:uppercase;}
+
+/* ═══ ANIMATIONS ═══ */
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fadeUp .38s ease forwards;}
+.fu1{animation-delay:.04s;opacity:0;}.fu2{animation-delay:.08s;opacity:0;}
+.fu3{animation-delay:.12s;opacity:0;}.fu4{animation-delay:.16s;opacity:0;}
+.fu5{animation-delay:.2s;opacity:0;}
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+@media(max-width:1100px){.g4{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:860px){.sb{transform:translateX(-100%)}.main{margin-left:0}.g2,.g21,.g3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ════ SIDEBAR ════ -->
+<aside class="sb">
+  <a href="index.html" class="sb-logo">
+    <div class="sb-lm">MA</div>
+    <div>
+      <div class="sb-b1"><span style="color:#ffffff;font-weight:900;">Mock</span><span style="background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900;">Arena</span></div>
+      <div class="sb-b2">Student Portal</div>
+    </div>
+  </a>
+  <div class="sb-student">
+    <div class="sb-av">AR</div>
+    <div class="sb-sname">Arjun Sharma</div>
+    <div class="sb-srole">JEE Advanced 2025 · Class 12</div>
+    <div class="sb-sbadge">🔥 42 Day Streak · Rank #312 AIR</div>
+  </div>
+  <div class="sb-college-block">
+    <div class="sb-ci">🏫</div>
+    <div><div class="sb-cn">DPS Patna</div><div class="sb-cs">Batch A · JEE 2025</div></div>
+  </div>
+  <div class="sb-grp">MockArena</div>
+  <ul class="sb-ul">
+    <li><a href="mockarena_dashboard.html" class="sb-nav"><span class="si">⬡</span>Dashboard</a></li>
+    <li><a href="mockarena_mocktest.html" class="sb-nav"><span class="si">◳</span>Mock Tests</a></li>
+    <li><a href="mockarena_results.html" class="sb-nav"><span class="si">◈</span>My Results</a></li>
+    <li><a href="mockarena_leaderboard.html" class="sb-nav"><span class="si">◇</span>Leaderboard</a></li>
+    <li><a href="mockarena_video_solutions.html" class="sb-nav"><span class="si">▷</span>Video Solutions</a></li>
+    <li><a href="mockarena_doubt_qa_v2.html" class="sb-nav"><span class="si">❖</span>Doubt Q&amp;A<span class="snb">2</span></a></li>
+  </ul>
+  <div class="sb-grp">My Institution</div>
+  <ul class="sb-ul">
+    <li><button class="sb-nav active" onclick="nav('overview',this)"><span class="si">⬡</span>My College</button></li>
+    <li><button class="sb-nav" onclick="nav('tests',this)"><span class="si">◳</span>College Tests<span class="snb snb-g">1</span></button></li>
+    <li><button class="sb-nav" onclick="nav('leaderboard',this)"><span class="si">◇</span>College Rank</button></li>
+    <li><button class="sb-nav" onclick="nav('announcements',this)"><span class="si">◉</span>Announcements<span class="snb">3</span></button></li>
+    <li><button class="sb-nav" onclick="nav('batch',this)"><span class="si">◈</span>Batch Stats</button></li>
+    <li><button class="sb-nav" onclick="nav('classmates',this)"><span class="si">◎</span>Classmates</button></li>
+  </ul>
+  <div class="sb-grp">Study Tools</div>
+  <ul class="sb-ul">
+    <li><a href="mockarena_study_planner.html" class="sb-nav"><span class="si">◳</span>Study Planner</a></li>
+    <li><a href="mockarena_notes_formulas.html" class="sb-nav"><span class="si">▤</span>Notes &amp; Formulas</a></li>
+  </ul>
+  <div class="sb-foot">
+    <a href="mockarena_profile.html" class="sb-nav"><span class="si">◎</span>My Profile</a>
+    <a href="mockarena_settings.html" class="sb-nav"><span class="si">⚙️</span>Settings</a>
+    <a href="mockarena_login.html" class="sb-nav"><span class="si">↩</span>Logout</a>
+  </div>
+</aside>
+
+<!-- ════ MAIN ════ -->
+<div class="main">
+  <div class="tb">
+    <div>
+      <div class="tb-title" id="tb-title">My College — DPS Patna</div>
+      <div class="tb-crumb" id="tb-crumb">MockArena / Institution / Overview</div>
+    </div>
+    <div class="tb-r">
+      <div class="tb-pill">🏫 DPS Patna · Batch A · JEE 2025</div>
+      <div class="tb-ib">🔔<div class="dot"></div></div>
+      <div class="tb-ib">👤</div>
+    </div>
+  </div>
+  <div class="stabs" id="stabs"></div>
+  <div class="content" id="content"></div>
+</div>
+
+<script>
+// ════ COLLEGE HERO — reusable ════
+const HERO = `
+<div class="college-hero fu fu1">
+  <div class="ch-grid"></div>
+  <div class="ch-orb"></div>
+  <div class="ch-orb2"></div>
+  <div class="ch-school">
+    <div class="ch-school-text">
+      <div class="ch-name-row">
+        <div class="ch-school-emblem">🏫</div>
+        <div class="ch-school-name">Delhi Public School, Patna</div>
+      </div>
+      <div class="ch-school-location">Affiliated to CBSE · Est. 1998 · Senior Secondary School</div>
+      <div class="ch-school-tags">
+        <span class="ch-tag">👥 312 Students</span>
+        <span class="ch-tag">📝 18 Tests Assigned</span>
+        <span class="ch-tag">🏆 Bihar State Rank #3</span>
+        <span class="ch-tag">🎓 JEE Advanced Batch A</span>
+        <span class="ch-tag">✅ Premium Institution</span>
+      </div>
+    </div>
+    <div class="ch-school-stats">
+      <div class="ch-stat"><div class="ch-sn">#4</div><div class="ch-sl">College Rank</div></div>
+      <div class="ch-stat"><div class="ch-sn">14/18</div><div class="ch-sl">Tests Done</div></div>
+      <div class="ch-stat"><div class="ch-sn">76%</div><div class="ch-sl">Your Avg</div></div>
+    </div>
+  </div>
+
+</div>`;
+
+const P = {
+
+overview:{title:'My College — DPS Patna',crumb:'MockArena / Institution / Overview',tabs:['Overview','My Schedule','Info'],html:`
+${HERO}
+<div class="g4 fu fu2">
+  <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">🏆</div><span class="kpi-delta delta-up">↑ 2 positions</span></div><div class="kpi-l">College Rank</div><div class="kpi-n">#4</div><div class="kpi-s">Among 312 DPS Patna students</div></div>
+  <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">📝</div><span class="kpi-delta delta-up">1 live now!</span></div><div class="kpi-l">Tests Assigned</div><div class="kpi-n">18</div><div class="kpi-s">14 completed · 4 pending</div></div>
+  <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">📊</div><span class="kpi-delta delta-up">+8% above batch</span></div><div class="kpi-l">Your vs Batch</div><div class="kpi-n">76%</div><div class="kpi-s">Batch average is 68%</div></div>
+  <div class="kpi kpi-am"><div class="kpi-top"><div class="kpi-ic" style="background:var(--amber-light)">👥</div><span class="kpi-delta delta-up">24 online now</span></div><div class="kpi-l">Active Students</div><div class="kpi-n">287</div><div class="kpi-s">Out of 312 enrolled</div></div>
+</div>
+<div class="g21 fu fu3">
+  <div class="card">
+    <div class="ch"><div><div class="ct">College Tests</div><div class="cs">Assigned by DPS Patna teachers</div></div><button class="btn btn-ghost" onclick="nav('tests',null)">View All →</button></div>
+    <div class="test-row" style="background:linear-gradient(135deg,var(--rose-light),rgba(200,75,75,.02));border-color:rgba(200,75,75,.2)">
+      <div class="tr-ic" style="background:var(--rose-light)">🔴</div>
+      <div style="flex:1"><div class="tr-name">DPS Patna — Monthly Test #6</div><div class="tr-meta"><span class="badge br">● Live Now</span><span class="badge bb">Full Mock · 3 hrs</span></div></div>
+      <button class="btn btn-sage" onclick="alert('Starting Monthly Test #6...')">Start Now →</button>
+    </div>
+    <div class="test-row">
+      <div class="tr-ic" style="background:var(--gold-dim)">📅</div>
+      <div style="flex:1"><div class="tr-name">Physics Unit Test — Electrostatics</div><div class="tr-meta"><span class="badge ba">Upcoming · 5 Jun</span><span class="badge bb">1 hr</span></div></div>
+      <button class="btn btn-ghost">Remind Me</button>
+    </div>
+    <div class="test-row">
+      <div class="tr-ic" style="background:var(--sage-light)">✅</div>
+      <div style="flex:1"><div class="tr-name">DPS Patna — Monthly Test #5</div><div class="tr-meta"><span class="badge bg">Done · 25 May</span><span style="font-size:.62rem;color:rgba(26,38,24,.4)">Rank #4 · 247/300</span></div></div>
+      <div class="tr-score"><div class="tr-sn">247/300</div></div>
+    </div>
+    <div class="test-row">
+      <div class="tr-ic" style="background:var(--sage-light)">✅</div>
+      <div style="flex:1"><div class="tr-name">Maths Unit Test — Calculus</div><div class="tr-meta"><span class="badge bg">Done · 18 May</span><span style="font-size:.62rem;color:rgba(26,38,24,.4)">Rank #2 · 38/40</span></div></div>
+      <div class="tr-score"><div class="tr-sn">38/40</div></div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div class="card">
+      <div class="ch"><div class="ct">Announcements</div><span class="badge br">3 new</span></div>
+      <div class="notice notice-ro"><div class="n-icon">🚨</div><div><div class="n-title">Monthly Test #6 — Live Today!</div><div class="n-desc">Starts 11 AM. 20% semester weightage.</div></div></div>
+      <div class="notice notice-sg"><div class="n-icon">📚</div><div><div class="n-title">New Chemistry Notes Uploaded</div><div class="n-desc">Organic Reactions notes now available.</div></div></div>
+      <div class="notice notice-gd"><div class="n-icon">🏆</div><div><div class="n-title">DPS Patna ranked #3 in Bihar!</div><div class="n-desc">Special prizes for top 10 students!</div></div></div>
+    </div>
+    <div class="card">
+      <div class="ct" style="margin-bottom:12px">My Teachers</div>
+      <div class="tc"><div class="tc-av" style="background:linear-gradient(135deg,var(--sage),#4a7a3d)">RK</div><div><div class="tc-name">Prof. Rajesh Kumar</div><div class="tc-sub">Physics · Class Teacher</div></div><button class="tc-btn">💬 Chat</button></div>
+      <div class="tc"><div class="tc-av" style="background:linear-gradient(135deg,#10b981,#059669)">SV</div><div><div class="tc-name">Dr. Sunita Verma</div><div class="tc-sub">Chemistry</div></div><button class="tc-btn">💬 Chat</button></div>
+      <div class="tc"><div class="tc-av" style="background:linear-gradient(135deg,var(--gold),#e8a830)">AJ</div><div><div class="tc-name">Mr. Ajay Jha</div><div class="tc-sub">Mathematics</div></div><button class="tc-btn">💬 Chat</button></div>
+    </div>
+  </div>
+</div>`},
+
+tests:{title:'College Tests',crumb:'MockArena / Institution / Tests',tabs:['All Tests','Live Now','Upcoming','Completed'],html:`
+${HERO}
+<div class="g4 fu fu2">
+  <div class="kpi kpi-ro"><div class="kpi-top"><div class="kpi-ic" style="background:var(--rose-light)">🔴</div><span class="kpi-delta br">Live!</span></div><div class="kpi-l">Live Now</div><div class="kpi-n">1</div><div class="kpi-s">Monthly Test #6 running</div></div>
+  <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">📅</div><span class="kpi-delta delta-up">3 tests</span></div><div class="kpi-l">Upcoming</div><div class="kpi-n">3</div><div class="kpi-s">Next: Physics · 5 Jun</div></div>
+  <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">✅</div><span class="kpi-delta delta-up">78% avg</span></div><div class="kpi-l">Completed</div><div class="kpi-n">14</div><div class="kpi-s">Your avg score 78%</div></div>
+  <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">🏆</div><span class="kpi-delta delta-up">Top 10%</span></div><div class="kpi-l">College Rank</div><div class="kpi-n">#4</div><div class="kpi-s">Top 4 of 312 students</div></div>
+</div>
+<div class="card fu fu3">
+  <div class="ch"><div><div class="ct">All Assigned Tests</div><div class="cs">18 tests assigned by DPS Patna</div></div></div>
+  <div class="test-row" style="background:linear-gradient(135deg,var(--rose-light),rgba(200,75,75,.02));border-color:rgba(200,75,75,.2)">
+    <div class="tr-ic" style="background:var(--rose-light)">🔴</div>
+    <div style="flex:1"><div class="tr-name">DPS Patna — Monthly Test #6</div><div class="tr-meta"><span class="badge br">● Live Now</span><span class="badge bb">Full Mock · 3 hrs · 90Q</span><span class="badge ba">Prof. Rajesh</span></div></div>
+    <button class="btn btn-sage">Start Now →</button>
+  </div>
+  <div class="test-row"><div class="tr-ic" style="background:var(--gold-dim)">📅</div><div style="flex:1"><div class="tr-name">Physics Unit Test — Electrostatics & Magnetism</div><div class="tr-meta"><span class="badge ba">Upcoming · 5 Jun</span><span class="badge bb">1 hr · 40Q</span></div></div><button class="btn btn-ghost">Remind Me</button></div>
+  <div class="test-row"><div class="tr-ic" style="background:var(--gold-dim)">📅</div><div style="flex:1"><div class="tr-name">Chemistry — Organic Reactions & Mechanisms</div><div class="tr-meta"><span class="badge ba">Upcoming · 8 Jun</span><span class="badge bb">2 hrs · 60Q</span></div></div><button class="btn btn-ghost">Remind Me</button></div>
+  <div class="test-row"><div class="tr-ic" style="background:var(--gold-dim)">📅</div><div style="flex:1"><div class="tr-name">Full Syllabus Mock — Pre Board</div><div class="tr-meta"><span class="badge ba">Upcoming · 15 Jun</span><span class="badge bb">3 hrs · 90Q</span></div></div><button class="btn btn-ghost">Remind Me</button></div>
+  <div class="test-row"><div class="tr-ic" style="background:var(--sage-light)">✅</div><div style="flex:1"><div class="tr-name">DPS Patna — Monthly Test #5</div><div class="tr-meta"><span class="badge bg">Done · 25 May</span></div></div><div class="tr-score"><div class="tr-sn">247/300</div><button class="btn btn-ghost" style="margin-top:4px;padding:4px 10px">Analysis</button></div></div>
+  <div class="test-row"><div class="tr-ic" style="background:var(--sage-light)">✅</div><div style="flex:1"><div class="tr-name">Maths — Calculus & Integration</div><div class="tr-meta"><span class="badge bg">Done · 18 May</span></div></div><div class="tr-score"><div class="tr-sn">38/40</div><button class="btn btn-ghost" style="margin-top:4px;padding:4px 10px">Analysis</button></div></div>
+  <div class="test-row"><div class="tr-ic" style="background:var(--sage-light)">✅</div><div style="flex:1"><div class="tr-name">Physics DPP — Waves & Sound</div><div class="tr-meta"><span class="badge bg">Done · 12 May</span></div></div><div class="tr-score"><div class="tr-sn">28/35</div><button class="btn btn-ghost" style="margin-top:4px;padding:4px 10px">Analysis</button></div></div>
+</div>`},
+
+leaderboard:{title:'College Leaderboard',crumb:'MockArena / Institution / Rankings',tabs:['Overall Rank','This Month','Subject-wise'],html:`
+${HERO}
+<div class="g4 fu fu2">
+  <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">🏆</div><span class="kpi-delta delta-up">↑ 2 positions</span></div><div class="kpi-l">Your Rank</div><div class="kpi-n">#4</div><div class="kpi-s">Among 312 students · DPS Patna</div></div>
+  <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">🎯</div><span class="kpi-delta delta-up">+8% above batch</span></div><div class="kpi-l">Your Score</div><div class="kpi-n">247</div><div class="kpi-s">Batch average: 218 pts</div></div>
+  <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">📈</div></div><div class="kpi-l">Top Score (DPS)</div><div class="kpi-n">284</div><div class="kpi-s">Rahul Kumar · Gap to #1: 37 pts</div></div>
+  <div class="kpi kpi-am"><div class="kpi-top"><div class="kpi-ic" style="background:var(--amber-light)">🏅</div><span class="kpi-delta delta-up">Top 1.3%</span></div><div class="kpi-l">Batch Percentile</div><div class="kpi-n">98.7</div><div class="kpi-s">You are in top 4 students</div></div>
+</div>
+<div class="g21 fu fu3">
+  <div class="card">
+    <div class="ch"><div><div class="ct">DPS Patna — Full Leaderboard</div><div class="cs">312 students · Updated live</div></div></div>
+    <div class="lb-row"><span class="lb-rank r-gold">🥇</span><div class="av av-gd">RK</div><span class="lb-name">Rahul Kumar</span><span class="lb-score mono">284</span><span class="lb-d ld-u">↑2</span></div>
+    <div class="lb-row"><span class="lb-rank r-silver">🥈</span><div class="av av-sk">PS</div><span class="lb-name">Priya Singh</span><span class="lb-score mono">276</span><span class="lb-d ld-d">↓1</span></div>
+    <div class="lb-row"><span class="lb-rank r-bronze">🥉</span><div class="av av-ro">AK</div><span class="lb-name">Amit Kumar</span><span class="lb-score mono">271</span><span class="lb-d ld-u">↑1</span></div>
+    <div class="lb-row me"><span class="lb-rank r-me">#4</span><div class="av av-sg">AR</div><span class="lb-name">Arjun Sharma<span class="lb-you">You</span></span><span class="lb-score mono">247</span><span class="lb-d ld-u">↑2</span></div>
+    <div class="lb-row"><span class="lb-rank" style="color:rgba(26,38,24,.3)">#5</span><div class="av av-pr">NM</div><span class="lb-name">Neha Mishra</span><span class="lb-score mono">241</span><span class="lb-d ld-d">↓1</span></div>
+    <div class="lb-row"><span class="lb-rank" style="color:rgba(26,38,24,.3)">#6</span><div class="av av-sk">SK</div><span class="lb-name">Saurav Kumar</span><span class="lb-score mono">238</span><span class="lb-d ld-u">↑3</span></div>
+    <div class="lb-row"><span class="lb-rank" style="color:rgba(26,38,24,.3)">#7</span><div class="av av-ro">DP</div><span class="lb-name">Deepak Pandey</span><span class="lb-score mono">234</span><span class="lb-d ld-d">↓2</span></div>
+    <div class="lb-row"><span class="lb-rank" style="color:rgba(26,38,24,.3)">#8</span><div class="av av-pr">RG</div><span class="lb-name">Ritesh Gupta</span><span class="lb-score mono">229</span><span class="lb-d ld-u">↑1</span></div>
+    <div class="lb-row"><span class="lb-rank" style="color:rgba(26,38,24,.3)">#9</span><div class="av av-gd">KS</div><span class="lb-name">Kavya Sharma</span><span class="lb-score mono">224</span><span class="lb-d ld-u">↑2</span></div>
+    <div class="lb-row"><span class="lb-rank" style="color:rgba(26,38,24,.3)">#10</span><div class="av av-sg">VK</div><span class="lb-name">Vivek Kumar</span><span class="lb-score mono">218</span><span class="lb-d" style="color:rgba(26,38,24,.3)">—</span></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div class="card">
+      <div class="ct" style="margin-bottom:14px">Your Position</div>
+      <div style="text-align:center;padding:16px 0 10px">
+        <div style="font-family:var(--font-d);font-size:2.8rem;font-weight:800;color:var(--sage);letter-spacing:-.04em;line-height:1">#4</div>
+        <div style="font-size:.7rem;color:rgba(26,38,24,.35);margin-top:4px">in DPS Patna</div>
+        <div style="display:flex;justify-content:center;gap:14px;margin-top:14px;padding-top:12px;border-top:1px solid var(--border)">
+          <div style="text-align:center"><div class="mono" style="font-size:.9rem;font-weight:600;color:var(--forest)">247</div><div style="font-size:.58rem;color:rgba(26,38,24,.35)">You</div></div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div style="text-align:center"><div class="mono" style="font-size:.9rem;font-weight:600;color:var(--forest)">284</div><div style="font-size:.58rem;color:rgba(26,38,24,.35)">Top</div></div>
+          <div style="width:1px;background:var(--border)"></div>
+          <div style="text-align:center"><div class="mono" style="font-size:.9rem;font-weight:600;color:var(--forest)">37</div><div style="font-size:.58rem;color:rgba(26,38,24,.35)">Gap</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ct" style="margin-bottom:12px">Subject Ranks</div>
+      <div class="mr"><span class="mr-l">⚛️ Physics</span><span class="badge bg">#6 / 312</span></div>
+      <div class="mr"><span class="mr-l">🧪 Chemistry</span><span class="badge bg">#3 / 312</span></div>
+      <div class="mr"><span class="mr-l">📐 Mathematics</span><span class="badge bg">#2 / 312</span></div>
+    </div>
+    <div class="card">
+      <div class="ct" style="margin-bottom:12px">Upcoming Tests</div>
+      <div class="mr"><span class="mr-l">Physics · 5 Jun</span><span class="badge ba">College</span></div>
+      <div class="mr"><span class="mr-l">Chemistry · 8 Jun</span><span class="badge ba">College</span></div>
+      <div class="mr"><span class="mr-l">Full Mock · 15 Jun</span><span class="badge ba">College</span></div>
+    </div>
+  </div>
+</div>`},
+
+announcements:{title:'Announcements',crumb:'MockArena / Institution / Announcements',tabs:['All','Important','This Week'],html:`
+${HERO}
+<div class="g21 fu fu2">
+  <div class="card">
+    <div class="ch"><div><div class="ct">College Announcements</div><div class="cs">From DPS Patna teachers & administration</div></div><span class="badge br">3 new</span></div>
+    <div class="notice notice-ro" style="flex-direction:column;gap:5px;margin-bottom:10px"><div style="font-size:.62rem;font-weight:600;color:var(--rose)">🚨 Important · Today</div><div class="n-title">Monthly Test #6 — Live Today 11 AM to 2 PM</div><div class="n-desc">All students must attempt. Carries 20% semester weightage. Ensure stable internet connection before starting.</div><div style="font-size:.62rem;color:rgba(26,38,24,.35);margin-top:2px">👨‍🏫 Prof. Rajesh Kumar · Physics Teacher</div></div>
+    <div class="notice notice-sg" style="flex-direction:column;gap:5px;margin-bottom:10px"><div style="font-size:.62rem;font-weight:600;color:var(--sage)">📚 New · Yesterday</div><div class="n-title">New Chemistry Notes — Organic Reactions Uploaded</div><div class="n-desc">Comprehensive notes uploaded to Study Material. Study before the 8th June chemistry test.</div><div style="font-size:.62rem;color:rgba(26,38,24,.35);margin-top:2px">👩‍🏫 Dr. Sunita Verma · Chemistry Teacher</div></div>
+    <div class="notice notice-sg" style="flex-direction:column;gap:5px;margin-bottom:10px"><div style="font-size:.62rem;font-weight:600;color:var(--sage)">🏆 New · 2 days ago</div><div class="n-title">DPS Patna Ranked #3 in Bihar State on MockArena!</div><div class="n-desc">Incredible achievement! Special prizes for top 10 students next month. Keep pushing!</div><div style="font-size:.62rem;color:rgba(26,38,24,.35);margin-top:2px">🏫 DPS Patna Administration</div></div>
+    <div class="notice notice-gd" style="flex-direction:column;gap:5px;margin-bottom:10px"><div style="font-size:.62rem;font-weight:600;color:var(--gold)">📅 Info · 5 days ago</div><div class="n-title">Parent-Teacher Meeting — 10th June 2025</div><div class="n-desc">PTM on 10th June. Your MockArena performance report will be shared with parents. Complete all pending tests before that.</div><div style="font-size:.62rem;color:rgba(26,38,24,.35);margin-top:2px">🏫 DPS Patna Administration</div></div>
+    <div class="notice notice-sk" style="flex-direction:column;gap:5px"><div style="font-size:.62rem;font-weight:600;color:var(--sky)">🎯 Info · 1 week ago</div><div class="n-title">Maths Special Revision — 3D Geometry & Calculus</div><div class="n-desc">Special revision classes starting next week. Register in college portal. Limited seats available.</div><div style="font-size:.62rem;color:rgba(26,38,24,.35);margin-top:2px">👨‍🏫 Mr. Ajay Jha · Mathematics</div></div>
+  </div>
+  <div style="display:flex;flex-direction:column;gap:14px;">
+    <div class="card">
+      <div class="ct" style="margin-bottom:12px">My Teachers</div>
+      <div class="tc"><div class="tc-av" style="background:linear-gradient(135deg,var(--sage),#4a7a3d)">RK</div><div><div class="tc-name">Prof. Rajesh Kumar</div><div class="tc-sub">Physics · Class Teacher</div></div><button class="tc-btn">💬 Chat</button></div>
+      <div class="tc"><div class="tc-av" style="background:linear-gradient(135deg,#10b981,#059669)">SV</div><div><div class="tc-name">Dr. Sunita Verma</div><div class="tc-sub">Chemistry</div></div><button class="tc-btn">💬 Chat</button></div>
+      <div class="tc"><div class="tc-av" style="background:linear-gradient(135deg,var(--gold),#e8a830)">AJ</div><div><div class="tc-name">Mr. Ajay Jha</div><div class="tc-sub">Mathematics</div></div><button class="tc-btn">💬 Chat</button></div>
+    </div>
+    <div class="card">
+      <div class="ct" style="margin-bottom:12px">College Info</div>
+      <div class="mr"><span class="mr-l">Institution</span><span class="mr-v">DPS Patna</span></div>
+      <div class="mr"><span class="mr-l">Affiliation</span><span class="mr-v">CBSE</span></div>
+      <div class="mr"><span class="mr-l">Batch</span><span class="mr-v">JEE 2025 · A</span></div>
+      <div class="mr"><span class="mr-l">Roll No.</span><span class="mr-v mono">42</span></div>
+      <div class="mr"><span class="mr-l">Section</span><span class="mr-v">Section A</span></div>
+      <div class="mr"><span class="mr-l">Bihar Rank</span><span class="mr-v">#3</span></div>
+    </div>
+  </div>
+</div>`},
+
+batch:{title:'Batch Performance',crumb:'MockArena / Institution / Batch Stats',tabs:['Overview','Subject-wise','Test-wise'],html:`
+${HERO}
+<div class="g4 fu fu2">
+  <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">📊</div><span class="kpi-delta delta-up">You: 76%</span></div><div class="kpi-l">Batch Average</div><div class="kpi-n">68%</div><div class="kpi-s">You score 8% above average</div></div>
+  <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">🏆</div><span class="kpi-delta delta-up">Top 1.3%</span></div><div class="kpi-l">Your Position</div><div class="kpi-n">#4</div><div class="kpi-s">Among 312 students</div></div>
+  <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">✅</div></div><div class="kpi-l">Attempt Rate</div><div class="kpi-n">92%</div><div class="kpi-s">Batch test attempt this month</div></div>
+  <div class="kpi kpi-am"><div class="kpi-top"><div class="kpi-ic" style="background:var(--amber-light)">⚡</div></div><div class="kpi-l">Improvement</div><div class="kpi-n">+18%</div><div class="kpi-s">Your score growth last 30 days</div></div>
+</div>
+<div class="g2 fu fu3">
+  <div class="card">
+    <div class="sh">Subject-wise — You vs Batch Average</div>
+    <div class="pb"><span class="pb-l" style="color:rgba(26,38,24,.35)">⚛️ Batch Avg</span><div class="pb-t"><div class="pb-f" style="width:64%;background:var(--border-med)"></div></div><span class="pb-v">64%</span></div>
+    <div class="pb"><span class="pb-l" style="color:var(--sage);font-weight:700">⚛️ You</span><div class="pb-t"><div class="pb-f" style="width:72%;background:linear-gradient(90deg,var(--sage),#4a7a3d)"></div></div><span class="pb-v" style="color:var(--sage)">72%</span></div>
+    <div style="height:8px"></div>
+    <div class="pb"><span class="pb-l" style="color:rgba(26,38,24,.35)">🧪 Batch Avg</span><div class="pb-t"><div class="pb-f" style="width:71%;background:var(--border-med)"></div></div><span class="pb-v">71%</span></div>
+    <div class="pb"><span class="pb-l" style="color:var(--sage);font-weight:700">🧪 You</span><div class="pb-t"><div class="pb-f" style="width:79%;background:linear-gradient(90deg,var(--sage),#4a7a3d)"></div></div><span class="pb-v" style="color:var(--sage)">79%</span></div>
+    <div style="height:8px"></div>
+    <div class="pb"><span class="pb-l" style="color:rgba(26,38,24,.35)">📐 Batch Avg</span><div class="pb-t"><div class="pb-f" style="width:69%;background:var(--border-med)"></div></div><span class="pb-v">69%</span></div>
+    <div class="pb"><span class="pb-l" style="color:var(--sage);font-weight:700">📐 You</span><div class="pb-t"><div class="pb-f" style="width:81%;background:linear-gradient(90deg,var(--sage),#4a7a3d)"></div></div><span class="pb-v" style="color:var(--sage)">81%</span></div>
+  </div>
+  <div class="card">
+    <div class="sh">Your Improvement Trend</div>
+    <div class="af-i"><div class="af-dot" style="background:var(--rose)"></div><div><div class="af-t">Monthly Test #6 — Live Now</div><div class="af-m">Attempt now to maintain #4 rank</div></div></div>
+    <div class="af-i"><div class="af-dot" style="background:var(--sage)"></div><div><div class="af-t">Monthly Test #5 — 247/300 · Rank #4</div><div class="af-m">25 May 2025 · +12 pts improvement</div></div></div>
+    <div class="af-i"><div class="af-dot" style="background:var(--gold)"></div><div><div class="af-t">Monthly Test #4 — 235/300 · Rank #6</div><div class="af-m">22 Apr 2025</div></div></div>
+    <div class="af-i"><div class="af-dot" style="background:var(--amber)"></div><div><div class="af-t">Monthly Test #3 — 218/300 · Rank #9</div><div class="af-m">25 Mar 2025</div></div></div>
+    <div class="af-i"><div class="af-dot" style="background:rgba(26,38,24,.2)"></div><div><div class="af-t">Monthly Test #2 — 204/300 · Rank #14</div><div class="af-m">22 Feb 2025</div></div></div>
+    <div style="margin-top:12px;padding:12px;background:var(--sage-light);border-radius:10px;border:1px solid rgba(107,143,94,.2)">
+      <div style="font-size:.75rem;font-weight:700;color:var(--sage)">📈 Amazing Progress!</div>
+      <div style="font-size:.68rem;color:var(--forest-muted);margin-top:3px">Rank #14 → #4 in 4 months. Keep this pace and you will reach #1 by August!</div>
+    </div>
+  </div>
+</div>`},
+
+classmates:{title:'My Classmates',crumb:'MockArena / Institution / Classmates',tabs:['All Students','Online Now','Top Performers'],html:`
+${HERO}
+<div class="g4 fu fu2">
+  <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">👥</div><span class="kpi-delta delta-up">92% active</span></div><div class="kpi-l">Total Students</div><div class="kpi-n">312</div><div class="kpi-s">DPS Patna · JEE Batch A</div></div>
+  <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">🟢</div><span class="kpi-delta delta-up">Right now</span></div><div class="kpi-l">Online Now</div><div class="kpi-n">24</div><div class="kpi-s">Studying or in tests</div></div>
+  <div class="kpi kpi-ro"><div class="kpi-top"><div class="kpi-ic" style="background:var(--rose-light)">🔴</div></div><div class="kpi-l">In Test Now</div><div class="kpi-n">47</div><div class="kpi-s">Attempting Monthly Test #6</div></div>
+  <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">🏆</div></div><div class="kpi-l">Your Rank</div><div class="kpi-n">#4</div><div class="kpi-s">Top 1.3% of batch</div></div>
+</div>
+<div class="card fu fu3">
+  <div class="ch"><div><div class="ct">My Classmates</div><div class="cs">312 students · DPS Patna · JEE Batch A 2025</div></div></div>
+  <div class="cm-grid">
+    ${[['RK','#c8962a,#e8a830','Rahul Kumar','#1 · 284',true,true],
+       ['PS','#3b82c4,#60a5e8','Priya Singh','#2 · 276',false,false],
+       ['AK','#c84b4b,#e06b6b','Amit Kumar','#3 · 271',false,true],
+       ['AR','#6b8f5e,#4a7a3d','You','#4 · 247',true,true],
+       ['NM','#7c5cbf,#9b7fd4','Neha Mishra','#5 · 241',true,false],
+       ['SK','#3b82c4,#60a5e8','Saurav K.','#6 · 238',false,true],
+       ['DP','#c84b4b,#e06b6b','Deepak P.','#7 · 234',true,false],
+       ['RG','#7c5cbf,#9b7fd4','Ritesh G.','#8 · 229',false,false],
+       ['KS','#c8962a,#e8a830','Kavya S.','#9 · 224',true,true],
+       ['VK','#6b8f5e,#4a7a3d','Vivek K.','#10 · 218',false,false],
+       ['SM','#c84b4b,#e06b6b','Sneha M.','#11 · 212',true,true],
+       ['MK','#3b82c4,#60a5e8','Manish K.','#12 · 208',false,false],
+    ].map(([i,g,n,r,o,t])=>`
+    <div class="cm-card ${n==='You'?'me':''}">
+      <div class="cm-av" style="background:linear-gradient(135deg,${g}">
+        ${i}${o?'<span class="cm-online"></span>':''}
+      </div>
+      <div class="cm-name" style="${n==='You'?'color:var(--sage);font-weight:700':''}">${n}</div>
+      <div class="cm-rank">${r} pts</div>
+      ${t?'<div style="font-size:.58rem;color:var(--rose);margin-top:3px">● In Test</div>':''}
+    </div>`).join('')}
+  </div>
+</div>`}
+
+};
+
+function nav(id,el){
+  const page=P[id];if(!page)return;
+  document.getElementById('tb-title').textContent=page.title;
+  document.getElementById('tb-crumb').textContent=page.crumb;
+  const stabs=document.getElementById('stabs');
+  stabs.innerHTML=page.tabs.map((t,i)=>`<button class="stab ${i===0?'active':''}" onclick="this.parentNode.querySelectorAll('.stab').forEach(s=>s.classList.remove('active'));this.classList.add('active')">${t}</button>`).join('');
+  document.getElementById('content').innerHTML=page.html;
+  document.querySelectorAll('.sb-nav').forEach(n=>n.classList.remove('active'));
+  if(el)el.classList.add('active');
+  setTimeout(()=>{
+    document.querySelectorAll('.pb-f').forEach(b=>{const w=b.style.width;b.style.width='0';setTimeout(()=>b.style.width=w,80);});
+  },120);
+}
+nav('overview',document.querySelector('.sb-nav.active'));
+</script>
+</body>
+</html>
