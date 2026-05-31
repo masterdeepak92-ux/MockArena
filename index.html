@@ -144,8 +144,8 @@
 
   /* ─── HERO ─── */
   .hero {
-    min-height: 100vh;
-    padding: 120px 6% 80px;
+
+    padding: 108px 6% 64px;
     position: relative;
     overflow: hidden;
     display: flex; align-items: center;
@@ -157,8 +157,8 @@
       linear-gradient(var(--border) 1px, transparent 1px),
       linear-gradient(90deg, var(--border) 1px, transparent 1px);
     background-size: 60px 60px;
-    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
-    -webkit-mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 0%, transparent 100%);
+
+
   }
 
   .hero-accent-blob {
@@ -180,10 +180,13 @@
 
   .hero-inner {
     position: relative; z-index: 1;
-    max-width: 1200px; margin: 0 auto;
+    max-width: 1200px; margin: 0 auto; width: 100%;
     display: grid; grid-template-columns: 1fr 1fr;
-    gap: 80px; align-items: center;
+    gap: 60px; align-items: center;
   }
+
+  /* Desktop: show hero visual card */
+  .hero-visual { display: block; }
 
   .hero-eyebrow {
     display: inline-flex; align-items: center; gap: 8px;
@@ -812,7 +815,7 @@
   .analytics-inner {
     max-width: 1200px; margin: 0 auto;
     display: grid; grid-template-columns: 1fr 1.2fr;
-    gap: 80px; align-items: center;
+    gap: 60px; align-items: center;
   }
 
   .analytics-cards {
@@ -1369,7 +1372,7 @@
   @media (max-width: 1024px) {
     nav { padding: 0 4%; }
 
-    .hero { padding: 108px 4% 64px; }
+    .hero { padding: 100px 4% 56px; }
     .hero-inner {
       grid-template-columns: 1fr;
       gap: 0;
@@ -1423,7 +1426,7 @@
     .announce-bar a { display: block; margin: 2px 0 0; }
 
     /* Hero */
-    .hero { padding: 88px 5% 56px; min-height: auto; }
+    .hero { padding: 76px 5% 48px; }
     .hero-inner { gap: 0; }
     .hero-eyebrow { font-size: 0.72rem; padding: 5px 10px 5px 6px; }
     .hero h1 {
