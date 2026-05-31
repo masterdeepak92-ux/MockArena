@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena — College Admin Panel</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf9f5;--cream-warm:#f5f3ec;--cream-card:#ffffff;
+  --forest:#1a2618;--forest-soft:#243422;--forest-muted:#3d5239;
+  --sage:#6b8f5e;--sage-light:rgba(107,143,94,0.1);--sage-glow:rgba(107,143,94,0.2);
+  --gold:#c8962a;--gold-light:rgba(200,150,42,0.1);--gold-dim:rgba(200,150,42,0.08);
+  --rose:#c84b4b;--rose-light:rgba(200,75,75,0.09);
+  --sky:#3b82c4;--sky-light:rgba(59,130,196,0.09);
+  --amber:#b87333;--amber-light:rgba(184,115,51,0.09);
+  --purple:#7c5cbf;--purple-light:rgba(124,92,191,0.09);
+  --border:rgba(26,38,24,0.08);--border-med:rgba(26,38,24,0.13);--border-strong:rgba(26,38,24,0.2);
+  --font-d:'Outfit',sans-serif;--font-b:'Outfit',sans-serif;--font-m:'IBM Plex Mono',monospace;
+  --sh:0 1px 3px rgba(26,38,24,0.06),0 4px 16px rgba(26,38,24,0.04);
+  --sh-hover:0 8px 32px rgba(107,143,94,0.15),0 2px 8px rgba(26,38,24,0.06);
+  --sh-deep:0 20px 60px rgba(26,38,24,0.12);
+  --sbw:256px;--tbh:62px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font-b);background:var(--cream);color:var(--forest);display:flex;-webkit-font-smoothing:antialiased;}
+
+/* SIDEBAR */
+.sb{width:var(--sbw);flex-shrink:0;background:var(--forest);height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;z-index:300;}
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px;}
+.sb-logo{padding:20px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.06);text-decoration:none;}
+.sb-lm{width:36px;height:36px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.82rem;font-weight:800;color:white;flex-shrink:0;box-shadow:0 0 18px var(--sage-glow);}
+.sb-b1{font-family:var(--font-d);font-size:1rem;font-weight:700;letter-spacing:-.02em;}
+.sb-b2{font-size:.56rem;font-weight:500;color:rgba(255,255,255,.28);letter-spacing:.1em;text-transform:uppercase;}
+.sb-admin{margin:12px 14px;background:rgba(107,143,94,.15);border:1px solid rgba(107,143,94,.25);border-radius:12px;padding:12px;}
+.sb-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.88rem;font-weight:800;color:white;margin-bottom:8px;box-shadow:0 0 14px rgba(200,150,42,.3);}
+.sb-aname{font-size:.8rem;font-weight:700;color:white;}
+.sb-arole{font-size:.62rem;color:rgba(255,255,255,.35);margin-top:1px;}
+.sb-abadge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;background:rgba(200,150,42,.15);border:1px solid rgba(200,150,42,.25);border-radius:100px;padding:2px 9px;font-size:.6rem;font-weight:600;color:var(--gold);}
+.sb-college{margin:0 14px 6px;background:rgba(59,130,196,.1);border:1px solid rgba(59,130,196,.2);border-radius:10px;padding:9px 12px;display:flex;align-items:center;gap:9px;}
+.sb-ci{font-size:1.3rem;}
+.sb-cn{font-size:.74rem;font-weight:700;color:white;}
+.sb-cs{font-size:.6rem;color:rgba(255,255,255,.3);margin-top:1px;}
+.sb-grp{padding:14px 18px 4px;font-size:.56rem;font-weight:600;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.12em;}
+.sb-ul{list-style:none;padding:0 8px;}
+.sb-ul li{margin-bottom:1px;}
+.sb-nav{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;text-decoration:none;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.42);transition:all .18s;cursor:pointer;background:none;border:none;width:100%;font-family:var(--font-b);text-align:left;}
+.sb-nav:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8);}
+.sb-nav.active{background:rgba(107,143,94,.2);color:white;border:1px solid rgba(107,143,94,.3);}
+.sb-nav.active .si{color:var(--sage);}
+.si{width:16px;text-align:center;font-size:.82rem;flex-shrink:0;color:rgba(255,255,255,.25);}
+.snb{margin-left:auto;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:100px;background:var(--rose);color:white;}
+.snb-g{background:var(--sage);}
+.sb-foot{margin-top:auto;padding:10px 8px 18px;border-top:1px solid rgba(255,255,255,.06);}
+
+/* MAIN */
+.main{margin-left:var(--sbw);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.tb{height:var(--tbh);background:rgba(250,249,245,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:12px;flex-shrink:0;}
+.tb-title{font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;}
+.tb-crumb{font-size:.64rem;color:rgba(26,38,24,.4);}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.tb-search{display:flex;align-items:center;gap:7px;background:var(--cream-warm);border:1.5px solid var(--border-med);border-radius:9px;padding:7px 12px;width:200px;transition:all .2s;}
+.tb-search:focus-within{border-color:var(--sage);}
+.tb-search input{border:none;outline:none;font-family:var(--font-b);font-size:.78rem;color:var(--forest);background:transparent;width:100%;}
+.tb-search input::placeholder{color:rgba(26,38,24,.3);}
+.tb-ib{width:36px;height:36px;border-radius:9px;background:var(--cream-warm);border:1.5px solid var(--border-med);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.88rem;transition:all .2s;position:relative;color:var(--forest-muted);}
+.tb-ib:hover{border-color:var(--sage);background:var(--sage-light);}
+.tb-ib .dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--rose);border:1.5px solid var(--cream);}
+.btn{font-family:var(--font-b);font-size:.76rem;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;border:none;}
+.btn-ghost{background:var(--cream-warm);border:1.5px solid var(--border-med);color:var(--forest-muted);}
+.btn-ghost:hover{border-color:var(--sage);color:var(--sage);}
+.btn-sage{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;box-shadow:0 2px 8px var(--sage-glow);}
+.btn-sage:hover{box-shadow:0 4px 16px var(--sage-glow);transform:translateY(-1px);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#e8a830);color:white;box-shadow:0 2px 8px rgba(200,150,42,.25);}
+.btn-gold:hover{box-shadow:0 4px 14px rgba(200,150,42,.35);transform:translateY(-1px);}
+.btn-primary{background:linear-gradient(135deg,var(--forest),var(--forest-soft));color:white;}
+.stabs{height:44px;background:var(--cream-card);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:2px;flex-shrink:0;overflow-x:auto;}
+.stabs::-webkit-scrollbar{display:none;}
+.stab{font-family:var(--font-b);font-size:.74rem;font-weight:600;color:rgba(26,38,24,.4);background:none;border:none;border-bottom:2px solid transparent;padding:0 13px;height:44px;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.stab:hover{color:var(--forest);}
+.stab.active{color:var(--sage);border-bottom-color:var(--sage);}
+.content{flex:1;overflow-y:auto;padding:22px 24px 40px;}
+.content::-webkit-scrollbar{width:3px;}
+.content::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+/* LAYOUT */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-bottom:20px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:20px;}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:13px;margin-bottom:20px;}
+.g12{display:grid;grid-template-columns:1fr 2fr;gap:13px;margin-bottom:20px;}
+.g31{display:grid;grid-template-columns:3fr 1fr;gap:13px;margin-bottom:20px;}
+
+/* KPI */
+.kpi{background:var(--cream-card);border:1px solid var(--border);border-radius:16px;padding:18px;transition:all .25s;position:relative;overflow:hidden;}
+.kpi:hover{box-shadow:var(--sh-hover);transform:translateY(-2px);}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:16px 16px 0 0;}
+.kpi-sg::after{background:linear-gradient(90deg,var(--sage),#8fb87f);}
+.kpi-gd::after{background:linear-gradient(90deg,var(--gold),#e8a830);}
+.kpi-ro::after{background:linear-gradient(90deg,var(--rose),#e06b6b);}
+.kpi-sk::after{background:linear-gradient(90deg,var(--sky),#60a5e8);}
+.kpi-am::after{background:linear-gradient(90deg,var(--amber),#d4844a);}
+.kpi-pr::after{background:linear-gradient(90deg,var(--purple),#9b7fd4);}
+.kpi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.kpi-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+.kpi-delta{font-size:.62rem;font-weight:600;padding:2px 7px;border-radius:100px;}
+.delta-up{background:rgba(107,143,94,.12);color:var(--sage);}
+.delta-dn{background:var(--rose-light);color:var(--rose);}
+.kpi-n{font-family:var(--font-d);font-size:1.6rem;font-weight:700;color:var(--forest);letter-spacing:-.04em;line-height:1;margin-bottom:3px;}
+.kpi-l{font-size:.66rem;font-weight:600;color:rgba(26,38,24,.45);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
+.kpi-s{font-size:.66rem;color:rgba(26,38,24,.35);}
+.sparks{display:flex;align-items:flex-end;gap:2px;height:22px;margin-top:10px;}
+.spark{flex:1;border-radius:1px;min-height:2px;transition:height .9s cubic-bezier(.4,0,.2,1);}
+
+/* CARD */
+.card{background:var(--cream-card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--sh);transition:box-shadow .25s;}
+.card:hover{box-shadow:var(--sh-hover);}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.ct{font-family:var(--font-d);font-size:.84rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;}
+.cs{font-size:.65rem;color:rgba(26,38,24,.4);margin-top:2px;}
+.sh{font-family:var(--font-d);font-size:.84rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;margin-bottom:13px;display:flex;align-items:center;gap:8px;}
+.sh::before{content:'';width:3px;height:15px;background:linear-gradient(180deg,var(--sage),#4a7a3d);border-radius:2px;box-shadow:0 0 6px var(--sage-glow);}
+.sh-r{margin-left:auto;display:flex;align-items:center;gap:7px;}
+
+/* TABLE */
+.tw{overflow-x:auto;}
+.tw::-webkit-scrollbar{height:3px;}
+.tw::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+table{width:100%;border-collapse:collapse;}
+thead th{font-size:.62rem;font-weight:700;color:rgba(26,38,24,.35);text-transform:uppercase;letter-spacing:.07em;padding:0 12px 9px;text-align:left;white-space:nowrap;}
+tbody td{padding:9px 12px;font-size:.78rem;color:var(--forest-muted);border-top:1px solid var(--border);white-space:nowrap;}
+tbody tr:hover td{background:var(--cream-warm);}
+.mono{font-family:var(--font-m);font-size:.7rem;}
+.bold{font-weight:700;color:var(--forest);}
+.avc{display:flex;align-items:center;gap:8px;}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;flex-shrink:0;}
+.av-sg{background:var(--sage-light);color:var(--sage);}
+.av-gd{background:var(--gold-dim);color:var(--gold);}
+.av-ro{background:var(--rose-light);color:var(--rose);}
+.av-sk{background:var(--sky-light);color:var(--sky);}
+.av-pr{background:var(--purple-light);color:var(--purple);}
+.av-am{background:var(--amber-light);color:var(--amber);}
+.av-n{font-size:.78rem;font-weight:600;color:var(--forest);}
+.av-m{font-size:.62rem;color:rgba(26,38,24,.35);}
+
+/* BADGE */
+.badge{font-size:.62rem;font-weight:600;padding:2px 9px;border-radius:100px;white-space:nowrap;display:inline-flex;align-items:center;gap:3px;}
+.bg{background:var(--sage-light);color:var(--sage);border:1px solid rgba(107,143,94,.2);}
+.br{background:var(--rose-light);color:var(--rose);border:1px solid rgba(200,75,75,.2);}
+.ba{background:var(--amber-light);color:var(--amber);border:1px solid rgba(184,115,51,.2);}
+.bb{background:var(--sky-light);color:var(--sky);border:1px solid rgba(59,130,196,.2);}
+.bgd{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(200,150,42,.2);}
+.bp{background:var(--purple-light);color:var(--purple);border:1px solid rgba(124,92,191,.2);}
+.bn{background:var(--cream-warm);color:rgba(26,38,24,.45);border:1px solid var(--border-med);}
+.acb{display:flex;gap:4px;}
+.ab{font-family:var(--font-b);font-size:.62rem;font-weight:600;padding:3px 9px;border-radius:6px;cursor:pointer;border:1px solid;transition:all .15s;}
+.ab-g{background:var(--sage-light);color:var(--sage);border-color:rgba(107,143,94,.2);}
+.ab-g:hover{background:var(--sage-glow);}
+.ab-a{background:var(--amber-light);color:var(--amber);border-color:rgba(184,115,51,.2);}
+.ab-r{background:var(--rose-light);color:var(--rose);border-color:rgba(200,75,75,.2);}
+.ab-b{background:var(--sky-light);color:var(--sky);border-color:rgba(59,130,196,.2);}
+
+/* PROGRESS BAR */
+.pb{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.pb-l{font-size:.7rem;font-weight:600;color:var(--forest-muted);width:120px;flex-shrink:0;}
+.pb-t{flex:1;height:6px;background:var(--cream-warm);border-radius:5px;overflow:hidden;border:1px solid var(--border);}
+.pb-f{height:100%;border-radius:5px;transition:width 1.5s cubic-bezier(.4,0,.2,1);}
+.pb-v{font-family:var(--font-m);font-size:.67rem;color:var(--forest-muted);width:36px;text-align:right;}
+
+/* METRIC ROW */
+.mr{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
+.mr:last-child{border-bottom:none;}
+.mr-l{font-size:.73rem;font-weight:500;color:var(--forest-muted);}
+.mr-v{font-family:var(--font-m);font-size:.73rem;font-weight:500;color:var(--forest);}
+
+/* ACTIVITY */
+.af-i{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.af-i:last-child{border-bottom:none;}
+.af-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.af-body{flex:1;}
+.af-t{font-size:.74rem;font-weight:600;color:var(--forest);margin-bottom:2px;}
+.af-m{font-size:.63rem;color:rgba(26,38,24,.4);}
+.af-time{font-size:.6rem;color:rgba(26,38,24,.3);flex-shrink:0;margin-top:3px;}
+
+/* NOTICE */
+.notice{display:flex;gap:10px;padding:12px 14px;border-radius:11px;margin-bottom:8px;}
+.notice-sg{background:var(--sage-light);border:1px solid rgba(107,143,94,.2);}
+.notice-gd{background:var(--gold-dim);border:1px solid rgba(200,150,42,.2);}
+.notice-ro{background:var(--rose-light);border:1px solid rgba(200,75,75,.15);}
+.notice-sk{background:var(--sky-light);border:1px solid rgba(59,130,196,.2);}
+.n-icon{font-size:.9rem;flex-shrink:0;margin-top:1px;}
+.n-title{font-size:.75rem;font-weight:700;color:var(--forest);margin-bottom:2px;}
+.n-desc{font-size:.68rem;color:var(--forest-muted);line-height:1.5;}
+.n-time{font-size:.6rem;color:rgba(26,38,24,.3);flex-shrink:0;white-space:nowrap;}
+
+/* FORM */
+.fl{display:flex;flex-direction:column;gap:5px;margin-bottom:10px;}
+.fl label{font-size:.7rem;font-weight:600;color:var(--forest-muted);}
+.fi{font-family:var(--font-b);font-size:.8rem;color:var(--forest);background:var(--cream-warm);border:1.5px solid var(--border-med);border-radius:9px;padding:8px 12px;outline:none;transition:all .2s;width:100%;}
+.fi:focus{border-color:var(--sage);background:white;box-shadow:0 0 0 3px var(--sage-light);}
+.fi::placeholder{color:rgba(26,38,24,.25);}
+textarea.fi{min-height:72px;resize:vertical;line-height:1.6;}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;}
+
+/* MODAL */
+.mo{position:fixed;inset:0;z-index:500;background:rgba(26,38,24,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;}
+.mo.open{display:flex;}
+.mb{background:var(--cream-card);border:1px solid var(--border-med);border-radius:20px;padding:28px;width:520px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:var(--sh-deep);animation:mpop .25s cubic-bezier(.34,1.56,.64,1);}
+@keyframes mpop{from{transform:scale(.92);opacity:0;}to{transform:scale(1);opacity:1;}}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.mt{font-family:var(--font-d);font-size:1rem;font-weight:700;color:var(--forest);letter-spacing:-.03em;}
+.mc{width:28px;height:28px;border:1.5px solid var(--border-med);border-radius:7px;background:none;cursor:pointer;font-size:.82rem;display:flex;align-items:center;justify-content:center;color:var(--forest-muted);}
+.mc:hover{border-color:var(--rose);color:var(--rose);}
+
+/* CTABS */
+.ctabs{display:flex;gap:2px;background:var(--cream-warm);border-radius:9px;padding:3px;margin-bottom:14px;width:fit-content;border:1px solid var(--border);}
+.ctab{font-family:var(--font-b);font-size:.71rem;font-weight:600;color:rgba(26,38,24,.4);background:none;border:none;padding:5px 12px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.ctab.active{background:white;color:var(--forest);box-shadow:0 1px 4px rgba(26,38,24,.08);}
+
+/* HEATMAP */
+.hm{display:flex;flex-direction:column;gap:4px;}
+.hm-row{display:flex;align-items:center;gap:3px;}
+.hm-l{font-size:.63rem;font-weight:500;color:var(--forest-muted);width:84px;text-align:right;flex-shrink:0;}
+.hm-cells{display:flex;gap:3px;}
+.hm-c{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.52rem;font-weight:700;cursor:pointer;transition:transform .15s;}
+.hm-c:hover{transform:scale(1.2);}
+.h0{background:var(--cream-warm);color:rgba(26,38,24,.25);}
+.h1{background:rgba(107,143,94,.12);color:var(--sage);}
+.h2{background:rgba(107,143,94,.28);color:var(--sage);}
+.h3{background:rgba(107,143,94,.5);color:white;}
+.h4{background:var(--sage);color:white;}
+.hw{background:var(--rose-light);color:var(--rose);}
+
+/* STUDENT CARD */
+.stu-card{background:var(--cream-card);border:1px solid var(--border);border-radius:14px;padding:16px;transition:all .2s;cursor:pointer;}
+.stu-card:hover{box-shadow:var(--sh-hover);transform:translateY(-2px);border-color:rgba(107,143,94,.3);}
+.stu-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:700;margin-bottom:10px;color:white;}
+.stu-name{font-size:.82rem;font-weight:700;color:var(--forest);margin-bottom:3px;}
+.stu-meta{font-size:.65rem;color:rgba(26,38,24,.4);margin-bottom:10px;}
+.stu-bar{height:4px;background:var(--cream-warm);border-radius:3px;overflow:hidden;margin-bottom:8px;}
+.stu-bar-f{height:100%;border-radius:3px;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fadeUp .38s ease forwards;}
+.fu1{animation-delay:.04s;opacity:0;}.fu2{animation-delay:.08s;opacity:0;}
+.fu3{animation-delay:.12s;opacity:0;}.fu4{animation-delay:.16s;opacity:0;}
+.fu5{animation-delay:.2s;opacity:0;}
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+@media(max-width:1100px){.g4{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:860px){.sb{transform:translateX(-100%)}.main{margin-left:0}.g2,.g21,.g12,.g3,.g31{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sb">
+  <a href="index.html" class="sb-logo">
+    <div class="sb-lm">MA</div>
+    <div>
+      <div class="sb-b1"><span style="color:#fff;font-weight:900;">Mock</span><span style="background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900;">Arena</span></div>
+      <div class="sb-b2">Institution Admin Panel</div>
+    </div>
+  </a>
+
+  <div class="sb-admin">
+    <div class="sb-av">RK</div>
+    <div class="sb-aname">Rajesh Kumar</div>
+    <div class="sb-arole">School Admin · DPS Patna</div>
+    <div class="sb-abadge">🏫 Institution Admin</div>
+  </div>
+
+  <div class="sb-college">
+    <div class="sb-ci">🏫</div>
+    <div><div class="sb-cn">Delhi Public School, Patna</div><div class="sb-cs">JEE Batch A · 312 Students</div></div>
+  </div>
+
+  <div class="sb-grp">Overview</div>
+  <ul class="sb-ul">
+    <li><button class="sb-nav active" onclick="nav('dashboard',this)"><span class="si">⬡</span>Dashboard</button></li>
+    <li><button class="sb-nav" onclick="nav('analytics',this)"><span class="si">◈</span>Analytics</button></li>
+  </ul>
+
+  <div class="sb-grp">Students</div>
+  <ul class="sb-ul">
+    <li><button class="sb-nav" onclick="nav('students',this)"><span class="si">◎</span>All Students<span class="snb snb-g">312</span></button></li>
+    <li><button class="sb-nav" onclick="nav('performance',this)"><span class="si">◈</span>Performance</button></li>
+    <li><button class="sb-nav" onclick="nav('attention',this)"><span class="si">⚠️</span>Needs Attention<span class="snb">8</span></button></li>
+  </ul>
+
+  <div class="sb-grp">Tests</div>
+  <ul class="sb-ul">
+    <li><button class="sb-nav" onclick="nav('tests',this)"><span class="si">◳</span>Manage Tests</button></li>
+    <li><button class="sb-nav" onclick="nav('results',this)"><span class="si">◇</span>Test Results</button></li>
+    <li><button class="sb-nav" onclick="nav('assign',this)"><span class="si">▦</span>Assign Tests</button></li>
+  </ul>
+
+  <div class="sb-grp">Communication</div>
+  <ul class="sb-ul">
+    <li><button class="sb-nav" onclick="nav('announcements',this)"><span class="si">◉</span>Announcements</button></li>
+    <li><button class="sb-nav" onclick="nav('reports',this)"><span class="si">▤</span>Reports</button></li>
+  </ul>
+
+  <div class="sb-foot">
+    <button class="sb-nav" onclick="nav('settings',this)"><span class="si">⚙️</span>Settings</button>
+    <a href="mockarena_my_college.html" class="sb-nav"><span class="si">↩</span>Student View</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+  <div class="tb">
+    <div>
+      <div class="tb-title" id="tb-title">Institution Dashboard</div>
+      <div class="tb-crumb" id="tb-crumb">DPS Patna / Admin / Dashboard</div>
+    </div>
+    <div class="tb-r">
+      <div class="tb-search"><span style="color:rgba(26,38,24,.3);font-size:.82rem">⌕</span><input type="text" placeholder="Search students, tests…"></div>
+      <div class="tb-ib">🔔<div class="dot"></div></div>
+      <div class="tb-ib">📅</div>
+      <button class="btn btn-ghost" onclick="openModal('report-modal')">⬇ Export</button>
+      <button class="btn btn-sage" onclick="openModal('test-modal')">+ Create Test</button>
+    </div>
+  </div>
+  <div class="stabs" id="stabs"></div>
+  <div class="content" id="content"></div>
+</div>
+
+<!-- CREATE TEST MODAL -->
+<div class="mo" id="test-modal">
+  <div class="mb">
+    <div class="mh"><div class="mt">📝 Create New Test</div><button class="mc" onclick="closeModal('test-modal')">✕</button></div>
+    <div class="fl"><label>Test Title *</label><input class="fi" type="text" placeholder="e.g. DPS Patna — Monthly Test #7"></div>
+    <div class="fg2">
+      <div class="fl"><label>Subject *</label><select class="fi"><option>Physics</option><option>Chemistry</option><option>Mathematics</option><option>Full Syllabus</option></select></div>
+      <div class="fl"><label>Test Type</label><select class="fi"><option>Monthly Test</option><option>Unit Test</option><option>DPP</option><option>Full Mock</option><option>Pre Board</option></select></div>
+    </div>
+    <div class="fg3">
+      <div class="fl"><label>Duration (min)</label><input class="fi" type="number" placeholder="180"></div>
+      <div class="fl"><label>Total Questions</label><input class="fi" type="number" placeholder="90"></div>
+      <div class="fl"><label>Total Marks</label><input class="fi" type="number" placeholder="300"></div>
+    </div>
+    <div class="fg2">
+      <div class="fl"><label>Assign to Batch</label><select class="fi"><option>JEE Batch A (312 students)</option><option>JEE Batch B</option><option>All Batches</option></select></div>
+      <div class="fl"><label>Schedule Date & Time</label><input class="fi" type="datetime-local"></div>
+    </div>
+    <div class="fg2">
+      <div class="fl"><label>Marks (Correct)</label><input class="fi" type="number" placeholder="+4"></div>
+      <div class="fl"><label>Marks (Wrong)</label><input class="fi" type="number" placeholder="-1"></div>
+    </div>
+    <div class="fl"><label>Instructions</label><textarea class="fi" placeholder="Add special instructions for students…"></textarea></div>
+    <div style="display:flex;gap:8px;margin-top:4px;">
+      <button class="btn btn-sage" style="flex:2;padding:10px;justify-content:center;" onclick="closeModal('test-modal');alert('✅ Test created and assigned to Batch A!')">✓ Create & Assign</button>
+      <button class="btn btn-ghost" style="padding:10px 14px;" onclick="closeModal('test-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- ANNOUNCEMENT MODAL -->
+<div class="mo" id="ann-modal">
+  <div class="mb">
+    <div class="mh"><div class="mt">📢 Post Announcement</div><button class="mc" onclick="closeModal('ann-modal')">✕</button></div>
+    <div class="fl"><label>Title *</label><input class="fi" type="text" placeholder="e.g. Important: Test schedule change"></div>
+    <div class="fg2">
+      <div class="fl"><label>Type</label><select class="fi"><option>📢 General</option><option>🚨 Important</option><option>📅 Schedule</option><option>🏆 Achievement</option></select></div>
+      <div class="fl"><label>Audience</label><select class="fi"><option>All Students (312)</option><option>JEE Batch A</option><option>JEE Batch B</option></select></div>
+    </div>
+    <div class="fl"><label>Message *</label><textarea class="fi" placeholder="Write your announcement here…" style="min-height:100px;"></textarea></div>
+    <div class="fg2">
+      <div class="fl"><label>Send Notification</label><select class="fi"><option>✅ Yes — notify all</option><option>❌ No — just post</option></select></div>
+      <div class="fl"><label>Pin to top?</label><select class="fi"><option>Yes — pin it</option><option>No</option></select></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px;">
+      <button class="btn btn-sage" style="flex:2;padding:10px;justify-content:center;" onclick="closeModal('ann-modal');alert('✅ Announcement posted to all 312 students!')">📢 Post Now</button>
+      <button class="btn btn-ghost" style="padding:10px 14px;" onclick="closeModal('ann-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<!-- REPORT MODAL -->
+<div class="mo" id="report-modal">
+  <div class="mb">
+    <div class="mh"><div class="mt">⬇ Export Report</div><button class="mc" onclick="closeModal('report-modal')">✕</button></div>
+    <div class="fl"><label>Report Type</label><select class="fi"><option>Batch Performance Report</option><option>Individual Student Report</option><option>Test-wise Analysis</option><option>Attendance Report</option></select></div>
+    <div class="fg2">
+      <div class="fl"><label>Batch</label><select class="fi"><option>All Batches</option><option>JEE Batch A</option><option>JEE Batch B</option></select></div>
+      <div class="fl"><label>Format</label><select class="fi"><option>PDF Report</option><option>Excel Sheet</option><option>CSV Data</option></select></div>
+    </div>
+    <div class="fg2">
+      <div class="fl"><label>From Date</label><input class="fi" type="date"></div>
+      <div class="fl"><label>To Date</label><input class="fi" type="date"></div>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px;">
+      <button class="btn btn-gold" style="flex:2;padding:10px;justify-content:center;" onclick="closeModal('report-modal');alert('✅ Report generating… will download shortly!')">⬇ Generate & Download</button>
+      <button class="btn btn-ghost" style="padding:10px 14px;" onclick="closeModal('report-modal')">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+function openModal(id){document.getElementById(id).classList.add('open');}
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+document.querySelectorAll('.mo').forEach(m=>m.addEventListener('click',e=>{if(e.target===m)m.classList.remove('open');}));
+
+const PAGES = {
+
+dashboard:{title:'Institution Dashboard',crumb:'DPS Patna / Admin / Dashboard',tabs:['Overview','Today','Activity'],render:()=>`
+  <!-- Welcome Banner -->
+  <div style="background:linear-gradient(135deg,var(--forest) 0%,var(--forest-soft) 60%,#2d4a2a 100%);border-radius:20px;padding:28px 32px;margin-bottom:18px;position:relative;overflow:hidden;" class="fu fu1">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(107,143,94,.15);filter:blur(50px);top:-60px;right:60px;pointer-events:none;"></div>
+    <div style="position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(200,150,42,.1);filter:blur(40px);bottom:-30px;left:35%;pointer-events:none;"></div>
+    <div style="display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;position:relative;z-index:1;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:4px 12px;font-size:.6rem;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--sage);box-shadow:0 0 6px var(--sage);"></div>
+          Delhi Public School, Patna · JEE Batch A 2025
+        </div>
+        <div style="font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:white;letter-spacing:-.04em;line-height:1.1;margin-bottom:6px;">
+          Good morning, <span style="background:linear-gradient(90deg,#a8d99c,#d4a84b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Prof. Rajesh!</span>
+        </div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:18px;">DPS Patna · 312 students · All teaching by MockArena experts · Bihar State Rank #3</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-gold" onclick="openModal('test-modal')">📝 Create Test</button>
+          <button class="btn" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.15);padding:7px 14px;" onclick="nav('students',null)">👥 View Students</button>
+          <button class="btn" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.15);padding:7px 14px;" onclick="openModal('ann-modal')">📢 Announce</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:180px;">
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;">
+          <div style="font-size:.6rem;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">State Rank</div>
+          <div style="font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:white;letter-spacing:-.04em;">#3 Bihar</div>
+          <div style="font-size:.62rem;color:rgba(255,255,255,.3);">MockArena Rankings 2025</div>
+        </div>
+        <div style="background:rgba(200,150,42,.12);border:1px solid rgba(200,150,42,.2);border-radius:12px;padding:12px 14px;">
+          <div style="font-size:.6rem;font-weight:600;color:rgba(200,150,42,.8);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Tests Conducted</div>
+          <div style="font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:white;letter-spacing:-.04em;">18</div>
+          <div style="font-size:.62rem;color:rgba(255,255,255,.3);">This academic year</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="g4 fu fu2">
+    <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">👥</div><span class="kpi-delta delta-up">92% active</span></div><div class="kpi-n">312</div><div class="kpi-l">Total Students</div><div class="kpi-s">287 active today · 24 online</div></div>
+    <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">📝</div><span class="kpi-delta delta-up">1 live now</span></div><div class="kpi-n">18</div><div class="kpi-l">Tests Assigned</div><div class="kpi-s">Monthly Test #6 running</div></div>
+    <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">📊</div><span class="kpi-delta delta-up">+4% this month</span></div><div class="kpi-n">68%</div><div class="kpi-l">Batch Avg Score</div><div class="kpi-s">Up from 64% last month</div></div>
+    <div class="kpi kpi-am"><div class="kpi-top"><div class="kpi-ic" style="background:var(--amber-light)">⚠️</div><span class="kpi-delta delta-dn">needs help</span></div><div class="kpi-n">8</div><div class="kpi-l">Needs Attention</div><div class="kpi-s">Below 55% accuracy</div></div>
+  </div>
+
+  <div class="g21 fu fu3">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Batch Performance — Subject-wise</div><div class="cs">Average accuracy across 312 students</div></div></div>
+      <div class="pb"><div class="pb-l">⚛️ Physics</div><div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--sage),#4a7a3d)" data-w="64%"></div></div><div class="pb-v">64%</div></div>
+      <div class="pb"><div class="pb-l">🧪 Chemistry</div><div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--sky),#60a5e8)" data-w="71%"></div></div><div class="pb-v">71%</div></div>
+      <div class="pb"><div class="pb-l">📐 Mathematics</div><div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--gold),#e8a830)" data-w="69%"></div></div><div class="pb-v">69%</div></div>
+      <div style="margin-top:16px;padding-top:14px;border-top:1px solid var(--border)">
+        <div class="sh" style="margin-bottom:10px">Live Test Monitor</div>
+        <div style="background:var(--rose-light);border:1px solid rgba(200,75,75,.2);border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:12px;">
+          <div style="width:8px;height:8px;border-radius:50%;background:var(--rose);animation:blink 1s infinite;flex-shrink:0;"></div>
+          <div style="flex:1"><div style="font-size:.8rem;font-weight:700;color:var(--forest)">Monthly Test #6 — LIVE</div><div style="font-size:.68rem;color:rgba(26,38,24,.4);margin-top:2px">Started 11:00 AM · Ends 2:00 PM · 3 hrs remaining</div></div>
+          <div style="text-align:right"><div style="font-family:var(--font-d);font-size:1rem;font-weight:800;color:var(--rose)">247</div><div style="font-size:.6rem;color:rgba(26,38,24,.35)">Attempting</div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px;">
+          <div style="background:var(--cream-warm);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest)">247</div><div style="font-size:.6rem;color:rgba(26,38,24,.35)">Attempting</div></div>
+          <div style="background:var(--cream-warm);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest)">38</div><div style="font-size:.6rem;color:rgba(26,38,24,.35)">Submitted</div></div>
+          <div style="background:var(--cream-warm);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border)"><div style="font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest)">27</div><div style="font-size:.6rem;color:rgba(26,38,24,.35)">Not Started</div></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="ch"><div class="ct">Student Activity</div></div>
+        <div class="af-i"><div class="af-dot" style="background:var(--sage)"></div><div class="af-body"><div class="af-t">Rahul Kumar — 284/300 in Mock #5</div><div class="af-m">Top scorer · Rank #1 in college</div></div><div class="af-time">2m</div></div>
+        <div class="af-i"><div class="af-dot" style="background:var(--rose)"></div><div class="af-body"><div class="af-t">Vikram Tiwari — 3rd consecutive fail</div><div class="af-m">Below 55% · Needs urgent attention</div></div><div class="af-time">14m</div></div>
+        <div class="af-i"><div class="af-dot" style="background:var(--gold)"></div><div class="af-body"><div class="af-t">Priya Singh improved by +24 pts</div><div class="af-m">Physics Test #5 · Best improvement</div></div><div class="af-time">1h</div></div>
+        <div class="af-i"><div class="af-dot" style="background:var(--sky)"></div><div class="af-body"><div class="af-t">5 new doubt questions submitted</div><div class="af-m">Electrostatics · Batch A students</div></div><div class="af-time">2h</div></div>
+      </div>
+      <div class="card">
+        <div class="ch"><div class="ct">Quick Actions</div></div>
+        <div style="display:flex;flex-direction:column;gap:7px;">
+          <button class="btn btn-sage" style="width:100%;justify-content:center;padding:9px;" onclick="openModal('test-modal')">📝 Create New Test</button>
+          <button class="btn btn-gold" style="width:100%;justify-content:center;padding:9px;" onclick="openModal('ann-modal')">📢 Post Announcement</button>
+          <button class="btn btn-ghost" style="width:100%;justify-content:center;padding:9px;" onclick="openModal('report-modal')">⬇ Download Report</button>
+          <button class="btn btn-ghost" style="width:100%;justify-content:center;padding:9px;" onclick="nav('attention',null)">⚠️ View Students Needing Help</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notices -->
+  <div class="g2 fu fu4">
+    <div>
+      <div class="notice notice-ro"><div class="n-icon">⚠️</div><div><div class="n-title">8 students struggling — below 55%</div><div class="n-desc">Vikram T., Nikhil K. and 6 others need immediate attention. Consider scheduling revision sessions.</div></div><div class="n-time">Today</div></div>
+      <div class="notice notice-gd"><div class="n-icon">🏆</div><div><div class="n-title">DPS Patna — Bihar State Rank #3</div><div class="n-desc">Your batch achieved state rank #3 on MockArena. Rahul Kumar is top scorer with 284/300.</div></div><div class="n-time">2d</div></div>
+    </div>
+    <div>
+      <div class="notice notice-sg"><div class="n-icon">✅</div><div><div class="n-title">Monthly Test #5 results published</div><div class="n-desc">All 312 results verified and shared. Average score: 218/300. Top: Rahul Kumar 284.</div></div><div class="n-time">Yesterday</div></div>
+      <div class="notice notice-sk"><div class="n-icon">📅</div><div><div class="n-title">PTM scheduled — 10th June 2025</div><div class="n-desc">MockArena performance reports will be shared with parents. Prepare batch summary.</div></div><div class="n-time">5d</div></div>
+    </div>
+  </div>`},
+
+students:{title:'All Students',crumb:'DPS Patna / Admin / Students',tabs:['All (312)','Needs Attention (8)','Top Performers','Inactive'],render:()=>`
+  <div class="g4 fu fu1">
+    <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">👥</div><span class="kpi-delta delta-up">92% active</span></div><div class="kpi-n">312</div><div class="kpi-l">Total Students</div><div class="kpi-s">JEE Batch A · DPS Patna</div></div>
+    <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">📈</div><span class="kpi-delta delta-up">75% improved</span></div><div class="kpi-n">234</div><div class="kpi-l">Improved This Month</div><div class="kpi-s">Compared to last month</div></div>
+    <div class="kpi kpi-ro"><div class="kpi-top"><div class="kpi-ic" style="background:var(--rose-light)">⚠️</div><span class="kpi-delta delta-dn">needs help</span></div><div class="kpi-n">8</div><div class="kpi-l">Needs Attention</div><div class="kpi-s">Below 55% avg accuracy</div></div>
+    <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">🔥</div><span class="kpi-delta delta-up">active now</span></div><div class="kpi-n">24</div><div class="kpi-l">Online Now</div><div class="kpi-s">Studying or in tests</div></div>
+  </div>
+  <div class="card fu fu2">
+    <div class="ch">
+      <div><div class="ct">Student List</div><div class="cs">312 students · JEE Batch A · DPS Patna</div></div>
+      <div style="display:flex;gap:7px;align-items:center">
+        <select class="fi" style="width:130px;padding:5px 8px;font-size:.7rem"><option>All Batches</option><option>JEE Batch A</option><option>JEE Batch B</option></select>
+        <button class="btn btn-ghost" style="padding:5px 10px" onclick="openModal('report-modal')">⬇ Export</button>
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>Student</th><th>Roll No.</th><th>Tests Done</th><th>Avg Score</th><th>College Rank</th><th>Physics</th><th>Chemistry</th><th>Maths</th><th>Streak</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${[
+            ['RK','Rahul Kumar','av-gd','42-01',24,'78%','#1','89%','76%','82%','🔥12d','bg','Active'],
+            ['PS','Priya Singh','av-sk','42-02',21,'74%','#2','85%','65%','72%','🔥8d','bg','Active'],
+            ['AK','Amit Kumar','av-ro','42-03',19,'71%','#3','78%','68%','67%','🔥5d','bg','Active'],
+            ['AR','Arjun Sharma','av-sg','42-04',18,'76%','#4','72%','79%','81%','🔥42d','bg','Active'],
+            ['NM','Neha Mishra','av-pr','42-05',16,'69%','#5','66%','74%','67%','🔥3d','bg','Active'],
+            ['SK','Saurav Kumar','av-am','42-06',14,'64%','#6','62%','68%','62%','—','ba','Average'],
+            ['VT','Vikram Tiwari','av-ro','42-07',8,'52%','#198','54%','50%','52%','—','br','Needs Help'],
+            ['NK','Nikhil Kapoor','av-sk','42-08',5,'48%','#241','48%','44%','52%','—','br','Needs Help'],
+          ].map(([init,name,ac,roll,tests,avg,rank,phy,chem,math,streak,sc,status],i)=>`
+            <tr>
+              <td class="mono">${i+1}</td>
+              <td><div class="avc"><div class="av ${ac}">${init}</div><div><div class="av-n">${name}</div><div class="av-m">Roll: ${roll}</div></div></div></td>
+              <td class="mono">${roll}</td>
+              <td class="mono bold">${tests}</td>
+              <td class="mono">${avg}</td>
+              <td class="mono" style="color:var(--sage);font-weight:700">${rank}</td>
+              <td class="mono">${phy}</td>
+              <td class="mono">${chem}</td>
+              <td class="mono">${math}</td>
+              <td style="font-size:.7rem;font-weight:600;color:var(--gold)">${streak}</td>
+              <td><span class="badge ${sc}">${status}</span></td>
+              <td><div class="acb">
+                <button class="ab ab-g" onclick="nav('performance',null)">View</button>
+                <button class="ab ab-b" onclick="alert('Opening chat with ${name}...')">Chat</button>
+              </div></td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+      <span style="font-size:.66rem;color:rgba(26,38,24,.35)">Showing 1–8 of 312 students</span>
+      <div style="display:flex;gap:3px">
+        ${['← Prev','1','2','3','…','39','Next →'].map((p,i)=>`<button class="btn ${i===1?'btn-sage':'btn-ghost'}" style="padding:4px 9px">${p}</button>`).join('')}
+      </div>
+    </div>
+  </div>`},
+
+performance:{title:'Batch Performance',crumb:'DPS Patna / Admin / Performance',tabs:['Overview','Subject-wise','Test-wise','Weak Areas'],render:()=>`
+  <div class="g4 fu fu1">
+    <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">📊</div><span class="kpi-delta delta-up">+4% this month</span></div><div class="kpi-n">68%</div><div class="kpi-l">Batch Avg Accuracy</div><div class="kpi-s">Up from 64% last month</div></div>
+    <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">🏆</div><span class="kpi-delta delta-up">Rahul Kumar</span></div><div class="kpi-n">284</div><div class="kpi-l">Top Score</div><div class="kpi-s">Monthly Test #5 · 284/300</div></div>
+    <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">📈</div><span class="kpi-delta delta-up">+18 pts avg</span></div><div class="kpi-n">218</div><div class="kpi-l">Batch Avg Score</div><div class="kpi-s">Up from 200 last month</div></div>
+    <div class="kpi kpi-am"><div class="kpi-top"><div class="kpi-ic" style="background:var(--amber-light)">✅</div><span class="kpi-delta delta-up">89% rate</span></div><div class="kpi-n">92%</div><div class="kpi-l">Test Attempt Rate</div><div class="kpi-s">Best in Bihar state</div></div>
+  </div>
+  <div class="g2 fu fu2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Subject-wise Performance</div><div class="cs">Batch average accuracy per subject</div></div></div>
+      <div class="pb"><div class="pb-l">⚛️ Physics</div><div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--sage),#4a7a3d)" data-w="64%"></div></div><div class="pb-v">64%</div></div>
+      <div class="pb"><div class="pb-l">🧪 Chemistry</div><div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--sky),#60a5e8)" data-w="71%"></div></div><div class="pb-v">71%</div></div>
+      <div class="pb"><div class="pb-l">📐 Mathematics</div><div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--gold),#e8a830)" data-w="69%"></div></div><div class="pb-v">69%</div></div>
+      <div style="height:12px;border-top:1px solid var(--border);margin:12px 0 4px"></div>
+      <div class="sh" style="margin-bottom:10px">Chapter-wise Weak Areas</div>
+      <div class="pb"><div class="pb-l">Magnetism</div><div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--rose),#e06b6b)" data-w="52%"></div></div><div class="pb-v" style="color:var(--rose)">52%</div></div>
+      <div class="pb"><div class="pb-l">Organic Chem</div><div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--rose),#e06b6b)" data-w="58%"></div></div><div class="pb-v" style="color:var(--rose)">58%</div></div>
+      <div class="pb"><div class="pb-l">3D Geometry</div><div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--amber),#d4844a)" data-w="61%"></div></div><div class="pb-v" style="color:var(--amber)">61%</div></div>
+      <div class="pb"><div class="pb-l">Electrostatics</div><div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--sage),#4a7a3d)" data-w="74%"></div></div><div class="pb-v">74%</div></div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Score Distribution</div><div class="cs">How 312 students scored in last test</div></div></div>
+      <div class="mr"><span class="mr-l">🏆 Top Scorers (250+)</span><span class="mr-v badge bg">12 students</span></div>
+      <div class="mr"><span class="mr-l">⭐ Good (200–250)</span><span class="mr-v badge bb">89 students</span></div>
+      <div class="mr"><span class="mr-l">✅ Average (150–200)</span><span class="mr-v badge ba">148 students</span></div>
+      <div class="mr"><span class="mr-l">⚠️ Needs Help (&lt;150)</span><span class="mr-v badge br">63 students</span></div>
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        <div class="sh" style="margin-bottom:10px">Test-wise Trend</div>
+        <div class="af-i"><div class="af-dot" style="background:var(--sage)"></div><div class="af-body"><div class="af-t">Monthly Test #5 — Avg 218/300</div><div class="af-m">25 May · +18 pts from #4</div></div></div>
+        <div class="af-i"><div class="af-dot" style="background:var(--gold)"></div><div class="af-body"><div class="af-t">Monthly Test #4 — Avg 200/300</div><div class="af-m">22 Apr · +12 pts from #3</div></div></div>
+        <div class="af-i"><div class="af-dot" style="background:var(--amber)"></div><div class="af-body"><div class="af-t">Monthly Test #3 — Avg 188/300</div><div class="af-m">25 Mar</div></div></div>
+      </div>
+    </div>
+  </div>`},
+
+attention:{title:'Needs Attention',crumb:'DPS Patna / Admin / Attention',tabs:['All (8)','Critical','Improving'],render:()=>`
+  <div class="g4 fu fu1">
+    <div class="kpi kpi-ro"><div class="kpi-top"><div class="kpi-ic" style="background:var(--rose-light)">🚨</div><span class="kpi-delta delta-dn">critical</span></div><div class="kpi-n">3</div><div class="kpi-l">Critical Cases</div><div class="kpi-s">Below 50% · 3 tests failed</div></div>
+    <div class="kpi kpi-am"><div class="kpi-top"><div class="kpi-ic" style="background:var(--amber-light)">⚠️</div><span class="kpi-delta delta-dn">at risk</span></div><div class="kpi-n">5</div><div class="kpi-l">At Risk</div><div class="kpi-s">50–55% accuracy range</div></div>
+    <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">📞</div><span class="kpi-delta delta-up">contacted</span></div><div class="kpi-n">4</div><div class="kpi-l">Parents Contacted</div><div class="kpi-s">4 of 8 families notified</div></div>
+    <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">📅</div></div><div class="kpi-n">2</div><div class="kpi-l">Revision Planned</div><div class="kpi-s">Extra sessions scheduled</div></div>
+  </div>
+  <div class="g3 fu fu2">
+    ${[
+      ['VT','Vikram Tiwari','av-ro','Roll 42-07','52%','#198','Magnetism, Organic Chem','Critical'],
+      ['NK','Nikhil Kapoor','av-sk','Roll 42-08','48%','#241','Waves, Integration','Critical'],
+      ['SM','Sanjay Mishra','av-am','Roll 42-09','53%','#207','P-Block, 3D Geometry','At Risk'],
+      ['RP','Rohit Prasad','av-pr','Roll 42-11','55%','#189','Modern Physics','At Risk'],
+      ['DG','Divya Gupta','av-ro','Roll 42-15','54%','#194','Thermodynamics','At Risk'],
+      ['KM','Karan Mehta','av-sg','Roll 42-19','56%','#176','Coordinate Geometry','At Risk'],
+    ].map(([init,name,ac,roll,avg,rank,weak,status])=>`
+    <div class="stu-card">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;">
+        <div class="stu-avatar ${ac}" style="width:38px;height:38px;border-radius:50%;margin-bottom:0;">${init}</div>
+        <span class="badge ${status==='Critical'?'br':'ba'}">${status}</span>
+      </div>
+      <div class="stu-name">${name}</div>
+      <div class="stu-meta">${roll} · College Rank ${rank}</div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:5px;font-size:.62rem;color:rgba(26,38,24,.4)"><span>Avg Accuracy</span><span class="mono" style="color:var(--rose);font-weight:600">${avg}</span></div>
+      <div class="stu-bar"><div class="stu-bar-f" style="width:${avg};background:linear-gradient(90deg,var(--rose),#e06b6b)"></div></div>
+      <div style="font-size:.65rem;color:rgba(26,38,24,.4);margin-bottom:10px">Weak: ${weak}</div>
+      <div class="acb">
+        <button class="ab ab-g" onclick="nav('performance',null)">View</button>
+        <button class="ab ab-b" onclick="alert('Sending message to ${name}...')">Message</button>
+        <button class="ab ab-a" onclick="alert('Scheduling session for ${name}...')">Schedule</button>
+      </div>
+    </div>`).join('')}
+  </div>`},
+
+tests:{title:'Manage Tests',crumb:'DPS Patna / Admin / Tests',tabs:['All Tests','Live','Upcoming','Completed'],render:()=>`
+  <div class="g4 fu fu1">
+    <div class="kpi kpi-ro"><div class="kpi-top"><div class="kpi-ic" style="background:var(--rose-light)">🔴</div><span class="kpi-delta br">Live!</span></div><div class="kpi-n">1</div><div class="kpi-l">Live Now</div><div class="kpi-s">Monthly Test #6 running</div></div>
+    <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">📅</div><span class="kpi-delta delta-up">3 upcoming</span></div><div class="kpi-n">3</div><div class="kpi-l">Upcoming Tests</div><div class="kpi-s">Next: Physics · 5 Jun</div></div>
+    <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">✅</div><span class="kpi-delta delta-up">avg 68%</span></div><div class="kpi-n">14</div><div class="kpi-l">Completed</div><div class="kpi-s">Batch avg score 68%</div></div>
+    <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">👥</div><span class="kpi-delta delta-up">92% rate</span></div><div class="kpi-n">92%</div><div class="kpi-l">Avg Attempt Rate</div><div class="kpi-s">Best performance in Bihar</div></div>
+  </div>
+  <div class="card fu fu2">
+    <div class="ch"><div><div class="ct">All Tests</div><div class="cs">18 tests assigned to JEE Batch A</div></div>
+      <button class="btn btn-sage" onclick="openModal('test-modal')">+ Create Test</button>
+    </div>
+    <div class="tw"><table>
+      <thead><tr><th>Test Name</th><th>Type</th><th>Status</th><th>Scheduled</th><th>Attempted</th><th>Avg Score</th><th>Top Score</th><th>Actions</th></tr></thead>
+      <tbody>
+        ${[
+          ['Monthly Test #6','Full Mock','🔴 Live','Today 11 AM','247/312','—','—'],
+          ['Physics Unit Test','Unit Test','📅 Upcoming','5 Jun 10 AM','—','—','—'],
+          ['Chemistry Organic','Unit Test','📅 Upcoming','8 Jun 11 AM','—','—','—'],
+          ['Full Syllabus Mock','Full Mock','📅 Upcoming','15 Jun 9 AM','—','—','—'],
+          ['Monthly Test #5','Full Mock','✅ Done','25 May','298/312','218/300','284/300'],
+          ['Maths Calculus','Unit Test','✅ Done','18 May','304/312','34/40','40/40'],
+          ['Physics Waves DPP','DPP','✅ Done','12 May','289/312','28/35','35/35'],
+          ['Monthly Test #4','Full Mock','✅ Done','22 Apr','301/312','200/300','268/300'],
+        ].map(([name,type,status,date,attempted,avg,top])=>`
+        <tr>
+          <td class="bold">${name}</td>
+          <td><span class="badge bn">${type}</span></td>
+          <td style="font-size:.72rem;font-weight:600">${status}</td>
+          <td class="mono">${date}</td>
+          <td class="mono">${attempted}</td>
+          <td class="mono" style="color:var(--sage)">${avg}</td>
+          <td class="mono" style="color:var(--gold)">${top}</td>
+          <td><div class="acb">
+            <button class="ab ab-g" onclick="nav('results',null)">Results</button>
+            <button class="ab ab-b" onclick="alert('Editing test...')">Edit</button>
+          </div></td>
+        </tr>`).join('')}
+      </tbody>
+    </table></div>
+  </div>`},
+
+results:{title:'Test Results',crumb:'DPS Patna / Admin / Results',tabs:['Latest Test','All Tests','Student-wise'],render:()=>`
+  <div class="g4 fu fu1">
+    <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">📊</div></div><div class="kpi-n">218</div><div class="kpi-l">Batch Avg Score</div><div class="kpi-s">Monthly Test #5 · out of 300</div></div>
+    <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">🏆</div></div><div class="kpi-n">284</div><div class="kpi-l">Top Score</div><div class="kpi-s">Rahul Kumar · #1 in batch</div></div>
+    <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">✅</div><span class="kpi-delta delta-up">298 students</span></div><div class="kpi-n">95%</div><div class="kpi-l">Attempt Rate</div><div class="kpi-s">298 of 312 attempted</div></div>
+    <div class="kpi kpi-ro"><div class="kpi-top"><div class="kpi-ic" style="background:var(--rose-light)">⚠️</div></div><div class="kpi-n">63</div><div class="kpi-l">Below Passing</div><div class="kpi-s">Below 150 marks · needs help</div></div>
+  </div>
+  <div class="g21 fu fu2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Monthly Test #5 — Results</div><div class="cs">25 May 2025 · 298 attempted · 312 enrolled</div></div>
+        <button class="btn btn-ghost" onclick="openModal('report-modal')">⬇ Export</button>
+      </div>
+      <div class="tw"><table>
+        <thead><tr><th>Rank</th><th>Student</th><th>Score</th><th>Physics</th><th>Chemistry</th><th>Maths</th><th>Time Taken</th><th>Grade</th></tr></thead>
+        <tbody>
+          ${[
+            ['🥇 #1','RK','Rahul Kumar','av-gd','284/300','98/100','92/100','94/100','2h 41m','bg','A+'],
+            ['🥈 #2','PS','Priya Singh','av-sk','276/300','94/100','88/100','94/100','2h 55m','bg','A+'],
+            ['🥉 #3','AK','Amit Kumar','av-ro','271/300','89/100','88/100','94/100','2h 48m','bg','A'],
+            ['#4','AR','Arjun Sharma','av-sg','247/300','81/100','84/100','82/100','2h 52m','bg','B+'],
+            ['#5','NM','Neha Mishra','av-pr','241/300','77/100','80/100','84/100','2h 44m','bb','B+'],
+            ['#6','SK','Saurav Kumar','av-am','238/300','76/100','78/100','84/100','2h 58m','bb','B'],
+            ['#198','VT','Vikram Tiwari','av-ro','148/300','48/100','52/100','48/100','3h 00m','br','F'],
+            ['#241','NK','Nikhil Kapoor','av-sk','124/300','42/100','40/100','42/100','2h 30m','br','F'],
+          ].map(([rank,init,name,ac,score,phy,chem,math,time,sc,grade])=>`
+          <tr>
+            <td class="mono" style="font-weight:700;color:var(--gold)">${rank}</td>
+            <td><div class="avc"><div class="av ${ac}">${init}</div><span class="av-n">${name}</span></div></td>
+            <td class="mono bold">${score}</td>
+            <td class="mono">${phy}</td>
+            <td class="mono">${chem}</td>
+            <td class="mono">${math}</td>
+            <td class="mono">${time}</td>
+            <td><span class="badge ${sc}">${grade}</span></td>
+          </tr>`).join('')}
+        </tbody>
+      </table></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="ct" style="margin-bottom:12px">Score Distribution</div>
+        <div class="mr"><span class="mr-l">250–300 (A+)</span><span class="mr-v">12 students</span></div>
+        <div class="mr"><span class="mr-l">200–250 (A/B+)</span><span class="mr-v">89 students</span></div>
+        <div class="mr"><span class="mr-l">150–200 (B/C)</span><span class="mr-v">134 students</span></div>
+        <div class="mr"><span class="mr-l">Below 150 (Fail)</span><span class="mr-v" style="color:var(--rose)">63 students</span></div>
+      </div>
+      <div class="card">
+        <div class="ct" style="margin-bottom:12px">Subject Averages</div>
+        <div class="mr"><span class="mr-l">⚛️ Physics</span><span class="mr-v mono">64/100</span></div>
+        <div class="mr"><span class="mr-l">🧪 Chemistry</span><span class="mr-v mono">71/100</span></div>
+        <div class="mr"><span class="mr-l">📐 Mathematics</span><span class="mr-v mono">69/100</span></div>
+        <div class="mr"><span class="mr-l">Overall Avg</span><span class="mr-v mono" style="color:var(--sage);font-weight:700">218/300</span></div>
+      </div>
+    </div>
+  </div>`},
+
+assign:{title:'Assign Tests',crumb:'DPS Patna / Admin / Assign',tabs:['Assign New','Scheduled','History'],render:()=>`
+  <div class="g2 fu fu1">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Assign Test to Batch</div><div class="cs">Select test and assign to students</div></div></div>
+      <div class="fl"><label>Select Test *</label>
+        <select class="fi"><option>Monthly Test #6 (Live Now)</option><option>Physics Unit Test</option><option>Chemistry Organic</option><option>Full Syllabus Mock</option><option>+ Create New Test</option></select></div>
+      <div class="fl"><label>Assign To *</label>
+        <select class="fi"><option>All Students (312)</option><option>JEE Batch A (312)</option><option>Select Students</option></select></div>
+      <div class="fg2">
+        <div class="fl"><label>Start Date & Time</label><input class="fi" type="datetime-local"></div>
+        <div class="fl"><label>End Date & Time</label><input class="fi" type="datetime-local"></div>
+      </div>
+      <div class="fl"><label>Instructions for Students</label><textarea class="fi" placeholder="e.g. This test is mandatory. Attempt from a quiet place…"></textarea></div>
+      <div class="fg2">
+        <div class="fl"><label>Send Notification?</label><select class="fi"><option>✅ Yes — notify students</option><option>❌ No</option></select></div>
+        <div class="fl"><label>Allow Late Submission?</label><select class="fi"><option>No</option><option>Yes — 30 min grace</option></select></div>
+      </div>
+      <button class="btn btn-sage" style="width:100%;justify-content:center;padding:10px;margin-top:4px;" onclick="alert('✅ Test assigned to 312 students! Notifications sent.')">✓ Assign Test to Batch</button>
+    </div>
+    <div class="card">
+      <div class="ct" style="margin-bottom:14px">Scheduled Tests</div>
+      ${[
+        ['📅','Physics Unit Test','5 Jun · 10 AM','312 students','Upcoming'],
+        ['📅','Chemistry Organic','8 Jun · 11 AM','312 students','Upcoming'],
+        ['📅','Full Syllabus Mock','15 Jun · 9 AM','312 students','Upcoming'],
+        ['🔴','Monthly Test #6','Today · 11 AM','247 attempting','Live'],
+      ].map(([ic,name,date,students,status])=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--cream);border:1px solid var(--border);border-radius:10px;margin-bottom:7px;">
+        <div style="font-size:1.1rem;flex-shrink:0">${ic}</div>
+        <div style="flex:1"><div style="font-size:.78rem;font-weight:600;color:var(--forest)">${name}</div><div style="font-size:.65rem;color:rgba(26,38,24,.4)">${date} · ${students}</div></div>
+        <span class="badge ${status==='Live'?'br':status==='Upcoming'?'ba':'bg'}">${status}</span>
+      </div>`).join('')}
+    </div>
+  </div>`},
+
+announcements:{title:'Announcements',crumb:'DPS Patna / Admin / Announcements',tabs:['All','Posted','Scheduled'],render:()=>`
+  <div class="g4 fu fu1">
+    <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">📢</div></div><div class="kpi-n">14</div><div class="kpi-l">Total Posted</div><div class="kpi-s">This academic year</div></div>
+    <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">👁️</div><span class="kpi-delta delta-up">94% read</span></div><div class="kpi-n">298</div><div class="kpi-l">Students Read</div><div class="kpi-s">Last announcement</div></div>
+    <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">📌</div></div><div class="kpi-n">2</div><div class="kpi-l">Pinned</div><div class="kpi-s">Currently pinned top</div></div>
+    <div class="kpi kpi-am"><div class="kpi-top"><div class="kpi-ic" style="background:var(--amber-light)">🔔</div></div><div class="kpi-n">312</div><div class="kpi-l">Reach</div><div class="kpi-s">All students notified</div></div>
+  </div>
+  <div class="g21 fu fu2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Posted Announcements</div></div>
+        <button class="btn btn-sage" onclick="openModal('ann-modal')">+ Post New</button>
+      </div>
+      ${[
+        ['notice-ro','🚨','Important · Today','Monthly Test #6 — Live Today 11 AM','All students must attempt. 20% semester weightage. Stable internet required.','Prof. Rajesh Kumar','312 sent','294 read'],
+        ['notice-sg','📚','New · Yesterday','New Chemistry Notes Uploaded — Organic Reactions','Notes uploaded to study material. Study before 8th June test.','Dr. Sunita Verma','312 sent','276 read'],
+        ['notice-sg','🏆','New · 2 days ago','DPS Patna Ranked #3 in Bihar State!','Incredible achievement! Special prizes for top 10 students next month.','DPS Admin','312 sent','312 read'],
+        ['notice-gd','📅','Info · 5 days ago','Parent-Teacher Meeting — 10th June 2025','MockArena reports shared with parents. Complete all pending tests.','DPS Admin','312 sent','289 read'],
+        ['notice-sk','🎯','Info · 1 week ago','Maths Special Revision — 3D Geometry','Special classes next week. Limited seats — register in portal.','Mr. Ajay Jha','312 sent','241 read'],
+      ].map(([cls,icon,tag,title,desc,author,sent,read])=>`
+      <div class="${cls}" style="padding:12px 14px;border-radius:11px;margin-bottom:8px;${cls.includes('ro')?'background:var(--rose-light);border:1px solid rgba(200,75,75,.15);':cls.includes('sg')?'background:var(--sage-light);border:1px solid rgba(107,143,94,.2);':cls.includes('gd')?'background:var(--gold-dim);border:1px solid rgba(200,150,42,.2);':'background:var(--sky-light);border:1px solid rgba(59,130,196,.2);'}">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:6px;">
+          <div style="font-size:.62rem;font-weight:600;opacity:.6">${icon} ${tag}</div>
+          <div style="display:flex;gap:8px;font-size:.62rem;color:rgba(26,38,24,.35)"><span>📤 ${sent}</span><span>👁️ ${read}</span></div>
+        </div>
+        <div style="font-size:.78rem;font-weight:700;color:var(--forest);margin-bottom:3px">${title}</div>
+        <div style="font-size:.68rem;color:var(--forest-muted);line-height:1.45;margin-bottom:5px">${desc}</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div style="font-size:.62rem;color:rgba(26,38,24,.35)">By ${author}</div>
+          <div class="acb"><button class="ab ab-b" onclick="alert('Editing...')">Edit</button><button class="ab ab-r" onclick="alert('Deleted!')">Delete</button></div>
+        </div>
+      </div>`).join('')}
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="ct" style="margin-bottom:14px">Quick Post</div>
+        <div class="fl"><label>Message</label><textarea class="fi" placeholder="Type announcement…" style="min-height:80px;"></textarea></div>
+        <div class="fl"><label>Type</label><select class="fi"><option>📢 General</option><option>🚨 Important</option><option>📅 Schedule</option></select></div>
+        <button class="btn btn-sage" style="width:100%;justify-content:center;margin-top:4px;" onclick="alert('✅ Posted to 312 students!')">Post to All Students</button>
+      </div>
+      <div class="card">
+        <div class="ct" style="margin-bottom:12px">Read Statistics</div>
+        <div class="mr"><span class="mr-l">Last Announcement</span><span class="mr-v">94% read</span></div>
+        <div class="mr"><span class="mr-l">Avg Read Rate</span><span class="mr-v">89%</span></div>
+        <div class="mr"><span class="mr-l">Total Reach</span><span class="mr-v">312 students</span></div>
+        <div class="mr"><span class="mr-l">Total Sent</span><span class="mr-v">14 posts</span></div>
+      </div>
+    </div>
+  </div>`},
+
+reports:{title:'Reports',crumb:'DPS Patna / Admin / Reports',tabs:['Batch Report','Individual','Export'],render:()=>`
+  <div class="g4 fu fu1">
+    <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">📊</div></div><div class="kpi-n">18</div><div class="kpi-l">Reports Generated</div><div class="kpi-s">This academic year</div></div>
+    <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">👪</div></div><div class="kpi-n">4</div><div class="kpi-l">PTM Reports Ready</div><div class="kpi-s">For June 10th meeting</div></div>
+    <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">⬇</div></div><div class="kpi-n">142</div><div class="kpi-l">Downloads</div><div class="kpi-s">Reports downloaded by admin</div></div>
+    <div class="kpi kpi-am"><div class="kpi-top"><div class="kpi-ic" style="background:var(--amber-light)">📅</div></div><div class="kpi-n">10 Jun</div><div class="kpi-l">Next PTM</div><div class="kpi-s">Parent-Teacher Meeting</div></div>
+  </div>
+  <div class="g2 fu fu2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Generate Report</div><div class="cs">Download detailed reports</div></div></div>
+      <div class="fl"><label>Report Type</label><select class="fi"><option>📊 Batch Performance Report</option><option>👤 Individual Student Report</option><option>📝 Test-wise Analysis</option><option>📅 Monthly Summary</option><option>👪 PTM Parent Report</option></select></div>
+      <div class="fg2">
+        <div class="fl"><label>Batch</label><select class="fi"><option>All Batches</option><option>JEE Batch A (312)</option></select></div>
+        <div class="fl"><label>Format</label><select class="fi"><option>📄 PDF</option><option>📊 Excel</option><option>📋 CSV</option></select></div>
+      </div>
+      <div class="fg2">
+        <div class="fl"><label>From Date</label><input class="fi" type="date" value="2025-01-01"></div>
+        <div class="fl"><label>To Date</label><input class="fi" type="date" value="2025-05-31"></div>
+      </div>
+      <button class="btn btn-gold" style="width:100%;justify-content:center;padding:10px;margin-top:4px;" onclick="alert('✅ Generating report… download will start shortly!')">⬇ Generate & Download</button>
+    </div>
+    <div class="card">
+      <div class="ct" style="margin-bottom:14px">Recent Reports</div>
+      ${[
+        ['📊','Batch Performance — May 2025','Generated 28 May','PDF · 24 pages'],
+        ['📝','Monthly Test #5 Analysis','Generated 26 May','PDF · 18 pages'],
+        ['👤','Individual Reports — All 312','Generated 20 May','Excel · 312 rows'],
+        ['👪','PTM Report — April Batch','Generated 10 Apr','PDF · 8 pages'],
+      ].map(([ic,title,date,format])=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--cream);border:1px solid var(--border);border-radius:10px;margin-bottom:7px;cursor:pointer;" onclick="alert('Downloading ${title}...')">
+        <div style="font-size:1.1rem">${ic}</div>
+        <div style="flex:1"><div style="font-size:.78rem;font-weight:600;color:var(--forest)">${title}</div><div style="font-size:.62rem;color:rgba(26,38,24,.4)">${date} · ${format}</div></div>
+        <button class="ab ab-g">⬇</button>
+      </div>`).join('')}
+    </div>
+  </div>`},
+
+analytics:{title:'Analytics',crumb:'DPS Patna / Admin / Analytics',tabs:['Overview','Trends','Comparison'],render:()=>`
+  <div class="g4 fu fu1">
+    <div class="kpi kpi-sg"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">📈</div><span class="kpi-delta delta-up">+8% this month</span></div><div class="kpi-n">68%</div><div class="kpi-l">Batch Accuracy</div><div class="kpi-s">Best in last 6 months</div></div>
+    <div class="kpi kpi-gd"><div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">🏆</div><span class="kpi-delta delta-up">Bihar #3</span></div><div class="kpi-n">#3</div><div class="kpi-l">State Rank</div><div class="kpi-s">MockArena Bihar Rankings</div></div>
+    <div class="kpi kpi-sk"><div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">⚡</div><span class="kpi-delta delta-up">+18 pts</span></div><div class="kpi-n">218</div><div class="kpi-l">Avg Score Trend</div><div class="kpi-s">Up from 200 last month</div></div>
+    <div class="kpi kpi-am"><div class="kpi-top"><div class="kpi-ic" style="background:var(--amber-light)">✅</div><span class="kpi-delta delta-up">92% rate</span></div><div class="kpi-n">92%</div><div class="kpi-l">Attempt Rate</div><div class="kpi-s">Best in Bihar state</div></div>
+  </div>
+  <div class="g2 fu fu2">
+    <div class="card">
+      <div class="sh">Monthly Score Trend — Batch A</div>
+      ${[['Feb','204'],['Mar','188'],['Apr','200'],['May','218'],['Jun (live)','—']].map(([m,s])=>`
+      <div class="pb"><div class="pb-l">${m}</div><div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--sage),#4a7a3d)" data-w="${s==='—'?'0%':Math.round(parseInt(s)/300*100)+'%'}"></div></div><div class="pb-v">${s}</div></div>`).join('')}
+      <div style="height:12px;border-top:1px solid var(--border);margin:12px 0 4px"></div>
+      <div class="sh" style="margin-bottom:10px">Top 5 Performers</div>
+      ${[['RK','Rahul Kumar','284','#1'],['PS','Priya Singh','276','#2'],['AK','Amit Kumar','271','#3'],['AR','Arjun Sharma','247','#4'],['NM','Neha Mishra','241','#5']].map(([init,name,score,rank],i)=>`
+      <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">
+        <div style="font-family:var(--font-m);font-size:.7rem;font-weight:700;color:var(--gold);width:20px">${rank}</div>
+        <div class="av av-${['gd','sk','ro','sg','pr'][i]}">${init}</div>
+        <div style="flex:1;font-size:.76rem;font-weight:600;color:var(--forest)">${name}</div>
+        <div style="font-family:var(--font-m);font-size:.74rem;color:var(--forest)">${score}/300</div>
+      </div>`).join('')}
+    </div>
+    <div class="card">
+      <div class="sh">Subject Improvement</div>
+      ${[['⚛️ Physics','58%','64%','+6%'],['🧪 Chemistry','65%','71%','+6%'],['📐 Maths','62%','69%','+7%']].map(([sub,prev,curr,delta])=>`
+      <div style="padding:10px 0;border-bottom:1px solid var(--border)">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
+          <span style="font-size:.78rem;font-weight:600;color:var(--forest)">${sub}</span>
+          <span style="font-size:.7rem;font-weight:700;color:var(--sage)">${delta} this month</span>
+        </div>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span style="font-size:.62rem;color:rgba(26,38,24,.35);width:36px">${prev}</span>
+          <div style="flex:1;height:6px;background:var(--cream-warm);border-radius:5px;overflow:hidden;border:1px solid var(--border)">
+            <div style="height:100%;border-radius:5px;background:linear-gradient(90deg,var(--sage),#4a7a3d);width:${curr}"></div>
+          </div>
+          <span style="font-size:.62rem;font-weight:700;color:var(--sage);width:36px">${curr}</span>
+        </div>
+      </div>`).join('')}
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        <div class="mr"><span class="mr-l">Bihar State Rank</span><span class="mr-v badge bg">#3</span></div>
+        <div class="mr"><span class="mr-l">National Rank</span><span class="mr-v badge bb">#847</span></div>
+        <div class="mr"><span class="mr-l">Patna District</span><span class="mr-v badge bg">#1</span></div>
+        <div class="mr"><span class="mr-l">Best Month</span><span class="mr-v">May 2025</span></div>
+      </div>
+    </div>
+  </div>`},
+
+settings:{title:'Settings',crumb:'DPS Patna / Admin / Settings',tabs:['Institution','Notifications','Access'],render:()=>`
+  <div class="g2 fu fu1">
+    <div class="card">
+      <div class="ct" style="margin-bottom:14px">Institution Settings</div>
+      <div class="fl"><label>Institution Name</label><input class="fi" value="Delhi Public School, Patna"></div>
+      <div class="fg2">
+        <div class="fl"><label>City</label><input class="fi" value="Patna"></div>
+        <div class="fl"><label>State</label><input class="fi" value="Bihar"></div>
+      </div>
+      <div class="fl"><label>Board Affiliation</label><select class="fi"><option selected>CBSE</option><option>ICSE</option><option>State Board</option></select></div>
+      <div class="fl"><label>Target Exam</label><select class="fi"><option selected>JEE Advanced</option><option>JEE Main</option><option>NEET</option><option>All Exams</option></select></div>
+      <div class="fg2">
+        <div class="fl"><label>Admin Email</label><input class="fi" type="email" value="admin@dpspatna.edu.in"></div>
+        <div class="fl"><label>Phone</label><input class="fi" value="+91 98765 43210"></div>
+      </div>
+      <button class="btn btn-sage" style="margin-top:4px;" onclick="alert('✅ Settings saved!')">Save Changes</button>
+    </div>
+    <div class="card">
+      <div class="ct" style="margin-bottom:14px">Plan & Access</div>
+      <div style="background:linear-gradient(135deg,var(--forest),var(--forest-soft));border-radius:12px;padding:16px;margin-bottom:14px;">
+        <div style="font-size:.6rem;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Current Plan</div>
+        <div style="font-family:var(--font-d);font-size:1.2rem;font-weight:800;color:white">Premium Plan</div>
+        <div style="font-size:.7rem;color:rgba(255,255,255,.4);margin-top:4px">Valid till: March 2026 · Auto renew</div>
+      </div>
+      <div class="mr"><span class="mr-l">Max Students</span><span class="mr-v">500 (using 312)</span></div>
+      <div class="mr"><span class="mr-l">Tests per Month</span><span class="mr-v">Unlimited</span></div>
+      <div class="mr"><span class="mr-l">Analytics</span><span class="mr-v badge bg">Full Access</span></div>
+      <div class="mr"><span class="mr-l">Reports</span><span class="mr-v badge bg">Enabled</span></div>
+      <div class="mr"><span class="mr-l">State Rankings</span><span class="mr-v badge bg">Enabled</span></div>
+    </div>
+  </div>`}
+
+};
+
+function nav(id,el){
+  const page=PAGES[id];if(!page)return;
+  document.getElementById('tb-title').textContent=page.title;
+  document.getElementById('tb-crumb').textContent=page.crumb;
+  const stabs=document.getElementById('stabs');
+  stabs.innerHTML=page.tabs.map((t,i)=>`<button class="stab ${i===0?'active':''}" onclick="this.parentNode.querySelectorAll('.stab').forEach(s=>s.classList.remove('active'));this.classList.add('active')">${t}</button>`).join('');
+  document.getElementById('content').innerHTML=page.render();
+  document.querySelectorAll('.sb-nav').forEach(n=>n.classList.remove('active'));
+  if(el)el.classList.add('active');
+  setTimeout(()=>{
+    document.querySelectorAll('.pb-f').forEach(b=>{
+      const w=b.getAttribute('data-w')||b.style.width;
+      b.style.width='0%';
+      setTimeout(()=>b.style.width=w,80);
+    });
+    document.querySelectorAll('.spark').forEach(b=>{
+      const h=b.getAttribute('data-h');
+      b.style.height='0%';
+      setTimeout(()=>b.style.height=h,80);
+    });
+    document.querySelectorAll('.stu-bar-f').forEach(b=>{
+      const w=b.style.width;b.style.width='0';
+      setTimeout(()=>b.style.width=w,80);
+    });
+  },100);
+}
+
+nav('dashboard',document.querySelector('.sb-nav.active'));
+</script>
+</body>
+</html>
