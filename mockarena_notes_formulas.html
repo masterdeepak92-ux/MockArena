@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena – Notes & Formula Sheets</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0d0f1a;--ink-soft:#1a1d2e;--ink-muted:#5a5f7a;--ink-faint:#9499b8;
+  --paper:#f4f5fb;--paper-warm:#eceef8;--paper-card:#ffffff;
+  --accent:#4f46e5;--accent-hover:#4338ca;
+  --accent-light:rgba(79,70,229,0.08);--accent-glow:rgba(79,70,229,0.22);
+  --accent-2:#7c3aed;--accent-green:#10b981;--accent-green-l:rgba(16,185,129,0.09);
+  --accent-rose:#f43f5e;--accent-rose-l:rgba(244,63,94,0.08);
+  --accent-amber:#f59e0b;--accent-amber-l:rgba(245,158,11,0.09);
+  --accent-sky:#0ea5e9;--accent-sky-l:rgba(14,165,233,0.09);
+  --border:rgba(13,15,26,0.08);--border-strong:rgba(13,15,26,0.13);
+  --radius-sm:8px;--radius-md:14px;--radius-lg:20px;--radius-xl:28px;
+  --font-d:'Manrope',sans-serif;--font-b:'Inter',sans-serif;--font-m:'JetBrains Mono',monospace;
+  --sh-card:0 2px 12px rgba(13,15,26,0.06),0 1px 3px rgba(13,15,26,0.04);
+  --sh-hover:0 12px 40px rgba(79,70,229,0.13),0 2px 8px rgba(13,15,26,0.06);
+  --sidebar-w:240px;--topbar-h:64px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-b);background:var(--paper);color:var(--ink);min-height:100vh;-webkit-font-smoothing:antialiased;display:flex;}
+.sidebar{width:var(--sidebar-w);flex-shrink:0;background:var(--ink-soft);height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;overflow-x:hidden;z-index:200;}
+.sidebar::-webkit-scrollbar{width:3px;}
+.sidebar::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:4px;}
+.sb-logo{padding:20px 20px 16px;display:flex;align-items:center;gap:0;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.06);}
+.sb-logo .mock{font-family:var(--font-d);font-size:1.1rem;font-weight:900;color:#fff;letter-spacing:-0.04em;}
+.sb-logo .arena{font-family:var(--font-d);font-size:1.1rem;font-weight:900;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:-0.04em;}
+.sb-user{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:10px;}
+.sb-avatar{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent-2));display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:0.85rem;font-weight:800;color:white;flex-shrink:0;}
+.sb-uname{font-size:0.82rem;font-weight:700;color:white;line-height:1.2;}
+.sb-umeta{font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:2px;}
+.sb-badge{display:inline-flex;align-items:center;gap:4px;background:rgba(16,185,129,0.15);border:1px solid rgba(16,185,129,0.25);border-radius:100px;padding:2px 7px;font-size:0.62rem;font-weight:700;color:#6ee7b7;margin-top:4px;}
+.sb-section-label{font-size:0.62rem;font-weight:700;color:rgba(255,255,255,0.2);text-transform:uppercase;letter-spacing:0.1em;padding:16px 20px 6px;}
+.sb-nav{list-style:none;padding:0 10px;}
+.sb-nav li{margin-bottom:2px;}
+.sb-nav a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);text-decoration:none;font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.5);transition:all .18s;}
+.sb-nav a:hover{background:rgba(255,255,255,0.06);color:rgba(255,255,255,0.85);}
+.sb-nav a.active{background:rgba(79,70,229,0.22);color:white;border:1px solid rgba(79,70,229,0.35);}
+.sb-nav a .ni{width:18px;text-align:center;font-size:0.9rem;flex-shrink:0;}
+.sb-bottom{margin-top:auto;padding:16px 10px 20px;border-top:1px solid rgba(255,255,255,0.06);}
+.sb-bottom a{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:var(--radius-sm);text-decoration:none;font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.4);transition:all .18s;}
+.sb-bottom a:hover{color:rgba(255,255,255,0.75);background:rgba(255,255,255,0.05);}
+.main{margin-left:var(--sidebar-w);flex:1;display:flex;flex-direction:column;min-height:100vh;}
+.topbar{height:var(--topbar-h);background:rgba(244,245,251,0.95);backdrop-filter:blur(16px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 28px;gap:16px;position:sticky;top:0;z-index:100;}
+.tb-title{font-family:var(--font-d);font-size:1rem;font-weight:800;color:var(--ink);letter-spacing:-0.03em;}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.tb-search{display:flex;align-items:center;gap:8px;background:white;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);padding:8px 14px;width:220px;transition:all .2s;}
+.tb-search input{border:none;outline:none;font-family:var(--font-b);font-size:0.82rem;color:var(--ink);background:transparent;width:100%;}
+.tb-search input::placeholder{color:var(--ink-faint);}
+.tb-icon-btn{width:36px;height:36px;border-radius:var(--radius-sm);background:white;border:1.5px solid var(--border-strong);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;transition:all .2s;}
+.content{padding:28px;flex:1;}
+.welcome-banner{background:linear-gradient(145deg,#0d0f1a 0%,#13143a 55%,#1e1060 100%);border-radius:var(--radius-xl);padding:32px 36px;margin-bottom:24px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;position:relative;overflow:hidden;}
+.wb-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;}
+.wb-orb1{position:absolute;width:280px;height:280px;border-radius:50%;background:rgba(79,70,229,0.2);filter:blur(55px);top:-60px;right:120px;pointer-events:none;}
+.wb-orb2{position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(124,58,237,0.15);filter:blur(40px);bottom:-30px;left:30%;pointer-events:none;}
+.wb-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.12);border-radius:100px;padding:4px 12px;font-family:var(--font-m);font-size:0.65rem;font-weight:500;color:rgba(255,255,255,0.45);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;width:fit-content;position:relative;z-index:1;}
+.wb-dot{width:5px;height:5px;border-radius:50%;background:#a78bfa;animation:blink 2s ease-in-out infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.wb-title{font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:white;letter-spacing:-0.04em;line-height:1.2;margin-bottom:6px;position:relative;z-index:1;}
+.wb-title span{background:linear-gradient(90deg,#a78bfa,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.wb-sub{font-size:0.82rem;color:rgba(255,255,255,0.4);margin-bottom:20px;position:relative;z-index:1;}
+.wb-actions{display:flex;gap:10px;position:relative;z-index:1;flex-wrap:wrap;}
+.btn-wb{font-family:var(--font-d);font-size:0.82rem;font-weight:700;padding:9px 20px;border-radius:var(--radius-sm);cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:6px;text-decoration:none;border:none;}
+.btn-wb-primary{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;}
+.btn-wb-outline{background:rgba(255,255,255,0.07);color:rgba(255,255,255,0.75);border:1px solid rgba(255,255,255,0.15);}
+.wb-stats{position:relative;z-index:1;display:flex;flex-direction:column;gap:10px;min-width:170px;}
+.wb-stat-item{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.09);border-radius:var(--radius-md);padding:12px 16px;display:flex;align-items:center;gap:12px;}
+.wb-stat-num{font-family:var(--font-d);font-size:1.2rem;font-weight:800;color:white;letter-spacing:-0.04em;line-height:1;}
+.wb-stat-lbl{font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:2px;}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px;}
+.stat-card{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--sh-card);transition:all .25s;position:relative;overflow:hidden;}
+.stat-card:hover{box-shadow:var(--sh-hover);transform:translateY(-2px);}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--radius-lg) var(--radius-lg) 0 0;}
+.sc1::before{background:linear-gradient(90deg,var(--accent),var(--accent-2));}
+.sc2::before{background:linear-gradient(90deg,var(--accent-green),#34d399);}
+.sc3::before{background:linear-gradient(90deg,var(--accent-amber),#fbbf24);}
+.sc4::before{background:linear-gradient(90deg,var(--accent-sky),#06b6d4);}
+.sc-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.sc-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.sc-num{font-family:var(--font-d);font-size:1.7rem;font-weight:800;color:var(--ink);letter-spacing:-0.05em;line-height:1;margin-bottom:3px;}
+.sc-label{font-size:0.72rem;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px;}
+.sc-delta{font-size:0.73rem;font-weight:600;}
+.delta-up{color:var(--accent-green);}
+.delta-neu{color:var(--ink-faint);}
+.filter-bar{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--radius-lg);padding:14px 20px;margin-bottom:16px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;box-shadow:var(--sh-card);}
+.filter-chips{display:flex;gap:6px;flex-wrap:wrap;flex:1;}
+.chip{font-size:0.75rem;font-weight:600;padding:6px 14px;border-radius:100px;cursor:pointer;transition:all .18s;border:1.5px solid var(--border-strong);color:var(--ink-muted);background:var(--paper);}
+.chip:hover{border-color:var(--accent);color:var(--accent);}
+.chip.active{background:var(--accent);color:white;border-color:var(--accent);}
+.filter-sep{width:1px;height:24px;background:var(--border-strong);}
+.view-btns{display:flex;gap:6px;}
+.view-btn{width:32px;height:32px;border-radius:var(--radius-sm);border:1.5px solid var(--border-strong);background:var(--paper);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.85rem;transition:all .18s;color:var(--ink-muted);}
+.view-btn.active,.view-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-light);}
+.subject-tabs{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:4px;}
+.sub-tab{display:flex;align-items:center;gap:8px;padding:10px 18px;border-radius:var(--radius-md);border:1.5px solid var(--border-strong);background:white;cursor:pointer;transition:all .18s;white-space:nowrap;flex-shrink:0;}
+.sub-tab:hover{border-color:var(--accent);}
+.sub-tab.active{border-color:var(--accent);background:var(--accent-light);}
+.sub-tab-icon{font-size:1.1rem;}
+.sub-tab-name{font-family:var(--font-d);font-size:0.82rem;font-weight:700;color:var(--ink-muted);}
+.sub-tab.active .sub-tab-name{color:var(--accent);}
+.sub-tab-count{font-size:0.65rem;font-weight:700;background:var(--paper-warm);color:var(--ink-faint);padding:2px 7px;border-radius:100px;}
+.sub-tab.active .sub-tab-count{background:rgba(79,70,229,0.12);color:var(--accent);}
+.notes-layout{display:grid;grid-template-columns:1fr 280px;gap:20px;}
+.notes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.notes-grid.list-view{grid-template-columns:1fr;}
+.note-card{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--sh-card);transition:all .25s;cursor:pointer;display:flex;flex-direction:column;}
+.note-card:hover{box-shadow:var(--sh-hover);transform:translateY(-3px);border-color:rgba(79,70,229,0.15);}
+.nc-top{padding:18px 18px 14px;flex:1;}
+.nc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.nc-subject-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;font-size:0.65rem;font-weight:700;}
+.nb-physics{background:var(--accent-light);color:var(--accent);}
+.nb-chemistry{background:var(--accent-green-l);color:#047857;}
+.nb-maths{background:var(--accent-amber-l);color:#b45309;}
+.nb-biology{background:var(--accent-sky-l);color:#0369a1;}
+.nc-bookmark{width:28px;height:28px;border-radius:var(--radius-sm);border:1.5px solid var(--border-strong);background:none;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:0.85rem;transition:all .18s;color:var(--ink-faint);}
+.nc-bookmark:hover,.nc-bookmark.saved{color:var(--accent-amber);border-color:rgba(245,158,11,0.3);background:var(--accent-amber-l);}
+.nc-icon{font-size:1.8rem;margin-bottom:10px;display:block;}
+.nc-title{font-family:var(--font-d);font-size:0.88rem;font-weight:800;color:var(--ink);letter-spacing:-0.02em;margin-bottom:6px;line-height:1.3;}
+.nc-desc{font-size:0.75rem;color:var(--ink-faint);line-height:1.5;margin-bottom:12px;}
+.nc-tags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;}
+.nc-tag{font-size:0.62rem;font-weight:600;padding:2px 8px;border-radius:6px;background:var(--paper-warm);color:var(--ink-muted);}
+.nc-meta{display:flex;align-items:center;gap:10px;}
+.nc-pages{font-size:0.68rem;color:var(--ink-faint);}
+.nc-views{font-size:0.68rem;color:var(--ink-faint);}
+.nc-footer{border-top:1px solid var(--border);padding:10px 18px;background:var(--paper);display:flex;align-items:center;justify-content:space-between;}
+.nc-type{font-size:0.65rem;font-weight:700;padding:3px 8px;border-radius:100px;}
+.nt-formula{background:var(--accent-light);color:var(--accent);}
+.nt-notes{background:var(--accent-green-l);color:#047857;}
+.nt-revision{background:var(--accent-amber-l);color:#b45309;}
+.nt-pyq{background:var(--accent-rose-l);color:var(--accent-rose);}
+.nc-download{font-family:var(--font-d);font-size:0.72rem;font-weight:700;padding:5px 12px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;border:none;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:4px;}
+.nc-download:hover{box-shadow:0 3px 10px var(--accent-glow);}
+.featured-sheet{background:linear-gradient(135deg,#1e1060 0%,#13143a 60%,#0d0f1a 100%);border-radius:var(--radius-xl);padding:24px;margin-bottom:20px;position:relative;overflow:hidden;cursor:pointer;transition:all .25s;}
+.featured-sheet:hover{box-shadow:0 16px 48px rgba(79,70,229,0.3);}
+.fs-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:32px 32px;pointer-events:none;}
+.fs-orb{position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(79,70,229,0.2);filter:blur(40px);top:-40px;right:-20px;pointer-events:none;}
+.fs-inner{position:relative;z-index:1;}
+.fs-badge{display:inline-flex;align-items:center;gap:5px;background:rgba(245,158,11,0.2);border:1px solid rgba(245,158,11,0.3);border-radius:100px;padding:3px 10px;font-size:0.65rem;font-weight:700;color:#fbbf24;margin-bottom:10px;}
+.fs-title{font-family:var(--font-d);font-size:1.1rem;font-weight:800;color:white;margin-bottom:4px;}
+.fs-sub{font-size:0.75rem;color:rgba(255,255,255,0.45);margin-bottom:14px;}
+.fs-stats{display:flex;gap:16px;margin-bottom:14px;}
+.fs-stat{font-size:0.72rem;color:rgba(255,255,255,0.5);}
+.fs-stat strong{color:rgba(255,255,255,0.85);font-weight:700;}
+.fs-btn{background:linear-gradient(135deg,var(--accent),var(--accent-2));color:white;border:none;border-radius:var(--radius-sm);padding:8px 18px;font-family:var(--font-d);font-size:0.78rem;font-weight:700;cursor:pointer;}
+.side-card{background:var(--paper-card);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--sh-card);margin-bottom:16px;}
+.side-header{padding:16px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+.side-title{font-family:var(--font-d);font-size:0.82rem;font-weight:800;color:var(--ink);display:flex;align-items:center;gap:8px;}
+.side-title::before{content:'';width:3px;height:14px;background:linear-gradient(180deg,var(--accent),var(--accent-2));border-radius:2px;}
+.side-body{padding:12px 18px;}
+.recent-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);cursor:pointer;}
+.recent-item:last-child{border-bottom:none;}
+.ri-icon{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.ri-title{font-size:0.78rem;font-weight:600;color:var(--ink);line-height:1.3;}
+.ri-meta{font-size:0.65rem;color:var(--ink-faint);margin-top:2px;}
+.ri-arrow{font-size:0.7rem;color:var(--ink-faint);margin-left:auto;}
+.progress-list{display:flex;flex-direction:column;gap:10px;}
+.prog-item{display:flex;flex-direction:column;gap:4px;}
+.prog-row{display:flex;align-items:center;justify-content:space-between;}
+.prog-name{font-size:0.78rem;font-weight:600;color:var(--ink);}
+.prog-pct{font-family:var(--font-m);font-size:0.7rem;color:var(--ink-faint);}
+.prog-bar{height:5px;background:var(--paper-warm);border-radius:10px;overflow:hidden;}
+.prog-fill{height:100%;border-radius:10px;}
+.formula-preview{background:var(--paper);border:1px solid var(--border);border-radius:var(--radius-md);padding:14px;font-family:var(--font-m);font-size:0.82rem;color:var(--ink);line-height:1.8;margin-bottom:8px;}
+.formula-preview .f{color:var(--accent);font-weight:500;}
+.formula-preview .eq{color:var(--accent-green);font-weight:500;}
+.sec-h{font-family:var(--font-d);font-size:0.88rem;font-weight:800;color:var(--ink);letter-spacing:-0.03em;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.sec-h::before{content:'';width:3px;height:16px;background:linear-gradient(180deg,var(--accent),var(--accent-2));border-radius:2px;}
+.sec-h-count{font-size:0.72rem;font-weight:600;color:var(--ink-faint);background:var(--paper-warm);padding:2px 8px;border-radius:100px;}
+.sec-h-action{margin-left:auto;font-size:0.75rem;font-weight:600;color:var(--accent);cursor:pointer;text-decoration:none;}
+@keyframes fu{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fu .5s ease both;}
+.fu1{animation-delay:.04s;}.fu2{animation-delay:.08s;}.fu3{animation-delay:.12s;}
+.fu4{animation-delay:.16s;}.fu5{animation-delay:.20s;}
+.toast{position:fixed;bottom:28px;right:28px;background:var(--ink);color:white;padding:12px 20px;border-radius:var(--radius-md);font-size:0.82rem;font-weight:600;z-index:999;display:none;align-items:center;gap:8px;box-shadow:0 8px 24px rgba(13,15,26,0.2);}
+.toast.show{display:flex;}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <a class="sb-logo" href="#"><span class="mock">Mock</span><span class="arena">Arena</span></a>
+  <div class="sb-user">
+    <div class="sb-avatar">AR</div>
+    <div><div class="sb-uname">Arjun Sharma</div><div class="sb-umeta">JEE Advanced 2025</div><div class="sb-badge">🔥 42 Day Streak</div></div>
+  </div>
+  <div class="sb-section-label">Main Menu</div>
+  <ul class="sb-nav">
+    <li><a href="mockarena_dashboard.html"><span class="ni">🏠</span>Dashboard</a></li>
+    <li><a href="mockarena_mocktest.html"><span class="ni">📝</span>Mock Tests</a></li>
+    <li><a href="mockarena_results.html"><span class="ni">📊</span>My Results</a></li>
+    <li><a href="mockarena_test_catalog.html"><span class="ni">📚</span>Test Series</a></li>
+    <li><a href="mockarena_leaderboard.html"><span class="ni">🏆</span>Leaderboard</a></li>
+    <li><a href="mockarena_video_solutions.html"><span class="ni">🎬</span>Video Solutions</a></li>
+    <li><a href="mockarena_doubt_qa_v2.html"><span class="ni">💬</span>Doubt Q&amp;A</a></li>
+  </ul>
+  <div class="sb-section-label">Study Tools</div>
+  <ul class="sb-nav">
+    <li><a href="mockarena_study_planner.html"><span class="ni">📅</span>Study Planner</a></li>
+    <li><a href="mockarena_notes_formulas.html" class="active"><span &amp; Formulas</a></li>
+    <li><a href="mockarena_analytics.html"><span class="ni">📈</span>Analytics</a></li>
+    <li><a href="mockarena_notifications.html"><spans</a></li>
+  </ul>
+  <div class="sb-bottom">
+    <a href="mockarena_profile.html"><span class="ni">👤</span>Profile</a>
+    <a href="mockarena_settings.html"><span class="ni">⚙️</span>Settings</a>
+    <a href="mockarena_login.html"><span class="ni">🚪</span>Logout</a>
+  </div>
+</aside>
+<div class="main">
+  <div class="topbar">
+    <div class="tb-title">Notes & Formula Sheets</div>
+    <div class="tb-right">
+      <div class="tb-search"><span>🔍</span><input type="text" placeholder="Search notes, formulas…" oninput="searchNotes(this.value)"></div>
+      <div class="tb-icon-btn">🔔</div>
+      <div class="tb-icon-btn">👤</div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="welcome-banner fu fu1">
+      <div class="wb-grid"></div><div class="wb-orb1"></div><div class="wb-orb2"></div>
+      <div>
+        <div class="wb-tag"><span class="wb-dot"></span>240+ Resources Available</div>
+        <div class="wb-title">Notes & <span>Formula Sheets</span></div>
+        <div class="wb-sub">Chapter-wise notes · Quick revision sheets · JEE & NEET ready</div>
+        <div class="wb-actions">
+          <button class="btn-wb btn-wb-primary" onclick="showToast('📥 Preparing all PDFs for download...')">📥 Download All PDFs</button>
+          <button class="btn-wb btn-wb-outline">🔖 My Bookmarks</button>
+        </div>
+      </div>
+      <div class="wb-stats">
+        <div class="wb-stat-item"><span style="font-size:1.3rem">📋</span><div><div class="wb-stat-num">47</div><div class="wb-stat-lbl">Notes Saved</div></div></div>
+        <div class="wb-stat-item"><span style="font-size:1.3rem">📥</span><div><div class="wb-stat-num">23</div><div class="wb-stat-lbl">Downloaded</div></div></div>
+        <div class="wb-stat-item"><span style="font-size:1.3rem">🔖</span><div><div class="wb-stat-num">12</div><div class="wb-stat-lbl">Bookmarked</div></div></div>
+      </div>
+    </div>
+    <div class="grid-4 fu fu2">
+      <div class="stat-card sc1"><div class="sc-top"><div><div class="sc-label">Total Sheets</div><div class="sc-num">240+</div></div><div class="sc-icon" style="background:var(--accent-light)">📋</div></div><div class="sc-delta delta-up">↑ 18 added this week</div></div>
+      <div class="stat-card sc2"><div class="sc-top"><div><div class="sc-label">Formula Sheets</div><div class="sc-num">86</div></div><div class="sc-icon" style="background:var(--accent-green-l)">🧮</div></div><div class="sc-delta delta-up">↑ All subjects covered</div></div>
+      <div class="stat-card sc3"><div class="sc-top"><div><div class="sc-label">Chapter Notes</div><div class="sc-num">124</div></div><div class="sc-icon" style="background:var(--accent-amber-l)">📝</div></div><div class="sc-delta delta-neu">JEE + NEET + Boards</div></div>
+      <div class="stat-card sc4"><div class="sc-top"><div><div class="sc-label">Revision Cards</div><div class="sc-num">30</div></div><div class="sc-icon" style="background:var(--accent-sky-l)">🃏</div></div><div class="sc-delta delta-up">↑ Quick revision ready</div></div>
+    </div>
+    <div class="filter-bar fu fu3">
+      <div class="filter-chips" id="typeChips">
+        <div class="chip active" onclick="setChip(this)">All Types</div>
+        <div class="chip" onclick="setChip(this)">📋 Formula Sheets</div>
+        <div class="chip" onclick="setChip(this)">📝 Chapter Notes</div>
+        <div class="chip" onclick="setChip(this)">🃏 Revision Cards</div>
+        <div class="chip" onclick="setChip(this)">📌 PYQ Analysis</div>
+      </div>
+      <div class="filter-sep"></div>
+      <div class="view-btns">
+        <div class="view-btn active" onclick="setView('grid',this)">⊞</div>
+        <div class="view-btn" onclick="setView('list',this)">☰</div>
+      </div>
+    </div>
+    <div class="subject-tabs fu fu3">
+      <div class="sub-tab active" onclick="setSubject(this,'all')"><span class="sub-tab-icon">📚</span><span class="sub-tab-name">All Subjects</span><span class="sub-tab-count">240</span></div>
+      <div class="sub-tab" onclick="setSubject(this,'physics')"><span class="sub-tab-icon">⚛️</span><span class="sub-tab-name">Physics</span><span class="sub-tab-count">68</span></div>
+      <div class="sub-tab" onclick="setSubject(this,'chemistry')"><span class="sub-tab-icon">🧪</span><span class="sub-tab-name">Chemistry</span><span class="sub-tab-count">72</span></div>
+      <div class="sub-tab" onclick="setSubject(this,'maths')"><span class="sub-tab-icon">📐</span><span class="sub-tab-name">Mathematics</span><span class="sub-tab-count">64</span></div>
+      <div class="sub-tab" onclick="setSubject(this,'biology')"><span class="sub-tab-icon">🧬</span><span class="sub-tab-name">Biology</span><span class="sub-tab-count">36</span></div>
+    </div>
+    <div class="notes-layout">
+      <div>
+        <div class="featured-sheet fu fu3">
+          <div class="fs-grid"></div><div class="fs-orb"></div>
+          <div class="fs-inner">
+            <div class="fs-badge">⭐ Most Downloaded This Week</div>
+            <div class="fs-title">Complete JEE Physics Formula Sheet 2025</div>
+            <div class="fs-sub">All chapters · Mechanics to Modern Physics · 12 pages · PDF</div>
+            <div class="fs-stats"><div class="fs-stat"><strong>12 pages</strong> · PDF</div><div class="fs-stat"><strong>48K</strong> downloads</div><div class="fs-stat"><strong>4.9 ⭐</strong> rating</div></div>
+            <button class="fs-btn" onclick="showToast('📥 Downloading JEE Physics Formula Sheet...')">📥 Download Free PDF</button>
+          </div>
+        </div>
+        <div class="sec-h fu fu4">All Notes <span class="sec-h-count" id="notesCount">12 sheets</span><a class="sec-h-action">View All →</a></div>
+        <div class="notes-grid fu fu4" id="notesGrid">
+          <div class="note-card" data-subject="physics" data-type="formula"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-physics">⚛️ Physics</span><button class="nc-bookmark saved" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">⚡</span><div class="nc-title">Electrostatics — Complete Formula Sheet</div><div class="nc-desc">Coulomb's law, electric field, potential, capacitors — all formulas with derivations.</div><div class="nc-tags"><span class="nc-tag">JEE Main</span><span class="nc-tag">JEE Advanced</span><span class="nc-tag">8 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 8 pages</span><span class="nc-views">👁️ 12.4K views</span></div></div><div class="nc-footer"><span class="nc-type nt-formula">Formula Sheet</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+          <div class="note-card" data-subject="maths" data-type="formula"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-maths">📐 Maths</span><button class="nc-bookmark" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">∫</span><div class="nc-title">Calculus — Differentiation & Integration</div><div class="nc-desc">All standard integrals, derivatives, JEE-level tricks and shortcuts.</div><div class="nc-tags"><span class="nc-tag">JEE Advanced</span><span class="nc-tag">10 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 10 pages</span><span class="nc-views">👁️ 18.2K views</span></div></div><div class="nc-footer"><span class="nc-type nt-formula">Formula Sheet</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+          <div class="note-card" data-subject="chemistry" data-type="notes"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-chemistry">🧪 Chemistry</span><button class="nc-bookmark" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">🧬</span><div class="nc-title">Organic Chemistry — Reaction Mechanisms</div><div class="nc-desc">All named reactions, mechanisms, reagents for JEE & NEET with memory tricks.</div><div class="nc-tags"><span class="nc-tag">JEE Main</span><span class="nc-tag">NEET</span><span class="nc-tag">15 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 15 pages</span><span class="nc-views">👁️ 22.1K views</span></div></div><div class="nc-footer"><span class="nc-type nt-notes">Chapter Notes</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+          <div class="note-card" data-subject="physics" data-type="notes"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-physics">⚛️ Physics</span><button class="nc-bookmark saved" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">🌊</span><div class="nc-title">Waves & Sound — Complete Notes</div><div class="nc-desc">Wave equation, superposition, standing waves, Doppler effect with solved examples.</div><div class="nc-tags"><span class="nc-tag">JEE Main</span><span class="nc-tag">12 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 12 pages</span><span class="nc-views">👁️ 9.8K views</span></div></div><div class="nc-footer"><span class="nc-type nt-notes">Chapter Notes</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+          <div class="note-card" data-subject="maths" data-type="revision"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-maths">📐 Maths</span><button class="nc-bookmark" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">📊</span><div class="nc-title">Coordinate Geometry — Quick Revision</div><div class="nc-desc">Straight lines, circles, parabola, ellipse — all standard results in one sheet.</div><div class="nc-tags"><span class="nc-tag">JEE Main</span><span class="nc-tag">6 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 6 pages</span><span class="nc-views">👁️ 14.5K views</span></div></div><div class="nc-footer"><span class="nc-type nt-revision">Revision Card</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+          <div class="note-card" data-subject="chemistry" data-type="formula"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-chemistry">🧪 Chemistry</span><button class="nc-bookmark" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">🔥</span><div class="nc-title">Thermodynamics — Laws & Formulas</div><div class="nc-desc">All four laws, enthalpy, entropy, Gibbs free energy with JEE-level problems.</div><div class="nc-tags"><span class="nc-tag">JEE Main</span><span class="nc-tag">NEET</span><span class="nc-tag">9 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 9 pages</span><span class="nc-views">👁️ 11.3K views</span></div></div><div class="nc-footer"><span class="nc-type nt-formula">Formula Sheet</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+          <div class="note-card" data-subject="biology" data-type="notes"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-biology">🧬 Biology</span><button class="nc-bookmark" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">🦠</span><div class="nc-title">Cell Biology — NCERT Notes</div><div class="nc-desc">Cell organelles, division, transport — complete NCERT-based notes for NEET.</div><div class="nc-tags"><span class="nc-tag">NEET UG</span><span class="nc-tag">NCERT</span><span class="nc-tag">14 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 14 pages</span><span class="nc-views">👁️ 16.7K views</span></div></div><div class="nc-footer"><span class="nc-type nt-notes">Chapter Notes</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+          <div class="note-card" data-subject="physics" data-type="pyq"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-physics">⚛️ Physics</span><button class="nc-bookmark" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">📌</span><div class="nc-title">Modern Physics — PYQ Analysis</div><div class="nc-desc">10 years JEE PYQ analysis with most important topics and expected questions.</div><div class="nc-tags"><span class="nc-tag">JEE Advanced</span><span class="nc-tag">PYQ</span><span class="nc-tag">7 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 7 pages</span><span class="nc-views">👁️ 8.9K views</span></div></div><div class="nc-footer"><span class="nc-type nt-pyq">PYQ Analysis</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+          <div class="note-card" data-subject="maths" data-type="formula"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-maths">📐 Maths</span><button class="nc-bookmark saved" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">🎲</span><div class="nc-title">Probability & Statistics</div><div class="nc-desc">Bayes theorem, binomial distribution, mean/variance — complete formula sheet.</div><div class="nc-tags"><span class="nc-tag">JEE Main</span><span class="nc-tag">5 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 5 pages</span><span class="nc-views">👁️ 7.2K views</span></div></div><div class="nc-footer"><span class="nc-type nt-formula">Formula Sheet</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+          <div class="note-card" data-subject="chemistry" data-type="revision"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-chemistry">🧪 Chemistry</span><button class="nc-bookmark" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">⚗️</span><div class="nc-title">P-Block Elements — Quick Revision</div><div class="nc-desc">All p-block properties, reactions, uses — one page quick revision for NEET & JEE.</div><div class="nc-tags"><span class="nc-tag">JEE Main</span><span class="nc-tag">NEET</span><span class="nc-tag">4 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 4 pages</span><span class="nc-views">👁️ 13.1K views</span></div></div><div class="nc-footer"><span class="nc-type nt-revision">Revision Card</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+          <div class="note-card" data-subject="biology" data-type="notes"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-biology">🧬 Biology</span><button class="nc-bookmark" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">🌿</span><div class="nc-title">Photosynthesis & Respiration</div><div class="nc-desc">Light & dark reactions, Calvin cycle, ETC — complete notes with diagrams.</div><div class="nc-tags"><span class="nc-tag">NEET UG</span><span class="nc-tag">NCERT</span><span class="nc-tag">11 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 11 pages</span><span class="nc-views">👁️ 19.4K views</span></div></div><div class="nc-footer"><span class="nc-type nt-notes">Chapter Notes</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+          <div class="note-card" data-subject="physics" data-type="formula"><div class="nc-top"><div class="nc-header"><span class="nc-subject-badge nb-physics">⚛️ Physics</span><button class="nc-bookmark" onclick="toggleBookmark(this)">🔖</button></div><span class="nc-icon">🔭</span><div class="nc-title">Optics — Ray & Wave Optics</div><div class="nc-desc">Refraction, lenses, mirrors, interference, diffraction — complete formula sheet.</div><div class="nc-tags"><span class="nc-tag">JEE Main</span><span class="nc-tag">NEET</span><span class="nc-tag">11 pages</span></div><div class="nc-meta"><span class="nc-pages">📄 11 pages</span><span class="nc-views">👁️ 15.8K views</span></div></div><div class="nc-footer"><span class="nc-type nt-formula">Formula Sheet</span><button class="nc-download" onclick="showToast('📥 Downloading...')">📥 PDF</button></div></div>
+        </div>
+      </div>
+      <div>
+        <div class="side-card fu fu4">
+          <div class="side-header"><div class="side-title">⚡ Quick Formula Preview</div></div>
+          <div class="side-body">
+            <div style="font-size:0.72rem;font-weight:700;color:var(--ink-faint);margin-bottom:8px;">ELECTROSTATICS</div>
+            <div class="formula-preview"><div class="f">F = kq₁q₂/r²</div><div class="f">E = F/q = kQ/r²</div><div class="f">V = kQ/r</div><div class="eq">C = Q/V = ε₀A/d</div><div class="f">U = ½CV² = Q²/2C</div></div>
+            <div style="font-size:0.72rem;font-weight:700;color:var(--ink-faint);margin-bottom:8px;margin-top:12px;">CALCULUS</div>
+            <div class="formula-preview"><div class="f">d/dx(xⁿ) = nxⁿ⁻¹</div><div class="eq">∫xⁿdx = xⁿ⁺¹/(n+1)</div><div class="f">d/dx(eˣ) = eˣ</div><div class="eq">∫eˣdx = eˣ + C</div></div>
+          </div>
+        </div>
+        <div class="side-card fu fu4">
+          <div class="side-header"><div class="side-title">📊 Your Coverage</div></div>
+          <div class="side-body">
+            <div class="progress-list">
+              <div class="prog-item"><div class="prog-row"><span class="prog-name">⚛️ Physics</span><span class="prog-pct">68/100</span></div><div class="prog-bar"><div class="prog-fill" style="width:68%;background:linear-gradient(90deg,var(--accent),var(--accent-2));"></div></div></div>
+              <div class="prog-item"><div class="prog-row"><span class="prog-name">🧪 Chemistry</span><span class="prog-pct">54/100</span></div><div class="prog-bar"><div class="prog-fill" style="width:54%;background:linear-gradient(90deg,var(--accent-green),#34d399);"></div></div></div>
+              <div class="prog-item"><div class="prog-row"><span class="prog-name">📐 Mathematics</span><span class="prog-pct">72/100</span></div><div class="prog-bar"><div class="prog-fill" style="width:72%;background:linear-gradient(90deg,var(--accent-amber),#fbbf24);"></div></div></div>
+              <div class="prog-item"><div class="prog-row"><span class="prog-name">🧬 Biology</span><span class="prog-pct">41/100</span></div><div class="prog-bar"><div class="prog-fill" style="width:41%;background:linear-gradient(90deg,var(--accent-sky),#06b6d4);"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="side-card fu fu5">
+          <div class="side-header"><div class="side-title">🕐 Recently Viewed</div></div>
+          <div class="side-body">
+            <div class="recent-item"><div class="ri-icon" style="background:var(--accent-light)">⚡</div><div><div class="ri-title">Electrostatics Formulas</div><div class="ri-meta">2 hours ago · Physics</div></div><span class="ri-arrow">›</span></div>
+            <div class="recent-item"><div class="ri-icon" style="background:var(--accent-amber-l)">∫</div><div><div class="ri-title">Integration Formulas</div><div class="ri-meta">Yesterday · Maths</div></div><span class="ri-arrow">›</span></div>
+            <div class="recent-item"><div class="ri-icon" style="background:var(--accent-green-l)">🧬</div><div><div class="ri-title">Organic Chemistry Reactions</div><div class="ri-meta">2 days ago · Chemistry</div></div><span class="ri-arrow">›</span></div>
+            <div class="recent-item"><div class="ri-icon" style="background:var(--accent-sky-l)">🌿</div><div><div class="ri-title">Photosynthesis Notes</div><div class="ri-meta">3 days ago · Biology</div></div><span class="ri-arrow">›</span></div>
+          </div>
+        </div>
+        <div class="side-card fu fu5">
+          <div class="side-header"><div class="side-title">🔥 Top Downloads</div></div>
+          <div class="side-body">
+            <div class="recent-item"><div style="font-family:var(--font-d);font-size:0.85rem;font-weight:800;color:var(--accent-amber);width:20px;">#1</div><div><div class="ri-title">JEE Physics Complete Sheet</div><div class="ri-meta">48K downloads</div></div><span class="ri-arrow">›</span></div>
+            <div class="recent-item"><div style="font-family:var(--font-d);font-size:0.85rem;font-weight:800;color:var(--ink-faint);width:20px;">#2</div><div><div class="ri-title">Organic Chemistry Reactions</div><div class="ri-meta">36K downloads</div></div><span class="ri-arrow">›</span></div>
+            <div class="recent-item"><div style="font-family:var(--font-d);font-size:0.85rem;font-weight:800;color:var(--ink-faint);width:20px;">#3</div><div><div class="ri-title">Calculus Formula Sheet</div><div class="ri-meta">29K downloads</div></div><span class="ri-arrow">›</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast">📥 <span id="toast-msg"></span></div>
+<script>
+function setChip(el){document.querySelectorAll('#typeChips .chip').forEach(c=>c.classList.remove('active'));el.classList.add('active');filterNotes();}
+function setSubject(el,sub){document.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');filterNotes();}
+function filterNotes(){
+  const activeSubject=document.querySelector('.sub-tab.active')?.textContent.trim().toLowerCase()||'all';
+  const activeType=document.querySelector('#typeChips .chip.active')?.textContent.trim().toLowerCase()||'all types';
+  let visible=0;
+  document.querySelectorAll('.note-card').forEach(card=>{
+    const subj=card.dataset.subject;const type=card.dataset.type;
+    const sm=activeSubject.includes('all')||activeSubject.includes(subj);
+    const tm=activeType.includes('all')||(activeType.includes('formula')&&type==='formula')||(activeType.includes('chapter')&&type==='notes')||(activeType.includes('revision')&&type==='revision')||(activeType.includes('pyq')&&type==='pyq');
+    card.style.display=(sm&&tm)?'':'none';if(sm&&tm)visible++;
+  });
+  document.getElementById('notesCount').textContent=visible+' sheets';
+}
+function setView(view,el){document.querySelectorAll('.view-btn').forEach(b=>b.classList.remove('active'));el.classList.add('active');document.getElementById('notesGrid').className=view==='list'?'notes-grid list-view':'notes-grid';}
+function searchNotes(val){let visible=0;document.querySelectorAll('.note-card').forEach(card=>{const title=card.querySelector('.nc-title')?.textContent.toLowerCase()||'';const show=title.includes(val.toLowerCase());card.style.display=show?'':'none';if(show)visible++;});document.getElementById('notesCount').textContent=visible+' sheets';}
+function toggleBookmark(btn){btn.classList.toggle('saved');showToast(btn.classList.contains('saved')?'🔖 Bookmarked!':'Bookmark removed');}
+function showToast(msg){const t=document.getElementById('toast');document.getElementById('toast-msg').textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500);}
+</script>
+</body>
+</html>
