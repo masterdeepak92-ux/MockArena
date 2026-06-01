@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena — Doubt Q&A</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf9f5;--cream-warm:#f5f3ec;--cream-card:#ffffff;
+  --forest:#1a2618;--forest-soft:#243422;--forest-muted:#3d5239;
+  --sage:#6b8f5e;--sage-light:rgba(107,143,94,0.1);--sage-glow:rgba(107,143,94,0.2);
+  --gold:#c8962a;--gold-light:rgba(200,150,42,0.1);--gold-dim:rgba(200,150,42,0.08);
+  --rose:#c84b4b;--rose-light:rgba(200,75,75,0.09);
+  --sky:#3b82c4;--sky-light:rgba(59,130,196,0.09);
+  --amber:#b87333;--amber-light:rgba(184,115,51,0.09);
+  --purple:#7c5cbf;--purple-light:rgba(124,92,191,0.09);
+  --border:rgba(26,38,24,0.08);--border-med:rgba(26,38,24,0.13);--border-strong:rgba(26,38,24,0.2);
+  --font-d:'Outfit',sans-serif;--font-b:'Outfit',sans-serif;
+  --font-serif:'Lora',serif;--font-m:'IBM Plex Mono',monospace;
+  --sh:0 1px 3px rgba(26,38,24,0.06),0 4px 16px rgba(26,38,24,0.04);
+  --sh-hover:0 8px 32px rgba(107,143,94,0.15),0 2px 8px rgba(26,38,24,0.06);
+  --sh-deep:0 20px 60px rgba(26,38,24,0.12);
+  --sbw:256px;--tbh:62px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font-b);background:var(--cream);color:var(--forest);display:flex;-webkit-font-smoothing:antialiased;}
+
+/* ═══ SIDEBAR ═══ */
+.sb{width:var(--sbw);flex-shrink:0;background:var(--forest);height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;z-index:300;border-right:1px solid rgba(255,255,255,.04);}
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px;}
+.sb-logo{padding:20px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06);text-decoration:none;}
+.sb-lm{width:36px;height:36px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.82rem;font-weight:800;color:white;flex-shrink:0;box-shadow:0 0 18px var(--sage-glow);}
+.sb-b1{font-family:var(--font-d);font-size:1rem;font-weight:700;color:white;letter-spacing:-.02em;}
+.sb-b2{font-size:.56rem;font-weight:500;color:rgba(255,255,255,.28);letter-spacing:.1em;text-transform:uppercase;}
+.sb-user{margin:12px 14px;background:rgba(107,143,94,.15);border:1px solid rgba(107,143,94,.25);border-radius:12px;padding:12px;}
+.sb-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.9rem;font-weight:800;color:white;margin-bottom:8px;box-shadow:0 0 14px rgba(200,150,42,.3);}
+.sb-uname{font-size:.8rem;font-weight:700;color:white;}
+.sb-urole{font-size:.64rem;color:rgba(255,255,255,.35);margin-top:1px;}
+.sb-ubadge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;background:rgba(200,150,42,.15);border:1px solid rgba(200,150,42,.25);border-radius:100px;padding:2px 9px;font-size:.6rem;font-weight:600;color:var(--gold);}
+.sb-grp{padding:14px 18px 4px;font-size:.56rem;font-weight:600;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.12em;}
+.sb-ul{list-style:none;padding:0 8px;}
+.sb-ul li{margin-bottom:1px;}
+.sb-nav{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;text-decoration:none;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.42);transition:all .18s;}
+.sb-nav:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);}
+.sb-nav.active{background:rgba(107,143,94,.2);color:white;border:1px solid rgba(107,143,94,.3);}
+.sb-nav.active .si{color:var(--sage);}
+.si{width:16px;text-align:center;font-size:.82rem;flex-shrink:0;color:rgba(255,255,255,.25);}
+.snb{margin-left:auto;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:100px;background:var(--rose);color:white;}
+.snb-g{background:var(--sage);}
+.sb-foot{margin-top:auto;padding:10px 8px 18px;border-top:1px solid rgba(255,255,255,.06);}
+
+/* ═══ MAIN ═══ */
+.main{margin-left:var(--sbw);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.tb{height:var(--tbh);background:rgba(250,249,245,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:12px;flex-shrink:0;}
+.tb-title{font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;}
+.tb-crumb{font-size:.64rem;color:rgba(26,38,24,.4);}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.tb-search{display:flex;align-items:center;gap:7px;background:var(--cream-warm);border:1.5px solid var(--border-med);border-radius:9px;padding:7px 12px;width:220px;transition:all .2s;}
+.tb-search:focus-within{border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-light);}
+.tb-search input{border:none;outline:none;font-family:var(--font-b);font-size:.78rem;color:var(--forest);background:transparent;width:100%;}
+.tb-search input::placeholder{color:rgba(26,38,24,.3);}
+.tb-ib{width:36px;height:36px;border-radius:9px;background:var(--cream-warm);border:1.5px solid var(--border-med);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.88rem;transition:all .2s;position:relative;color:var(--forest-muted);}
+.tb-ib:hover{border-color:var(--sage);background:var(--sage-light);}
+.tb-ib .dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--rose);border:1.5px solid var(--cream);}
+.btn{font-family:var(--font-b);font-size:.76rem;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;border:none;}
+.btn-ghost{background:var(--cream-warm);border:1.5px solid var(--border-med);color:var(--forest-muted);}
+.btn-ghost:hover{border-color:var(--sage);color:var(--sage);}
+.btn-sage{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;box-shadow:0 2px 8px var(--sage-glow);}
+.btn-sage:hover{box-shadow:0 4px 16px var(--sage-glow);transform:translateY(-1px);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#e8a830);color:white;box-shadow:0 2px 8px rgba(200,150,42,.25);}
+.btn-gold:hover{box-shadow:0 4px 14px rgba(200,150,42,.35);transform:translateY(-1px);}
+.btn-primary{background:linear-gradient(135deg,var(--forest),var(--forest-soft));color:white;}
+.btn-primary:hover{box-shadow:var(--sh-hover);transform:translateY(-1px);}
+
+/* TABS */
+.stabs{height:44px;background:var(--cream-card);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:2px;flex-shrink:0;overflow-x:auto;}
+.stabs::-webkit-scrollbar{display:none;}
+.stab{font-family:var(--font-b);font-size:.74rem;font-weight:600;color:rgba(26,38,24,.4);background:none;border:none;border-bottom:2px solid transparent;padding:0 13px;height:44px;cursor:pointer;transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.stab:hover{color:var(--forest);}
+.stab.active{color:var(--sage);border-bottom-color:var(--sage);}
+.stab-cnt{font-size:.58rem;font-weight:700;padding:1px 6px;border-radius:100px;background:var(--rose-light);color:var(--rose);}
+.stab-cnt-g{background:var(--sage-light);color:var(--sage);}
+
+/* CONTENT */
+.content{flex:1;overflow:hidden;display:grid;grid-template-columns:240px 1fr 268px;}
+
+/* ═══ LEFT PANEL ═══ */
+.lp{border-right:1px solid var(--border);background:var(--cream-warm);overflow-y:auto;display:flex;flex-direction:column;}
+.lp::-webkit-scrollbar{width:3px;}
+.lp::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+.lp-sec{padding:12px 12px 6px;}
+.lp-hd{font-family:var(--font-d);font-size:.66rem;font-weight:700;color:rgba(26,38,24,.35);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;display:flex;align-items:center;gap:6px;}
+.lp-hd::before{content:'';width:2px;height:11px;background:linear-gradient(180deg,var(--sage),#4a7a3d);border-radius:2px;}
+.lp-sep{height:1px;background:var(--border);margin:4px 12px;}
+.fc{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:9px;cursor:pointer;font-size:.75rem;font-weight:500;color:var(--forest-muted);transition:all .18s;}
+.fc:hover{background:var(--cream-card);color:var(--forest);}
+.fc.on{background:var(--cream-card);color:var(--forest);font-weight:700;box-shadow:var(--sh);}
+.fc.on .fc-ic{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;border-color:transparent;}
+.fc-ic{width:24px;height:24px;border-radius:6px;background:var(--cream-warm);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.76rem;flex-shrink:0;transition:all .18s;}
+.fc-cnt{margin-left:auto;font-family:var(--font-m);font-size:.6rem;color:rgba(26,38,24,.32);}
+.fc.on .fc-cnt{color:var(--sage);font-weight:700;}
+.sf{display:flex;align-items:center;gap:8px;padding:6px 10px;border-radius:8px;cursor:pointer;font-size:.74rem;color:var(--forest-muted);transition:all .18s;}
+.sf:hover{background:var(--cream-card);}
+.sf.on{background:var(--cream-card);font-weight:600;color:var(--forest);}
+.sf-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* ═══ CENTER ═══ */
+.cp{display:flex;flex-direction:column;overflow:hidden;}
+.ask-strip{padding:12px 16px;background:var(--cream-card);border-bottom:1px solid var(--border);flex-shrink:0;}
+.ask-strip-inner{display:flex;align-items:center;gap:10px;background:var(--cream-warm);border:1.5px solid var(--border-med);border-radius:11px;padding:10px 14px;cursor:pointer;transition:all .2s;}
+.ask-strip-inner:hover{border-color:var(--sage);background:white;}
+.ask-strip-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:white;flex-shrink:0;}
+.ask-strip-placeholder{font-size:.8rem;color:rgba(26,38,24,.35);flex:1;}
+.dlist{flex:1;overflow-y:auto;padding:12px 14px;}
+.dlist::-webkit-scrollbar{width:3px;}
+.dlist::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+/* DOUBT CARD */
+.dc{background:var(--cream-card);border:1px solid var(--border);border-radius:13px;padding:0;margin-bottom:9px;cursor:pointer;transition:all .22s;overflow:hidden;position:relative;}
+.dc:hover{box-shadow:var(--sh-hover);border-color:rgba(107,143,94,.2);}
+.dc.on{border-color:var(--sage);box-shadow:var(--sh-hover);}
+.dc-accent{height:3px;width:100%;}
+.dc-body{padding:13px 14px 11px;}
+.dc-top{display:flex;align-items:flex-start;gap:9px;margin-bottom:8px;}
+.dc-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:white;flex-shrink:0;}
+.dc-info{flex:1;}
+.dc-name{font-size:.74rem;font-weight:700;color:var(--forest);}
+.dc-time{font-family:var(--font-m);font-size:.6rem;color:rgba(26,38,24,.32);margin-top:1px;}
+.dc-unread{width:7px;height:7px;border-radius:50%;background:var(--rose);flex-shrink:0;margin-top:4px;}
+.dc-badges{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px;}
+.dc-q{font-size:.77rem;color:var(--forest);line-height:1.5;margin-bottom:8px;font-weight:500;}
+.dc-foot{display:flex;align-items:center;gap:7px;}
+.vote-btn{display:flex;align-items:center;gap:4px;font-size:.67rem;font-weight:600;padding:3px 9px;border-radius:6px;border:1px solid var(--border);background:var(--cream-warm);color:rgba(26,38,24,.4);cursor:pointer;transition:all .18s;}
+.vote-btn:hover,.vote-btn.up{border-color:rgba(107,143,94,.3);background:var(--sage-light);color:var(--sage);}
+.ans-cnt{font-size:.67rem;color:rgba(26,38,24,.38);display:flex;align-items:center;gap:4px;}
+
+/* ═══ DETAIL PANEL ═══ */
+.dp{display:flex;flex-direction:column;overflow:hidden;}
+.dp-scroll{flex:1;overflow-y:auto;padding:16px;}
+.dp-scroll::-webkit-scrollbar{width:3px;}
+.dp-scroll::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+/* Question block */
+.dv-q{background:var(--cream-card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:var(--sh);}
+.dv-qh{display:flex;align-items:flex-start;gap:11px;margin-bottom:11px;}
+.dv-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.84rem;font-weight:800;color:white;flex-shrink:0;}
+.dv-meta{flex:1;}
+.dv-name{font-family:var(--font-d);font-size:.83rem;font-weight:700;color:var(--forest);}
+.dv-time{font-size:.65rem;color:rgba(26,38,24,.36);margin-top:2px;}
+.dv-text{font-family:var(--font-serif);font-size:.88rem;color:var(--forest);line-height:1.78;margin-bottom:12px;}
+.dv-text .mf{font-family:var(--font-m);background:var(--cream-warm);padding:2px 7px;border-radius:5px;font-size:.84rem;border:1px solid var(--border);color:var(--forest);}
+.dv-acts{display:flex;gap:7px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap;}
+.dv-act{display:flex;align-items:center;gap:5px;font-size:.71rem;font-weight:600;padding:5px 11px;border-radius:8px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;transition:all .18s;}
+.dv-act:hover{border-color:var(--sage);color:var(--sage);}
+.dv-act.on{background:var(--sage-light);border-color:rgba(107,143,94,.25);color:var(--sage);}
+
+/* Answer section header */
+.ans-hd{font-family:var(--font-d);font-size:.78rem;font-weight:700;color:var(--forest);margin-bottom:11px;display:flex;align-items:center;gap:8px;}
+.ans-hd::before{content:'';width:3px;height:13px;background:linear-gradient(180deg,var(--sage),#4a7a3d);border-radius:2px;box-shadow:0 0 6px var(--sage-glow);}
+
+/* Answer card */
+.ac{background:var(--cream-card);border:1px solid var(--border);border-radius:13px;padding:16px;margin-bottom:10px;box-shadow:var(--sh);transition:all .22s;}
+.ac:hover{box-shadow:var(--sh-hover);}
+.ac.expert{border-color:rgba(107,143,94,.28);background:linear-gradient(135deg,rgba(107,143,94,.03),var(--cream-card));}
+.ac-hd{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.ac-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:white;flex-shrink:0;position:relative;}
+.ac-badge{position:absolute;bottom:-3px;right:-3px;width:15px;height:15px;border-radius:50%;background:linear-gradient(135deg,var(--sage),#4a7a3d);display:flex;align-items:center;justify-content:center;font-size:.48rem;border:1.5px solid white;}
+.ac-name{font-family:var(--font-d);font-size:.8rem;font-weight:700;color:var(--forest);}
+.ac-role{font-size:.63rem;color:rgba(26,38,24,.36);margin-top:1px;}
+.ac-text{font-size:.8rem;color:var(--forest-muted);line-height:1.68;margin-bottom:10px;}
+.ac-text .mf{font-family:var(--font-m);background:var(--cream-warm);padding:1px 6px;border-radius:4px;font-size:.76rem;border:1px solid var(--border);color:var(--forest);}
+.ac-step{background:var(--cream-warm);border:1px solid var(--border);border-radius:9px;padding:11px 13px;margin-bottom:7px;}
+.ac-step-t{font-family:var(--font-d);font-size:.71rem;font-weight:700;color:var(--sage);margin-bottom:4px;display:flex;align-items:center;gap:6px;}
+.ac-step-t::before{content:'✦';font-size:.6rem;}
+.ac-step-b{font-size:.77rem;color:var(--forest-muted);line-height:1.63;}
+.ac-vid{display:flex;align-items:center;gap:9px;background:var(--sky-light);border:1px solid rgba(59,130,196,.2);border-radius:9px;padding:10px 12px;cursor:pointer;transition:all .18s;margin-top:9px;}
+.ac-vid:hover{background:rgba(59,130,196,.14);}
+.ac-vid-ic{width:34px;height:34px;border-radius:8px;background:var(--sky);display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0;}
+.ac-vid-t{font-size:.73rem;font-weight:600;color:var(--sky);}
+.ac-vid-s{font-size:.61rem;color:rgba(59,130,196,.6);}
+.ac-foot{display:flex;align-items:center;gap:7px;padding-top:9px;border-top:1px solid var(--border);flex-wrap:wrap;}
+
+/* Reply box */
+.reply-wrap{background:var(--cream-warm);border:1px solid var(--border-med);border-radius:12px;padding:13px;margin-top:12px;}
+.reply-ta{width:100%;font-family:var(--font-b);font-size:.78rem;color:var(--forest);background:white;border:1.5px solid var(--border-med);border-radius:9px;padding:9px 12px;outline:none;resize:none;min-height:60px;line-height:1.6;transition:all .2s;}
+.reply-ta:focus{border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-light);}
+.reply-ta::placeholder{color:rgba(26,38,24,.28);}
+.dp-footer{background:var(--cream-warm);border-top:1px solid var(--border);padding:11px 16px;flex-shrink:0;}
+
+/* ═══ RIGHT PANEL ═══ */
+.rp{border-left:1px solid var(--border);background:var(--cream-warm);overflow-y:auto;}
+.rp::-webkit-scrollbar{width:3px;}
+.rp::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+.rp-sec{padding:13px 13px 7px;}
+.rp-hd{font-family:var(--font-d);font-size:.66rem;font-weight:700;color:rgba(26,38,24,.35);text-transform:uppercase;letter-spacing:.1em;margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+.rp-hd::before{content:'';width:2px;height:11px;background:linear-gradient(180deg,var(--sage),#4a7a3d);border-radius:2px;}
+.rp-sep{height:1px;background:var(--border);margin:4px 13px;}
+.expert-row{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:10px;background:var(--cream-card);border:1px solid var(--border);margin-bottom:6px;cursor:pointer;transition:all .18s;}
+.expert-row:hover{box-shadow:var(--sh);border-color:rgba(107,143,94,.2);}
+.exp-av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:white;flex-shrink:0;}
+.exp-name{font-size:.74rem;font-weight:600;color:var(--forest);}
+.exp-sub{font-size:.6rem;color:rgba(26,38,24,.36);margin-top:1px;}
+.exp-status{display:flex;align-items:center;gap:4px;font-size:.59rem;font-weight:600;white-space:nowrap;}
+.mr{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);}
+.mr:last-child{border-bottom:none;}
+.mr-l{font-size:.72rem;font-weight:500;color:var(--forest-muted);}
+.mr-v{font-family:var(--font-m);font-size:.72rem;color:var(--forest);}
+.trend-row{display:flex;align-items:flex-start;gap:8px;padding:7px 9px;border-radius:9px;cursor:pointer;transition:all .18s;margin-bottom:3px;}
+.trend-row:hover{background:var(--cream-card);}
+.trend-n{font-family:var(--font-d);font-size:.78rem;font-weight:800;color:rgba(26,38,24,.18);width:14px;flex-shrink:0;text-align:right;}
+.trend-t{font-size:.73rem;color:var(--forest-muted);line-height:1.4;}
+.trend-s{font-size:.59rem;color:rgba(26,38,24,.32);margin-top:2px;}
+
+/* BADGES */
+.badge{font-size:.62rem;font-weight:600;padding:2px 9px;border-radius:100px;white-space:nowrap;display:inline-flex;align-items:center;gap:3px;}
+.bg{background:var(--sage-light);color:var(--sage);border:1px solid rgba(107,143,94,.2);}
+.br{background:var(--rose-light);color:var(--rose);border:1px solid rgba(200,75,75,.2);}
+.ba{background:var(--amber-light);color:var(--amber);border:1px solid rgba(184,115,51,.2);}
+.bb{background:var(--sky-light);color:var(--sky);border:1px solid rgba(59,130,196,.2);}
+.bgd{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(200,150,42,.2);}
+.bp{background:var(--purple-light);color:var(--purple);border:1px solid rgba(124,92,191,.2);}
+.b-exp{background:linear-gradient(135deg,rgba(107,143,94,.1),rgba(107,143,94,.05));color:var(--sage);border:1px solid rgba(107,143,94,.22);font-weight:700;}
+
+/* MODAL */
+.mo{position:fixed;inset:0;z-index:500;background:rgba(26,38,24,.55);backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;}
+.mo.open{display:flex;}
+.mb{background:var(--cream-card);border:1px solid var(--border-med);border-radius:20px;padding:28px;width:560px;max-width:95vw;max-height:88vh;overflow-y:auto;box-shadow:var(--sh-deep);animation:mpop .25s cubic-bezier(.34,1.56,.64,1);}
+@keyframes mpop{from{transform:scale(.92);opacity:0;}to{transform:scale(1);opacity:1;}}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.mt{font-family:var(--font-d);font-size:1rem;font-weight:700;color:var(--forest);letter-spacing:-.03em;}
+.mc{width:28px;height:28px;border:1.5px solid var(--border-med);border-radius:7px;background:none;cursor:pointer;font-size:.82rem;display:flex;align-items:center;justify-content:center;color:var(--forest-muted);}
+.mc:hover{border-color:var(--rose);color:var(--rose);}
+.fl{display:flex;flex-direction:column;gap:5px;margin-bottom:12px;}
+.fl label{font-size:.7rem;font-weight:600;color:var(--forest-muted);}
+.fi{font-family:var(--font-b);font-size:.82rem;color:var(--forest);background:var(--cream-warm);border:1.5px solid var(--border-med);border-radius:9px;padding:9px 12px;outline:none;transition:all .2s;width:100%;}
+.fi:focus{border-color:var(--sage);background:white;box-shadow:0 0 0 3px var(--sage-light);}
+.fi::placeholder{color:rgba(26,38,24,.25);}
+textarea.fi{min-height:100px;resize:vertical;line-height:1.6;}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+
+/* Notice */
+.notice{display:flex;gap:10px;padding:11px 13px;border-radius:10px;margin-bottom:8px;}
+.notice-sg{background:var(--sage-light);border:1px solid rgba(107,143,94,.2);}
+.notice-gd{background:var(--gold-dim);border:1px solid rgba(200,150,42,.2);}
+.n-icon{font-size:.88rem;flex-shrink:0;margin-top:1px;}
+.n-title{font-size:.74rem;font-weight:700;color:var(--forest);margin-bottom:2px;}
+.n-desc{font-size:.68rem;color:var(--forest-muted);line-height:1.5;}
+
+/* Empty state */
+.empty{text-align:center;padding:48px 20px;}
+.empty-ic{font-size:2.8rem;margin-bottom:12px;opacity:.22;}
+.empty-t{font-family:var(--font-d);font-size:.88rem;font-weight:700;color:var(--forest);margin-bottom:5px;}
+.empty-s{font-size:.74rem;color:rgba(26,38,24,.4);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fadeUp .35s ease forwards;}
+.fu1{animation-delay:.04s;opacity:0}.fu2{animation-delay:.08s;opacity:0}
+.fu3{animation-delay:.12s;opacity:0}.fu4{animation-delay:.16s;opacity:0}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+@media(max-width:1200px){.content{grid-template-columns:220px 1fr}.rp{display:none}}
+@media(max-width:900px){.content{grid-template-columns:1fr}.lp{display:none}.sb{transform:translateX(-100%)}.main{margin-left:0}}
+</style>
+</head>
+<body>
+
+<!-- ════ SIDEBAR ════ -->
+<aside class="sb">
+  <a href="index.html" class="sb-logo">
+    <div class="sb-lm">MA</div>
+    <div><div class="sb-b1"><span style="color:#fff;font-weight:900;">Mock</span><span style="background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900;">Arena</span></div><div class="sb-b2">Doubt Q&A</div></div>
+  </a>
+  <div class="sb-user">
+    <div class="sb-av">AR</div>
+    <div class="sb-uname">Arjun Sharma</div>
+    <div class="sb-urole">JEE Advanced 2025 · Class 12</div>
+    <div class="sb-ubadge">🔥 42 Day Streak · AIR #312</div>
+  </div>
+  <div class="sb-grp">Main Menu</div>
+  <ul class="sb-ul">
+    <li><a href="mockarena_dashboard.html" class="sb-nav"><span class="si">⬡</span>Dashboard</a></li>
+    <li><a href="mockarena_mocktest.html" class="sb-nav"><span class="si">◳</span>Mock Tests</a></li>
+    <li><a href="mockarena_results.html" class="sb-nav"><span class="si">◈</span>My Results</a></li>
+    <li><a href="mockarena_test_catalog.html" class="sb-nav"><span class="si">▤</span>Test Series</a></li>
+    <li><a href="mockarena_leaderboard.html" class="sb-nav"><span class="si">◇</span>Leaderboard</a></li>
+    <li><a href="mockarena_pyq.html" class="sb-nav"><span class="si">📄</span>PYQ & Solutions</a></li>
+    <li><a href="mockarena_video_solutions.html" class="sb-nav"><span class="si">▷</span>Video Solutions</a></li>
+    <li><a href="mockarena_doubt_qa_v2.html" class="sb-nav active"><span class="si">❖</span>Doubt Q&A<span class="snb">2</span></a></li>
+  </ul>
+  <div class="sb-grp">Study Tools</div>
+  <ul class="sb-ul">
+    <li><a href="mockarena_study_planner.html" class="sb-nav"><span class="si">◳</span>Study Planner</a></li>
+    <li><a href="mockarena_notes_formulas.html" class="sb-nav"><span class="si">▤</span>Notes & Formulas</a></li>
+    <li><a href="mockarena_analytics.html" class="sb-nav"><span class="si">◈</span>Analytics</a></li>
+  </ul>
+  <div class="sb-grp">My College</div>
+  <ul class="sb-ul">
+    <li><a href="mockarena_my_college.html" class="sb-nav"><span class="si">⬡</span>My College</a></li>
+  </ul>
+  <div class="sb-foot">
+    <a href="mockarena_profile.html" class="sb-nav"><span class="si">◎</span>My Profile</a>
+    <a href="mockarena_settings.html" class="sb-nav"><span class="si">⚙️</span>Settings</a>
+    <a href="mockarena_notifications.html" class="sb-nav"><span class="si">🔔</span>Notifications<span class="snb">7</span></a>
+    <a href="login.html" class="sb-nav"><span class="si">↩</span>Logout</a>
+  </div>
+</aside>
+
+<!-- ════ MAIN ════ -->
+<div class="main">
+  <div class="tb">
+    <div><div class="tb-title">Doubt Q&A</div><div class="tb-crumb">MockArena / Doubt Q&A · 2 new answers</div></div>
+    <div class="tb-r">
+      <div class="tb-search"><span style="color:rgba(26,38,24,.3);font-size:.85rem">⌕</span><input type="text" placeholder="Search doubts, topics, chapters…" oninput="searchQ(this.value)"></div>
+      <div class="tb-ib">🔔<div class="dot"></div></div>
+      <button class="btn btn-ghost" onclick="openAsk()">💬 Ask a Doubt</button>
+      <button class="btn btn-sage" onclick="openAsk()">+ New Doubt</button>
+    </div>
+  </div>
+  <!-- TABS -->
+  <div class="stabs">
+    <button class="stab active" onclick="setTab('all',this)">📚 All Doubts</button>
+    <button class="stab" onclick="setTab('mine',this)">👤 My Doubts <span class="stab-cnt">2</span></button>
+    <button class="stab" onclick="setTab('answered',this)">✅ Answered <span class="stab-cnt stab-cnt-g">32</span></button>
+    <button class="stab" onclick="setTab('unanswered',this)">⏳ Unanswered <span class="stab-cnt">16</span></button>
+    <button class="stab" onclick="setTab('expert',this)">⭐ Expert Replies</button>
+    <button class="stab" onclick="setTab('trending',this)">🔥 Trending</button>
+    <button class="stab" onclick="setTab('saved',this)">🔖 Saved</button>
+  </div>
+  <!-- THREE COLUMNS -->
+  <div class="content">
+
+    <!-- LEFT -->
+    <div class="lp">
+      <div class="lp-sec">
+        <div class="lp-hd">Filter</div>
+        <div class="fc on" onclick="setFC('all',this)"><div class="fc-ic">📚</div>All Doubts<span class="fc-cnt">48</span></div>
+        <div class="fc" onclick="setFC('mine',this)"><div class="fc-ic">👤</div>My Doubts<span class="fc-cnt">6</span></div>
+        <div class="fc" onclick="setFC('answered',this)"><div class="fc-ic">✅</div>Answered<span class="fc-cnt">32</span></div>
+        <div class="fc" onclick="setFC('unanswered',this)"><div class="fc-ic">⏳</div>Unanswered<span class="fc-cnt">16</span></div>
+        <div class="fc" onclick="setFC('expert',this)"><div class="fc-ic">⭐</div>Expert Replies<span class="fc-cnt">18</span></div>
+        <div class="fc" onclick="setFC('saved',this)"><div class="fc-ic">🔖</div>Saved<span class="fc-cnt">4</span></div>
+      </div>
+      <div class="lp-sep"></div>
+      <div class="lp-sec">
+        <div class="lp-hd">Subject</div>
+        <div class="sf on" onclick="setSF('all',this)"><div class="sf-dot" style="background:var(--forest)"></div>All Subjects</div>
+        <div class="sf" onclick="setSF('physics',this)"><div class="sf-dot" style="background:var(--sky)"></div>⚛️ Physics</div>
+        <div class="sf" onclick="setSF('chemistry',this)"><div class="sf-dot" style="background:var(--sage)"></div>🧪 Chemistry</div>
+        <div class="sf" onclick="setSF('mathematics',this)"><div class="sf-dot" style="background:var(--gold)"></div>📐 Mathematics</div>
+        <div class="sf" onclick="setSF('biology',this)"><div class="sf-dot" style="background:var(--purple)"></div>🧬 Biology</div>
+      </div>
+      <div class="lp-sep"></div>
+      <div class="lp-sec">
+        <div class="lp-hd">Exam</div>
+        <div class="sf on" onclick="setEF('all',this)"><div class="sf-dot" style="background:var(--forest)"></div>All Exams</div>
+        <div class="sf" onclick="setEF('jee advanced',this)"><div class="sf-dot" style="background:#4f46e5"></div>JEE Advanced</div>
+        <div class="sf" onclick="setEF('jee main',this)"><div class="sf-dot" style="background:var(--sky)"></div>JEE Mains</div>
+        <div class="sf" onclick="setEF('neet',this)"><div class="sf-dot" style="background:var(--sage)"></div>NEET UG</div>
+        <div class="sf" onclick="setEF('boards',this)"><div class="sf-dot" style="background:var(--gold)"></div>Boards</div>
+      </div>
+      <div class="lp-sep"></div>
+      <div class="lp-sec">
+        <div class="lp-hd">Sort By</div>
+        <div class="sf on">Latest First</div>
+        <div class="sf">Most Upvoted</div>
+        <div class="sf">Unanswered First</div>
+        <div class="sf">Expert Answers</div>
+      </div>
+    </div>
+
+    <!-- CENTER -->
+    <div class="cp">
+      <!-- QUICK ASK STRIP -->
+      <div class="ask-strip">
+        <div class="ask-strip-inner" onclick="openAsk()">
+          <div class="ask-strip-av">AR</div>
+          <span class="ask-strip-placeholder">Ask a doubt — Physics, Chemistry, Maths, Biology…</span>
+          <button class="btn btn-sage" style="padding:6px 14px;font-size:.72rem;" onclick="event.stopPropagation();openAsk()">Ask →</button>
+        </div>
+      </div>
+      <!-- DOUBT LIST -->
+      <div class="dlist" id="dlist"></div>
+    </div>
+
+    <!-- RIGHT -->
+    <div class="rp">
+      <div class="rp-sec">
+        <div class="rp-hd">Your Stats</div>
+        <div class="mr"><span class="mr-l">Doubts Asked</span><span class="mr-v">6</span></div>
+        <div class="mr"><span class="mr-l">Answered</span><span class="mr-v" style="color:var(--sage)">4</span></div>
+        <div class="mr"><span class="mr-l">Pending</span><span class="mr-v" style="color:var(--amber)">2</span></div>
+        <div class="mr"><span class="mr-l">Upvotes Received</span><span class="mr-v">14</span></div>
+        <div class="mr"><span class="mr-l">Helped Others</span><span class="mr-v">8 replies</span></div>
+        <div class="mr"><span class="mr-l">Avg Response Time</span><span class="mr-v">3.4 hrs</span></div>
+      </div>
+      <div class="rp-sep"></div>
+      <div class="rp-sec">
+        <div class="rp-hd">MockArena Experts</div>
+        ${[['AK','linear-gradient(135deg,#6b8f5e,#4a7a3d)','Dr. Arvind Kumar','⚛️ Physics Expert','Online','var(--sage)'],
+           ['PR','linear-gradient(135deg,#10b981,#059669)','Dr. Priya Rathi','🧪 Chemistry Expert','Online','var(--sage)'],
+           ['RS','linear-gradient(135deg,#c8962a,#e8a830)','Prof. Rohit Sharma','📐 Maths Expert','Away','var(--amber)'],
+           ['SV','linear-gradient(135deg,#7c5cbf,#6b4ba8)','Dr. Seema Verma','🧬 Biology Expert','Online','var(--sage)']].map(([i,g,n,s,st,sc])=>`
+        <div class="expert-row">
+          <div class="exp-av" style="background:${g}">${i}</div>
+          <div style="flex:1"><div class="exp-name">${n}</div><div class="exp-sub">${s}</div></div>
+          <div class="exp-status" style="color:${sc}"><span style="width:6px;height:6px;border-radius:50%;background:${sc};display:inline-block;"></span>${st}</div>
+        </div>`).join('')}
+      </div>
+      <div class="rp-sep"></div>
+      <div class="rp-sec">
+        <div class="rp-hd">Trending Topics</div>
+        ${[['Magnetism — Lorentz force on moving charge','⚛️ Physics'],
+           ['SN1 vs SN2 reaction mechanism','🧪 Chemistry'],
+           ['Integration by parts — ILATE rule','📐 Maths'],
+           ['Photosynthesis light reactions','🧬 Biology'],
+           ['Electrochemistry — EMF calculation','🧪 Chemistry'],
+           ['3D Geometry — direction cosines','📐 Maths']].map(([t,s],i)=>`
+        <div class="trend-row" onclick="document.querySelector('.ask-strip-inner').click()">
+          <div class="trend-n">${i+1}</div>
+          <div><div class="trend-t">${t}</div><div class="trend-s">${s}</div></div>
+        </div>`).join('')}
+      </div>
+      <div class="rp-sep"></div>
+      <div class="rp-sec">
+        <div class="rp-hd">Tips</div>
+        <div class="notice notice-sg" style="margin-bottom:7px"><div class="n-icon">💡</div><div><div class="n-title">Get faster answers</div><div class="n-desc">Add chapter name + what you tried. Experts respond 3× faster!</div></div></div>
+        <div class="notice notice-gd"><div class="n-icon">⏱</div><div><div class="n-title">Response time</div><div class="n-desc">Average expert reply under <strong>4 hours</strong>. Urgent doubts prioritised.</div></div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- DETAIL MODAL / PANEL — rendered inside dlist -->
+
+<!-- ASK DOUBT MODAL -->
+<div class="mo" id="ask-mo">
+  <div class="mb">
+    <div class="mh"><div class="mt">💬 Ask a Doubt</div><button class="mc" onclick="closeAsk()">✕</button></div>
+    <div class="fl"><label>Your Doubt *</label>
+      <textarea class="fi" id="ask-q" placeholder="Describe your doubt clearly. Include chapter, topic and what you already tried…" style="min-height:120px;"></textarea></div>
+    <div class="fg2">
+      <div class="fl"><label>Subject *</label>
+        <select class="fi" id="ask-subj"><option>⚛️ Physics</option><option>🧪 Chemistry</option><option>📐 Mathematics</option><option>🧬 Biology</option></select></div>
+      <div class="fl"><label>Chapter / Topic</label>
+        <input type="text" class="fi" id="ask-ch" placeholder="e.g. Magnetism, Calculus…"></div>
+    </div>
+    <div class="fg2">
+      <div class="fl"><label>Exam</label>
+        <select class="fi"><option>JEE Advanced</option><option>JEE Mains</option><option>NEET UG</option><option>JEE Foundation</option><option>Boards</option></select></div>
+      <div class="fl"><label>Difficulty</label>
+        <select class="fi"><option>Easy</option><option>Medium</option><option selected>Hard</option></select></div>
+    </div>
+    <div class="fl"><label>Tags (optional)</label>
+      <input type="text" class="fi" placeholder="e.g. magnetism, lorentz-force"></div>
+    <div class="fl"><label>Attach Image (optional)</label>
+      <div style="border:2px dashed var(--border-med);border-radius:10px;padding:18px;text-align:center;cursor:pointer;background:var(--cream-warm);" onclick="alert('Image upload coming soon!')">
+        <div style="font-size:1.3rem;margin-bottom:5px">📎</div>
+        <div style="font-size:.75rem;font-weight:600;color:var(--forest-muted)">Click to upload image</div>
+        <div style="font-size:.65rem;color:rgba(26,38,24,.35);margin-top:3px">PNG, JPG up to 5MB</div>
+      </div></div>
+    <div style="display:flex;gap:9px;margin-top:4px;">
+      <button class="btn btn-sage" style="flex:2;justify-content:center;padding:11px;" onclick="submitAsk()">🚀 Submit Doubt</button>
+      <button class="btn btn-ghost" style="padding:11px 16px;" onclick="closeAsk()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════ DATA ════
+const DB = [
+  {id:1,mine:true,status:'answered',expert:true,trending:true,saved:false,votes:24,
+   av:{i:'AR',g:'linear-gradient(135deg,#c8962a,#e8a830)'},
+   name:'You (Arjun Sharma)',subj:'Physics',ch:'Magnetism',exam:'JEE Advanced',diff:'Hard',time:'2 hours ago',
+   q:'A proton moves with velocity v in a uniform magnetic field B. Why does the magnetic force not do any work on the proton even though force acts on it?',
+   tags:['magnetism','work-energy','JEE-Advanced'],
+   answers:[
+     {id:1,expert:true,votes:18,
+      av:{i:'AK',g:'linear-gradient(135deg,#6b8f5e,#4a7a3d)'},
+      name:'Dr. Arvind Kumar',role:'Physics Expert · MockArena Faculty',time:'1 hour ago',
+      text:'Great conceptual question! This is fundamental to electromagnetic theory.',
+      steps:[
+        {t:'Step 1 — Understanding Work',b:'Work done W = F⃗ · d⃗ = F × d × cosθ. Work is done only when the force has a component along the displacement direction.'},
+        {t:'Step 2 — Direction of Magnetic Force',b:'Magnetic force F⃗ = qv⃗ × B⃗. By the cross product definition, F⃗ is ALWAYS perpendicular (90°) to the velocity v⃗.'},
+        {t:'Step 3 — Why No Work Done',b:'Since force ⊥ velocity, and displacement is always along velocity: angle between F and displacement = 90°. W = F·d·cos(90°) = 0.'},
+        {t:'Conclusion',b:'Magnetic force changes DIRECTION of velocity (circular motion) but NOT magnitude. So speed, KE remain constant. This is why a charged particle moves in a perfect circle.'},
+      ],vid:true,vidT:'Watch: Work done by magnetic force — complete explanation (8 min)'},
+     {id:2,expert:false,votes:6,
+      av:{i:'RK',g:'linear-gradient(135deg,#3b82c4,#60a5e8)'},
+      name:'Rahul Kumar',role:'Class 12 · JEE Aspirant',time:'45 min ago',
+      text:'Great memory trick: magnetic force = centripetal force in circular motion. Centripetal force also does zero work since it\'s always perpendicular to displacement. Same concept!',
+      steps:[],vid:false},
+   ]},
+  {id:2,mine:true,status:'unanswered',expert:false,trending:false,saved:true,votes:8,
+   av:{i:'AR',g:'linear-gradient(135deg,#c8962a,#e8a830)'},
+   name:'You (Arjun Sharma)',subj:'Mathematics',ch:'Integration',exam:'JEE Advanced',diff:'Hard',time:'Yesterday',
+   q:'How to evaluate ∫ x·eˣ dx? I tried substitution u=x but it doesn\'t simplify. The answer must involve both x and eˣ terms.',
+   tags:['integration','IBP','calculus'],answers:[]},
+  {id:3,mine:false,status:'answered',expert:true,trending:true,saved:false,votes:31,
+   av:{i:'PS',g:'linear-gradient(135deg,#7c5cbf,#9b7fd4)'},
+   name:'Priya Singh',subj:'Chemistry',ch:'Organic Chemistry',exam:'JEE Mains',diff:'Medium',time:'3 hours ago',
+   q:'What is the exact difference between SN1 and SN2 reactions? When does each mechanism occur and what are the deciding factors?',
+   tags:['organic','SN1','SN2','mechanism'],
+   answers:[
+     {id:1,expert:true,votes:28,
+      av:{i:'PR',g:'linear-gradient(135deg,#10b981,#059669)'},
+      name:'Dr. Priya Rathi',role:'Chemistry Expert · MockArena Faculty',time:'2 hours ago',
+      text:'Excellent question — this is one of the most commonly asked topics in JEE and NEET organic chemistry.',
+      steps:[
+        {t:'SN1 — Unimolecular',b:'Rate = k[substrate]. Forms carbocation intermediate. Favoured by: 3° > 2° > 1° substrate, polar protic solvents, weak nucleophiles. Gives racemisation.'},
+        {t:'SN2 — Bimolecular',b:'Rate = k[substrate][nucleophile]. Concerted — no intermediate. Favoured by: 1° > 2° (3° = no reaction), polar aprotic solvents, strong nucleophiles. Gives Walden inversion.'},
+        {t:'Key Deciding Factors',b:'(1) Steric hindrance is the MAIN factor. (2) Nucleophile strength and concentration. (3) Solvent polarity (protic vs aprotic). (4) Nature of leaving group.'},
+      ],vid:true,vidT:'Watch: SN1 vs SN2 complete comparison with examples (12 min)'},
+   ]},
+  {id:4,mine:false,status:'answered',expert:true,trending:false,saved:true,votes:22,
+   av:{i:'AK2',g:'linear-gradient(135deg,#c84b4b,#e06b6b)'},
+   name:'Amit Kumar',subj:'Physics',ch:'Electrostatics',exam:'JEE Advanced',diff:'Medium',time:'5 hours ago',
+   q:'In Gauss\'s law, does the electric field at a point on the Gaussian surface depend only on the enclosed charge, or on ALL charges in space?',
+   tags:['electrostatics','gauss-law'],
+   answers:[
+     {id:1,expert:true,votes:19,
+      av:{i:'AK',g:'linear-gradient(135deg,#6b8f5e,#4a7a3d)'},
+      name:'Dr. Arvind Kumar',role:'Physics Expert · MockArena Faculty',time:'4 hours ago',
+      text:'This is a very common misconception in JEE preparation. Let me clarify clearly.',
+      steps:[
+        {t:'Flux vs Electric Field (KEY DISTINCTION)',b:'Gauss\'s Law: ∮ E⃗·dA⃗ = Q_enc/ε₀. The NET FLUX through a closed surface depends only on enclosed charge. But E⃗ at each surface point depends on ALL charges by superposition principle.'},
+        {t:'Why Gauss\'s Law is Useful',b:'We choose surfaces with such symmetry that E is constant and parallel to dA everywhere. Then E × (Area) = Q_enc/ε₀ → E = Q_enc/(ε₀ × Area).'},
+      ],vid:false},
+   ]},
+  {id:5,mine:false,status:'unanswered',expert:false,trending:false,saved:false,votes:4,
+   av:{i:'NM',g:'linear-gradient(135deg,#b87333,#d4844a)'},
+   name:'Neha Mishra',subj:'Biology',ch:'Cell Division',exam:'NEET',diff:'Easy',time:'6 hours ago',
+   q:'During which exact stage of meiosis does crossing over occur and why is it important for genetic diversity?',
+   tags:['meiosis','crossing-over','genetics','NEET'],answers:[]},
+  {id:6,mine:false,status:'answered',expert:true,trending:true,saved:false,votes:19,
+   av:{i:'SK',g:'linear-gradient(135deg,#3b82c4,#60a5e8)'},
+   name:'Saurav Kumar',subj:'Mathematics',ch:'Coordinate Geometry',exam:'JEE Advanced',diff:'Hard',time:'1 day ago',
+   q:'How do I find the equation of a circle passing through 3 given non-collinear points? What is the systematic approach?',
+   tags:['circles','coordinate-geometry'],
+   answers:[
+     {id:1,expert:true,votes:17,
+      av:{i:'RS',g:'linear-gradient(135deg,#c8962a,#e8a830)'},
+      name:'Prof. Rohit Sharma',role:'Mathematics Expert · MockArena Faculty',time:'20 hours ago',
+      text:'A circle through 3 non-collinear points is always unique. Two methods:',
+      steps:[
+        {t:'Method 1 — General Equation (faster for JEE)',b:'x² + y² + Dx + Ey + F = 0. Substitute 3 points → 3 equations in D, E, F. Solve simultaneously.'},
+        {t:'Method 2 — Perpendicular Bisectors (geometric)',b:'Find ⊥ bisectors of any 2 sides of the triangle formed by the 3 points. Their intersection = centre. Radius = distance from centre to any point.'},
+        {t:'JEE Tip',b:'Method 1 is faster for exams. Method 2 gives better geometric intuition. Practice both — JEE 2023 had a direct question on this.'},
+      ],vid:true,vidT:'Watch: Circle through 3 points — full solution (10 min)'},
+   ]},
+];
+
+let activeId = null;
+let activeFilter = 'all';
+let activeSubj = 'all';
+let activeExam = 'all';
+
+// ════ RENDER LIST ════
+function renderList(data){
+  const dlist = document.getElementById('dlist');
+  if(!data.length){
+    dlist.innerHTML=`<div class="empty"><div class="empty-ic">💬</div><div class="empty-t">No doubts found</div><div class="empty-s">Try a different filter or ask a new doubt</div><br><button class="btn btn-sage" style="margin-top:8px" onclick="openAsk()">+ Ask a Doubt</button></div>`;
+    return;
+  }
+  dlist.innerHTML = data.map(d=>`
+  <div class="dc ${d.status==='answered'?'':'unsolved'} ${d.id===activeId?'on':''}" id="dc-${d.id}" onclick="openDetail(${d.id})">
+    <div class="dc-accent" style="background:${d.status==='answered'?'var(--sage)':d.mine?'var(--rose)':'var(--amber)'}"></div>
+    <div class="dc-body">
+      <div class="dc-top">
+        <div class="dc-av" style="background:${d.av.g};width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;color:white;flex-shrink:0;">${d.av.i}</div>
+        <div class="dc-info">
+          <div class="dc-name">${d.name}</div>
+          <div class="dc-time">${d.time} · ${d.ch}</div>
+        </div>
+        ${d.answers.some(a=>!a.seenByUser)&&d.status==='answered'?'<div class="dc-unread"></div>':''}
+      </div>
+      <div class="dc-badges">
+        <span class="badge ${d.subj==='Physics'?'bb':d.subj==='Chemistry'?'bg':d.subj==='Mathematics'?'bgd':'bp'}">${d.subj}</span>
+        <span class="badge ${d.status==='answered'?'bg':'ba'}">${d.status==='answered'?'✅ Answered':'⏳ Pending'}</span>
+        ${d.expert?'<span class="badge b-exp">⭐ Expert</span>':''}
+        ${d.mine?'<span class="badge bb">Yours</span>':''}
+        ${d.trending?'<span class="badge br">🔥</span>':''}
+        ${d.saved?'<span class="badge bgd">🔖</span>':''}
+      </div>
+      <div class="dc-q">${d.q.substring(0,110)}${d.q.length>110?'…':''}</div>
+      <div class="dc-foot">
+        <div class="vote-btn ${d.votes>15?'up':''}">▲ ${d.votes}</div>
+        <div class="ans-cnt">💬 ${d.answers.length}</div>
+        <span style="font-size:.62rem;color:rgba(26,38,24,.3);margin-left:auto">${d.diff}</span>
+      </div>
+    </div>
+  </div>`).join('');
+  // auto-open first
+  if(!activeId && data.length) openDetail(data[0].id);
+}
+
+// ════ DETAIL VIEW ════
+function openDetail(id){
+  activeId = id;
+  document.querySelectorAll('.dc').forEach(c=>c.classList.remove('on'));
+  const card = document.getElementById('dc-'+id);
+  if(card) card.classList.add('on');
+
+  const d = DB.find(x=>x.id===id);
+  if(!d) return;
+
+  const subj = d.subj;
+  const sc = subj==='Physics'?'bb':subj==='Chemistry'?'bg':subj==='Mathematics'?'bgd':'bp';
+
+  const answersHtml = d.answers.length ? d.answers.map(a=>`
+  <div class="ac ${a.expert?'expert':''}">
+    <div class="ac-hd">
+      <div class="ac-av" style="background:${a.av.g}">${a.av.i}${a.expert?'<div class="ac-badge">⭐</div>':''}</div>
+      <div style="flex:1"><div class="ac-name">${a.name}</div><div class="ac-role">${a.role||'Student'} · ${a.time}</div></div>
+      <div style="display:flex;gap:6px;align-items:center">
+        ${a.expert?'<span class="badge b-exp">⭐ Expert</span>':''}
+        <div class="vote-btn">▲ ${a.votes}</div>
+      </div>
+    </div>
+    <div class="ac-text">${a.text}</div>
+    ${a.steps.map(s=>`<div class="ac-step"><div class="ac-step-t">${s.t}</div><div class="ac-step-b">${s.b}</div></div>`).join('')}
+    ${a.vid?`<div class="ac-vid" onclick="alert('Opening video solution...')"><div class="ac-vid-ic">▶</div><div><div class="ac-vid-t">${a.vidT}</div><div class="ac-vid-s">MockArena Expert Video · Free</div></div></div>`:''}
+    <div class="ac-foot">
+      <button class="dv-act" onclick="this.classList.toggle('on')">▲ Helpful</button>
+      <button class="dv-act" onclick="this.closest('.ac').querySelector('.reply-wrap')?.classList.toggle('hidden')">↩ Reply</button>
+      <button class="dv-act" onclick="alert('Reported!')">⚑ Report</button>
+      <span style="margin-left:auto;font-size:.64rem;color:rgba(26,38,24,.3)">${a.time}</span>
+    </div>
+  </div>`).join('') : `
+  <div style="text-align:center;padding:28px;background:var(--cream-warm);border-radius:13px;border:2px dashed var(--border-med);margin-bottom:14px">
+    <div style="font-size:1.8rem;margin-bottom:8px;opacity:.25">💬</div>
+    <div style="font-family:var(--font-d);font-size:.83rem;font-weight:700;color:var(--forest);margin-bottom:4px">No answers yet</div>
+    <div style="font-size:.72rem;color:rgba(26,38,24,.4);margin-bottom:10px">Experts are reviewing. You'll be notified when answered.</div>
+    <span class="badge ba">⏳ Avg response: under 4 hours</span>
+  </div>`;
+
+  // Show detail in a floating panel over the center
+  const cp = document.querySelector('.cp');
+  const existing = document.getElementById('detail-panel');
+  if(existing) existing.remove();
+
+  const panel = document.createElement('div');
+  panel.id = 'detail-panel';
+  panel.style.cssText = 'position:absolute;top:0;left:240px;right:268px;bottom:0;background:var(--cream);z-index:50;display:flex;flex-direction:column;border-left:1px solid var(--border);border-right:1px solid var(--border);';
+
+  panel.innerHTML = `
+  <div style="height:48px;background:rgba(250,249,245,.96);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 16px;gap:10px;flex-shrink:0;">
+    <button onclick="document.getElementById('detail-panel').remove();activeId=null;" style="font-family:var(--font-b);font-size:.72rem;font-weight:600;padding:5px 12px;border-radius:8px;border:1.5px solid var(--border-med);background:var(--cream-warm);color:var(--forest-muted);cursor:pointer;">← Back</button>
+    <div style="font-family:var(--font-d);font-size:.8rem;font-weight:700;color:var(--forest)">${d.subj} · ${d.ch}</div>
+    <div style="margin-left:auto;display:flex;gap:7px;">
+      <button class="btn btn-ghost" style="font-size:.7rem;padding:5px 12px;" onclick="alert('Saved!')">🔖 Save</button>
+      <button class="btn btn-ghost" style="font-size:.7rem;padding:5px 12px;" onclick="alert('Shared!')">↗ Share</button>
+    </div>
+  </div>
+  <div class="dp-scroll" style="flex:1;overflow-y:auto;padding:16px;">
+    <div class="dv-q">
+      <div class="dv-qh">
+        <div class="dv-av" style="background:${d.av.g};width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.84rem;font-weight:800;color:white;flex-shrink:0;">${d.av.i}</div>
+        <div class="dv-meta">
+          <div class="dv-name" style="font-family:var(--font-d);font-size:.84rem;font-weight:700;color:var(--forest);">${d.name}</div>
+          <div class="dv-time" style="font-size:.65rem;color:rgba(26,38,24,.36);margin-top:2px;">${d.time} · ${d.exam} · ${d.diff}</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:11px;">
+        <span class="badge ${sc}">${d.subj}</span>
+        <span class="badge ba">${d.ch}</span>
+        <span class="badge ${d.status==='answered'?'bg':'ba'}">${d.status==='answered'?'✅ Answered':'⏳ Pending'}</span>
+        ${d.expert?'<span class="badge b-exp">⭐ Expert Verified</span>':''}
+        ${d.tags.map(t=>`<span style="font-size:.6rem;font-weight:500;padding:2px 8px;border-radius:100px;background:var(--cream-warm);color:rgba(26,38,24,.4);border:1px solid var(--border)">#${t}</span>`).join('')}
+      </div>
+      <div class="dv-text" style="font-family:var(--font-serif);font-size:.88rem;color:var(--forest);line-height:1.78;margin-bottom:12px;">${d.q}</div>
+      <div class="dv-acts">
+        <div class="vote-btn" style="font-size:.72rem;padding:5px 12px;">▲ ${d.votes} Upvotes</div>
+        <div class="ans-cnt">💬 ${d.answers.length} Answers</div>
+        <button class="dv-act" onclick="alert('Bookmarked!')">🔖 Save</button>
+        <button class="dv-act" onclick="alert('Reported!')">⚑ Report</button>
+      </div>
+    </div>
+    <div class="ans-hd">${d.answers.length} Answer${d.answers.length!==1?'s':''} ${d.expert?'· ⭐ Expert Verified':d.status==='unanswered'?'· Waiting for Expert':''}</div>
+    ${answersHtml}
+    <div style="background:var(--cream-warm);border:1px solid var(--border-med);border-radius:12px;padding:14px;margin-top:4px;">
+      <div style="font-family:var(--font-d);font-size:.76rem;font-weight:700;color:var(--forest);margin-bottom:8px;">💬 Add Your Answer</div>
+      <textarea class="reply-ta" placeholder="Share your solution or add to the discussion — be clear and step-by-step…" style="width:100%;font-family:var(--font-b);font-size:.78rem;color:var(--forest);background:white;border:1.5px solid var(--border-med);border-radius:9px;padding:9px 12px;outline:none;resize:none;min-height:70px;line-height:1.6;transition:all .2s;"></textarea>
+      <div style="display:flex;gap:8px;margin-top:8px;">
+        <button style="display:flex;align-items:center;gap:5px;font-size:.72rem;font-weight:600;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;" onclick="alert('Image upload coming soon!')">📎 Image</button>
+        <div style="flex:1"></div>
+        <button class="btn btn-ghost" style="font-size:.72rem;padding:6px 12px;">Save Draft</button>
+        <button class="btn btn-sage" style="font-size:.72rem;padding:6px 14px;" onclick="alert('Answer posted! Thank you for helping.')">Post Answer →</button>
+      </div>
+    </div>
+  </div>`;
+
+  document.querySelector('.main').style.position = 'relative';
+  document.querySelector('.main').appendChild(panel);
+}
+
+// ════ FILTERS ════
+function getFiltered(){
+  let data = DB;
+  if(activeFilter==='mine') data=data.filter(d=>d.mine);
+  else if(activeFilter==='answered') data=data.filter(d=>d.status==='answered');
+  else if(activeFilter==='unanswered') data=data.filter(d=>d.status==='unanswered');
+  else if(activeFilter==='expert') data=data.filter(d=>d.expert);
+  else if(activeFilter==='trending') data=data.filter(d=>d.trending);
+  else if(activeFilter==='saved') data=data.filter(d=>d.saved);
+  if(activeSubj!=='all') data=data.filter(d=>d.subj.toLowerCase().includes(activeSubj));
+  if(activeExam!=='all') data=data.filter(d=>d.exam.toLowerCase().includes(activeExam));
+  return data;
+}
+
+function setTab(f,btn){
+  document.querySelectorAll('.stab').forEach(s=>s.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  activeFilter=f; activeId=null;
+  const ep=document.getElementById('detail-panel');if(ep)ep.remove();
+  renderList(getFiltered());
+}
+
+function setFC(f,el){
+  document.querySelectorAll('.fc').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  activeFilter=f; activeId=null;
+  const ep=document.getElementById('detail-panel');if(ep)ep.remove();
+  renderList(getFiltered());
+}
+
+function setSF(s,el){
+  document.querySelectorAll('.sf').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  activeSubj=s; activeId=null;
+  const ep=document.getElementById('detail-panel');if(ep)ep.remove();
+  renderList(getFiltered());
+}
+
+function setEF(e,el){
+  document.querySelectorAll('.sf').forEach(x=>x.classList.remove('on'));
+  el.classList.add('on');
+  activeExam=e; activeId=null;
+  const ep=document.getElementById('detail-panel');if(ep)ep.remove();
+  renderList(getFiltered());
+}
+
+function searchQ(v){
+  v=v.toLowerCase();
+  if(!v){renderList(getFiltered());return;}
+  renderList(DB.filter(d=>d.q.toLowerCase().includes(v)||d.subj.toLowerCase().includes(v)||d.ch.toLowerCase().includes(v)||d.tags.some(t=>t.includes(v))));
+}
+
+function openAsk(){document.getElementById('ask-mo').classList.add('open');}
+function closeAsk(){document.getElementById('ask-mo').classList.remove('open');}
+document.getElementById('ask-mo').addEventListener('click',e=>{if(e.target===document.getElementById('ask-mo'))closeAsk();});
+
+function submitAsk(){
+  const q=document.getElementById('ask-q').value.trim();
+  if(!q){alert('Please write your doubt!');return;}
+  closeAsk();
+  document.getElementById('ask-q').value='';
+  alert('✅ Doubt submitted! MockArena experts will reply within 4 hours. You\'ll receive a notification.');
+}
+
+// INIT
+document.querySelector('.main').style.position='relative';
+renderList(DB);
+</script>
+</body>
+</html>
