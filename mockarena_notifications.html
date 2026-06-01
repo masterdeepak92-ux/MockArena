@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena — Notifications</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf9f5;--cream-warm:#f5f3ec;--cream-card:#ffffff;
+  --forest:#1a2618;--forest-soft:#243422;--forest-muted:#3d5239;
+  --sage:#6b8f5e;--sage-light:rgba(107,143,94,0.1);--sage-glow:rgba(107,143,94,0.22);
+  --gold:#c8962a;--gold-dim:rgba(200,150,42,0.09);
+  --rose:#c84b4b;--rose-light:rgba(200,75,75,0.09);
+  --sky:#3b82c4;--sky-light:rgba(59,130,196,0.09);
+  --amber:#b87333;--amber-light:rgba(184,115,51,0.09);
+  --purple:#7c5cbf;--purple-light:rgba(124,92,191,0.09);
+  --indigo:#4f46e5;--indigo-light:rgba(79,70,229,0.09);
+  --border:rgba(26,38,24,0.08);--border-med:rgba(26,38,24,0.13);--border-strong:rgba(26,38,24,0.2);
+  --font-d:'Outfit',sans-serif;--font-m:'IBM Plex Mono',monospace;
+  --sh:0 1px 3px rgba(26,38,24,0.06),0 4px 16px rgba(26,38,24,0.04);
+  --sh-hover:0 8px 32px rgba(107,143,94,0.15),0 2px 8px rgba(26,38,24,0.06);
+  --sh-deep:0 20px 60px rgba(26,38,24,0.12);
+  --sbw:256px;--tbh:62px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font-d);background:var(--cream);color:var(--forest);display:flex;-webkit-font-smoothing:antialiased;}
+
+/* ─── SIDEBAR ─── */
+.sb{width:var(--sbw);flex-shrink:0;background:var(--forest);height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;z-index:300;}
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px;}
+.sb-logo{padding:20px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06);text-decoration:none;}
+.sb-lm{width:36px;height:36px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:800;color:white;flex-shrink:0;box-shadow:0 0 18px var(--sage-glow);}
+.sb-b2{font-size:.56rem;font-weight:500;color:rgba(255,255,255,.28);letter-spacing:.1em;text-transform:uppercase;}
+.sb-user{margin:12px 14px;background:rgba(107,143,94,.15);border:1px solid rgba(107,143,94,.25);border-radius:12px;padding:12px;}
+.sb-av{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:800;color:white;margin-bottom:8px;}
+.sb-uname{font-size:.8rem;font-weight:700;color:white;}
+.sb-urole{font-size:.62rem;color:rgba(255,255,255,.35);margin-top:1px;}
+.sb-ubadge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;background:rgba(200,150,42,.15);border:1px solid rgba(200,150,42,.25);border-radius:100px;padding:2px 9px;font-size:.6rem;font-weight:600;color:var(--gold);}
+.sb-grp{padding:14px 18px 4px;font-size:.56rem;font-weight:600;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.12em;}
+.sb-ul{list-style:none;padding:0 8px;}
+.sb-ul li{margin-bottom:1px;}
+.sb-nav{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;text-decoration:none;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.42);transition:all .18s;}
+.sb-nav:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);}
+.sb-nav.active{background:rgba(107,143,94,.2);color:white;border:1px solid rgba(107,143,94,.3);}
+.si{width:16px;text-align:center;font-size:.82rem;flex-shrink:0;color:rgba(255,255,255,.25);}
+.sb-nav.active .si{color:var(--sage);}
+.snb{margin-left:auto;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:100px;background:var(--rose);color:white;}
+.sb-foot{margin-top:auto;padding:10px 8px 18px;border-top:1px solid rgba(255,255,255,.06);}
+
+/* ─── MAIN ─── */
+.main{margin-left:var(--sbw);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+.tb{height:var(--tbh);background:rgba(250,249,245,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:12px;flex-shrink:0;}
+.tb-title{font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;}
+.tb-crumb{font-size:.64rem;color:rgba(26,38,24,.4);}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.tb-ib{width:36px;height:36px;border-radius:9px;background:var(--cream-warm);border:1.5px solid var(--border-med);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.88rem;transition:all .2s;position:relative;}
+.tb-ib:hover{border-color:var(--sage);background:var(--sage-light);}
+.btn{font-family:var(--font-d);font-size:.75rem;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;border:none;}
+.btn-ghost{background:var(--cream-warm);border:1.5px solid var(--border-med);color:var(--forest-muted);}
+.btn-ghost:hover{border-color:var(--sage);color:var(--sage);}
+.btn-sage{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;box-shadow:0 2px 8px var(--sage-glow);}
+.btn-sage:hover{box-shadow:0 4px 16px var(--sage-glow);transform:translateY(-1px);}
+.btn-rose{background:linear-gradient(135deg,var(--rose),#e06b6b);color:white;}
+
+/* ─── TAB BAR ─── */
+.tab-bar{height:44px;background:var(--cream-card);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:2px;flex-shrink:0;overflow-x:auto;}
+.tab-bar::-webkit-scrollbar{display:none;}
+.tab{font-family:var(--font-d);font-size:.74rem;font-weight:600;color:rgba(26,38,24,.4);background:none;border:none;border-bottom:2px solid transparent;padding:0 14px;height:44px;cursor:pointer;transition:all .18s;white-space:nowrap;display:flex;align-items:center;gap:5px;}
+.tab:hover{color:var(--forest);}
+.tab.active{color:var(--sage);border-bottom-color:var(--sage);}
+.tab-cnt{font-size:.58rem;font-weight:700;padding:1px 6px;border-radius:100px;background:var(--rose-light);color:var(--rose);line-height:1.4;}
+.tab-cnt-sage{background:var(--sage-light);color:var(--sage);}
+
+/* ─── CONTENT ─── */
+.content{flex:1;overflow-y:auto;padding:0;}
+.content::-webkit-scrollbar{width:3px;}
+.content::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+/* ─── TWO COLUMN LAYOUT ─── */
+.layout{display:grid;grid-template-columns:1fr 320px;height:100%;overflow:hidden;}
+.col-main{overflow-y:auto;padding:20px 20px 40px;}
+.col-main::-webkit-scrollbar{width:3px;}
+.col-main::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+.col-side{border-left:1px solid var(--border);overflow-y:auto;background:var(--cream-warm);}
+.col-side::-webkit-scrollbar{width:3px;}
+.col-side::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+/* ─── SECTION HEADER ─── */
+.sec-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;padding:0 2px;}
+.sec-title{font-family:var(--font-d);font-size:.76rem;font-weight:700;color:rgba(26,38,24,.4);text-transform:uppercase;letter-spacing:.08em;display:flex;align-items:center;gap:8px;}
+.sec-title::before{content:'';width:3px;height:13px;background:linear-gradient(180deg,var(--sage),#4a7a3d);border-radius:2px;}
+
+/* ─── NOTIFICATION CARD ─── */
+.ncard{background:var(--cream-card);border:1px solid var(--border);border-radius:14px;padding:0;margin-bottom:8px;cursor:pointer;transition:all .22s;position:relative;overflow:hidden;display:flex;}
+.ncard:hover{box-shadow:var(--sh-hover);transform:translateX(2px);border-color:rgba(107,143,94,.25);}
+.ncard.unread{border-color:var(--border-med);}
+.ncard-accent{width:3px;flex-shrink:0;border-radius:14px 0 0 14px;}
+.ncard-body{flex:1;padding:14px 14px 12px;}
+.ncard-top{display:flex;align-items:flex-start;gap:11px;margin-bottom:8px;}
+.ncard-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;flex-shrink:0;}
+.ncard-info{flex:1;}
+.ncard-title{font-size:.82rem;font-weight:700;color:var(--forest);line-height:1.3;margin-bottom:3px;}
+.ncard-desc{font-size:.74rem;color:rgba(26,38,24,.52);line-height:1.55;}
+.ncard-footer{display:flex;align-items:center;gap:8px;margin-top:9px;}
+.ncard-time{font-family:var(--font-m);font-size:.62rem;color:rgba(26,38,24,.32);}
+.ncard-unread-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.ncard-actions{display:flex;gap:6px;margin-left:auto;}
+.nact{font-family:var(--font-d);font-size:.68rem;font-weight:600;padding:4px 11px;border-radius:7px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;transition:all .18s;}
+.nact:hover{border-color:var(--sage);color:var(--sage);}
+.nact-primary{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;border-color:transparent;}
+.nact-primary:hover{box-shadow:0 2px 8px var(--sage-glow);}
+.badge{font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:100px;display:inline-flex;align-items:center;gap:3px;}
+.b-sg{background:var(--sage-light);color:var(--sage);border:1px solid rgba(107,143,94,.2);}
+.b-ro{background:var(--rose-light);color:var(--rose);border:1px solid rgba(200,75,75,.18);}
+.b-gd{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(200,150,42,.18);}
+.b-sk{background:var(--sky-light);color:var(--sky);border:1px solid rgba(59,130,196,.18);}
+.b-am{background:var(--amber-light);color:var(--amber);border:1px solid rgba(184,115,51,.18);}
+.b-pr{background:var(--purple-light);color:var(--purple);border:1px solid rgba(124,92,191,.18);}
+.b-in{background:var(--indigo-light);color:var(--indigo);border:1px solid rgba(79,70,229,.18);}
+
+/* ─── DATE DIVIDER ─── */
+.date-div{display:flex;align-items:center;gap:10px;margin:16px 0 10px;}
+.date-div-line{flex:1;height:1px;background:var(--border);}
+.date-div-label{font-size:.65rem;font-weight:700;color:rgba(26,38,24,.32);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;background:var(--cream-warm);padding:2px 10px;border-radius:100px;border:1px solid var(--border);}
+
+/* ─── SIDE PANEL CARDS ─── */
+.side-card{background:var(--cream-card);border-bottom:1px solid var(--border);padding:18px;}
+.side-card:last-child{border-bottom:none;}
+.side-card-title{font-family:var(--font-d);font-size:.78rem;font-weight:700;color:var(--forest);margin-bottom:12px;display:flex;align-items:center;gap:7px;}
+.side-card-title::before{content:'';width:3px;height:13px;background:linear-gradient(180deg,var(--sage),#4a7a3d);border-radius:2px;}
+
+/* ─── TOGGLE SWITCH ─── */
+.pref-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);}
+.pref-row:last-child{border-bottom:none;}
+.pref-left{display:flex;align-items:center;gap:9px;}
+.pref-ic{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.82rem;flex-shrink:0;}
+.pref-name{font-size:.76rem;font-weight:600;color:var(--forest);}
+.pref-sub{font-size:.62rem;color:rgba(26,38,24,.38);margin-top:1px;}
+.toggle{width:38px;height:22px;border-radius:100px;border:none;cursor:pointer;transition:all .28s;position:relative;flex-shrink:0;}
+.toggle.on{background:linear-gradient(135deg,var(--sage),#4a7a3d);box-shadow:0 0 8px var(--sage-glow);}
+.toggle.off{background:var(--border-med);}
+.toggle::after{content:'';position:absolute;width:16px;height:16px;border-radius:50%;background:white;top:3px;transition:all .28s;box-shadow:0 1px 3px rgba(0,0,0,.15);}
+.toggle.on::after{left:19px;}
+.toggle.off::after{left:3px;}
+
+/* ─── QUIET HOURS ─── */
+.qh-block{background:linear-gradient(135deg,var(--forest),var(--forest-soft));border-radius:12px;padding:16px;margin-bottom:10px;}
+.qh-title{font-family:var(--font-d);font-size:.78rem;font-weight:700;color:white;margin-bottom:4px;}
+.qh-sub{font-size:.68rem;color:rgba(255,255,255,.4);margin-bottom:12px;}
+.qh-times{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px;}
+.qh-time{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:8px 10px;}
+.qh-time-label{font-size:.58rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px;}
+.qh-time-val{font-family:var(--font-m);font-size:.84rem;font-weight:600;color:white;}
+
+/* ─── SNOOZE PANEL ─── */
+.snooze-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:8px;}
+.snooze-btn{background:var(--cream-warm);border:1.5px solid var(--border-med);border-radius:9px;padding:9px;text-align:center;cursor:pointer;transition:all .2s;font-family:var(--font-d);}
+.snooze-btn:hover{border-color:var(--sage);background:var(--sage-light);}
+.snooze-btn.active{background:var(--sage);border-color:var(--sage);color:white;}
+.snooze-n{font-size:.82rem;font-weight:800;color:var(--forest);}
+.snooze-btn.active .snooze-n{color:white;}
+.snooze-l{font-size:.6rem;color:rgba(26,38,24,.4);margin-top:2px;}
+.snooze-btn.active .snooze-l{color:rgba(255,255,255,.7);}
+
+/* ─── PROGRESS BAR ─── */
+.pb{display:flex;align-items:center;gap:8px;margin-bottom:7px;}
+.pb-l{font-size:.7rem;font-weight:500;color:var(--forest-muted);flex:1;}
+.pb-t{width:60px;height:5px;background:var(--cream-warm);border-radius:3px;overflow:hidden;border:1px solid var(--border);}
+.pb-f{height:100%;border-radius:3px;}
+
+/* ─── EMPTY STATE ─── */
+.empty{text-align:center;padding:52px 20px;}
+.empty-icon{font-size:2.8rem;margin-bottom:12px;opacity:.25;}
+.empty-title{font-family:var(--font-d);font-size:.88rem;font-weight:700;color:var(--forest);margin-bottom:5px;}
+.empty-sub{font-size:.74rem;color:rgba(26,38,24,.4);}
+
+/* ─── SETTINGS PAGE ─── */
+.settings-section{background:var(--cream-card);border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;box-shadow:var(--sh);}
+.settings-section-title{font-family:var(--font-d);font-size:.8rem;font-weight:700;color:var(--forest);margin-bottom:14px;display:flex;align-items:center;gap:8px;padding-bottom:10px;border-bottom:1px solid var(--border);}
+.settings-section-title::before{content:'';width:3px;height:14px;background:linear-gradient(180deg,var(--sage),#4a7a3d);border-radius:2px;}
+.time-input{font-family:var(--font-m);font-size:.82rem;color:var(--forest);background:var(--cream-warm);border:1.5px solid var(--border-med);border-radius:9px;padding:8px 12px;outline:none;transition:all .2s;width:100%;}
+.time-input:focus{border-color:var(--sage);background:white;}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fadeUp .35s ease forwards;}
+.fu1{animation-delay:.04s;opacity:0}.fu2{animation-delay:.08s;opacity:0}
+.fu3{animation-delay:.12s;opacity:0}.fu4{animation-delay:.16s;opacity:0}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+@media(max-width:1024px){.layout{grid-template-columns:1fr}.col-side{display:none}}
+@media(max-width:860px){.sb{transform:translateX(-100%)}.main{margin-left:0}}
+</style>
+</head>
+<body>
+
+<!-- ════ SIDEBAR ════ -->
+<aside class="sb">
+  <a href="index.html" class="sb-logo">
+    <div class="sb-lm">MA</div>
+    <div>
+      <div style="font-family:var(--font-d);font-size:1rem;font-weight:700;letter-spacing:-.02em;">
+        <span style="color:#fff;font-weight:900;">Mock</span><span style="background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900;">Arena</span>
+      </div>
+      <div class="sb-b2">Notifications</div>
+    </div>
+  </a>
+  <div class="sb-user">
+    <div class="sb-av">AR</div>
+    <div class="sb-uname">Arjun Sharma</div>
+    <div class="sb-urole">JEE Advanced 2025 · Class 12</div>
+    <div class="sb-ubadge">🔥 42 Day Streak</div>
+  </div>
+  <div class="sb-grp">Main Menu</div>
+  <ul class="sb-ul">
+    <li><a href="mockarena_dashboard.html" class="sb-nav"><span class="si">⬡</span>Dashboard</a></li>
+    <li><a href="mockarena_mocktest.html" class="sb-nav"><span class="si">◳</span>Mock Tests</a></li>
+    <li><a href="mockarena_results.html" class="sb-nav"><span class="si">◈</span>My Results</a></li>
+    <li><a href="mockarena_leaderboard.html" class="sb-nav"><span class="si">◇</span>Leaderboard</a></li>
+    <li><a href="mockarena_pyq.html" class="sb-nav"><span class="si">📄</span>PYQ & Solutions</a></li>
+    <li><a href="mockarena_video_solutions.html" class="sb-nav"><span class="si">▷</span>Video Solutions</a></li>
+    <li><a href="mockarena_doubt_qa_v2.html" class="sb-nav"><span class="si">❖</span>Doubt Q&A</a></li>
+  </ul>
+  <div class="sb-grp">Study Tools</div>
+  <ul class="sb-ul">
+    <li><a href="mockarena_study_planner.html" class="sb-nav"><span class="si">◳</span>Study Planner</a></li>
+    <li><a href="mockarena_notes_formulas.html" class="sb-nav"><span class="si">▤</span>Notes & Formulas</a></li>
+    <li><a href="mockarena_analytics.html" class="sb-nav"><span class="si">◈</span>Analytics</a></li>
+  </ul>
+  <div class="sb-grp">Account</div>
+  <ul class="sb-ul">
+    <li><a href="mockarena_my_college.html" class="sb-nav"><span class="si">⬡</span>My College</a></li>
+    <li><a href="mockarena_profile.html" class="sb-nav"><span class="si">◎</span>My Profile</a></li>
+  </ul>
+  <div class="sb-foot">
+    <a href="#" class="sb-nav active"><span class="si">🔔</span>Notifications<span class="snb">7</span></a>
+    <a href="mockarena_settings.html" class="sb-nav"><span class="si">⚙️</span>Settings</a>
+    <a href="mockarena_login.html" class="sb-nav"><span class="si">↩</span>Logout</a>
+  </div>
+</aside>
+
+<!-- ════ MAIN ════ -->
+<div class="main">
+
+  <!-- TOPBAR -->
+  <div class="tb">
+    <div>
+      <div class="tb-title" id="tb-title">Notifications</div>
+      <div class="tb-crumb" id="tb-crumb">MockArena / Notifications · 7 unread</div>
+    </div>
+    <div class="tb-r">
+      <button class="btn btn-ghost" onclick="markAllRead()">✓ Mark all read</button>
+      <button class="btn btn-ghost" onclick="clearAll()">🗑 Clear all</button>
+      <button class="btn btn-sage" onclick="switchTab('settings')">⚙ Preferences</button>
+      <div class="tb-ib">👤</div>
+    </div>
+  </div>
+
+  <!-- TAB BAR -->
+  <div class="tab-bar" id="tab-bar">
+    <button class="tab active" onclick="switchTab('all',this)">🔔 All<span class="tab-cnt" id="cnt-all">7</span></button>
+    <button class="tab" onclick="switchTab('tests',this)">📝 Tests<span class="tab-cnt" id="cnt-tests">3</span></button>
+    <button class="tab" onclick="switchTab('results',this)">📊 Results<span class="tab-cnt tab-cnt-sage" id="cnt-results">1</span></button>
+    <button class="tab" onclick="switchTab('rank',this)">🏆 Rank<span class="tab-cnt tab-cnt-sage" id="cnt-rank">2</span></button>
+    <button class="tab" onclick="switchTab('college',this)">🏫 College<span class="tab-cnt" id="cnt-college">2</span></button>
+    <button class="tab" onclick="switchTab('streak',this)">🔥 Streak</button>
+    <button class="tab" onclick="switchTab('doubts',this)">💬 Doubts<span class="tab-cnt tab-cnt-sage" id="cnt-doubts">1</span></button>
+    <button class="tab" onclick="switchTab('system',this)">⚙ System</button>
+    <button class="tab" onclick="switchTab('settings',this)">🔕 Quiet & Settings</button>
+  </div>
+
+  <!-- CONTENT -->
+  <div class="content">
+    <div class="layout">
+      <div class="col-main" id="col-main"></div>
+      <div class="col-side" id="col-side"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════
+// NOTIFICATION DATA
+// ══════════════════════════════════════
+const NOTIFS = [
+  {id:1,cat:'tests',icon:'🔴',accent:'#c84b4b',icBg:'rgba(200,75,75,.1)',
+   title:'Monthly Test #6 is LIVE Right Now!',
+   desc:'DPS Patna Monthly Test #6 has started and will run until 2:00 PM today. 247 students are attempting. You have full 3 hours.',
+   time:'Just now',badges:[{cls:'b-ro',t:'● LIVE'}],unread:true,
+   actions:[{label:'Start Test →',cls:'nact-primary'},{label:'Dismiss',cls:''}]},
+
+  {id:2,cat:'tests',icon:'⏰',accent:'#b87333',icBg:'rgba(184,115,51,.1)',
+   title:'Physics Unit Test — Tomorrow 10:00 AM',
+   desc:'Reminder: Physics Electrostatics & Magnetism test is scheduled for tomorrow. Assigned by DPS Patna. Duration: 1 hour.',
+   time:'2 hours ago',badges:[{cls:'b-am',t:'Upcoming'}],unread:true,
+   actions:[{label:'View Test',cls:'nact-primary'},{label:'Snooze',cls:''}]},
+
+  {id:3,cat:'tests',icon:'📅',accent:'#b87333',icBg:'rgba(184,115,51,.1)',
+   title:'Chemistry Test — 8 June at 11 AM',
+   desc:'Chemistry Organic Reactions & Mechanisms test coming up on 8th June. Prepare with MockArena PYQ and notes.',
+   time:'Yesterday',badges:[{cls:'b-am',t:'Reminder'}],unread:true,
+   actions:[{label:'Prepare Now',cls:'nact-primary'},{label:'Add to Planner',cls:''}]},
+
+  {id:4,cat:'results',icon:'📊',accent:'#6b8f5e',icBg:'rgba(107,143,94,.1)',
+   title:'Monthly Test #5 Result Published — You scored 247/300!',
+   desc:'Your score: 247/300 · 82.3% accuracy · Rank #4 in DPS Patna · AIR #312. You improved by 12 points from last month!',
+   time:'2 days ago',badges:[{cls:'b-sg',t:'Result Out'},{cls:'b-gd',t:'#4 College'}],unread:true,
+   actions:[{label:'View Full Analysis',cls:'nact-primary'},{label:'Compare',cls:''}]},
+
+  {id:5,cat:'rank',icon:'🏆',accent:'#6b8f5e',icBg:'rgba(107,143,94,.1)',
+   title:'Your All India Rank Improved to #312! 🎉',
+   desc:'Congratulations! Your AIR moved from #360 to #312 — that\'s 48 positions up this month. You are in the Top 2% of JEE aspirants nationally.',
+   time:'2 days ago',badges:[{cls:'b-sg',t:'↑ Rank Up'},{cls:'b-in',t:'Top 2%'}],unread:true,
+   actions:[{label:'View Leaderboard',cls:'nact-primary'},{label:'Share',cls:''}]},
+
+  {id:6,cat:'rank',icon:'🥇',accent:'#c8962a',icBg:'rgba(200,150,42,.09)',
+   title:'You entered Top 5 in DPS Patna College!',
+   desc:'Your college rank improved from #6 to #4. You are now in the Top 5 of your batch. Only 37 points separate you from Rank #1!',
+   time:'3 days ago',badges:[{cls:'b-gd',t:'College #4'}],unread:false,
+   actions:[{label:'View College Rank',cls:'nact-primary'},{label:'Dismiss',cls:''}]},
+
+  {id:7,cat:'college',icon:'📢',accent:'#3b82c4',icBg:'rgba(59,130,196,.09)',
+   title:'Announcement from DPS Patna — Mandatory Test Today',
+   desc:'"Monthly Test #6 is live from 11 AM to 2 PM. Attendance is mandatory. This carries 20% semester weightage." — Prof. Rajesh Kumar',
+   time:'Today 9:00 AM',badges:[{cls:'b-sk',t:'College'}],unread:true,
+   actions:[{label:'View Announcement',cls:'nact-primary'},{label:'Dismiss',cls:''}]},
+
+  {id:8,cat:'college',icon:'🏆',accent:'#3b82c4',icBg:'rgba(59,130,196,.09)',
+   title:'DPS Patna Ranked #3 in Bihar State on MockArena!',
+   desc:'Your school achieved Bihar State Rank #3. Special prizes announced for top 10 students next month. You are currently at #4 — push for #3!',
+   time:'2 days ago',badges:[{cls:'b-sk',t:'College'},{cls:'b-gd',t:'#3 Bihar'}],unread:true,
+   actions:[{label:'View Details',cls:'nact-primary'},{label:'Dismiss',cls:''}]},
+
+  {id:9,cat:'streak',icon:'🔥',accent:'#c8962a',icBg:'rgba(200,150,42,.09)',
+   title:'42-Day Study Streak! You are on fire! 🔥',
+   desc:'You have studied on MockArena for 42 consecutive days — that puts you in the Top 1% of consistent students. Don\'t break the chain today!',
+   time:'Today 7:00 AM',badges:[{cls:'b-gd',t:'🔥 42 Days'}],unread:false,
+   actions:[{label:'Keep Going',cls:'nact-primary'},{label:'View Progress',cls:''}]},
+
+  {id:10,cat:'streak',icon:'⚡',accent:'#b87333',icBg:'rgba(184,115,51,.09)',
+   title:'7 of 10 Daily PYQ Done — 3 More to Hit Your Goal!',
+   desc:'You have completed 7 out of your 10 daily PYQ target. Complete 3 more questions today to maintain your perfect streak.',
+   time:'Today 6:30 AM',badges:[{cls:'b-am',t:'Daily Goal'}],unread:false,
+   actions:[{label:'Continue PYQ',cls:'nact-primary'},{label:'Dismiss',cls:''}]},
+
+  {id:11,cat:'doubts',icon:'💬',accent:'#7c5cbf',icBg:'rgba(124,92,191,.09)',
+   title:'Your Doubt on Magnetism Got Answered!',
+   desc:'MockArena Expert Dr. Arvind Kumar answered your doubt: "Why does a moving charge not exert force on a stationary charge?" — A detailed video explanation is attached.',
+   time:'4 hours ago',badges:[{cls:'b-pr',t:'Doubt Solved'}],unread:true,
+   actions:[{label:'View Answer',cls:'nact-primary'},{label:'Ask Follow-up',cls:''}]},
+
+  {id:12,cat:'system',icon:'✨',accent:'#4f46e5',icBg:'rgba(79,70,229,.09)',
+   title:'New Feature: PYQ Bank is Live! JEE · NEET · Boards',
+   desc:'MockArena PYQ bank is now available with JEE Advanced, JEE Mains, NEET UG, Foundation and Board papers — all with expert step-by-step solutions.',
+   time:'3 days ago',badges:[{cls:'b-in',t:'New Feature'}],unread:false,
+   actions:[{label:'Explore PYQ',cls:'nact-primary'},{label:'Dismiss',cls:''}]},
+
+  {id:13,cat:'system',icon:'🤖',accent:'#4f46e5',icBg:'rgba(79,70,229,.09)',
+   title:'Your AI Study Plan Updated for Weak Chapters',
+   desc:'Based on your performance data, your AI plan now focuses on Magnetism (52%) and 3D Geometry (58%) — the two chapters with most JEE weightage and your lowest accuracy.',
+   time:'4 days ago',badges:[{cls:'b-in',t:'AI Update'}],unread:false,
+   actions:[{label:'View Plan',cls:'nact-primary'},{label:'Dismiss',cls:''}]},
+];
+
+// State
+let unreadSet = new Set(NOTIFS.filter(n=>n.unread).map(n=>n.id));
+let deletedSet = new Set();
+let snoozedSet = new Set();
+let currentTab = 'all';
+let quietHoursOn = false;
+let snoozeActive = false;
+let snoozeUntil = '';
+
+// Preferences
+const prefs = {
+  testAlerts:true, resultUpdates:true, rankChanges:true,
+  collegeNotices:true, streakReminders:true, doubtReplies:true,
+  newContent:false, aiUpdates:true, platformNews:false, achievements:true,
+  pushNotif:true, emailDigest:false, whatsapp:false, inApp:true
+};
+
+function getFiltered(tab){
+  let items = NOTIFS.filter(n => !deletedSet.has(n.id));
+  if(tab !== 'all' && tab !== 'settings') items = items.filter(n => n.cat === tab);
+  return items;
+}
+
+function renderNotifHTML(n){
+  const isUnread = unreadSet.has(n.id);
+  const badgesHTML = n.badges.map(b=>`<span class="badge ${b.cls}">${b.t}</span>`).join('');
+  const actsHTML = n.actions.map(a=>`<button class="nact ${a.cls}" onclick="event.stopPropagation();handleAction(${n.id},'${a.label}')">${a.label}</button>`).join('');
+  return `
+  <div class="ncard ${isUnread?'unread':''}" id="ncard-${n.id}" onclick="readNotif(${n.id})">
+    <div class="ncard-accent" style="background:${n.accent}"></div>
+    <div class="ncard-body">
+      <div class="ncard-top">
+        <div class="ncard-icon" style="background:${n.icBg}">${n.icon}</div>
+        <div class="ncard-info">
+          <div class="ncard-title">${isUnread?`<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:${n.accent};margin-right:6px;vertical-align:middle;"></span>`:''}${n.title}</div>
+          <div class="ncard-desc">${n.desc}</div>
+        </div>
+      </div>
+      <div class="ncard-footer">
+        <span class="ncard-time">${n.time}</span>
+        ${badgesHTML}
+        <div class="ncard-actions">${actsHTML}
+          <button class="nact" onclick="event.stopPropagation();deleteNotif(${n.id})" title="Delete">🗑</button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderMain(tab){
+  const main = document.getElementById('col-main');
+  if(tab === 'settings'){ renderSettings(); return; }
+
+  const items = getFiltered(tab);
+
+  // Group
+  const groups = {today:[], yesterday:[], earlier:[]};
+  items.forEach(n=>{
+    if(n.time.includes('now')||n.time.includes('hours')||n.time.startsWith('Today')) groups.today.push(n);
+    else if(n.time === 'Yesterday') groups.yesterday.push(n);
+    else groups.earlier.push(n);
+  });
+
+  let html = '';
+
+  // Summary bar for 'all'
+  if(tab === 'all'){
+    const unread = items.filter(n=>unreadSet.has(n.id)).length;
+    html += `
+    <div style="background:linear-gradient(135deg,var(--forest),var(--forest-soft));border-radius:16px;padding:20px 24px;margin-bottom:18px;position:relative;overflow:hidden;" class="fu fu1">
+      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;"></div>
+      <div style="position:absolute;width:200px;height:200px;border-radius:50%;background:rgba(107,143,94,.15);filter:blur(40px);top:-40px;right:20px;pointer-events:none;"></div>
+      <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;">
+        <div>
+          <div style="font-family:var(--font-d);font-size:1.15rem;font-weight:800;color:white;letter-spacing:-.03em;margin-bottom:3px;">
+            ${unread > 0 ? `You have <span style="color:#a8d99c">${unread} unread</span> notifications` : 'All caught up! 🎉'}
+          </div>
+          <div style="font-size:.74rem;color:rgba(255,255,255,.4);">MockArena · ${new Date().toLocaleDateString('en-IN',{weekday:'long',day:'numeric',month:'long'})}</div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          ${[['📝','Tests','3'],['🏆','Rank','↑2'],['🏫','College','2'],['💬','Doubts','1']].map(([ic,label,val])=>`
+          <div style="background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:8px 12px;text-align:center;cursor:pointer;" onclick="switchTab('${label.toLowerCase()}')">
+            <div style="font-size:.9rem">${ic}</div>
+            <div style="font-family:var(--font-d);font-size:.78rem;font-weight:700;color:white;margin-top:2px;">${val}</div>
+            <div style="font-size:.58rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.05em;">${label}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  if(!items.length){
+    html += `<div class="empty"><div class="empty-icon">🔔</div><div class="empty-title">All clear!</div><div class="empty-sub">No notifications in this category</div></div>`;
+    main.innerHTML = html;
+    return;
+  }
+
+  if(groups.today.length){
+    html += `<div class="date-div"><div class="date-div-line"></div><div class="date-div-label">Today</div><div class="date-div-line"></div></div>`;
+    html += groups.today.map(renderNotifHTML).join('');
+  }
+  if(groups.yesterday.length){
+    html += `<div class="date-div"><div class="date-div-line"></div><div class="date-div-label">Yesterday</div><div class="date-div-line"></div></div>`;
+    html += groups.yesterday.map(renderNotifHTML).join('');
+  }
+  if(groups.earlier.length){
+    html += `<div class="date-div"><div class="date-div-line"></div><div class="date-div-label">Earlier</div><div class="date-div-line"></div></div>`;
+    html += groups.earlier.map(renderNotifHTML).join('');
+  }
+
+  main.innerHTML = html;
+}
+
+function renderSide(){
+  const side = document.getElementById('col-side');
+  side.innerHTML = `
+  <!-- Quiet Hours -->
+  <div class="side-card">
+    <div class="side-card-title">🌙 Quiet Hours</div>
+    <div class="qh-block">
+      <div class="qh-title">Do Not Disturb</div>
+      <div class="qh-sub">No notifications during these hours</div>
+      <div class="qh-times">
+        <div class="qh-time"><div class="qh-time-label">From</div><div class="qh-time-val">10:30 PM</div></div>
+        <div class="qh-time"><div class="qh-time-label">Until</div><div class="qh-time-val">7:00 AM</div></div>
+      </div>
+      <button class="toggle ${quietHoursOn?'on':'off'}" onclick="toggleQuiet(this)" style="display:block"></button>
+    </div>
+    <div style="font-size:.7rem;color:rgba(26,38,24,.45);margin-top:8px;">
+      ${quietHoursOn ? '🌙 Quiet mode is <strong>ON</strong> — notifications paused' : 'Quiet mode is off · All notifications active'}
+    </div>
+  </div>
+
+  <!-- Snooze -->
+  <div class="side-card">
+    <div class="side-card-title">⏸ Snooze Notifications</div>
+    <div style="font-size:.72rem;color:rgba(26,38,24,.45);margin-bottom:10px;">Temporarily pause all notifications</div>
+    <div class="snooze-grid">
+      ${[['30m','30 Min'],['1h','1 Hour'],['3h','3 Hours'],['Today','Rest of Day']].map(([v,l])=>`
+      <div class="snooze-btn ${snoozeActive&&snoozeUntil===v?'active':''}" onclick="setSnooze('${v}',this)">
+        <div class="snooze-n">${v}</div><div class="snooze-l">${l}</div>
+      </div>`).join('')}
+    </div>
+    ${snoozeActive ? `<div style="font-size:.7rem;font-weight:600;color:var(--amber);margin-top:4px;">⏸ Snoozed until ${snoozeUntil} · <button onclick="cancelSnooze()" style="border:none;background:none;color:var(--rose);font-size:.7rem;font-weight:600;cursor:pointer;">Cancel</button></div>` : ''}
+  </div>
+
+  <!-- Unread breakdown -->
+  <div class="side-card">
+    <div class="side-card-title">📊 Unread Breakdown</div>
+    ${[
+      ['📝 Tests','3','b-ro'],
+      ['🏫 College','2','b-sk'],
+      ['🏆 Rank','1','b-sg'],
+      ['💬 Doubts','1','b-pr'],
+      ['📊 Results','1','b-sg'],
+    ].map(([label,cnt,cls])=>`
+    <div class="pb">
+      <span class="pb-l">${label}</span>
+      <span class="badge ${cls}" style="margin-left:auto">${cnt}</span>
+    </div>`).join('')}
+  </div>
+
+  <!-- Quick Prefs -->
+  <div class="side-card">
+    <div class="side-card-title">⚙ Quick Preferences</div>
+    ${[
+      ['🔴','Test Alerts','testAlerts'],
+      ['📊','Results','resultUpdates'],
+      ['🏆','Rank Changes','rankChanges'],
+      ['🏫','College','collegeNotices'],
+      ['🔥','Streak','streakReminders'],
+      ['💬','Doubt Replies','doubtReplies'],
+    ].map(([ic,name,key])=>`
+    <div class="pref-row">
+      <div class="pref-left">
+        <div class="pref-ic" style="background:var(--cream-warm)">${ic}</div>
+        <div class="pref-name" style="font-size:.74rem">${name}</div>
+      </div>
+      <button class="toggle ${prefs[key]?'on':'off'}" onclick="togglePref('${key}',this)"></button>
+    </div>`).join('')}
+    <button class="btn btn-ghost" style="width:100%;justify-content:center;margin-top:10px;" onclick="switchTab('settings')">View All Settings →</button>
+  </div>
+
+  <!-- Next test reminder -->
+  <div class="side-card">
+    <div class="side-card-title">⏰ Next Test</div>
+    <div style="background:var(--cream-warm);border:1px solid var(--border-med);border-radius:11px;padding:14px;">
+      <div style="font-family:var(--font-d);font-size:.84rem;font-weight:700;color:var(--forest);margin-bottom:3px;">Physics Unit Test</div>
+      <div style="font-size:.7rem;color:rgba(26,38,24,.45);margin-bottom:10px;">Tomorrow · 5 Jun · 10:00 AM · 1 hour</div>
+      <div style="height:4px;background:var(--border);border-radius:2px;overflow:hidden;margin-bottom:8px;">
+        <div style="width:78%;height:100%;background:linear-gradient(90deg,var(--sage),#a8d99c);border-radius:2px;"></div>
+      </div>
+      <div style="font-size:.66rem;color:rgba(26,38,24,.35);">Preparation: 78% complete</div>
+    </div>
+  </div>`;
+}
+
+function renderSettings(){
+  document.getElementById('tb-title').textContent = 'Notification Settings';
+  document.getElementById('tb-crumb').textContent = 'MockArena / Notifications / Preferences';
+  const main = document.getElementById('col-main');
+  main.innerHTML = `
+  <!-- SETTINGS PAGE -->
+  <div style="max-width:680px;">
+
+    <!-- Quiet Hours Full -->
+    <div class="settings-section fu fu1">
+      <div class="settings-section-title">🌙 Quiet Hours (Do Not Disturb)</div>
+      <div style="font-size:.76rem;color:rgba(26,38,24,.45);margin-bottom:14px;">During quiet hours, all notifications are silenced. Critical test alerts can still break through if enabled.</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div><div style="font-size:.8rem;font-weight:600;color:var(--forest)">Enable Quiet Hours</div><div style="font-size:.66rem;color:rgba(26,38,24,.38)">Silence all non-critical notifications</div></div>
+        <button class="toggle ${quietHoursOn?'on':'off'}" onclick="toggleQuiet(this)"></button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div><label style="font-size:.68rem;font-weight:600;color:rgba(26,38,24,.45);display:block;margin-bottom:5px;">FROM (Quiet starts)</label>
+          <input type="time" class="time-input" value="22:30"></div>
+        <div><label style="font-size:.68rem;font-weight:600;color:rgba(26,38,24,.45);display:block;margin-bottom:5px;">UNTIL (Quiet ends)</label>
+          <input type="time" class="time-input" value="07:00"></div>
+      </div>
+      <div class="pref-row">
+        <div class="pref-left"><div class="pref-ic" style="background:var(--rose-light)">🚨</div><div><div class="pref-name">Allow Critical Alerts</div><div class="pref-sub">Live test start alerts still come through</div></div></div>
+        <button class="toggle on" onclick="this.classList.toggle('on');this.classList.toggle('off')"></button>
+      </div>
+    </div>
+
+    <!-- Snooze -->
+    <div class="settings-section fu fu2">
+      <div class="settings-section-title">⏸ Snooze All Notifications</div>
+      <div style="font-size:.76rem;color:rgba(26,38,24,.45);margin-bottom:14px;">Temporarily pause all notifications. Perfect for study sessions where you don't want interruptions.</div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;">
+        ${[['30m','30 Min'],['1h','1 Hour'],['3h','3 Hours'],['6h','6 Hours'],['Today','Today'],['1d','Tomorrow'],['3d','3 Days'],['Off','Turn Off']].map(([v,l])=>`
+        <div class="snooze-btn ${snoozeActive&&snoozeUntil===v?'active':''}" onclick="setSnooze('${v}',this)">
+          <div class="snooze-n">${v}</div><div class="snooze-l">${l}</div>
+        </div>`).join('')}
+      </div>
+      ${snoozeActive ? `<div style="background:var(--amber-light);border:1px solid rgba(184,115,51,.2);border-radius:9px;padding:10px 14px;font-size:.74rem;color:var(--amber);font-weight:600;">⏸ Notifications snoozed until ${snoozeUntil} · <button onclick="cancelSnooze()" style="border:none;background:none;color:var(--rose);font-size:.74rem;font-weight:700;cursor:pointer;text-decoration:underline;">Cancel Snooze</button></div>` : ''}
+    </div>
+
+    <!-- Notification Types -->
+    <div class="settings-section fu fu3">
+      <div class="settings-section-title">📋 What to Notify Me About</div>
+      ${[
+        ['🔴','ri-ro','Test Alerts','testAlerts','Live tests, upcoming reminders, test assigned by college'],
+        ['📊','ni-sg','Result Updates','resultUpdates','When test results, scores and rankings are published'],
+        ['🏆','ni-sg','Rank Changes','rankChanges','All India Rank, state rank, college rank improvements'],
+        ['🏫','ni-sk','College Notices','collegeNotices','Announcements and alerts from DPS Patna admin'],
+        ['🔥','ni-am','Streak Reminders','streakReminders','Daily study streak protection and daily goal reminders'],
+        ['💬','ni-pr','Doubt Replies','doubtReplies','When MockArena experts answer your submitted doubts'],
+        ['📚','ni-pr','New Content','newContent','New notes, videos, PYQ papers, formula sheets added'],
+        ['🤖','ni-in','AI Plan Updates','aiUpdates','When your AI study plan is updated based on performance'],
+        ['📢','ni-in','Platform Updates','platformNews','New features, announcements from MockArena team'],
+        ['🏅','ni-gd','Achievements','achievements','Badges earned, milestones reached, streaks achieved'],
+      ].map(([ic,icCls,name,key,desc])=>`
+      <div class="pref-row">
+        <div class="pref-left">
+          <div class="pref-ic" style="background:var(--cream-warm)">${ic}</div>
+          <div><div class="pref-name">${name}</div><div class="pref-sub">${desc}</div></div>
+        </div>
+        <button class="toggle ${prefs[key]?'on':'off'}" onclick="togglePref('${key}',this)"></button>
+      </div>`).join('')}
+    </div>
+
+    <!-- Channels -->
+    <div class="settings-section fu fu4">
+      <div class="settings-section-title">📱 Notification Channels</div>
+      <div style="font-size:.76rem;color:rgba(26,38,24,.45);margin-bottom:14px;">Choose how you want to receive notifications from MockArena.</div>
+      ${[
+        ['📱','In-App Notifications','inApp','Show alerts inside MockArena · Recommended'],
+        ['🔔','Push Notifications','pushNotif','Browser or device push alerts'],
+        ['📧','Email Digest','emailDigest','Weekly summary every Sunday · Not spam'],
+        ['💬','WhatsApp Alerts','whatsapp','Critical test alerts on WhatsApp only'],
+      ].map(([ic,name,key,desc])=>`
+      <div class="pref-row">
+        <div class="pref-left">
+          <div class="pref-ic" style="background:var(--cream-warm)">${ic}</div>
+          <div><div class="pref-name">${name}</div><div class="pref-sub">${desc}</div></div>
+        </div>
+        <button class="toggle ${prefs[key]?'on':'off'}" onclick="togglePref('${key}',this)"></button>
+      </div>`).join('')}
+    </div>
+
+    <!-- Frequency -->
+    <div class="settings-section fu fu4">
+      <div class="settings-section-title">⏱ Notification Frequency</div>
+      <div style="font-size:.76rem;color:rgba(26,38,24,.45);margin-bottom:14px;">Control how often MockArena can send you non-urgent notifications.</div>
+      ${[
+        ['Streak Reminders','Once daily at 7:00 AM'],
+        ['Upcoming Test Reminders','24h and 1h before test'],
+        ['Result Notifications','Immediately when published'],
+        ['Rank Update Alerts','Once daily summary'],
+        ['Study Tips & Suggestions','Max 2 per week'],
+      ].map(([name,freq])=>`
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);">
+        <span style="font-size:.76rem;font-weight:500;color:var(--forest)">${name}</span>
+        <span style="font-family:var(--font-m);font-size:.66rem;color:rgba(26,38,24,.4);background:var(--cream-warm);padding:3px 9px;border-radius:100px;border:1px solid var(--border-med)">${freq}</span>
+      </div>`).join('')}
+    </div>
+
+    <!-- Danger Zone -->
+    <div class="settings-section fu fu4" style="border-color:rgba(200,75,75,.2);">
+      <div class="settings-section-title" style="color:var(--rose);">⚠️ Danger Zone</div>
+      <div style="font-size:.76rem;color:rgba(26,38,24,.45);margin-bottom:14px;">Destructive actions — these cannot be undone easily.</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <button class="btn btn-ghost" onclick="markAllRead()" style="border-color:rgba(107,143,94,.3);color:var(--sage);">✓ Mark All as Read</button>
+        <button class="btn btn-ghost" onclick="clearAll()" style="border-color:rgba(200,75,75,.2);color:var(--rose);">🗑 Clear All Notifications</button>
+        <button class="btn btn-rose" onclick="alert('All notification preferences reset to defaults.')">↺ Reset to Defaults</button>
+      </div>
+    </div>
+
+  </div>`;
+}
+
+// ─── ACTIONS ───
+function readNotif(id){
+  unreadSet.delete(id);
+  const card = document.getElementById('ncard-'+id);
+  if(card){
+    card.classList.remove('unread');
+    const dot = card.querySelector('span[style*="border-radius:50%"]');
+    if(dot) dot.remove();
+  }
+  updateCounts();
+}
+
+function deleteNotif(id){
+  deletedSet.add(id);
+  unreadSet.delete(id);
+  const card = document.getElementById('ncard-'+id);
+  if(card){ card.style.opacity='0'; card.style.transform='translateX(20px)'; setTimeout(()=>card.remove(), 280); }
+  updateCounts();
+}
+
+function markAllRead(){
+  unreadSet.clear();
+  document.querySelectorAll('.ncard.unread').forEach(c=>{
+    c.classList.remove('unread');
+  });
+  updateCounts();
+}
+
+function clearAll(){
+  if(!confirm('Clear all notifications? This cannot be undone.')) return;
+  NOTIFS.forEach(n=>deletedSet.add(n.id));
+  renderMain(currentTab);
+  updateCounts();
+}
+
+function handleAction(id, label){
+  if(label === 'Dismiss'){ deleteNotif(id); return; }
+  if(label === 'Snooze'){ setSnooze('1h',null); return; }
+  readNotif(id);
+  const n = NOTIFS.find(x=>x.id===id);
+  if(!n) return;
+  const destinations = {'Start Test →':'mockarena_mocktest.html','View Full Analysis':'mockarena_results.html','View Leaderboard':'mockarena_leaderboard.html','View Announcement':'mockarena_my_college.html','Prepare Now':'mockarena_pyq.html','Continue PYQ':'mockarena_pyq.html','View Plan':'mockarena_study_planner.html','Explore PYQ':'mockarena_pyq.html','View Answer':'mockarena_doubt_qa_v2.html'};
+  if(destinations[label]) window.location.href = destinations[label];
+}
+
+function togglePref(key, btn){
+  prefs[key] = !prefs[key];
+  btn.classList.toggle('on');
+  btn.classList.toggle('off');
+}
+
+function toggleQuiet(btn){
+  quietHoursOn = !quietHoursOn;
+  btn.classList.toggle('on');
+  btn.classList.toggle('off');
+  renderSide();
+}
+
+function setSnooze(val, el){
+  if(snoozeActive && snoozeUntil === val){ cancelSnooze(); return; }
+  snoozeActive = true;
+  snoozeUntil = val;
+  document.querySelectorAll('.snooze-btn').forEach(b=>b.classList.remove('active'));
+  if(el) el.classList.add('active');
+  renderSide();
+}
+
+function cancelSnooze(){
+  snoozeActive = false;
+  snoozeUntil = '';
+  renderSide();
+}
+
+function updateCounts(){
+  const unread = NOTIFS.filter(n=>!deletedSet.has(n.id)&&unreadSet.has(n.id));
+  const cnt = id => document.getElementById(id);
+  const total = unread.length;
+  if(cnt('cnt-all')) cnt('cnt-all').textContent = total || '';
+  if(cnt('cnt-all')) cnt('cnt-all').style.display = total ? '' : 'none';
+  ['tests','results','rank','college','doubts'].forEach(cat=>{
+    const c = unread.filter(n=>n.cat===cat).length;
+    const el = cnt('cnt-'+cat);
+    if(el){ el.textContent = c || ''; el.style.display = c ? '' : 'none'; }
+  });
+  document.querySelector('.sb-nav.active .snb') && (document.querySelector('.sb-nav.active .snb').textContent = total);
+  document.getElementById('tb-crumb').textContent = `MockArena / Notifications · ${total} unread`;
+}
+
+function switchTab(tab, btn){
+  currentTab = tab;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  else {
+    document.querySelectorAll('.tab').forEach(t=>{
+      if(t.textContent.toLowerCase().includes(tab)) t.classList.add('active');
+    });
+  }
+  if(tab === 'settings'){
+    renderSettings();
+  } else {
+    document.getElementById('tb-title').textContent = 'Notifications';
+    document.getElementById('tb-crumb').textContent = `MockArena / Notifications · ${unreadSet.size} unread`;
+    renderMain(tab);
+  }
+}
+
+// INIT
+renderMain('all');
+renderSide();
+updateCounts();
+</script>
+</body>
+</html>
