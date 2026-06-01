@@ -1,47 +1,315 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>MockArena Login</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena — Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --forest:#1a2618;--forest-soft:#243422;
+  --sage:#6b8f5e;--sage-light:rgba(107,143,94,0.12);--sage-glow:rgba(107,143,94,0.25);
+  --gold:#c8962a;--rose:#c84b4b;--sky:#3b82c4;
+  --cream:#faf9f5;--cream-warm:#f5f3ec;
+  --border:rgba(26,38,24,0.1);--border-med:rgba(26,38,24,0.15);
+  --font-d:'Outfit',sans-serif;--font-m:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;font-family:var(--font-d);-webkit-font-smoothing:antialiased;}
+body{background:var(--forest);display:flex;align-items:center;justify-content:center;min-height:100vh;position:relative;overflow:hidden;}
+
+/* Background */
+.bg-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(107,143,94,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(107,143,94,.04) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;}
+.bg-orb1{position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(107,143,94,.18),transparent 70%);top:-100px;left:-80px;pointer-events:none;}
+.bg-orb2{position:absolute;width:350px;height:350px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.1),transparent 70%);bottom:-80px;right:-60px;pointer-events:none;}
+.bg-orb3{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(79,70,229,.08),transparent 70%);top:40%;right:10%;pointer-events:none;}
+
+/* Card */
+.card{background:var(--cream);border-radius:24px;padding:36px 40px;width:100%;max-width:440px;position:relative;z-index:1;box-shadow:0 24px 80px rgba(0,0,0,.35);}
+
+/* Logo */
+.logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:28px;}
+.logo-mark{width:40px;height:40px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;color:white;box-shadow:0 0 20px var(--sage-glow);}
+.logo-text{font-size:1.3rem;font-weight:900;letter-spacing:-.03em;}
+.logo-mock{color:var(--forest);}
+.logo-arena{background:linear-gradient(135deg,#4f46e5,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+
+/* Header */
+.header{text-align:center;margin-bottom:28px;}
+.title{font-size:1.4rem;font-weight:800;color:var(--forest);letter-spacing:-.03em;margin-bottom:6px;}
+.subtitle{font-size:.82rem;color:rgba(26,38,24,.5);line-height:1.5;}
+
+/* Tabs */
+.tabs{display:flex;background:var(--cream-warm);border-radius:12px;padding:4px;margin-bottom:24px;border:1px solid var(--border);}
+.tab{flex:1;font-family:var(--font-d);font-size:.8rem;font-weight:600;padding:9px;border-radius:9px;border:none;cursor:pointer;transition:all .2s;color:rgba(26,38,24,.45);background:none;}
+.tab.active{background:white;color:var(--forest);box-shadow:0 1px 6px rgba(26,38,24,.1);}
+
+/* Form */
+.form{display:flex;flex-direction:column;gap:14px;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label{font-size:.72rem;font-weight:600;color:rgba(26,38,24,.55);letter-spacing:.02em;}
+.field input{font-family:var(--font-d);font-size:.88rem;color:var(--forest);background:var(--cream-warm);border:1.5px solid var(--border-med);border-radius:11px;padding:11px 14px;outline:none;transition:all .2s;width:100%;}
+.field input:focus{border-color:var(--sage);background:white;box-shadow:0 0 0 3px var(--sage-light);}
+.field input::placeholder{color:rgba(26,38,24,.28);}
+
+/* Row */
+.row{display:flex;align-items:center;justify-content:space-between;margin-top:-4px;}
+.remember{display:flex;align-items:center;gap:6px;font-size:.74rem;color:rgba(26,38,24,.5);cursor:pointer;}
+.remember input{width:14px;height:14px;accent-color:var(--sage);}
+.forgot{font-size:.74rem;font-weight:600;color:var(--sage);text-decoration:none;}
+.forgot:hover{text-decoration:underline;}
+
+/* Buttons */
+.btn-primary{width:100%;font-family:var(--font-d);font-size:.9rem;font-weight:700;padding:13px;border-radius:11px;border:none;cursor:pointer;transition:all .22s;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;box-shadow:0 4px 16px var(--sage-glow);margin-top:4px;}
+.btn-primary:hover{box-shadow:0 6px 22px var(--sage-glow);transform:translateY(-1px);}
+.btn-primary:active{transform:translateY(0);}
+
+.divider{display:flex;align-items:center;gap:12px;margin:4px 0;}
+.divider-line{flex:1;height:1px;background:var(--border);}
+.divider-text{font-size:.72rem;color:rgba(26,38,24,.35);font-weight:500;}
+
+.btn-google{width:100%;font-family:var(--font-d);font-size:.84rem;font-weight:600;padding:11px;border-radius:11px;border:1.5px solid var(--border-med);cursor:pointer;transition:all .22s;background:white;color:var(--forest);display:flex;align-items:center;justify-content:center;gap:9px;}
+.btn-google:hover{border-color:var(--sage);box-shadow:0 2px 10px rgba(26,38,24,.08);}
+.google-icon{width:18px;height:18px;}
+
+/* Exam badges */
+.exam-badges{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;margin-bottom:20px;}
+.exam-badge{font-size:.62rem;font-weight:600;padding:3px 10px;border-radius:100px;border:1px solid;}
+.eb-jee{background:rgba(79,70,229,.08);color:#4f46e5;border-color:rgba(79,70,229,.2);}
+.eb-neet{background:var(--sage-light);color:var(--sage);border-color:rgba(107,143,94,.25);}
+.eb-boards{background:rgba(200,150,42,.08);color:var(--gold);border-color:rgba(200,150,42,.2);}
+.eb-found{background:rgba(184,115,51,.08);color:#b87333;border-color:rgba(184,115,51,.2);}
+
+/* Footer */
+.footer{text-align:center;margin-top:18px;}
+.footer-text{font-size:.76rem;color:rgba(26,38,24,.45);}
+.footer-link{font-weight:700;color:var(--sage);text-decoration:none;cursor:pointer;}
+.footer-link:hover{text-decoration:underline;}
+
+/* Back to home */
+.back-home{position:absolute;top:20px;left:20px;z-index:10;display:flex;align-items:center;gap:6px;font-size:.76rem;font-weight:600;color:rgba(255,255,255,.5);text-decoration:none;transition:color .18s;}
+.back-home:hover{color:white;}
+
+/* Error message */
+.error-msg{font-size:.74rem;color:var(--rose);background:rgba(200,75,75,.08);border:1px solid rgba(200,75,75,.2);border-radius:8px;padding:8px 12px;display:none;}
+.error-msg.show{display:block;}
+
+/* Success */
+.success-msg{font-size:.74rem;color:var(--sage);background:var(--sage-light);border:1px solid rgba(107,143,94,.25);border-radius:8px;padding:8px 12px;display:none;}
+.success-msg.show{display:block;}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+.card{animation:fadeIn .4s ease;}
+</style>
 </head>
 <body>
 
-    <h2>Login to MockArena</h2>
+<div class="bg-grid"></div>
+<div class="bg-orb1"></div>
+<div class="bg-orb2"></div>
+<div class="bg-orb3"></div>
 
-    <button onclick="googleLogin()">Login with Google</button>
+<a href="index.html" class="back-home">← Back to Home</a>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<div class="card">
 
-    <script>
-      // 🔥 PASTE YOUR FIREBASE CONFIG HERE
-      const firebaseConfig = {
-        apiKey: "PASTE_API_KEY",
-        authDomain: "mockarena-c18c4.firebaseapp.com",
-        projectId: "mockarena-c18c4",
-        storageBucket: "mockarena-c18c4.appspot.com",
-        messagingSenderId: "861067164791",
-        appId: "PASTE_APP_ID"
-      };
+  <!-- Logo -->
+  <div class="logo">
+    <div class="logo-mark">MA</div>
+    <div class="logo-text">
+      <span class="logo-mock">Mock</span><span class="logo-arena">Arena</span>
+    </div>
+  </div>
 
-      // Initialize Firebase
-      firebase.initializeApp(firebaseConfig);
-      const auth = firebase.auth();
+  <!-- Exam Badges -->
+  <div class="exam-badges">
+    <span class="exam-badge eb-jee">JEE Advanced</span>
+    <span class="exam-badge eb-jee">JEE Mains</span>
+    <span class="exam-badge eb-neet">NEET UG</span>
+    <span class="exam-badge eb-found">JEE Foundation</span>
+    <span class="exam-badge eb-neet">NEET Foundation</span>
+    <span class="exam-badge eb-boards">Class 10 & 12 Boards</span>
+  </div>
 
-      // Google Login Function
-      function googleLogin() {
-          const provider = new firebase.auth.GoogleAuthProvider();
+  <!-- Header -->
+  <div class="header">
+    <div class="title" id="form-title">Welcome Back!</div>
+    <div class="subtitle" id="form-subtitle">Sign in to continue your preparation journey</div>
+  </div>
 
-          auth.signInWithPopup(provider)
-          .then((result) => {
-              alert("Login Successful");
-              window.location.href = "dashboard.html";
-          })
-          .catch((error) => {
-              alert(error.message);
-          });
-      }
-    </script>
+  <!-- Tabs -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('login',this)">Sign In</button>
+    <button class="tab" onclick="switchTab('register',this)">Create Account</button>
+  </div>
 
+  <!-- Messages -->
+  <div class="error-msg" id="error-msg">⚠️ Please enter valid email and password.</div>
+  <div class="success-msg" id="success-msg">✅ Account created! Redirecting...</div>
+
+  <!-- LOGIN FORM -->
+  <div id="login-form">
+    <div class="form">
+      <div class="field">
+        <label>EMAIL ADDRESS</label>
+        <input type="email" id="login-email" placeholder="your@email.com">
+      </div>
+      <div class="field">
+        <label>PASSWORD</label>
+        <input type="password" id="login-password" placeholder="Enter your password">
+      </div>
+      <div class="row">
+        <label class="remember"><input type="checkbox" checked> Remember me</label>
+        <a href="#" class="forgot">Forgot password?</a>
+      </div>
+      <button class="btn-primary" onclick="handleLogin()">Sign In to MockArena →</button>
+    </div>
+    <div class="divider"><div class="divider-line"></div><div class="divider-text">or continue with</div><div class="divider-line"></div></div>
+    <button class="btn-google" onclick="handleGoogleLogin()">
+      <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Continue with Google
+    </button>
+  </div>
+
+  <!-- REGISTER FORM -->
+  <div id="register-form" style="display:none;">
+    <div class="form">
+      <div class="field">
+        <label>FULL NAME</label>
+        <input type="text" id="reg-name" placeholder="Your full name">
+      </div>
+      <div class="field">
+        <label>EMAIL ADDRESS</label>
+        <input type="email" id="reg-email" placeholder="your@email.com">
+      </div>
+      <div class="field">
+        <label>PASSWORD</label>
+        <input type="password" id="reg-password" placeholder="Create a password (min 6 chars)">
+      </div>
+      <div class="field">
+        <label>TARGET EXAM</label>
+        <select id="reg-exam" style="font-family:var(--font-d);font-size:.88rem;color:var(--forest);background:var(--cream-warm);border:1.5px solid var(--border-med);border-radius:11px;padding:11px 14px;outline:none;cursor:pointer;width:100%;">
+          <option value="">Select your target exam</option>
+          <option>JEE Advanced</option>
+          <option>JEE Mains</option>
+          <option>JEE Foundation (Class 9-10)</option>
+          <option>NEET UG</option>
+          <option>NEET Foundation (Class 9-10)</option>
+          <option>Class 12 Boards (CBSE)</option>
+          <option>Class 10 Boards (CBSE)</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="handleRegister()">Create My Account →</button>
+    </div>
+    <div class="divider"><div class="divider-line"></div><div class="divider-text">or</div><div class="divider-line"></div></div>
+    <button class="btn-google" onclick="handleGoogleLogin()">
+      <svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+      Sign up with Google
+    </button>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <div id="footer-switch" class="footer-text">
+      Don't have an account? <span class="footer-link" onclick="switchTab('register',null)">Create one free →</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function switchTab(tab, btn){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  document.getElementById('error-msg').classList.remove('show');
+  document.getElementById('success-msg').classList.remove('show');
+
+  if(tab === 'login'){
+    document.getElementById('login-form').style.display = 'block';
+    document.getElementById('register-form').style.display = 'none';
+    document.getElementById('form-title').textContent = 'Welcome Back!';
+    document.getElementById('form-subtitle').textContent = 'Sign in to continue your preparation journey';
+    document.getElementById('footer-switch').innerHTML = 'Don\'t have an account? <span class="footer-link" onclick="switchTab(\'register\',null)">Create one free →</span>';
+  } else {
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('register-form').style.display = 'block';
+    document.getElementById('form-title').textContent = 'Join MockArena Free';
+    document.getElementById('form-subtitle').textContent = 'Start your JEE · NEET · Boards preparation today';
+    document.getElementById('footer-switch').innerHTML = 'Already have an account? <span class="footer-link" onclick="switchTab(\'login\',null)">Sign in →</span>';
+  }
+}
+
+function handleLogin(){
+  const email = document.getElementById('login-email').value;
+  const pass = document.getElementById('login-password').value;
+  const err = document.getElementById('error-msg');
+  
+  if(!email || !pass){
+    err.textContent = '⚠️ Please enter your email and password.';
+    err.classList.add('show');
+    return;
+  }
+  if(!email.includes('@')){
+    err.textContent = '⚠️ Please enter a valid email address.';
+    err.classList.add('show');
+    return;
+  }
+  
+  err.classList.remove('show');
+  
+  // Show loading
+  const btn = document.querySelector('#login-form .btn-primary');
+  btn.textContent = 'Signing in...';
+  btn.style.opacity = '.7';
+  
+  // Redirect to dashboard
+  setTimeout(()=>{ window.location.href = 'mockarena_dashboard.html'; }, 1000);
+}
+
+function handleRegister(){
+  const name = document.getElementById('reg-name').value;
+  const email = document.getElementById('reg-email').value;
+  const pass = document.getElementById('reg-password').value;
+  const exam = document.getElementById('reg-exam').value;
+  const err = document.getElementById('error-msg');
+  const suc = document.getElementById('success-msg');
+  
+  if(!name || !email || !pass || !exam){
+    err.textContent = '⚠️ Please fill all fields to create your account.';
+    err.classList.add('show');
+    return;
+  }
+  if(pass.length < 6){
+    err.textContent = '⚠️ Password must be at least 6 characters.';
+    err.classList.add('show');
+    return;
+  }
+  
+  err.classList.remove('show');
+  suc.classList.add('show');
+  
+  const btn = document.querySelector('#register-form .btn-primary');
+  btn.textContent = 'Creating account...';
+  btn.style.opacity = '.7';
+  
+  setTimeout(()=>{ window.location.href = 'mockarena_dashboard.html'; }, 1500);
+}
+
+function handleGoogleLogin(){
+  const btn = event.target.closest('button');
+  btn.textContent = 'Connecting...';
+  btn.style.opacity = '.7';
+  setTimeout(()=>{ window.location.href = 'mockarena_dashboard.html'; }, 1000);
+}
+
+// Enter key support
+document.addEventListener('keydown', e=>{
+  if(e.key === 'Enter'){
+    const loginVisible = document.getElementById('login-form').style.display !== 'none';
+    if(loginVisible) handleLogin();
+    else handleRegister();
+  }
+});
+</script>
 </body>
 </html>
