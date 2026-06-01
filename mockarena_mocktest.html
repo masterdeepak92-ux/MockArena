@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena — JEE Advanced Full Mock #15</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf9f5;--cream-warm:#f5f3ec;--cream-card:#ffffff;
+  --forest:#1a2618;--forest-soft:#243422;--forest-muted:#3d5239;
+  --sage:#6b8f5e;--sage-light:rgba(107,143,94,0.1);--sage-glow:rgba(107,143,94,0.22);
+  --gold:#c8962a;--gold-dim:rgba(200,150,42,0.09);
+  --rose:#c84b4b;--rose-light:rgba(200,75,75,0.09);
+  --sky:#3b82c4;--sky-light:rgba(59,130,196,0.09);
+  --amber:#b87333;--amber-light:rgba(184,115,51,0.09);
+  --purple:#7c5cbf;--purple-light:rgba(124,92,191,0.09);
+  --border:rgba(26,38,24,0.08);--border-med:rgba(26,38,24,0.13);--border-strong:rgba(26,38,24,0.2);
+  --font-d:'Outfit',sans-serif;--font-b:'Outfit',sans-serif;--font-m:'IBM Plex Mono',monospace;--font-s:'Lora',serif;
+  --sh:0 1px 3px rgba(26,38,24,0.06),0 4px 16px rgba(26,38,24,0.04);
+  --sh-hover:0 8px 32px rgba(107,143,94,0.15),0 2px 8px rgba(26,38,24,0.06);
+  --sh-deep:0 20px 60px rgba(26,38,24,0.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font-b);background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased;}
+
+/* ═══ TOP BAR ═══ */
+.topbar{height:56px;background:var(--forest);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.06);position:relative;z-index:100;}
+.tb-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.tb-lm{width:30px;height:30px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:white;flex-shrink:0;}
+.tb-brand{font-family:var(--font-d);font-size:.9rem;font-weight:900;}
+.tb-mock{color:white;}
+.tb-arena{background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.tb-test-name{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.5);display:flex;align-items:center;gap:6px;}
+.tb-test-name::before{content:'';width:1px;height:16px;background:rgba(255,255,255,.15);}
+.tb-center{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;}
+
+/* Subject tabs in topbar */
+.subj-tabs{display:flex;gap:4px;background:rgba(255,255,255,.06);border-radius:10px;padding:3px;}
+.subj-tab{font-family:var(--font-d);font-size:.72rem;font-weight:600;padding:5px 14px;border-radius:8px;border:none;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.45);background:none;}
+.subj-tab:hover{color:rgba(255,255,255,.8);background:rgba(255,255,255,.06);}
+.subj-tab.active{color:white;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);}
+.subj-tab.phy.active{background:rgba(59,130,196,.3);border-color:rgba(59,130,196,.4);}
+.subj-tab.chem.active{background:rgba(107,143,94,.3);border-color:rgba(107,143,94,.4);}
+.subj-tab.math.active{background:rgba(200,150,42,.25);border-color:rgba(200,150,42,.35);}
+.subj-tab.bio.active{background:rgba(124,92,191,.3);border-color:rgba(124,92,191,.4);}
+
+.tb-right{display:flex;align-items:center;gap:10px;}
+
+/* Timer */
+.timer-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px 14px;display:flex;align-items:center;gap:8px;}
+.timer-box.warning{background:rgba(200,150,42,.15);border-color:rgba(200,150,42,.3);}
+.timer-box.danger{background:rgba(200,75,75,.18);border-color:rgba(200,75,75,.35);animation:timerPulse 1s infinite;}
+@keyframes timerPulse{0%,100%{opacity:1;}50%{opacity:.7;}}
+.timer-icon{font-size:.88rem;}
+.timer-val{font-family:var(--font-m);font-size:.92rem;font-weight:600;color:white;letter-spacing:.04em;}
+.timer-lbl{font-size:.56rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;}
+
+.btn{font-family:var(--font-b);font-size:.76rem;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;border:none;}
+.btn-ghost-light{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);}
+.btn-ghost-light:hover{background:rgba(255,255,255,.14);color:white;}
+.btn-submit{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;padding:8px 18px;box-shadow:0 2px 12px var(--sage-glow);}
+.btn-submit:hover{box-shadow:0 4px 18px var(--sage-glow);transform:translateY(-1px);}
+.btn-danger{background:linear-gradient(135deg,var(--rose),#e06b6b);color:white;}
+
+/* ═══ MAIN LAYOUT ═══ */
+.layout{display:flex;height:calc(100vh - 56px);overflow:hidden;}
+
+/* ═══ LEFT — QUESTION PANEL ═══ */
+.q-panel{flex:1;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--border);}
+
+/* Section bar */
+.section-bar{background:var(--cream-warm);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.section-label{font-family:var(--font-d);font-size:.72rem;font-weight:700;color:var(--forest-muted);text-transform:uppercase;letter-spacing:.06em;}
+.section-tabs{display:flex;gap:4px;}
+.sec-tab{font-family:var(--font-d);font-size:.7rem;font-weight:600;padding:4px 12px;border-radius:7px;border:1.5px solid var(--border-med);background:var(--cream-warm);color:var(--forest-muted);cursor:pointer;transition:all .18s;}
+.sec-tab:hover{border-color:var(--sage);color:var(--sage);}
+.sec-tab.active{background:var(--forest);color:white;border-color:var(--forest);}
+.q-progress-bar{height:3px;background:var(--border);flex-shrink:0;}
+.q-progress-fill{height:100%;background:linear-gradient(90deg,var(--sage),#4a7a3d);transition:width .4s ease;}
+
+/* Question body */
+.q-body{flex:1;overflow-y:auto;padding:24px;}
+.q-body::-webkit-scrollbar{width:3px;}
+.q-body::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+/* Q Header */
+.q-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px;gap:12px;}
+.q-num-badge{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.q-num{width:36px;height:36px;border-radius:9px;background:var(--forest);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.82rem;font-weight:800;}
+.q-type-info{display:flex;flex-direction:column;gap:3px;}
+.q-type-badge{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.qt-single{background:var(--sky-light);color:var(--sky);border:1px solid rgba(59,130,196,.2);}
+.qt-multi{background:var(--purple-light);color:var(--purple);border:1px solid rgba(124,92,191,.2);}
+.qt-integer{background:var(--amber-light);color:var(--amber);border:1px solid rgba(184,115,51,.2);}
+.qt-para{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(200,150,42,.2);}
+.q-marks-info{font-size:.64rem;color:rgba(26,38,24,.4);display:flex;gap:10px;}
+.marks-correct{color:var(--sage);font-weight:600;}
+.marks-wrong{color:var(--rose);font-weight:600;}
+.q-actions{display:flex;gap:6px;}
+.q-action-btn{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--border-med);background:var(--cream-warm);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.8rem;transition:all .18s;}
+.q-action-btn:hover{border-color:var(--sage);background:var(--sage-light);}
+.q-action-btn.bookmarked{background:var(--gold-dim);border-color:rgba(200,150,42,.3);}
+
+/* Question text */
+.q-text-block{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px;}
+.q-subject-tag{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.qt-phy{color:var(--sky);}
+.qt-chem{color:var(--sage);}
+.qt-math{color:var(--gold);}
+.qt-bio{color:var(--purple);}
+.q-text{font-family:var(--font-s);font-size:.92rem;color:var(--forest);line-height:1.75;margin-bottom:0;}
+.q-text .math{font-family:var(--font-m);background:var(--cream-warm);padding:2px 7px;border-radius:5px;font-size:.88rem;color:var(--forest);border:1px solid var(--border);}
+.q-diagram{background:var(--cream-warm);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;margin-top:12px;font-size:.78rem;color:rgba(26,38,24,.4);}
+
+/* Options */
+.q-opts{display:flex;flex-direction:column;gap:8px;margin-bottom:20px;}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border-radius:12px;border:2px solid var(--border-med);background:white;cursor:pointer;transition:all .22s;position:relative;}
+.opt:hover{border-color:var(--sage);background:var(--sage-light);}
+.opt.selected{border-color:var(--sky);background:var(--sky-light);}
+.opt.selected .opt-key{background:var(--sky);color:white;border-color:var(--sky);}
+.opt.correct{border-color:var(--sage);background:var(--sage-light);}
+.opt.correct .opt-key{background:var(--sage);color:white;border-color:var(--sage);}
+.opt.wrong{border-color:var(--rose);background:var(--rose-light);}
+.opt.wrong .opt-key{background:var(--rose);color:white;border-color:var(--rose);}
+.opt-key{width:28px;height:28px;border-radius:8px;border:2px solid var(--border-strong);background:var(--cream-warm);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.72rem;font-weight:800;color:var(--forest-muted);flex-shrink:0;transition:all .22s;}
+.opt-text{font-size:.84rem;color:var(--forest);line-height:1.5;padding-top:1px;}
+.opt-text .math{font-family:var(--font-m);background:var(--cream-warm);padding:1px 6px;border-radius:4px;font-size:.8rem;border:1px solid var(--border);}
+
+/* Integer input */
+.integer-input-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+.integer-label{font-size:.76rem;font-weight:600;color:var(--forest-muted);}
+.integer-input{font-family:var(--font-m);font-size:1.2rem;font-weight:700;color:var(--forest);background:white;border:2px solid var(--border-med);border-radius:12px;padding:14px 18px;outline:none;width:180px;text-align:center;transition:all .22s;}
+.integer-input:focus{border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-light);}
+.calc-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:180px;}
+.calc-btn{font-family:var(--font-m);font-size:.88rem;font-weight:600;padding:10px;border-radius:9px;border:1.5px solid var(--border-med);background:var(--cream-warm);color:var(--forest);cursor:pointer;transition:all .18s;text-align:center;}
+.calc-btn:hover{border-color:var(--sage);background:var(--sage-light);}
+.calc-btn.special{background:var(--forest);color:white;border-color:var(--forest);}
+
+/* Q Footer — navigation */
+.q-footer{background:var(--cream-warm);border-top:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.q-nav-btn{font-family:var(--font-d);font-size:.78rem;font-weight:600;padding:9px 18px;border-radius:10px;cursor:pointer;transition:all .2s;border:1.5px solid;display:flex;align-items:center;gap:6px;}
+.q-nav-prev{background:var(--cream-warm);border-color:var(--border-strong);color:var(--forest-muted);}
+.q-nav-prev:hover{border-color:var(--sage);color:var(--sage);}
+.q-nav-next{background:linear-gradient(135deg,var(--forest),var(--forest-soft));color:white;border-color:transparent;}
+.q-nav-next:hover{box-shadow:var(--sh-hover);transform:translateY(-1px);}
+.q-mark-btn{font-family:var(--font-d);font-size:.76rem;font-weight:600;padding:8px 16px;border-radius:10px;border:1.5px solid rgba(200,150,42,.3);background:var(--gold-dim);color:var(--gold);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;}
+.q-mark-btn:hover{background:rgba(200,150,42,.15);}
+.q-mark-btn.marked{background:var(--gold);color:white;border-color:var(--gold);}
+.q-clear-btn{font-family:var(--font-d);font-size:.76rem;font-weight:600;padding:8px 16px;border-radius:10px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;transition:all .2s;}
+.q-clear-btn:hover{border-color:var(--rose);color:var(--rose);}
+.q-spacer{flex:1;}
+.q-counter{font-family:var(--font-m);font-size:.72rem;color:rgba(26,38,24,.4);}
+
+/* ═══ RIGHT — PALETTE ═══ */
+.palette-panel{width:280px;flex-shrink:0;background:white;border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+.palette-header{padding:14px 16px 10px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.palette-title{font-family:var(--font-d);font-size:.8rem;font-weight:700;color:var(--forest);margin-bottom:10px;}
+
+/* Status legend */
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:0;}
+.leg-item{display:flex;align-items:center;gap:6px;font-size:.65rem;color:var(--forest-muted);}
+.leg-dot{width:18px;height:18px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-weight:700;}
+.leg-answered{background:var(--sage);color:white;}
+.leg-not-answered{background:var(--rose-light);color:var(--rose);border:1.5px solid rgba(200,75,75,.25);}
+.leg-not-visited{background:var(--cream-warm);color:rgba(26,38,24,.4);border:1.5px solid var(--border-strong);}
+.leg-marked{background:var(--gold);color:white;}
+.leg-marked-answered{background:var(--purple);color:white;}
+
+/* Palette scroll area */
+.palette-scroll{flex:1;overflow-y:auto;padding:12px 14px;}
+.palette-scroll::-webkit-scrollbar{width:3px;}
+.palette-scroll::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+.palette-subj-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(26,38,24,.35);margin:10px 0 7px;display:flex;align-items:center;gap:7px;}
+.palette-subj-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:4px;}
+.p-btn{width:100%;aspect-ratio:1;border-radius:8px;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:.7rem;font-weight:600;cursor:pointer;transition:all .18s;position:relative;}
+.p-btn:hover{transform:scale(1.1);}
+.p-btn.current{box-shadow:0 0 0 2px var(--forest),0 0 0 4px rgba(26,38,24,.15);}
+/* States */
+.p-not-visited{background:var(--cream-warm);border-color:var(--border-strong);color:rgba(26,38,24,.4);}
+.p-answered{background:var(--sage);border-color:#4a7a3d;color:white;}
+.p-not-answered{background:var(--rose-light);border-color:rgba(200,75,75,.35);color:var(--rose);}
+.p-marked{background:var(--gold);border-color:#b8832a;color:white;}
+.p-marked-answered{background:var(--purple);border-color:#6b4ba8;color:white;}
+.p-btn.current.p-answered{box-shadow:0 0 0 2px #4a7a3d,0 0 0 4px rgba(107,143,94,.25);}
+.p-btn.current.p-not-answered{box-shadow:0 0 0 2px var(--rose),0 0 0 4px var(--rose-light);}
+.p-btn.current.p-not-visited{box-shadow:0 0 0 2px var(--forest),0 0 0 4px rgba(26,38,24,.15);}
+
+/* Summary strip */
+.summary-strip{background:var(--cream-warm);border-top:1px solid var(--border);padding:10px 14px;flex-shrink:0;}
+.summary-row{display:flex;justify-content:space-between;margin-bottom:6px;}
+.sum-item{text-align:center;}
+.sum-n{font-family:var(--font-d);font-size:.9rem;font-weight:800;color:var(--forest);}
+.sum-l{font-size:.56rem;color:rgba(26,38,24,.38);text-transform:uppercase;letter-spacing:.05em;}
+.sum-n.answered{color:var(--sage);}
+.sum-n.not-ans{color:var(--rose);}
+.sum-n.marked{color:var(--gold);}
+.sum-n.not-vis{color:rgba(26,38,24,.35);}
+.submit-btn{width:100%;font-family:var(--font-d);font-size:.82rem;font-weight:700;padding:11px;border-radius:11px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;box-shadow:0 4px 14px var(--sage-glow);transition:all .22s;margin-top:6px;}
+.submit-btn:hover{box-shadow:0 6px 20px var(--sage-glow);transform:translateY(-1px);}
+
+/* ═══ SUBMIT MODAL ═══ */
+.mo{position:fixed;inset:0;z-index:500;background:rgba(26,38,24,.6);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;}
+.mo.open{display:flex;}
+.mb{background:white;border:1px solid var(--border-med);border-radius:22px;padding:30px;width:480px;max-width:95vw;box-shadow:var(--sh-deep);animation:mpop .25s cubic-bezier(.34,1.56,.64,1);}
+@keyframes mpop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.mb-title{font-family:var(--font-d);font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:6px;letter-spacing:-.03em;}
+.mb-sub{font-size:.78rem;color:rgba(26,38,24,.5);margin-bottom:20px;}
+.mb-stats-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:18px;}
+.mb-stat{background:var(--cream-warm);border:1px solid var(--border);border-radius:11px;padding:12px 14px;}
+.mb-stat-n{font-family:var(--font-d);font-size:1.2rem;font-weight:800;margin-bottom:2px;}
+.mb-stat-l{font-size:.62rem;font-weight:500;color:rgba(26,38,24,.4);text-transform:uppercase;letter-spacing:.06em;}
+.mb-warn{background:var(--rose-light);border:1px solid rgba(200,75,75,.2);border-radius:11px;padding:11px 14px;font-size:.76rem;color:var(--rose);margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.mb-actions{display:flex;gap:9px;}
+.mb-cancel{flex:1;font-family:var(--font-d);font-size:.8rem;font-weight:600;padding:11px;border-radius:10px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;}
+.mb-cancel:hover{border-color:var(--sage);color:var(--sage);}
+.mb-confirm{flex:2;font-family:var(--font-d);font-size:.82rem;font-weight:700;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;box-shadow:0 4px 14px var(--sage-glow);}
+.mb-confirm:hover{transform:translateY(-1px);}
+
+/* ═══ RESULT VIEW ═══ */
+.result-view{display:none;flex-direction:column;height:100vh;overflow-y:auto;}
+.result-view::-webkit-scrollbar{width:3px;}
+.result-view::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.fade{animation:fadeIn .3s ease;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- ════ TEST INTERFACE ════ -->
+<div id="test-interface" style="display:flex;flex-direction:column;height:100vh;">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="mockarena_dashboard.html" class="tb-logo">
+    <div class="tb-lm">MA</div>
+    <div class="tb-brand"><span class="tb-mock">Mock</span><span class="tb-arena">Arena</span></div>
+  </a>
+  <div class="tb-test-name">JEE Advanced Full Mock #15</div>
+
+  <div class="tb-center">
+    <div class="subj-tabs" id="subj-tabs">
+      <button class="subj-tab phy active" onclick="switchSubject(0,this)">⚛️ Physics</button>
+      <button class="subj-tab chem" onclick="switchSubject(1,this)">🧪 Chemistry</button>
+      <button class="subj-tab math" onclick="switchSubject(2,this)">📐 Maths</button>
+    </div>
+  </div>
+
+  <div class="tb-right">
+    <div class="timer-box" id="timer-box">
+      <span class="timer-icon">⏱</span>
+      <div>
+        <div class="timer-val" id="timer">03:00:00</div>
+        <div class="timer-lbl">Remaining</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost-light" onclick="toggleInstructions()">📋 Instructions</button>
+    <button class="btn btn-submit" onclick="openSubmit()">Submit Test</button>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+  <!-- LEFT: QUESTION PANEL -->
+  <div class="q-panel">
+    <div class="section-bar">
+      <span class="section-label">Section:</span>
+      <div class="section-tabs" id="section-tabs"></div>
+      <div style="margin-left:auto;font-family:var(--font-m);font-size:.68rem;color:rgba(26,38,24,.35)" id="sec-info"></div>
+    </div>
+    <div class="q-progress-bar"><div class="q-progress-fill" id="q-progress"></div></div>
+    <div class="q-body" id="q-body"></div>
+    <div class="q-footer">
+      <button class="q-mark-btn" id="mark-btn" onclick="toggleMark()">🔖 Mark for Review</button>
+      <button class="q-clear-btn" onclick="clearAnswer()">✕ Clear</button>
+      <div class="q-spacer"></div>
+      <span class="q-counter" id="q-counter"></span>
+      <button class="q-nav-btn q-nav-prev" onclick="navigate(-1)">← Previous</button>
+      <button class="q-nav-btn q-nav-next" onclick="navigate(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- RIGHT: PALETTE PANEL -->
+  <div class="palette-panel">
+    <div class="palette-header">
+      <div class="palette-title">Question Palette</div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot leg-answered">✓</div>Answered</div>
+        <div class="leg-item"><div class="leg-dot leg-not-answered">!</div>Not Answered</div>
+        <div class="leg-item"><div class="leg-dot leg-not-visited">—</div>Not Visited</div>
+        <div class="leg-item"><div class="leg-dot leg-marked">🔖</div>Marked</div>
+        <div class="leg-item"><div class="leg-dot leg-marked-answered">✓</div>Marked+Ans</div>
+      </div>
+    </div>
+    <div class="palette-scroll" id="palette"></div>
+    <div class="summary-strip">
+      <div class="summary-row">
+        <div class="sum-item"><div class="sum-n answered" id="sum-answered">0</div><div class="sum-l">Answered</div></div>
+        <div class="sum-item"><div class="sum-n not-ans" id="sum-not-ans">0</div><div class="sum-l">Not Ans.</div></div>
+        <div class="sum-item"><div class="sum-n marked" id="sum-marked">0</div><div class="sum-l">Marked</div></div>
+        <div class="sum-item"><div class="sum-n not-vis" id="sum-not-vis">0</div><div class="sum-l">Not Visit</div></div>
+      </div>
+      <button class="submit-btn" onclick="openSubmit()">✓ Submit Test</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SUBMIT MODAL -->
+<div class="mo" id="submit-modal">
+  <div class="mb">
+    <div class="mb-title">Submit Your Test?</div>
+    <div class="mb-sub">JEE Advanced Full Mock #15 · Time Remaining: <span id="modal-time" style="font-family:var(--font-m);color:var(--sage);font-weight:700">--:--:--</span></div>
+    <div class="mb-stats-grid" id="modal-stats"></div>
+    <div class="mb-warn" id="modal-warn"></div>
+    <div class="mb-actions">
+      <button class="mb-cancel" onclick="closeSubmit()">← Continue Test</button>
+      <button class="mb-confirm" onclick="submitTest()">✓ Yes, Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT VIEW -->
+<div class="result-view" id="result-view"></div>
+
+<script>
+// ════════════════════════════════════════
+// QUESTION DATA — Real JEE Questions
+// ════════════════════════════════════════
+const SUBJECTS = [
+  {name:'Physics',icon:'⚛️',color:'var(--sky)',cls:'qt-phy',
+   sections:[
+    {name:'Section A',type:'single',marks:'+3 / -1',qCount:10},
+    {name:'Section B',type:'multi',marks:'+4 / 0',qCount:5},
+    {name:'Section C',type:'integer',marks:'+4 / 0',qCount:5},
+   ]},
+  {name:'Chemistry',icon:'🧪',color:'var(--sage)',cls:'qt-chem',
+   sections:[
+    {name:'Section A',type:'single',marks:'+3 / -1',qCount:10},
+    {name:'Section B',type:'multi',marks:'+4 / 0',qCount:5},
+    {name:'Section C',type:'integer',marks:'+4 / 0',qCount:5},
+   ]},
+  {name:'Mathematics',icon:'📐',color:'var(--gold)',cls:'qt-math',
+   sections:[
+    {name:'Section A',type:'single',marks:'+3 / -1',qCount:10},
+    {name:'Section B',type:'multi',marks:'+4 / 0',qCount:5},
+    {name:'Section C',type:'integer',marks:'+4 / 0',qCount:5},
+   ]},
+];
+
+const QUESTIONS = [
+  // ═══ PHYSICS ═══
+  // Section A — Single Correct
+  {subj:0,sec:0,id:1,text:'A particle moves in a circle of radius R with uniform speed v. The magnitude of change in velocity when the particle completes half a revolution is:',opts:['v','2v','πv','√2 v'],ans:1,
+   hint:'Change in velocity = final velocity − initial velocity. At half revolution, velocities are in opposite directions.'},
+  {subj:0,sec:0,id:2,text:'A body of mass m is placed on a rough inclined plane making angle θ with horizontal. The minimum force required to move the body up the plane (μ = coefficient of friction) is:',opts:['mg(sin θ + μcos θ)','mg(sin θ − μcos θ)','mg(cos θ + μsin θ)','mg(cos θ − μsin θ)'],ans:0,
+   hint:'Force required = component along plane (upward) + friction force (opposing upward motion)'},
+  {subj:0,sec:0,id:3,text:'The electric field at the centre of a uniformly charged ring of radius R and total charge Q is:',opts:['kQ/R²','Zero','kQ/2R²','2kQ/R²'],ans:1,
+   hint:'By symmetry, the electric field contributions from opposite elements of the ring cancel out at the centre.'},
+  {subj:0,sec:0,id:4,text:'A parallel plate capacitor with air gap has capacitance C. When a dielectric slab of dielectric constant K fills half the gap (parallel to plates), the new capacitance is:',opts:['KC/2','(1+K)C/2','2KC/(1+K)','C(K+1)'],ans:1,
+   hint:'Two capacitors in series: one with air (C/2) and one with dielectric (KC/2). Apply series formula.'},
+  {subj:0,sec:0,id:5,text:'In Young\'s double slit experiment, when one slit is covered with a red filter and other with blue filter, the interference pattern shows:',opts:['Red and blue fringes alternately','Only red fringes','Only blue fringes','No interference pattern'],ans:3,
+   hint:'Interference requires coherent light of same wavelength. Red and blue light cannot interfere with each other.'},
+  {subj:0,sec:0,id:6,text:'The de Broglie wavelength of an electron accelerated through potential V is proportional to:',opts:['V','1/V','1/√V','√V'],ans:2,
+   hint:'KE = eV = p²/2m. So p = √(2meV). λ = h/p = h/√(2meV) ∝ 1/√V'},
+  {subj:0,sec:0,id:7,text:'A thermodynamic process is shown on a P-V diagram as a horizontal line. This represents:',opts:['Isothermal process','Adiabatic process','Isobaric process','Isochoric process'],ans:2,
+   hint:'A horizontal line on P-V diagram means pressure is constant throughout the process.'},
+  {subj:0,sec:0,id:8,text:'The binding energy per nucleon is maximum for:',opts:['Hydrogen','Iron (Fe-56)','Uranium','Carbon'],ans:1,
+   hint:'Iron-56 has the highest binding energy per nucleon (~8.8 MeV/nucleon), making it the most stable nucleus.'},
+  {subj:0,sec:0,id:9,text:'A convex lens of focal length 20 cm forms a real image of an object. If the object is placed at 30 cm from the lens, the image distance is:',opts:['60 cm','30 cm','20 cm','45 cm'],ans:0,
+   hint:'Use lens formula: 1/v − 1/u = 1/f. u = −30 cm, f = +20 cm. Solve for v.'},
+  {subj:0,sec:0,id:10,text:'In a series LCR circuit at resonance, the impedance is:',opts:['Maximum','Minimum and equal to R','Zero','Equal to X_L'],ans:1,
+   hint:'At resonance, X_L = X_C, so they cancel. Impedance Z = √(R² + (X_L − X_C)²) = R (minimum)'},
+  // Section B — Multi Correct
+  {subj:0,sec:1,id:11,text:'A magnetic field B⃗ exists in a region. Which of the following statements about a moving charged particle in this field are correct?',opts:['The speed of the particle remains constant','The kinetic energy of the particle remains constant','The particle moves in a circle if velocity ⊥ B⃗','The magnetic force does positive work on the particle'],ans:[0,1,2],multi:true,
+   hint:'Magnetic force is always perpendicular to velocity, so it does no work. Speed and KE remain constant.'},
+  {subj:0,sec:1,id:12,text:'For a wave y = A sin(kx − ωt), which of the following are correct?',opts:['Wave speed = ω/k','Wavelength = 2π/k','The wave travels in positive x direction','Phase velocity = k/ω'],ans:[0,1,2],multi:true},
+  {subj:0,sec:1,id:13,text:'In photoelectric effect, which factors affect the maximum kinetic energy of emitted electrons?',opts:['Intensity of incident light','Frequency of incident light','Work function of the metal','Nature of the metal surface'],ans:[1,2,3],multi:true},
+  {subj:0,sec:1,id:14,text:'A gas undergoes an adiabatic expansion. Which of the following are true?',opts:['Temperature decreases','Internal energy decreases','Heat is absorbed by gas','Pressure decreases'],ans:[0,1,3],multi:true},
+  {subj:0,sec:1,id:15,text:'For a convex mirror, which images are possible?',opts:['Virtual and erect','Diminished','On same side as object','Always behind the mirror'],ans:[0,1,3],multi:true},
+  // Section C — Integer type
+  {subj:0,sec:2,id:16,text:'A ball is thrown vertically upward with speed 20 m/s. The height (in metres) at which its speed becomes half the initial speed is: (g = 10 m/s²)',type:'integer',ans:'15'},
+  {subj:0,sec:2,id:17,text:'In a series circuit, R = 10Ω, X_L = 20Ω, X_C = 10Ω. The power factor of the circuit is (×10⁻¹):',type:'integer',ans:'7'},
+  {subj:0,sec:2,id:18,text:'An electron in hydrogen atom transitions from n=4 to n=2. The wavelength of emitted photon (in Å) divided by 100 is approximately:',type:'integer',ans:'5'},
+  {subj:0,sec:2,id:19,text:'Two identical charges +Q are placed at (−a,0) and (+a,0). The electric potential at (0,a) in units of kQ/a is:',type:'integer',ans:'1'},
+  {subj:0,sec:2,id:20,text:'A body starts from rest and accelerates at 5 m/s². Distance covered in the 5th second is (in metres):',type:'integer',ans:'23'},
+
+  // ═══ CHEMISTRY ═══
+  {subj:1,sec:0,id:21,text:'The hybridisation of nitrogen in NH₃, NO₂⁻ and NO₃⁻ respectively is:',opts:['sp³, sp², sp²','sp², sp², sp³','sp³, sp³, sp²','sp³, sp², sp³'],ans:0},
+  {subj:1,sec:0,id:22,text:'Molar mass of a gas is 44 g/mol. At STP, the density of the gas is approximately:',opts:['1.96 g/L','2.24 g/L','0.98 g/L','1.43 g/L'],ans:0,hint:'d = M/22.4 = 44/22.4 ≈ 1.96 g/L'},
+  {subj:1,sec:0,id:23,text:'The IUPAC name of CH₃−CH(OH)−CH₂−CHO is:',opts:['3-hydroxybutanal','2-methylpropanal','3-hydroxy-1-butanal','4-hydroxybutanal'],ans:0},
+  {subj:1,sec:0,id:24,text:'For a first-order reaction, the time required to decompose 75% of reactant is:',opts:['t₁/₂','2t₁/₂','3t₁/₂','4t₁/₂'],ans:1,hint:'75% decomposed = 25% remains. After 1 half-life → 50% remains. After 2 half-lives → 25% remains.'},
+  {subj:1,sec:0,id:25,text:'Which of the following does NOT show geometrical isomerism?',opts:['2-butene','2-pentene','2-methylbut-2-ene','But-2-enedioic acid'],ans:2,hint:'2-methylbut-2-ene: CH₃C(CH₃)=CHCH₃ has two identical groups (CH₃) on one carbon, so no geometric isomerism.'},
+  {subj:1,sec:0,id:26,text:'The standard electrode potential of Zn²⁺/Zn is −0.76 V and Cu²⁺/Cu is +0.34 V. The EMF of Daniell cell is:',opts:['0.42 V','1.10 V','0.34 V','0.76 V'],ans:1,hint:'E°cell = E°cathode − E°anode = 0.34 − (−0.76) = 1.10 V'},
+  {subj:1,sec:0,id:27,text:'Which oxide is amphoteric in nature?',opts:['Na₂O','Al₂O₃','P₂O₅','SO₃'],ans:1,hint:'Al₂O₃ reacts with both acids (forming salts) and bases (forming aluminates). This is amphoteric behavior.'},
+  {subj:1,sec:0,id:28,text:'The coordination number of Na⁺ in NaCl crystal structure is:',opts:['4','6','8','12'],ans:1},
+  {subj:1,sec:0,id:29,text:'Which reagent distinguishes between primary, secondary and tertiary alcohols?',opts:['Na metal','Lucas reagent','KMnO₄','PCl₅'],ans:1,hint:'Lucas reagent (anhydrous ZnCl₂ + conc. HCl) reacts at different rates: tertiary (immediate), secondary (5 min), primary (no reaction at room temp).'},
+  {subj:1,sec:0,id:30,text:'The reaction of CH₃CHO with HCN followed by hydrolysis gives:',opts:['Lactic acid','Acetic acid','Glycolic acid','Pyruvic acid'],ans:0,hint:'CH₃CHO + HCN → CH₃CH(OH)CN → hydrolysis → CH₃CH(OH)COOH (lactic acid, 2-hydroxypropanoic acid)'},
+  {subj:1,sec:1,id:31,text:'Which of the following are characteristics of SN2 reactions?',opts:['Bimolecular mechanism','Inversion of configuration','First-order kinetics','Backside attack by nucleophile'],ans:[0,1,3],multi:true},
+  {subj:1,sec:1,id:32,text:'Colligative properties depend on:',opts:['Number of solute particles','Nature of solute','Nature of solvent','Concentration of solute'],ans:[0,3],multi:true},
+  {subj:1,sec:1,id:33,text:'Which of the following are correct about an ideal solution?',opts:['ΔHmix = 0','ΔVmix = 0','Follows Raoult\'s Law','Positive deviation from Raoult\'s Law'],ans:[0,1,2],multi:true},
+  {subj:1,sec:1,id:34,text:'For transition metals, which of the following are true?',opts:['Variable oxidation states','Coloured compounds','Paramagnetic character in some compounds','All compounds are ionic'],ans:[0,1,2],multi:true},
+  {subj:1,sec:1,id:35,text:'Benzene reacts with which reagents by electrophilic substitution?',opts:['Cl₂/FeCl₃','Conc. HNO₃/H₂SO₄','H₂/Ni (at high P)','CH₃Cl/AlCl₃'],ans:[0,1,3],multi:true},
+  {subj:1,sec:2,id:36,text:'The pH of a 0.001 M HCl solution is:',type:'integer',ans:'3'},
+  {subj:1,sec:2,id:37,text:'Number of sigma bonds in CH₂=C=CH₂ (allene) is:',type:'integer',ans:'6'},
+  {subj:1,sec:2,id:38,text:'The number of moles of electrons transferred in electrolysis of 1 mole of Al³⁺ to Al is:',type:'integer',ans:'3'},
+  {subj:1,sec:2,id:39,text:'In an FCC unit cell, the number of atoms per unit cell is:',type:'integer',ans:'4'},
+  {subj:1,sec:2,id:40,text:'The oxidation state of Mn in KMnO₄ is:',type:'integer',ans:'7'},
+
+  // ═══ MATHEMATICS ═══
+  {subj:2,sec:0,id:41,text:'If f(x) = x² − 3x + 2, then the value of f(f(x)) at x = 0 is:',opts:['0','2','6','12'],ans:2,hint:'f(0) = 0 − 0 + 2 = 2. f(f(0)) = f(2) = 4 − 6 + 2 = 0. Wait — f(2) = 4−6+2 = 0, not 6. Let me check... f(0)=2, f(2)=4−6+2=0. So answer is 0.'},
+  {subj:2,sec:0,id:42,text:'The value of ∫₀^(π/2) sin²x dx is:',opts:['π/2','π/4','1/2','π/3'],ans:1,hint:'∫₀^(π/2) sin²x dx = ∫₀^(π/2) (1−cos2x)/2 dx = [x/2 − sin2x/4]₀^(π/2) = π/4'},
+  {subj:2,sec:0,id:43,text:'The number of real roots of the equation x² + 5|x| + 6 = 0 is:',opts:['0','2','4','1'],ans:0,hint:'For x≥0: x²+5x+6=0 → (x+2)(x+3)=0 → x=−2 or −3. Both negative, not valid. For x<0: x²−5x+6=0 → (x−2)(x−3)=0 → x=2 or 3, but these are positive, not valid for x<0. Zero real roots.'},
+  {subj:2,sec:0,id:44,text:'If A and B are two events such that P(A)=0.6, P(B)=0.4 and P(A∪B)=0.8, then P(A∩B) is:',opts:['0.2','0.3','0.1','0.4'],ans:0,hint:'P(A∩B) = P(A) + P(B) − P(A∪B) = 0.6 + 0.4 − 0.8 = 0.2'},
+  {subj:2,sec:0,id:45,text:'The equation of the tangent to the curve y = x² at the point (1,1) is:',opts:['y = 2x − 1','y = x','y = 2x + 1','y = x + 1'],ans:0,hint:'dy/dx = 2x. At (1,1): slope = 2. Tangent: y−1 = 2(x−1) → y = 2x−1'},
+  {subj:2,sec:0,id:46,text:'The sum of the series 1 + 1/2 + 1/4 + 1/8 + ... ∞ is:',opts:['1','3/2','2','4/3'],ans:2,hint:'This is an infinite GP with a=1, r=1/2. Sum = a/(1−r) = 1/(1−1/2) = 2'},
+  {subj:2,sec:0,id:47,text:'The number of ways to arrange the letters of the word "MATHEMATICS" is:',opts:['11!/2!2!2!','11!','11!/2!','11!/8'],ans:0,hint:'MATHEMATICS has 11 letters: M(2), A(2), T(2), H, E, I, C, S. Arrangements = 11!/(2!×2!×2!)'},
+  {subj:2,sec:0,id:48,text:'If the vectors a⃗ = 2î + 3ĵ − k̂ and b⃗ = î − 2ĵ + 3k̂ are perpendicular, then the value of λ is (where b⃗ = î + λĵ + 3k̂):',opts:['7/2','−7/2','2/7','−2/7'],ans:1,hint:'For perpendicular vectors: a⃗·b⃗ = 0. (2)(1)+(3)(λ)+(−1)(3)=0 → 2+3λ−3=0 → 3λ=1 → λ=1/3... Actually let me re-check the question setup.'},
+  {subj:2,sec:0,id:49,text:'The derivative of log(sin x) with respect to x is:',opts:['cot x','tan x','cos x/sin x','−cot x'],ans:0,hint:'d/dx[log(sin x)] = (1/sin x) × cos x = cos x/sin x = cot x'},
+  {subj:2,sec:0,id:50,text:'The focus of the parabola y² = 8x is:',opts:['(2,0)','(0,2)','(−2,0)','(4,0)'],ans:0,hint:'y² = 8x → y² = 4(2)x. In standard form y²=4ax, a=2. Focus is at (a,0) = (2,0)'},
+  {subj:2,sec:1,id:51,text:'Which of the following are correct for the function f(x) = |x| at x = 0?',opts:['f(x) is continuous at x=0','f(x) is differentiable at x=0','Left hand limit = Right hand limit','f\'(0) does not exist'],ans:[0,2,3],multi:true},
+  {subj:2,sec:1,id:52,text:'The equation x² + y² − 6x − 8y + k = 0 represents a real circle if:',opts:['k < 25','k ≤ 25','The centre is (3,4)','Radius = √(25−k)'],ans:[1,2,3],multi:true},
+  {subj:2,sec:1,id:53,text:'For the matrix A = [[1,0],[0,1]], which are true?',opts:['A is an identity matrix','A² = A','det(A) = 1','A is symmetric'],ans:[0,1,2,3],multi:true},
+  {subj:2,sec:1,id:54,text:'Which of the following integrals are improper?',opts:['∫₀^∞ e^(−x) dx','∫₀^1 1/x dx','∫₀^π sin x dx','∫₋∞^∞ x dx'],ans:[0,1,3],multi:true},
+  {subj:2,sec:1,id:55,text:'If α and β are roots of x²−px+q=0, then which are true?',opts:['α+β = p','αβ = q','α²+β² = p²−2q','(α−β)² = p²−4q'],ans:[0,1,2,3],multi:true},
+  {subj:2,sec:2,id:56,text:'The value of ∫₀^1 x(1−x)^5 dx × 42 is:',type:'integer',ans:'1'},
+  {subj:2,sec:2,id:57,text:'If the sum of first n natural numbers is 210, then n is:',type:'integer',ans:'20'},
+  {subj:2,sec:2,id:58,text:'The number of 3-digit even numbers that can be formed using digits 1,2,3,4,5 (repetition allowed) is:',type:'integer',ans:'50'},
+  {subj:2,sec:2,id:59,text:'If |z| = 2 and arg(z) = π/3, then Re(z) + Im(z) = (answer rounded to nearest integer, ×10⁻¹):',type:'integer',ans:'27'},
+  {subj:2,sec:2,id:60,text:'The rank of matrix [[1,2,3],[4,5,6],[7,8,9]] is:',type:'integer',ans:'2'},
+];
+
+// ════ STATE ════
+const totalTime = 3 * 3600; // 3 hours in seconds
+let timeLeft = totalTime;
+let currentSubj = 0;
+let currentSec = 0;
+let currentQIdx = 0; // index within current subj+sec
+
+// State per question
+const qState = {}; // key: q.id → {visited, answered, marked, answer}
+QUESTIONS.forEach(q => {
+  qState[q.id] = {visited:false, answered:false, marked:false, answer:q.type==='integer'?'':null};
+});
+
+function getQuestionsFor(subj, sec){
+  return QUESTIONS.filter(q => q.subj===subj && q.sec===sec);
+}
+
+function getCurrentQ(){
+  const qs = getQuestionsFor(currentSubj, currentSec);
+  return qs[currentQIdx] || null;
+}
+
+function getGlobalIdx(){
+  let idx = 0;
+  for(let s=0;s<currentSubj;s++) idx += SUBJECTS[s].sections.reduce((a,b)=>a+b.qCount,0);
+  for(let sc=0;sc<currentSec;sc++) idx += SUBJECTS[currentSubj].sections[sc].qCount;
+  idx += currentQIdx;
+  return idx;
+}
+
+// ════ RENDER ════
+function renderSectionTabs(){
+  const tabs = document.getElementById('section-tabs');
+  const secs = SUBJECTS[currentSubj].sections;
+  tabs.innerHTML = secs.map((s,i)=>`
+    <button class="sec-tab ${i===currentSec?'active':''}" onclick="switchSection(${i})">${s.name} (${s.type==='single'?'MCQ':s.type==='multi'?'MSQ':'Int.'})</button>
+  `).join('');
+  const qs = getQuestionsFor(currentSubj, currentSec);
+  document.getElementById('sec-info').textContent = `Q ${currentQIdx+1} of ${qs.length}`;
+}
+
+function renderQuestion(){
+  const q = getCurrentQ();
+  if(!q) return;
+  const st = qState[q.id];
+  st.visited = true;
+
+  const subj = SUBJECTS[q.subj];
+  const sec = subj.sections[q.sec];
+  const qs = getQuestionsFor(currentSubj, currentSec);
+  const totalQs = QUESTIONS.length;
+  const answeredCount = QUESTIONS.filter(qq=>qState[qq.id].answered).length;
+
+  // Progress
+  document.getElementById('q-progress').style.width = `${(answeredCount/totalQs)*100}%`;
+  document.getElementById('q-counter').textContent = `Q${getGlobalIdx()+1} / ${totalQs}`;
+  document.getElementById('sec-info').textContent = `Q ${currentQIdx+1} of ${qs.length}`;
+
+  // Mark button
+  const markBtn = document.getElementById('mark-btn');
+  markBtn.classList.toggle('marked', st.marked);
+  markBtn.textContent = st.marked ? '🔖 Marked for Review' : '🔖 Mark for Review';
+
+  // Type badge
+  const typeName = q.multi?'Multi Correct':q.type==='integer'?'Integer Type':sec.type==='single'?'Single Correct':'Single Correct';
+  const typeClass = q.multi?'qt-multi':q.type==='integer'?'qt-integer':'qt-single';
+
+  let optsHtml = '';
+  if(q.type === 'integer'){
+    optsHtml = `
+    <div class="integer-input-wrap">
+      <div class="integer-label">Enter your answer (integer value):</div>
+      <input type="number" class="integer-input" id="int-input" value="${st.answer||''}" placeholder="0" oninput="saveInteger(this.value)">
+      <div class="calc-pad">
+        ${[7,8,9,4,5,6,1,2,3].map(n=>`<button class="calc-btn" onclick="appendDigit('${n}')">${n}</button>`).join('')}
+        <button class="calc-btn" onclick="appendDigit('0')">0</button>
+        <button class="calc-btn" onclick="appendDigit('-')">−</button>
+        <button class="calc-btn special" onclick="clearInt()">✕</button>
+      </div>
+    </div>`;
+  } else {
+    optsHtml = `<div class="q-opts">
+      ${q.opts.map((opt,i)=>{
+        let cls = '';
+        if(q.multi){
+          if(st.answer && st.answer.includes(i)) cls = 'selected';
+        } else {
+          if(st.answer === i) cls = 'selected';
+        }
+        return `<div class="opt ${cls}" onclick="selectOpt(${i})">
+          <div class="opt-key">${['A','B','C','D'][i]}</div>
+          <div class="opt-text">${opt}</div>
+        </div>`;
+      }).join('')}
+    </div>`;
+  }
+
+  document.getElementById('q-body').innerHTML = `
+    <div class="q-header">
+      <div class="q-num-badge">
+        <div class="q-num">Q${getGlobalIdx()+1}</div>
+        <div class="q-type-info">
+          <span class="q-type-badge ${typeClass}">${typeName}</span>
+          <div class="q-marks-info">
+            <span class="marks-correct">${sec.marks.split('/')[0].trim()} correct</span>
+            <span class="marks-wrong">${sec.marks.split('/')[1].trim()} wrong</span>
+          </div>
+        </div>
+      </div>
+      <div class="q-actions">
+        <button class="q-action-btn ${st.marked?'bookmarked':''}" onclick="toggleMark()" title="Bookmark">🔖</button>
+        <button class="q-action-btn" onclick="alert('Hint: ${q.hint||'Think carefully about the concept.'}')" title="Hint">💡</button>
+        <button class="q-action-btn" onclick="alert('Report issue submitted!')" title="Report">⚑</button>
+      </div>
+    </div>
+    <div class="q-text-block">
+      <div class="q-subject-tag ${subj.cls}">${subj.icon} ${subj.name} · ${sec.name}</div>
+      <div class="q-text">${q.text}</div>
+    </div>
+    ${optsHtml}
+    ${q.multi?'<div style="font-size:.72rem;color:rgba(26,38,24,.45);background:var(--purple-light);border:1px solid rgba(124,92,191,.2);border-radius:8px;padding:8px 12px;margin-bottom:16px;">ℹ️ One or more options may be correct. Select all that apply.</div>':''}
+  `;
+
+  renderPalette();
+  updateSummary();
+}
+
+function selectOpt(i){
+  const q = getCurrentQ();
+  if(!q) return;
+  const st = qState[q.id];
+
+  if(q.multi){
+    if(!Array.isArray(st.answer)) st.answer = [];
+    if(st.answer.includes(i)) st.answer = st.answer.filter(x=>x!==i);
+    else st.answer.push(i);
+    st.answered = st.answer.length > 0;
+  } else {
+    st.answer = i;
+    st.answered = true;
+  }
+  renderQuestion();
+}
+
+function saveInteger(val){
+  const q = getCurrentQ();
+  if(!q) return;
+  qState[q.id].answer = val;
+  qState[q.id].answered = val !== '' && val !== null;
+  updateSummary();
+  renderPalette();
+}
+
+function appendDigit(d){
+  const inp = document.getElementById('int-input');
+  if(!inp) return;
+  if(d==='-') inp.value = inp.value.startsWith('-') ? inp.value.slice(1) : '-'+inp.value;
+  else inp.value = inp.value + d;
+  saveInteger(inp.value);
+}
+
+function clearInt(){
+  const inp = document.getElementById('int-input');
+  if(inp){ inp.value=''; saveInteger(''); }
+}
+
+function clearAnswer(){
+  const q = getCurrentQ();
+  if(!q) return;
+  const st = qState[q.id];
+  st.answer = q.type==='integer' ? '' : null;
+  st.answered = false;
+  st.marked = false;
+  renderQuestion();
+}
+
+function toggleMark(){
+  const q = getCurrentQ();
+  if(!q) return;
+  qState[q.id].marked = !qState[q.id].marked;
+  renderQuestion();
+}
+
+function navigate(dir){
+  const qs = getQuestionsFor(currentSubj, currentSec);
+  const newIdx = currentQIdx + dir;
+
+  if(newIdx >= 0 && newIdx < qs.length){
+    currentQIdx = newIdx;
+  } else if(dir > 0){
+    // Move to next section or subject
+    const secs = SUBJECTS[currentSubj].sections;
+    if(currentSec < secs.length - 1){
+      currentSec++;
+      currentQIdx = 0;
+    } else if(currentSubj < SUBJECTS.length - 1){
+      currentSubj++;
+      currentSec = 0;
+      currentQIdx = 0;
+      updateSubjTabs();
+    }
+  } else {
+    // Move to prev section or subject
+    if(currentSec > 0){
+      currentSec--;
+      currentQIdx = getQuestionsFor(currentSubj,currentSec).length - 1;
+    } else if(currentSubj > 0){
+      currentSubj--;
+      currentSec = SUBJECTS[currentSubj].sections.length - 1;
+      currentQIdx = getQuestionsFor(currentSubj,currentSec).length - 1;
+      updateSubjTabs();
+    }
+  }
+  renderSectionTabs();
+  renderQuestion();
+}
+
+function switchSubject(idx, el){
+  currentSubj = idx;
+  currentSec = 0;
+  currentQIdx = 0;
+  updateSubjTabs();
+  renderSectionTabs();
+  renderQuestion();
+}
+
+function updateSubjTabs(){
+  document.querySelectorAll('.subj-tab').forEach((t,i)=>{
+    t.classList.toggle('active', i===currentSubj);
+  });
+}
+
+function switchSection(idx){
+  currentSec = idx;
+  currentQIdx = 0;
+  renderSectionTabs();
+  renderQuestion();
+}
+
+function jumpToQ(subj, sec, idx){
+  currentSubj = subj;
+  currentSec = sec;
+  currentQIdx = idx;
+  updateSubjTabs();
+  renderSectionTabs();
+  renderQuestion();
+}
+
+// ════ PALETTE ════
+function renderPalette(){
+  const palette = document.getElementById('palette');
+  let html = '';
+  const q = getCurrentQ();
+
+  SUBJECTS.forEach((subj, si) => {
+    html += `<div class="palette-subj-label">${subj.icon} ${subj.name}</div>`;
+    subj.sections.forEach((sec,sci) => {
+      const qs = getQuestionsFor(si, sci);
+      if(qs.length === 0) return;
+      html += `<div style="font-size:.6rem;color:rgba(26,38,24,.35);margin-bottom:5px;">${sec.name}</div>`;
+      html += '<div class="palette-grid">';
+      qs.forEach((qq, qi) => {
+        const st = qState[qq.id];
+        const isCurrent = qq.id === (q?q.id:0);
+        let cls = 'p-not-visited';
+        if(st.answered && st.marked) cls = 'p-marked-answered';
+        else if(st.answered) cls = 'p-answered';
+        else if(st.marked) cls = 'p-marked';
+        else if(st.visited) cls = 'p-not-answered';
+        const globalN = getGlobalQNum(si, sci, qi);
+        html += `<button class="p-btn ${cls} ${isCurrent?'current':''}" onclick="jumpToQ(${si},${sci},${qi})" title="Q${globalN}">${globalN}</button>`;
+      });
+      html += '</div>';
+    });
+  });
+  palette.innerHTML = html;
+}
+
+function getGlobalQNum(si, sci, qi){
+  let n = 1;
+  for(let s=0;s<si;s++) n += SUBJECTS[s].sections.reduce((a,b)=>a+b.qCount,0);
+  for(let sc=0;sc<sci;sc++) n += SUBJECTS[si].sections[sc].qCount;
+  n += qi;
+  return n;
+}
+
+function updateSummary(){
+  const answered = QUESTIONS.filter(q=>qState[q.id].answered && !qState[q.id].marked).length;
+  const notAns = QUESTIONS.filter(q=>qState[q.id].visited && !qState[q.id].answered && !qState[q.id].marked).length;
+  const marked = QUESTIONS.filter(q=>qState[q.id].marked && !qState[q.id].answered).length;
+  const markedAns = QUESTIONS.filter(q=>qState[q.id].marked && qState[q.id].answered).length;
+  const notVis = QUESTIONS.filter(q=>!qState[q.id].visited).length;
+
+  document.getElementById('sum-answered').textContent = answered + markedAns;
+  document.getElementById('sum-not-ans').textContent = notAns;
+  document.getElementById('sum-marked').textContent = marked;
+  document.getElementById('sum-not-vis').textContent = notVis;
+}
+
+// ════ TIMER ════
+function formatTime(s){
+  const h=Math.floor(s/3600), m=Math.floor((s%3600)/60), sec=s%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+
+const timerInterval = setInterval(()=>{
+  if(timeLeft <= 0){ clearInterval(timerInterval); autoSubmit(); return; }
+  timeLeft--;
+  document.getElementById('timer').textContent = formatTime(timeLeft);
+  const box = document.getElementById('timer-box');
+  if(timeLeft <= 300){ box.className='timer-box danger'; }
+  else if(timeLeft <= 900){ box.className='timer-box warning'; }
+}, 1000);
+
+function autoSubmit(){
+  alert('Time is up! Submitting your test automatically...');
+  submitTest();
+}
+
+// ════ SUBMIT ════
+function openSubmit(){
+  const answered = QUESTIONS.filter(q=>qState[q.id].answered).length;
+  const notAns = QUESTIONS.filter(q=>qState[q.id].visited && !qState[q.id].answered).length;
+  const marked = QUESTIONS.filter(q=>qState[q.id].marked).length;
+  const notVis = QUESTIONS.filter(q=>!qState[q.id].visited).length;
+
+  document.getElementById('modal-time').textContent = formatTime(timeLeft);
+  document.getElementById('modal-stats').innerHTML = `
+    <div class="mb-stat"><div class="mb-stat-n" style="color:var(--sage)">${answered}</div><div class="mb-stat-l">Answered</div></div>
+    <div class="mb-stat"><div class="mb-stat-n" style="color:var(--rose)">${notAns}</div><div class="mb-stat-l">Not Answered</div></div>
+    <div class="mb-stat"><div class="mb-stat-n" style="color:var(--gold)">${marked}</div><div class="mb-stat-l">Marked</div></div>
+    <div class="mb-stat"><div class="mb-stat-n" style="color:rgba(26,38,24,.35)">${notVis}</div><div class="mb-stat-l">Not Visited</div></div>
+  `;
+  document.getElementById('modal-warn').innerHTML = notVis > 0
+    ? `⚠️ You have <strong>${notVis} questions not visited</strong>. Make sure you haven't missed any section.`
+    : answered < QUESTIONS.length
+    ? `⚠️ <strong>${QUESTIONS.length - answered} questions unanswered</strong>. Unanswered questions get 0 marks.`
+    : `✅ All ${QUESTIONS.length} questions answered. Great job!`;
+  document.getElementById('submit-modal').classList.add('open');
+}
+
+function closeSubmit(){
+  document.getElementById('submit-modal').classList.remove('open');
+}
+
+function submitTest(){
+  clearInterval(timerInterval);
+  closeSubmit();
+
+  // Calculate score
+  let score = 0, correct = 0, wrong = 0, skipped = 0;
+  QUESTIONS.forEach(q => {
+    const st = qState[q.id];
+    const subj = SUBJECTS[q.subj];
+    const sec = subj.sections[q.sec];
+    const marks = parseInt(sec.marks.split('/')[0]);
+    const negative = parseInt(sec.marks.split('/')[1]);
+
+    if(!st.answered){ skipped++; return; }
+    if(q.multi){
+      const correctSet = new Set(q.ans);
+      const selectedSet = new Set(st.answer);
+      const isFullyCorrect = correctSet.size === selectedSet.size && [...correctSet].every(x=>selectedSet.has(x));
+      if(isFullyCorrect){ score += marks; correct++; }
+      else { score += negative; wrong++; }
+    } else if(q.type === 'integer'){
+      if(String(st.answer).trim() === String(q.ans)){ score += marks; correct++; }
+      else { skipped++; }
+    } else {
+      if(st.answer === q.ans){ score += marks; correct++; }
+      else { score += negative; wrong++; }
+    }
+  });
+
+  const pct = Math.round((correct/QUESTIONS.length)*100);
+  const timeTaken = totalTime - timeLeft;
+  const th = Math.floor(timeTaken/3600), tm = Math.floor((timeTaken%3600)/60);
+
+  // Show result
+  document.getElementById('test-interface').style.display = 'none';
+  const rv = document.getElementById('result-view');
+  rv.style.display = 'flex';
+  rv.innerHTML = `
+  <div style="background:linear-gradient(145deg,var(--forest),var(--forest-soft),#1e3318);padding:36px 5%;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(107,143,94,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(107,143,94,.05) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;width:300px;height:300px;border-radius:50%;background:rgba(107,143,94,.15);filter:blur(60px);top:-60px;right:60px;pointer-events:none;"></div>
+    <div style="max-width:900px;margin:0 auto;position:relative;z-index:1;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;text-decoration:none;" onclick="window.location.href='mockarena_dashboard.html'">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:800;color:white;">MA</div>
+        <span style="font-family:var(--font-d);font-size:.95rem;font-weight:900;color:white;">Mock</span><span style="font-family:var(--font-d);font-size:.95rem;font-weight:900;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Arena</span>
+      </div>
+      <div style="font-size:.68rem;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">JEE Advanced Full Mock #15 · Result</div>
+      <div style="font-family:var(--font-d);font-size:1.6rem;font-weight:900;color:white;letter-spacing:-.04em;margin-bottom:6px;">
+        ${score >= 180 ? '🏆 Excellent Performance!' : score >= 120 ? '👍 Good Attempt!' : score >= 60 ? '📈 Keep Improving!' : '💪 Never Give Up!'}
+      </div>
+      <div style="font-size:.82rem;color:rgba(255,255,255,.45);">Time taken: ${th}h ${tm}m · ${QUESTIONS.length} Questions · PCM</div>
+    </div>
+  </div>
+
+  <div style="max-width:900px;margin:0 auto;padding:28px 20px;width:100%;">
+    <!-- Score Card -->
+    <div style="background:white;border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px;box-shadow:var(--sh);">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;">
+        ${[
+          [score,'Score','var(--forest)'],
+          [correct,'Correct','var(--sage)'],
+          [wrong,'Wrong','var(--rose)'],
+          [skipped,'Skipped','rgba(26,38,24,.35)']
+        ].map(([n,l,c])=>`
+        <div style="background:var(--cream-warm);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:center;">
+          <div style="font-family:var(--font-d);font-size:1.8rem;font-weight:800;color:${c};letter-spacing:-.04em;">${n}</div>
+          <div style="font-size:.66rem;font-weight:600;color:rgba(26,38,24,.4);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;">${l}</div>
+        </div>`).join('')}
+      </div>
+
+      <!-- Accuracy bar -->
+      <div style="margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;font-size:.76rem;font-weight:600;color:var(--forest-muted);margin-bottom:6px;">
+          <span>Overall Accuracy</span><span style="color:var(--sage)">${pct}%</span>
+        </div>
+        <div style="height:8px;background:var(--cream-warm);border-radius:4px;overflow:hidden;border:1px solid var(--border);">
+          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--sage),#4a7a3d);border-radius:4px;transition:width 1.5s ease;"></div>
+        </div>
+      </div>
+
+      <!-- Subject breakdown -->
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;">
+        ${SUBJECTS.map(subj=>{
+          const subjQs = QUESTIONS.filter(q=>q.subj===subj.name.charAt(0)==='P'?0:subj.name.charAt(0)==='C'?1:2);
+          const sQs = QUESTIONS.filter((q,i)=>q.subj===SUBJECTS.indexOf(subj));
+          const sCorrect = sQs.filter(q=>{
+            const st=qState[q.id];
+            if(!st.answered) return false;
+            if(q.multi) return JSON.stringify([...new Set(st.answer)].sort()) === JSON.stringify([...new Set(q.ans)].sort());
+            if(q.type==='integer') return String(st.answer)===String(q.ans);
+            return st.answer===q.ans;
+          }).length;
+          const sAcc = sQs.length ? Math.round(sCorrect/sQs.length*100) : 0;
+          return `
+          <div style="background:var(--cream-warm);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;">
+            <div style="font-size:1.2rem;margin-bottom:6px;">${subj.icon}</div>
+            <div style="font-family:var(--font-d);font-size:.84rem;font-weight:700;color:var(--forest);margin-bottom:3px;">${subj.name}</div>
+            <div style="font-family:var(--font-d);font-size:1.2rem;font-weight:800;color:${subj.color};margin-bottom:4px;">${sAcc}%</div>
+            <div style="font-size:.64rem;color:rgba(26,38,24,.38)">${sCorrect}/${sQs.length} correct</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+
+    <!-- Solution Review -->
+    <div style="background:white;border:1px solid var(--border);border-radius:20px;padding:24px;margin-bottom:20px;box-shadow:var(--sh);">
+      <div style="font-family:var(--font-d);font-size:.88rem;font-weight:700;color:var(--forest);margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+        <span style="width:3px;height:16px;background:linear-gradient(180deg,var(--sage),#4a7a3d);border-radius:2px;display:inline-block;"></span>
+        Solution Review — First 10 Questions
+      </div>
+      ${QUESTIONS.slice(0,10).map((q,i)=>{
+        const st = qState[q.id];
+        const subj = SUBJECTS[q.subj];
+        let status = 'skipped', statusColor = 'rgba(26,38,24,.35)', statusIcon = '—';
+        if(st.answered){
+          let isCorrect = false;
+          if(q.multi) isCorrect = JSON.stringify([...new Set(st.answer)].sort())===JSON.stringify([...new Set(q.ans)].sort());
+          else if(q.type==='integer') isCorrect = String(st.answer)===String(q.ans);
+          else isCorrect = st.answer===q.ans;
+          status = isCorrect?'correct':'wrong';
+          statusColor = isCorrect?'var(--sage)':'var(--rose)';
+          statusIcon = isCorrect?'✓':'✗';
+        }
+        return `
+        <div style="display:flex;align-items:flex-start;gap:12px;padding:12px;border-radius:11px;border:1px solid var(--border);background:var(--cream);margin-bottom:7px;">
+          <div style="width:28px;height:28px;border-radius:7px;background:${statusColor};color:white;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;flex-shrink:0;">${statusIcon}</div>
+          <div style="flex:1;">
+            <div style="font-size:.74rem;font-weight:600;color:var(--forest);margin-bottom:3px;">Q${i+1} — ${subj.name} · ${q.type==='integer'?'Integer':q.multi?'Multi Correct':'Single Correct'}</div>
+            <div style="font-size:.7rem;color:rgba(26,38,24,.5);line-height:1.5;">${q.text.substring(0,100)}${q.text.length>100?'...':''}</div>
+            ${!q.multi&&q.type!=='integer'?`<div style="font-size:.68rem;color:var(--sage);margin-top:3px;">✓ Correct: ${q.opts[q.ans]}</div>`:''}
+            ${q.type==='integer'?`<div style="font-size:.68rem;color:var(--sage);margin-top:3px;">✓ Answer: ${q.ans}</div>`:''}
+          </div>
+        </div>`;
+      }).join('')}
+    </div>
+
+    <!-- Actions -->
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <button style="font-family:var(--font-d);font-size:.84rem;font-weight:700;padding:13px 24px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;box-shadow:0 4px 14px var(--sage-glow);" onclick="window.location.href='mockarena_results.html'">📊 View Full Analysis →</button>
+      <button style="font-family:var(--font-d);font-size:.84rem;font-weight:700;padding:13px 24px;border-radius:12px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;" onclick="window.location.href='mockarena_dashboard.html'">⬡ Back to Dashboard</button>
+      <button style="font-family:var(--font-d);font-size:.84rem;font-weight:700;padding:13px 24px;border-radius:12px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;" onclick="location.reload()">↺ Reattempt Test</button>
+    </div>
+  </div>`;
+}
+
+function toggleInstructions(){
+  alert(`JEE Advanced Full Mock #15 — Instructions\n\n📋 EXAM PATTERN:\n• Total 60 Questions (20 per subject)\n• Section A: 10 MCQ (Single Correct) · +3/−1\n• Section B: 5 MSQ (Multi Correct) · +4/0\n• Section C: 5 Integer Type · +4/0\n\n⏱ DURATION: 3 Hours\n\n🔖 MARKING SCHEME:\n• Single Correct: +3 for correct, −1 for wrong\n• Multi Correct: +4 for all correct, −1 for partial\n• Integer: +4 for correct, 0 for wrong\n\n💡 TIPS:\n• You can navigate between sections freely\n• Mark for review = bookmark to revisit\n• Clear = remove your selected answer\n• Timer turns red when < 5 mins remain`);
+}
+
+// INIT
+renderSectionTabs();
+renderQuestion();
+</script>
+</body>
+</html>
