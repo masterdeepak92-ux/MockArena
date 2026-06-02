@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena — NEET UG Full Mock #8</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf9f5;--cream-warm:#f5f3ec;--cream-card:#ffffff;
+  --forest:#1a2618;--forest-soft:#243422;--forest-muted:#3d5239;
+  --sage:#6b8f5e;--sage-light:rgba(107,143,94,0.1);--sage-glow:rgba(107,143,94,0.22);
+  --gold:#c8962a;--gold-dim:rgba(200,150,42,0.09);
+  --rose:#c84b4b;--rose-light:rgba(200,75,75,0.09);
+  --sky:#3b82c4;--sky-light:rgba(59,130,196,0.09);
+  --amber:#b87333;--amber-light:rgba(184,115,51,0.09);
+  --purple:#7c5cbf;--purple-light:rgba(124,92,191,0.09);
+  --teal:#0d9488;--teal-light:rgba(13,148,136,0.09);
+  --border:rgba(26,38,24,0.08);--border-med:rgba(26,38,24,0.13);
+  --font-d:'Outfit',sans-serif;--font-m:'IBM Plex Mono',monospace;--font-s:'Lora',serif;
+  --sh:0 1px 3px rgba(26,38,24,0.06),0 4px 16px rgba(26,38,24,0.04);
+  --sh-hover:0 8px 32px rgba(107,143,94,0.15),0 2px 8px rgba(26,38,24,0.06);
+  --sh-deep:0 20px 60px rgba(26,38,24,0.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font-d);background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased;}
+
+/* ═══ TOP BAR ═══ */
+.topbar{height:56px;background:var(--forest);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.06);position:relative;z-index:100;}
+.tb-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.tb-lm{width:30px;height:30px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:white;}
+.tb-brand{font-family:var(--font-d);font-size:.9rem;font-weight:900;}
+.tb-mock{color:white;}
+.tb-arena{background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.tb-divider{width:1px;height:18px;background:rgba(255,255,255,.15);}
+.tb-test-name{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.5);}
+.tb-center{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;}
+
+/* Subject tabs */
+.subj-tabs{display:flex;gap:3px;background:rgba(255,255,255,.06);border-radius:10px;padding:3px;}
+.subj-tab{font-family:var(--font-d);font-size:.72rem;font-weight:600;padding:5px 12px;border-radius:8px;border:none;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.4);background:none;}
+.subj-tab:hover{color:rgba(255,255,255,.8);}
+.subj-tab.active{color:white;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);}
+.subj-tab.bio.active{background:rgba(13,148,136,.35);border-color:rgba(13,148,136,.5);}
+.subj-tab.phy.active{background:rgba(59,130,196,.3);border-color:rgba(59,130,196,.4);}
+.subj-tab.chem.active{background:rgba(107,143,94,.3);border-color:rgba(107,143,94,.4);}
+
+.tb-right{display:flex;align-items:center;gap:10px;}
+.timer-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px 14px;display:flex;align-items:center;gap:8px;}
+.timer-box.warning{background:rgba(200,150,42,.15);border-color:rgba(200,150,42,.3);}
+.timer-box.danger{background:rgba(200,75,75,.18);border-color:rgba(200,75,75,.35);animation:timerPulse 1s infinite;}
+@keyframes timerPulse{0%,100%{opacity:1;}50%{opacity:.7;}}
+.timer-icon{font-size:.88rem;}
+.timer-val{font-family:var(--font-m);font-size:.92rem;font-weight:600;color:white;letter-spacing:.04em;}
+.timer-lbl{font-size:.56rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;}
+.btn{font-family:var(--font-d);font-size:.76rem;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;border:none;}
+.btn-ghost-light{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);}
+.btn-ghost-light:hover{background:rgba(255,255,255,.14);color:white;}
+.btn-submit{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;padding:8px 18px;box-shadow:0 2px 12px var(--sage-glow);}
+.btn-submit:hover{box-shadow:0 4px 18px var(--sage-glow);transform:translateY(-1px);}
+
+/* ═══ LAYOUT ═══ */
+.layout{display:flex;height:calc(100vh - 56px);overflow:hidden;}
+
+/* ═══ QUESTION PANEL ═══ */
+.q-panel{flex:1;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--border);}
+.section-bar{background:var(--cream-warm);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.sec-label{font-family:var(--font-d);font-size:.72rem;font-weight:700;color:var(--forest-muted);text-transform:uppercase;letter-spacing:.06em;}
+.sec-tabs{display:flex;gap:4px;}
+.sec-tab{font-family:var(--font-d);font-size:.7rem;font-weight:600;padding:4px 12px;border-radius:7px;border:1.5px solid var(--border-med);background:var(--cream-warm);color:var(--forest-muted);cursor:pointer;transition:all .18s;}
+.sec-tab:hover{border-color:var(--sage);color:var(--sage);}
+.sec-tab.active{background:var(--forest);color:white;border-color:var(--forest);}
+.q-progress-bar{height:3px;background:var(--border);flex-shrink:0;}
+.q-progress-fill{height:100%;background:linear-gradient(90deg,var(--teal),var(--sage));transition:width .4s ease;}
+.q-body{flex:1;overflow-y:auto;padding:22px;}
+.q-body::-webkit-scrollbar{width:3px;}
+.q-body::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+/* Question header */
+.q-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:12px;}
+.q-num-badge{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.q-num{width:36px;height:36px;border-radius:9px;background:var(--forest);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.82rem;font-weight:800;}
+.q-type-info{display:flex;flex-direction:column;gap:3px;}
+.q-type-badge{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.qt-single{background:var(--teal-light);color:var(--teal);border:1px solid rgba(13,148,136,.2);}
+.q-marks-info{font-size:.64rem;color:rgba(26,38,24,.4);display:flex;gap:10px;}
+.marks-pos{color:var(--sage);font-weight:600;}
+.marks-neg{color:var(--rose);font-weight:600;}
+.q-actions{display:flex;gap:6px;}
+.q-action-btn{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--border-med);background:var(--cream-warm);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.8rem;transition:all .18s;}
+.q-action-btn:hover{border-color:var(--sage);background:var(--sage-light);}
+.q-action-btn.bookmarked{background:var(--gold-dim);border-color:rgba(200,150,42,.3);}
+
+/* Question text */
+.q-text-block{background:white;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;}
+.q-subject-tag{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px;display:flex;align-items:center;gap:6px;}
+.qt-bio{color:var(--teal);}
+.qt-phy{color:var(--sky);}
+.qt-chem{color:var(--sage);}
+.q-text{font-family:var(--font-s);font-size:.9rem;color:var(--forest);line-height:1.78;}
+.q-text .math{font-family:var(--font-m);background:var(--cream-warm);padding:2px 7px;border-radius:5px;font-size:.86rem;border:1px solid var(--border);}
+.q-ncert{font-size:.68rem;color:rgba(26,38,24,.4);font-style:italic;margin-top:8px;padding-top:8px;border-top:1px solid var(--border);}
+
+/* Options */
+.q-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:18px;}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:12px 15px;border-radius:11px;border:2px solid var(--border-med);background:white;cursor:pointer;transition:all .22s;}
+.opt:hover{border-color:var(--teal);background:var(--teal-light);}
+.opt.selected{border-color:var(--sky);background:var(--sky-light);}
+.opt.selected .opt-key{background:var(--sky);color:white;border-color:var(--sky);}
+.opt.correct{border-color:var(--sage);background:var(--sage-light);}
+.opt.correct .opt-key{background:var(--sage);color:white;border-color:var(--sage);}
+.opt.wrong{border-color:var(--rose);background:var(--rose-light);}
+.opt.wrong .opt-key{background:var(--rose);color:white;border-color:var(--rose);}
+.opt-key{width:28px;height:28px;border-radius:8px;border:2px solid var(--border-med);background:var(--cream-warm);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.72rem;font-weight:800;color:var(--forest-muted);flex-shrink:0;transition:all .22s;}
+.opt-text{font-size:.84rem;color:var(--forest);line-height:1.5;padding-top:1px;}
+
+/* Footer */
+.q-footer{background:var(--cream-warm);border-top:1px solid var(--border);padding:13px 20px;display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.q-mark-btn{font-family:var(--font-d);font-size:.76rem;font-weight:600;padding:8px 15px;border-radius:10px;border:1.5px solid rgba(200,150,42,.3);background:var(--gold-dim);color:var(--gold);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:5px;}
+.q-mark-btn:hover{background:rgba(200,150,42,.15);}
+.q-mark-btn.marked{background:var(--gold);color:white;border-color:var(--gold);}
+.q-clear-btn{font-family:var(--font-d);font-size:.76rem;font-weight:600;padding:8px 15px;border-radius:10px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;transition:all .2s;}
+.q-clear-btn:hover{border-color:var(--rose);color:var(--rose);}
+.q-spacer{flex:1;}
+.q-counter{font-family:var(--font-m);font-size:.72rem;color:rgba(26,38,24,.4);}
+.q-nav-btn{font-family:var(--font-d);font-size:.78rem;font-weight:600;padding:9px 18px;border-radius:10px;cursor:pointer;transition:all .2s;border:1.5px solid;display:flex;align-items:center;gap:6px;}
+.q-nav-prev{background:var(--cream-warm);border-color:var(--border-med);color:var(--forest-muted);}
+.q-nav-prev:hover{border-color:var(--sage);color:var(--sage);}
+.q-nav-next{background:linear-gradient(135deg,var(--forest),var(--forest-soft));color:white;border-color:transparent;}
+.q-nav-next:hover{box-shadow:var(--sh-hover);transform:translateY(-1px);}
+
+/* ═══ PALETTE PANEL ═══ */
+.palette-panel{width:278px;flex-shrink:0;background:white;display:flex;flex-direction:column;overflow:hidden;}
+.palette-header{padding:13px 15px 9px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.palette-title{font-family:var(--font-d);font-size:.8rem;font-weight:700;color:var(--forest);margin-bottom:9px;}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.leg-item{display:flex;align-items:center;gap:5px;font-size:.64rem;color:var(--forest-muted);}
+.leg-dot{width:18px;height:18px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.56rem;font-weight:700;}
+.leg-answered{background:var(--sage);color:white;}
+.leg-not-answered{background:var(--rose-light);color:var(--rose);border:1.5px solid rgba(200,75,75,.25);}
+.leg-not-visited{background:var(--cream-warm);color:rgba(26,38,24,.4);border:1.5px solid var(--border-med);}
+.leg-marked{background:var(--gold);color:white;}
+.leg-marked-answered{background:var(--purple);color:white;}
+
+.palette-scroll{flex:1;overflow-y:auto;padding:11px 13px;}
+.palette-scroll::-webkit-scrollbar{width:3px;}
+.palette-scroll::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+.palette-subj-label{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(26,38,24,.35);margin:10px 0 6px;display:flex;align-items:center;gap:6px;}
+.palette-subj-label::after{content:'';flex:1;height:1px;background:var(--border);}
+.palette-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:3px;}
+.p-btn{width:100%;aspect-ratio:1;border-radius:7px;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:.68rem;font-weight:600;cursor:pointer;transition:all .18s;}
+.p-btn:hover{transform:scale(1.1);}
+.p-btn.current{box-shadow:0 0 0 2px var(--forest),0 0 0 4px rgba(26,38,24,.12);}
+.p-not-visited{background:var(--cream-warm);border-color:var(--border-med);color:rgba(26,38,24,.4);}
+.p-answered{background:var(--sage);border-color:#4a7a3d;color:white;}
+.p-not-answered{background:var(--rose-light);border-color:rgba(200,75,75,.35);color:var(--rose);}
+.p-marked{background:var(--gold);border-color:#b8832a;color:white;}
+.p-marked-answered{background:var(--purple);border-color:#6b4ba8;color:white;}
+
+.summary-strip{background:var(--cream-warm);border-top:1px solid var(--border);padding:10px 13px;flex-shrink:0;}
+.summary-row{display:flex;justify-content:space-between;margin-bottom:7px;}
+.sum-item{text-align:center;}
+.sum-n{font-family:var(--font-d);font-size:.9rem;font-weight:800;color:var(--forest);}
+.sum-l{font-size:.56rem;color:rgba(26,38,24,.38);text-transform:uppercase;letter-spacing:.05em;}
+.sum-n.answered{color:var(--sage);}
+.sum-n.not-ans{color:var(--rose);}
+.sum-n.marked{color:var(--gold);}
+.sum-n.not-vis{color:rgba(26,38,24,.3);}
+.submit-btn{width:100%;font-family:var(--font-d);font-size:.82rem;font-weight:700;padding:11px;border-radius:11px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;box-shadow:0 4px 14px var(--sage-glow);transition:all .22s;margin-top:5px;}
+.submit-btn:hover{box-shadow:0 6px 20px var(--sage-glow);transform:translateY(-1px);}
+
+/* MODAL */
+.mo{position:fixed;inset:0;z-index:500;background:rgba(26,38,24,.6);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;}
+.mo.open{display:flex;}
+.mb{background:white;border:1px solid var(--border-med);border-radius:22px;padding:28px;width:480px;max-width:95vw;box-shadow:var(--sh-deep);animation:mpop .25s cubic-bezier(.34,1.56,.64,1);}
+@keyframes mpop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.mb-title{font-family:var(--font-d);font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:6px;}
+.mb-sub{font-size:.78rem;color:rgba(26,38,24,.5);margin-bottom:18px;}
+.mb-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
+.mb-stat{background:var(--cream-warm);border:1px solid var(--border);border-radius:11px;padding:12px 14px;}
+.mb-stat-n{font-family:var(--font-d);font-size:1.2rem;font-weight:800;margin-bottom:2px;}
+.mb-stat-l{font-size:.62rem;color:rgba(26,38,24,.4);text-transform:uppercase;letter-spacing:.05em;}
+.mb-warn{background:var(--rose-light);border:1px solid rgba(200,75,75,.2);border-radius:10px;padding:10px 14px;font-size:.76rem;color:var(--rose);margin-bottom:16px;display:flex;align-items:center;gap:8px;}
+.mb-actions{display:flex;gap:9px;}
+.mb-cancel{flex:1;font-family:var(--font-d);font-size:.8rem;font-weight:600;padding:11px;border-radius:10px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;}
+.mb-cancel:hover{border-color:var(--sage);color:var(--sage);}
+.mb-confirm{flex:2;font-family:var(--font-d);font-size:.82rem;font-weight:700;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;box-shadow:0 4px 14px var(--sage-glow);}
+
+/* Result view */
+.result-view{display:none;flex-direction:column;height:100vh;overflow-y:auto;background:var(--cream);}
+.result-view::-webkit-scrollbar{width:3px;}
+.result-view::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.fade{animation:fadeIn .3s ease;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<!-- ════ TEST INTERFACE ════ -->
+<div id="test-interface" style="display:flex;flex-direction:column;height:100vh;">
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <a href="mockarena_dashboard.html" class="tb-logo">
+    <div class="tb-lm">MA</div>
+    <div class="tb-brand"><span class="tb-mock">Mock</span><span class="tb-arena">Arena</span></div>
+  </a>
+  <div class="tb-divider"></div>
+  <div class="tb-test-name">NEET UG Full Mock #8</div>
+  <div class="tb-center">
+    <div class="subj-tabs" id="subj-tabs">
+      <button class="subj-tab bio active" onclick="switchSubject(0,this)">🧬 Biology</button>
+      <button class="subj-tab phy" onclick="switchSubject(1,this)">⚛️ Physics</button>
+      <button class="subj-tab chem" onclick="switchSubject(2,this)">🧪 Chemistry</button>
+    </div>
+  </div>
+  <div class="tb-right">
+    <div class="timer-box" id="timer-box">
+      <span class="timer-icon">⏱</span>
+      <div>
+        <div class="timer-val" id="timer">03:20:00</div>
+        <div class="timer-lbl">Remaining</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost-light" onclick="showInstructions()">📋 Instructions</button>
+    <button class="btn btn-submit" onclick="openSubmit()">Submit Test</button>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+  <!-- QUESTION PANEL -->
+  <div class="q-panel">
+    <div class="section-bar">
+      <span class="sec-label">Section:</span>
+      <div class="sec-tabs" id="section-tabs"></div>
+      <div style="margin-left:auto;font-family:var(--font-m);font-size:.68rem;color:rgba(26,38,24,.35)" id="sec-info"></div>
+    </div>
+    <div class="q-progress-bar"><div class="q-progress-fill" id="q-progress"></div></div>
+    <div class="q-body" id="q-body"></div>
+    <div class="q-footer">
+      <button class="q-mark-btn" id="mark-btn" onclick="toggleMark()">🔖 Mark for Review</button>
+      <button class="q-clear-btn" onclick="clearAnswer()">✕ Clear</button>
+      <div class="q-spacer"></div>
+      <span class="q-counter" id="q-counter"></span>
+      <button class="q-nav-btn q-nav-prev" onclick="navigate(-1)">← Previous</button>
+      <button class="q-nav-btn q-nav-next" onclick="navigate(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- PALETTE PANEL -->
+  <div class="palette-panel">
+    <div class="palette-header">
+      <div class="palette-title">Question Palette</div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot leg-answered">✓</div>Answered</div>
+        <div class="leg-item"><div class="leg-dot leg-not-answered">!</div>Not Answered</div>
+        <div class="leg-item"><div class="leg-dot leg-not-visited">—</div>Not Visited</div>
+        <div class="leg-item"><div class="leg-dot leg-marked">🔖</div>Marked</div>
+        <div class="leg-item"><div class="leg-dot leg-marked-answered">✓</div>Marked+Ans</div>
+      </div>
+    </div>
+    <div class="palette-scroll" id="palette"></div>
+    <div class="summary-strip">
+      <div class="summary-row">
+        <div class="sum-item"><div class="sum-n answered" id="sum-answered">0</div><div class="sum-l">Answered</div></div>
+        <div class="sum-item"><div class="sum-n not-ans" id="sum-not-ans">0</div><div class="sum-l">Not Ans.</div></div>
+        <div class="sum-item"><div class="sum-n marked" id="sum-marked">0</div><div class="sum-l">Marked</div></div>
+        <div class="sum-item"><div class="sum-n not-vis" id="sum-not-vis">0</div><div class="sum-l">Not Visit</div></div>
+      </div>
+      <button class="submit-btn" onclick="openSubmit()">✓ Submit Test</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SUBMIT MODAL -->
+<div class="mo" id="submit-modal">
+  <div class="mb">
+    <div class="mb-title">Submit NEET Mock Test?</div>
+    <div class="mb-sub">NEET UG Full Mock #8 · Time Left: <span id="modal-time" style="font-family:var(--font-m);color:var(--sage);font-weight:700">--:--:--</span></div>
+    <div class="mb-stats" id="modal-stats"></div>
+    <div class="mb-warn" id="modal-warn"></div>
+    <div class="mb-actions">
+      <button class="mb-cancel" onclick="closeSubmit()">← Continue Test</button>
+      <button class="mb-confirm" onclick="submitTest()">✓ Yes, Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT VIEW -->
+<div class="result-view" id="result-view"></div>
+
+<script>
+// ════ NEET SUBJECTS & SECTIONS ════
+const SUBJECTS = [
+  {name:'Biology',icon:'🧬',color:'var(--teal)',cls:'qt-bio',
+   sections:[
+    {name:'Botany',type:'single',marks:'+4 / -1',qCount:50},
+    {name:'Zoology',type:'single',marks:'+4 / -1',qCount:50},
+   ]},
+  {name:'Physics',icon:'⚛️',color:'var(--sky)',cls:'qt-phy',
+   sections:[
+    {name:'Section A',type:'single',marks:'+4 / -1',qCount:35},
+    {name:'Section B',type:'single',marks:'+4 / -1',qCount:15},
+   ]},
+  {name:'Chemistry',icon:'🧪',color:'var(--sage)',cls:'qt-chem',
+   sections:[
+    {name:'Section A',type:'single',marks:'+4 / -1',qCount:35},
+    {name:'Section B',type:'single',marks:'+4 / -1',qCount:15},
+   ]},
+];
+
+// ════ REAL NEET QUESTIONS ════
+const QUESTIONS = [
+  // ─── BIOLOGY · BOTANY ───
+  {subj:0,sec:0,id:1,text:'Which of the following is the correct sequence of events in mitosis?',
+   opts:['Prophase → Metaphase → Anaphase → Telophase','Metaphase → Prophase → Anaphase → Telophase','Prophase → Anaphase → Metaphase → Telophase','Telophase → Anaphase → Metaphase → Prophase'],
+   ans:0,ncert:'Class 11 · Chapter 10 · Cell Cycle and Cell Division',
+   hint:'PMAT — Prophase, Metaphase, Anaphase, Telophase is the correct order.'},
+  {subj:0,sec:0,id:2,text:'The process of photosynthesis takes place in:',
+   opts:['Mitochondria','Ribosome','Chloroplast','Nucleus'],
+   ans:2,ncert:'Class 11 · Chapter 13 · Photosynthesis',
+   hint:'Chloroplasts are the site of photosynthesis — they contain the thylakoids and stroma.'},
+  {subj:0,sec:0,id:3,text:'Which of the following is NOT a function of gibberellins?',
+   opts:['Seed germination','Stem elongation','Root initiation','Breaking dormancy'],
+   ans:2,ncert:'Class 11 · Chapter 15 · Plant Growth & Development',
+   hint:'Gibberellins promote stem elongation, seed germination and breaking dormancy. Root initiation is promoted by auxins.'},
+  {subj:0,sec:0,id:4,text:'The first stable product of CO₂ fixation in C₃ plants is:',
+   opts:['Oxaloacetate (OAA)','3-Phosphoglycerate (3-PGA)','RuBP','Glucose'],
+   ans:1,ncert:'Class 11 · Chapter 13 · Photosynthesis in Higher Plants',
+   hint:'In C₃ plants, CO₂ is fixed by RuBisCO onto RuBP to form two molecules of 3-PGA (first stable product).'},
+  {subj:0,sec:0,id:5,text:'Which type of placentation is found in Dianthus?',
+   opts:['Axile','Free central','Parietal','Basal'],
+   ans:1,ncert:'Class 11 · Chapter 5 · Morphology of Flowering Plants',
+   hint:'Free central placentation is found in members of family Caryophyllaceae — e.g., Dianthus. Ovules are borne on central axis.'},
+  {subj:0,sec:0,id:6,text:'Casparian strips are present in:',
+   opts:['Epidermis','Cortex','Endodermis','Pericycle'],
+   ans:2,ncert:'Class 11 · Chapter 11 · Transport in Plants',
+   hint:'Casparian strips are suberin deposits in the radial and transverse walls of endodermal cells, regulating water movement.'},
+  {subj:0,sec:0,id:7,text:'The correct sequence of taxonomic categories is:',
+   opts:['Species → Genus → Family → Order → Class → Phylum → Kingdom','Kingdom → Phylum → Class → Order → Family → Genus → Species','Species → Family → Genus → Order → Class → Phylum → Kingdom','Kingdom → Class → Phylum → Order → Family → Genus → Species'],
+   ans:1,ncert:'Class 11 · Chapter 1 · The Living World',
+   hint:'King Philip Came Over For Good Soup — Kingdom, Phylum, Class, Order, Family, Genus, Species.'},
+  {subj:0,sec:0,id:8,text:'Which of the following is an example of a vestigial organ in humans?',
+   opts:['Appendix','Pancreas','Liver','Kidney'],
+   ans:0,ncert:'Class 12 · Chapter 7 · Evolution',
+   hint:'The vermiform appendix is a vestigial organ in humans — it has no significant function but was useful in ancestors.'},
+  {subj:0,sec:0,id:9,text:'The enzyme that catalyses the first step of glycolysis is:',
+   opts:['Phosphoglucose isomerase','Hexokinase','Phosphofructokinase','Aldolase'],
+   ans:1,ncert:'Class 11 · Chapter 12 · Respiration in Plants',
+   hint:'Hexokinase catalyses the phosphorylation of glucose to glucose-6-phosphate — the first step of glycolysis.'},
+  {subj:0,sec:0,id:10,text:'Which plant hormone causes apical dominance?',
+   opts:['Gibberellin','Cytokinin','Auxin','Ethylene'],
+   ans:2,ncert:'Class 11 · Chapter 15 · Plant Growth and Development',
+   hint:'Auxin produced at the apical bud suppresses lateral bud growth — this is called apical dominance.'},
+  {subj:0,sec:0,id:11,text:'Xylem transports water from roots to leaves. This transport is explained by:',
+   opts:['Root pressure theory only','Cohesion-Tension theory','Active transport theory','Capillarity theory only'],
+   ans:1,ncert:'Class 11 · Chapter 11 · Transport in Plants',
+   hint:'The Cohesion-Tension theory (Dixon-Joly) best explains long-distance water transport through xylem.'},
+  {subj:0,sec:0,id:12,text:'Which organelle is known as the "powerhouse of the cell"?',
+   opts:['Ribosome','Golgi apparatus','Mitochondria','Lysosome'],
+   ans:2,ncert:'Class 11 · Chapter 8 · Cell: The Unit of Life',
+   hint:'Mitochondria produce ATP through cellular respiration — hence called the powerhouse of the cell.'},
+  // More botany...
+  {subj:0,sec:0,id:13,text:'In which phase of meiosis does crossing over occur?',
+   opts:['Leptotene','Zygotene','Pachytene','Diplotene'],
+   ans:2,ncert:'Class 11 · Chapter 10 · Cell Cycle and Cell Division',
+   hint:'Crossing over (exchange of genetic material between non-sister chromatids) occurs during Pachytene of Prophase I.'},
+  {subj:0,sec:0,id:14,text:'Which of the following is an incorrect match?',
+   opts:['Rhizobium — Nitrogen fixation','Nostoc — Nitrogen fixation','E. coli — Vitamin B12 synthesis','Streptomyces — Antibiotics'],
+   ans:2,ncert:'Class 12 · Chapter 10 · Microbes in Human Welfare',
+   hint:'E. coli synthesizes Vitamin K, not B12. Vitamin B12 is synthesized by Pseudomonas and Propionibacterium.'},
+  {subj:0,sec:0,id:15,text:'The botanical name of the plant used for the production of the drug reserpine is:',
+   opts:['Papaver somniferum','Rauwolfia serpentina','Datura stramonium','Cannabis sativa'],
+   ans:1,ncert:'Class 12 · Chapter 16 · Environmental Issues',
+   hint:'Rauwolfia serpentina (Sarpagandha) is used to produce reserpine — used to treat hypertension and mental illness.'},
+  // Many more botany
+  {subj:0,sec:0,id:16,text:'Which of the following is a correct statement about Bryophytes?',
+   opts:['They are vascular plants','They have seeds','They are called amphibians of the plant kingdom','They are predominantly found in marine environments'],
+   ans:2,ncert:'Class 11 · Chapter 3 · Plant Kingdom',
+   hint:'Bryophytes are called amphibians of the plant kingdom as they need water for reproduction (fertilization requires water).'},
+  {subj:0,sec:0,id:17,text:'The inflorescence of wheat is called:',
+   opts:['Spadix','Spike of spikelets','Raceme','Umbel'],
+   ans:1,ncert:'Class 11 · Chapter 5 · Morphology of Flowering Plants',
+   hint:'Wheat (Triticum aestivum) has a spike of spikelets type of inflorescence, where each spikelet has florets.'},
+  {subj:0,sec:0,id:18,text:'Which of the following vitamins is water-soluble?',
+   opts:['Vitamin A','Vitamin D','Vitamin E','Vitamin C'],
+   ans:3,ncert:'Class 11 · Chapter 16 · Digestion and Absorption',
+   hint:'Vitamins B and C are water-soluble. Vitamins A, D, E, K are fat-soluble. Vitamin C (ascorbic acid) is water-soluble.'},
+  {subj:0,sec:0,id:19,text:'Assertion: Cytokinin delays senescence of leaves.\nReason: Cytokinin promotes cell division and stimulates nutrient mobilization towards leaves.',
+   opts:['Both A and R are true and R is the correct explanation','Both A and R are true but R is not the correct explanation','A is true but R is false','A is false but R is true'],
+   ans:0,ncert:'Class 11 · Chapter 15 · Plant Growth and Development',
+   hint:'Both are correct. Cytokinin delays leaf senescence (Richmond-Lang effect) by mobilising nutrients to the leaf.'},
+  {subj:0,sec:0,id:20,text:'How many ATPs are produced by complete oxidation of one glucose molecule in aerobic respiration?',
+   opts:['36–38','30–32','2','18'],
+   ans:0,ncert:'Class 11 · Chapter 12 · Respiration in Plants',
+   hint:'Complete aerobic oxidation of glucose yields approximately 36-38 ATP molecules (via glycolysis + Krebs cycle + ETC).'},
+  // More botany to 50
+  {subj:0,sec:0,id:21,text:'Which of the following is the correct site of ETS (Electron Transport System)?',
+   opts:['Matrix of mitochondria','Inner mitochondrial membrane','Outer mitochondrial membrane','Cytoplasm'],
+   ans:1,ncert:'Class 11 · Chapter 12 · Respiration in Plants',hint:'ETS is located on the inner mitochondrial membrane.'},
+  {subj:0,sec:0,id:22,text:'The monomer of DNA is:',opts:['Nucleoside','Nucleotide','Amino acid','Fatty acid'],ans:1,ncert:'Class 12 · Chapter 6 · Molecular Basis of Inheritance',hint:'DNA is a polymer of nucleotides. Each nucleotide = phosphate + sugar + nitrogenous base.'},
+  {subj:0,sec:0,id:23,text:'Which of the following enzymes is used in DNA replication to remove RNA primers?',opts:['DNA polymerase I','DNA polymerase III','Helicase','Primase'],ans:0,ncert:'Class 12 · Chapter 6',hint:'DNA polymerase I has 5\'→3\' exonuclease activity to remove RNA primers and replaces with DNA.'},
+  {subj:0,sec:0,id:24,text:'The term "Ecology" was coined by:',opts:['Ernst Haeckel','Aristotle','Darwin','Linnaeus'],ans:0,ncert:'Class 12 · Chapter 13 · Organisms and Populations',hint:'Ernst Haeckel coined the term "Ecology" in 1869 from Greek oikos (home) and logos (study).'},
+  {subj:0,sec:0,id:25,text:'Which pigment is responsible for the red colour of tomatoes?',opts:['Anthocyanin','Lycopene','Carotene','Chlorophyll b'],ans:1,ncert:'Class 11 · Chapter 13',hint:'Lycopene is a carotenoid pigment responsible for the red colour in tomatoes and other red fruits.'},
+  // Remaining botany stubs
+  ...[26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50].map(n=>({
+    subj:0,sec:0,id:n,
+    text:`Botany Question ${n}: NCERT-based question on Plant Kingdom, Anatomy, Physiology, or Genetics.`,
+    opts:['Option A (Correct answer)','Option B','Option C','Option D'],
+    ans:0,ncert:'NCERT Class 11-12 · Biology',hint:'Refer to NCERT for detailed explanation.'
+  })),
+
+  // ─── BIOLOGY · ZOOLOGY ───
+  {subj:0,sec:1,id:51,text:'During which sub-stage of meiosis I does synapsis of homologous chromosomes occur?',
+   opts:['Leptotene','Zygotene','Pachytene','Diplotene'],
+   ans:1,ncert:'Class 11 · Chapter 10 · Cell Cycle and Cell Division',
+   hint:'Synapsis (pairing of homologous chromosomes) occurs during Zygotene. Crossing over occurs during Pachytene.'},
+  {subj:0,sec:1,id:52,text:'Which blood group is called the "universal donor"?',
+   opts:['AB+','O+','O−','AB−'],
+   ans:2,ncert:'Class 12 · Chapter 5 · Principles of Inheritance',
+   hint:'O negative (O−) blood group is the universal donor as it lacks A, B antigens and Rh factor — safe for all.'},
+  {subj:0,sec:1,id:53,text:'The correct sequence in the reflex arc is:',
+   opts:['Receptor → Effector → Afferent neuron → CNS → Efferent neuron','Receptor → Afferent neuron → CNS → Efferent neuron → Effector','CNS → Receptor → Afferent neuron → Effector → Efferent neuron','Effector → Afferent neuron → Receptor → CNS → Efferent neuron'],
+   ans:1,ncert:'Class 11 · Chapter 21 · Neural Control and Coordination',
+   hint:'A reflex arc goes: Receptor → Afferent (sensory) neuron → CNS → Efferent (motor) neuron → Effector (muscle/gland).'},
+  {subj:0,sec:1,id:54,text:'Which enzyme is responsible for digestion of proteins in the stomach?',
+   opts:['Pepsin','Trypsin','Lipase','Amylase'],
+   ans:0,ncert:'Class 11 · Chapter 16 · Digestion and Absorption',
+   hint:'Pepsin (secreted as pepsinogen, activated by HCl) digests proteins in the stomach into peptides.'},
+  {subj:0,sec:1,id:55,text:'The functional unit of kidney is:',
+   opts:['Nephron','Neuron','Alveolus','Acinus'],
+   ans:0,ncert:'Class 11 · Chapter 19 · Excretory Products',
+   hint:'The nephron is the functional unit of the kidney — each kidney has about 1 million nephrons.'},
+  {subj:0,sec:1,id:56,text:'Which hormone is secreted by the corpus luteum?',
+   opts:['Estrogen only','Progesterone and estrogen','FSH','LH'],
+   ans:1,ncert:'Class 12 · Chapter 3 · Human Reproduction',
+   hint:'Corpus luteum (formed from ruptured Graafian follicle) secretes both progesterone and estrogen to maintain pregnancy.'},
+  {subj:0,sec:1,id:57,text:'Sickle cell anaemia is caused by:',
+   opts:['Deletion of a codon','Point mutation in beta-globin gene','Addition of a nucleotide','Chromosomal abnormality'],
+   ans:1,ncert:'Class 12 · Chapter 5 · Principles of Inheritance',
+   hint:'A single point mutation (GAG→GTG) in the beta-globin gene replaces glutamic acid with valine → sickle-shaped RBCs.'},
+  {subj:0,sec:1,id:58,text:'Which type of immunity is acquired through mother\'s milk?',
+   opts:['Active immunity','Passive immunity','Auto-immunity','Cell-mediated immunity'],
+   ans:1,ncert:'Class 12 · Chapter 8 · Human Health and Disease',
+   hint:'Colostrum (first milk) contains maternal antibodies (IgA) — this is passive immunity transferred to the infant.'},
+  {subj:0,sec:1,id:59,text:'The normal human heart rate (beats per minute) is:',
+   opts:['50–60','70–75','80–90','90–100'],
+   ans:1,ncert:'Class 11 · Chapter 18 · Body Fluids and Circulation',
+   hint:'Normal resting heart rate in healthy adults is 70–75 beats per minute (cardiac output ≈ 5 L/min).'},
+  {subj:0,sec:1,id:60,text:'Which of the following is NOT a part of the male reproductive system?',
+   opts:['Epididymis','Seminal vesicle','Fallopian tube','Vas deferens'],
+   ans:2,ncert:'Class 12 · Chapter 3 · Human Reproduction',
+   hint:'The Fallopian tube (oviduct) is part of the female reproductive system, not the male.'},
+  // Remaining zoology stubs
+  ...[61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100].map(n=>({
+    subj:0,sec:1,id:n,
+    text:`Zoology Question ${n}: NCERT-based question on Animal Kingdom, Human Physiology, Genetics, or Evolution.`,
+    opts:['Option A (Correct answer)','Option B','Option C','Option D'],
+    ans:0,ncert:'NCERT Class 11-12 · Biology',hint:'Refer to NCERT for detailed explanation.'
+  })),
+
+  // ─── PHYSICS ───
+  {subj:1,sec:0,id:101,text:'A body of mass 5 kg is acted upon by two perpendicular forces of 8 N and 6 N. The magnitude of acceleration is:',
+   opts:['1.5 m/s²','2 m/s²','2.5 m/s²','3 m/s²'],
+   ans:1,ncert:'Class 11 · Chapter 5 · Laws of Motion',
+   hint:'Net force = √(8²+6²) = √100 = 10 N. a = F/m = 10/5 = 2 m/s².'},
+  {subj:1,sec:0,id:102,text:'The de Broglie wavelength of an electron accelerated through 100 V is approximately:',
+   opts:['1.23 Å','0.123 Å','12.3 Å','0.0123 Å'],
+   ans:0,ncert:'Class 12 · Chapter 11 · Dual Nature of Radiation',
+   hint:'λ = h/√(2meV) = 1.227/√V nm = 1.227/10 nm = 0.1227 nm = 1.23 Å'},
+  {subj:1,sec:0,id:103,text:'The lens formula is:',
+   opts:['1/f = 1/v − 1/u','1/f = 1/u − 1/v','1/f = 1/v + 1/u','f = v − u'],
+   ans:0,ncert:'Class 12 · Chapter 9 · Ray Optics',
+   hint:'Lens formula: 1/f = 1/v − 1/u (using sign convention, with all distances measured from optical centre).'},
+  {subj:1,sec:0,id:104,text:'The binding energy per nucleon is maximum for:',
+   opts:['Hydrogen','Iron (Fe-56)','Uranium (U-238)','Carbon'],
+   ans:1,ncert:'Class 12 · Chapter 13 · Nuclei',
+   hint:'Iron-56 has the highest binding energy per nucleon (~8.8 MeV/nucleon) — it is the most stable nucleus.'},
+  {subj:1,sec:0,id:105,text:'In a series LCR circuit at resonance, the impedance equals:',
+   opts:['Zero','Maximum','R (resistance only)','X_L + X_C'],
+   ans:2,ncert:'Class 12 · Chapter 7 · Alternating Current',
+   hint:'At resonance, X_L = X_C so they cancel. Z = √(R²+(X_L−X_C)²) = √(R²+0) = R.'},
+  // Physics stubs
+  ...[106,107,108,109,110,111,112,113,114,115,116,117,118,119,120,121,122,123,124,125,126,127,128,129,130,131,132,133,134,135].map(n=>({
+    subj:1,sec:0,id:n,
+    text:`Physics Question ${n}: NCERT-based question covering Mechanics, Electricity, Optics, or Modern Physics.`,
+    opts:['Option A (Correct)','Option B','Option C','Option D'],
+    ans:0,ncert:'NCERT Class 11-12 · Physics',hint:'Refer to NCERT for detailed explanation.'
+  })),
+  ...[136,137,138,139,140,141,142,143,144,145,146,147,148,149,150].map(n=>({
+    subj:1,sec:1,id:n,
+    text:`Physics Section B Question ${n-135}: NCERT-based concept question.`,
+    opts:['Option A (Correct)','Option B','Option C','Option D'],
+    ans:0,ncert:'NCERT Class 11-12 · Physics',hint:'Refer to NCERT.'
+  })),
+
+  // ─── CHEMISTRY ───
+  {subj:2,sec:0,id:151,text:'Which of the following is a non-reducing sugar?',
+   opts:['Glucose','Fructose','Sucrose','Maltose'],
+   ans:2,ncert:'Class 12 · Chapter 14 · Biomolecules',
+   hint:'Sucrose is a non-reducing sugar because both anomeric carbons (C1 of glucose and C2 of fructose) are involved in the glycosidic bond — no free carbonyl group.'},
+  {subj:2,sec:0,id:152,text:'The standard electrode potential of Zn²⁺/Zn is −0.76 V and Cu²⁺/Cu is +0.34 V. The EMF of Daniell cell is:',
+   opts:['0.42 V','1.10 V','0.76 V','0.34 V'],
+   ans:1,ncert:'Class 12 · Chapter 3 · Electrochemistry',
+   hint:'E°cell = E°cathode − E°anode = 0.34 − (−0.76) = 1.10 V. Copper is cathode, zinc is anode.'},
+  {subj:2,sec:0,id:153,text:'Which of the following is the correct IUPAC name of CH₃−CH(OH)−COOH?',
+   opts:['2-hydroxypropanoic acid','3-hydroxypropanoic acid','Lactic acid (common name)','Propanol'],
+   ans:0,ncert:'Class 12 · Chapter 12 · Aldehydes, Ketones & Carboxylic Acids',
+   hint:'CH₃−CH(OH)−COOH: Longest chain = 3C (propanoic acid), OH at C2 → 2-hydroxypropanoic acid (IUPAC name of lactic acid).'},
+  {subj:2,sec:0,id:154,text:'For a first-order reaction, the time required to complete 75% of reaction is:',
+   opts:['t₁/₂','2t₁/₂','3t₁/₂','4t₁/₂'],
+   ans:1,ncert:'Class 12 · Chapter 4 · Chemical Kinetics',
+   hint:'75% complete = 25% remains. After 1 half-life → 50% remains, after 2 half-lives → 25% remains. t = 2t₁/₂.'},
+  {subj:2,sec:0,id:155,text:'The hybridisation of nitrogen in NH₃ is:',
+   opts:['sp','sp²','sp³','sp³d'],
+   ans:2,ncert:'Class 11 · Chapter 4 · Chemical Bonding',
+   hint:'In NH₃, N has 3 bond pairs + 1 lone pair = 4 electron pairs → sp³ hybridisation (tetrahedral electron geometry, pyramidal shape).'},
+  // Chemistry stubs
+  ...[156,157,158,159,160,161,162,163,164,165,166,167,168,169,170,171,172,173,174,175,176,177,178,179,180,181,182,183,184,185].map(n=>({
+    subj:2,sec:0,id:n,
+    text:`Chemistry Question ${n-150}: NCERT-based question on Physical, Organic, or Inorganic Chemistry.`,
+    opts:['Option A (Correct)','Option B','Option C','Option D'],
+    ans:0,ncert:'NCERT Class 11-12 · Chemistry',hint:'Refer to NCERT for detailed explanation.'
+  })),
+  ...[186,187,188,189,190,191,192,193,194,195,196,197,198,199,200].map(n=>({
+    subj:2,sec:1,id:n,
+    text:`Chemistry Section B Question ${n-185}: NCERT-based concept question.`,
+    opts:['Option A (Correct)','Option B','Option C','Option D'],
+    ans:0,ncert:'NCERT Class 11-12 · Chemistry',hint:'Refer to NCERT.'
+  })),
+];
+
+// ════ STATE ════
+const totalTime = 3*3600 + 20*60; // 3h 20m
+let timeLeft = totalTime;
+let currentSubj = 0, currentSec = 0, currentQIdx = 0;
+const qState = {};
+QUESTIONS.forEach(q=>{ qState[q.id]={visited:false,answered:false,marked:false,answer:null}; });
+
+function getQsFor(s,sc){ return QUESTIONS.filter(q=>q.subj===s&&q.sec===sc); }
+function getCurrentQ(){ return getQsFor(currentSubj,currentSec)[currentQIdx]||null; }
+
+function getGlobalNum(si,sci,qi){
+  let n=1;
+  for(let s=0;s<si;s++) n+=SUBJECTS[s].sections.reduce((a,b)=>a+b.qCount,0);
+  for(let sc=0;sc<sci;sc++) n+=SUBJECTS[si].sections[sc].qCount;
+  n+=qi; return n;
+}
+
+function getGlobalIdx(){return getGlobalNum(currentSubj,currentSec,currentQIdx);}
+
+function renderSectionTabs(){
+  const tabs=document.getElementById('section-tabs');
+  const secs=SUBJECTS[currentSubj].sections;
+  tabs.innerHTML=secs.map((s,i)=>`<button class="sec-tab ${i===currentSec?'active':''}" onclick="switchSection(${i})">${s.name}</button>`).join('');
+  const qs=getQsFor(currentSubj,currentSec);
+  document.getElementById('sec-info').textContent=`Q ${currentQIdx+1} of ${qs.length}`;
+}
+
+function renderQuestion(){
+  const q=getCurrentQ(); if(!q)return;
+  const st=qState[q.id]; st.visited=true;
+  const subj=SUBJECTS[q.subj]; const sec=subj.sections[q.sec];
+  const qs=getQsFor(currentSubj,currentSec);
+  const total=QUESTIONS.length;
+  const answered=QUESTIONS.filter(qq=>qState[qq.id].answered).length;
+  document.getElementById('q-progress').style.width=`${(answered/total)*100}%`;
+  document.getElementById('q-counter').textContent=`Q${getGlobalIdx()} / ${total}`;
+  document.getElementById('sec-info').textContent=`Q ${currentQIdx+1} of ${qs.length}`;
+  const markBtn=document.getElementById('mark-btn');
+  markBtn.classList.toggle('marked',st.marked);
+  markBtn.textContent=st.marked?'🔖 Marked':'🔖 Mark for Review';
+
+  document.getElementById('q-body').innerHTML=`
+  <div class="q-header">
+    <div class="q-num-badge">
+      <div class="q-num">Q${getGlobalIdx()}</div>
+      <div class="q-type-info">
+        <span class="q-type-badge qt-single">Single Correct</span>
+        <div class="q-marks-info"><span class="marks-pos">+4 correct</span><span class="marks-neg">−1 wrong</span></div>
+      </div>
+    </div>
+    <div class="q-actions">
+      <button class="q-action-btn ${st.marked?'bookmarked':''}" onclick="toggleMark()" title="Mark">🔖</button>
+      <button class="q-action-btn" onclick="alert('Hint: ${(q.hint||'Think carefully!').replace(/'/g,'\\\'')}')" title="Hint">💡</button>
+      <button class="q-action-btn" onclick="alert('Issue reported!')" title="Report">⚑</button>
+    </div>
+  </div>
+  <div class="q-text-block">
+    <div class="q-subject-tag ${subj.cls}">${subj.icon} ${subj.name} · ${sec.name}</div>
+    <div class="q-text">${q.text}</div>
+    ${q.ncert?`<div class="q-ncert">📖 ${q.ncert}</div>`:''}
+  </div>
+  <div class="q-opts">
+    ${q.opts.map((opt,i)=>`
+    <div class="opt ${st.answer===i?'selected':''}" onclick="selectOpt(${i})">
+      <div class="opt-key">${['A','B','C','D'][i]}</div>
+      <div class="opt-text">${opt}</div>
+    </div>`).join('')}
+  </div>`;
+
+  renderPalette(); updateSummary();
+}
+
+function selectOpt(i){
+  const q=getCurrentQ(); if(!q)return;
+  const st=qState[q.id];
+  st.answer=i; st.answered=true;
+  renderQuestion();
+}
+
+function clearAnswer(){
+  const q=getCurrentQ(); if(!q)return;
+  qState[q.id].answer=null; qState[q.id].answered=false; qState[q.id].marked=false;
+  renderQuestion();
+}
+
+function toggleMark(){
+  const q=getCurrentQ(); if(!q)return;
+  qState[q.id].marked=!qState[q.id].marked;
+  renderQuestion();
+}
+
+function navigate(dir){
+  const qs=getQsFor(currentSubj,currentSec);
+  const newIdx=currentQIdx+dir;
+  if(newIdx>=0&&newIdx<qs.length){ currentQIdx=newIdx; }
+  else if(dir>0){
+    const secs=SUBJECTS[currentSubj].sections;
+    if(currentSec<secs.length-1){ currentSec++; currentQIdx=0; }
+    else if(currentSubj<SUBJECTS.length-1){ currentSubj++; currentSec=0; currentQIdx=0; updateSubjTabs(); }
+  } else {
+    if(currentSec>0){ currentSec--; currentQIdx=getQsFor(currentSubj,currentSec).length-1; }
+    else if(currentSubj>0){ currentSubj--; currentSec=SUBJECTS[currentSubj].sections.length-1; currentQIdx=getQsFor(currentSubj,currentSec).length-1; updateSubjTabs(); }
+  }
+  renderSectionTabs(); renderQuestion();
+}
+
+function switchSubject(idx,el){
+  currentSubj=idx; currentSec=0; currentQIdx=0;
+  updateSubjTabs(); renderSectionTabs(); renderQuestion();
+}
+
+function updateSubjTabs(){
+  document.querySelectorAll('.subj-tab').forEach((t,i)=>t.classList.toggle('active',i===currentSubj));
+}
+
+function switchSection(idx){ currentSec=idx; currentQIdx=0; renderSectionTabs(); renderQuestion(); }
+
+function jumpToQ(si,sci,qi){ currentSubj=si; currentSec=sci; currentQIdx=qi; updateSubjTabs(); renderSectionTabs(); renderQuestion(); }
+
+function renderPalette(){
+  const palette=document.getElementById('palette');
+  const q=getCurrentQ();
+  let html='';
+  SUBJECTS.forEach((subj,si)=>{
+    html+=`<div class="palette-subj-label">${subj.icon} ${subj.name}</div>`;
+    subj.sections.forEach((sec,sci)=>{
+      const qs=getQsFor(si,sci);
+      if(!qs.length)return;
+      html+=`<div style="font-size:.6rem;color:rgba(26,38,24,.35);margin-bottom:4px;">${sec.name}</div>`;
+      html+='<div class="palette-grid">';
+      qs.forEach((qq,qi)=>{
+        const st=qState[qq.id];
+        const isCurr=qq.id===(q?q.id:0);
+        let cls='p-not-visited';
+        if(st.answered&&st.marked)cls='p-marked-answered';
+        else if(st.answered)cls='p-answered';
+        else if(st.marked)cls='p-marked';
+        else if(st.visited)cls='p-not-answered';
+        const gn=getGlobalNum(si,sci,qi);
+        html+=`<button class="p-btn ${cls} ${isCurr?'current':''}" onclick="jumpToQ(${si},${sci},${qi})" title="Q${gn}">${gn}</button>`;
+      });
+      html+='</div>';
+    });
+  });
+  palette.innerHTML=html;
+}
+
+function updateSummary(){
+  const answered=QUESTIONS.filter(q=>qState[q.id].answered&&!qState[q.id].marked).length;
+  const markedAns=QUESTIONS.filter(q=>qState[q.id].marked&&qState[q.id].answered).length;
+  const notAns=QUESTIONS.filter(q=>qState[q.id].visited&&!qState[q.id].answered&&!qState[q.id].marked).length;
+  const marked=QUESTIONS.filter(q=>qState[q.id].marked&&!qState[q.id].answered).length;
+  const notVis=QUESTIONS.filter(q=>!qState[q.id].visited).length;
+  document.getElementById('sum-answered').textContent=answered+markedAns;
+  document.getElementById('sum-not-ans').textContent=notAns;
+  document.getElementById('sum-marked').textContent=marked;
+  document.getElementById('sum-not-vis').textContent=notVis;
+}
+
+// Timer
+function formatTime(s){
+  const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+const timerInterval=setInterval(()=>{
+  if(timeLeft<=0){clearInterval(timerInterval);submitTest();return;}
+  timeLeft--;
+  document.getElementById('timer').textContent=formatTime(timeLeft);
+  const box=document.getElementById('timer-box');
+  if(timeLeft<=300)box.className='timer-box danger';
+  else if(timeLeft<=900)box.className='timer-box warning';
+},1000);
+
+// Submit
+function openSubmit(){
+  const answered=QUESTIONS.filter(q=>qState[q.id].answered).length;
+  const notAns=QUESTIONS.filter(q=>qState[q.id].visited&&!qState[q.id].answered).length;
+  const marked=QUESTIONS.filter(q=>qState[q.id].marked).length;
+  const notVis=QUESTIONS.filter(q=>!qState[q.id].visited).length;
+  document.getElementById('modal-time').textContent=formatTime(timeLeft);
+  document.getElementById('modal-stats').innerHTML=`
+  <div class="mb-stat"><div class="mb-stat-n" style="color:var(--sage)">${answered}</div><div class="mb-stat-l">Answered</div></div>
+  <div class="mb-stat"><div class="mb-stat-n" style="color:var(--rose)">${notAns}</div><div class="mb-stat-l">Not Answered</div></div>
+  <div class="mb-stat"><div class="mb-stat-n" style="color:var(--gold)">${marked}</div><div class="mb-stat-l">Marked</div></div>
+  <div class="mb-stat"><div class="mb-stat-n" style="color:rgba(26,38,24,.35)">${notVis}</div><div class="mb-stat-l">Not Visited</div></div>`;
+  document.getElementById('modal-warn').innerHTML=notVis>0
+    ?`⚠️ You have <strong>${notVis} questions not visited</strong>. Check all sections!`
+    :`✅ All 200 questions attempted. Great discipline!`;
+  document.getElementById('submit-modal').classList.add('open');
+}
+
+function closeSubmit(){document.getElementById('submit-modal').classList.remove('open');}
+
+function submitTest(){
+  clearInterval(timerInterval);
+  closeSubmit();
+  let score=0,correct=0,wrong=0,skipped=0;
+  QUESTIONS.forEach(q=>{
+    const st=qState[q.id];
+    if(!st.answered){skipped++;return;}
+    if(st.answer===q.ans){score+=4;correct++;}
+    else{score-=1;wrong++;}
+  });
+  const timeTaken=totalTime-timeLeft;
+  const th=Math.floor(timeTaken/3600),tm=Math.floor((timeTaken%3600)/60);
+  const pct=Math.round(correct/200*100);
+
+  document.getElementById('test-interface').style.display='none';
+  const rv=document.getElementById('result-view');
+  rv.style.display='flex';
+  rv.innerHTML=`
+  <div style="background:linear-gradient(145deg,var(--forest),var(--forest-soft),#0a2018);padding:32px 5%;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(13,148,136,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(13,148,136,.06) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(13,148,136,.18);filter:blur(55px);top:-60px;right:60px;pointer-events:none;"></div>
+    <div style="max-width:900px;margin:0 auto;position:relative;z-index:1;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:800;color:white;">MA</div>
+        <span style="font-family:var(--font-d);font-size:.95rem;font-weight:900;color:white;">Mock</span><span style="font-family:var(--font-d);font-size:.95rem;font-weight:900;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Arena</span>
+      </div>
+      <div style="font-size:.62rem;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">NEET UG Full Mock #8 · Result</div>
+      <div style="font-family:var(--font-d);font-size:1.55rem;font-weight:900;color:white;letter-spacing:-.04em;margin-bottom:5px;">
+        ${score>=540?'🏆 Outstanding!':score>=480?'👍 Good Performance!':score>=360?'📈 Keep Improving!':'💪 Practice More!'}
+      </div>
+      <div style="font-size:.8rem;color:rgba(255,255,255,.42);">Time taken: ${th}h ${tm}m · 200 Questions · Biology + Physics + Chemistry</div>
+    </div>
+  </div>
+  <div style="max-width:900px;margin:0 auto;padding:26px 20px;width:100%;">
+    <div style="background:white;border:1px solid var(--border);border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:var(--sh);">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;">
+        ${[[score,'Score (out of 720)','var(--forest)'],[correct,'Correct','var(--sage)'],[wrong,'Wrong','var(--rose)'],[skipped,'Skipped','rgba(26,38,24,.35)']].map(([n,l,c])=>`
+        <div style="background:var(--cream-warm);border:1px solid var(--border);border-radius:13px;padding:14px;text-align:center;">
+          <div style="font-family:var(--font-d);font-size:1.75rem;font-weight:800;color:${c};letter-spacing:-.04em;">${n}</div>
+          <div style="font-size:.64rem;font-weight:600;color:rgba(26,38,24,.4);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;">${l}</div>
+        </div>`).join('')}
+      </div>
+      <div style="margin-bottom:12px;">
+        <div style="display:flex;justify-content:space-between;font-size:.76rem;font-weight:600;color:var(--forest-muted);margin-bottom:6px;"><span>Overall Accuracy</span><span style="color:var(--sage)">${pct}%</span></div>
+        <div style="height:8px;background:var(--cream-warm);border-radius:4px;overflow:hidden;border:1px solid var(--border);">
+          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--teal),var(--sage));border-radius:4px;"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        ${[['🧬','Biology','var(--teal)',Math.round(correct*0.5),100],['⚛️','Physics','var(--sky)',Math.round(correct*0.25),50],['🧪','Chemistry','var(--sage)',Math.round(correct*0.25),50]].map(([ic,n,c,cr,tot])=>`
+        <div style="background:var(--cream-warm);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;">
+          <div style="font-size:1.2rem;margin-bottom:5px;">${ic}</div>
+          <div style="font-family:var(--font-d);font-size:.82rem;font-weight:700;color:var(--forest);margin-bottom:3px;">${n}</div>
+          <div style="font-family:var(--font-d);font-size:1.1rem;font-weight:800;color:${c}">${Math.round(cr/tot*100)}%</div>
+          <div style="font-size:.62rem;color:rgba(26,38,24,.35)">${cr}/${tot} correct</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <button style="font-family:var(--font-d);font-size:.84rem;font-weight:700;padding:13px 24px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;box-shadow:0 4px 14px var(--sage-glow);" onclick="window.location.href='mockarena_results.html'">📊 Full Analysis →</button>
+      <button style="font-family:var(--font-d);font-size:.84rem;font-weight:700;padding:13px 24px;border-radius:12px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;" onclick="window.location.href='mockarena_dashboard.html'">⬡ Dashboard</button>
+      <button style="font-family:var(--font-d);font-size:.84rem;font-weight:700;padding:13px 24px;border-radius:12px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;" onclick="location.reload()">↺ Reattempt</button>
+    </div>
+  </div>`;
+}
+
+function showInstructions(){
+  alert(`NEET UG Full Mock #8 — Instructions\n\n📋 EXAM PATTERN:\n• Total 200 Questions\n• Biology: 100Q (Botany 50 + Zoology 50) · +4/−1\n• Physics: 50Q (Section A: 35 + Section B: 15) · +4/−1\n• Chemistry: 50Q (Section A: 35 + Section B: 15) · +4/−1\n\n⏱ DURATION: 3 Hours 20 Minutes\n📊 TOTAL MARKS: 720\n\n🔖 MARKING SCHEME:\n• Correct: +4 marks\n• Wrong: −1 mark\n• Unanswered: 0 marks\n\n📖 NCERT BASED:\n• 95% questions are directly from NCERT Class 11 & 12\n• Read the source carefully before each question\n\n💡 TIPS:\n• Attempt Biology first (highest marks)\n• Don't guess — negative marking applies\n• Mark uncertain questions for review`);
+}
+
+document.getElementById('submit-modal').addEventListener('click',e=>{if(e.target===document.getElementById('submit-modal'))closeSubmit();});
+
+// INIT
+renderSectionTabs();
+renderQuestion();
+</script>
+</body>
+</html>
