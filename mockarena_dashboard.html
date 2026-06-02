@@ -816,23 +816,35 @@ function toggleTask(el){
 })();
 </script>
 
+
 <script id="mobile-script">
-document.addEventListener("DOMContentLoaded", function(){
+document.addEventListener("DOMContentLoaded",function(){
+  // Remove any existing mob-ham buttons first
+  document.querySelectorAll(".mob-ham,.mob-menu-btn").forEach(function(e){e.remove();});
+
+  // Create overlay
   var ov=document.createElement("div");
   ov.className="mob-overlay";
+  ov.style.cssText="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9998;";
   ov.addEventListener("click",closeNav);
   document.body.appendChild(ov);
 
-  var ham=document.createElement("div");
+  // Create ONE hamburger
+  var ham=document.createElement("button");
   ham.className="mob-ham";
   ham.innerHTML="&#9776;";
-  ham.style.display="none";
+  ham.style.cssText="display:none;width:36px;height:36px;border-radius:8px;background:#f5f3ec;border:1.5px solid rgba(26,38,24,.13);align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;flex-shrink:0;color:#1a2618;margin-right:6px;";
   ham.addEventListener("click",toggleNav);
 
+  // Insert into topbar
   var tb=document.querySelector(".tb");
   if(tb) tb.insertBefore(ham,tb.firstChild);
 
-  function check(){ ham.style.display=window.innerWidth<=860?"flex":"none"; }
+  // Show only on mobile
+  function check(){
+    ham.style.display=window.innerWidth<=860?"flex":"none";
+    if(window.innerWidth>860) closeNav();
+  }
   check();
   window.addEventListener("resize",check);
 
@@ -844,16 +856,16 @@ document.addEventListener("DOMContentLoaded", function(){
   function openNav(){
     var sb=document.querySelector(".sb");
     if(sb) sb.classList.add("mob-open");
-    ov.classList.add("mob-open");
+    ov.style.display="block";
     document.body.style.overflow="hidden";
   }
   function closeNav(){
     var sb=document.querySelector(".sb");
     if(sb) sb.classList.remove("mob-open");
-    ov.classList.remove("mob-open");
+    ov.style.display="none";
     document.body.style.overflow="";
   }
-
+  // Close on nav click
   document.querySelectorAll(".sb-nav,.sb a").forEach(function(el){
     el.addEventListener("click",function(){
       if(window.innerWidth<=860) closeNav();
