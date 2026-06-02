@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena — Faculty Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Refined sage-cream with deep forest accents */
+  --cream:#faf9f5;
+  --cream-warm:#f5f3ec;
+  --cream-card:#ffffff;
+  --forest:#1a2618;
+  --forest-soft:#243422;
+  --forest-muted:#3d5239;
+  --sage:#6b8f5e;
+  --sage-light:rgba(107,143,94,0.1);
+  --sage-glow:rgba(107,143,94,0.2);
+  --gold:#c8962a;
+  --gold-light:rgba(200,150,42,0.1);
+  --gold-dim:rgba(200,150,42,0.08);
+  --rose:#c84b4b;
+  --rose-light:rgba(200,75,75,0.09);
+  --sky:#3b82c4;
+  --sky-light:rgba(59,130,196,0.09);
+  --amber:#b87333;
+  --amber-light:rgba(184,115,51,0.09);
+  --purple:#7c5cbf;
+  --purple-light:rgba(124,92,191,0.09);
+  --border:rgba(26,38,24,0.08);
+  --border-med:rgba(26,38,24,0.13);
+  --border-strong:rgba(26,38,24,0.2);
+  --font-d:'Outfit',sans-serif;
+  --font-b:'Outfit',sans-serif;
+  --font-serif:'Lora',serif;
+  --font-m:'IBM Plex Mono',monospace;
+  --sh:0 1px 3px rgba(26,38,24,0.06),0 4px 16px rgba(26,38,24,0.04);
+  --sh-hover:0 8px 32px rgba(107,143,94,0.15),0 2px 8px rgba(26,38,24,0.06);
+  --sh-deep:0 20px 60px rgba(26,38,24,0.12);
+  --sbw:256px;--tbh:62px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font-b);background:var(--cream);color:var(--forest);
+  display:flex;-webkit-font-smoothing:antialiased;}
+
+/* ═══════════ SIDEBAR ═══════════ */
+.sb{width:var(--sbw);flex-shrink:0;background:var(--forest);height:100vh;
+  position:fixed;top:0;left:0;display:flex;flex-direction:column;
+  overflow-y:auto;z-index:300;border-right:1px solid rgba(255,255,255,0.04);}
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:3px;}
+
+.sb-logo{padding:20px 18px 16px;display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid rgba(255,255,255,0.06);}
+.sb-lm{width:36px;height:36px;background:linear-gradient(135deg,var(--sage),#4a7a3d);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-size:.82rem;font-weight:800;color:white;flex-shrink:0;
+  box-shadow:0 0 18px var(--sage-glow);}
+.sb-brand{display:flex;flex-direction:column;}
+.sb-b1{font-family:var(--font-d);font-size:1rem;font-weight:700;color:white;letter-spacing:-.02em;}
+.sb-b2{font-size:.56rem;font-weight:500;color:rgba(255,255,255,.28);letter-spacing:.1em;text-transform:uppercase;}
+
+.sb-faculty{margin:12px 14px;background:rgba(107,143,94,.15);border:1px solid rgba(107,143,94,.25);
+  border-radius:12px;padding:12px;}
+.sb-fav{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-d);font-size:.9rem;font-weight:800;color:white;
+  margin-bottom:8px;box-shadow:0 0 14px rgba(200,150,42,.3);}
+.sb-fname{font-size:.8rem;font-weight:700;color:white;line-height:1.2;}
+.sb-frole{font-size:.64rem;color:rgba(255,255,255,.35);margin-top:1px;}
+.sb-fsubject{display:inline-flex;align-items:center;gap:4px;margin-top:6px;
+  background:rgba(200,150,42,.15);border:1px solid rgba(200,150,42,.25);
+  border-radius:100px;padding:2px 9px;font-size:.6rem;font-weight:600;color:var(--gold);}
+
+.sb-grp{padding:14px 18px 4px;font-size:.56rem;font-weight:600;color:rgba(255,255,255,.2);
+  text-transform:uppercase;letter-spacing:.12em;}
+.sb-ul{list-style:none;padding:0 8px;}
+.sb-ul li{margin-bottom:1px;}
+.sb-nav{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;
+  text-decoration:none;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.42);
+  transition:all .18s;cursor:pointer;background:none;border:none;width:100%;font-family:var(--font-b);text-align:left;}
+.sb-nav:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.8);}
+.sb-nav.active{background:rgba(107,143,94,.2);color:white;border:1px solid rgba(107,143,94,.3);}
+.sb-nav.active .si{color:var(--sage);}
+.si{width:16px;text-align:center;font-size:.82rem;flex-shrink:0;color:rgba(255,255,255,.25);}
+.snb{margin-left:auto;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:100px;background:var(--rose);color:white;}
+.snb-g{background:var(--sage);}
+.sb-foot{margin-top:auto;padding:10px 8px 18px;border-top:1px solid rgba(255,255,255,.06);}
+
+/* ═══════════ MAIN ═══════════ */
+.main{margin-left:var(--sbw);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;}
+
+/* Topbar */
+.tb{height:var(--tbh);background:rgba(250,249,245,.96);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);display:flex;align-items:center;
+  padding:0 24px;gap:12px;flex-shrink:0;}
+.tb-info{display:flex;flex-direction:column;}
+.tb-title{font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;}
+.tb-crumb{font-size:.64rem;color:rgba(26,38,24,.4);}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.tb-search{display:flex;align-items:center;gap:7px;background:var(--cream-warm);
+  border:1.5px solid var(--border-med);border-radius:9px;padding:7px 12px;
+  width:210px;transition:all .2s;}
+.tb-search:focus-within{border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-light);}
+.tb-search input{border:none;outline:none;font-family:var(--font-b);font-size:.78rem;
+  color:var(--forest);background:transparent;width:100%;}
+.tb-search input::placeholder{color:rgba(26,38,24,.3);}
+.tb-ib{width:36px;height:36px;border-radius:9px;background:var(--cream-warm);
+  border:1.5px solid var(--border-med);display:flex;align-items:center;justify-content:center;
+  cursor:pointer;font-size:.88rem;transition:all .2s;position:relative;color:var(--forest-muted);}
+.tb-ib:hover{border-color:var(--sage);background:var(--sage-light);}
+.tb-ib .dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;
+  background:var(--rose);border:1.5px solid var(--cream);}
+.btn{font-family:var(--font-b);font-size:.76rem;font-weight:600;padding:7px 14px;
+  border-radius:9px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;border:none;}
+.btn-ghost{background:var(--cream-warm);border:1.5px solid var(--border-med);color:var(--forest-muted);}
+.btn-ghost:hover{border-color:var(--sage);color:var(--sage);}
+.btn-primary{background:linear-gradient(135deg,var(--forest),var(--forest-soft));color:white;}
+.btn-primary:hover{box-shadow:var(--sh-hover);transform:translateY(-1px);}
+.btn-sage{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;
+  box-shadow:0 2px 8px var(--sage-glow);}
+.btn-sage:hover{box-shadow:0 4px 16px var(--sage-glow);transform:translateY(-1px);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),#e8a830);color:white;box-shadow:0 2px 8px rgba(200,150,42,.25);}
+.btn-gold:hover{box-shadow:0 4px 14px rgba(200,150,42,.35);transform:translateY(-1px);}
+
+/* Stabs */
+.stabs{height:44px;background:var(--cream-card);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 24px;gap:2px;flex-shrink:0;overflow-x:auto;}
+.stabs::-webkit-scrollbar{display:none;}
+.stab{font-family:var(--font-b);font-size:.74rem;font-weight:600;color:rgba(26,38,24,.4);
+  background:none;border:none;border-bottom:2px solid transparent;
+  padding:0 13px;height:44px;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.stab:hover{color:var(--forest);}
+.stab.active{color:var(--sage);border-bottom-color:var(--sage);}
+
+/* Content */
+.content{flex:1;overflow-y:auto;padding:22px 24px 40px;}
+.content::-webkit-scrollbar{width:3px;}
+.content::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+/* ═══════════ COMPONENTS ═══════════ */
+
+/* Grids */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-bottom:20px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:20px;}
+.g21{display:grid;grid-template-columns:2fr 1fr;gap:13px;margin-bottom:20px;}
+.g12{display:grid;grid-template-columns:1fr 2fr;gap:13px;margin-bottom:20px;}
+.g31{display:grid;grid-template-columns:3fr 1fr;gap:13px;margin-bottom:20px;}
+
+/* KPI cards — editorial style with serif accent */
+.kpi{background:var(--cream-card);border:1px solid var(--border);border-radius:16px;
+  padding:18px;transition:all .25s;cursor:pointer;position:relative;overflow:hidden;}
+.kpi:hover{box-shadow:var(--sh-hover);transform:translateY(-2px);}
+.kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;border-radius:16px 16px 0 0;}
+.kpi-sg::after{background:linear-gradient(90deg,var(--sage),#8fb87f);}
+.kpi-gd::after{background:linear-gradient(90deg,var(--gold),#e8a830);}
+.kpi-ro::after{background:linear-gradient(90deg,var(--rose),#e06b6b);}
+.kpi-sk::after{background:linear-gradient(90deg,var(--sky),#60a5e8);}
+.kpi-am::after{background:linear-gradient(90deg,var(--amber),#d4844a);}
+.kpi-pr::after{background:linear-gradient(90deg,var(--purple),#9b7fd4);}
+.kpi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
+.kpi-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+.kpi-delta{font-size:.62rem;font-weight:600;padding:2px 7px;border-radius:100px;}
+.delta-up{background:rgba(107,143,94,.12);color:var(--sage);}
+.delta-dn{background:var(--rose-light);color:var(--rose);}
+.kpi-n{font-family:var(--font-d);font-size:1.6rem;font-weight:700;color:var(--forest);
+  letter-spacing:-.04em;line-height:1;margin-bottom:3px;}
+.kpi-l{font-size:.66rem;font-weight:600;color:rgba(26,38,24,.45);text-transform:uppercase;
+  letter-spacing:.06em;margin-bottom:4px;}
+.kpi-s{font-size:.66rem;color:rgba(26,38,24,.35);}
+.sparks{display:flex;align-items:flex-end;gap:2px;height:22px;margin-top:10px;}
+.spark{flex:1;border-radius:1px;min-height:2px;transition:height .9s cubic-bezier(.4,0,.2,1);}
+
+/* Main card */
+.card{background:var(--cream-card);border:1px solid var(--border);border-radius:16px;
+  padding:20px;box-shadow:var(--sh);transition:box-shadow .25s;}
+.card:hover{box-shadow:var(--sh-hover);}
+.ch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.ct{font-family:var(--font-d);font-size:.84rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;}
+.cs{font-size:.65rem;color:rgba(26,38,24,.4);margin-top:2px;}
+
+/* Section heading */
+.sh{font-family:var(--font-d);font-size:.84rem;font-weight:700;color:var(--forest);
+  letter-spacing:-.02em;margin-bottom:13px;display:flex;align-items:center;gap:8px;}
+.sh::before{content:'';width:3px;height:15px;background:linear-gradient(180deg,var(--sage),#4a7a3d);
+  border-radius:2px;box-shadow:0 0 6px var(--sage-glow);}
+.sh-r{margin-left:auto;display:flex;align-items:center;gap:7px;}
+
+/* Table */
+.tw{overflow-x:auto;}
+.tw::-webkit-scrollbar{height:3px;}
+.tw::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+table{width:100%;border-collapse:collapse;}
+thead th{font-size:.62rem;font-weight:700;color:rgba(26,38,24,.35);text-transform:uppercase;
+  letter-spacing:.07em;padding:0 12px 9px;text-align:left;white-space:nowrap;}
+tbody td{padding:9px 12px;font-size:.78rem;color:var(--forest-muted);
+  border-top:1px solid var(--border);white-space:nowrap;}
+tbody tr:hover td{background:var(--cream-warm);}
+.mono{font-family:var(--font-m);font-size:.7rem;}
+.bold{font-weight:700;color:var(--forest);}
+.avc{display:flex;align-items:center;gap:8px;}
+.av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.62rem;font-weight:700;flex-shrink:0;}
+.av-n{font-size:.78rem;font-weight:600;color:var(--forest);}
+.av-m{font-size:.62rem;color:rgba(26,38,24,.35);}
+.badge{font-size:.62rem;font-weight:600;padding:2px 9px;border-radius:100px;
+  white-space:nowrap;display:inline-flex;align-items:center;gap:3px;}
+.bg{background:var(--sage-light);color:var(--sage);border:1px solid rgba(107,143,94,.2);}
+.br{background:var(--rose-light);color:var(--rose);border:1px solid rgba(200,75,75,.2);}
+.ba{background:var(--amber-light);color:var(--amber);border:1px solid rgba(184,115,51,.2);}
+.bb{background:var(--sky-light);color:var(--sky);border:1px solid rgba(59,130,196,.2);}
+.bgd{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(200,150,42,.2);}
+.bp{background:var(--purple-light);color:var(--purple);border:1px solid rgba(124,92,191,.2);}
+.bn{background:var(--cream-warm);color:rgba(26,38,24,.45);border:1px solid var(--border-med);}
+.acb{display:flex;gap:4px;}
+.ab{font-family:var(--font-b);font-size:.62rem;font-weight:600;padding:3px 9px;
+  border-radius:6px;cursor:pointer;border:1px solid;transition:all .15s;}
+.ab-g{background:var(--sage-light);color:var(--sage);border-color:rgba(107,143,94,.2);}
+.ab-g:hover{background:var(--sage-glow);}
+.ab-a{background:var(--amber-light);color:var(--amber);border-color:rgba(184,115,51,.2);}
+.ab-a:hover{background:rgba(184,115,51,.18);}
+.ab-r{background:var(--rose-light);color:var(--rose);border-color:rgba(200,75,75,.2);}
+.ab-r:hover{background:rgba(200,75,75,.15);}
+.ab-b{background:var(--sky-light);color:var(--sky);border-color:rgba(59,130,196,.2);}
+.ab-b:hover{background:rgba(59,130,196,.18);}
+
+/* Progress bar */
+.pb{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.pb-l{font-size:.7rem;font-weight:600;color:var(--forest-muted);width:120px;flex-shrink:0;}
+.pb-t{flex:1;height:6px;background:var(--cream-warm);border-radius:5px;overflow:hidden;border:1px solid var(--border);}
+.pb-f{height:100%;border-radius:5px;transition:width 1.5s cubic-bezier(.4,0,.2,1);}
+.pb-v{font-family:var(--font-m);font-size:.67rem;color:var(--forest-muted);width:36px;text-align:right;}
+
+/* Bar chart */
+.bch{display:flex;align-items:flex-end;gap:5px;height:100px;padding-bottom:20px;position:relative;}
+.bch-col{flex:1;display:flex;flex-direction:column;align-items:center;position:relative;}
+.bch-bar{width:100%;border-radius:4px 4px 0 0;transition:height 1.3s cubic-bezier(.4,0,.2,1);cursor:pointer;}
+.bch-bar:hover{filter:brightness(1.1);}
+.bch-lbl{font-size:.58rem;font-weight:500;color:rgba(26,38,24,.35);position:absolute;bottom:-16px;text-align:center;width:100%;}
+
+/* Line chart */
+.lc-wrap{height:110px;position:relative;}
+.lc-svg{width:100%;height:100%;overflow:visible;}
+.lc-lbls{display:flex;justify-content:space-between;margin-top:4px;}
+.lc-lbl{font-size:.6rem;font-weight:500;color:rgba(26,38,24,.3);text-align:center;}
+
+/* Donut */
+.dn-row{display:flex;align-items:center;gap:16px;}
+.dn-wrap{position:relative;width:88px;height:88px;flex-shrink:0;}
+.dn-svg{transform:rotate(-90deg);}
+.dn-bg{fill:none;stroke:var(--cream-warm);stroke-width:12;}
+.dn-seg{fill:none;stroke-width:12;stroke-linecap:butt;transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1);}
+.dn-ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.dn-n{font-family:var(--font-d);font-size:1rem;font-weight:700;color:var(--forest);letter-spacing:-.04em;line-height:1;}
+.dn-l{font-size:.56rem;font-weight:500;color:rgba(26,38,24,.35);text-transform:uppercase;letter-spacing:.04em;}
+.dn-leg{flex:1;display:flex;flex-direction:column;gap:6px;}
+.dli{display:flex;align-items:center;justify-content:space-between;}
+.dli-l{display:flex;align-items:center;gap:6px;}
+.dli-c{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.dli-n{font-size:.72rem;font-weight:500;color:var(--forest-muted);}
+.dli-v{font-family:var(--font-m);font-size:.7rem;color:var(--forest);}
+
+/* Toggle */
+.toggle{position:relative;width:36px;height:18px;flex-shrink:0;}
+.toggle input{opacity:0;width:0;height:0;position:absolute;}
+.tg-tr{position:absolute;inset:0;background:var(--border-med);border-radius:100px;cursor:pointer;transition:all .2s;}
+.toggle input:checked ~ .tg-tr{background:var(--sage);box-shadow:0 0 8px var(--sage-glow);}
+.tg-th{position:absolute;width:12px;height:12px;background:white;border-radius:50%;top:3px;left:3px;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.toggle input:checked ~ .tg-tr .tg-th{transform:translateX(18px);}
+
+/* Form */
+.fl{display:flex;flex-direction:column;gap:4px;}
+.fl label{font-size:.7rem;font-weight:600;color:var(--forest-muted);}
+.fi{font-family:var(--font-b);font-size:.8rem;color:var(--forest);background:var(--cream-warm);
+  border:1.5px solid var(--border-med);border-radius:9px;padding:8px 11px;
+  outline:none;transition:all .2s;appearance:none;-webkit-appearance:none;width:100%;}
+.fi:focus{border-color:var(--sage);background:white;box-shadow:0 0 0 3px var(--sage-light);}
+.fi::placeholder{color:rgba(26,38,24,.25);}
+.fi option{background:white;}
+textarea.fi{min-height:72px;resize:vertical;line-height:1.6;}
+.fg2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.fg3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;}
+
+/* Heatmap */
+.hm{display:flex;flex-direction:column;gap:4px;}
+.hm-row{display:flex;align-items:center;gap:3px;}
+.hm-l{font-size:.63rem;font-weight:500;color:var(--forest-muted);width:84px;text-align:right;flex-shrink:0;}
+.hm-cells{display:flex;gap:3px;}
+.hm-c{width:22px;height:22px;border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-size:.52rem;font-weight:700;cursor:pointer;transition:transform .15s;position:relative;}
+.hm-c:hover{transform:scale(1.2);z-index:10;}
+.hm-c:hover::after{content:attr(data-t);position:absolute;bottom:calc(100%+4px);left:50%;
+  transform:translateX(-50%);background:var(--forest);color:white;
+  font-size:.58rem;padding:3px 7px;border-radius:5px;white-space:nowrap;z-index:20;}
+.h0{background:var(--cream-warm);color:rgba(26,38,24,.25);}
+.h1{background:rgba(107,143,94,.12);color:var(--sage);}
+.h2{background:rgba(107,143,94,.28);color:var(--sage);}
+.h3{background:rgba(107,143,94,.5);color:white;}
+.h4{background:var(--sage);color:white;}
+.hw{background:var(--rose-light);color:var(--rose);}
+
+/* Activity feed */
+.af{display:flex;flex-direction:column;}
+.af-i{display:flex;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
+.af-i:last-child{border-bottom:none;}
+.af-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+.af-body{flex:1;}
+.af-t{font-size:.74rem;font-weight:600;color:var(--forest);margin-bottom:2px;}
+.af-m{font-size:.63rem;color:rgba(26,38,24,.4);}
+.af-time{font-size:.6rem;color:rgba(26,38,24,.3);flex-shrink:0;margin-top:3px;}
+
+/* Student card */
+.stu-card{background:var(--cream-card);border:1px solid var(--border);border-radius:14px;
+  padding:16px;transition:all .2s;cursor:pointer;}
+.stu-card:hover{box-shadow:var(--sh-hover);transform:translateY(-2px);border-color:rgba(107,143,94,.3);}
+.stu-avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:1rem;font-weight:700;margin-bottom:10px;}
+.stu-name{font-size:.82rem;font-weight:700;color:var(--forest);margin-bottom:3px;}
+.stu-meta{font-size:.65rem;color:rgba(26,38,24,.4);margin-bottom:10px;}
+.stu-score-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px;}
+.stu-score-lbl{font-size:.62rem;color:rgba(26,38,24,.4);}
+.stu-score-val{font-family:var(--font-m);font-size:.72rem;font-weight:500;color:var(--forest);}
+.stu-bar{height:4px;background:var(--cream-warm);border-radius:3px;overflow:hidden;margin-bottom:8px;}
+.stu-bar-f{height:100%;border-radius:3px;transition:width 1.4s cubic-bezier(.4,0,.2,1);}
+
+/* Question preview card */
+.q-card{background:var(--cream-card);border:1px solid var(--border);border-radius:14px;
+  padding:16px;margin-bottom:10px;transition:all .2s;cursor:pointer;}
+.q-card:hover{box-shadow:var(--sh-hover);border-color:rgba(107,143,94,.3);}
+.q-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px;}
+.q-text{font-size:.82rem;font-weight:500;color:var(--forest);line-height:1.6;margin-bottom:10px;}
+.q-opts{display:flex;flex-direction:column;gap:5px;}
+.q-opt{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--cream-warm);
+  border:1px solid var(--border);border-radius:7px;font-size:.76rem;color:var(--forest-muted);}
+.q-opt.correct{background:var(--sage-light);border-color:rgba(107,143,94,.2);color:var(--sage);}
+.q-opt-key{width:20px;height:20px;border-radius:5px;background:white;border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;color:rgba(26,38,24,.4);flex-shrink:0;}
+.q-opt.correct .q-opt-key{background:var(--sage);border-color:var(--sage);color:white;}
+
+/* Perm row */
+.perm-row{display:flex;align-items:center;justify-content:space-between;
+  padding:10px 12px;background:var(--cream-warm);border:1px solid var(--border);
+  border-radius:9px;margin-bottom:5px;}
+.perm-info{display:flex;align-items:center;gap:9px;}
+.perm-ic{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.82rem;}
+.perm-name{font-size:.74rem;font-weight:600;color:var(--forest);}
+.perm-desc{font-size:.62rem;color:rgba(26,38,24,.35);}
+
+/* Notice card */
+.notice{display:flex;gap:10px;padding:12px 14px;border-radius:11px;margin-bottom:8px;}
+.notice-sg{background:var(--sage-light);border:1px solid rgba(107,143,94,.2);}
+.notice-gd{background:var(--gold-dim);border:1px solid rgba(200,150,42,.2);}
+.notice-ro{background:var(--rose-light);border:1px solid rgba(200,75,75,.15);}
+.notice-sk{background:var(--sky-light);border:1px solid rgba(59,130,196,.2);}
+.n-icon{font-size:.9rem;flex-shrink:0;margin-top:1px;}
+.n-title{font-size:.75rem;font-weight:700;color:var(--forest);margin-bottom:2px;}
+.n-desc{font-size:.68rem;color:var(--forest-muted);line-height:1.5;}
+.n-time{font-size:.6rem;color:rgba(26,38,24,.3);flex-shrink:0;white-space:nowrap;}
+
+/* Drop zone */
+.dz{border:2px dashed var(--border-med);border-radius:14px;padding:30px;
+  text-align:center;cursor:pointer;transition:all .2s;}
+.dz:hover,.dz.drag{border-color:var(--sage);background:var(--sage-light);}
+.dz-ic{font-size:2.2rem;margin-bottom:10px;}
+.dz-t{font-family:var(--font-d);font-size:.86rem;font-weight:700;color:var(--forest);margin-bottom:4px;}
+.dz-s{font-size:.7rem;color:rgba(26,38,24,.4);}
+
+/* Modal */
+.mo{position:fixed;inset:0;z-index:500;background:rgba(26,38,24,.55);
+  backdrop-filter:blur(6px);display:none;align-items:center;justify-content:center;padding:20px;}
+.mo.open{display:flex;}
+.mb{background:var(--cream-card);border:1px solid var(--border-med);border-radius:20px;
+  padding:28px;width:540px;max-width:95vw;max-height:88vh;overflow-y:auto;
+  box-shadow:var(--sh-deep);animation:mpop .25s cubic-bezier(.34,1.56,.64,1);}
+@keyframes mpop{from{transform:scale(.92);opacity:0;}to{transform:scale(1);opacity:1;}}
+.mh{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.mt{font-family:var(--font-d);font-size:1rem;font-weight:700;color:var(--forest);letter-spacing:-.03em;}
+.mc{width:28px;height:28px;border:1.5px solid var(--border-med);border-radius:7px;
+  background:none;cursor:pointer;font-size:.82rem;display:flex;align-items:center;
+  justify-content:center;transition:all .2s;color:var(--forest-muted);}
+.mc:hover{border-color:var(--rose);color:var(--rose);}
+
+/* CTabs */
+.ctabs{display:flex;gap:2px;background:var(--cream-warm);border-radius:9px;
+  padding:3px;margin-bottom:14px;width:fit-content;border:1px solid var(--border);}
+.ctab{font-family:var(--font-b);font-size:.71rem;font-weight:600;color:rgba(26,38,24,.4);
+  background:none;border:none;padding:5px 12px;border-radius:6px;cursor:pointer;transition:all .2s;}
+.ctab.active{background:white;color:var(--forest);box-shadow:0 1px 4px rgba(26,38,24,.08);}
+
+/* Calendar */
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:6px;}
+.cal-hdr{font-size:.62rem;font-weight:700;color:rgba(26,38,24,.3);text-align:center;padding-bottom:6px;text-transform:uppercase;letter-spacing:.05em;}
+.cal-day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;
+  border-radius:8px;font-size:.72rem;font-weight:500;cursor:pointer;transition:all .18s;color:var(--forest-muted);}
+.cal-day:hover{background:var(--sage-light);color:var(--sage);}
+.cal-day.today{background:var(--sage);color:white;font-weight:700;box-shadow:0 2px 8px var(--sage-glow);}
+.cal-day.has-test{background:var(--gold-dim);color:var(--gold);font-weight:700;}
+.cal-day.empty{opacity:0;}
+
+/* Metric row */
+.mr{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid var(--border);}
+.mr:last-child{border-bottom:none;}
+.mr-l{font-size:.73rem;font-weight:500;color:var(--forest-muted);}
+.mr-v{font-family:var(--font-m);font-size:.73rem;font-weight:500;color:var(--forest);}
+
+/* Score ring */
+.score-ring{position:relative;display:inline-flex;align-items:center;justify-content:center;}
+.sr-svg{transform:rotate(-90deg);}
+.sr-bg{fill:none;stroke:var(--cream-warm);stroke-width:8;}
+.sr-fill{fill:none;stroke-width:8;stroke-linecap:round;transition:stroke-dashoffset 1.5s cubic-bezier(.4,0,.2,1);}
+.sr-ctr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+.sr-n{font-family:var(--font-d);font-size:1rem;font-weight:700;color:var(--forest);letter-spacing:-.04em;line-height:1;}
+.sr-l{font-size:.55rem;font-weight:500;color:rgba(26,38,24,.35);text-transform:uppercase;letter-spacing:.04em;}
+
+/* Palette for student avatars */
+.av-sg{background:var(--sage-light);color:var(--sage);}
+.av-gd{background:var(--gold-dim);color:var(--gold);}
+.av-ro{background:var(--rose-light);color:var(--rose);}
+.av-sk{background:var(--sky-light);color:var(--sky);}
+.av-pr{background:var(--purple-light);color:var(--purple);}
+
+/* Timeline */
+.tl-item{display:flex;gap:12px;padding-bottom:14px;position:relative;}
+.tl-item:last-child{padding-bottom:0;}
+.tl-line{position:absolute;left:11px;top:24px;bottom:0;width:1px;background:var(--border-med);}
+.tl-item:last-child .tl-line{display:none;}
+.tl-dot{width:24px;height:24px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:.68rem;flex-shrink:0;position:relative;z-index:1;}
+.tl-body{flex:1;}
+.tl-t{font-size:.76rem;font-weight:600;color:var(--forest);margin-bottom:2px;}
+.tl-m{font-size:.65rem;color:rgba(26,38,24,.4);}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.fu{animation:fadeUp .38s ease forwards;}
+.fu1{animation-delay:.04s;opacity:0;}.fu2{animation-delay:.08s;opacity:0;}
+.fu3{animation-delay:.12s;opacity:0;}.fu4{animation-delay:.16s;opacity:0;}
+.fu5{animation-delay:.20s;opacity:0;}
+
+::-webkit-scrollbar{width:3px;height:3px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+@media(max-width:1100px){.g4{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:860px){.sb{transform:translateX(-100%)}.main{margin-left:0}.g2,.g21,.g12,.g3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ══════════ SIDEBAR ══════════ -->
+<aside class="sb">
+  <a href="mockarena_landing.html" class="sb-logo">
+    <div class="sb-lm">MA</div>
+    <div class="sb-brand"><div class="sb-b1">MockArena</div><div class="sb-b2">Faculty Portal</div></div>
+  </a>
+
+  <div class="sb-faculty">
+    <div class="sb-fav">DK</div>
+    <div class="sb-fname">Dr. Deepak Kumar</div>
+    <div class="sb-frole">Senior Faculty · Physics & Maths</div>
+    <div class="sb-fsubject">⚛️ IIT JEE Expert · 12 Years</div>
+  </div>
+
+  <div class="sb-grp">Overview</div>
+  <ul class="sb-ul">
+    <li><button class="sb-nav active" onclick="nav('dashboard',this)"><span class="si">⬡</span>Dashboard</button></li>
+    <li><button class="sb-nav" onclick="nav('analytics',this)"><span class="si">◈</span>Analytics</button></li>
+    <li><button class="sb-nav" onclick="nav('schedule',this)"><span class="si">◳</span>My Schedule</button></li>
+  </ul>
+
+  <div class="sb-grp">Teaching</div>
+  <ul class="sb-ul">
+    <li><button class="sb-nav" onclick="nav('students',this)"><span class="si">◎</span>My Students<span class="snb snb-g">248</span></button></li>
+    <li><button class="sb-nav" onclick="nav('batches',this)"><span class="si">▦</span>Batches & Classes</button></li>
+    <li><button class="sb-nav" onclick="nav('performance',this)"><span class="si">◈</span>Student Performance</button></li>
+    <li><button class="sb-nav" onclick="nav('doubt',this)"><span class="si">❖</span>Doubt Sessions<span class="snb">3</span></button></li>
+  </ul>
+
+  <div class="sb-grp">Content</div>
+  <ul class="sb-ul">
+    <li><button class="sb-nav" onclick="nav('questions',this)"><span class="si">❖</span>My Questions</button></li>
+    <li><button class="sb-nav" onclick="nav('tests',this)"><span class="si">▦</span>Tests I Created</button></li>
+    <li><button class="sb-nav" onclick="nav('upload',this)"><span class="si">⬆</span>Upload Content</button></li>
+    <li><button class="sb-nav" onclick="nav('videos',this)"><span class="si">▷</span>Video Solutions</button></li>
+    <li><button class="sb-nav" onclick="nav('studymaterial',this)"><span class="si">◳</span>Study Material</button></li>
+  </ul>
+
+  <div class="sb-grp">Assessments</div>
+  <ul class="sb-ul">
+    <li><button class="sb-nav" onclick="nav('results',this)"><span class="si">◇</span>Test Results</button></li>
+    <li><button class="sb-nav" onclick="nav('grading',this)"><span class="si">◎</span>Grading Center</button></li>
+    <li><button class="sb-nav" onclick="nav('reports',this)"><span class="si">▤</span>Reports</button></li>
+  </ul>
+
+  <div class="sb-grp">Communication</div>
+  <ul class="sb-ul">
+    <li><button class="sb-nav" onclick="nav('announcements',this)"><span class="si">◉</span>Announcements</button></li>
+    <li><button class="sb-nav" onclick="nav('feedback',this)"><span class="si">◎</span>Student Feedback</button></li>
+  </ul>
+
+  <div class="sb-foot">
+    <button class="sb-nav" onclick="nav('settings',this)"><span class="si">⚙️</span>Settings</button>
+    <button class="sb-nav" onclick="window.location='mockarena_landing.html'"><span class="si">↩</span>Back to Site</button>
+  </div>
+</aside>
+
+<!-- ══════════ MAIN ══════════ -->
+<div class="main">
+  <div class="tb">
+    <div class="tb-info">
+      <div class="tb-title" id="tb-title">Faculty Dashboard</div>
+      <div class="tb-crumb" id="tb-crumb">MockArena / Faculty / Dashboard</div>
+    </div>
+    <div class="tb-r">
+      <div class="tb-search"><span style="color:rgba(26,38,24,.3);font-size:.82rem;">⌕</span><input type="text" placeholder="Search students, tests…"></div>
+      <div class="tb-ib">🔔<div class="dot"></div></div>
+      <div class="tb-ib">📅</div>
+      <button class="btn btn-ghost">⬇ Export</button>
+      <button class="btn btn-sage" onclick="openCreateTest()">+ Create Test</button>
+    </div>
+  </div>
+  <div class="stabs" id="stabs"></div>
+  <div class="content" id="content"></div>
+</div>
+
+<!-- ══ CREATE TEST MODAL ══ -->
+<div class="mo" id="test-modal">
+  <div class="mb">
+    <div class="mh"><div class="mt">📝 Create New Test</div><button class="mc" onclick="closeModal('test-modal')">✕</button></div>
+    <div style="display:flex;flex-direction:column;gap:11px;">
+      <div class="fl"><label>Test Title *</label><input class="fi" type="text" placeholder="e.g. JEE Advanced Chapter Test — Kinematics"></div>
+      <div class="fg2">
+        <div class="fl"><label>Subject *</label>
+          <select class="fi"><option>Physics</option><option>Chemistry</option><option>Mathematics</option></select></div>
+        <div class="fl"><label>Chapter / Topic *</label><input class="fi" type="text" placeholder="e.g. Kinematics, Waves…"></div>
+      </div>
+      <div class="fg3">
+        <div class="fl"><label>Test Type</label>
+          <select class="fi"><option>Chapter Test</option><option>Full Mock</option><option>DPP</option><option>Part Test</option></select></div>
+        <div class="fl"><label>Duration (min)</label><input class="fi" type="number" placeholder="60"></div>
+        <div class="fl"><label>Total Questions</label><input class="fi" type="number" placeholder="30"></div>
+      </div>
+      <div class="fg2">
+        <div class="fl"><label>Assign to Batch</label>
+          <select class="fi"><option>JEE Advanced 2026 — Batch A</option><option>JEE Mains 2026 — Batch B</option><option>All My Batches</option></select></div>
+        <div class="fl"><label>Schedule Date & Time</label><input class="fi" type="datetime-local"></div>
+      </div>
+      <div class="fg2">
+        <div class="fl"><label>Marks (Correct)</label><input class="fi" type="number" placeholder="+4"></div>
+        <div class="fl"><label>Marks (Wrong)</label><input class="fi" type="number" placeholder="-1"></div>
+      </div>
+      <div class="fl"><label>Instructions for Students</label>
+        <textarea class="fi" placeholder="Add any special instructions…" style="min-height:60px;"></textarea></div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-sage" style="flex:2;padding:10px;justify-content:center;" onclick="closeModal('test-modal');alert('Test created & assigned to batch ✓')">✓ Create & Schedule</button>
+        <button class="btn btn-ghost" style="padding:10px 14px;" onclick="closeModal('test-modal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ ADD QUESTION MODAL ══ -->
+<div class="mo" id="q-modal">
+  <div class="mb">
+    <div class="mh"><div class="mt">❖ Add Question</div><button class="mc" onclick="closeModal('q-modal')">✕</button></div>
+    <div style="display:flex;flex-direction:column;gap:11px;">
+      <div class="fg2">
+        <div class="fl"><label>Subject *</label>
+          <select class="fi"><option>Physics</option><option>Chemistry</option><option>Mathematics</option></select></div>
+        <div class="fl"><label>Chapter</label><input class="fi" type="text" placeholder="e.g. Kinematics"></div>
+      </div>
+      <div class="fg3">
+        <div class="fl"><label>Type</label>
+          <select class="fi" onchange="toggleQType(this)">
+            <option value="mcq">Single Correct</option><option value="multi">Multiple Correct</option>
+            <option value="int">Integer Type</option></select></div>
+        <div class="fl"><label>Difficulty</label>
+          <select class="fi"><option>Easy</option><option selected>Medium</option><option>Hard</option></select></div>
+        <div class="fl"><label>Marks (+/−)</label>
+          <div style="display:flex;gap:5px;"><input class="fi" type="number" placeholder="+4" style="width:50%"><input class="fi" type="number" placeholder="-1" style="width:50%"></div></div>
+      </div>
+      <div class="fl"><label>Question Text *</label><textarea class="fi" placeholder="Type question here…"></textarea></div>
+      <div id="q-opts">
+        <div style="font-size:.7rem;font-weight:600;color:var(--forest-muted);margin-bottom:6px;">Options * — mark correct answer →</div>
+        ${['A','B','C','D'].map(k=>`<div style="display:flex;align-items:center;gap:7px;margin-bottom:6px;"><div style="width:22px;height:22px;border-radius:5px;background:var(--cream-warm);border:1px solid var(--border-med);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:rgba(26,38,24,.4);flex-shrink:0;">${k}</div><input class="fi" type="text" placeholder="Option ${k}" style="flex:1"><label style="display:flex;align-items:center;gap:4px;font-size:.63rem;font-weight:500;color:rgba(26,38,24,.4);white-space:nowrap;cursor:pointer;"><input type="radio" name="correct_opt" value="${k}" style="accent-color:var(--sage)"> Correct</label></div>`).join('')}
+      </div>
+      <div id="q-int" style="display:none;" class="fl"><label>Correct Integer Answer</label><input class="fi" type="number" placeholder="Enter exact integer"></div>
+      <div class="fl"><label>Solution / Explanation</label><textarea class="fi" placeholder="Step-by-step solution…" style="min-height:60px;"></textarea></div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-sage" style="flex:2;padding:10px;justify-content:center;" onclick="closeModal('q-modal');alert('Question saved to bank ✓')">✓ Save Question</button>
+        <button class="btn btn-ghost" style="padding:10px 14px;" onclick="closeModal('q-modal')">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════
+// HELPERS
+// ════════════════════════════════
+const H = {
+  kpi:(cls,ic,num,lbl,sub,dir,sparks=[])=>`
+    <div class="kpi kpi-${cls}">
+      <div class="kpi-top">
+        <div class="kpi-ic" style="background:var(--cream-warm)">${ic}</div>
+        <div class="kpi-delta ${dir==='up'?'delta-up':'delta-dn'}">${dir==='up'?'↑':'↓'} ${dir==='up'?'+':''}</div>
+      </div>
+      <div class="kpi-n">${num}</div>
+      <div class="kpi-l">${lbl}</div>
+      <div class="kpi-s">${sub}</div>
+      ${sparks.length?`<div class="sparks">${sparks.map((h,i)=>`<div class="spark" style="background:${i===sparks.length-1?`var(--sage)`:`rgba(107,143,94,.25)`};height:0%" data-h="${h}%"></div>`).join('')}</div>`:''}
+    </div>`,
+
+  pb:(lbl,w,grad,id,val)=>`
+    <div class="pb"><div class="pb-l">${lbl}</div>
+      <div class="pb-t"><div class="pb-f" id="${id}" style="width:0%;background:${grad}"></div></div>
+      <div class="pb-v">${val}</div></div>`,
+
+  bar:(h,grad,lbl,id)=>`
+    <div class="bch-col">
+      <div class="bch-bar" id="${id}" style="background:${grad};height:0%" data-h="${h}"></div>
+      <div class="bch-lbl">${lbl}</div>
+    </div>`,
+
+  badge:(cls,txt)=>`<span class="badge ${cls}">${txt}</span>`,
+
+  afItem:(col,t,m,time)=>`
+    <div class="af-i">
+      <div class="af-dot" style="background:${col}"></div>
+      <div class="af-body"><div class="af-t">${t}</div><div class="af-m">${m}</div></div>
+      <div class="af-time">${time}</div>
+    </div>`,
+
+  scoreRing:(score,total,col,id)=>{
+    const r=44,c=2*Math.PI*r,pct=score/total;
+    return `<div class="score-ring">
+      <svg class="sr-svg" width="96" height="96" viewBox="0 0 96 96">
+        <circle class="sr-bg" cx="48" cy="48" r="${r}"/>
+        <circle class="sr-fill" id="${id}" cx="48" cy="48" r="${r}" stroke="${col}"
+          stroke-dasharray="${c}" stroke-dashoffset="${c}" stroke-linecap="round"/>
+      </svg>
+      <div class="sr-ctr"><div class="sr-n">${score}</div><div class="sr-l">/ ${total}</div></div>
+    </div>`;
+  }
+};
+
+function tab(tabs){
+  return `<div class="ctabs">${tabs.map((t,i)=>`<button class="ctab ${i===0?'active':''}" onclick="this.closest('.ctabs').querySelectorAll('.ctab').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${t}</button>`).join('')}</div>`;
+}
+
+function ph(ic,t,d){
+  return `<div class="card fu fu1"><div style="text-align:center;padding:50px 20px;"><div style="font-size:2.5rem;margin-bottom:12px;opacity:.3">${ic}</div><div style="font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest);margin-bottom:6px">${t}</div><div style="font-size:.78rem;color:rgba(26,38,24,.4);max-width:360px;margin:0 auto">${d}</div></div></div>`;
+}
+
+// ════════════════════════════════
+// PAGES
+// ════════════════════════════════
+const PAGES = {
+
+dashboard:{
+title:'Faculty Dashboard',crumb:'Faculty / Dashboard',
+tabs:['Overview','Today\'s Tasks','Recent Activity'],
+render:()=>`
+  <!-- Welcome Banner -->
+  <div style="background:linear-gradient(135deg,var(--forest) 0%,var(--forest-soft) 60%,${`#2d4a2a`} 100%);border-radius:20px;padding:28px 32px;margin-bottom:18px;position:relative;overflow:hidden;" class="fu fu1">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(107,143,94,.15);filter:blur(50px);top:-60px;right:60px;pointer-events:none;"></div>
+    <div style="position:absolute;width:180px;height:180px;border-radius:50%;background:rgba(200,150,42,.1);filter:blur(40px);bottom:-30px;left:35%;pointer-events:none;"></div>
+    <div style="display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;position:relative;z-index:1;">
+      <div>
+        <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:4px 12px;font-size:.6rem;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;">
+          <div style="width:5px;height:5px;border-radius:50%;background:var(--sage);box-shadow:0 0 6px var(--sage);"></div>
+          JEE Advanced Faculty · Academic Year 2025–26
+        </div>
+        <div style="font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:white;letter-spacing:-.04em;line-height:1.1;margin-bottom:6px;">
+          Good morning, <span style="background:linear-gradient(90deg,#a8d99c,#d4a84b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Dr. Kumar!</span>
+        </div>
+        <div style="font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:18px;">248 students across 3 batches · 2 tests scheduled today · 3 doubt sessions pending</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn btn-gold" onclick="openCreateTest()">📝 Create Test</button>
+          <button class="btn" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.15);padding:7px 14px;" onclick="nav('students',null)">👥 View Students</button>
+          <button class="btn" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.15);padding:7px 14px;" onclick="openQModal()">❖ Add Question</button>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:180px;">
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:12px 14px;">
+          <div style="font-size:.6rem;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">This Month's Rating</div>
+          <div style="font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:white;letter-spacing:-.04em;">4.8 ⭐</div>
+          <div style="font-size:.62rem;color:rgba(255,255,255,.3);">From 142 student reviews</div>
+        </div>
+        <div style="background:rgba(200,150,42,.12);border:1px solid rgba(200,150,42,.2);border-radius:12px;padding:12px 14px;">
+          <div style="font-size:.6rem;font-weight:600;color:rgba(200,150,42,.8);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;">Questions Added</div>
+          <div style="font-family:var(--font-d);font-size:1.5rem;font-weight:800;color:white;letter-spacing:-.04em;">1,284</div>
+          <div style="font-size:.62rem;color:rgba(255,255,255,.3);">+48 this month</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="g4 fu fu2">
+    ${H.kpi('sg','👥','248','My Students','3 batches active','up',[60,65,72,78,82,88,92,100])}
+    ${H.kpi('gd','📝','18','Tests Created','this year','up',[40,50,55,62,68,74,80,100])}
+    ${H.kpi('sk','🎯','76.4%','Batch Avg Accuracy','+4.2% this month','up',[60,64,68,72,74,76,76,100])}
+    ${H.kpi('am','❖','1,284','Questions in Bank','+48 this month','up',[50,58,65,72,78,85,92,100])}
+  </div>
+
+  <div class="g21 fu fu3">
+    <div class="card">
+      <div class="ch">
+        <div><div class="ct">Batch Performance Trend</div><div class="cs">Average scores across all tests · Last 8 mocks</div></div>
+        <div style="display:flex;gap:10px;align-items:center;">
+          <div style="display:flex;align-items:center;gap:4px;font-size:.63rem;color:rgba(26,38,24,.4)"><div style="width:8px;height:2px;background:var(--sage);border-radius:2px;"></div>Batch A</div>
+          <div style="display:flex;align-items:center;gap:4px;font-size:.63rem;color:rgba(26,38,24,.4)"><div style="width:8px;height:2px;background:var(--gold);border-radius:2px;border-style:dashed;"></div>Batch B</div>
+        </div>
+      </div>
+      <div class="lc-wrap">
+        <svg class="lc-svg" viewBox="0 0 480 100" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="lg-sg" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:#6b8f5e;stop-opacity:.18"/>
+              <stop offset="100%" style="stop-color:#6b8f5e;stop-opacity:0"/>
+            </linearGradient>
+            <linearGradient id="lg-gd" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" style="stop-color:#c8962a;stop-opacity:.12"/>
+              <stop offset="100%" style="stop-color:#c8962a;stop-opacity:0"/>
+            </linearGradient>
+          </defs>
+          ${[0,25,50,75,100].map(y=>`<line x1="0" y1="${y}" x2="480" y2="${y}" stroke="rgba(26,38,24,0.05)" stroke-width="1"/>`).join('')}
+          <path fill="url(#lg-gd)" d="M0,85 L60,80 L120,75 L180,70 L240,65 L300,60 L360,55 L440,48 L440,100 L0,100 Z"/>
+          <polyline fill="none" stroke="#c8962a" stroke-width="1.8" stroke-dasharray="4 3"
+            points="0,85 60,80 120,75 180,70 240,65 300,60 360,55 440,48"/>
+          <path fill="url(#lg-sg)" d="M0,88 L60,82 L120,76 L180,68 L240,60 L300,52 L360,44 L440,36 L440,100 L0,100 Z"/>
+          <polyline fill="none" stroke="#6b8f5e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
+            points="0,88 60,82 120,76 180,68 240,60 300,52 360,44 440,36"/>
+          <circle cx="440" cy="36" r="4" fill="#6b8f5e" stroke="var(--cream-card)" stroke-width="2"/>
+        </svg>
+      </div>
+      <div class="lc-lbls">
+        ${['Test 1','Test 2','Test 3','Test 4','Test 5','Test 6','Test 7','Test 8★'].map(t=>`<span class="lc-lbl">${t}</span>`).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><div><div class="ct">Today's Schedule</div></div><span class="badge bg">3 events</span></div>
+      <div class="tl-item">
+        <div class="tl-line"></div>
+        <div class="tl-dot" style="background:var(--sage-light);color:var(--sage)">📝</div>
+        <div class="tl-body"><div class="tl-t">JEE Advanced Mock #5 — Live</div><div class="tl-m">6:00 PM · 4,821 students · Physics + Chem + Maths</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-line"></div>
+        <div class="tl-dot" style="background:var(--gold-dim);color:var(--gold)">🎥</div>
+        <div class="tl-body"><div class="tl-t">Doubt Session — Electrostatics</div><div class="tl-m">4:00 PM · Batch A · 24 students registered</div></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-dot" style="background:var(--sky-light);color:var(--sky)">📊</div>
+        <div class="tl-body"><div class="tl-t">Review Mock #4 Results</div><div class="tl-m">Pending · 248 students · Answer key verification</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g3 fu fu4">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Subject Accuracy Heatmap</div><div class="cs">My students · All chapters</div></div></div>
+      <div class="hm">
+        ${[['Kinematics',['h4','h4','h3','hw','h4','h3']],['Newton\'s Laws',['h4','h3','h4','h3','h4','h4']],['Work & Energy',['h3','h4','h2','h3','h4','h3']],['Electrostatics',['h4','h3','h4','h2','h0','h1']],['Magnetism',['hw','h2','hw','h1','h2','hw']],['Modern Physics',['h3','h2','h3','h2','h3','h2']],].map(([lbl,cells])=>`
+          <div class="hm-row">
+            <div class="hm-l">${lbl}</div>
+            <div class="hm-cells">${cells.map((c,i)=>`<div class="hm-c ${c}" data-t="Set ${i+1}: ${c==='hw'?'Weak 40-55%':c==='h0'?'Skipped':c==='h1'?'Below Avg 55-65%':c==='h2'?'Average 65-75%':c==='h3'?'Good 75-85%':'Excellent 85%+'}">${c==='hw'?'✕':c==='h0'?'—':'✓'}</div>`).join('')}</div>
+          </div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><div><div class="ct">Batch Comparison</div><div class="cs">Performance by subject</div></div></div>
+      ${H.pb('⚛️ Physics','82%','linear-gradient(90deg,var(--sage),#4a7a3d)','bp1','82%')}
+      ${H.pb('🧪 Chemistry','71%','linear-gradient(90deg,var(--sky),#60a5e8)','bp2','71%')}
+      ${H.pb('📐 Mathematics','78%','linear-gradient(90deg,var(--gold),#e8a830)','bp3','78%')}
+      <div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">
+        ${[['Tests Created','18'],['Questions Added','1,284'],['Avg Batch Score','76%'],['Students Improved','186 / 248']].map(([l,v])=>`
+          <div class="mr"><div class="mr-l">${l}</div><div class="mr-v">${v}</div></div>`).join('')}
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ch"><div><div class="ct">Student Activity Feed</div></div></div>
+      <div class="af" id="student-feed">
+        ${[
+          ['#6b8f5e','Rahul Kumar completed Mock #4','Score 247/300 · Rank #312 in your batch','2m'],
+          ['#c8962a','3 new doubt questions submitted','Electrostatics · Batch A students','14m'],
+          ['#3b82c4','Priya Sharma improved by +24 pts','Physics Test #6 · Best improvement','28m'],
+          ['#c84b4b','Vikram — Magnetism score dropped','Below 60% · Needs attention','1h'],
+          ['#7c5cbf','Mock #5 registrations open','4,821 students enrolled · Today 6 PM','2h'],
+          ['#b87333','Arjun Mehta answered 20 DPP Qs','Calculus · 95% accuracy','3h'],
+        ].map(([c,t,m,time])=>H.afItem(c,t,m,time)).join('')}
+      </div>
+    </div>
+  </div>
+
+  <!-- Notices -->
+  <div class="fu fu5">
+    <div class="sh">Alerts & Notices <div class="sh-r"><span class="badge bg">2 new</span></div></div>
+    <div class="g2">
+      <div>
+        <div class="notice notice-ro"><div class="n-icon">⚠️</div><div><div class="n-title">5 students struggling with Magnetism</div><div class="n-desc">Vikram T., Priya S. and 3 others scored below 55% in the last 3 Magnetism tests. Consider scheduling a revision session.</div></div><div class="n-time">Today</div></div>
+        <div class="notice notice-gd"><div class="n-icon">⭐</div><div><div class="n-title">Rahul Kumar — top performer this month</div><div class="n-desc">Consistent improvement across all subjects. Consider featuring on leaderboard.</div></div><div class="n-time">2d ago</div></div>
+      </div>
+      <div>
+        <div class="notice notice-sg"><div class="n-icon">✅</div><div><div class="n-title">Mock #4 answer key reviewed</div><div class="n-desc">All 180 questions verified. Results published to 4,821 students.</div></div><div class="n-time">Yesterday</div></div>
+        <div class="notice notice-sk"><div class="n-icon">📅</div><div><div class="n-title">Upcoming: JEE Advanced Mock #5</div><div class="n-desc">Starts today at 6:00 PM. You're assigned as the invigilating faculty. Please be online by 5:45 PM.</div></div><div class="n-time">Today</div></div>
+      </div>
+    </div>
+  </div>`,
+},
+
+students:{
+title:'My Students',crumb:'Faculty / Students',
+tabs:['All Students','Needs Attention','Top Performers','Inactive'],
+render:()=>`
+  <div class="g4 fu fu1">
+    ${H.kpi('sg','👥','248','Total Students','across 3 batches','up',[60,65,72,78,82,88,92,100])}
+    ${H.kpi('gd','✅','186','Improved This Month','75% of students','up',[40,50,60,70,76,80,86,100])}
+    ${H.kpi('ro','⚠️','12','Needs Attention','below 60% avg','up',[60,55,50,45,50,40,38,12])}
+    ${H.kpi('sk','🔥','142','With Study Streak','consistent learners','up',[50,60,70,80,88,92,96,100])}
+  </div>
+  <div class="card fu fu2">
+    <div class="ch">
+      ${tab(['All (248)','Needs Attention (12)','Top Performers','Inactive'])}
+      <div style="display:flex;gap:7px;align-items:center">
+        <select class="fi" style="width:140px;padding:5px 8px;font-size:.7rem"><option>All Batches</option><option>JEE Adv Batch A</option><option>JEE Mains Batch B</option><option>Foundation</option></select>
+        <select class="fi" style="width:120px;padding:5px 8px;font-size:.7rem"><option>All Subjects</option><option>Physics</option><option>Chemistry</option><option>Maths</option></select>
+        <button class="btn btn-ghost" style="padding:5px 10px">⬇ Export</button>
+      </div>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>Student</th><th>Batch</th><th>Tests Done</th><th>Avg Score</th><th>Best Rank</th><th>Physics</th><th>Chemistry</th><th>Maths</th><th>Streak</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${[
+            ['RK','Rahul Kumar','JEE Adv A',24,'78%','#312','89%','76%','82%','🔥12d','bg','Active'],
+            ['PS','Priya Sharma','JEE Adv A',18,'72%','#589','85%','65%','66%','🔥8d','bg','Active'],
+            ['AM','Arjun Mehta','JEE Main B',31,'85%','#188','91%','82%','82%','🔥24d','bg','Active'],
+            ['SB','Sneha Bose','Foundation',12,'71%','#620','78%','68%','67%','🔥15d','bg','Active'],
+            ['VT','Vikram Tiwari','JEE Adv A',8,'54%','#2,840','58%','50%','55%','—','br','Needs Help'],
+            ['NK','Nikhil Kapoor','JEE Main B',5,'48%','#4,120','52%','44%','48%','—','br','Needs Help'],
+          ].map(([init,name,batch,tests,avg,rank,phy,chem,math,streak,sc,status],i)=>`
+            <tr>
+              <td class="mono">${i+1}</td>
+              <td><div class="avc"><div class="av av-${['sg','sk','gd','pr','ro','am'][i]}">${init}</div><div><div class="av-n">${name}</div><div class="av-m">${batch}</div></div></div></td>
+              <td>${H.badge('bn',batch)}</td>
+              <td class="mono bold">${tests}</td>
+              <td class="mono">${avg}</td>
+              <td class="mono" style="color:var(--sage)">${rank}</td>
+              <td class="mono">${phy}</td>
+              <td class="mono">${chem}</td>
+              <td class="mono">${math}</td>
+              <td style="font-size:.7rem;font-weight:600;color:var(--gold)">${streak}</td>
+              <td>${H.badge(sc,status)}</td>
+              <td><div class="acb">
+                <button class="ab ab-g" onclick="nav('performance',null)">View</button>
+                <button class="ab ab-b">Message</button>
+              </div></td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+      <span style="font-size:.66rem;color:rgba(26,38,24,.35)">Showing 1–6 of 248 students</span>
+      <div style="display:flex;gap:3px">
+        ${['← Prev','1','2','3','…','42','Next →'].map((p,i)=>`<button class="btn ${i===1?'btn-sage':'btn-ghost'}" style="padding:4px 9px">${p}</button>`).join('')}
+      </div>
+    </div>
+  </div>`,
+},
+
+performance:{
+title:'Student Performance Analysis',crumb:'Faculty / Performance',
+tabs:['Overview','Subject-wise','Trend Analysis','Weak Areas'],
+render:()=>`
+  <div class="g4 fu fu1">
+    ${H.kpi('sg','📈','76.4%','Batch Avg Accuracy','+4.2% this month','up')}
+    ${H.kpi('gd','🏆','#312','Batch Best Rank','Rahul Kumar','up')}
+    ${H.kpi('sk','⏱','2h 34m','Avg Test Duration','within expected range','up')}
+    ${H.kpi('am','📊','198/300','Batch Avg Score','+14 pts from last test','up')}
+  </div>
+
+  <div class="g21 fu fu2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Chapter-wise Class Performance</div><div class="cs">Physics · All students in my batches</div></div>
+        <select class="fi" style="width:110px;padding:5px 8px;font-size:.7rem"><option>Physics</option><option>Chemistry</option><option>Maths</option></select>
+      </div>
+      ${H.pb('Kinematics','88%','linear-gradient(90deg,var(--sage),#4a7a3d)','cp1','88%')}
+      ${H.pb('Newton\'s Laws','84%','linear-gradient(90deg,var(--sage),#4a7a3d)','cp2','84%')}
+      ${H.pb('Work & Energy','79%','linear-gradient(90deg,var(--sage),#4a7a3d)','cp3','79%')}
+      ${H.pb('Electrostatics','74%','linear-gradient(90deg,var(--sky),#60a5e8)','cp4','74%')}
+      ${H.pb('Magnetism','61%','linear-gradient(90deg,var(--amber),#d4844a)','cp5','61%')}
+      ${H.pb('Modern Physics','72%','linear-gradient(90deg,var(--gold),#e8a830)','cp6','72%')}
+      <div style="margin-top:10px;padding:10px;background:var(--rose-light);border:1px solid rgba(200,75,75,.15);border-radius:9px;">
+        <div style="font-size:.72rem;font-weight:700;color:var(--rose);margin-bottom:3px;">⚠ Weak Area Detected: Magnetism (61%)</div>
+        <div style="font-size:.65rem;color:var(--rose);">12 students below 55% · Schedule revision session recommended</div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="ch"><div><div class="ct">Score Distribution</div><div class="cs">Last mock · 248 students</div></div></div>
+        <div class="bch" style="height:90px;">
+          ${[['0-100','6%'],['100-150','14%'],['150-200','24%'],['200-250','28%'],['250-300','20%'],['300+','8%']].map(([l,h],i)=>H.bar(h,`linear-gradient(180deg,var(--sage),#4a7a3d)`,l,'sd'+i)).join('')}
+        </div>
+      </div>
+      <div class="card">
+        <div class="ch"><div><div class="ct">Attempt Distribution</div></div></div>
+        <div style="display:flex;align-items:center;gap:14px">
+          <div class="dn-wrap">
+            <svg class="dn-svg" width="88" height="88" viewBox="0 0 88 88">
+              <circle class="dn-bg" cx="44" cy="44" r="35"/>
+              <circle class="dn-seg" cx="44" cy="44" r="35" stroke="#6b8f5e" id="dd1" stroke-dasharray="0 219.91"/>
+              <circle class="dn-seg" cx="44" cy="44" r="35" stroke="#c84b4b" id="dd2" stroke-dasharray="0 219.91"/>
+              <circle class="dn-seg" cx="44" cy="44" r="35" stroke="#9499b8" id="dd3" stroke-dasharray="0 219.91"/>
+            </svg>
+            <div class="dn-ctr"><div class="dn-n">248</div><div class="dn-l">Students</div></div>
+          </div>
+          <div class="dn-leg">
+            <div class="dli"><div class="dli-l"><div class="dli-c" style="background:var(--sage)"></div><div class="dli-n">Correct</div></div><div class="dli-v">74%</div></div>
+            <div class="dli"><div class="dli-l"><div class="dli-c" style="background:var(--rose)"></div><div class="dli-n">Wrong</div></div><div class="dli-v">16%</div></div>
+            <div class="dli"><div class="dli-l"><div class="dli-c" style="background:#9499b8"></div><div class="dli-n">Skipped</div></div><div class="dli-v">10%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`,
+},
+
+questions:{
+title:'My Question Bank',crumb:'Faculty / Questions',
+tabs:['All Questions','Draft','Flagged','Archived'],
+render:()=>`
+  <div class="g4 fu fu1">
+    ${H.kpi('sg','❖','1,284','My Questions','in bank','up')}
+    ${H.kpi('gd','⭐','94.2%','Avg Accuracy','of my questions','up')}
+    ${H.kpi('sk','🚩','3','Flagged','need review','up')}
+    ${H.kpi('am','📝','48','Added This Month','this month','up')}
+  </div>
+  <div class="card fu fu2">
+    <div class="ch">
+      ${tab(['All (1,284)','Physics (520)','Chemistry (384)','Maths (380)','Drafts (12)','Flagged (3)'])}
+      <div style="display:flex;gap:7px">
+        <select class="fi" style="width:110px;padding:5px 8px;font-size:.7rem"><option>All Types</option><option>MCQ</option><option>Integer</option><option>Multi</option></select>
+        <select class="fi" style="width:105px;padding:5px 8px;font-size:.7rem"><option>All Levels</option><option>Easy</option><option>Medium</option><option>Hard</option></select>
+        <button class="btn btn-sage" style="padding:5px 10px" onclick="openQModal()">+ Add Question</button>
+      </div>
+    </div>
+    <!-- Question preview cards -->
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <div class="q-card">
+        <div class="q-top">
+          <div style="display:flex;gap:6px">${H.badge('bg','Physics')}${H.badge('bn','Kinematics')}${H.badge('ba','Medium')}${H.badge('bn','MCQ')}</div>
+          <div style="display:flex;gap:5px"><button class="ab ab-g">Edit</button><button class="ab ab-a">Preview</button><button class="ab ab-r">Delete</button></div>
+        </div>
+        <div class="q-text">A particle moves along a straight line. Its velocity at time <em>t</em> is v = 3t² − 6t m/s. The acceleration of the particle at t = 2s is:</div>
+        <div class="q-opts">
+          <div class="q-opt"><div class="q-opt-key">A</div>0 m/s²</div>
+          <div class="q-opt correct"><div class="q-opt-key">B</div>6 m/s² <span style="margin-left:auto;font-size:.6rem;font-weight:700">✓ CORRECT</span></div>
+          <div class="q-opt"><div class="q-opt-key">C</div>12 m/s²</div>
+          <div class="q-opt"><div class="q-opt-key">D</div>3 m/s²</div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+          <span style="font-size:.63rem;color:rgba(26,38,24,.35)">Used in 6 tests · 1,248 attempts · 84% accuracy</span>
+          <span class="badge bg">Live in Bank</span>
+        </div>
+      </div>
+      <div class="q-card">
+        <div class="q-top">
+          <div style="display:flex;gap:6px">${H.badge('bg','Physics')}${H.badge('bn','Electrostatics')}${H.badge('br','Hard')}${H.badge('bgd','Integer')} </div>
+          <div style="display:flex;gap:5px"><button class="ab ab-g">Edit</button><button class="ab ab-a">Preview</button><button class="ab ab-r">Delete</button></div>
+        </div>
+        <div class="q-text">A spring of spring constant k = 200 N/m is compressed by 0.1 m. The potential energy stored in the spring (in Joules) is:</div>
+        <div style="padding:8px 12px;background:var(--sage-light);border:1px solid rgba(107,143,94,.2);border-radius:8px;font-size:.78rem;font-weight:600;color:var(--sage);">
+          ✓ Correct Answer: <span style="font-family:var(--font-m)">1</span> (Integer)
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)">
+          <span style="font-size:.63rem;color:rgba(26,38,24,.35)">Used in 4 tests · 892 attempts · 62% accuracy</span>
+          <span class="badge bg">Live in Bank</span>
+        </div>
+      </div>
+    </div>
+  </div>`,
+},
+
+tests:{
+title:'Tests I Created',crumb:'Faculty / Tests',
+tabs:['All Tests','Live','Scheduled','Draft','Completed'],
+render:()=>`
+  <div class="g4 fu fu1">
+    ${H.kpi('sg','📝','18','Tests Created','this year','up')}
+    ${H.kpi('gd','🔴','2','Currently Live','active now','up')}
+    ${H.kpi('sk','📅','4','Scheduled','upcoming','up')}
+    ${H.kpi('am','✅','12','Completed','results published','up')}
+  </div>
+  <div class="card fu fu2">
+    <div class="ch">
+      ${tab(['All (18)','🔴 Live (2)','Scheduled (4)','Draft (2)','Completed (10)'])}
+      <button class="btn btn-sage" style="padding:5px 10px" onclick="openCreateTest()">+ Create Test</button>
+    </div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>#</th><th>Test Name</th><th>Subject</th><th>Qs</th><th>Duration</th><th>Batch</th><th>Scheduled</th><th>Attempts</th><th>Avg Score</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${[
+            [18,'JEE Advanced Full Mock #5','Physics+Chem+Maths',180,'3h','Batch A','Today 6PM',4821,'—','br','Live'],
+            [17,'Physics Chapter Test — Waves','Physics',30,'45m','Batch A+B','Yesterday',248,'89/120','bt','Completed'],
+            [16,'Electrostatics DPP #8','Physics',20,'30m','Batch A','26 May',0,'—','ba','Scheduled'],
+            [15,'Magnetism Chapter Test','Physics',40,'1h','Batch A','28 May',0,'—','ba','Scheduled'],
+            [14,'JEE Advanced Mock #4','Physics+Chem+Maths',180,'3h','Batch A','22 May',4821,'198/300','bt','Completed'],
+          ].map(([n,name,subj,qs,dur,batch,sched,att,avg,sc,st])=>`
+            <tr>
+              <td class="mono">${n}</td>
+              <td class="bold">${name}</td>
+              <td>${H.badge('bg',subj)}</td>
+              <td class="mono">${qs}</td>
+              <td class="mono">${dur}</td>
+              <td>${H.badge('bn',batch)}</td>
+              <td class="mono">${sched}</td>
+              <td class="mono">${att||'—'}</td>
+              <td class="mono">${avg}</td>
+              <td>${H.badge(sc,'● '+st)}</td>
+              <td><div class="acb">
+                <button class="ab ab-g">${st==='Completed'?'Results':'${st==="Live"?"Monitor":"Preview"}'}</button>
+                <button class="ab ab-a">Edit</button>
+                <button class="ab ab-r">Delete</button>
+              </div></td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`,
+},
+
+upload:{
+title:'Upload Content',crumb:'Faculty / Upload',
+tabs:['Add Question','Bulk Upload','Study Material','Video Solutions'],
+render:()=>`
+  <div class="g12 fu" style="align-items:start">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Bulk Question Upload</div><div class="cs">Upload hundreds of questions via CSV</div></div></div>
+      <div class="dz" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="event.preventDefault();this.classList.remove('drag');alert('Processing your file...')">
+        <div class="dz-ic">📁</div>
+        <div class="dz-t">Drop your CSV or Excel file here</div>
+        <div class="dz-s">Supports .csv, .xlsx · Max 500 questions · Max 10MB</div>
+        <button class="btn btn-sage" style="margin-top:12px;padding:7px 16px" onclick="alert('Open file browser...')">Browse Files</button>
+      </div>
+      <div style="margin-top:14px;padding:12px;background:var(--cream-warm);border:1px solid var(--border);border-radius:10px">
+        <div style="font-size:.72rem;font-weight:700;color:var(--forest);margin-bottom:6px">Required CSV Format:</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px">
+          ${['subject','chapter','type','question','opt_a','opt_b','opt_c','opt_d','correct','difficulty','marks_correct','marks_wrong','solution'].map(c=>`<span style="font-family:var(--font-m);font-size:.6rem;padding:2px 7px;background:var(--sage-light);color:var(--sage);border:1px solid rgba(107,143,94,.2);border-radius:4px">${c}</span>`).join('')}
+        </div>
+        <a href="#" style="font-size:.68rem;color:var(--sage);font-weight:600;margin-top:8px;display:inline-block">⬇ Download Template CSV</a>
+      </div>
+      <div style="margin-top:14px">
+        <div style="font-size:.72rem;font-weight:700;color:var(--forest);margin-bottom:8px">Upload Study Material (PDF / Notes)</div>
+        <div class="dz" style="padding:20px">
+          <div style="font-size:1.4rem;margin-bottom:6px">📄</div>
+          <div style="font-size:.78rem;font-weight:600;color:var(--forest)">Drop PDF / Notes / Slides</div>
+          <div style="font-size:.65rem;color:rgba(26,38,24,.35);margin-bottom:8px">PDF, PPT, DOC · Max 50MB</div>
+          <button class="btn btn-gold" style="padding:6px 13px" onclick="alert('Browse study material...')">Browse</button>
+        </div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <div class="card">
+        <div class="ch"><div><div class="ct">My Content Stats</div></div></div>
+        ${[['Total Questions','1,284'],['Videos Uploaded','42'],['Study Materials','18 PDFs'],['Tests Created','18'],['Added This Month','+48 questions'],['Flagged Questions','3']].map(([l,v])=>`
+          <div class="mr"><div class="mr-l">${l}</div><div class="mr-v">${v}</div></div>`).join('')}
+      </div>
+      <div class="card">
+        <div class="ch"><div><div class="ct">Content by Subject</div></div></div>
+        ${H.pb('⚛️ Physics','75%','linear-gradient(90deg,var(--sage),#4a7a3d)','us1','520')}
+        ${H.pb('🧪 Chemistry','55%','linear-gradient(90deg,var(--sky),#60a5e8)','us2','384')}
+        ${H.pb('📐 Mathematics','54%','linear-gradient(90deg,var(--gold),#e8a830)','us3','380')}
+        <button class="btn btn-sage" style="width:100%;padding:9px;justify-content:center;margin-top:10px" onclick="openQModal()">+ Add Single Question</button>
+      </div>
+    </div>
+  </div>`,
+},
+
+results:{
+title:'Test Results & Grading',crumb:'Faculty / Results',
+tabs:['Recent Results','Pending Review','Answer Keys','Grade Book'],
+render:()=>`
+  <div class="g4 fu fu1">
+    ${H.kpi('sg','📊','12','Tests Graded','this year','up')}
+    ${H.kpi('gd','✅','248','Answers Reviewed','this month','up')}
+    ${H.kpi('sk','⏳','2','Pending Review','need attention','up')}
+    ${H.kpi('am','📈','76.4%','Avg Class Score','this month','up')}
+  </div>
+  <div class="card fu fu2">
+    <div class="ch"><div><div class="ct">Recent Test Results</div><div class="cs">All tests I created</div></div>
+      <button class="btn btn-ghost">⬇ Export Grades</button></div>
+    <div class="tw">
+      <table>
+        <thead><tr><th>Test</th><th>Date</th><th>Students</th><th>Avg Score</th><th>Pass Rate</th><th>Highest</th><th>Lowest</th><th>Pending Review</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${[
+            ['Physics Waves Test','25 May',248,'89/120','84%','118/120','42/120','0','bt','Published'],
+            ['JEE Advanced Mock #4','22 May',4821,'198/300','64%','281/300','48/300','0','bt','Published'],
+            ['Electrostatics DPP #7','20 May',248,'72/100','71%','98/100','28/100','2','ba','Pending'],
+            ['Magnetism Chapter Test','18 May',248,'61/100','58%','94/100','18/100','0','bt','Published'],
+          ].map(([name,date,students,avg,pass,high,low,pend,sc,status])=>`
+            <tr>
+              <td class="bold">${name}</td>
+              <td class="mono">${date}</td>
+              <td class="mono">${students}</td>
+              <td class="mono bold" style="color:var(--sage)">${avg}</td>
+              <td class="mono">${pass}</td>
+              <td class="mono" style="color:var(--gold)">${high}</td>
+              <td class="mono" style="color:var(--rose)">${low}</td>
+              <td>${pend!=='0'?`<span class="badge br">${pend} pending</span>`:H.badge('bg','All done')}</td>
+              <td>${H.badge(sc,'● '+status)}</td>
+              <td><div class="acb">
+                <button class="ab ab-g">View Results</button>
+                <button class="ab ab-a">Edit Key</button>
+              </div></td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`,
+},
+
+batches:{
+title:'Batches & Classes',crumb:'Faculty / Batches',
+tabs:['My Batches','Class Schedule','Assignments'],
+render:()=>`
+  <div class="g3 fu fu1">
+    ${[['JEE Advanced 2026 — Batch A','142 students','Physics · Chemistry · Maths','Mon/Wed/Fri · 4–6 PM','bg'],
+       ['JEE Mains 2026 — Batch B','82 students','Physics · Mathematics','Tue/Thu · 5–7 PM','bb'],
+       ['JEE Foundation 2027','24 students','Physics · Maths (Class 10)','Sat/Sun · 10–12 AM','bgd']].map(([name,students,subjects,schedule,sc])=>`
+      <div class="card" style="cursor:pointer" onclick="nav('students',null)">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px">
+          <div style="width:44px;height:44px;border-radius:12px;background:var(--sage-light);display:flex;align-items:center;justify-content:center;font-size:1.2rem">📚</div>
+          ${H.badge(sc,'Active')}
+        </div>
+        <div style="font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest);margin-bottom:4px">${name}</div>
+        <div style="font-size:.7rem;color:rgba(26,38,24,.4);margin-bottom:10px">${subjects}</div>
+        <div class="mr"><div class="mr-l">👥 Students</div><div class="mr-v">${students}</div></div>
+        <div class="mr"><div class="mr-l">📅 Schedule</div><div class="mr-v" style="font-size:.68rem">${schedule}</div></div>
+        <div class="mr"><div class="mr-l">📝 Tests</div><div class="mr-v">6 this month</div></div>
+        <button class="btn btn-ghost" style="width:100%;margin-top:12px;justify-content:center">View Batch →</button>
+      </div>`).join('')}
+  </div>`,
+},
+
+doubt:{
+title:'Doubt Sessions',crumb:'Faculty / Doubt Sessions',
+tabs:['Pending (3)','Scheduled','Resolved'],
+render:()=>`
+  <div class="g4 fu fu1">
+    ${H.kpi('ro','❓','3','Pending Doubts','need response','up')}
+    ${H.kpi('gd','📅','2','Sessions Today','scheduled','up')}
+    ${H.kpi('sg','✅','142','Doubts Resolved','this month','up')}
+    ${H.kpi('sk','⭐','4.9','Student Rating','doubt sessions','up')}
+  </div>
+  <div class="card fu fu2">
+    <div class="ch"><div><div class="ct">Student Doubt Questions</div></div>
+      <button class="btn btn-sage" style="padding:5px 10px" onclick="alert('Schedule group session!')">📅 Schedule Session</button></div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      ${[
+        ['RK','Rahul Kumar','Batch A','⚛️ Physics','Electrostatics','In the derivation of electric field for a uniformly charged sphere, why do we assume the field inside the shell is zero? How does this follow from Gauss\'s Law?','2h ago','br'],
+        ['PS','Priya Sharma','Batch A','📐 Maths','Integration','I\'m struggling with integration by parts when the integral doesn\'t simplify. When should I apply LIATE rule vs using substitution?','4h ago','br'],
+        ['AM','Arjun Mehta','Batch B','⚛️ Physics','Magnetism','How to determine the direction of induced current using Lenz\'s law when the magnetic field is changing at an angle?','Yesterday','ba'],
+      ].map(([init,name,batch,subj,topic,q,time,sc])=>`
+        <div class="card" style="cursor:pointer">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:9px">
+              <div class="av av-sg" style="width:34px;height:34px;font-size:.72rem;font-weight:700">${init}</div>
+              <div><div style="font-size:.78rem;font-weight:700;color:var(--forest)">${name}</div>
+                <div style="font-size:.62rem;color:rgba(26,38,24,.35)">${batch} · ${time}</div></div>
+            </div>
+            <div style="display:flex;gap:6px">${H.badge('bg',subj)}${H.badge('bn',topic)}${H.badge(sc,sc==='br'?'Urgent':'Pending')}</div>
+          </div>
+          <div style="font-size:.8rem;color:var(--forest-muted);line-height:1.6;margin-bottom:10px;padding:10px 12px;background:var(--cream-warm);border-radius:9px;border-left:3px solid var(--sage)">"${q}"</div>
+          <div style="display:flex;gap:7px">
+            <button class="btn btn-sage" style="padding:5px 12px">✍ Answer Now</button>
+            <button class="btn btn-ghost" style="padding:5px 12px">📅 Schedule Session</button>
+            <button class="btn btn-ghost" style="padding:5px 12px">🔗 Share Resource</button>
+          </div>
+        </div>`).join('')}
+    </div>
+  </div>`,
+},
+
+announcements:{
+title:'Announcements',crumb:'Faculty / Announcements',
+tabs:['Post Announcement','Sent','Drafts'],
+render:()=>`
+  <div class="g2 fu fu1" style="align-items:start">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Post New Announcement</div></div></div>
+      <div style="display:flex;flex-direction:column;gap:11px">
+        <div class="fl"><label>Title *</label><input class="fi" type="text" placeholder="e.g. Important: Mock #5 schedule change"></div>
+        <div class="fl"><label>Message *</label><textarea class="fi" placeholder="Write your announcement here…" style="min-height:100px"></textarea></div>
+        <div class="fg2">
+          <div class="fl"><label>Send To</label>
+            <select class="fi"><option>All My Students</option><option>JEE Adv Batch A</option><option>JEE Mains Batch B</option><option>Foundation Batch</option></select></div>
+          <div class="fl"><label>Priority</label>
+            <select class="fi"><option>Normal</option><option>Important</option><option>Urgent</option></select></div>
+        </div>
+        <div style="display:flex;align-items:center;gap:9px;padding:10px 12px;background:var(--cream-warm);border:1px solid var(--border);border-radius:9px">
+          <label class="toggle"><input type="checkbox" checked><div class="tg-tr"><div class="tg-th"></div></div></label>
+          <div><div style="font-size:.73rem;font-weight:600;color:var(--forest)">Send push notification</div><div style="font-size:.62rem;color:rgba(26,38,24,.35)">Notify students via app notification</div></div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-sage" style="flex:2;padding:10px;justify-content:center" onclick="alert('Announcement posted to 248 students ✓')">📣 Post Announcement</button>
+          <button class="btn btn-ghost" style="padding:10px 14px" onclick="alert('Saved as draft')">Save Draft</button>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Recent Announcements</div></div></div>
+      ${[
+        ['bg','📅','Mock #5 today at 6PM — be ready','All Students · 248 students · Read: 91%','2h ago'],
+        ['bgd','📊','Mock #4 results published','All Students · 248 students · Read: 88%','Yesterday'],
+        ['br','⚠️','Magnetism revision session — Saturday','Batch A · 142 students · Read: 76%','2d ago'],
+        ['bb','📚','New study notes uploaded: Electrostatics','All Students · 248 students · Read: 82%','3d ago'],
+      ].map(([sc,ic,t,d,time])=>`
+        <div class="notice notice-${sc==='bg'?'sg':sc==='bgd'?'gd':sc==='br'?'ro':'sk'}">
+          <div class="n-icon">${ic}</div>
+          <div style="flex:1"><div class="n-title">${t}</div><div class="n-desc">${d}</div></div>
+          <div class="n-time">${time}</div>
+        </div>`).join('')}
+    </div>
+  </div>`,
+},
+
+schedule:{ title:'My Schedule', crumb:'Faculty / Schedule', tabs:['Weekly View','Month View','Upcoming Tests'], render:()=>ph('📅','Schedule Manager','Your weekly teaching schedule, test calendar, and event manager.') },
+feedback:{ title:'Student Feedback', crumb:'Faculty / Feedback', tabs:['Reviews','Ratings','Suggestions'], render:()=>ph('⭐','Student Feedback','Collect and review student feedback, ratings, and course improvement suggestions.') },
+analytics:{ title:'Analytics', crumb:'Faculty / Analytics', tabs:['My Impact','Test Analytics','Content Performance'], render:()=>ph('📈','Faculty Analytics','Deep insights into your teaching impact, student outcomes, and content performance.') },
+videos:{ title:'Video Solutions', crumb:'Faculty / Videos', tabs:['My Videos','Upload','Analytics'], render:()=>ph('🎥','Video Solution Manager','Upload, organize, and track engagement on your video solution library.') },
+studymaterial:{ title:'Study Material', crumb:'Faculty / Study Material', tabs:['All Material','Upload','Categories'], render:()=>ph('📄','Study Material','Upload and organize notes, PDFs, and slides for your students.') },
+grading:{ title:'Grading Center', crumb:'Faculty / Grading', tabs:['Pending','Graded','Grade Book'], render:()=>ph('✅','Grading Center','Review subjective answers, manage grade books, and publish results.') },
+reports:{ title:'Reports', crumb:'Faculty / Reports', tabs:['Student Reports','Class Reports','Download'], render:()=>ph('📋','Reports','Generate and download detailed student and batch performance reports.') },
+settings:{ title:'Settings', crumb:'Faculty / Settings', tabs:['Profile','Notifications','Preferences'], render:()=>`
+  <div class="g2 fu fu1" style="align-items:start">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Faculty Profile</div></div></div>
+      <div style="text-align:center;padding:20px 0;border-bottom:1px solid var(--border);margin-bottom:16px">
+        <div style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:800;color:white;margin:0 auto 10px;box-shadow:0 0 20px rgba(200,150,42,.3)">DK</div>
+        <div style="font-family:var(--font-d);font-size:.92rem;font-weight:700;color:var(--forest)">Dr. Deepak Kumar</div>
+        <div style="font-size:.68rem;color:rgba(26,38,24,.4);margin-top:2px">Senior Faculty · Physics & Mathematics · 12 Years Experience</div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div class="fg2">
+          <div class="fl"><label>First Name</label><input class="fi" type="text" value="Deepak"></div>
+          <div class="fl"><label>Last Name</label><input class="fi" type="text" value="Kumar"></div>
+        </div>
+        <div class="fl"><label>Email</label><input class="fi" type="email" value="deepak.kumar@mockarena.com"></div>
+        <div class="fl"><label>Phone</label><input class="fi" type="tel" value="+91 98765 43210"></div>
+        <div class="fg2">
+          <div class="fl"><label>Primary Subject</label><select class="fi"><option>Physics</option><option>Chemistry</option><option>Mathematics</option></select></div>
+          <div class="fl"><label>Expertise</label><input class="fi" type="text" value="JEE Advanced, IIT"></div>
+        </div>
+        <div class="fl"><label>Bio / Introduction</label><textarea class="fi" style="min-height:70px">Senior Physics and Mathematics faculty with 12 years of JEE Advanced coaching experience. IIT Roorkee alumni.</textarea></div>
+        <button class="btn btn-sage" style="padding:9px;justify-content:center;width:100%" onclick="alert('Profile updated ✓')">✓ Save Profile</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="ch"><div><div class="ct">Notification Preferences</div></div></div>
+      ${[['New doubt question submitted',true],['Student test completion',false],['Weekly performance report',true],['Test scheduled reminders',true],['Question flagged for review',true],['Student milestone achieved',false]].map(([name,on])=>`
+        <div class="perm-row">
+          <div class="perm-name">${name}</div>
+          <label class="toggle"><input type="checkbox" ${on?'checked':''}><div class="tg-tr"><div class="tg-th"></div></div></label>
+        </div>`).join('')}
+      <button class="btn btn-ghost" style="width:100%;margin-top:12px;padding:9px;justify-content:center" onclick="alert('Preferences saved ✓')">Save Preferences</button>
+    </div>
+  </div>` },
+};
+
+// ════════════════════════════════
+// NAVIGATION
+// ════════════════════════════════
+function nav(id,btn){
+  const p=PAGES[id];if(!p)return;
+  document.getElementById('tb-title').textContent=p.title;
+  document.getElementById('tb-crumb').textContent=p.crumb;
+  document.querySelectorAll('.sb-nav').forEach(b=>b.classList.remove('active'));
+  if(btn)btn.classList.add('active');
+  document.getElementById('stabs').innerHTML=(p.tabs||[]).map((t,i)=>`
+    <button class="stab ${i===0?'active':''}" onclick="this.closest('.stabs').querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${t}</button>`).join('');
+  const c=document.getElementById('content');
+  c.innerHTML=p.render();
+  c.scrollTop=0;
+  setTimeout(runAnims,80);
+}
+
+// ════════════════════════════════
+// ANIMATIONS
+// ════════════════════════════════
+function runAnims(){
+  document.querySelectorAll('.spark[data-h]').forEach(el=>{
+    setTimeout(()=>{ el.style.height=el.getAttribute('data-h'); },100+Math.random()*150);
+  });
+  document.querySelectorAll('.bch-bar[data-h]').forEach(el=>{
+    setTimeout(()=>{ el.style.height=el.getAttribute('data-h'); },200);
+  });
+  const barMap={
+    'bp1':'82%','bp2':'71%','bp3':'78%',
+    'cp1':'88%','cp2':'84%','cp3':'79%','cp4':'74%','cp5':'61%','cp6':'72%',
+    'pb-s':'61%','pb-e':'35%','pb-a':'4%',
+    'ea1':'78%','ea2':'65%','ea3':'55%','ea4':'40%','ea5':'28%',
+    'qb1':'75%','qb2':'55%','qb3':'54%',
+    'us1':'75%','us2':'55%','us3':'54%',
+    'dd1w':'74%','sys1':'99.9%','sys2':'99.7%',
+  };
+  Object.entries(barMap).forEach(([id,w])=>{
+    const el=document.getElementById(id);
+    if(el) setTimeout(()=>{ el.style.width=w; },300);
+  });
+  // Score rings
+  ['sr1','sr2','sr3'].forEach((id,i)=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const scores=[247,274,268],totals=[300,300,300],r=44,c=2*Math.PI*r;
+    el.style.strokeDashoffset=c*(1-scores[i]/totals[i]);
+  });
+  // Donuts
+  animDn('dd1','dd2','dd3',[0.74,0.16,0.10],219.91);
+  animDn('dr1','dr2','dr3',[0.61,0.35,0.04],226.19);
+  animDn('dv1','dv2','dv3',[0.62,0.28,0.10],226.19);
+}
+
+function animDn(i1,i2,i3,pcts,circ){
+  const ids=[i1,i2,i3];let off=0;
+  ids.forEach((id,i)=>{
+    const el=document.getElementById(id);if(!el)return;
+    const seg=circ*pcts[i];
+    el.style.strokeDasharray=`${seg} ${circ-seg}`;
+    el.style.strokeDashoffset=-off;
+    off+=seg;
+  });
+}
+
+// ════════════════════════════════
+// MODALS
+// ════════════════════════════════
+function openCreateTest(){ document.getElementById('test-modal').classList.add('open'); }
+function openQModal(){ document.getElementById('q-modal').classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+function toggleQType(sel){
+  const v=sel.value;
+  document.getElementById('q-opts').style.display=v==='int'?'none':'block';
+  document.getElementById('q-int').style.display=v==='int'?'flex':'none';
+}
+document.querySelectorAll('.mo').forEach(m=>{
+  m.addEventListener('click',e=>{ if(e.target===m)m.classList.remove('open'); });
+});
+document.addEventListener('keydown',e=>{ if(e.key==='Escape')document.querySelectorAll('.mo.open').forEach(m=>m.classList.remove('open')); });
+
+// ════════════════════════════════
+// LIVE FEED
+// ════════════════════════════════
+const FEED=[
+  ['#6b8f5e','Rahul Kumar — Mock #5 submitted','Score 271/300 · Batch A rank #1'],
+  ['#c8962a','New doubt: Electrostatics field lines','Sneha Bose · Batch A · 3 minutes ago'],
+  ['#3b82c4','Priya Sharma improved streak to 9 days','Physics DPP completed'],
+  ['#c84b4b','Vikram Tiwari — below 55% in Magnetism','Needs personal attention'],
+  ['#7c5cbf','5 students completed today\'s DPP','Calculus · Batch B'],
+];
+let fi=0;
+setInterval(()=>{
+  const feed=document.getElementById('student-feed');if(!feed)return;
+  const item=FEED[fi%FEED.length];fi++;
+  const el=document.createElement('div');
+  el.className='af-i';el.style.cssText='opacity:0;transform:translateY(-8px);transition:all .3s ease';
+  el.innerHTML=`<div class="af-dot" style="background:${item[0]}"></div>
+    <div class="af-body"><div class="af-t">${item[1]}</div><div class="af-m">${item[2]}</div></div>
+    <div class="af-time">Now</div>`;
+  feed.prepend(el);
+  setTimeout(()=>{ el.style.opacity='1';el.style.transform='translateY(0)'; },50);
+  if(feed.children.length>7)feed.removeChild(feed.lastChild);
+},7000);
+
+// ════════════════════════════════
+// INIT
+// ════════════════════════════════
+nav('dashboard',document.querySelector('.sb-nav.active'));
+</script>
+</body>
+</html>
