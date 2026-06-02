@@ -445,6 +445,156 @@ textarea.fi{min-height:72px;resize:vertical;line-height:1.6;}
 
 @media(max-width:1100px){.g4{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:860px){.sb{transform:translateX(-100%)}.main{margin-left:0}.g2,.g21,.g12,.g3{grid-template-columns:1fr}}
+
+/* ═══════════════════════════════════
+   MOBILE RESPONSIVE — Teacher Page
+═══════════════════════════════════ */
+
+.mob-menu-btn {
+  display: none;
+  width: 36px; height: 36px;
+  border-radius: 9px;
+  background: var(--cream-warm);
+  border: 1.5px solid var(--border-med);
+  align-items: center; justify-content: center;
+  cursor: pointer; font-size: 1.1rem;
+  flex-shrink: 0; transition: all .2s;
+  color: var(--forest);
+}
+.mob-menu-btn:hover { border-color: var(--sage); background: var(--sage-light); }
+
+.sb-overlay {
+  display: none;
+  position: fixed; inset: 0;
+  background: rgba(26,38,24,.55);
+  backdrop-filter: blur(4px);
+  z-index: 290;
+}
+.sb-overlay.open { display: block; }
+
+/* TABLET: 860px - 1100px */
+@media(max-width:1100px) {
+  .g4 { grid-template-columns: repeat(2,1fr) !important; }
+  .g3 { grid-template-columns: repeat(2,1fr) !important; }
+  .g21 { grid-template-columns: 1fr !important; }
+  .g12 { grid-template-columns: 1fr !important; }
+}
+
+/* MOBILE: up to 860px */
+@media(max-width:860px) {
+  /* Sidebar slides in */
+  .sb {
+    transform: translateX(-100%);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+    z-index: 300;
+  }
+  .sb.open { transform: translateX(0); }
+
+  /* Main takes full width */
+  .main { margin-left: 0 !important; }
+
+  /* Show hamburger */
+  .mob-menu-btn { display: flex; }
+
+  /* Topbar */
+  .tb { padding: 0 14px; gap: 8px; }
+  .tb-search { display: none; }
+  .tb-title { font-size: .82rem; }
+  .tb-crumb { font-size: .58rem; }
+
+  /* All grids → single column */
+  .g4,.g3,.g2,.g21,.g12,.g31,.g13,.fg2,.fg3 {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Content padding */
+  .content { padding: 14px 14px 40px !important; overflow-y: auto !important; }
+
+  /* Cards */
+  .card { padding: 14px; }
+  .kpi { padding: 14px; }
+  .kpi-n { font-size: 1.35rem; }
+
+  /* Tab bar */
+  .stabs { padding: 0 14px; overflow-x: auto; }
+  .stab { padding: 0 10px; font-size: .7rem; white-space: nowrap; }
+
+  /* Hide scrollbars on stabs */
+  .stabs::-webkit-scrollbar { display: none; }
+
+  /* Student cards grid */
+  .students-grid {
+    grid-template-columns: repeat(2,1fr) !important;
+  }
+
+  /* Heatmap scroll */
+  .hm { overflow-x: auto; }
+  .hm-row { min-width: 320px; }
+
+  /* Bar chart */
+  .bch { height: 70px; }
+  .bch-lbl { font-size: .5rem; }
+
+  /* Welcome banner grid */
+  div[style*="grid-template-columns:1fr auto"] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Line chart */
+  .lc-wrap { height: 80px; }
+
+  /* KPI sparks smaller */
+  .sparks { height: 16px; }
+
+  /* Table responsive */
+  .tw { overflow-x: auto; }
+  table { min-width: 500px; }
+
+  /* Donut */
+  .dn-row { flex-direction: column; align-items: flex-start; }
+
+  /* Modal full screen on mobile */
+  .mb {
+    width: 95vw !important;
+    max-height: 90vh !important;
+    padding: 18px !important;
+    margin: 0 auto;
+  }
+
+  /* Score ring smaller */
+  .score-ring svg { width: 80px !important; height: 80px !important; }
+
+  /* Calendar */
+  .cal-grid { gap: 2px; }
+  .cal-day { font-size: .66rem; border-radius: 6px; }
+
+  /* Perm rows */
+  .perm-row { flex-wrap: wrap; gap: 8px; }
+
+  /* Q card opts */
+  .q-opts { gap: 4px; }
+  .q-opt { font-size: .72rem; padding: 5px 8px; }
+
+  /* Badges grid */
+  .badges-grid { grid-template-columns: repeat(4,1fr) !important; }
+
+  /* Activity feed time hide */
+  .af-time { display: none; }
+
+  /* Drop zone */
+  .dz { padding: 20px; }
+}
+
+/* SMALL PHONES: 480px */
+@media(max-width:480px) {
+  .g4 { grid-template-columns: 1fr 1fr !important; }
+  .kpi-n { font-size: 1.2rem; }
+  .tb-title { font-size: .75rem; }
+  .stab { font-size: .66rem; }
+  .students-grid { grid-template-columns: 1fr !important; }
+  .cal-day { font-size: .58rem; }
+}
+
 </style>
 </head>
 <body>
@@ -1386,6 +1536,44 @@ setInterval(()=>{
 // INIT
 // ════════════════════════════════
 nav('dashboard',document.querySelector('.sb-nav.active'));
+</script>
+<script>
+// ═══ MOBILE MENU — Teacher Page ═══
+(function(){
+  var overlay = document.createElement('div');
+  overlay.className = 'sb-overlay';
+  overlay.onclick = closeSidebar;
+  document.body.appendChild(overlay);
+
+  var tb = document.querySelector('.tb');
+  if(tb) {
+    var btn = document.createElement('div');
+    btn.className = 'mob-menu-btn';
+    btn.innerHTML = '&#9776;';
+    btn.onclick = toggleSidebar;
+    tb.insertBefore(btn, tb.firstChild);
+  }
+
+  function toggleSidebar(){
+    var sb = document.querySelector('.sb');
+    var ov = document.querySelector('.sb-overlay');
+    sb.classList.contains('open') ? closeSidebar() : (sb.classList.add('open'), ov.classList.add('open'));
+  }
+
+  function closeSidebar(){
+    var sb = document.querySelector('.sb');
+    var ov = document.querySelector('.sb-overlay');
+    if(sb) sb.classList.remove('open');
+    if(ov) ov.classList.remove('open');
+  }
+
+  // Close on nav click
+  document.querySelectorAll('.sb-nav').forEach(function(b){
+    b.addEventListener('click', function(){
+      if(window.innerWidth <= 860) closeSidebar();
+    });
+  });
+})();
 </script>
 </body>
 </html>
