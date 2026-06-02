@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MockArena — JEE Main Mock #22</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@300;400;500&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cream:#faf9f5;--cream-warm:#f5f3ec;--cream-card:#ffffff;
+  --forest:#1a2618;--forest-soft:#243422;--forest-muted:#3d5239;
+  --sage:#6b8f5e;--sage-light:rgba(107,143,94,0.1);--sage-glow:rgba(107,143,94,0.22);
+  --gold:#c8962a;--gold-dim:rgba(200,150,42,0.09);
+  --rose:#c84b4b;--rose-light:rgba(200,75,75,0.09);
+  --sky:#3b82c4;--sky-light:rgba(59,130,196,0.09);
+  --amber:#b87333;--amber-light:rgba(184,115,51,0.09);
+  --purple:#7c5cbf;--purple-light:rgba(124,92,191,0.09);
+  --indigo:#4f46e5;--indigo-light:rgba(79,70,229,0.09);
+  --border:rgba(26,38,24,0.08);--border-med:rgba(26,38,24,0.13);
+  --font-d:'Outfit',sans-serif;--font-m:'IBM Plex Mono',monospace;--font-s:'Lora',serif;
+  --sh:0 1px 3px rgba(26,38,24,0.06),0 4px 16px rgba(26,38,24,0.04);
+  --sh-hover:0 8px 32px rgba(107,143,94,0.15),0 2px 8px rgba(26,38,24,0.06);
+  --sh-deep:0 20px 60px rgba(26,38,24,0.12);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--font-d);background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased;}
+
+/* TOP BAR */
+.topbar{height:56px;background:var(--forest);display:flex;align-items:center;padding:0 20px;gap:16px;flex-shrink:0;border-bottom:1px solid rgba(255,255,255,.06);z-index:100;}
+.tb-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.tb-lm{width:30px;height:30px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:white;}
+.tb-brand{font-size:.9rem;font-weight:900;}
+.tb-mock{color:white;}
+.tb-arena{background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.tb-div{width:1px;height:18px;background:rgba(255,255,255,.15);}
+.tb-name{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.5);}
+.tb-center{flex:1;display:flex;align-items:center;justify-content:center;}
+.subj-tabs{display:flex;gap:3px;background:rgba(255,255,255,.06);border-radius:10px;padding:3px;}
+.subj-tab{font-size:.72rem;font-weight:600;padding:5px 13px;border-radius:8px;border:none;cursor:pointer;transition:all .2s;color:rgba(255,255,255,.4);background:none;}
+.subj-tab:hover{color:rgba(255,255,255,.8);}
+.subj-tab.active{color:white;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.15);}
+.subj-tab.phy.active{background:rgba(59,130,196,.3);border-color:rgba(59,130,196,.4);}
+.subj-tab.chem.active{background:rgba(107,143,94,.3);border-color:rgba(107,143,94,.4);}
+.subj-tab.math.active{background:rgba(200,150,42,.25);border-color:rgba(200,150,42,.35);}
+.tb-right{display:flex;align-items:center;gap:10px;}
+.timer-box{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:6px 14px;display:flex;align-items:center;gap:8px;}
+.timer-box.warning{background:rgba(200,150,42,.15);border-color:rgba(200,150,42,.3);}
+.timer-box.danger{background:rgba(200,75,75,.18);border-color:rgba(200,75,75,.35);animation:tpulse 1s infinite;}
+@keyframes tpulse{0%,100%{opacity:1}50%{opacity:.7}}
+.timer-val{font-family:var(--font-m);font-size:.92rem;font-weight:600;color:white;letter-spacing:.04em;}
+.timer-lbl{font-size:.56rem;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.08em;}
+.btn{font-family:var(--font-d);font-size:.76rem;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;border:none;}
+.btn-gl{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);color:rgba(255,255,255,.75);}
+.btn-gl:hover{background:rgba(255,255,255,.14);color:white;}
+.btn-sub{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;padding:8px 18px;box-shadow:0 2px 12px var(--sage-glow);}
+.btn-sub:hover{box-shadow:0 4px 18px var(--sage-glow);transform:translateY(-1px);}
+
+/* LAYOUT */
+.layout{display:flex;height:calc(100vh - 56px);overflow:hidden;}
+
+/* QUESTION PANEL */
+.qp{flex:1;display:flex;flex-direction:column;overflow:hidden;border-right:1px solid var(--border);}
+.sec-bar{background:var(--cream-warm);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0;}
+.sec-lbl{font-size:.72rem;font-weight:700;color:var(--forest-muted);text-transform:uppercase;letter-spacing:.06em;}
+.sec-tabs{display:flex;gap:4px;}
+.stab{font-size:.7rem;font-weight:600;padding:4px 12px;border-radius:7px;border:1.5px solid var(--border-med);background:var(--cream-warm);color:var(--forest-muted);cursor:pointer;transition:all .18s;}
+.stab:hover{border-color:var(--sage);color:var(--sage);}
+.stab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.q-prog{height:3px;background:var(--border);flex-shrink:0;}
+.q-prog-fill{height:100%;background:linear-gradient(90deg,var(--indigo),var(--sage));transition:width .4s ease;}
+.q-body{flex:1;overflow-y:auto;padding:22px;}
+.q-body::-webkit-scrollbar{width:3px;}
+.q-body::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+
+/* Question */
+.q-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;gap:12px;}
+.q-num-b{display:flex;align-items:center;gap:8px;}
+.q-num{width:36px;height:36px;border-radius:9px;background:var(--forest);color:white;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:800;}
+.q-type-b{font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.qt-single{background:var(--sky-light);color:var(--sky);border:1px solid rgba(59,130,196,.2);}
+.qt-integer{background:var(--amber-light);color:var(--amber);border:1px solid rgba(184,115,51,.2);}
+.q-marks{font-size:.64rem;color:rgba(26,38,24,.4);display:flex;gap:10px;}
+.mp{color:var(--sage);font-weight:600;}
+.mn{color:var(--rose);font-weight:600;}
+.q-acts{display:flex;gap:6px;}
+.q-ab{width:30px;height:30px;border-radius:8px;border:1.5px solid var(--border-med);background:var(--cream-warm);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.8rem;transition:all .18s;}
+.q-ab:hover{border-color:var(--sage);background:var(--sage-light);}
+.q-ab.bm{background:var(--gold-dim);border-color:rgba(200,150,42,.3);}
+.q-tb{background:white;border:1px solid var(--border);border-radius:14px;padding:18px;margin-bottom:14px;}
+.q-stag{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:9px;}
+.qt-phy{color:var(--sky);}
+.qt-chem{color:var(--sage);}
+.qt-math{color:var(--gold);}
+.q-txt{font-family:var(--font-s);font-size:.9rem;color:var(--forest);line-height:1.78;}
+.q-txt .mf{font-family:var(--font-m);background:var(--cream-warm);padding:2px 7px;border-radius:5px;font-size:.86rem;border:1px solid var(--border);}
+
+/* MCQ Options */
+.q-opts{display:flex;flex-direction:column;gap:7px;margin-bottom:18px;}
+.opt{display:flex;align-items:flex-start;gap:12px;padding:12px 15px;border-radius:11px;border:2px solid var(--border-med);background:white;cursor:pointer;transition:all .22s;}
+.opt:hover{border-color:var(--indigo);background:var(--indigo-light);}
+.opt.on{border-color:var(--sky);background:var(--sky-light);}
+.opt.on .ok{background:var(--sky);color:white;border-color:var(--sky);}
+.opt.correct{border-color:var(--sage);background:var(--sage-light);}
+.opt.correct .ok{background:var(--sage);color:white;}
+.opt.wrong{border-color:var(--rose);background:var(--rose-light);}
+.opt.wrong .ok{background:var(--rose);color:white;}
+.ok{width:28px;height:28px;border-radius:8px;border:2px solid var(--border-med);background:var(--cream-warm);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;color:var(--forest-muted);flex-shrink:0;transition:all .22s;}
+.ot{font-size:.84rem;color:var(--forest);line-height:1.5;padding-top:1px;}
+.ot .mf{font-family:var(--font-m);background:var(--cream-warm);padding:1px 6px;border-radius:4px;font-size:.8rem;border:1px solid var(--border);}
+
+/* Integer input */
+.int-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:18px;}
+.int-lbl{font-size:.76rem;font-weight:600;color:var(--forest-muted);}
+.int-input{font-family:var(--font-m);font-size:1.2rem;font-weight:700;color:var(--forest);background:white;border:2px solid var(--border-med);border-radius:12px;padding:14px 18px;outline:none;width:180px;text-align:center;transition:all .22s;}
+.int-input:focus{border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-light);}
+.calc-pad{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;width:186px;}
+.calc-btn{font-family:var(--font-m);font-size:.88rem;font-weight:600;padding:10px;border-radius:9px;border:1.5px solid var(--border-med);background:var(--cream-warm);color:var(--forest);cursor:pointer;transition:all .18s;text-align:center;}
+.calc-btn:hover{border-color:var(--sage);background:var(--sage-light);}
+.calc-btn.sp{background:var(--forest);color:white;border-color:var(--forest);}
+.calc-btn.neg{background:var(--amber-light);border-color:rgba(184,115,51,.25);color:var(--amber);}
+
+/* Footer */
+.q-foot{background:var(--cream-warm);border-top:1px solid var(--border);padding:13px 20px;display:flex;align-items:center;gap:9px;flex-shrink:0;}
+.q-mbtn{font-size:.76rem;font-weight:600;padding:8px 15px;border-radius:10px;border:1.5px solid rgba(200,150,42,.3);background:var(--gold-dim);color:var(--gold);cursor:pointer;transition:all .2s;}
+.q-mbtn:hover{background:rgba(200,150,42,.15);}
+.q-mbtn.marked{background:var(--gold);color:white;border-color:var(--gold);}
+.q-cbtn{font-size:.76rem;font-weight:600;padding:8px 15px;border-radius:10px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;transition:all .2s;}
+.q-cbtn:hover{border-color:var(--rose);color:var(--rose);}
+.q-sp{flex:1;}
+.q-cnt{font-family:var(--font-m);font-size:.72rem;color:rgba(26,38,24,.4);}
+.q-nav{font-size:.78rem;font-weight:600;padding:9px 18px;border-radius:10px;cursor:pointer;transition:all .2s;border:1.5px solid;display:flex;align-items:center;gap:6px;}
+.q-prev{background:var(--cream-warm);border-color:var(--border-med);color:var(--forest-muted);}
+.q-prev:hover{border-color:var(--sage);color:var(--sage);}
+.q-next{background:linear-gradient(135deg,var(--forest),var(--forest-soft));color:white;border-color:transparent;}
+.q-next:hover{box-shadow:var(--sh-hover);transform:translateY(-1px);}
+
+/* PALETTE */
+.pp{width:278px;flex-shrink:0;background:white;display:flex;flex-direction:column;overflow:hidden;}
+.pp-hd{padding:13px 15px 9px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.pp-title{font-size:.8rem;font-weight:700;color:var(--forest);margin-bottom:9px;}
+.legend{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.li{display:flex;align-items:center;gap:5px;font-size:.64rem;color:var(--forest-muted);}
+.ld{width:18px;height:18px;border-radius:5px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.56rem;font-weight:700;}
+.la{background:var(--sage);color:white;}
+.lna{background:var(--rose-light);color:var(--rose);border:1.5px solid rgba(200,75,75,.25);}
+.lnv{background:var(--cream-warm);color:rgba(26,38,24,.4);border:1.5px solid var(--border-med);}
+.lm{background:var(--gold);color:white;}
+.lma{background:var(--purple);color:white;}
+.pp-scroll{flex:1;overflow-y:auto;padding:10px 12px;}
+.pp-scroll::-webkit-scrollbar{width:3px;}
+.pp-scroll::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+.pp-slbl{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(26,38,24,.35);margin:10px 0 6px;display:flex;align-items:center;gap:6px;}
+.pp-slbl::after{content:'';flex:1;height:1px;background:var(--border);}
+.pp-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:3px;}
+.pb{width:100%;aspect-ratio:1;border-radius:7px;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:var(--font-m);font-size:.68rem;font-weight:600;cursor:pointer;transition:all .18s;}
+.pb:hover{transform:scale(1.1);}
+.pb.cur{box-shadow:0 0 0 2px var(--forest),0 0 0 4px rgba(26,38,24,.12);}
+.pnv{background:var(--cream-warm);border-color:var(--border-med);color:rgba(26,38,24,.4);}
+.pa{background:var(--sage);border-color:#4a7a3d;color:white;}
+.pna{background:var(--rose-light);border-color:rgba(200,75,75,.35);color:var(--rose);}
+.pm{background:var(--gold);border-color:#b8832a;color:white;}
+.pma{background:var(--purple);border-color:#6b4ba8;color:white;}
+.sum-strip{background:var(--cream-warm);border-top:1px solid var(--border);padding:10px 13px;flex-shrink:0;}
+.sum-row{display:flex;justify-content:space-between;margin-bottom:7px;}
+.si{text-align:center;}
+.sn{font-size:.9rem;font-weight:800;color:var(--forest);}
+.sl{font-size:.56rem;color:rgba(26,38,24,.38);text-transform:uppercase;letter-spacing:.05em;}
+.sn.a{color:var(--sage);}
+.sn.na{color:var(--rose);}
+.sn.m{color:var(--gold);}
+.sn.nv{color:rgba(26,38,24,.3);}
+.sub-btn{width:100%;font-size:.82rem;font-weight:700;padding:11px;border-radius:11px;border:none;cursor:pointer;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;box-shadow:0 4px 14px var(--sage-glow);transition:all .22s;margin-top:5px;}
+.sub-btn:hover{box-shadow:0 6px 20px var(--sage-glow);transform:translateY(-1px);}
+
+/* MODAL */
+.mo{position:fixed;inset:0;z-index:500;background:rgba(26,38,24,.6);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:20px;}
+.mo.open{display:flex;}
+.mb{background:white;border:1px solid var(--border-med);border-radius:22px;padding:28px;width:480px;max-width:95vw;box-shadow:var(--sh-deep);animation:mpop .25s cubic-bezier(.34,1.56,.64,1);}
+@keyframes mpop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.mb-t{font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:6px;}
+.mb-s{font-size:.78rem;color:rgba(26,38,24,.5);margin-bottom:18px;}
+.mb-sg{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px;}
+.mb-si{background:var(--cream-warm);border:1px solid var(--border);border-radius:11px;padding:12px 14px;}
+.mb-sn{font-size:1.2rem;font-weight:800;margin-bottom:2px;}
+.mb-sl{font-size:.62rem;color:rgba(26,38,24,.4);text-transform:uppercase;letter-spacing:.05em;}
+.mb-w{background:var(--rose-light);border:1px solid rgba(200,75,75,.2);border-radius:10px;padding:10px 14px;font-size:.76rem;color:var(--rose);margin-bottom:16px;}
+.mb-as{display:flex;gap:9px;}
+.mb-can{flex:1;font-size:.8rem;font-weight:600;padding:11px;border-radius:10px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;}
+.mb-can:hover{border-color:var(--sage);color:var(--sage);}
+.mb-con{flex:2;font-size:.82rem;font-weight:700;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;}
+
+.rv{display:none;flex-direction:column;height:100vh;overflow-y:auto;background:var(--cream);}
+.rv::-webkit-scrollbar{width:3px;}
+.rv::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+::-webkit-scrollbar{width:3px;}
+::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+</style>
+</head>
+<body>
+
+<div id="ti" style="display:flex;flex-direction:column;height:100vh;">
+
+<!-- TOPBAR -->
+<div class="topbar">
+  <a href="mockarena_dashboard.html" class="tb-logo">
+    <div class="tb-lm">MA</div>
+    <div class="tb-brand"><span class="tb-mock">Mock</span><span class="tb-arena">Arena</span></div>
+  </a>
+  <div class="tb-div"></div>
+  <div class="tb-name">JEE Main Mock #22</div>
+  <div class="tb-center">
+    <div class="subj-tabs" id="stabs">
+      <button class="subj-tab phy active" onclick="switchSubj(0,this)">⚛️ Physics</button>
+      <button class="subj-tab chem" onclick="switchSubj(1,this)">🧪 Chemistry</button>
+      <button class="subj-tab math" onclick="switchSubj(2,this)">📐 Maths</button>
+    </div>
+  </div>
+  <div class="tb-right">
+    <div class="timer-box" id="tbox">
+      <span style="font-size:.88rem">⏱</span>
+      <div><div class="timer-val" id="timer">03:00:00</div><div class="timer-lbl">Remaining</div></div>
+    </div>
+    <button class="btn btn-gl" onclick="showInstr()">📋 Instructions</button>
+    <button class="btn btn-sub" onclick="openMo()">Submit Test</button>
+  </div>
+</div>
+
+<div class="layout">
+  <!-- QUESTION -->
+  <div class="qp">
+    <div class="sec-bar">
+      <span class="sec-lbl">Section:</span>
+      <div class="sec-tabs" id="sec-tabs"></div>
+      <div style="margin-left:auto;font-family:var(--font-m);font-size:.68rem;color:rgba(26,38,24,.35)" id="sec-info"></div>
+    </div>
+    <div class="q-prog"><div class="q-prog-fill" id="qpf"></div></div>
+    <div class="q-body" id="qbody"></div>
+    <div class="q-foot">
+      <button class="q-mbtn" id="mbtn" onclick="toggleMark()">🔖 Mark for Review</button>
+      <button class="q-cbtn" onclick="clearAns()">✕ Clear</button>
+      <div class="q-sp"></div>
+      <span class="q-cnt" id="qcnt"></span>
+      <button class="q-nav q-prev" onclick="nav(-1)">← Previous</button>
+      <button class="q-nav q-next" onclick="nav(1)">Next →</button>
+    </div>
+  </div>
+
+  <!-- PALETTE -->
+  <div class="pp">
+    <div class="pp-hd">
+      <div class="pp-title">Question Palette</div>
+      <div class="legend">
+        <div class="li"><div class="ld la">✓</div>Answered</div>
+        <div class="li"><div class="ld lna">!</div>Not Answered</div>
+        <div class="li"><div class="ld lnv">—</div>Not Visited</div>
+        <div class="li"><div class="ld lm">🔖</div>Marked</div>
+        <div class="li"><div class="ld lma">✓</div>Marked+Ans</div>
+      </div>
+    </div>
+    <div class="pp-scroll" id="palette"></div>
+    <div class="sum-strip">
+      <div class="sum-row">
+        <div class="si"><div class="sn a" id="s-ans">0</div><div class="sl">Answered</div></div>
+        <div class="si"><div class="sn na" id="s-na">0</div><div class="sl">Not Ans.</div></div>
+        <div class="si"><div class="sn m" id="s-mk">0</div><div class="sl">Marked</div></div>
+        <div class="si"><div class="sn nv" id="s-nv">0</div><div class="sl">Not Visit</div></div>
+      </div>
+      <button class="sub-btn" onclick="openMo()">✓ Submit Test</button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- SUBMIT MODAL -->
+<div class="mo" id="mo">
+  <div class="mb">
+    <div class="mb-t">Submit JEE Main Mock?</div>
+    <div class="mb-s">JEE Main Mock #22 · Time Left: <span id="mo-time" style="font-family:var(--font-m);color:var(--sage);font-weight:700">--:--:--</span></div>
+    <div class="mb-sg" id="mo-stats"></div>
+    <div class="mb-w" id="mo-warn"></div>
+    <div class="mb-as">
+      <button class="mb-can" onclick="closeMo()">← Continue Test</button>
+      <button class="mb-con" onclick="submitTest()">✓ Yes, Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT -->
+<div class="rv" id="rv"></div>
+
+<script>
+// ════ JEE MAIN SUBJECTS ════
+// Pattern: 90 Qs · 3h · 300 marks
+// Each subject: Section A (20 MCQ +4/-1) + Section B (10 Integer, attempt any 5, +4/0)
+const SUBJS = [
+  {name:'Physics',icon:'⚛️',color:'var(--sky)',cls:'qt-phy',
+   secs:[
+    {name:'Section A (MCQ)',type:'mcq',marks:'+4 / −1',qc:20},
+    {name:'Section B (Integer)',type:'integer',marks:'+4 / 0',qc:10,attempt:5},
+   ]},
+  {name:'Chemistry',icon:'🧪',color:'var(--sage)',cls:'qt-chem',
+   secs:[
+    {name:'Section A (MCQ)',type:'mcq',marks:'+4 / −1',qc:20},
+    {name:'Section B (Integer)',type:'integer',marks:'+4 / 0',qc:10,attempt:5},
+   ]},
+  {name:'Mathematics',icon:'📐',color:'var(--gold)',cls:'qt-math',
+   secs:[
+    {name:'Section A (MCQ)',type:'mcq',marks:'+4 / −1',qc:20},
+    {name:'Section B (Integer)',type:'integer',marks:'+4 / 0',qc:10,attempt:5},
+   ]},
+];
+
+const QS = [
+  // ═══ PHYSICS · SECTION A (MCQ) ═══
+  {s:0,sc:0,id:1,type:'mcq',
+   text:'A body moves along a circular path of radius R with uniform speed v. The change in velocity when it describes an angle of 60° at the centre is:',
+   opts:['v','v√2','v√3','2v'],ans:0,
+   hint:'Change in velocity = 2v·sin(θ/2) = 2v·sin(30°) = 2v×0.5 = v'},
+  {s:0,sc:0,id:2,type:'mcq',
+   text:'The work done by a force F⃗ = (3î + 4ĵ) N in displacing a body through d⃗ = (2î − 3ĵ) m is:',
+   opts:['6 J','−6 J','18 J','−18 J'],ans:1,
+   hint:'W = F⃗·d⃗ = (3×2) + (4×−3) = 6 − 12 = −6 J'},
+  {s:0,sc:0,id:3,type:'mcq',
+   text:'In Young\'s double slit experiment, slit separation d = 0.2 mm, screen distance D = 1 m. If λ = 500 nm, fringe width is:',
+   opts:['2.5 mm','1.5 mm','0.5 mm','5 mm'],ans:0,
+   hint:'β = λD/d = (500×10⁻⁹×1)/(0.2×10⁻³) = 2.5×10⁻³ m = 2.5 mm'},
+  {s:0,sc:0,id:4,type:'mcq',
+   text:'A monoatomic ideal gas undergoes adiabatic expansion. If volume becomes 8 times, the temperature becomes:',
+   opts:['T/4','T/2','T/8','2T'],ans:0,
+   hint:'For adiabatic process: TV^(γ-1) = const. For monoatomic γ=5/3, T₁V₁^(2/3) = T₂(8V₁)^(2/3). T₂ = T₁/4'},
+  {s:0,sc:0,id:5,type:'mcq',
+   text:'The magnetic field at the centre of a circular coil of radius R carrying current I is:',
+   opts:['μ₀I/2R','μ₀I/R','2μ₀I/R','μ₀I/4R'],ans:0,
+   hint:'B = μ₀I/2R (standard result for magnetic field at centre of circular current loop)'},
+  {s:0,sc:0,id:6,type:'mcq',
+   text:'For a photoelectric effect experiment, the stopping potential depends on:',
+   opts:['Intensity of light only','Frequency of light only','Both frequency and intensity','Neither frequency nor intensity'],ans:1,
+   hint:'Stopping potential V₀ = (hν − φ)/e. It depends only on frequency (ν) and work function (φ), NOT intensity.'},
+  {s:0,sc:0,id:7,type:'mcq',
+   text:'A convex mirror of focal length 20 cm forms an image of an object placed at 30 cm. The image distance is:',
+   opts:['12 cm behind mirror','12 cm in front','60 cm behind','60 cm in front'],ans:0,
+   hint:'1/v + 1/u = 1/f. For convex mirror f=+20, u=−30. 1/v = 1/20 + 1/30 = (3+2)/60 = 5/60. v = +12 cm (behind mirror)'},
+  {s:0,sc:0,id:8,type:'mcq',
+   text:'The half-life of a radioactive element is 8 years. In 32 years, the fraction of element that remains is:',
+   opts:['1/16','1/8','1/32','1/4'],ans:0,
+   hint:'Number of half-lives = 32/8 = 4. Fraction remaining = (1/2)⁴ = 1/16'},
+  {s:0,sc:0,id:9,type:'mcq',
+   text:'In a series LCR circuit, resonance frequency is f₀. If both L and C are doubled, new resonance frequency is:',
+   opts:['f₀/2','f₀/4','2f₀','f₀'],ans:0,
+   hint:'f₀ = 1/(2π√LC). If L→2L, C→2C: new f = 1/(2π√(2L×2C)) = 1/(2π×2√LC) = f₀/2'},
+  {s:0,sc:0,id:10,type:'mcq',
+   text:'Two charges +q and −q are placed at distance d. The electric field at the midpoint between them is:',
+   opts:['Zero','8kq/d²','4kq/d²','kq/d²'],ans:1,
+   hint:'At midpoint, E from +q points towards −q, E from −q also points towards −q. E_net = 2×k·q/(d/2)² = 8kq/d²'},
+  {s:0,sc:0,id:11,type:'mcq',
+   text:'The escape velocity from Earth\'s surface is approximately:',
+   opts:['7.9 km/s','11.2 km/s','3.0 km/s','9.8 km/s'],ans:1,
+   hint:'Escape velocity v_e = √(2GM/R) = √(2gR) = √(2×9.8×6.4×10⁶) ≈ 11.2 km/s'},
+  {s:0,sc:0,id:12,type:'mcq',
+   text:'A wire of resistance R is bent into a circle. The effective resistance between two diametrically opposite points is:',
+   opts:['R/4','R/2','R','2R'],ans:0,
+   hint:'Two semicircles of resistance R/2 each in parallel. R_eff = (R/2 × R/2)/(R/2 + R/2) = R/4'},
+  {s:0,sc:0,id:13,type:'mcq',
+   text:'The dimensional formula of Planck\'s constant (h) is:',
+   opts:['[ML²T⁻¹]','[ML²T⁻²]','[MLT⁻¹]','[ML²T⁻³]'],ans:0,
+   hint:'E = hν. [h] = [E]/[ν] = ML²T⁻²/T⁻¹ = ML²T⁻¹ (same as angular momentum)'},
+  {s:0,sc:0,id:14,type:'mcq',
+   text:'The Bernoulli equation is based on the conservation of:',
+   opts:['Mass','Momentum','Energy','All of the above'],ans:2,
+   hint:'Bernoulli\'s equation (P + ½ρv² + ρgh = constant) is based on conservation of mechanical energy for ideal fluid flow.'},
+  {s:0,sc:0,id:15,type:'mcq',
+   text:'A body is thrown horizontally with velocity u from height h. Time to reach ground is:',
+   opts:['√(h/g)','√(2h/g)','2h/g','h/g'],ans:1,
+   hint:'Vertical: h = ½gt². t = √(2h/g). Horizontal velocity doesn\'t affect vertical fall time.'},
+  {s:0,sc:0,id:16,type:'mcq',
+   text:'In a p-n junction diode under forward bias:',
+   opts:['Depletion region widens','Depletion region narrows','Current flows from n to p internally','Reverse current flows'],ans:1,
+   hint:'Forward bias reduces the potential barrier, narrowing the depletion region and allowing current to flow.'},
+  {s:0,sc:0,id:17,type:'mcq',
+   text:'The coefficient of performance (COP) of a refrigerator is:',
+   opts:['Q_L/W','Q_H/W','W/Q_L','Q_H/Q_L'],ans:0,
+   hint:'COP of refrigerator = Q_L/W = Heat removed from cold reservoir / Work input.'},
+  {s:0,sc:0,id:18,type:'mcq',
+   text:'If the frequency of sound is doubled, the wavelength becomes:',
+   opts:['Half','Double','Quarter','Same'],ans:0,
+   hint:'v = fλ. Speed of sound is constant. If f doubles, λ = v/f becomes half.'},
+  {s:0,sc:0,id:19,type:'mcq',
+   text:'The SI unit of electric field intensity is:',
+   opts:['N/C','C/N','N·C','V·m'],ans:0,
+   hint:'Electric field E = F/q. SI unit = Newton/Coulomb (N/C) = Volt/metre (V/m).'},
+  {s:0,sc:0,id:20,type:'mcq',
+   text:'A proton and alpha particle are accelerated through same potential difference. Ratio of their de Broglie wavelengths λ_p/λ_α is:',
+   opts:['2√2','√2','1/√2','2'],ans:0,
+   hint:'λ = h/√(2mqV). λ_p/λ_α = √(m_α×q_α×V)/√(m_p×q_p×V) = √(4m_p×2e)/√(m_p×e) = √8 = 2√2'},
+
+  // ═══ PHYSICS · SECTION B (INTEGER) ═══
+  {s:0,sc:1,id:21,type:'integer',
+   text:'A ball is thrown vertically upward with speed 20 m/s. The maximum height (in metres) reached by the ball is: (g = 10 m/s²)',
+   ans:'20',hint:'h = v²/2g = 400/20 = 20 m'},
+  {s:0,sc:1,id:22,type:'integer',
+   text:'In a series circuit R = 10Ω, X_L = 20Ω, X_C = 14Ω. The impedance Z (in Ω) is (nearest integer):',
+   ans:'12',hint:'Z = √(R² + (X_L − X_C)²) = √(100 + 36) = √136 ≈ 12 Ω'},
+  {s:0,sc:1,id:23,type:'integer',
+   text:'Two parallel plates capacitor has plate area 100 cm² and separation 1 mm. Capacitance (in pF) is: (ε₀ = 8.85×10⁻¹² F/m)',
+   ans:'89',hint:'C = ε₀A/d = 8.85×10⁻¹²×100×10⁻⁴/10⁻³ ≈ 88.5 pF ≈ 89 pF'},
+  {s:0,sc:1,id:24,type:'integer',
+   text:'The wavelength (in nm) of photon with energy 2.5 eV is: (hc = 1240 eV·nm)',
+   ans:'496',hint:'λ = hc/E = 1240/2.5 = 496 nm'},
+  {s:0,sc:1,id:25,type:'integer',
+   text:'A particle completes 5 revolutions per second in a circle of radius 2 m. Its centripetal acceleration (in m/s²) is approximately:',
+   ans:'1974',hint:'a = ω²r = (2πf)²r = (10π)²×2 = 200π² ≈ 1974 m/s²'},
+  {s:0,sc:1,id:26,type:'integer',text:'The power of a lens that forms a real image at 40 cm of an object at 20 cm is (in dioptres):',ans:'7',hint:'1/f = 1/v − 1/u = 1/0.4 − 1/(−0.2) = 2.5+5 = 7.5 D ≈ 7 D'},
+  {s:0,sc:1,id:27,type:'integer',text:'An object of mass 2 kg is thrown upward. At the highest point, its KE is (in J):',ans:'0',hint:'At highest point, velocity = 0, so KE = ½mv² = 0 J'},
+  {s:0,sc:1,id:28,type:'integer',text:'The number of significant figures in 0.00340 is:',ans:'3',hint:'Leading zeros are not significant. Trailing zero after decimal IS significant. 3, 4, 0 → 3 significant figures.'},
+  {s:0,sc:1,id:29,type:'integer',text:'The gravitational PE of a satellite at height R above Earth surface (m=1 kg, g=10 m/s², R=6400 km) in MJ is approximately:',ans:'32',hint:'At h=R: PE = −GMm/2R = −mgR/2 = −10×6.4×10⁶/2 = −32 MJ (magnitude = 32 MJ)'},
+  {s:0,sc:1,id:30,type:'integer',text:'In photoelectric effect, the stopping potential for light of frequency 2×10¹⁵ Hz is (φ = 4 eV, h = 4×10⁻¹⁵ eV·s):',ans:'4',hint:'V₀ = (hf − φ)/e = (4×10⁻¹⁵ × 2×10¹⁵ − 4)/1 = (8−4) = 4 V'},
+
+  // ═══ CHEMISTRY · SECTION A ═══
+  {s:1,sc:0,id:31,type:'mcq',
+   text:'The hybridisation of carbon in diamond and graphite respectively is:',
+   opts:['sp³, sp²','sp², sp³','sp³, sp','sp, sp²'],ans:0,
+   hint:'In diamond: each C bonded to 4 others tetrahedral → sp³. In graphite: each C bonded to 3 in layer → sp², one π bond.'},
+  {s:1,sc:0,id:32,type:'mcq',
+   text:'The reaction of CH₃CHO with HCN gives a product which on hydrolysis yields:',
+   opts:['Glycolic acid','Lactic acid','Acetic acid','Pyruvic acid'],ans:1,
+   hint:'CH₃CHO + HCN → CH₃CH(OH)CN (cyanohydrin) → hydrolysis → CH₃CH(OH)COOH (lactic acid)'},
+  {s:1,sc:0,id:33,type:'mcq',
+   text:'Which of the following has the highest boiling point?',
+   opts:['n-butane','Isobutane','n-pentane','Neopentane'],ans:2,
+   hint:'Higher molecular weight and linear structure → more surface area → stronger van der Waals forces → highest bp for n-pentane.'},
+  {s:1,sc:0,id:34,type:'mcq',
+   text:'The molarity of a 10% w/v H₂SO₄ solution (density = 1.07 g/mL) is approximately:',
+   opts:['1.09 M','1.07 M','0.98 M','1.15 M'],ans:0,
+   hint:'10% w/v means 10g H₂SO₄ in 100 mL solution. Molarity = 10/(98 × 0.1) = 1.02 M ≈ 1.09 M'},
+  {s:1,sc:0,id:35,type:'mcq',
+   text:'Which of the following oxides is amphoteric?',
+   opts:['Na₂O','MgO','Al₂O₃','P₂O₅'],ans:2,
+   hint:'Al₂O₃ reacts with both acids (→ AlCl₃) and bases (→ NaAlO₂). This dual behavior = amphoteric oxide.'},
+  {s:1,sc:0,id:36,type:'mcq',
+   text:'The IUPAC name of CH₂=CH−CH₂−OH is:',
+   opts:['Prop-1-en-3-ol','Prop-2-en-1-ol','Prop-1-en-1-ol','Allyl alcohol only'],ans:1,
+   hint:'OH on C1, double bond between C2 and C3 → prop-2-en-1-ol (also called allyl alcohol).'},
+  {s:1,sc:0,id:37,type:'mcq',
+   text:'Assertion: NaCl has higher melting point than CCl₄.\nReason: NaCl is ionic while CCl₄ is covalent (molecular).',
+   opts:['Both A and R are true and R explains A','Both are true but R doesn\'t explain A','A is true but R is false','A is false'],ans:0,
+   hint:'Ionic compounds (NaCl) have strong electrostatic forces → very high mp. Molecular CCl₄ has weak van der Waals forces → low mp.'},
+  {s:1,sc:0,id:38,type:'mcq',
+   text:'The number of sigma bonds in CH₂=C=CH₂ (allene) is:',
+   opts:['4','5','6','7'],ans:2,
+   hint:'Allene: C−H(×4 sigma) + C=C(×2 sigma, 2 pi) = 4 C-H + 2 C-C sigma = 6 sigma bonds.'},
+  {s:1,sc:0,id:39,type:'mcq',
+   text:'Which reagent is used to distinguish between primary, secondary and tertiary alcohols?',
+   opts:['Na metal','Lucas reagent (anhydrous ZnCl₂ + conc. HCl)','KMnO₄','Fehling\'s solution'],ans:1,
+   hint:'Lucas reagent reacts at different rates: 3° (immediate turbidity), 2° (5 min), 1° (no reaction at room temp).'},
+  {s:1,sc:0,id:40,type:'mcq',
+   text:'The standard electrode potential E° for F₂/F⁻ is +2.87 V. This means fluorine is the:',
+   opts:['Strongest reducing agent','Strongest oxidizing agent','Weakest oxidizing agent','Neutral'],ans:1,
+   hint:'High positive E° means strong tendency to get reduced (gain electrons). F₂ is the strongest oxidizing agent known.'},
+  {s:1,sc:0,id:41,type:'mcq',text:'The coordination number of Na⁺ in NaCl crystal is:',opts:['4','6','8','12'],ans:1,hint:'In NaCl (rock salt) structure: each Na⁺ is surrounded by 6 Cl⁻ ions and vice versa. Coordination number = 6.'},
+  {s:1,sc:0,id:42,type:'mcq',text:'Which of the following is NOT a greenhouse gas?',opts:['CO₂','CH₄','N₂','N₂O'],ans:2,hint:'N₂ is NOT a greenhouse gas. CO₂, CH₄, N₂O and water vapor are major greenhouse gases.'},
+  {s:1,sc:0,id:43,type:'mcq',text:'The reaction of sodium with ethanol gives:',opts:['NaOH + H₂','Sodium ethoxide + H₂','Sodium acetate + H₂','No reaction'],ans:1,hint:'2Na + 2C₂H₅OH → 2C₂H₅ONa + H₂↑. Sodium displaces H from −OH group of alcohols.'},
+  {s:1,sc:0,id:44,type:'mcq',text:'The pH of 0.001 M HCl solution is:',opts:['1','2','3','4'],ans:2,hint:'HCl is strong acid, fully ionized. [H⁺] = 0.001 = 10⁻³ M. pH = −log[H⁺] = −log(10⁻³) = 3'},
+  {s:1,sc:0,id:45,type:'mcq',text:'Which type of isomerism is shown by CH₃CH₂OH and CH₃OCH₃?',opts:['Chain isomerism','Position isomerism','Functional group isomerism','Optical isomerism'],ans:2,hint:'Both have formula C₂H₆O but different functional groups (alcohol vs ether) → functional group isomerism.'},
+  {s:1,sc:0,id:46,type:'mcq',text:'Bohr\'s model explains the spectrum of:',opts:['Multi-electron atoms','Hydrogen atom only','All atoms','Noble gases'],ans:1,hint:'Bohr\'s model successfully explains the spectrum of hydrogen atom (and H-like ions). It fails for multi-electron systems.'},
+  {s:1,sc:0,id:47,type:'mcq',text:'The catalyst used in the Haber process for manufacture of NH₃ is:',opts:['Pt','Fe with Mo promoter','V₂O₅','Ni'],ans:1,hint:'Haber process: N₂ + 3H₂ ⇌ 2NH₃. Catalyst = Iron (Fe) with molybdenum (Mo) as promoter. Conditions: 200 atm, 500°C.'},
+  {s:1,sc:0,id:48,type:'mcq',text:'In an FCC unit cell, number of atoms per unit cell is:',opts:['2','4','6','8'],ans:1,hint:'FCC: 8 corner atoms (×1/8) + 6 face atoms (×1/2) = 1 + 3 = 4 atoms per unit cell.'},
+  {s:1,sc:0,id:49,type:'mcq',text:'Which of the following best explains the Tyndall effect?',opts:['Reflection of light','Scattering of light by colloidal particles','Absorption of light','Refraction of light'],ans:1,hint:'Tyndall effect is the scattering of light by colloidal particles. This distinguishes colloids from true solutions.'},
+  {s:1,sc:0,id:50,type:'mcq',text:'The oxidation state of Mn in KMnO₄ is:',opts:['+4','+6','+7','+5'],ans:2,hint:'In KMnO₄: K is +1, O is −2 (×4 = −8). K + Mn + 4O = 0 → +1 + Mn − 8 = 0 → Mn = +7.'},
+
+  // ═══ CHEMISTRY · SECTION B ═══
+  {s:1,sc:1,id:51,type:'integer',text:'The molar mass of a gas is 44 g/mol. Its density at STP (in g/L) is approximately (1 decimal):',ans:'2',hint:'d = M/22.4 = 44/22.4 ≈ 1.96 ≈ 2 g/L'},
+  {s:1,sc:1,id:52,type:'integer',text:'The number of moles of electrons in 1 Faraday is:',ans:'1',hint:'1 Faraday = 96500 C = charge of 1 mole of electrons. So 1 mole of electrons.'},
+  {s:1,sc:1,id:53,type:'integer',text:'The van\'t Hoff factor (i) for Na₂SO₄ in dilute solution is:',ans:'3',hint:'Na₂SO₄ → 2Na⁺ + SO₄²⁻. Total ions = 3. Van\'t Hoff factor i = 3.'},
+  {s:1,sc:1,id:54,type:'integer',text:'The half-life of a first-order reaction is 10 min. Rate constant k × 10³ (in min⁻¹) is approximately:',ans:'69',hint:'k = 0.693/t₁/₂ = 0.693/10 = 0.0693 min⁻¹ = 69.3 × 10⁻³ ≈ 69 × 10⁻³'},
+  {s:1,sc:1,id:55,type:'integer',text:'The number of sigma bonds in benzene (C₆H₆) is:',ans:'12',hint:'Benzene: 6 C−H sigma + 6 C−C sigma = 12 sigma bonds (+ 3 pi bonds in the ring).'},
+  {s:1,sc:1,id:56,type:'integer',text:'Oxidation state of Cr in K₂Cr₂O₇:',ans:'6',hint:'2K(+1) + 2Cr + 7O(-2) = 0 → 2 + 2Cr − 14 = 0 → Cr = +6'},
+  {s:1,sc:1,id:57,type:'integer',text:'The number of atoms in 0.5 mol of O₂ is (×Nₐ):',ans:'1',hint:'0.5 mol O₂ = 0.5 × 2 = 1 mol O atoms = 1 × Nₐ atoms'},
+  {s:1,sc:1,id:58,type:'integer',text:'For reaction A→B, rate = k[A]². If [A] doubles, rate increases by factor:',ans:'4',hint:'Rate ∝ [A]². If [A]→2[A]: new rate = k(2[A])² = 4k[A]². Rate increases by factor 4.'},
+  {s:1,sc:1,id:59,type:'integer',text:'The pH of a buffer with [CH₃COOH] = [CH₃COONa] = 0.1 M is (pKₐ of CH₃COOH = 4.74, round to nearest integer):',ans:'5',hint:'Henderson-Hasselbalch: pH = pKₐ + log([A⁻]/[HA]) = 4.74 + log(1) = 4.74 ≈ 5'},
+  {s:1,sc:1,id:60,type:'integer',text:'The number of unpaired electrons in Fe³⁺ ion is:',ans:'5',hint:'Fe is [Ar]3d⁶4s². Fe³⁺ loses 3 electrons → [Ar]3d⁵. Five 3d electrons, all unpaired (by Hund\'s rule) = 5.'},
+
+  // ═══ MATHEMATICS · SECTION A ═══
+  {s:2,sc:0,id:61,type:'mcq',
+   text:'If f(x) = x² − 3x + 2, then f(f(0)) equals:',
+   opts:['0','2','6','12'],ans:0,
+   hint:'f(0) = 0−0+2 = 2. f(2) = 4−6+2 = 0.'},
+  {s:2,sc:0,id:62,type:'mcq',
+   text:'The value of ∫₀^(π/2) sin²x dx is:',
+   opts:['π/4','π/2','1/2','π/3'],ans:0,
+   hint:'∫sin²x dx = ∫(1−cos2x)/2 dx = [x/2 − sin2x/4]₀^(π/2) = π/4 − 0 = π/4'},
+  {s:2,sc:0,id:63,type:'mcq',
+   text:'The number of real roots of x² + 5|x| + 6 = 0 is:',
+   opts:['0','2','4','1'],ans:0,
+   hint:'For x≥0: x²+5x+6=0 → x=−2 or −3 (both negative, not valid). For x<0: x²−5x+6=0 → x=2 or 3 (positive, not valid for x<0). Zero real roots.'},
+  {s:2,sc:0,id:64,type:'mcq',
+   text:'The equation of tangent to curve y = x² at (1,1) is:',
+   opts:['y = 2x−1','y = x','y = 2x+1','y = x+1'],ans:0,
+   hint:'dy/dx = 2x. At (1,1): slope = 2. Tangent: y−1 = 2(x−1) → y = 2x−1'},
+  {s:2,sc:0,id:65,type:'mcq',
+   text:'Sum of the infinite GP: 1 + 1/2 + 1/4 + ... is:',
+   opts:['2','3/2','1','4/3'],ans:0,
+   hint:'a = 1, r = 1/2. S = a/(1−r) = 1/(1−1/2) = 2'},
+  {s:2,sc:0,id:66,type:'mcq',
+   text:'The locus of a point equidistant from (1,0) and (−1,0) is:',
+   opts:['x = 0 (Y-axis)','y = 0 (X-axis)','x + y = 0','x² + y² = 1'],ans:0,
+   hint:'Equidistant from (1,0) and (−1,0) means the perpendicular bisector of the segment joining them = Y-axis (x=0).'},
+  {s:2,sc:0,id:67,type:'mcq',
+   text:'If A = [[1,2],[3,4]], then det(A) is:',
+   opts:['−2','2','10','−10'],ans:0,
+   hint:'det([[a,b],[c,d]]) = ad−bc = 1×4 − 2×3 = 4−6 = −2'},
+  {s:2,sc:0,id:68,type:'mcq',
+   text:'The probability that at least one head appears when 3 fair coins are tossed is:',
+   opts:['7/8','1/8','3/4','1/2'],ans:0,
+   hint:'P(at least one H) = 1 − P(no heads) = 1 − (1/2)³ = 1 − 1/8 = 7/8'},
+  {s:2,sc:0,id:69,type:'mcq',
+   text:'d/dx [log(sin x)] equals:',
+   opts:['cot x','tan x','−cot x','sec x'],ans:0,
+   hint:'d/dx [log(sin x)] = (1/sin x) × cos x = cos x/sin x = cot x'},
+  {s:2,sc:0,id:70,type:'mcq',
+   text:'The focus of the parabola y² = 8x is at:',
+   opts:['(2,0)','(0,2)','(−2,0)','(4,0)'],ans:0,
+   hint:'y² = 8x → y² = 4(2)x. Standard form y²=4ax gives a=2. Focus = (a,0) = (2,0).'},
+  {s:2,sc:0,id:71,type:'mcq',text:'If vectors a⃗ = î+2ĵ+3k̂ and b⃗ = 2î+4ĵ+6k̂, they are:',opts:['Perpendicular','Parallel','Neither','Same magnitude'],ans:1,hint:'b⃗ = 2a⃗. When one vector is a scalar multiple of another, they are parallel.'},
+  {s:2,sc:0,id:72,type:'mcq',text:'The number of ways to arrange letters of "INDIA" is:',opts:['60','120','30','20'],ans:0,hint:'INDIA has 5 letters with I repeated 2 times. Arrangements = 5!/2! = 120/2 = 60.'},
+  {s:2,sc:0,id:73,type:'mcq',text:'∫ x·eˣ dx equals:',opts:['xeˣ − eˣ + C','xeˣ + eˣ + C','eˣ(x−1) + C','Both A and C'],ans:3,hint:'By integration by parts: ∫xeˣdx = xeˣ − ∫eˣdx = xeˣ − eˣ + C = eˣ(x−1) + C'},
+  {s:2,sc:0,id:74,type:'mcq',text:'sin(A+B) equals:',opts:['sinA·cosB + cosA·sinB','sinA·cosB − cosA·sinB','cosA·cosB − sinA·sinB','cosA·cosB + sinA·sinB'],ans:0,hint:'Addition formula: sin(A+B) = sinA·cosB + cosA·sinB'},
+  {s:2,sc:0,id:75,type:'mcq',text:'The value of lim_{x→0} (sin x)/x is:',opts:['1','0','∞','Undefined'],ans:0,hint:'Standard limit: lim_{x→0} (sin x)/x = 1. This is a fundamental calculus result.'},
+  {s:2,sc:0,id:76,type:'mcq',text:'If P(A) = 0.6, P(B) = 0.4, P(A∩B) = 0.2, then P(A∪B) is:',opts:['0.8','0.6','1.0','0.4'],ans:0,hint:'P(A∪B) = P(A)+P(B)−P(A∩B) = 0.6+0.4−0.2 = 0.8'},
+  {s:2,sc:0,id:77,type:'mcq',text:'The equation x² + y² − 6x − 8y = 0 represents a circle with centre:',opts:['(3,4)','(−3,−4)','(6,8)','(3,−4)'],ans:0,hint:'Complete the square: (x−3)² + (y−4)² = 25. Centre = (3,4), radius = 5.'},
+  {s:2,sc:0,id:78,type:'mcq',text:'The arithmetic mean of 5 numbers is 10. If one number is 20, the mean of remaining 4 is:',opts:['7.5','8','6.25','5'],ans:0,hint:'Sum = 5×10 = 50. Remaining sum = 50−20 = 30. Mean = 30/4 = 7.5'},
+  {s:2,sc:0,id:79,type:'mcq',text:'The value of ⁿC₀ + ⁿC₁ + ⁿC₂ + ... + ⁿCₙ is:',opts:['2ⁿ','n!','2n','nⁿ'],ans:0,hint:'Binomial theorem: (1+1)ⁿ = ∑ⁿCₖ = 2ⁿ. Sum of all binomial coefficients = 2ⁿ.'},
+  {s:2,sc:0,id:80,type:'mcq',text:'If α and β are roots of x² − px + q = 0, then α² + β² equals:',opts:['p² − 2q','p² + 2q','p² − q','q² − p'],ans:0,hint:'α+β = p, αβ = q. α²+β² = (α+β)² − 2αβ = p² − 2q.'},
+
+  // ═══ MATHEMATICS · SECTION B ═══
+  {s:2,sc:1,id:81,type:'integer',text:'The value of ∫₀^1 x(1−x)^9 dx × 110 is:',ans:'1',hint:'Beta function: ∫₀^1 xᵐ(1−x)ⁿdx = m!n!/(m+n+1)! = 1!9!/11! = 1/(11×10) = 1/110. So answer = 1.'},
+  {s:2,sc:1,id:82,type:'integer',text:'Sum of first n natural numbers is 55. Find n:',ans:'10',hint:'n(n+1)/2 = 55 → n(n+1) = 110 → n = 10 (since 10×11 = 110).'},
+  {s:2,sc:1,id:83,type:'integer',text:'The rank of matrix [[1,2],[2,4]] is:',ans:'1',hint:'Row 2 = 2 × Row 1. Matrix is rank 1 (only one linearly independent row).'},
+  {s:2,sc:1,id:84,type:'integer',text:'If f(x) = 3x + 2, f⁻¹(11) equals:',ans:'3',hint:'f(x) = 11 → 3x+2 = 11 → 3x = 9 → x = 3. So f⁻¹(11) = 3.'},
+  {s:2,sc:1,id:85,type:'integer',text:'The number of terms in expansion of (a+b)¹⁰ is:',ans:'11',hint:'Number of terms in (a+b)ⁿ = n+1 = 10+1 = 11 terms.'},
+  {s:2,sc:1,id:86,type:'integer',text:'3-digit numbers divisible by both 3 and 5 (i.e., by 15): How many are there?',ans:'60',hint:'3-digit multiples of 15: from 105 to 990. Count = (990−105)/15 + 1 = 885/15 + 1 = 59+1 = 60.'},
+  {s:2,sc:1,id:87,type:'integer',text:'If tan θ = 3/4 and θ is in first quadrant, then sin θ × 5 equals:',ans:'3',hint:'tan θ = 3/4, hyp = 5 (3-4-5 triangle). sin θ = 3/5. sin θ × 5 = 3.'},
+  {s:2,sc:1,id:88,type:'integer',text:'The area of triangle with vertices (0,0), (4,0), (0,3) in sq units is:',ans:'6',hint:'Area = ½|base × height| = ½ × 4 × 3 = 6 square units.'},
+  {s:2,sc:1,id:89,type:'integer',text:'The derivative of x³ at x = 2 is:',ans:'12',hint:'d/dx(x³) = 3x². At x=2: 3×4 = 12.'},
+  {s:2,sc:1,id:90,type:'integer',text:'The value of sin²30° + cos²30° + tan²45° is:',ans:'2',hint:'sin²30° + cos²30° = 1 (identity). tan²45° = 1² = 1. Total = 1 + 1 = 2.'},
+];
+
+// ════ STATE ════
+const TOTAL_TIME = 3*3600;
+let timeLeft = TOTAL_TIME;
+let curS = 0, curSc = 0, curQ = 0;
+const QST = {};
+QS.forEach(q=>{ QST[q.id]={visited:false,answered:false,marked:false,answer:null}; });
+
+function getQs(s,sc){ return QS.filter(q=>q.s===s&&q.sc===sc); }
+function getCurQ(){ return getQs(curS,curSc)[curQ]||null; }
+function gn(si,sci,qi){
+  let n=1;
+  for(let s=0;s<si;s++) n+=SUBJS[s].secs.reduce((a,b)=>a+b.qc,0);
+  for(let sc=0;sc<sci;sc++) n+=SUBJS[si].secs[sc].qc;
+  return n+qi;
+}
+function gi(){ return gn(curS,curSc,curQ); }
+
+function renderSecTabs(){
+  const tabs=document.getElementById('sec-tabs');
+  tabs.innerHTML=SUBJS[curS].secs.map((s,i)=>`<button class="stab ${i===curSc?'on':''}" onclick="switchSec(${i})">${s.name}</button>`).join('');
+  const qs=getQs(curS,curSc);
+  document.getElementById('sec-info').textContent=`Q ${curQ+1} of ${qs.length}`;
+}
+
+function renderQ(){
+  const q=getCurQ(); if(!q)return;
+  const st=QST[q.id]; st.visited=true;
+  const subj=SUBJS[q.s]; const sec=subj.secs[q.sc];
+  const answered=QS.filter(qq=>QST[qq.id].answered).length;
+  document.getElementById('qpf').style.width=`${(answered/90)*100}%`;
+  document.getElementById('qcnt').textContent=`Q${gi()} / 90`;
+  document.getElementById('sec-info').textContent=`Q ${curQ+1} of ${getQs(curS,curSc).length}`;
+  const mb=document.getElementById('mbtn');
+  mb.classList.toggle('marked',st.marked);
+  mb.textContent=st.marked?'🔖 Marked':'🔖 Mark for Review';
+
+  const isInt=q.type==='integer';
+  const typeHtml=isInt
+    ?`<span class="q-type-b qt-integer">Integer Type</span><div class="q-marks"><span class="mp">+4 correct</span><span class="mn">0 wrong</span></div>`
+    :`<span class="q-type-b qt-single">Single Correct</span><div class="q-marks"><span class="mp">+4 correct</span><span class="mn">−1 wrong</span></div>`;
+
+  let contentHtml='';
+  if(isInt){
+    contentHtml=`<div class="int-wrap">
+      <div class="int-lbl">Enter your answer (integer value, can be negative):</div>
+      <input type="number" class="int-input" id="ii" value="${st.answer||''}" placeholder="0" oninput="saveInt(this.value)">
+      <div class="calc-pad">
+        ${[7,8,9,4,5,6,1,2,3].map(n=>`<button class="calc-btn" onclick="addDigit('${n}')">${n}</button>`).join('')}
+        <button class="calc-btn" onclick="addDigit('0')">0</button>
+        <button class="calc-btn neg" onclick="toggleNeg()">±</button>
+        <button class="calc-btn sp" onclick="clearInt()">✕</button>
+      </div>
+      ${sec.attempt?`<div style="font-size:.72rem;color:var(--amber);background:var(--amber-light);border:1px solid rgba(184,115,51,.2);border-radius:8px;padding:8px 12px;margin-top:8px;">ℹ️ Section B: Attempt any <strong>${sec.attempt}</strong> out of ${sec.qc} questions. Best ${sec.attempt} will be considered.</div>`:''}
+    </div>`;
+  } else {
+    contentHtml=`<div class="q-opts">
+      ${q.opts.map((o,i)=>`
+      <div class="opt ${st.answer===i?'on':''}" onclick="selOpt(${i})">
+        <div class="ok">${['A','B','C','D'][i]}</div>
+        <div class="ot">${o}</div>
+      </div>`).join('')}
+    </div>`;
+  }
+
+  document.getElementById('qbody').innerHTML=`
+  <div class="q-hdr">
+    <div class="q-num-b">
+      <div class="q-num">Q${gi()}</div>
+      <div>${typeHtml}</div>
+    </div>
+    <div class="q-acts">
+      <button class="q-ab ${st.marked?'bm':''}" onclick="toggleMark()" title="Mark">🔖</button>
+      <button class="q-ab" onclick="alert('Hint: ${(q.hint||'Think carefully!').replace(/'/g,"\\'")}')">💡</button>
+      <button class="q-ab" onclick="alert('Reported!')">⚑</button>
+    </div>
+  </div>
+  <div class="q-tb">
+    <div class="q-stag ${subj.cls}">${subj.icon} ${subj.name} · ${sec.name}</div>
+    <div class="q-txt">${q.text}</div>
+  </div>
+  ${contentHtml}`;
+
+  renderPalette(); updateSum();
+}
+
+function selOpt(i){
+  const q=getCurQ(); if(!q)return;
+  QST[q.id].answer=i; QST[q.id].answered=true;
+  renderQ();
+}
+
+function saveInt(v){
+  const q=getCurQ(); if(!q)return;
+  QST[q.id].answer=v; QST[q.id].answered=v!==''&&v!==null;
+  updateSum(); renderPalette();
+}
+
+function addDigit(d){
+  const el=document.getElementById('ii'); if(!el)return;
+  el.value=el.value+d; saveInt(el.value);
+}
+
+function toggleNeg(){
+  const el=document.getElementById('ii'); if(!el)return;
+  el.value=el.value.startsWith('-')?el.value.slice(1):'-'+el.value;
+  saveInt(el.value);
+}
+
+function clearInt(){
+  const el=document.getElementById('ii');if(el){el.value='';saveInt('');}
+}
+
+function clearAns(){
+  const q=getCurQ();if(!q)return;
+  QST[q.id].answer=null;QST[q.id].answered=false;QST[q.id].marked=false;
+  renderQ();
+}
+
+function toggleMark(){
+  const q=getCurQ();if(!q)return;
+  QST[q.id].marked=!QST[q.id].marked; renderQ();
+}
+
+function nav(d){
+  const qs=getQs(curS,curSc);
+  const ni=curQ+d;
+  if(ni>=0&&ni<qs.length){curQ=ni;}
+  else if(d>0){
+    const secs=SUBJS[curS].secs;
+    if(curSc<secs.length-1){curSc++;curQ=0;}
+    else if(curS<SUBJS.length-1){curS++;curSc=0;curQ=0;updSubjTabs();}
+  } else {
+    if(curSc>0){curSc--;curQ=getQs(curS,curSc).length-1;}
+    else if(curS>0){curS--;curSc=SUBJS[curS].secs.length-1;curQ=getQs(curS,curSc).length-1;updSubjTabs();}
+  }
+  renderSecTabs();renderQ();
+}
+
+function switchSubj(idx,el){
+  curS=idx;curSc=0;curQ=0;updSubjTabs();renderSecTabs();renderQ();
+}
+
+function updSubjTabs(){
+  document.querySelectorAll('.subj-tab').forEach((t,i)=>t.classList.toggle('active',i===curS));
+}
+
+function switchSec(idx){curSc=idx;curQ=0;renderSecTabs();renderQ();}
+function jumpToQ(si,sci,qi){curS=si;curSc=sci;curQ=qi;updSubjTabs();renderSecTabs();renderQ();}
+
+function renderPalette(){
+  const pal=document.getElementById('palette');
+  const q=getCurQ();
+  let h='';
+  SUBJS.forEach((subj,si)=>{
+    h+=`<div class="pp-slbl">${subj.icon} ${subj.name}</div>`;
+    subj.secs.forEach((sec,sci)=>{
+      const qs=getQs(si,sci);if(!qs.length)return;
+      h+=`<div style="font-size:.6rem;color:rgba(26,38,24,.35);margin-bottom:4px">${sec.name}${sec.attempt?` (attempt any ${sec.attempt})`:''}</div>`;
+      h+='<div class="pp-grid">';
+      qs.forEach((qq,qi)=>{
+        const st=QST[qq.id];
+        const isCur=qq.id===(q?q.id:0);
+        let cls='pnv';
+        if(st.answered&&st.marked)cls='pma';
+        else if(st.answered)cls='pa';
+        else if(st.marked)cls='pm';
+        else if(st.visited)cls='pna';
+        h+=`<button class="pb ${cls} ${isCur?'cur':''}" onclick="jumpToQ(${si},${sci},${qi})" title="Q${gn(si,sci,qi)}">${gn(si,sci,qi)}</button>`;
+      });
+      h+='</div>';
+    });
+  });
+  pal.innerHTML=h;
+}
+
+function updateSum(){
+  const ans=QS.filter(q=>QST[q.id].answered&&!QST[q.id].marked).length;
+  const mA=QS.filter(q=>QST[q.id].marked&&QST[q.id].answered).length;
+  const na=QS.filter(q=>QST[q.id].visited&&!QST[q.id].answered&&!QST[q.id].marked).length;
+  const mk=QS.filter(q=>QST[q.id].marked&&!QST[q.id].answered).length;
+  const nv=QS.filter(q=>!QST[q.id].visited).length;
+  document.getElementById('s-ans').textContent=ans+mA;
+  document.getElementById('s-na').textContent=na;
+  document.getElementById('s-mk').textContent=mk;
+  document.getElementById('s-nv').textContent=nv;
+}
+
+// Timer
+function ft(s){
+  const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),sec=s%60;
+  return `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+}
+const TI=setInterval(()=>{
+  if(timeLeft<=0){clearInterval(TI);submitTest();return;}
+  timeLeft--;
+  document.getElementById('timer').textContent=ft(timeLeft);
+  const b=document.getElementById('tbox');
+  if(timeLeft<=300)b.className='timer-box danger';
+  else if(timeLeft<=900)b.className='timer-box warning';
+},1000);
+
+function openMo(){
+  const ans=QS.filter(q=>QST[q.id].answered).length;
+  const na=QS.filter(q=>QST[q.id].visited&&!QST[q.id].answered).length;
+  const mk=QS.filter(q=>QST[q.id].marked).length;
+  const nv=QS.filter(q=>!QST[q.id].visited).length;
+  document.getElementById('mo-time').textContent=ft(timeLeft);
+  document.getElementById('mo-stats').innerHTML=`
+  <div class="mb-si"><div class="mb-sn" style="color:var(--sage)">${ans}</div><div class="mb-sl">Answered</div></div>
+  <div class="mb-si"><div class="mb-sn" style="color:var(--rose)">${na}</div><div class="mb-sl">Not Answered</div></div>
+  <div class="mb-si"><div class="mb-sn" style="color:var(--gold)">${mk}</div><div class="mb-sl">Marked</div></div>
+  <div class="mb-si"><div class="mb-sn" style="color:rgba(26,38,24,.35)">${nv}</div><div class="mb-sl">Not Visited</div></div>`;
+  document.getElementById('mo-warn').innerHTML=nv>0
+    ?`⚠️ <strong>${nv} questions not visited.</strong> Don't forget Section B — attempt any 5!`
+    :`✅ All 90 questions attempted!`;
+  document.getElementById('mo').classList.add('open');
+}
+function closeMo(){document.getElementById('mo').classList.remove('open');}
+document.getElementById('mo').addEventListener('click',e=>{if(e.target===document.getElementById('mo'))closeMo();});
+
+function submitTest(){
+  clearInterval(TI); closeMo();
+  let score=0,correct=0,wrong=0,skipped=0;
+  QS.forEach(q=>{
+    const st=QST[q.id];
+    if(!st.answered){skipped++;return;}
+    const myAns=q.type==='integer'?String(st.answer).trim():st.answer;
+    const corrAns=q.type==='integer'?String(q.ans):q.ans;
+    if(myAns==corrAns){score+=4;correct++;}
+    else if(q.type==='mcq'){score-=1;wrong++;}
+    else skipped++;
+  });
+  const tt=TOTAL_TIME-timeLeft;
+  const th=Math.floor(tt/3600),tm=Math.floor((tt%3600)/60);
+  const pct=Math.round(score/300*100);
+
+  document.getElementById('ti').style.display='none';
+  const rv=document.getElementById('rv');
+  rv.style.display='flex';
+  rv.innerHTML=`
+  <div style="background:linear-gradient(145deg,var(--forest),var(--forest-soft),#0e1a24);padding:32px 5%;position:relative;overflow:hidden;">
+    <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(59,130,196,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(59,130,196,.05) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
+    <div style="position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(79,70,229,.15);filter:blur(55px);top:-60px;right:60px;pointer-events:none;"></div>
+    <div style="max-width:900px;margin:0 auto;position:relative;z-index:1;">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;">
+        <div style="width:32px;height:32px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.76rem;font-weight:800;color:white;">MA</div>
+        <span style="font-size:.95rem;font-weight:900;color:white;">Mock</span><span style="font-size:.95rem;font-weight:900;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Arena</span>
+      </div>
+      <div style="font-size:.62rem;font-weight:600;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;">JEE Main Mock #22 · Result</div>
+      <div style="font-size:1.55rem;font-weight:900;color:white;letter-spacing:-.04em;margin-bottom:5px;">
+        ${score>=270?'🏆 Excellent! 99+ Percentile!':score>=240?'👍 Great Score!':score>=180?'📈 Good Attempt!':'💪 Keep Practicing!'}
+      </div>
+      <div style="font-size:.8rem;color:rgba(255,255,255,.42);">Time: ${th}h ${tm}m · 90 Questions · PCM · +4/−1 marking</div>
+    </div>
+  </div>
+  <div style="max-width:900px;margin:0 auto;padding:26px 20px;width:100%;">
+    <div style="background:white;border:1px solid var(--border);border-radius:20px;padding:22px;margin-bottom:18px;box-shadow:var(--sh);">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px;">
+        ${[[score,'Score (out of 300)','var(--forest)'],[correct,'Correct','var(--sage)'],[wrong,'Wrong (−1 each)','var(--rose)'],[skipped,'Skipped / Not Ans.','rgba(26,38,24,.35)']].map(([n,l,c])=>`
+        <div style="background:var(--cream-warm);border:1px solid var(--border);border-radius:13px;padding:14px;text-align:center;">
+          <div style="font-size:1.75rem;font-weight:800;color:${c};letter-spacing:-.04em;">${n}</div>
+          <div style="font-size:.64rem;font-weight:600;color:rgba(26,38,24,.4);text-transform:uppercase;letter-spacing:.06em;margin-top:4px;">${l}</div>
+        </div>`).join('')}
+      </div>
+      <div style="margin-bottom:14px;">
+        <div style="display:flex;justify-content:space-between;font-size:.76rem;font-weight:600;color:var(--forest-muted);margin-bottom:6px;"><span>Score Percentage</span><span style="color:${pct>=90?'var(--sage)':pct>=60?'var(--amber)':'var(--rose)'}">${pct}%</span></div>
+        <div style="height:8px;background:var(--cream-warm);border-radius:4px;overflow:hidden;border:1px solid var(--border);">
+          <div style="height:100%;width:${pct}%;background:linear-gradient(90deg,var(--indigo),var(--sage));border-radius:4px;"></div>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+        ${[['⚛️','Physics','var(--sky)'],['🧪','Chemistry','var(--sage)'],['📐','Mathematics','var(--gold)']].map(([ic,n,c])=>{
+          const subjQs=QS.filter(q=>q.s===['Physics','Chemistry','Mathematics'].indexOf(n));
+          const subjCorrect=subjQs.filter(q=>{
+            const st=QST[q.id];if(!st.answered)return false;
+            const ma=q.type==='integer'?String(st.answer).trim():st.answer;
+            const ca=q.type==='integer'?String(q.ans):q.ans;
+            return ma==ca;
+          }).length;
+          const acc=Math.round(subjCorrect/30*100);
+          return `<div style="background:var(--cream-warm);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;">
+            <div style="font-size:1.2rem;margin-bottom:5px">${ic}</div>
+            <div style="font-size:.82rem;font-weight:700;color:var(--forest);margin-bottom:3px">${n}</div>
+            <div style="font-size:1.1rem;font-weight:800;color:${c}">${acc}%</div>
+            <div style="font-size:.62rem;color:rgba(26,38,24,.35)">${subjCorrect}/30 correct</div>
+          </div>`;
+        }).join('')}
+      </div>
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <button style="font-size:.84rem;font-weight:700;padding:13px 24px;border-radius:12px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;box-shadow:0 4px 14px var(--sage-glow);" onclick="window.location.href='mockarena_results.html'">📊 Full Analysis →</button>
+      <button style="font-size:.84rem;font-weight:700;padding:13px 24px;border-radius:12px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;" onclick="window.location.href='mockarena_dashboard.html'">⬡ Dashboard</button>
+      <button style="font-size:.84rem;font-weight:700;padding:13px 24px;border-radius:12px;border:1.5px solid var(--border-med);background:none;color:var(--forest-muted);cursor:pointer;" onclick="location.reload()">↺ Reattempt</button>
+    </div>
+  </div>`;
+}
+
+function showInstr(){
+  alert(`JEE Main Mock #22 — Instructions\n\n📋 EXAM PATTERN:\n• Total 90 Questions · 300 Marks · 3 Hours\n• Physics: 20 MCQ (Section A) + 10 Integer (Section B, attempt any 5)\n• Chemistry: 20 MCQ (Section A) + 10 Integer (Section B, attempt any 5)\n• Mathematics: 20 MCQ (Section A) + 10 Integer (Section B, attempt any 5)\n\n⏱ DURATION: 3 Hours\n📊 TOTAL MARKS: 300\n\n🔖 MARKING SCHEME:\n• MCQ Correct: +4 | Wrong: −1 | Skipped: 0\n• Integer Correct: +4 | Wrong/Skipped: 0 (NO negative marking)\n\n⚠️ SECTION B:\n• 10 questions given, attempt ANY 5\n• Best 5 attempted responses will be evaluated\n• Integer answers: any non-negative integer\n\n💡 STRATEGY:\n• Attempt all Section A MCQ you know\n• In Section B, choose your 5 strongest questions\n• Integer type has no negative marking — attempt all 10!`);
+}
+
+// INIT
+renderSecTabs(); renderQ();
+</script>
+</body>
+</html>
