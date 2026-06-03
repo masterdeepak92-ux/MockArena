@@ -938,6 +938,24 @@ document.addEventListener("DOMContentLoaded",function(){
 <script>
 (function(){
   var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+  var FAKE_NAMES=["Rahul Kumar","Arjun Sharma","Rahul","Arjun"];
+  function _replaceNames(el, firstName, fullName, initials){
+    if(el.nodeType===3){
+      var t=el.textContent;
+      FAKE_NAMES.forEach(function(n){
+        if(t.indexOf(n)!==-1){
+          t=t.replace(new RegExp(n+"!","g"),firstName+"!")
+             .replace(new RegExp("\("+n.split(" ")[0]+" K\.\)","g"),"("+firstName+" "+initials.charAt(1)+")")
+             .replace(new RegExp("\("+n+"\)","g"),"("+fullName+")")
+             .replace(new RegExp("^"+n+"$"),fullName)
+             .replace(new RegExp(" "+n+"$")," "+fullName);
+          el.textContent=t;
+        }
+      });
+    } else if(el.nodeType===1&&el.tagName!=="SCRIPT"&&el.tagName!=="STYLE"){
+      Array.from(el.childNodes).forEach(function(child){_replaceNames(child,firstName,fullName,initials);});
+    }
+  }
   function _g(){
     var s1=document.createElement("script");
     s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
@@ -956,7 +974,7 @@ document.addEventListener("DOMContentLoaded",function(){
             var photo=u.photoURL;
             var firstName=parts[0];
 
-            // Update avatar
+            // 1. Update avatar
             document.querySelectorAll(".sb-av,.sb-avatar").forEach(function(el){
               if(photo){
                 var img=document.createElement("img");
@@ -970,18 +988,22 @@ document.addEventListener("DOMContentLoaded",function(){
               }
             });
 
-            // Update name
-            document.querySelectorAll(".sb-uname").forEach(function(el){
-              el.textContent=nm;
+            // 2. Update .sb-uname, .sb-name, .sb-sname, .av-name, .ph-name, .sc-name
+            var nameSelectors=[".sb-uname",".sb-name",".sb-sname",".av-name",".ph-name",".sc-name"];
+            nameSelectors.forEach(function(sel){
+              document.querySelectorAll(sel).forEach(function(el){el.textContent=nm;});
             });
 
-            // Update topbar greeting
+            // 3. Update topbar greeting
             var tb=document.querySelector(".tb-title");
             if(tb&&tb.textContent.indexOf("Good")!==-1){
               var hour=new Date().getHours();
               var greet=hour<12?"Good Morning":hour<17?"Good Afternoon":"Good Evening";
               tb.textContent=greet+", "+firstName+"!";
             }
+
+            // 4. Replace ALL hardcoded names in the entire page body
+            _replaceNames(document.body, firstName, nm, initials);
           }
         });
       };
