@@ -286,68 +286,82 @@ function switchTab(tab, btn){
   }
 }
 
-function handleLogin(){
-  const email = document.getElementById('login-email').value;
-  const pass = document.getElementById('login-password').value;
-  const err = document.getElementById('error-msg');
-  
-  if(!email || !pass){
-    err.textContent = '⚠️ Please enter your email and password.';
-    err.classList.add('show');
-    return;
-  }
-  if(!email.includes('@')){
-    err.textContent = '⚠️ Please enter a valid email address.';
-    err.classList.add('show');
-    return;
-  }
-  
-  err.classList.remove('show');
-  
-  // Show loading
-  const btn = document.querySelector('#login-form .btn-primary');
-  btn.textContent = 'Signing in...';
-  btn.style.opacity = '.7';
-  
-  // Redirect to dashboard
-  setTimeout(()=>{ window.location.href = 'mockarena_dashboard.html'; }, 1000);
-}
+// ── Firebase loaded dynamically so it is always ready ──────
+(function(){
+  var _cfg={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+  var _s1=document.createElement('script');
+  _s1.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+  _s1.onload=function(){
+    var _s2=document.createElement('script');
+    _s2.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js';
+    _s2.onload=function(){
+      if(!firebase.apps.length) firebase.initializeApp(_cfg);
+      var _auth=firebase.auth();
+      _auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      var _gp=new firebase.auth.GoogleAuthProvider();
+      _gp.setCustomParameters({prompt:'select_account'});
+      // Redirect if already logged in
+      _auth.onAuthStateChanged(function(u){if(u) window.location.href='mockarena_dashboard.html';});
+      function _err(c){return({'auth/user-not-found':'No account found with this email.','auth/wrong-password':'Incorrect password.','auth/invalid-credential':'Email or password is incorrect.','auth/email-already-in-use':'This email is already registered.','auth/weak-password':'Password must be at least 6 characters.','auth/invalid-email':'Please enter a valid email address.','auth/too-many-requests':'Too many attempts. Try again later.','auth/popup-closed-by-user':'Google sign-in was cancelled.','auth/network-request-failed':'Network error. Check your connection.'})[c]||'Something went wrong. Please try again.';}
+      function _show(id,msg){var e=document.getElementById(id);e.textContent=msg;e.classList.add('show');}
+      function _hide(){document.getElementById('error-msg').classList.remove('show');document.getElementById('success-msg').classList.remove('show');}
 
-function handleRegister(){
-  const name = document.getElementById('reg-name').value;
-  const email = document.getElementById('reg-email').value;
-  const pass = document.getElementById('reg-password').value;
-  const exam = document.getElementById('reg-exam').value;
-  const err = document.getElementById('error-msg');
-  const suc = document.getElementById('success-msg');
-  
-  if(!name || !email || !pass || !exam){
-    err.textContent = '⚠️ Please fill all fields to create your account.';
-    err.classList.add('show');
-    return;
-  }
-  if(pass.length < 6){
-    err.textContent = '⚠️ Password must be at least 6 characters.';
-    err.classList.add('show');
-    return;
-  }
-  
-  err.classList.remove('show');
-  suc.classList.add('show');
-  
-  const btn = document.querySelector('#register-form .btn-primary');
-  btn.textContent = 'Creating account...';
-  btn.style.opacity = '.7';
-  
-  setTimeout(()=>{ window.location.href = 'mockarena_dashboard.html'; }, 1500);
-}
+      window.handleLogin=function(){
+        var email=document.getElementById('login-email').value.trim();
+        var pass=document.getElementById('login-password').value;
+        var err=document.getElementById('error-msg');
+        if(!email||!pass){err.textContent='⚠️ Please enter your email and password.';err.classList.add('show');return;}
+        if(!email.includes('@')){err.textContent='⚠️ Please enter a valid email address.';err.classList.add('show');return;}
+        err.classList.remove('show');
+        var btn=document.querySelector('#login-form .btn-primary');
+        btn.textContent='Signing in...';btn.style.opacity='.7';
+        _auth.signInWithEmailAndPassword(email,pass).then(function(){
+          window.location.href='mockarena_dashboard.html';
+        }).catch(function(e){
+          err.textContent='⚠️ '+_err(e.code);err.classList.add('show');
+          btn.textContent='Sign In to MockArena →';btn.style.opacity='1';
+        });
+      };
 
-function handleGoogleLogin(){
-  const btn = event.target.closest('button');
-  btn.textContent = 'Connecting...';
-  btn.style.opacity = '.7';
-  setTimeout(()=>{ window.location.href = 'mockarena_dashboard.html'; }, 1000);
-}
+      window.handleRegister=function(){
+        var name=document.getElementById('reg-name').value.trim();
+        var email=document.getElementById('reg-email').value.trim();
+        var pass=document.getElementById('reg-password').value;
+        var exam=document.getElementById('reg-exam').value;
+        var err=document.getElementById('error-msg');
+        var suc=document.getElementById('success-msg');
+        if(!name||!email||!pass||!exam){err.textContent='⚠️ Please fill all fields to create your account.';err.classList.add('show');return;}
+        if(pass.length<6){err.textContent='⚠️ Password must be at least 6 characters.';err.classList.add('show');return;}
+        err.classList.remove('show');suc.classList.add('show');
+        var btn=document.querySelector('#register-form .btn-primary');
+        btn.textContent='Creating account...';btn.style.opacity='.7';
+        _auth.createUserWithEmailAndPassword(email,pass).then(function(r){
+          return r.user.updateProfile({displayName:name});
+        }).then(function(){
+          window.location.href='mockarena_dashboard.html';
+        }).catch(function(e){
+          suc.classList.remove('show');err.textContent='⚠️ '+_err(e.code);err.classList.add('show');
+          btn.textContent='Create My Account →';btn.style.opacity='1';
+        });
+      };
+
+      window.handleGoogleLogin=function(){
+        var btn=event.target.closest('button');
+        btn.textContent='Connecting...';btn.style.opacity='.7';
+        _auth.signInWithPopup(_gp).then(function(){
+          window.location.href='mockarena_dashboard.html';
+        }).catch(function(e){
+          document.getElementById('error-msg').textContent='⚠️ '+_err(e.code);
+          document.getElementById('error-msg').classList.add('show');
+          btn.innerHTML='<svg class="google-icon" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg> Continue with Google';
+          btn.style.opacity='1';
+        });
+      };
+    };
+    document.head.appendChild(_s2);
+  };
+  document.head.appendChild(_s1);
+})();
 
 // Enter key support
 document.addEventListener('keydown', e=>{
