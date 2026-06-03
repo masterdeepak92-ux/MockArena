@@ -843,22 +843,20 @@ document.addEventListener("DOMContentLoaded",function(){
 <script>
 (function(){
   var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-  var FAKE_NAMES=["Rahul Kumar","Arjun Sharma","Rahul","Arjun"];
-  function _replaceNames(el, firstName, fullName, initials){
+  var FAKE=["Rahul Kumar","Arjun Sharma","Rahul","Arjun"];
+  function _rep(el,fn,nm,in2){
     if(el.nodeType===3){
       var t=el.textContent;
-      FAKE_NAMES.forEach(function(n){
+      FAKE.forEach(function(n){
         if(t.indexOf(n)!==-1){
-          t=t.replace(new RegExp(n+"!","g"),firstName+"!")
-             .replace(new RegExp("\("+n.split(" ")[0]+" K\.\)","g"),"("+firstName+" "+initials.charAt(1)+")")
-             .replace(new RegExp("\("+n+"\)","g"),"("+fullName+")")
-             .replace(new RegExp("^"+n+"$"),fullName)
-             .replace(new RegExp(" "+n+"$")," "+fullName);
+          t=t.replace(new RegExp(n+"!","g"),fn+"!")
+             .replace(new RegExp("\("+n.split(" ")[0]+" K\.\)","g"),"("+fn+" "+in2.charAt(1)+")")
+             .replace(new RegExp("^"+n+"$"),nm);
           el.textContent=t;
         }
       });
     } else if(el.nodeType===1&&el.tagName!=="SCRIPT"&&el.tagName!=="STYLE"){
-      Array.from(el.childNodes).forEach(function(child){_replaceNames(child,firstName,fullName,initials);});
+      Array.from(el.childNodes).forEach(function(c){_rep(c,fn,nm,in2);});
     }
   }
   function _g(){
@@ -875,40 +873,17 @@ document.addEventListener("DOMContentLoaded",function(){
           if(u){
             var nm=u.displayName||u.email||"Student";
             var parts=nm.split(" ");
-            var initials=(parts[0].charAt(0)+(parts[1]?parts[1].charAt(0):"")).toUpperCase();
+            var in2=(parts[0].charAt(0)+(parts[1]?parts[1].charAt(0):"")).toUpperCase();
             var photo=u.photoURL;
-            var firstName=parts[0];
-
-            // 1. Update avatar
+            var fn=parts[0];
             document.querySelectorAll(".sb-av,.sb-avatar").forEach(function(el){
-              if(photo){
-                var img=document.createElement("img");
-                img.src=photo;
-                img.style.cssText="width:100%;height:100%;border-radius:50%;object-fit:cover;";
-                img.onerror=function(){el.textContent=initials;};
-                el.innerHTML="";
-                el.appendChild(img);
-              } else {
-                el.textContent=initials;
-              }
+              if(photo){var img=document.createElement("img");img.src=photo;img.style.cssText="width:100%;height:100%;border-radius:50%;object-fit:cover;";img.onerror=function(){el.textContent=in2;};el.innerHTML="";el.appendChild(img);}
+              else{el.textContent=in2;}
             });
-
-            // 2. Update .sb-uname, .sb-name, .sb-sname, .av-name, .ph-name, .sc-name
-            var nameSelectors=[".sb-uname",".sb-name",".sb-sname",".av-name",".ph-name",".sc-name"];
-            nameSelectors.forEach(function(sel){
-              document.querySelectorAll(sel).forEach(function(el){el.textContent=nm;});
-            });
-
-            // 3. Update topbar greeting
+            document.querySelectorAll(".sb-uname,.sb-name").forEach(function(el){el.textContent=nm;});
             var tb=document.querySelector(".tb-title");
-            if(tb&&tb.textContent.indexOf("Good")!==-1){
-              var hour=new Date().getHours();
-              var greet=hour<12?"Good Morning":hour<17?"Good Afternoon":"Good Evening";
-              tb.textContent=greet+", "+firstName+"!";
-            }
-
-            // 4. Replace ALL hardcoded names in the entire page body
-            _replaceNames(document.body, firstName, nm, initials);
+            if(tb&&tb.textContent.indexOf("Good")!==-1){var h=new Date().getHours();var g=h<12?"Good Morning":h<17?"Good Afternoon":"Good Evening";tb.textContent=g+", "+fn+"!";}
+            _rep(document.body,fn,nm,in2);
           }
         });
       };
@@ -946,6 +921,58 @@ document.addEventListener("DOMContentLoaded",function(){
     });
   }
   if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_il);}else{_il();}
+})();
+</script>
+<script>
+(function(){
+  function _initFirestore(){
+    // Load Firestore SDK
+    var s=document.createElement("script");
+    s.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
+    s.onload=function(){
+      var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+      if(!firebase.apps.length)firebase.initializeApp(_c);
+      var db=firebase.firestore();
+
+      firebase.auth().onAuthStateChanged(function(user){
+        if(!user)return;
+        var ref=db.collection("users").doc(user.uid);
+        ref.get().then(function(doc){
+          if(!doc.exists){
+            // First login - create profile
+            ref.set({
+              uid:user.uid,
+              name:user.displayName||"Student",
+              email:user.email,
+              photo:user.photoURL||"",
+              role:"student",
+              examTarget:"",
+              className:"",
+              joinDate:firebase.firestore.FieldValue.serverTimestamp(),
+              totalTests:0,
+              avgScore:0,
+              bestScore:0,
+              streak:0,
+              totalPoints:0
+            });
+          } else {
+            // Update last login
+            ref.update({
+              lastLogin:firebase.firestore.FieldValue.serverTimestamp(),
+              name:user.displayName||doc.data().name||"Student",
+              photo:user.photoURL||doc.data().photo||""
+            });
+          }
+        });
+      });
+
+      // Expose db globally for other scripts
+      window._maDB=db;
+    };
+    document.head.appendChild(s);
+  }
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_initFirestore);}
+  else{_initFirestore();}
 })();
 </script>
 </body>
