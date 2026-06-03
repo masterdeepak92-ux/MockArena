@@ -265,6 +265,11 @@ body{font-family:var(--font-b);background:var(--paper);color:var(--ink);min-heig
 }
 </style>
 
+<style>
+.sb{display:flex!important;flex-direction:column!important;overflow-y:auto!important;}
+.sb-foot{position:sticky!important;bottom:0!important;background:var(--forest)!important;margin-top:auto!important;padding:10px 8px 18px!important;border-top:1px solid rgba(255,255,255,.06)!important;flex-shrink:0!important;z-index:10!important;}
+.sb-av img,.sb-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
+</style>
 </head>
 <body>
 
@@ -799,6 +804,40 @@ document.addEventListener("DOMContentLoaded",function(){
         var _done=false;
         firebase.auth().onAuthStateChanged(function(u){
           if(!_done&&!u){_done=true;window.location.href="login.html";}
+          if(u){
+            var nm=u.displayName||u.email||"Student";
+            var parts=nm.split(" ");
+            var initials=(parts[0].charAt(0)+(parts[1]?parts[1].charAt(0):"")).toUpperCase();
+            var photo=u.photoURL;
+            var firstName=parts[0];
+
+            // Update avatar
+            document.querySelectorAll(".sb-av,.sb-avatar").forEach(function(el){
+              if(photo){
+                var img=document.createElement("img");
+                img.src=photo;
+                img.style.cssText="width:100%;height:100%;border-radius:50%;object-fit:cover;";
+                img.onerror=function(){el.textContent=initials;};
+                el.innerHTML="";
+                el.appendChild(img);
+              } else {
+                el.textContent=initials;
+              }
+            });
+
+            // Update name
+            document.querySelectorAll(".sb-uname").forEach(function(el){
+              el.textContent=nm;
+            });
+
+            // Update topbar greeting
+            var tb=document.querySelector(".tb-title");
+            if(tb&&tb.textContent.indexOf("Good")!==-1){
+              var hour=new Date().getHours();
+              var greet=hour<12?"Good Morning":hour<17?"Good Afternoon":"Good Evening";
+              tb.textContent=greet+", "+firstName+"!";
+            }
+          }
         });
       };
       document.head.appendChild(s2);
@@ -810,25 +849,22 @@ document.addEventListener("DOMContentLoaded",function(){
 </script>
 <script>
 (function(){
-  function _initLogout(){
-    // Find ALL logout/signout links and wire them to Firebase signOut
-    document.querySelectorAll('a[href="login.html"]').forEach(function(link){
-      var txt = link.textContent.toLowerCase();
-      if(txt.indexOf('logout')!==-1 || txt.indexOf('sign out')!==-1 || txt.indexOf('log out')!==-1){
-        link.href = '#';
-        link.addEventListener('click', function(e){
+  function _il(){
+    document.querySelectorAll("a").forEach(function(link){
+      var txt=link.textContent.trim().toLowerCase();
+      if((txt==="logout"||txt==="sign out")&&link.getAttribute("href")==="login.html"){
+        link.href="#";
+        link.addEventListener("click",function(e){
           e.preventDefault();
-          var s1=document.createElement('script');
-          s1.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+          var s1=document.createElement("script");
+          s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
           s1.onload=function(){
-            var s2=document.createElement('script');
-            s2.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js';
+            var s2=document.createElement("script");
+            s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
             s2.onload=function(){
               var c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
               if(!firebase.apps.length)firebase.initializeApp(c);
-              firebase.auth().signOut().then(function(){
-                window.location.href='login.html';
-              });
+              firebase.auth().signOut().then(function(){window.location.href="login.html";});
             };
             document.head.appendChild(s2);
           };
@@ -837,8 +873,7 @@ document.addEventListener("DOMContentLoaded",function(){
       }
     });
   }
-  if(document.readyState==='loading'){document.addEventListener('DOMContentLoaded',_initLogout);}
-  else{_initLogout();}
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_il);}else{_il();}
 })();
 </script>
 </body>
