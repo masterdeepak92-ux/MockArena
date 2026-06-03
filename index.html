@@ -1,2098 +1,713 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MockArena – India's Premier Exam Prep Platform</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MockArena — Crack IIT JEE, NEET & Board Exams</title>
+<meta name="description" content="India's most powerful exam preparation platform. Adaptive mock tests, AI analytics, live leaderboards for JEE Advanced, JEE Mains, NEET & Boards."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
-  :root {
-    /* Core palette — deep slate + electric violet */
-    --ink: #0d0f1a;
-    --ink-soft: #1a1d2e;
-    --ink-muted: #5a5f7a;
-    --ink-faint: #9499b8;
-    --paper: #f4f5fb;
-    --paper-warm: #eceef8;
-    --paper-card: #ffffff;
-
-    /* Primary accent — electric indigo */
-    --accent: #4f46e5;
-    --accent-hover: #4338ca;
-    --accent-light: rgba(79,70,229,0.08);
-    --accent-glow: rgba(79,70,229,0.25);
-
-    /* Secondary accents */
-    --accent-2: #7c3aed;          /* violet */
-    --accent-cool: #0ea5e9;       /* sky blue */
-    --accent-green: #10b981;      /* emerald */
-    --accent-amber: #f59e0b;      /* amber */
-    --accent-rose: #f43f5e;       /* rose */
-    --gold: #eab308;
-
-    /* Borders */
-    --border: rgba(13,15,26,0.07);
-    --border-strong: rgba(13,15,26,0.13);
-
-    /* Radii */
-    --radius-sm: 8px;
-    --radius-md: 14px;
-    --radius-lg: 22px;
-    --radius-xl: 34px;
-
-    /* Fonts */
-    --font-display: 'Manrope', sans-serif;
-    --font-body: 'Inter', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
-
-    /* Shadows */
-    --shadow-card: 0 2px 16px rgba(13,15,26,0.06), 0 1px 3px rgba(13,15,26,0.04);
-    --shadow-hover: 0 16px 56px rgba(79,70,229,0.14), 0 2px 8px rgba(13,15,26,0.06);
-  }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: var(--font-body);
-    background: var(--paper);
-    color: var(--ink);
-    overflow-x: hidden;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    font-feature-settings: "kern" 1, "liga" 1;
-  }
-
-  /* ─── NAV ─── */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(16px);
-    -webkit-backdrop-filter: blur(16px);
-    border-bottom: 1px solid rgba(13,15,26,0.08);
-    padding: 0 6%;
-    display: flex; align-items: center; justify-content: space-between;
-    height: 68px;
-  }
-
-  .nav-logo {
-    font-family: 'Manrope', sans-serif;
-    font-size: 1.35rem; font-weight: 900;
-    letter-spacing: -0.05em;
-    text-decoration: none;
-    display: inline-flex; align-items: baseline; gap: 0;
-    line-height: 1;
-    flex-shrink: 0;
-  }
-
-  .nav-logo .logo-mock {
-    color: #0d0f1a;
-    -webkit-text-fill-color: #0d0f1a;
-  }
-
-  .nav-logo .logo-arena {
-    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .nav-links {
-    display: flex; align-items: center; gap: 2rem;
-    list-style: none;
-  }
-
-  .nav-links a {
-    font-size: 0.9rem; font-weight: 500;
-    color: var(--ink-muted);
-    text-decoration: none;
-    transition: color 0.2s;
-  }
-  .nav-links a:hover { color: var(--ink); }
-
-  .nav-cta {
-    display: flex; align-items: center; gap: 12px;
-  }
-
-  .btn-ghost {
-    font-family: var(--font-body);
-    font-size: 0.88rem; font-weight: 600;
-    color: var(--ink-muted);
-    background: none; border: none;
-    cursor: pointer; padding: 8px 16px;
-    border-radius: var(--radius-sm);
-    transition: all 0.2s;
-    text-decoration: none; display: inline-flex; align-items: center;
-  }
-  .btn-ghost:hover { color: var(--ink); background: var(--border); }
-
-  .btn-primary {
-    font-family: var(--font-body);
-    font-size: 0.88rem; font-weight: 600;
-    color: white; background: var(--accent);
-    border: none; cursor: pointer;
-    padding: 9px 20px;
-    border-radius: var(--radius-sm);
-    transition: all 0.2s;
-    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
-  }
-  .btn-primary:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow); }
-
-  /* ─── HERO ─── */
-  .hero {
-
-    padding: 108px 6% 64px;
-    position: relative;
-    overflow: hidden;
-    display: flex; align-items: center;
-  }
-
-  .hero-bg-grid {
-    position: absolute; inset: 0;
-    background-image:
-      linear-gradient(var(--border) 1px, transparent 1px),
-      linear-gradient(90deg, var(--border) 1px, transparent 1px);
-    background-size: 60px 60px;
-
-
-  }
-
-  .hero-accent-blob {
-    position: absolute;
-    width: 600px; height: 600px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(79,70,229,0.10) 0%, transparent 70%);
-    top: -100px; right: -100px;
-    pointer-events: none;
-  }
-  .hero-accent-blob-2 {
-    position: absolute;
-    width: 400px; height: 400px;
-    border-radius: 50%;
-    background: radial-gradient(circle, rgba(124,58,237,0.07) 0%, transparent 70%);
-    bottom: -50px; left: 10%;
-    pointer-events: none;
-  }
-
-  .hero-inner {
-    position: relative; z-index: 1;
-    max-width: 1200px; margin: 0 auto; width: 100%;
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 60px; align-items: center;
-  }
-
-  /* Desktop: show hero visual card */
-  .hero-visual { display: block; }
-
-  .hero-eyebrow {
-    display: inline-flex; align-items: center; gap: 8px;
-    background: rgba(79,70,229,0.08);
-    border: 1px solid rgba(79,70,229,0.20);
-    border-radius: 100px;
-    padding: 6px 14px 6px 8px;
-    font-size: 0.8rem; font-weight: 600;
-    color: var(--accent);
-    margin-bottom: 1.5rem;
-  }
-
-  .hero-eyebrow .dot {
-    width: 6px; height: 6px;
-    border-radius: 50%; background: var(--accent);
-    animation: pulse-dot 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse-dot {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.7); }
-  }
-
-  .hero h1 {
-    font-family: var(--font-display);
-    font-size: clamp(2.6rem, 5vw, 4rem);
-    font-weight: 800;
-    line-height: 1.08;
-    letter-spacing: -0.04em;
-    color: var(--ink);
-    margin-bottom: 1.5rem;
-  }
-
-  .hero h1 em {
-    font-style: normal;
-    color: var(--accent);
-    position: relative;
-  }
-
-  .hero h1 em::after {
-    content: '';
-    position: absolute;
-    bottom: 2px; left: 0; right: 0;
-    height: 3px;
-    background: var(--accent);
-    border-radius: 2px;
-    opacity: 0.25;
-  }
-
-  .hero-sub {
-    font-size: 1.1rem; font-weight: 400;
-    color: var(--ink-muted);
-    line-height: 1.7;
-    margin-bottom: 2.5rem;
-    max-width: 480px;
-  }
-
-  .hero-actions {
-    display: flex; align-items: center; gap: 16px;
-    flex-wrap: wrap;
-    margin-bottom: 3rem;
-  }
-
-  .btn-hero {
-    font-family: var(--font-body);
-    font-size: 1rem; font-weight: 600;
-    color: white; background: var(--ink);
-    border: none; cursor: pointer;
-    padding: 14px 28px;
-    border-radius: var(--radius-md);
-    transition: all 0.25s;
-    text-decoration: none;
-    display: inline-flex; align-items: center; gap: 8px;
-    position: relative; overflow: hidden;
-  }
-  .btn-hero::before {
-    content: '';
-    position: absolute; inset: 0;
-    background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.1) 100%);
-  }
-  .btn-hero:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(13,15,26,0.22); }
-
-  .btn-hero-outline {
-    font-family: var(--font-body);
-    font-size: 1rem; font-weight: 600;
-    color: var(--ink); background: transparent;
-    border: 1.5px solid var(--border-strong); cursor: pointer;
-    padding: 14px 28px;
-    border-radius: var(--radius-md);
-    transition: all 0.25s;
-    text-decoration: none;
-    display: inline-flex; align-items: center; gap: 8px;
-  }
-  .btn-hero-outline:hover { background: var(--ink); color: white; border-color: var(--ink); }
-
-  .hero-trust {
-    display: flex; align-items: center; gap: 20px;
-    flex-wrap: wrap;
-  }
-
-  .trust-stat {
-    display: flex; flex-direction: column;
-  }
-  .trust-stat .num {
-    font-family: var(--font-display);
-    font-size: 1.35rem; font-weight: 800;
-    color: var(--ink);
-    line-height: 1;
-    letter-spacing: -0.03em;
-  }
-  .trust-stat .lbl {
-    font-size: 0.75rem; font-weight: 500;
-    color: var(--ink-faint);
-    margin-top: 2px;
-  }
-
-  .trust-divider {
-    width: 1px; height: 36px;
-    background: var(--border-strong);
-  }
-
-  /* ─── HERO CARD STACK ─── */
-  .hero-visual {
-    position: relative;
-  }
-
-  .hero-card-main {
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
-    padding: 28px;
-    box-shadow: var(--shadow-hover);
-    position: relative; z-index: 2;
-  }
-
-  .hero-card-back {
-    position: absolute;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
-    width: 90%; height: 100%;
-    top: -16px; right: -16px;
-    z-index: 1;
-    box-shadow: var(--shadow-card);
-  }
-
-  .hcm-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 20px;
-  }
-
-  .hcm-title {
-    font-family: var(--font-display);
-    font-size: 0.95rem; font-weight: 700;
-    color: var(--ink);
-    letter-spacing: -0.02em;
-  }
-
-  .hcm-badge {
-    background: rgba(13,158,92,0.1);
-    color: var(--accent-green);
-    font-size: 0.72rem; font-weight: 600;
-    padding: 4px 10px; border-radius: 100px;
-    border: 1px solid rgba(13,158,92,0.2);
-  }
-
-  .hcm-timer {
-    background: var(--paper-warm);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    padding: 16px;
-    margin-bottom: 20px;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-
-  .timer-label { font-size: 0.75rem; color: var(--ink-faint); font-weight: 500; }
-  .timer-value {
-    font-family: var(--font-mono);
-    font-size: 1.5rem; font-weight: 500;
-    color: var(--accent);
-    letter-spacing: 0.02em;
-  }
-
-  .hcm-question {
-    font-size: 0.9rem; font-weight: 500;
-    color: var(--ink);
-    line-height: 1.5;
-    margin-bottom: 16px;
-    padding: 12px;
-    background: var(--paper);
-    border-radius: var(--radius-sm);
-    border-left: 3px solid var(--accent);
-  }
-
-  .hcm-options {
-    display: flex; flex-direction: column; gap: 8px;
-    margin-bottom: 20px;
-  }
-
-  .hcm-option {
-    padding: 10px 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    font-size: 0.85rem; font-weight: 500;
-    cursor: pointer;
-    transition: all 0.15s;
-    display: flex; align-items: center; gap: 10px;
-    color: var(--ink-soft);
-  }
-  .hcm-option.selected {
-    background: rgba(79,70,229,0.07);
-    border-color: var(--accent);
-    color: var(--accent);
-  }
-  .hcm-option.correct {
-    background: rgba(13,158,92,0.06);
-    border-color: var(--accent-green);
-    color: var(--accent-green);
-  }
-
-  .opt-key {
-    width: 22px; height: 22px;
-    border: 1px solid currentColor;
-    border-radius: 4px;
-    font-size: 0.7rem; font-weight: 700;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-    opacity: 0.6;
-  }
-
-  .hcm-progress {
-    display: flex; flex-direction: column; gap: 6px;
-  }
-  .progress-info {
-    display: flex; justify-content: space-between;
-    font-size: 0.75rem; color: var(--ink-faint);
-  }
-  .progress-bar {
-    height: 5px; background: var(--border);
-    border-radius: 10px; overflow: hidden;
-  }
-  .progress-fill {
-    height: 100%; width: 37%;
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    border-radius: 10px;
-    animation: progress-anim 3s ease-in-out infinite alternate;
-  }
-  @keyframes progress-anim { from { width: 35%; } to { width: 40%; } }
-
-  /* ─── FLOATING BADGES ─── */
-  .hero-badge {
-    position: absolute;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    box-shadow: var(--shadow-card);
-    padding: 12px 16px;
-    display: flex; align-items: center; gap: 10px;
-    z-index: 10;
-    animation: float-badge 4s ease-in-out infinite alternate;
-  }
-  .hero-badge.b1 {
-    bottom: -20px; left: -30px;
-    animation-delay: -1s;
-  }
-  .hero-badge.b2 {
-    top: 10px; right: -20px;
-    animation-delay: -2.5s;
-  }
-  @keyframes float-badge {
-    from { transform: translateY(0px); }
-    to { transform: translateY(-6px); }
-  }
-
-  .badge-icon {
-    width: 36px; height: 36px; border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.1rem; flex-shrink: 0;
-  }
-  .badge-text .title { font-size: 0.8rem; font-weight: 600; color: var(--ink); }
-  .badge-text .sub { font-size: 0.7rem; color: var(--ink-faint); }
-
-  /* ─── SECTION WRAPPER ─── */
-  .section {
-    padding: 100px 6%;
-  }
-
-  .section-inner {
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-
-  .section-tag {
-    font-family: var(--font-mono);
-    font-size: 0.7rem; font-weight: 500;
-    color: var(--accent);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-    display: flex; align-items: center; gap: 8px;
-  }
-  .section-tag::before {
-    content: '';
-    display: inline-block;
-    width: 20px; height: 2px;
-    background: var(--accent);
-    border-radius: 1px;
-  }
-
-  .section-h {
-    font-family: var(--font-display);
-    font-size: clamp(1.9rem, 3.2vw, 2.8rem);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-    color: var(--ink);
-    line-height: 1.12;
-    margin-bottom: 1rem;
-  }
-
-  .section-sub {
-    font-size: 1.05rem;
-    color: var(--ink-muted);
-    max-width: 560px;
-    line-height: 1.7;
-    margin-bottom: 3.5rem;
-  }
-
-  /* ─── EXAMS STRIP ─── */
-  .exams-section {
-    padding: 20px 6% 60px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .exams-inner {
-    max-width: 1200px; margin: 0 auto;
-  }
-
-  .exams-label {
-    font-size: 0.78rem; font-weight: 600;
-    color: var(--ink-faint);
-    text-transform: uppercase; letter-spacing: 0.08em;
-    margin-bottom: 20px;
-  }
-
-  .exams-grid {
-    display: flex; flex-wrap: wrap; gap: 12px;
-  }
-
-  .exam-pill {
-    background: var(--paper-card);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    padding: 8px 18px;
-    font-size: 0.85rem; font-weight: 600;
-    color: var(--ink-soft);
-    display: flex; align-items: center; gap: 8px;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-decoration: none;
-  }
-  .exam-pill:hover {
-    border-color: var(--accent);
-    color: var(--accent);
-    background: rgba(255,77,28,0.04);
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(255,77,28,0.12);
-  }
-
-  .exam-pill .pill-icon {
-    width: 22px; height: 22px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.7rem; font-weight: 800;
-    flex-shrink: 0;
-  }
-
-  /* ─── FEATURES ─── */
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  .feature-card {
-    background: var(--paper-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 28px;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  .feature-card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0;
-    height: 3px;
-    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-  .feature-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-hover);
-    border-color: transparent;
-  }
-  .feature-card:hover::before { opacity: 1; }
-
-  .fc-1::before { background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
-  .fc-2::before { background: linear-gradient(90deg, var(--accent-cool), #06b6d4); }
-  .fc-3::before { background: linear-gradient(90deg, var(--accent-green), #34d399); }
-  .fc-4::before { background: linear-gradient(90deg, var(--accent-2), #a855f7); }
-  .fc-5::before { background: linear-gradient(90deg, var(--accent-amber), #fbbf24); }
-  .fc-6::before { background: linear-gradient(90deg, var(--accent-rose), #fb7185); }
-
-  .feature-icon {
-    width: 48px; height: 48px;
-    border-radius: var(--radius-md);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.4rem;
-    margin-bottom: 16px;
-  }
-
-  .feature-card h3 {
-    font-family: var(--font-display);
-    font-size: 1rem; font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 8px;
-    letter-spacing: -0.03em;
-  }
-
-  .feature-card p {
-    font-size: 0.875rem;
-    color: var(--ink-muted);
-    line-height: 1.6;
-    margin-bottom: 16px;
-  }
-
-  .feature-tags {
-    display: flex; flex-wrap: wrap; gap: 6px;
-  }
-
-  .ftag {
-    font-size: 0.7rem; font-weight: 600;
-    padding: 3px 9px; border-radius: 100px;
-    background: var(--paper-warm);
-    color: var(--ink-muted);
-    border: 1px solid var(--border);
-  }
-
-  /* ─── EXAM PROGRAMS ─── */
-  .programs-section {
-    background: linear-gradient(155deg, #0d0f1a 0%, #13143a 50%, #0d1025 100%);
-    color: white;
-  }
-
-  .programs-inner {
-    max-width: 1200px; margin: 0 auto;
-  }
-
-  .programs-section .section-tag { color: #a78bfa; }
-  .programs-section .section-tag::before { background: #a78bfa; }
-  .programs-section .section-h { color: white; }
-  .programs-section .section-sub { color: rgba(255,255,255,0.45); }
-
-  .programs-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  .program-card {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.1);
-    border-radius: var(--radius-lg);
-    padding: 32px;
-    transition: all 0.3s;
-    position: relative;
-    overflow: hidden;
-    cursor: pointer;
-  }
-  .program-card:hover {
-    background: rgba(255,255,255,0.08);
-    border-color: rgba(255,255,255,0.2);
-    transform: translateY(-4px);
-  }
-
-  .program-card.featured {
-    background: rgba(79,70,229,0.14);
-    border-color: rgba(79,70,229,0.35);
-  }
-  .program-card.featured:hover {
-    background: rgba(79,70,229,0.22);
-    border-color: var(--accent);
-  }
-
-  .prog-top {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    margin-bottom: 20px;
-  }
-
-  .prog-icon {
-    width: 52px; height: 52px;
-    border-radius: var(--radius-md);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1.5rem;
-  }
-
-  .prog-badge {
-    font-size: 0.7rem; font-weight: 600;
-    padding: 4px 10px; border-radius: 100px;
-    background: rgba(255,255,255,0.08);
-    color: rgba(255,255,255,0.6);
-    border: 1px solid rgba(255,255,255,0.1);
-  }
-  .program-card.featured .prog-badge {
-    background: var(--accent); color: white; border-color: var(--accent);
-  }
-
-  .program-card h3 {
-    font-family: var(--font-display);
-    font-size: 1.15rem; font-weight: 700;
-    color: white;
-    margin-bottom: 8px;
-    letter-spacing: -0.03em;
-  }
-
-  .program-card p {
-    font-size: 0.875rem;
-    color: rgba(255,255,255,0.5);
-    line-height: 1.6;
-    margin-bottom: 20px;
-  }
-
-  .prog-subjects {
-    display: flex; flex-direction: column; gap: 8px;
-    margin-bottom: 24px;
-  }
-
-  .prog-subject {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 0.85rem; font-weight: 500;
-    color: rgba(255,255,255,0.7);
-  }
-  .prog-subject::before {
-    content: '';
-    width: 6px; height: 6px; border-radius: 50%;
-    background: #a78bfa;
-    flex-shrink: 0;
-  }
-
-  .prog-cta {
-    font-size: 0.85rem; font-weight: 600;
-    color: rgba(255,255,255,0.4);
-    text-decoration: none;
-    display: flex; align-items: center; gap: 6px;
-    transition: color 0.2s;
-    background: none; border: none; cursor: pointer;
-    padding: 0;
-    font-family: var(--font-body);
-  }
-  .program-card:hover .prog-cta { color: white; }
-  .program-card.featured .prog-cta { color: #a78bfa; }
-
-  /* ─── HOW IT WORKS ─── */
-  .steps-grid {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 0;
-    position: relative;
-  }
-
-  .steps-grid::before {
-    content: '';
-    position: absolute;
-    top: 40px; left: 12.5%; right: 12.5%;
-    height: 1px;
-    background: repeating-linear-gradient(90deg, var(--border) 0, var(--border) 8px, transparent 8px, transparent 16px);
-    z-index: 0;
-  }
-
-  .step-item {
-    text-align: center;
-    padding: 0 24px;
-    position: relative; z-index: 1;
-  }
-
-  .step-num {
-    width: 80px; height: 80px;
-    background: var(--paper-card);
-    border: 1.5px solid var(--border-strong);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 20px;
-    font-family: var(--font-display);
-    font-size: 1.5rem; font-weight: 800;
-    color: var(--ink);
-    transition: all 0.3s;
-  }
-  .step-item:hover .step-num {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: white;
-    transform: scale(1.05);
-  }
-
-  .step-item h4 {
-    font-family: var(--font-display);
-    font-size: 1rem; font-weight: 700;
-    color: var(--ink);
-    margin-bottom: 8px;
-    letter-spacing: -0.03em;
-  }
-
-  .step-item p {
-    font-size: 0.85rem; color: var(--ink-muted);
-    line-height: 1.6;
-  }
-
-  /* ─── ANALYTICS PREVIEW ─── */
-  .analytics-section {
-    background: linear-gradient(145deg, var(--paper-warm) 0%, var(--paper) 100%);
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .analytics-inner {
-    max-width: 1200px; margin: 0 auto;
-    display: grid; grid-template-columns: 1fr 1.2fr;
-    gap: 60px; align-items: center;
-  }
-
-  .analytics-cards {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 16px;
-  }
-
-  .analytics-card {
-    background: var(--paper-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 20px;
-    box-shadow: var(--shadow-card);
-    transition: all 0.3s;
-  }
-  .analytics-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-hover);
-  }
-
-  .analytics-card.wide {
-    grid-column: 1 / -1;
-  }
-
-  .ac-label {
-    font-size: 0.72rem; font-weight: 600;
-    color: var(--ink-faint);
-    text-transform: uppercase; letter-spacing: 0.06em;
-    margin-bottom: 8px;
-  }
-
-  .ac-value {
-    font-family: var(--font-display);
-    font-size: 1.75rem; font-weight: 800;
-    color: var(--ink);
-    line-height: 1;
-    margin-bottom: 4px;
-    letter-spacing: -0.04em;
-  }
-
-  .ac-delta {
-    font-size: 0.75rem; font-weight: 600;
-    display: flex; align-items: center; gap: 4px;
-  }
-  .ac-delta.up { color: var(--accent-green); }
-  .ac-delta.down { color: var(--accent); }
-
-  .mini-bars {
-    display: flex; align-items: flex-end; gap: 3px;
-    height: 40px; margin-top: 12px;
-  }
-
-  .mini-bar {
-    flex: 1;
-    border-radius: 2px 2px 0 0;
-    background: var(--border);
-    transition: all 0.3s;
-  }
-  .mini-bar.active { background: var(--accent); }
-  .mini-bar.best { background: var(--accent-2); }
-
-  .rank-row {
-    display: flex; align-items: center; gap: 10px;
-    padding: 8px 0;
-    border-bottom: 1px solid var(--border);
-  }
-  .rank-row:last-child { border-bottom: none; }
-
-  .rank-pos {
-    font-family: var(--font-mono);
-    font-size: 0.75rem; font-weight: 500;
-    color: var(--ink-faint);
-    width: 20px;
-  }
-  .rank-name { font-size: 0.82rem; font-weight: 600; color: var(--ink); flex: 1; }
-  .rank-score {
-    font-family: var(--font-mono);
-    font-size: 0.8rem; font-weight: 500;
-    color: var(--accent);
-  }
-
-  /* ─── TESTIMONIALS ─── */
-  .testimonials-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  .testimonial-card {
-    background: var(--paper-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 28px;
-    box-shadow: var(--shadow-card);
-    transition: all 0.3s;
-  }
-  .testimonial-card:hover {
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-hover);
-  }
-
-  .tc-stars {
-    color: var(--gold);
-    font-size: 0.9rem;
-    margin-bottom: 12px;
-    letter-spacing: 2px;
-  }
-
-  .tc-quote {
-    font-size: 0.9rem;
-    color: var(--ink-soft);
-    line-height: 1.7;
-    margin-bottom: 20px;
-    font-style: italic;
-  }
-
-  .tc-author {
-    display: flex; align-items: center; gap: 12px;
-    border-top: 1px solid var(--border);
-    padding-top: 16px;
-  }
-
-  .tc-avatar {
-    width: 40px; height: 40px; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; font-size: 0.85rem; flex-shrink: 0;
-  }
-
-  .tc-name { font-size: 0.85rem; font-weight: 600; color: var(--ink); }
-  .tc-meta { font-size: 0.75rem; color: var(--ink-faint); }
-
-  /* ─── PRICING ─── */
-  .pricing-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
-    max-width: 960px; margin: 0 auto;
-  }
-
-  .pricing-card {
-    background: var(--paper-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-xl);
-    padding: 36px;
-    position: relative;
-    transition: all 0.3s;
-  }
-  .pricing-card:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-hover);
-  }
-
-  .pricing-card.popular {
-    background: linear-gradient(155deg, #13143a 0%, #1e1060 100%);
-    border-color: rgba(79,70,229,0.5);
-    color: white;
-    transform: scale(1.04) translateY(-4px);
-    box-shadow: 0 20px 60px rgba(79,70,229,0.30), 0 4px 12px rgba(13,15,26,0.2);
-  }
-  .pricing-card.popular:hover {
-    transform: scale(1.04) translateY(-8px);
-  }
-
-  .popular-badge {
-    position: absolute;
-    top: -14px; left: 50%;
-    transform: translateX(-50%);
-    background: linear-gradient(90deg, var(--accent), var(--accent-2));
-    color: white;
-    font-size: 0.72rem; font-weight: 700;
-    padding: 5px 16px; border-radius: 100px;
-    letter-spacing: 0.04em;
-    white-space: nowrap;
-    text-transform: uppercase;
-  }
-
-  .plan-name {
-    font-family: var(--font-display);
-    font-size: 0.78rem; font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--ink-faint);
-    margin-bottom: 12px;
-  }
-  .pricing-card.popular .plan-name { color: rgba(255,255,255,0.5); }
-
-  .plan-price {
-    display: flex; align-items: baseline; gap: 4px;
-    margin-bottom: 6px;
-  }
-  .price-curr { font-size: 1.2rem; font-weight: 600; color: var(--ink-muted); margin-top: 4px; }
-  .price-num {
-    font-family: var(--font-display);
-    font-size: 3rem; font-weight: 800;
-    color: var(--ink); line-height: 1;
-    letter-spacing: -0.05em;
-  }
-  .price-period { font-size: 0.85rem; color: var(--ink-faint); }
-  .pricing-card.popular .price-curr,
-  .pricing-card.popular .price-num { color: white; }
-  .pricing-card.popular .price-period { color: rgba(255,255,255,0.4); }
-
-  .plan-desc {
-    font-size: 0.82rem; color: var(--ink-muted);
-    margin-bottom: 24px; line-height: 1.5;
-  }
-  .pricing-card.popular .plan-desc { color: rgba(255,255,255,0.5); }
-
-  .plan-features {
-    list-style: none; display: flex; flex-direction: column; gap: 10px;
-    margin-bottom: 28px;
-  }
-  .plan-features li {
-    display: flex; align-items: center; gap: 10px;
-    font-size: 0.87rem; color: var(--ink-soft);
-  }
-  .pricing-card.popular .plan-features li { color: rgba(255,255,255,0.75); }
-
-  .check-icon {
-    width: 18px; height: 18px; border-radius: 50%;
-    background: rgba(13,158,92,0.1);
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0; font-size: 0.65rem; color: var(--accent-green);
-    border: 1px solid rgba(13,158,92,0.2);
-  }
-  .pricing-card.popular .check-icon {
-    background: rgba(255,255,255,0.1);
-    color: rgba(255,255,255,0.8);
-    border-color: rgba(255,255,255,0.2);
-  }
-
-  .plan-btn {
-    width: 100%;
-    font-family: var(--font-body);
-    font-size: 0.9rem; font-weight: 600;
-    padding: 13px 24px;
-    border-radius: var(--radius-md);
-    border: 1.5px solid var(--border-strong);
-    background: transparent; color: var(--ink);
-    cursor: pointer; transition: all 0.2s;
-    text-decoration: none;
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-  }
-  .plan-btn:hover { background: var(--ink); color: white; border-color: var(--ink); }
-
-  .plan-btn.primary-plan {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    color: white;
-    border-color: transparent;
-  }
-  .plan-btn.primary-plan:hover { background: linear-gradient(135deg, var(--accent-hover), #6d28d9); }
-
-  /* ─── FAQ ─── */
-  .faq-grid {
-    max-width: 800px; margin: 0 auto;
-    display: flex; flex-direction: column; gap: 12px;
-  }
-
-  .faq-item {
-    background: var(--paper-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-md);
-    overflow: hidden;
-  }
-
-  .faq-q {
-    padding: 20px 24px;
-    display: flex; justify-content: space-between; align-items: center;
-    cursor: pointer;
-    transition: background 0.2s;
-    user-select: none;
-  }
-  .faq-q:hover { background: var(--paper-warm); }
-
-  .faq-q span {
-    font-size: 0.95rem; font-weight: 600;
-    color: var(--ink);
-  }
-
-  .faq-toggle {
-    width: 28px; height: 28px;
-    border: 1.5px solid var(--border-strong);
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 1rem; color: var(--ink-muted);
-    transition: all 0.3s;
-    flex-shrink: 0;
-  }
-  .faq-item.open .faq-toggle {
-    background: var(--accent); border-color: var(--accent); color: white;
-    transform: rotate(45deg);
-  }
-
-  .faq-a {
-    max-height: 0; overflow: hidden;
-    transition: max-height 0.35s ease, padding 0.3s ease;
-    font-size: 0.875rem; color: var(--ink-muted); line-height: 1.7;
-    padding: 0 24px;
-  }
-  .faq-item.open .faq-a {
-    max-height: 300px;
-    padding: 0 24px 20px;
-  }
-
-  /* ─── CTA BANNER ─── */
-  .cta-section {
-    padding: 100px 6%;
-    background: linear-gradient(155deg, #0d0f1a 0%, #13143a 60%, #1e1060 100%);
-    text-align: center;
-  }
-
-  .cta-inner {
-    max-width: 700px; margin: 0 auto;
-  }
-
-  .cta-section .section-tag { color: #a78bfa; justify-content: center; }
-  .cta-section .section-tag::before { background: #a78bfa; }
-
-  .cta-h {
-    font-family: var(--font-display);
-    font-size: clamp(2rem, 3.8vw, 3.2rem);
-    font-weight: 800; letter-spacing: -0.04em;
-    color: white; line-height: 1.08;
-    margin-bottom: 1.2rem;
-  }
-
-  .cta-sub {
-    font-size: 1.05rem;
-    color: rgba(255,255,255,0.5);
-    line-height: 1.7;
-    margin-bottom: 2.5rem;
-  }
-
-  .cta-btns {
-    display: flex; align-items: center; justify-content: center; gap: 16px;
-    flex-wrap: wrap;
-  }
-
-  .btn-white {
-    font-family: var(--font-body);
-    font-size: 1rem; font-weight: 600;
-    background: white; color: var(--ink);
-    border: none; cursor: pointer;
-    padding: 14px 28px; border-radius: var(--radius-md);
-    text-decoration: none;
-    display: inline-flex; align-items: center; gap: 8px;
-    transition: all 0.2s;
-  }
-  .btn-white:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(255,255,255,0.2); }
-
-  .btn-outline-white {
-    font-family: var(--font-body);
-    font-size: 1rem; font-weight: 600;
-    background: transparent; color: white;
-    border: 1.5px solid rgba(255,255,255,0.25); cursor: pointer;
-    padding: 14px 28px; border-radius: var(--radius-md);
-    text-decoration: none;
-    display: inline-flex; align-items: center; gap: 8px;
-    transition: all 0.2s;
-  }
-  .btn-outline-white:hover { border-color: rgba(255,255,255,0.6); background: rgba(255,255,255,0.06); }
-
-  /* ─── FOOTER ─── */
-  footer {
-    background: #090b18;
-    color: rgba(255,255,255,0.5);
-    padding: 60px 6% 32px;
-  }
-
-  /* Footer logo — white + indigo gradient on dark bg */
-  footer .nav-logo .logo-mock {
-    color: #ffffff;
-    -webkit-text-fill-color: #ffffff;
-  }
-  footer .nav-logo .logo-arena {
-    background: linear-gradient(135deg, #818cf8 0%, #a78bfa 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-
-  .footer-inner {
-    max-width: 1200px; margin: 0 auto;
-  }
-
-  .footer-top {
-    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
-    gap: 60px;
-    padding-bottom: 48px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
-    margin-bottom: 32px;
-  }
-
-  .footer-brand .nav-logo {
-    color: white; margin-bottom: 16px;
-    display: inline-flex;
-  }
-  .footer-brand p {
-    font-size: 0.87rem; line-height: 1.7;
-    color: rgba(255,255,255,0.45);
-    margin-bottom: 20px;
-  }
-
-  .footer-social {
-    display: flex; gap: 10px;
-  }
-  .social-btn {
-    width: 36px; height: 36px;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: var(--radius-sm);
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.8rem; color: rgba(255,255,255,0.5);
-    text-decoration: none; cursor: pointer;
-    transition: all 0.2s;
-    background: none;
-  }
-  .social-btn:hover { border-color: rgba(255,255,255,0.3); color: white; }
-
-  .footer-col h5 {
-    font-family: var(--font-display);
-    font-size: 0.8rem; font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.9);
-    margin-bottom: 16px;
-  }
-
-  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-  .footer-col ul li a {
-    font-size: 0.85rem;
-    color: rgba(255,255,255,0.4);
-    text-decoration: none; transition: color 0.2s;
-  }
-  .footer-col ul li a:hover { color: rgba(255,255,255,0.9); }
-
-  .footer-bottom {
-    display: flex; justify-content: space-between; align-items: center;
-    flex-wrap: wrap; gap: 12px;
-  }
-
-  .footer-copy { font-size: 0.8rem; }
-
-  .footer-legal {
-    display: flex; gap: 20px;
-  }
-  .footer-legal a {
-    font-size: 0.8rem;
-    color: rgba(255,255,255,0.3);
-    text-decoration: none; transition: color 0.2s;
-  }
-  .footer-legal a:hover { color: rgba(255,255,255,0.7); }
-
-  /* ─── ANNOUNCE BAR ─── */
-  .announce-bar {
-    background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 100%);
-    color: white;
-    text-align: center;
-    padding: 10px 6%;
-    font-size: 0.8rem; font-weight: 600;
-    letter-spacing: 0.01em;
-  }
-  .announce-bar a {
-    color: white; text-decoration: underline; margin-left: 8px;
-    opacity: 0.85; transition: opacity 0.2s;
-  }
-  .announce-bar a:hover { opacity: 1; }
-
-  /* ─── ANIMATIONS ─── */
-  @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(24px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .fade-in { animation: fadeInUp 0.7s ease forwards; }
-  .fade-in-d1 { animation: fadeInUp 0.7s 0.1s ease forwards; opacity: 0; }
-  .fade-in-d2 { animation: fadeInUp 0.7s 0.2s ease forwards; opacity: 0; }
-  .fade-in-d3 { animation: fadeInUp 0.7s 0.3s ease forwards; opacity: 0; }
-  .fade-in-d4 { animation: fadeInUp 0.7s 0.4s ease forwards; opacity: 0; }
-
-  /* ══════════════════════════════
-     HAMBURGER MENU
-  ══════════════════════════════ */
-  .hamburger {
-    display: none;
-    flex-direction: column;
-    justify-content: center;
-    gap: 5px;
-    width: 40px; height: 40px;
-    background: none; border: none;
-    cursor: pointer; padding: 6px;
-    border-radius: var(--radius-sm);
-    transition: background .2s;
-  }
-  .hamburger:hover { background: var(--accent-light); }
-  .hamburger span {
-    display: block;
-    width: 100%; height: 2px;
-    background: var(--ink);
-    border-radius: 2px;
-    transition: all .3s cubic-bezier(.16,1,.3,1);
-    transform-origin: center;
-  }
-  .hamburger.is-open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .hamburger.is-open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
-  .hamburger.is-open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-  .mobile-nav {
-    display: none;
-    position: fixed;
-    top: 68px; left: 0; right: 0;
-    background: rgba(255,255,255,0.98);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(13,15,26,0.08);
-    padding: 16px 5% 24px;
-    z-index: 99;
-    flex-direction: column;
-    gap: 4px;
-    transform: translateY(-8px);
-    opacity: 0;
-    pointer-events: none;
-    transition: all .25s ease;
-  }
-  .mobile-nav.is-open {
-    display: flex;
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: all;
-  }
-  .mobile-nav a {
-    font-family: var(--font-body);
-    font-size: 1rem; font-weight: 600;
-    color: var(--ink-muted);
-    text-decoration: none;
-    padding: 12px 16px;
-    border-radius: var(--radius-sm);
-    transition: all .18s;
-  }
-  .mobile-nav a:hover { background: var(--accent-light); color: var(--accent); }
-  .mobile-nav .mn-divider { height: 1px; background: var(--border-strong); margin: 8px 0; }
-  .mobile-nav .mn-cta {
-    background: var(--accent);
-    color: white;
-    border-radius: var(--radius-md);
-    text-align: center;
-    padding: 14px;
-    font-size: 0.95rem;
-    font-weight: 700;
-    margin-top: 4px;
-  }
-  .mobile-nav .mn-cta:hover { background: var(--accent-hover); color: white; }
-
-  /* ══════════════════════════════
-     RESPONSIVE — TABLET 1024px
-  ══════════════════════════════ */
-  @media (max-width: 1024px) {
-    nav { padding: 0 4%; }
-
-    .hero { padding: 100px 4% 56px; }
-    .hero-inner {
-      grid-template-columns: 1fr;
-      gap: 0;
-      max-width: 680px;
-      margin: 0 auto;
-    }
-    .hero-visual { display: none; }
-    .hero h1 { font-size: clamp(2.2rem, 4.5vw, 3rem); }
-    .hero-sub { max-width: 560px; }
-
-    .exams-section { padding: 16px 4% 48px; }
-    .section { padding: 72px 4%; }
-    .section-inner { max-width: 100%; }
-
-    .features-grid { grid-template-columns: repeat(2, 1fr); }
-    .programs-grid { grid-template-columns: repeat(2, 1fr); }
-    .steps-grid { grid-template-columns: repeat(2, 1fr); gap: 32px; }
-    .steps-grid::before { display: none; }
-
-    .analytics-inner { grid-template-columns: 1fr; }
-    .analytics-visual { display: none; }
-
-    .testimonials-grid { grid-template-columns: repeat(2, 1fr); }
-
-    .pricing-grid {
-      grid-template-columns: repeat(2, 1fr);
-      max-width: 680px;
-      margin: 0 auto;
-    }
-    .pricing-card.popular { transform: none; }
-
-    .footer-inner { padding: 56px 4% 28px; }
-    .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; }
-    .footer-brand { grid-column: span 2; }
-
-    .cta-inner { padding: 56px 5%; }
-  }
-
-  /* ══════════════════════════════
-     RESPONSIVE — MOBILE 768px
-  ══════════════════════════════ */
-  @media (max-width: 768px) {
-    /* Nav */
-    .nav-links { display: none; }
-    .nav-cta { display: none; }
-    .hamburger { display: flex; }
-    nav { padding: 0 5%; height: 64px; }
-
-    /* Announce bar */
-    .announce-bar { font-size: 0.7rem; padding: 8px 5%; }
-    .announce-bar a { display: block; margin: 2px 0 0; }
-
-    /* Hero */
-    .hero { padding: 76px 5% 48px; }
-    .hero-inner { gap: 0; }
-    .hero-eyebrow { font-size: 0.72rem; padding: 5px 10px 5px 6px; }
-    .hero h1 {
-      font-size: clamp(1.9rem, 7.5vw, 2.6rem);
-      letter-spacing: -0.03em;
-      margin-bottom: 1.2rem;
-    }
-    .hero-sub { font-size: 0.95rem; margin-bottom: 2rem; }
-    .hero-actions {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 12px;
-      margin-bottom: 2rem;
-    }
-    .btn-hero, .btn-hero-outline {
-      width: 100%;
-      justify-content: center;
-      padding: 15px 24px;
-      font-size: 0.95rem;
-    }
-    .hero-trust { gap: 16px; flex-wrap: wrap; }
-    .trust-divider { display: none; }
-    .trust-stat .num { font-size: 1.15rem; }
-
-    /* Exam pills */
-    .exams-section { padding: 12px 5% 36px; }
-    .exam-pill { font-size: 0.78rem; padding: 6px 12px; }
-
-    /* Sections */
-    .section { padding: 52px 5%; }
-    .section-h { font-size: clamp(1.55rem, 6.5vw, 2.1rem); }
-    .section-sub { font-size: 0.92rem; margin-bottom: 2rem; }
-
-    /* Features */
-    .features-grid { grid-template-columns: 1fr; gap: 12px; }
-    .feature-card { padding: 22px 20px; }
-    .feature-card h3 { font-size: 0.95rem; }
-
-    /* Programs */
-    .programs-grid { grid-template-columns: 1fr; gap: 12px; }
-    .program-card { padding: 22px 20px; }
-    .programs-section .section { padding: 52px 5%; }
-
-    /* Steps */
-    .steps-grid { grid-template-columns: 1fr; gap: 20px; }
-    .step-item { padding: 20px; }
-
-    /* Analytics */
-    .analytics-inner { grid-template-columns: 1fr; }
-
-    /* Testimonials */
-    .testimonials-grid { grid-template-columns: 1fr; gap: 12px; }
-
-    /* Pricing */
-    .pricing-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
-    .pricing-card.popular { transform: none; }
-    .pricing-card { padding: 24px 22px; }
-
-    /* FAQ */
-    .faq-q { padding: 16px 18px; font-size: 0.88rem; }
-    .faq-a { padding: 0 18px; }
-
-    /* CTA */
-    .cta-section { padding: 0; }
-    .cta-inner { padding: 48px 5%; border-radius: 0; }
-    .cta-h { font-size: clamp(1.7rem, 6vw, 2.2rem); }
-    .cta-sub { font-size: 0.92rem; }
-    .cta-btns { flex-direction: column; align-items: center; gap: 12px; }
-    .btn-white, .btn-outline-white {
-      width: 100%; max-width: 320px;
-      justify-content: center;
-      padding: 14px 24px;
-    }
-
-    /* Footer */
-    .footer-inner { padding: 40px 5% 24px; }
-    .footer-top { grid-template-columns: 1fr; gap: 28px; }
-    .footer-brand { grid-column: span 1; }
-    .footer-bottom { flex-direction: column; align-items: flex-start; gap: 10px; }
-    .footer-legal { flex-wrap: wrap; gap: 12px; }
-    .footer-copy { font-size: 0.75rem; }
-  }
-
-  /* ══════════════════════════════
-     RESPONSIVE — SMALL 480px
-  ══════════════════════════════ */
-  @media (max-width: 480px) {
-    .hero h1 { font-size: 1.75rem; }
-    .hero-trust { gap: 12px; }
-    .trust-stat { flex: 1; min-width: 70px; }
-    .trust-stat .num { font-size: 1rem; }
-    .pricing-grid { max-width: 100%; }
-    .exams-grid { gap: 6px; }
-  }
-
-
-</style>
-
-<style id="mobile-fix">
-@media(max-width:860px){
-  html,body{height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;}
-  .sb{transform:translateX(-100%)!important;transition:transform .3s ease!important;position:fixed!important;z-index:9999!important;height:100%!important;}
-  .sb.mob-open{transform:translateX(0)!important;}
-  .mob-overlay{position:fixed!important;inset:0!important;background:rgba(0,0,0,.55)!important;z-index:9998!important;display:none!important;}
-  .mob-overlay.mob-open{display:block!important;}
-  .mob-ham{display:flex!important;width:36px!important;height:36px!important;border-radius:8px!important;background:#f5f3ec!important;border:1.5px solid rgba(26,38,24,.13)!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;font-size:1.1rem!important;flex-shrink:0!important;color:#1a2618!important;margin-right:4px!important;}
-  .main{margin-left:0!important;width:100vw!important;height:auto!important;min-height:100vh!important;display:block!important;overflow-y:auto!important;}
-  .tb{position:sticky!important;top:0!important;z-index:200!important;padding:0 12px!important;height:52px!important;gap:8px!important;flex-shrink:0!important;}
-  .tb-search{display:none!important;}
-  .stabs{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;padding:0 12px!important;}
-  .stabs::-webkit-scrollbar{display:none!important;}
-  .stab{white-space:nowrap!important;font-size:.7rem!important;padding:0 10px!important;}
-  .content{padding:14px 12px 60px!important;overflow-y:visible!important;height:auto!important;flex:none!important;}
-  .g4,.g3,.g2,.g21,.g12,.g31{display:grid!important;grid-template-columns:1fr!important;gap:12px!important;}
-  .card,.kpi{padding:14px!important;}
-  .kpi-n{font-size:1.3rem!important;}
-  .lp,.col-left,.rp,.col-right{display:none!important;}
-  .layout{flex-direction:column!important;height:auto!important;}
-  .q-panel,.qp{min-height:350px!important;height:auto!important;overflow-y:auto!important;}
-  .palette-panel,.pp{width:100%!important;height:auto!important;border-left:none!important;border-top:1px solid #e8e5de!important;}
-  .palette-grid,.pp-grid{grid-template-columns:repeat(10,1fr)!important;}
-  .topbar{flex-wrap:wrap!important;height:auto!important;min-height:56px!important;padding:8px 12px!important;gap:6px!important;}
-  .tb-center{order:3!important;width:100%!important;padding-bottom:6px!important;}
-  .tb-test-name,.tb-div{display:none!important;}
-  .subj-tab{padding:4px 9px!important;font-size:.68rem!important;}
-  .scope-bar{flex-wrap:wrap!important;}
-  .hero-inner,.lbh-inner{grid-template-columns:1fr!important;}
-  .my-ranks{display:none!important;}
-  .fg2,.fg3{grid-template-columns:1fr!important;}
-  .mb{width:94vw!important;max-height:90vh!important;padding:18px!important;}
-  .af-time{display:none!important;}
-  .badges-grid{grid-template-columns:repeat(4,1fr)!important;}
-  .planner-days{gap:3px!important;padding:8px!important;}
-  .tw{overflow-x:auto!important;}
+:root{
+  --cream:#faf9f5;--cream-warm:#f5f3ec;--cream-card:#ffffff;
+  --forest:#1a2618;--forest-soft:#243422;--forest-muted:#3d5239;
+  --sage:#6b8f5e;--sage-light:rgba(107,143,94,0.1);--sage-glow:rgba(107,143,94,0.25);
+  --gold:#c8962a;--gold-light:rgba(200,150,42,0.12);
+  --rose:#c84b4b;--sky:#3b82c4;--amber:#b87333;--purple:#7c5cbf;
+  --border:rgba(26,38,24,0.08);--border-med:rgba(26,38,24,0.13);
+  --font-d:'Outfit',sans-serif;--font-s:'Lora',serif;--font-m:'IBM Plex Mono',monospace;
+  --max:1140px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--font-d);background:var(--cream);color:var(--forest);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+
+/* ── LAYOUT HELPERS ── */
+.container{max-width:var(--max);margin:0 auto;padding:0 24px;}
+@media(max-width:768px){.container{padding:0 16px;}}
+
+/* ── NAVBAR ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:1000;height:64px;
+  background:rgba(250,249,245,0.95);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);transition:box-shadow .3s;}
+.nav.scrolled{box-shadow:0 4px 24px rgba(26,38,24,.08);}
+.nav-inner{max-width:var(--max);margin:0 auto;padding:0 24px;height:100%;
+  display:flex;align-items:center;gap:8px;}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none;flex-shrink:0;margin-right:auto;}
+.nav-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--sage),#4a7a3d);
+  border-radius:10px;display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:800;color:white;box-shadow:0 0 16px var(--sage-glow);}
+.nav-brand{font-size:1.05rem;font-weight:800;color:var(--forest);letter-spacing:-.03em;}
+.nav-brand em{font-style:normal;background:linear-gradient(135deg,var(--sage),#4a7a3d);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-links{display:flex;align-items:center;gap:2px;}
+.nav-link{font-size:.8rem;font-weight:500;color:rgba(26,38,24,.5);padding:7px 13px;
+  border-radius:8px;text-decoration:none;transition:all .18s;white-space:nowrap;}
+.nav-link:hover{color:var(--forest);background:var(--sage-light);}
+.nav-divider{width:1px;height:20px;background:var(--border);margin:0 8px;}
+.btn-nav-login{font-family:var(--font-d);font-size:.78rem;font-weight:600;padding:7px 16px;
+  border-radius:9px;border:1.5px solid var(--border-med);background:transparent;
+  color:var(--forest-muted);cursor:pointer;transition:all .2s;text-decoration:none;}
+.btn-nav-login:hover{border-color:var(--sage);color:var(--sage);}
+.btn-nav-start{font-family:var(--font-d);font-size:.78rem;font-weight:700;padding:8px 18px;
+  border-radius:9px;border:none;background:linear-gradient(135deg,var(--forest),var(--forest-soft));
+  color:white;cursor:pointer;transition:all .2s;text-decoration:none;white-space:nowrap;
+  box-shadow:0 2px 10px rgba(26,38,24,.18);}
+.btn-nav-start:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(26,38,24,.22);}
+.nav-mob-btn{display:none;background:none;border:none;cursor:pointer;
+  font-size:1.3rem;color:var(--forest);padding:4px;margin-left:8px;}
+
+/* ── HERO ── */
+.hero{padding:100px 0 64px;}
+.hero-inner{max-width:var(--max);margin:0 auto;padding:0 24px;
+  display:grid;grid-template-columns:1fr 420px;gap:48px;align-items:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;
+  background:var(--sage-light);border:1px solid rgba(107,143,94,.25);
+  border-radius:100px;padding:5px 14px;margin-bottom:24px;
+  font-size:.7rem;font-weight:600;color:var(--sage);letter-spacing:.05em;
+  animation:fadeUp .5s ease both;}
+.badge-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);
+  animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+.hero-title{font-family:var(--font-s);font-size:clamp(2.2rem,4vw,3.6rem);
+  font-weight:700;line-height:1.15;letter-spacing:-.02em;color:var(--forest);
+  margin-bottom:18px;animation:fadeUp .6s .1s ease both;}
+.hero-title .t-sage{background:linear-gradient(135deg,var(--sage),#4a7a3d);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-title .t-gold{background:linear-gradient(135deg,var(--gold),#e8a830);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:1rem;color:rgba(26,38,24,.52);line-height:1.75;
+  margin-bottom:32px;animation:fadeUp .6s .2s ease both;}
+.hero-btns{display:flex;align-items:center;gap:12px;flex-wrap:wrap;
+  margin-bottom:20px;animation:fadeUp .6s .3s ease both;}
+.btn-primary-lg{font-family:var(--font-d);font-size:.9rem;font-weight:700;
+  padding:13px 26px;border-radius:12px;border:none;
+  background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;
+  cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:8px;
+  box-shadow:0 4px 18px var(--sage-glow);transition:all .25s;}
+.btn-primary-lg:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--sage-glow);}
+.btn-outline-lg{font-family:var(--font-d);font-size:.9rem;font-weight:600;
+  padding:12px 22px;border-radius:12px;border:1.5px solid var(--border-med);
+  background:transparent;color:var(--forest);cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:8px;transition:all .25s;}
+.btn-outline-lg:hover{border-color:var(--sage);color:var(--sage);background:var(--sage-light);}
+.hero-note{font-size:.71rem;color:rgba(26,38,24,.35);
+  animation:fadeUp .6s .4s ease both;}
+.hero-note span{margin:0 6px;}
+
+/* Hero cards */
+.hero-cards{display:flex;flex-direction:column;gap:12px;animation:fadeUp .7s .3s ease both;}
+.hc{background:white;border:1px solid var(--border);border-radius:16px;
+  padding:18px;box-shadow:0 4px 20px rgba(26,38,24,.05);}
+.hc-head{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.hc-icon{width:32px;height:32px;border-radius:9px;display:flex;align-items:center;
+  justify-content:center;font-size:.9rem;flex-shrink:0;}
+.hci-sg{background:var(--sage-light);}
+.hci-gd{background:var(--gold-light);}
+.hc-title{font-size:.78rem;font-weight:700;color:var(--forest);}
+.hc-sub{font-size:.63rem;color:rgba(26,38,24,.38);}
+.hc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+.hcs-n{font-family:var(--font-d);font-size:1.3rem;font-weight:800;color:var(--forest);letter-spacing:-.03em;}
+.hcs-l{font-size:.59rem;color:rgba(26,38,24,.38);text-transform:uppercase;letter-spacing:.05em;}
+.hc-bar-row{margin-bottom:7px;}
+.hc-bar-labels{display:flex;justify-content:space-between;font-size:.61rem;color:rgba(26,38,24,.4);margin-bottom:3px;}
+.hc-bar{height:5px;background:var(--cream-warm);border-radius:5px;overflow:hidden;}
+.hc-bar-fill{height:100%;border-radius:5px;}
+.hcb-sg{background:linear-gradient(90deg,var(--sage),#8fb87f);}
+.hcb-gd{background:linear-gradient(90deg,var(--gold),#e8a830);}
+.hcb-ro{background:linear-gradient(90deg,var(--rose),#e06b6b);}
+.hc-avs{display:flex;align-items:center;gap:0;margin-top:10px;}
+.hca{width:26px;height:26px;border-radius:50%;border:2px solid white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.56rem;font-weight:700;color:white;margin-left:-6px;flex-shrink:0;}
+.hca:first-child{margin-left:0;}
+.hca-more{background:var(--cream-warm)!important;color:var(--forest-muted)!important;font-size:.52rem;}
+.hc-avs-text{font-size:.63rem;color:rgba(26,38,24,.4);margin-left:8px;}
+
+/* ── STATS BAR ── */
+.stats-bar{background:var(--forest);padding:32px 0;}
+.stats-inner{display:grid;grid-template-columns:repeat(4,1fr);gap:0;}
+.stat-item{text-align:center;padding:8px 16px;border-right:1px solid rgba(255,255,255,.06);}
+.stat-item:last-child{border-right:none;}
+.stat-n{font-family:var(--font-d);font-size:2rem;font-weight:800;color:white;letter-spacing:-.04em;}
+.stat-n em{font-style:normal;background:linear-gradient(135deg,var(--sage),#8fb87f);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-l{font-size:.68rem;color:rgba(255,255,255,.32);text-transform:uppercase;letter-spacing:.08em;margin-top:3px;}
+
+/* ── SECTIONS ── */
+.section{padding:80px 0;}
+.section-alt{background:var(--cream-warm);}
+.section-dark{background:var(--forest);}
+.section-tag{display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-m);font-size:.63rem;color:var(--sage);
+  letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px;}
+.section-tag-light{color:rgba(107,143,94,.7);}
+.section-title{font-family:var(--font-s);font-size:clamp(1.7rem,3vw,2.5rem);
+  font-weight:700;color:var(--forest);letter-spacing:-.02em;line-height:1.2;margin-bottom:10px;}
+.section-title-light{color:white;}
+.section-sub{font-size:.93rem;color:rgba(26,38,24,.48);line-height:1.75;max-width:540px;margin-bottom:44px;}
+.section-sub-light{color:rgba(255,255,255,.36);}
+
+/* ── EXAM GRID ── */
+.exam-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.exam-card{background:white;border:1px solid var(--border);border-radius:18px;
+  padding:22px;cursor:pointer;transition:all .25s;position:relative;overflow:hidden;
+  text-decoration:none;display:block;}
+.exam-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.ec-adv::before{background:linear-gradient(90deg,#4f46e5,#7c3aed);}
+.ec-main::before{background:linear-gradient(90deg,var(--sky),#60a5e8);}
+.ec-neet::before{background:linear-gradient(90deg,var(--sage),#8fb87f);}
+.ec-jf::before{background:linear-gradient(90deg,var(--gold),#e8a830);}
+.ec-nf::before{background:linear-gradient(90deg,var(--amber),#d4844a);}
+.ec-boards::before{background:linear-gradient(90deg,var(--rose),#e06b6b);}
+.exam-card:hover{transform:translateY(-4px);box-shadow:0 12px 36px rgba(26,38,24,.1);border-color:rgba(26,38,24,.01);}
+.ec-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:14px;}
+.ec-badge{font-size:.59rem;font-weight:700;padding:3px 9px;border-radius:100px;letter-spacing:.04em;}
+.eb-pu{background:rgba(79,70,229,.1);color:#4f46e5;}
+.eb-sk{background:rgba(59,130,196,.1);color:var(--sky);}
+.eb-sg{background:var(--sage-light);color:var(--sage);}
+.eb-gd{background:var(--gold-light);color:var(--gold);}
+.eb-am{background:rgba(184,115,51,.1);color:var(--amber);}
+.eb-ro{background:rgba(200,75,75,.09);color:var(--rose);}
+.ec-icon{font-size:1.5rem;}
+.ec-name{font-size:.92rem;font-weight:800;color:var(--forest);letter-spacing:-.02em;margin-bottom:5px;}
+.ec-desc{font-size:.71rem;color:rgba(26,38,24,.44);margin-bottom:12px;line-height:1.55;}
+.ec-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:14px;}
+.ec-chip{font-size:.58rem;font-weight:500;padding:3px 8px;border-radius:5px;
+  background:var(--cream-warm);color:rgba(26,38,24,.48);border:1px solid var(--border);}
+.ec-foot{display:flex;align-items:center;justify-content:space-between;
+  padding-top:12px;border-top:1px solid var(--border);}
+.ec-students{font-size:.62rem;color:rgba(26,38,24,.38);}
+.ec-arr{font-size:.78rem;color:var(--sage);transition:transform .2s;}
+.exam-card:hover .ec-arr{transform:translateX(4px);}
+
+/* ── FEATURES ── */
+.feat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.feat-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);
+  border-radius:16px;padding:22px;transition:all .25s;}
+.feat-card:hover{background:rgba(255,255,255,.07);border-color:rgba(107,143,94,.3);transform:translateY(-2px);}
+.feat-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;
+  justify-content:center;font-size:1.05rem;margin-bottom:14px;}
+.fi-sg{background:rgba(107,143,94,.2);}
+.fi-gd{background:rgba(200,150,42,.15);}
+.fi-ro{background:rgba(200,75,75,.15);}
+.fi-sk{background:rgba(59,130,196,.15);}
+.fi-am{background:rgba(184,115,51,.15);}
+.fi-pr{background:rgba(124,92,191,.15);}
+.feat-title{font-size:.86rem;font-weight:700;color:white;margin-bottom:7px;letter-spacing:-.02em;}
+.feat-desc{font-size:.72rem;color:rgba(255,255,255,.36);line-height:1.65;}
+.feat-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:12px;}
+.feat-chip{font-size:.57rem;font-weight:600;padding:2px 8px;border-radius:5px;
+  background:rgba(255,255,255,.06);color:rgba(255,255,255,.3);}
+
+/* ── HOW IT WORKS ── */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;}
+.steps::after{content:'';position:absolute;top:27px;left:12.5%;right:12.5%;height:1px;
+  background:repeating-linear-gradient(90deg,var(--border-med) 0,var(--border-med) 6px,transparent 6px,transparent 12px);}
+.step{text-align:center;position:relative;z-index:1;}
+.step-num{width:54px;height:54px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sage),#4a7a3d);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--font-m);font-size:.84rem;color:white;
+  margin:0 auto 14px;box-shadow:0 0 18px var(--sage-glow);}
+.step-title{font-size:.86rem;font-weight:700;color:var(--forest);margin-bottom:6px;}
+.step-desc{font-size:.71rem;color:rgba(26,38,24,.44);line-height:1.6;}
+
+/* ── TESTIMONIALS ── */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.testi-card{background:white;border:1px solid var(--border);border-radius:16px;padding:20px;}
+.testi-stars{font-size:.78rem;margin-bottom:10px;}
+.testi-quote{font-family:var(--font-s);font-size:.81rem;font-style:italic;
+  color:rgba(26,38,24,.62);line-height:1.7;margin-bottom:14px;}
+.testi-foot{display:flex;align-items:center;gap:10px;}
+.testi-av{width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.72rem;font-weight:700;color:white;}
+.testi-name{font-size:.75rem;font-weight:700;color:var(--forest);}
+.testi-role{font-size:.61rem;color:rgba(26,38,24,.38);}
+.testi-rank{display:inline-flex;align-items:center;gap:4px;margin-top:3px;
+  font-size:.6rem;font-weight:600;color:var(--sage);
+  background:var(--sage-light);border-radius:100px;padding:2px 7px;}
+
+/* ── PRICING ── */
+.pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;align-items:start;}
+.price-card{background:white;border:1px solid var(--border);border-radius:20px;padding:26px;position:relative;}
+.price-card.featured{background:var(--forest);border-color:transparent;
+  box-shadow:0 20px 60px rgba(26,38,24,.18);}
+.price-popular{position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,var(--gold),#e8a830);color:white;
+  font-size:.6rem;font-weight:700;padding:4px 14px;border-radius:100px;
+  white-space:nowrap;box-shadow:0 2px 8px rgba(200,150,42,.3);}
+.price-plan{font-size:.68rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--sage);margin-bottom:8px;}
+.price-plan-inv{color:rgba(107,143,94,.65);}
+.price-amt{font-family:var(--font-d);font-size:2.3rem;font-weight:800;
+  color:var(--forest);letter-spacing:-.04em;line-height:1;}
+.price-amt-inv{color:white;}
+.price-per{font-size:.7rem;color:rgba(26,38,24,.38);margin-bottom:5px;}
+.price-per-inv{color:rgba(255,255,255,.32);}
+.price-desc{font-size:.74rem;color:rgba(26,38,24,.44);margin-bottom:20px;line-height:1.5;}
+.price-desc-inv{color:rgba(255,255,255,.36);}
+.price-list{list-style:none;margin-bottom:22px;}
+.price-list li{display:flex;align-items:center;gap:8px;font-size:.74rem;
+  color:rgba(26,38,24,.58);padding:5px 0;border-bottom:1px solid var(--border);}
+.price-list li:last-child{border-bottom:none;}
+.price-list-inv li{color:rgba(255,255,255,.42);border-bottom-color:rgba(255,255,255,.06);}
+.pl-check{color:var(--sage);font-weight:700;flex-shrink:0;}
+.pl-check-inv{color:rgba(107,143,94,.7);}
+.pl-x{color:rgba(26,38,24,.2);}
+.btn-price{width:100%;font-family:var(--font-d);font-size:.8rem;font-weight:700;
+  padding:11px;border-radius:10px;cursor:pointer;transition:all .2s;border:none;}
+.btp-outline{background:transparent;border:1.5px solid var(--border-med);color:var(--forest-muted);}
+.btp-outline:hover{border-color:var(--sage);color:var(--sage);}
+.btp-sage{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;
+  box-shadow:0 3px 12px var(--sage-glow);}
+.btp-sage:hover{transform:translateY(-1px);box-shadow:0 6px 18px var(--sage-glow);}
+.btp-white{background:white;color:var(--forest);}
+.btp-white:hover{background:var(--cream-warm);}
+
+/* ── CTA ── */
+.cta-section{background:linear-gradient(135deg,var(--forest),var(--forest-soft));
+  padding:80px 0;text-align:center;position:relative;overflow:hidden;}
+.cta-section::before{content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(107,143,94,.05) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(107,143,94,.05) 1px,transparent 1px);
+  background-size:44px 44px;pointer-events:none;}
+.cta-orb{position:absolute;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(107,143,94,.12),transparent 70%);
+  top:-200px;left:50%;transform:translateX(-50%);pointer-events:none;}
+.cta-inner{position:relative;z-index:1;}
+.cta-title{font-family:var(--font-s);font-size:clamp(1.7rem,3.5vw,2.7rem);
+  font-weight:700;color:white;letter-spacing:-.02em;margin-bottom:12px;line-height:1.2;}
+.cta-title em{font-style:normal;background:linear-gradient(135deg,var(--sage),#8fb87f);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.cta-sub{font-size:.92rem;color:rgba(255,255,255,.4);margin-bottom:32px;line-height:1.7;}
+.cta-btns{display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;}
+.btn-cta-sec{font-family:var(--font-d);font-size:.86rem;font-weight:600;
+  padding:12px 22px;border-radius:11px;border:1.5px solid rgba(255,255,255,.15);
+  background:transparent;color:rgba(255,255,255,.55);cursor:pointer;
+  text-decoration:none;transition:all .2s;}
+.btn-cta-sec:hover{border-color:rgba(255,255,255,.3);color:rgba(255,255,255,.8);}
+
+/* ── FOOTER ── */
+.footer{background:var(--forest);padding:52px 0 28px;}
+.footer-grid{display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr;gap:40px;margin-bottom:40px;}
+.footer-desc{font-size:.74rem;color:rgba(255,255,255,.28);line-height:1.75;max-width:270px;margin-top:12px;}
+.footer-col-title{font-size:.64rem;font-weight:700;color:rgba(255,255,255,.22);
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:14px;}
+.footer-links{list-style:none;}
+.footer-links li{margin-bottom:8px;}
+.footer-links a{font-size:.74rem;color:rgba(255,255,255,.32);text-decoration:none;transition:color .18s;}
+.footer-links a:hover{color:rgba(255,255,255,.65);}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.05);padding-top:20px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-copy{font-size:.68rem;color:rgba(255,255,255,.18);}
+.footer-copy a{color:rgba(107,143,94,.5);text-decoration:none;}
+.footer-tags{display:flex;gap:7px;flex-wrap:wrap;}
+.footer-tag{font-size:.58rem;font-weight:600;padding:3px 9px;border-radius:5px;
+  background:rgba(255,255,255,.04);color:rgba(255,255,255,.2);
+  border:1px solid rgba(255,255,255,.06);}
+
+/* ── ACHIEVEMENT STRIP ── */
+.achieve-strip{background:var(--forest);padding:0;}
+.achieve-inner{display:flex;align-items:stretch;}
+.achieve-item{flex:1;display:flex;align-items:center;gap:14px;padding:22px 16px;}
+.achieve-icon{font-size:1.5rem;flex-shrink:0;}
+.achieve-n{font-family:var(--font-d);font-size:1.3rem;font-weight:800;color:white;letter-spacing:-.03em;line-height:1;}
+.achieve-l{font-size:.62rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;}
+.achieve-div{width:1px;background:rgba(255,255,255,.07);flex-shrink:0;margin:14px 0;}
+.achieve-inner{display:flex;align-items:stretch;border-radius:0;}
+.achieve-item{flex:1;display:flex;align-items:center;gap:14px;padding:24px 20px;}
+.achieve-icon{font-size:1.6rem;flex-shrink:0;}
+.achieve-n{font-family:var(--font-d);font-size:1.35rem;font-weight:800;color:white;
+  letter-spacing:-.03em;line-height:1;}
+.achieve-l{font-size:.65rem;color:rgba(255,255,255,.32);text-transform:uppercase;
+  letter-spacing:.07em;margin-top:3px;}
+.achieve-div{width:1px;background:rgba(255,255,255,.07);flex-shrink:0;margin:16px 0;}
+
+/* Hero panel */
+.hero-panel{display:flex;flex-direction:column;gap:12px;animation:fadeUp .7s .3s ease both;}
+.hc-main{border:1.5px solid rgba(107,143,94,.2);}
+.hc-live{margin-left:auto;font-size:.6rem;font-weight:700;color:var(--rose);
+  background:rgba(200,75,75,.1);border:1px solid rgba(200,75,75,.2);
+  border-radius:100px;padding:2px 8px;white-space:nowrap;
+  animation:blink 1.5s infinite;}
+.hc-streak{margin-top:10px;font-size:.68rem;font-weight:600;color:var(--gold);
+  background:var(--gold-light);border:1px solid rgba(200,150,42,.2);
+  border-radius:8px;padding:6px 10px;text-align:center;}
+
+/* Leaderboard rows */
+.hc-lb-row{display:flex;align-items:center;gap:8px;padding:6px 0;
+  border-bottom:1px solid var(--border);}
+.hc-lb-row:last-of-type{border-bottom:none;}
+.hc-lb-you{background:var(--sage-light);border-radius:8px;padding:6px 8px;margin:2px -4px;}
+.hc-lb-rank{font-size:.78rem;width:32px;flex-shrink:0;text-align:center;}
+.hc-lb-name{flex:1;font-size:.72rem;font-weight:600;color:var(--forest);}
+.hc-lb-pts{font-size:.68rem;font-weight:700;color:var(--forest-muted);}
+
+/* Hero stat pills */
+.hero-pills{display:flex;gap:8px;flex-wrap:wrap;}
+.hero-pill{display:flex;align-items:center;gap:5px;font-size:.68rem;font-weight:600;
+  color:var(--forest-muted);background:white;border:1px solid var(--border);
+  border-radius:100px;padding:5px 12px;box-shadow:0 1px 4px rgba(26,38,24,.05);}
+
+@media(max-width:1024px){
+  .achieve-inner{flex-wrap:wrap;}
+  .achieve-item{flex:calc(50% - 1px);min-width:140px;}
+  .achieve-div{display:none;}
+}
+@media(max-width:768px){
+  .achieve-item{flex:calc(50% - 8px);}
+  .hero-pills{display:none;}
+  .hc-live{display:none;}
 }
 @media(max-width:480px){
-  .g4{grid-template-columns:1fr 1fr!important;}
-  .badges-grid{grid-template-columns:repeat(3,1fr)!important;}
-  .palette-grid,.pp-grid{grid-template-columns:repeat(8,1fr)!important;}
+  .achieve-item{flex:100%;}
 }
-</style>
+@keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
+.reveal.vis{opacity:1;transform:translateY(0);}
+.reveal-d1{transition-delay:.1s;}
+.reveal-d2{transition-delay:.2s;}
+.reveal-d3{transition-delay:.3s;}
 
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .hero-inner{grid-template-columns:1fr;gap:40px;}
+  .hero-panel{flex-direction:row;}
+  .hero-panel .hc{flex:1;}
+  .exam-grid{grid-template-columns:repeat(2,1fr);}
+  .feat-grid{grid-template-columns:repeat(2,1fr);}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:768px){
+  .nav-links,.nav-divider,.btn-nav-login{display:none;}
+  .nav-mob-btn{display:block;}
+  .hero{padding:80px 0 48px;}
+  .hero-panel{flex-direction:column;}
+  .stats-inner{grid-template-columns:repeat(2,1fr);}
+  .stat-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.06);padding:12px;}
+  .stat-item:nth-child(odd){border-right:1px solid rgba(255,255,255,.06);}
+  .exam-grid{grid-template-columns:1fr;}
+  .feat-grid{grid-template-columns:1fr;}
+  .steps{grid-template-columns:repeat(2,1fr);}
+  .steps::after{display:none;}
+  .testi-grid{grid-template-columns:1fr;}
+  .pricing-grid{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr 1fr;}
+  .section{padding:56px 0;}
+}
+@media(max-width:480px){
+  .hero-btns{flex-direction:column;align-items:stretch;}
+  .btn-primary-lg,.btn-outline-lg{text-align:center;justify-content:center;}
+  .steps{grid-template-columns:1fr;}
+  .footer-grid{grid-template-columns:1fr;}
+}
+
+/* Mobile menu */
+.mob-menu{display:none;position:fixed;top:64px;left:0;right:0;z-index:998;
+  background:white;border-bottom:1px solid var(--border);
+  padding:16px;box-shadow:0 8px 24px rgba(26,38,24,.08);}
+.mob-menu.open{display:block;}
+.mob-menu a{display:block;padding:10px 12px;font-size:.88rem;font-weight:500;
+  color:var(--forest);text-decoration:none;border-radius:8px;transition:all .18s;}
+.mob-menu a:hover{background:var(--sage-light);color:var(--sage);}
+.mob-menu-cta{margin-top:12px;display:block;padding:12px;text-align:center;
+  background:linear-gradient(135deg,var(--forest),var(--forest-soft));
+  color:white!important;border-radius:10px;font-weight:700!important;font-size:.86rem!important;}
+</style>
 </head>
 <body>
 
-<!-- ANNOUNCE BAR -->
-<div class="announce-bar">
-  🎉 MockArena Beta Launch — Free access for first 500 students!
-  <a href="login.html">Claim your spot →</a>
-</div>
-
-<!-- NAV -->
-<nav id="mainNav">
-  <a href="#" class="nav-logo">
-    <span class="logo-mock">Mock</span><span class="logo-arena">Arena</span>
-  </a>
-  <ul class="nav-links">
-    <li><a href="#features">Features</a></li>
-    <li><a href="#programs">Programs</a></li>
-    <li><a href="#analytics">Analytics</a></li>
-    <li><a href="#pricing">Pricing</a></li>
-    <li><a href="#faq">FAQ</a></li>
-  </ul>
-  <div class="nav-cta">
-    <a href="login.html" class="btn-ghost">Log In</a>
-    <a href="login.html" class="btn-primary">Start Free Trial →</a>
+<!-- NAVBAR -->
+<nav class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-logo">
+      <div class="nav-mark">MA</div>
+      <span class="nav-brand">Mock<em>Arena</em></span>
+    </a>
+    <div class="nav-links">
+      <a href="#exams" class="nav-link">Exams</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#how" class="nav-link">How it works</a>
+      <a href="#pricing" class="nav-link">Pricing</a>
+    </div>
+    <div class="nav-divider"></div>
+    <a href="login.html" class="btn-nav-login">Log In</a>
+    <a href="login.html" class="btn-nav-start">Start Free Trial →</a>
+    <button class="nav-mob-btn" onclick="toggleMob()" aria-label="Menu">☰</button>
   </div>
-  <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" onclick="toggleMobileNav()">
-    <span></span><span></span><span></span>
-  </button>
 </nav>
 
-<!-- MOBILE NAV -->
-<div class="mobile-nav" id="mobileNav">
-  <a href="#features" onclick="closeMobileNav()">📝 Features</a>
-  <a href="#programs" onclick="closeMobileNav()">🎯 Programs</a>
-  <a href="#analytics" onclick="closeMobileNav()">📊 Analytics</a>
-  <a href="#pricing" onclick="closeMobileNav()">💰 Pricing</a>
-  <a href="#faq" onclick="closeMobileNav()">❓ FAQ</a>
-  <div class="mn-divider"></div>
-  <a href="login.html" onclick="closeMobileNav()" style="color:var(--ink-muted);">Log In</a>
-  <a href="login.html" onclick="closeMobileNav()" class="mn-cta">Start Free Trial →</a>
+<!-- MOBILE MENU -->
+<div class="mob-menu" id="mob-menu">
+  <a href="#exams" onclick="closeMob()">Exams</a>
+  <a href="#features" onclick="closeMob()">Features</a>
+  <a href="#how" onclick="closeMob()">How it works</a>
+  <a href="#pricing" onclick="closeMob()">Pricing</a>
+  <a href="login.html" class="mob-menu-cta">Start Free Trial →</a>
 </div>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg-grid"></div>
-  <div class="hero-accent-blob"></div>
-  <div class="hero-accent-blob-2"></div>
-  <div class="hero-inner">
-    <div>
-      <div class="hero-eyebrow fade-in">
-        <div class="dot"></div>
-        India's smartest exam prep platform
+  <div class="hero-inner container">
+    <!-- Left: Text -->
+    <div class="hero-left">
+      <div class="hero-badge"><span class="badge-dot"></span>India's Smartest Exam Prep Platform</div>
+      <h1 class="hero-title">Crack <span class="t-sage">IIT JEE</span>,<br/>NEET &amp; <span class="t-gold">Board Exams.</span><br/>Together.</h1>
+      <p class="hero-sub">MockArena brings adaptive mock tests, AI-powered analytics, live leaderboards, and expert content for Class 9–12, JEE &amp; NEET — all under one roof.</p>
+      <div class="hero-btns">
+        <a href="login.html" class="btn-primary-lg">Start Free Trial →</a>
+        <a href="#exams" class="btn-outline-lg">Explore Platform</a>
       </div>
-      <h1 class="fade-in-d1">
-        Crack <em>IIT JEE</em>,<br>NEET &amp; Board<br>Exams. Together.
-      </h1>
-      <p class="hero-sub fade-in-d2">
-        MockArena brings adaptive mock tests, AI-powered analytics, live leaderboards, and expert content for Class 9–12, JEE Foundation, JEE Mains &amp; Advanced, and NEET — all under one roof.
-      </p>
-      <div class="hero-actions fade-in-d3">
-        <a href="login.html" class="btn-hero">Start Free Trial <span>→</span></a>
-        <a href="#features" class="btn-hero-outline">Explore Platform</a>
-      </div>
-      <div class="hero-trust fade-in-d4">
-        <div class="trust-stat">
-          <span class="num">50K+</span>
-          <span class="lbl">Students Enrolled</span>
-        </div>
-        <div class="trust-divider"></div>
-        <div class="trust-stat">
-          <span class="num">10K+</span>
-          <span class="lbl">Practice Questions</span>
-        </div>
-        <div class="trust-divider"></div>
-        <div class="trust-stat">
-          <span class="num">98%</span>
-          <span class="lbl">Satisfaction Rate</span>
-        </div>
-        <div class="trust-divider"></div>
-        <div class="trust-stat">
-          <span class="num">340+</span>
-          <span class="lbl">IIT &amp; NEET Selections</span>
-        </div>
-      </div>
+      <p class="hero-note">✓ Free forever plan <span>·</span> ✓ No credit card needed <span>·</span> ✓ 50,000+ students</p>
     </div>
-
-    <!-- HERO VISUAL: MOCK TEST CARD -->
-    <div class="hero-visual fade-in-d2">
-      <div class="hero-card-back"></div>
-      <div class="hero-card-main">
-        <div class="hcm-header">
-          <div class="hcm-title">JEE Advanced Mock · Full Syllabus</div>
-          <div class="hcm-badge">● Live Now</div>
+    <!-- Right: Cards -->
+    <!-- Hero Visual Panel -->
+    <div class="hero-panel">
+      <!-- Performance Card -->
+      <div class="hc hc-main">
+        <div class="hc-head">
+          <div class="hc-icon hci-sg">📊</div>
+          <div><div class="hc-title">Your Performance</div><div class="hc-sub">JEE Advanced · Last 8 mocks</div></div>
+          <div class="hc-live">● LIVE</div>
         </div>
-        <div class="hcm-timer">
-          <div>
-            <div class="timer-label">TIME REMAINING</div>
-            <div class="timer-value" id="hero-timer">02:47:33</div>
-          </div>
-          <div style="text-align:right">
-            <div class="timer-label">QUESTION</div>
-            <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:800;color:var(--ink);">23 / 62</div>
-          </div>
+        <div class="hc-stats">
+          <div><div class="hcs-n">247</div><div class="hcs-l">Latest Score</div></div>
+          <div><div class="hcs-n">84%</div><div class="hcs-l">Accuracy</div></div>
+          <div><div class="hcs-n">#312</div><div class="hcs-l">National Rank</div></div>
         </div>
-        <div class="hcm-question">
-          A particle moves along a straight line. Its velocity at time t is v = (3t² − 6t) m/s. Find the acceleration at t = 2s.
+        <div class="hc-bar-row">
+          <div class="hc-bar-labels"><span>Physics</span><span>91%</span></div>
+          <div class="hc-bar"><div class="hc-bar-fill hcb-sg" id="bar1" style="width:0%"></div></div>
         </div>
-        <div class="hcm-options">
-          <div class="hcm-option"><span class="opt-key">A</span>0 m/s²</div>
-          <div class="hcm-option selected"><span class="opt-key">B</span>6 m/s²</div>
-          <div class="hcm-option"><span class="opt-key">C</span>12 m/s²</div>
-          <div class="hcm-option correct"><span class="opt-key">D</span>3 m/s²</div>
+        <div class="hc-bar-row">
+          <div class="hc-bar-labels"><span>Chemistry</span><span>78%</span></div>
+          <div class="hc-bar"><div class="hc-bar-fill hcb-gd" id="bar2" style="width:0%"></div></div>
         </div>
-        <div class="hcm-progress">
-          <div class="progress-info">
-            <span>Progress</span>
-            <span>23 of 62 answered</span>
-          </div>
-          <div class="progress-bar"><div class="progress-fill"></div></div>
+        <div class="hc-bar-row">
+          <div class="hc-bar-labels"><span>Maths</span><span>86%</span></div>
+          <div class="hc-bar"><div class="hc-bar-fill hcb-ro" id="bar3" style="width:0%"></div></div>
+        </div>
+        <div class="hc-streak">🔥 12-day streak &nbsp;·&nbsp; Keep it up!</div>
+      </div>
+      <!-- Leaderboard Card -->
+      <div class="hc">
+        <div class="hc-head">
+          <div class="hc-icon hci-gd">🏆</div>
+          <div><div class="hc-title">Live Leaderboard</div><div class="hc-sub">JEE Advanced · This week</div></div>
+        </div>
+        <div class="hc-lb-row"><span class="hc-lb-rank">🥇</span><div class="hca" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)">AS</div><span class="hc-lb-name">Aryan Sharma</span><span class="hc-lb-pts">312 pts</span></div>
+        <div class="hc-lb-row"><span class="hc-lb-rank">🥈</span><div class="hca" style="background:linear-gradient(135deg,var(--rose),#e06b6b)">PM</div><span class="hc-lb-name">Priya Mehta</span><span class="hc-lb-pts">298 pts</span></div>
+        <div class="hc-lb-row"><span class="hc-lb-rank">🥉</span><div class="hca" style="background:linear-gradient(135deg,var(--gold),#e8a830)">RK</div><span class="hc-lb-name">Rohit Kumar</span><span class="hc-lb-pts">285 pts</span></div>
+        <div class="hc-lb-row hc-lb-you"><span class="hc-lb-rank" style="color:var(--sage)">⭐312</span><div class="hca" style="background:linear-gradient(135deg,var(--sage),#4a7a3d)">YO</div><span class="hc-lb-name" style="color:var(--sage);font-weight:700;">You</span><span class="hc-lb-pts" style="color:var(--sage)">247 pts</span></div>
+        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;">
+          <span style="font-size:.62rem;color:rgba(26,38,24,.38);">4,821 students competing</span>
+          <a href="login.html" style="font-size:.68rem;font-weight:700;color:var(--sage);text-decoration:none;">View Full →</a>
         </div>
       </div>
-      <!-- FLOATING BADGES -->
-      <div class="hero-badge b1">
-        <div class="badge-icon" style="background:rgba(16,185,129,0.1);">🏆</div>
-        <div class="badge-text">
-          <div class="title">Rank #3 in Class</div>
-          <div class="sub">Physics · Top 5%</div>
-        </div>
-      </div>
-      <div class="hero-badge b2">
-        <div class="badge-icon" style="background:rgba(79,70,229,0.1);">📈</div>
-        <div class="badge-text">
-          <div class="title">+18% Accuracy</div>
-          <div class="sub">vs last test</div>
-        </div>
+      <!-- Mini stat pills -->
+      <div class="hero-pills">
+        <div class="hero-pill"><span>🎯</span> 50K+ Students</div>
+        <div class="hero-pill"><span>🏆</span> 340+ IIT Selections</div>
+        <div class="hero-pill"><span>⭐</span> 98% Satisfaction</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- EXAM PROGRAMS STRIP -->
-<div class="exams-section">
-  <div class="exams-inner">
-    <div class="exams-label">We cover all major exams</div>
-    <div class="exams-grid">
-      <a href="#programs" class="exam-pill">
-        <div class="pill-icon" style="background:rgba(79,70,229,0.1);color:var(--accent);">J</div>
-        JEE Advanced
-      </a>
-      <a href="#programs" class="exam-pill">
-        <div class="pill-icon" style="background:rgba(14,165,233,0.1);color:var(--accent-cool);">J</div>
-        JEE Mains
-      </a>
-      <a href="#programs" class="exam-pill">
-        <div class="pill-icon" style="background:rgba(16,185,129,0.1);color:var(--accent-green);">N</div>
-        NEET UG
-      </a>
-      <a href="#programs" class="exam-pill">
-        <div class="pill-icon" style="background:rgba(124,58,237,0.1);color:var(--accent-2);">F</div>
-        JEE Foundation (9–10)
-      </a>
-      <a href="#programs" class="exam-pill">
-        <div class="pill-icon" style="background:rgba(245,158,11,0.1);color:var(--accent-amber);">F</div>
-        NEET Foundation (9–10)
-      </a>
-      <a href="#programs" class="exam-pill">
-        <div class="pill-icon" style="background:rgba(244,63,94,0.1);color:var(--accent-rose);">B</div>
-        Class 11–12 Boards
-      </a>
-      <a href="#programs" class="exam-pill">
-        <div class="pill-icon" style="background:rgba(16,185,129,0.1);color:var(--accent-green);">B</div>
-        Class 9–10 Boards
-      </a>
+<!-- ACHIEVEMENT STRIP -->
+<div style="background:var(--forest);padding:0;border-top:1px solid rgba(255,255,255,.05);">
+  <div class="container">
+    <div class="achieve-inner reveal">
+      <div class="achieve-item">
+        <div class="achieve-icon">🎯</div>
+        <div><div class="achieve-n">50,000+</div><div class="achieve-l">Students Enrolled</div></div>
+      </div>
+      <div class="achieve-div"></div>
+      <div class="achieve-item">
+        <div class="achieve-icon">📝</div>
+        <div><div class="achieve-n">10,000+</div><div class="achieve-l">Practice Questions</div></div>
+      </div>
+      <div class="achieve-div"></div>
+      <div class="achieve-item">
+        <div class="achieve-icon">⭐</div>
+        <div><div class="achieve-n">98%</div><div class="achieve-l">Student Satisfaction</div></div>
+      </div>
+      <div class="achieve-div"></div>
+      <div class="achieve-item">
+        <div class="achieve-icon">🏆</div>
+        <div><div class="achieve-n">340+</div><div class="achieve-l">IIT &amp; NEET Selections</div></div>
+      </div>
+      <div class="achieve-div"></div>
+      <div class="achieve-item">
+        <div class="achieve-icon">🔥</div>
+        <div><div class="achieve-n">4.9 ★</div><div class="achieve-l">Average Rating</div></div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- FEATURES SECTION -->
-<section class="section" id="features">
-  <div class="section-inner">
-    <div class="section-tag">Platform Features</div>
-    <h2 class="section-h">Everything a serious<br>student needs.</h2>
-    <p class="section-sub">From adaptive mock tests to real-time leaderboards, MockArena is built around how toppers actually prepare.</p>
-    <div class="features-grid">
-
-      <div class="feature-card fc-1">
-        <div class="feature-icon" style="background:rgba(79,70,229,0.08);">📝</div>
-        <h3>Adaptive Mock Tests</h3>
-        <p>Full-length and chapter-wise tests that adapt to your performance. Covers NTA, CBSE, and IIT-style question patterns with negative marking support.</p>
-        <div class="feature-tags">
-          <span class="ftag">Full Syllabus</span>
-          <span class="ftag">Chapter-wise</span>
-          <span class="ftag">Part Tests</span>
-          <span class="ftag">Previous Year Papers</span>
-        </div>
-      </div>
-
-      <div class="feature-card fc-2">
-        <div class="feature-icon" style="background:rgba(14,165,233,0.08);">📊</div>
-        <h3>Deep Performance Analytics</h3>
-        <p>Subject-wise accuracy, time-per-question heat maps, weak area detection, and comparative rank among all MockArena students.</p>
-        <div class="feature-tags">
-          <span class="ftag">Rank Analysis</span>
-          <span class="ftag">Time Analysis</span>
-          <span class="ftag">Error Logs</span>
-          <span class="ftag">Percentile</span>
-        </div>
-      </div>
-
-      <div class="feature-card fc-3">
-        <div class="feature-icon" style="background:rgba(13,158,92,0.08);">🏆</div>
-        <h3>Live Leaderboards</h3>
-        <p>Real-time competitive rankings across batches, cities, and nationally. Weekly challenges and special contest tests with rewards.</p>
-        <div class="feature-tags">
-          <span class="ftag">City Rank</span>
-          <span class="ftag">National Rank</span>
-          <span class="ftag">Weekly Contests</span>
-        </div>
-      </div>
-
-      <div class="feature-card fc-4">
-        <div class="feature-icon" style="background:rgba(124,58,237,0.08);">🤖</div>
-        <h3>AI-Powered Study Planner</h3>
-        <p>Personalized study schedules based on your exam date, weak topics, and daily availability. Smart reminders and revision nudges included.</p>
-        <div class="feature-tags">
-          <span class="ftag">Smart Schedule</span>
-          <span class="ftag">Topic Prioritizer</span>
-          <span class="ftag">Revision Alerts</span>
-        </div>
-      </div>
-
-      <div class="feature-card fc-5">
-        <div class="feature-icon" style="background:rgba(245,158,11,0.08);">📚</div>
-        <h3>Expert Video Solutions</h3>
-        <p>Step-by-step video and text solutions for every question in every test, curated by experienced IIT and NEET faculty.</p>
-        <div class="feature-tags">
-          <span class="ftag">Video Solutions</span>
-          <span class="ftag">Shortcut Methods</span>
-          <span class="ftag">Concept Links</span>
-        </div>
-      </div>
-
-      <div class="feature-card fc-6">
-        <div class="feature-icon" style="background:rgba(244,63,94,0.08);">📋</div>
-        <h3>Digital Answer Sheets</h3>
-        <p>View your OMR-style answer sheets, question-by-question breakdown, attempted vs unattempted stats, and re-attempt analysis after every test.</p>
-        <div class="feature-tags">
-          <span class="ftag">OMR View</span>
-          <span class="ftag">Question Review</span>
-          <span class="ftag">Re-attempt</span>
-        </div>
-      </div>
-
+<!-- EXAMS -->
+<section class="section" id="exams">
+  <div class="container">
+    <div class="section-tag reveal">📚 We Cover All Major Exams</div>
+    <h2 class="section-title reveal">One Platform. Every Exam.</h2>
+    <p class="section-sub reveal">From Class 9 foundations to JEE Advanced — dedicated content, chapter-wise tests &amp; full mocks.</p>
+    <div class="exam-grid">
+      <a href="login.html" class="exam-card ec-adv reveal">
+        <div class="ec-top"><span class="ec-badge eb-pu">TOUGHEST</span><span class="ec-icon">⚡</span></div>
+        <div class="ec-name">JEE Advanced</div>
+        <div class="ec-desc">IIT entrance for Class 12. 3-hour paper with Physics, Chemistry &amp; Maths.</div>
+        <div class="ec-chips"><span class="ec-chip">Full Mock Tests</span><span class="ec-chip">Chapter Tests</span><span class="ec-chip">PYQ 20 Years</span></div>
+        <div class="ec-foot"><span class="ec-students">12,400+ students</span><span class="ec-arr">→</span></div>
+      </a>
+      <a href="login.html" class="exam-card ec-main reveal reveal-d1">
+        <div class="ec-top"><span class="ec-badge eb-sk">NTA PATTERN</span><span class="ec-icon">🎯</span></div>
+        <div class="ec-name">JEE Mains</div>
+        <div class="ec-desc">NIT &amp; IIIT entrance. CBT with 90 questions in 3 hours.</div>
+        <div class="ec-chips"><span class="ec-chip">CBT Pattern</span><span class="ec-chip">Negative Marking</span><span class="ec-chip">Rank Predictor</span></div>
+        <div class="ec-foot"><span class="ec-students">18,200+ students</span><span class="ec-arr">→</span></div>
+      </a>
+      <a href="login.html" class="exam-card ec-neet reveal reveal-d2">
+        <div class="ec-top"><span class="ec-badge eb-sg">MEDICAL</span><span class="ec-icon">🩺</span></div>
+        <div class="ec-name">NEET UG</div>
+        <div class="ec-desc">MBBS &amp; BDS entrance. 200 questions — Physics, Chemistry &amp; Biology.</div>
+        <div class="ec-chips"><span class="ec-chip">NCERT Based</span><span class="ec-chip">Biology Focus</span><span class="ec-chip">Cut-off Analysis</span></div>
+        <div class="ec-foot"><span class="ec-students">15,600+ students</span><span class="ec-arr">→</span></div>
+      </a>
+      <a href="login.html" class="exam-card ec-jf reveal">
+        <div class="ec-top"><span class="ec-badge eb-gd">CLASS 9-10</span><span class="ec-icon">🌱</span></div>
+        <div class="ec-name">JEE Foundation</div>
+        <div class="ec-desc">Build a strong base for JEE. Concept-wise tests for Class 9 &amp; 10.</div>
+        <div class="ec-chips"><span class="ec-chip">Concept Building</span><span class="ec-chip">HOTS Questions</span><span class="ec-chip">Weekly Tests</span></div>
+        <div class="ec-foot"><span class="ec-students">8,400+ students</span><span class="ec-arr">→</span></div>
+      </a>
+      <a href="login.html" class="exam-card ec-nf reveal reveal-d1">
+        <div class="ec-top"><span class="ec-badge eb-am">CLASS 9-10</span><span class="ec-icon">🔬</span></div>
+        <div class="ec-name">NEET Foundation</div>
+        <div class="ec-desc">Early start for medical aspirants. Bio, Physics &amp; Chemistry for Class 9-10.</div>
+        <div class="ec-chips"><span class="ec-chip">NCERT Aligned</span><span class="ec-chip">Diagram Based</span><span class="ec-chip">MCQ Practice</span></div>
+        <div class="ec-foot"><span class="ec-students">6,800+ students</span><span class="ec-arr">→</span></div>
+      </a>
+      <a href="login.html" class="exam-card ec-boards reveal reveal-d2">
+        <div class="ec-top"><span class="ec-badge eb-ro">CBSE</span><span class="ec-icon">📝</span></div>
+        <div class="ec-name">Class 10 &amp; 12 Boards</div>
+        <div class="ec-desc">CBSE board prep with chapter tests, sample papers &amp; revision notes.</div>
+        <div class="ec-chips"><span class="ec-chip">Sample Papers</span><span class="ec-chip">Case Studies</span><span class="ec-chip">Marking Scheme</span></div>
+        <div class="ec-foot"><span class="ec-students">9,200+ students</span><span class="ec-arr">→</span></div>
+      </a>
     </div>
   </div>
 </section>
 
-<!-- PROGRAMS SECTION -->
-<section class="section programs-section" id="programs">
-  <div class="programs-inner">
-    <div class="section-tag">Exam Programs</div>
-    <h2 class="section-h">Pick your battle.<br>We'll train you for it.</h2>
-    <p class="section-sub">Structured programs for every stage, from Class 9 foundation to JEE Advanced and NEET final push.</p>
-    <div class="programs-grid">
-
-      <div class="program-card featured">
-        <div class="prog-top">
-          <div class="prog-icon" style="background:rgba(79,70,229,0.22);">⚛️</div>
-          <div class="prog-badge">Most Popular</div>
-        </div>
-        <h3>JEE Advanced</h3>
-        <p>India's most challenging engineering exam. Full-length tests, integer type, match the column, and assertion-reason questions.</p>
-        <div class="prog-subjects">
-          <div class="prog-subject">Physics — Mechanics, Electromagnetism, Modern Physics</div>
-          <div class="prog-subject">Chemistry — Physical, Organic, Inorganic</div>
-          <div class="prog-subject">Mathematics — Calculus, Algebra, Coordinate Geometry</div>
-        </div>
-        <button class="prog-cta">Explore Program →</button>
+<!-- FEATURES -->
+<section class="section section-dark" id="features">
+  <div class="container">
+    <div class="section-tag section-tag-light reveal">🚀 Platform Features</div>
+    <h2 class="section-title section-title-light reveal">Everything a Serious Student Needs.</h2>
+    <p class="section-sub section-sub-light reveal">Built around how toppers actually prepare — not just another test platform.</p>
+    <div class="feat-grid">
+      <div class="feat-card reveal">
+        <div class="feat-icon fi-sg">📊</div>
+        <div class="feat-title">Adaptive Mock Tests</div>
+        <div class="feat-desc">Full-length and chapter-wise tests covering NTA, CBSE, and IIT-style patterns with negative marking support.</div>
+        <div class="feat-chips"><span class="feat-chip">Full Syllabus</span><span class="feat-chip">Chapter-wise</span><span class="feat-chip">Part Tests</span></div>
       </div>
-
-      <div class="program-card">
-        <div class="prog-top">
-          <div class="prog-icon" style="background:rgba(14,165,233,0.15);">🎯</div>
-          <div class="prog-badge">NTA Pattern</div>
-        </div>
-        <h3>JEE Mains</h3>
-        <p>NTA-style CBT tests with Section A (MCQ) and Section B (integer) questions. Full syllabus and subject-wise tests.</p>
-        <div class="prog-subjects">
-          <div class="prog-subject">75 questions, 3-hour timed tests</div>
-          <div class="prog-subject">Detailed percentile &amp; rank analysis</div>
-          <div class="prog-subject">Chapter-wise question bank (4000+ Qs)</div>
-        </div>
-        <button class="prog-cta">Explore Program →</button>
+      <div class="feat-card reveal reveal-d1">
+        <div class="feat-icon fi-gd">📈</div>
+        <div class="feat-title">Deep Performance Analytics</div>
+        <div class="feat-desc">Subject-wise accuracy, time heat maps, weak area detection, and comparative rank among all students.</div>
+        <div class="feat-chips"><span class="feat-chip">Rank Analysis</span><span class="feat-chip">Time Analysis</span><span class="feat-chip">Error Logs</span></div>
       </div>
-
-      <div class="program-card">
-        <div class="prog-top">
-          <div class="prog-icon" style="background:rgba(13,158,92,0.15);">🧬</div>
-          <div class="prog-badge">NTA NEET Pattern</div>
-        </div>
-        <h3>NEET UG</h3>
-        <p>Complete 720-mark mock tests and chapter tests in Physics, Chemistry, and Biology aligned to the NTA NEET pattern.</p>
-        <div class="prog-subjects">
-          <div class="prog-subject">Biology (Botany + Zoology) — 360 marks</div>
-          <div class="prog-subject">Physics &amp; Chemistry — 180 marks each</div>
-          <div class="prog-subject">NCERT-mapped question bank</div>
-        </div>
-        <button class="prog-cta">Explore Program →</button>
+      <div class="feat-card reveal reveal-d2">
+        <div class="feat-icon fi-ro">🏆</div>
+        <div class="feat-title">Live Leaderboards</div>
+        <div class="feat-desc">Real-time rankings across batches, cities, and nationally. Weekly challenges with rewards.</div>
+        <div class="feat-chips"><span class="feat-chip">City Rank</span><span class="feat-chip">National Rank</span><span class="feat-chip">Contests</span></div>
       </div>
-
-      <div class="program-card">
-        <div class="prog-top">
-          <div class="prog-icon" style="background:rgba(124,58,237,0.15);">🧲</div>
-          <div class="prog-badge">Class 9–10</div>
-        </div>
-        <h3>JEE Foundation</h3>
-        <p>Build strong conceptual foundations from Class 9 &amp; 10 that give a head start for JEE preparation in higher classes.</p>
-        <div class="prog-subjects">
-          <div class="prog-subject">Physics &amp; Math foundations</div>
-          <div class="prog-subject">NTSE, Olympiad-level problem sets</div>
-          <div class="prog-subject">CBSE curriculum integration</div>
-        </div>
-        <button class="prog-cta">Explore Program →</button>
+      <div class="feat-card reveal">
+        <div class="feat-icon fi-sk">🤖</div>
+        <div class="feat-title">AI Study Planner</div>
+        <div class="feat-desc">Personalized schedules based on exam date, weak topics, and daily availability with smart reminders.</div>
+        <div class="feat-chips"><span class="feat-chip">Smart Schedule</span><span class="feat-chip">Topic Prioritizer</span><span class="feat-chip">Reminders</span></div>
       </div>
-
-      <div class="program-card">
-        <div class="prog-top">
-          <div class="prog-icon" style="background:rgba(245,158,11,0.15);">🔬</div>
-          <div class="prog-badge">Class 9–10</div>
-        </div>
-        <h3>NEET Foundation</h3>
-        <p>Early Biology and Science preparation from Class 9, aligned with NCERT and designed for NEET readiness.</p>
-        <div class="prog-subjects">
-          <div class="prog-subject">Life Science, Cell Biology, Genetics basics</div>
-          <div class="prog-subject">NTSE &amp; Science Olympiad prep</div>
-          <div class="prog-subject">NCERT + reference material</div>
-        </div>
-        <button class="prog-cta">Explore Program →</button>
+      <div class="feat-card reveal reveal-d1">
+        <div class="feat-icon fi-am">📹</div>
+        <div class="feat-title">Video Solutions</div>
+        <div class="feat-desc">Step-by-step solutions by expert IIT faculty for every question in the simplest way possible.</div>
+        <div class="feat-chips"><span class="feat-chip">Expert Faculty</span><span class="feat-chip">Concept Videos</span><span class="feat-chip">PYQ Solutions</span></div>
       </div>
-
-      <div class="program-card">
-        <div class="prog-top">
-          <div class="prog-icon" style="background:rgba(244,63,94,0.15);">📖</div>
-          <div class="prog-badge">Class 11–12</div>
-        </div>
-        <h3>CBSE / State Boards</h3>
-        <p>Board exam preparation with chapter tests, full syllabus mocks, and sample paper practice for Class 11 &amp; 12.</p>
-        <div class="prog-subjects">
-          <div class="prog-subject">PCM &amp; PCB subject-wise tests</div>
-          <div class="prog-subject">CBSE sample papers &amp; previous years</div>
-          <div class="prog-subject">Detailed marking scheme analysis</div>
-        </div>
-        <button class="prog-cta">Explore Program →</button>
+      <div class="feat-card reveal reveal-d2">
+        <div class="feat-icon fi-pr">💬</div>
+        <div class="feat-title">Doubt Q&amp;A Forum</div>
+        <div class="feat-desc">Ask doubts and get expert answers within hours. Community support for every topic.</div>
+        <div class="feat-chips"><span class="feat-chip">Expert Answers</span><span class="feat-chip">Community</span><span class="feat-chip">24hr Response</span></div>
       </div>
-
     </div>
   </div>
 </section>
 
 <!-- HOW IT WORKS -->
-<section class="section" id="how-it-works" style="background:var(--paper-warm); border-top:1px solid var(--border); border-bottom:1px solid var(--border);">
-  <div class="section-inner">
-    <div style="text-align:center; max-width:600px; margin:0 auto 60px;">
-      <div class="section-tag" style="justify-content:center">How It Works</div>
-      <h2 class="section-h">From signup to topper<br>in four steps.</h2>
-    </div>
-    <div class="steps-grid">
-      <div class="step-item">
+<section class="section" id="how">
+  <div class="container">
+    <div class="section-tag reveal">⚙️ Simple Process</div>
+    <h2 class="section-title reveal">Start in 4 Simple Steps</h2>
+    <p class="section-sub reveal">Getting started with MockArena takes less than 2 minutes.</p>
+    <div class="steps reveal">
+      <div class="step">
         <div class="step-num">01</div>
-        <h4>Create Your Profile</h4>
-        <p>Select your exam goal, class, and target year. MockArena personalizes your entire dashboard around your goals.</p>
+        <div class="step-title">Create Free Account</div>
+        <div class="step-desc">Sign up with Google or email. Choose your target exam and class in seconds.</div>
       </div>
-      <div class="step-item">
+      <div class="step">
         <div class="step-num">02</div>
-        <h4>Take a Diagnostic Test</h4>
-        <p>A free diagnostic test maps your current strengths and weaknesses across every chapter and subject.</p>
+        <div class="step-title">Take Diagnostic Test</div>
+        <div class="step-desc">A quick 20-min test to assess your level and identify weak areas.</div>
       </div>
-      <div class="step-item">
+      <div class="step">
         <div class="step-num">03</div>
-        <h4>Follow Your Study Plan</h4>
-        <p>AI assigns a daily study plan with mock tests, practice sets, and revision reminders based on your progress.</p>
+        <div class="step-title">Follow Your Plan</div>
+        <div class="step-desc">AI builds your personalized study plan with daily tasks and mock tests.</div>
       </div>
-      <div class="step-item">
+      <div class="step">
         <div class="step-num">04</div>
-        <h4>Analyse &amp; Improve</h4>
-        <p>After every test, deep analytics reveal exactly where you lost marks and what to study next. Repeat and rank up.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ANALYTICS SECTION -->
-<section class="section analytics-section" id="analytics">
-  <div class="analytics-inner">
-    <div>
-      <div class="section-tag">Student Analytics</div>
-      <h2 class="section-h">Know exactly where<br>you stand.</h2>
-      <p class="section-sub">Unlike generic test portals, MockArena shows you real insights — not just scores. Understand your accuracy trends, time efficiency, and where you rank in real time.</p>
-      <ul style="list-style:none; display:flex; flex-direction:column; gap:14px; margin-bottom:2rem;">
-        <li style="display:flex;gap:12px;align-items:flex-start;font-size:0.9rem;color:var(--ink-soft);">
-          <span style="margin-top:2px;font-size:1rem;">✅</span>
-          <span><strong>Subject &amp; topic-level accuracy</strong> — see exactly which chapters drag your rank down</span>
-        </li>
-        <li style="display:flex;gap:12px;align-items:flex-start;font-size:0.9rem;color:var(--ink-soft);">
-          <span style="margin-top:2px;font-size:1rem;">✅</span>
-          <span><strong>Attempt rate &amp; time-per-question</strong> — identify where you're too slow or guessing blindly</span>
-        </li>
-        <li style="display:flex;gap:12px;align-items:flex-start;font-size:0.9rem;color:var(--ink-soft);">
-          <span style="margin-top:2px;font-size:1rem;">✅</span>
-          <span><strong>Predicted AIR &amp; College Predictor</strong> — estimate your likely JEE/NEET rank based on your test performance</span>
-        </li>
-        <li style="display:flex;gap:12px;align-items:flex-start;font-size:0.9rem;color:var(--ink-soft);">
-          <span style="margin-top:2px;font-size:1rem;">✅</span>
-          <span><strong>Progress over time</strong> — visual graphs showing your 30-day improvement trajectory</span>
-        </li>
-      </ul>
-      <a href="login.html" class="btn-hero">See Your Dashboard →</a>
-    </div>
-
-    <div class="analytics-cards">
-      <div class="analytics-card">
-        <div class="ac-label">Overall Score</div>
-        <div class="ac-value">247 / 300</div>
-        <div class="ac-delta up">↑ +23 pts from last test</div>
-        <div class="mini-bars">
-          <div class="mini-bar" style="height:40%"></div>
-          <div class="mini-bar" style="height:55%"></div>
-          <div class="mini-bar" style="height:50%"></div>
-          <div class="mini-bar active" style="height:65%"></div>
-          <div class="mini-bar active" style="height:72%"></div>
-          <div class="mini-bar best" style="height:82%"></div>
-        </div>
-      </div>
-
-      <div class="analytics-card">
-        <div class="ac-label">Accuracy Rate</div>
-        <div class="ac-value">78.4%</div>
-        <div class="ac-delta up">↑ +6.2% improvement</div>
-        <div style="margin-top:12px; display:flex; flex-direction:column; gap:8px;">
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--ink-faint);margin-bottom:4px;"><span>Physics</span><span>82%</span></div>
-            <div class="progress-bar" style="height:4px;"><div class="progress-fill" style="width:82%;background:var(--accent);"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--ink-faint);margin-bottom:4px;"><span>Chemistry</span><span>75%</span></div>
-            <div class="progress-bar" style="height:4px;"><div class="progress-fill" style="width:75%;background:var(--accent-green);"></div></div>
-          </div>
-          <div>
-            <div style="display:flex;justify-content:space-between;font-size:0.72rem;color:var(--ink-faint);margin-bottom:4px;"><span>Maths</span><span>68%</span></div>
-            <div class="progress-bar" style="height:4px;"><div class="progress-fill" style="width:68%;background:var(--accent-2);"></div></div>
-          </div>
-        </div>
-      </div>
-
-      <div class="analytics-card wide">
-        <div class="ac-label" style="margin-bottom:12px;">Live Leaderboard — JEE Advanced Mock #14</div>
-        <div class="rank-row">
-          <div class="rank-pos">1</div>
-          <div class="rank-name">Aryan S.</div>
-          <div class="rank-score">271</div>
-        </div>
-        <div class="rank-row">
-          <div class="rank-pos">2</div>
-          <div class="rank-name">Priya M.</div>
-          <div class="rank-score">264</div>
-        </div>
-        <div class="rank-row" style="background:rgba(79,70,229,0.06);border-radius:6px;">
-          <div class="rank-pos" style="color:var(--accent);">3</div>
-          <div class="rank-name" style="color:var(--accent);font-weight:700;">You (Rahul K.) 🎯</div>
-          <div class="rank-score" style="color:var(--accent-2);">247</div>
-        </div>
-        <div class="rank-row">
-          <div class="rank-pos">4</div>
-          <div class="rank-name">Shreya B.</div>
-          <div class="rank-score">238</div>
-        </div>
-        <div class="rank-row">
-          <div class="rank-pos">5</div>
-          <div class="rank-name">Kunal T.</div>
-          <div class="rank-score">231</div>
-        </div>
+        <div class="step-title">Track &amp; Improve</div>
+        <div class="step-desc">Monitor rank, accuracy and improvement with detailed weekly analytics.</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- TESTIMONIALS -->
-<section class="section" id="testimonials">
-  <div class="section-inner">
-    <div class="section-tag">Student Stories</div>
-    <h2 class="section-h">Real students. Real results.</h2>
-    <p class="section-sub">Hear from students who used MockArena to level up their preparation and crack their dream exams.</p>
-    <div class="testimonials-grid">
-      <div class="testimonial-card">
-        <div class="tc-stars">★★★★★</div>
-        <p class="tc-quote">"MockArena's analytics showed me I was spending too long on organic chemistry at the cost of Physics mechanics — fixing that boosted my score by 40 marks in 3 weeks."</p>
-        <div class="tc-author">
-          <div class="tc-avatar" style="background:rgba(79,70,229,0.1);color:var(--accent);">AK</div>
-          <div>
-            <div class="tc-name">Ankit Kumar</div>
-            <div class="tc-meta">JEE Advanced 2024 — AIR 847</div>
-          </div>
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-tag reveal">⭐ Student Success Stories</div>
+    <h2 class="section-title reveal">Toppers Trust MockArena</h2>
+    <p class="section-sub reveal">Real results from real students who cracked their dream exams.</p>
+    <div class="testi-grid">
+      <div class="testi-card reveal">
+        <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+        <div class="testi-quote">"MockArena's analytics showed me exactly where I was losing marks. Fixed my weak areas in 3 months."</div>
+        <div class="testi-foot">
+          <div class="testi-av" style="background:linear-gradient(135deg,#4f46e5,#7c3aed)">AK</div>
+          <div><div class="testi-name">Aryan Kumar</div><div class="testi-role">IIT Delhi, CS Engineering</div><div class="testi-rank">🏆 JEE Advanced AIR 847</div></div>
         </div>
       </div>
-      <div class="testimonial-card">
-        <div class="tc-stars">★★★★★</div>
-        <p class="tc-quote">"The live leaderboard kept me competitive all through my preparation. Seeing my rank improve week-over-week was genuinely motivating. I attempted NEET with full confidence."</p>
-        <div class="tc-author">
-          <div class="tc-avatar" style="background:rgba(16,185,129,0.1);color:var(--accent-green);">PS</div>
-          <div>
-            <div class="tc-name">Pooja Sharma</div>
-            <div class="tc-meta">NEET UG 2024 — Score: 680/720</div>
-          </div>
+      <div class="testi-card reveal reveal-d1">
+        <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+        <div class="testi-quote">"The live leaderboard kept me motivated every day. Competing nationally made me push harder than ever."</div>
+        <div class="testi-foot">
+          <div class="testi-av" style="background:linear-gradient(135deg,var(--sage),#4a7a3d)">PS</div>
+          <div><div class="testi-name">Priya Sharma</div><div class="testi-role">AIIMS Delhi, MBBS</div><div class="testi-rank">🏆 NEET AIR 1,204</div></div>
         </div>
       </div>
-      <div class="testimonial-card">
-        <div class="tc-stars">★★★★★</div>
-        <p class="tc-quote">"I started JEE Foundation in Class 10 on MockArena. By the time I reached Class 11, I was already comfortable with topics most of my classmates were struggling with."</p>
-        <div class="tc-author">
-          <div class="tc-avatar" style="background:rgba(124,58,237,0.1);color:var(--accent-2);">RM</div>
-          <div>
-            <div class="tc-name">Rohan Mehta</div>
-            <div class="tc-meta">JEE Foundation Student · Class 11</div>
-          </div>
+      <div class="testi-card reveal reveal-d2">
+        <div class="testi-stars">⭐⭐⭐⭐⭐</div>
+        <div class="testi-quote">"Video solutions after each mock test are incredible. Concepts I struggled with for months — explained simply."</div>
+        <div class="testi-foot">
+          <div class="testi-av" style="background:linear-gradient(135deg,var(--gold),#e8a830)">RV</div>
+          <div><div class="testi-name">Rohit Verma</div><div class="testi-role">IIT Bombay, Mechanical</div><div class="testi-rank">🏆 JEE Advanced AIR 1,562</div></div>
         </div>
       </div>
     </div>
@@ -2100,353 +715,169 @@
 </section>
 
 <!-- PRICING -->
-<section class="section" id="pricing" style="background:var(--paper-warm); border-top:1px solid var(--border);">
-  <div class="section-inner">
-    <div style="text-align:center; max-width:600px; margin:0 auto 60px;">
-      <div class="section-tag" style="justify-content:center">Pricing</div>
-      <h2 class="section-h">Invest in your future.<br>Not a fortune.</h2>
-      <p class="section-sub" style="margin-bottom:0;">All plans include a 7-day free trial. Cancel anytime. No hidden fees.</p>
-    </div>
-    <div class="pricing-grid">
-
-      <div class="pricing-card">
-        <div class="plan-name">Explorer</div>
-        <div class="plan-price">
-          <span class="price-curr">₹</span>
-          <span class="price-num">0</span>
-          <span class="price-period">/ month</span>
-        </div>
-        <p class="plan-desc">For students who want to try before they commit.</p>
-        <ul class="plan-features">
-          <li><div class="check-icon">✓</div>5 free mock tests per month</li>
-          <li><div class="check-icon">✓</div>Basic performance report</li>
-          <li><div class="check-icon">✓</div>Access to leaderboard</li>
-          <li><div class="check-icon">✓</div>2 previous year papers</li>
-          <li><div class="check-icon">✓</div>Mobile app access</li>
+<section class="section" id="pricing">
+  <div class="container">
+    <div class="section-tag reveal">💰 Simple Pricing</div>
+    <h2 class="section-title reveal">Plans for Every Student</h2>
+    <p class="section-sub reveal">Start free, upgrade when you're ready. No hidden charges ever.</p>
+    <div class="pricing-grid reveal">
+      <div class="price-card">
+        <div class="price-plan">Free</div>
+        <div class="price-amt">₹0</div>
+        <div class="price-per">forever free</div>
+        <div class="price-desc">Perfect to get started and explore MockArena.</div>
+        <ul class="price-list">
+          <li><span class="pl-check">✓</span>5 mock tests per month</li>
+          <li><span class="pl-check">✓</span>Basic analytics</li>
+          <li><span class="pl-check">✓</span>Leaderboard access</li>
+          <li><span class="pl-check">✓</span>Doubt forum</li>
+          <li style="opacity:.35"><span class="pl-x">✗</span>Chapter-wise tests</li>
+          <li style="opacity:.35"><span class="pl-x">✗</span>Video solutions</li>
+          <li style="opacity:.35"><span class="pl-x">✗</span>AI study planner</li>
         </ul>
-        <a href="#" class="plan-btn">Get Started Free</a>
+        <button class="btn-price btp-outline" onclick="window.location.href='login.html'">Get Started Free</button>
       </div>
-
-      <div class="pricing-card popular">
-        <div class="popular-badge">⭐ Most Popular</div>
-        <div class="plan-name">Scholar</div>
-        <div class="plan-price">
-          <span class="price-curr">₹</span>
-          <span class="price-num">499</span>
-          <span class="price-period">/ month</span>
-        </div>
-        <p class="plan-desc">Everything you need to rank in the top 10%.</p>
-        <ul class="plan-features">
-          <li><div class="check-icon">✓</div>Unlimited mock tests</li>
-          <li><div class="check-icon">✓</div>Full analytics dashboard</li>
-          <li><div class="check-icon">✓</div>Video solutions for all questions</li>
-          <li><div class="check-icon">✓</div>AI study planner</li>
-          <li><div class="check-icon">✓</div>All previous year papers</li>
-          <li><div class="check-icon">✓</div>Predicted rank &amp; AIR estimator</li>
-          <li><div class="check-icon">✓</div>Priority email support</li>
+      <div class="price-card featured">
+        <div class="price-popular">🔥 Most Popular</div>
+        <div class="price-plan price-plan-inv">Scholar</div>
+        <div class="price-amt price-amt-inv">₹299</div>
+        <div class="price-per price-per-inv">per month · billed annually</div>
+        <div class="price-desc price-desc-inv">Everything you need to crack your exam.</div>
+        <ul class="price-list price-list-inv">
+          <li><span class="pl-check pl-check-inv">✓</span>Unlimited mock tests</li>
+          <li><span class="pl-check pl-check-inv">✓</span>All chapter-wise tests</li>
+          <li><span class="pl-check pl-check-inv">✓</span>Deep analytics &amp; rank</li>
+          <li><span class="pl-check pl-check-inv">✓</span>Video solutions</li>
+          <li><span class="pl-check pl-check-inv">✓</span>AI study planner</li>
+          <li><span class="pl-check pl-check-inv">✓</span>PYQ 20 years</li>
+          <li><span class="pl-check pl-check-inv">✓</span>Priority doubt support</li>
         </ul>
-        <a href="#" class="plan-btn primary-plan">Start Free Trial →</a>
+        <button class="btn-price btp-sage" onclick="window.location.href='login.html'">Start Scholar Plan →</button>
       </div>
-
-      <div class="pricing-card">
-        <div class="plan-name">Elite</div>
-        <div class="plan-price">
-          <span class="price-curr">₹</span>
-          <span class="price-num">999</span>
-          <span class="price-period">/ month</span>
-        </div>
-        <p class="plan-desc">For serious aspirants targeting top 1000 AIR.</p>
-        <ul class="plan-features">
-          <li><div class="check-icon">✓</div>Everything in Scholar</li>
-          <li><div class="check-icon">✓</div>Live test series with analysis sessions</li>
-          <li><div class="check-icon">✓</div>Expert doubt resolution (24h)</div></li>
-          <li><div class="check-icon">✓</div>Personalized mentor calls (monthly)</div></li>
-          <li><div class="check-icon">✓</div>Early access to new features</div></li>
-          <li><div class="check-icon">✓</div>Dedicated WhatsApp support</div></li>
+      <div class="price-card">
+        <div class="price-plan">Institution</div>
+        <div class="price-amt">Custom</div>
+        <div class="price-per">per student · bulk pricing</div>
+        <div class="price-desc">For coaching institutes &amp; schools.</div>
+        <ul class="price-list">
+          <li><span class="pl-check">✓</span>Everything in Scholar</li>
+          <li><span class="pl-check">✓</span>Teacher dashboard</li>
+          <li><span class="pl-check">✓</span>Custom test creation</li>
+          <li><span class="pl-check">✓</span>Batch management</li>
+          <li><span class="pl-check">✓</span>Institution leaderboard</li>
+          <li><span class="pl-check">✓</span>College admin panel</li>
+          <li><span class="pl-check">✓</span>Dedicated support</li>
         </ul>
-        <a href="#" class="plan-btn">Start Free Trial →</a>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="section" id="faq">
-  <div class="section-inner">
-    <div style="text-align:center; max-width:600px; margin:0 auto 48px;">
-      <div class="section-tag" style="justify-content:center">FAQ</div>
-      <h2 class="section-h">Questions? Answered.</h2>
-    </div>
-    <div class="faq-grid">
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>Is MockArena suitable for Class 9 and 10 students?</span>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-a">Yes! MockArena has dedicated Foundation programs for Class 9 and 10 students preparing for JEE and NEET. The content is aligned with CBSE curriculum while introducing competitive exam concepts early, giving students a significant head start.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>How is MockArena different from other test prep platforms?</span>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-a">MockArena is built around deep analytics and competitive ranking, not just test delivery. After every test, you get question-level time analysis, chapter-wise accuracy, AIR prediction, and a clear action plan. Most platforms show you scores; we show you exactly how to improve them.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>Are the test questions original or copied from other sources?</span>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-a">Our question bank includes a mix of original questions crafted by IIT alumni and experienced faculty, previous year questions from JEE and NEET (with detailed solutions), and curated practice questions. Every question is reviewed for accuracy and exam relevance.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>Can I use MockArena on my phone?</span>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-a">Absolutely. MockArena is available on web browsers and as dedicated iOS and Android apps. Your progress syncs across all devices seamlessly, so you can study on the go and take tests on a full screen when needed.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>What happens after my 7-day free trial?</span>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-a">After the 7-day trial, you can choose the Explorer (free) plan or upgrade to Scholar or Elite. You won't be charged automatically — we'll ask you to choose a plan. Your test history and analytics are preserved regardless of the plan you choose.</div>
-      </div>
-      <div class="faq-item">
-        <div class="faq-q" onclick="toggleFaq(this)">
-          <span>Does MockArena cover CBSE boards alongside competitive prep?</span>
-          <div class="faq-toggle">+</div>
-        </div>
-        <div class="faq-a">Yes. We understand that Class 11 and 12 students need to simultaneously prepare for boards and competitive exams. MockArena offers CBSE-pattern chapter tests, sample papers, and a dedicated board module that runs alongside your JEE or NEET preparation.</div>
+        <button class="btn-price btp-outline" onclick="window.location.href='mailto:masterdeepak92@gmail.com'">Contact Us</button>
       </div>
     </div>
   </div>
 </section>
 
-<!-- CTA BANNER -->
+<!-- CTA -->
 <section class="cta-section">
-  <div class="cta-inner">
-    <div class="section-tag">Join MockArena</div>
-    <h2 class="cta-h">Your rank is waiting.<br>Go claim it.</h2>
-    <p class="cta-sub">Join 50,000+ students already using MockArena to prepare smarter, track progress precisely, and reach their dream colleges.</p>
-    <div class="cta-btns">
-      <a href="#pricing" class="btn-white">Start Free Trial →</a>
-      <a href="#programs" class="btn-outline-white">Explore Programs</a>
+  <div class="cta-orb"></div>
+  <div class="cta-inner container">
+    <div class="section-tag section-tag-light reveal" style="justify-content:center;margin-bottom:12px;">🚀 Join 50,000+ Students</div>
+    <h2 class="cta-title reveal">Your <em>Dream IIT or AIIMS</em><br/>Starts Here.</h2>
+    <p class="cta-sub reveal">Start your preparation today. Free forever plan available. No credit card required.</p>
+    <div class="cta-btns reveal">
+      <a href="login.html" class="btn-primary-lg">Start Free Trial →</a>
+      <a href="login.html" class="btn-cta-sec">Already have an account? Log In</a>
     </div>
   </div>
 </section>
 
 <!-- FOOTER -->
-<footer>
-  <div class="footer-inner">
-    <div class="footer-top">
-      <div class="footer-brand">
-        <a href="#" class="nav-logo">
-          <span class="logo-mock">Mock</span><span class="logo-arena">Arena</span>
-        </a>
-        <p>India's most advanced student evaluation and mock test platform for JEE, NEET, and Board exam aspirants from Class 9 to 12.</p>
-        <div class="footer-social">
-          <a href="#" class="social-btn">tw</a>
-          <a href="#" class="social-btn">yt</a>
-          <a href="#" class="social-btn">ig</a>
-          <a href="#" class="social-btn">tg</a>
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div class="nav-mark">MA</div>
+          <span class="nav-brand" style="color:white">Mock<em>Arena</em></span>
         </div>
+        <p class="footer-desc">India's most powerful exam preparation platform for JEE, NEET, and Board exams. Trusted by 50,000+ students.</p>
       </div>
-      <div class="footer-col">
-        <h5>Platform</h5>
-        <ul>
-          <li><a href="#">Mock Tests</a></li>
-          <li><a href="#">Analytics</a></li>
-          <li><a href="#">Leaderboards</a></li>
-          <li><a href="#">Study Planner</a></li>
-          <li><a href="#">Video Solutions</a></li>
+      <div>
+        <div class="footer-col-title">Exams</div>
+        <ul class="footer-links">
+          <li><a href="login.html">JEE Advanced</a></li>
+          <li><a href="login.html">JEE Mains</a></li>
+          <li><a href="login.html">NEET UG</a></li>
+          <li><a href="login.html">JEE Foundation</a></li>
+          <li><a href="login.html">NEET Foundation</a></li>
+          <li><a href="login.html">Class 10 &amp; 12 Boards</a></li>
         </ul>
       </div>
-      <div class="footer-col">
-        <h5>Programs</h5>
-        <ul>
-          <li><a href="#">JEE Advanced</a></li>
-          <li><a href="#">JEE Mains</a></li>
-          <li><a href="#">NEET UG</a></li>
-          <li><a href="#">JEE Foundation</a></li>
-          <li><a href="#">NEET Foundation</a></li>
+      <div>
+        <div class="footer-col-title">Platform</div>
+        <ul class="footer-links">
+          <li><a href="login.html">Dashboard</a></li>
+          <li><a href="login.html">Mock Tests</a></li>
+          <li><a href="login.html">Leaderboard</a></li>
+          <li><a href="login.html">Analytics</a></li>
+          <li><a href="login.html">Video Solutions</a></li>
+          <li><a href="login.html">Doubt Forum</a></li>
         </ul>
       </div>
-      <div class="footer-col">
-        <h5>Classes</h5>
-        <ul>
-          <li><a href="#">Class 9</a></li>
-          <li><a href="#">Class 10</a></li>
-          <li><a href="#">Class 11</a></li>
-          <li><a href="#">Class 12</a></li>
-          <li><a href="#">Dropper Batch</a></li>
-        </ul>
-      </div>
-      <div class="footer-col">
-        <h5>Company</h5>
-        <ul>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
           <li><a href="#">About Us</a></li>
-          <li><a href="#">Careers</a></li>
-          <li><a href="#">Contact</a></li>
+          <li><a href="#">For Institutions</a></li>
+          <li><a href="#">For Teachers</a></li>
           <li><a href="#">Blog</a></li>
-          <li><a href="#">Partnerships</a></li>
+          <li><a href="mailto:masterdeepak92@gmail.com">Contact</a></li>
+          <li><a href="#">Privacy Policy</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <div class="footer-copy">© 2025 MockArena · mockarena.co.in · All rights reserved.</div>
-      <div class="footer-legal">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-        <a href="#">Refund Policy</a>
+      <p class="footer-copy">© 2026 MockArena · Built for India's students · <a href="mailto:masterdeepak92@gmail.com">masterdeepak92@gmail.com</a></p>
+      <div class="footer-tags">
+        <span class="footer-tag">JEE Advanced</span>
+        <span class="footer-tag">NEET UG</span>
+        <span class="footer-tag">CBSE Boards</span>
       </div>
     </div>
   </div>
 </footer>
 
 <script>
-  // Mobile Nav
-  function toggleMobileNav() {
-    const nav = document.getElementById('mobileNav');
-    const btn = document.getElementById('hamburgerBtn');
-    const isOpen = nav.classList.contains('is-open');
-    if (isOpen) {
-      nav.classList.remove('is-open');
-      btn.classList.remove('is-open');
-    } else {
-      nav.classList.add('is-open');
-      btn.classList.add('is-open');
-    }
+// Navbar scroll
+window.addEventListener('scroll',function(){
+  document.getElementById('nav').classList.toggle('scrolled',window.scrollY>10);
+});
+
+// Scroll reveal
+var obs=new IntersectionObserver(function(entries){
+  entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis');});
+},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el);});
+
+// Animate hero bars after page load
+window.addEventListener('load',function(){
+  setTimeout(function(){
+    document.getElementById('bar1').style.width='91%';
+    document.getElementById('bar2').style.width='78%';
+    document.getElementById('bar3').style.width='86%';
+  },600);
+});
+
+// Mobile menu
+function toggleMob(){
+  document.getElementById('mob-menu').classList.toggle('open');
+}
+function closeMob(){
+  document.getElementById('mob-menu').classList.remove('open');
+}
+document.addEventListener('click',function(e){
+  var menu=document.getElementById('mob-menu');
+  var btn=document.querySelector('.nav-mob-btn');
+  if(menu.classList.contains('open')&&!menu.contains(e.target)&&!btn.contains(e.target)){
+    menu.classList.remove('open');
   }
-  function closeMobileNav() {
-    document.getElementById('mobileNav').classList.remove('is-open');
-    document.getElementById('hamburgerBtn').classList.remove('is-open');
-  }
-  document.addEventListener('click', e => {
-    const nav = document.getElementById('mobileNav');
-    const btn = document.getElementById('hamburgerBtn');
-    if (nav.classList.contains('is-open') && !nav.contains(e.target) && !btn.contains(e.target)) {
-      closeMobileNav();
-    }
-  });
-
-  // Live timer countdown
-  let seconds = 2 * 3600 + 47 * 60 + 33;
-  const timerEl = document.getElementById('hero-timer');
-  if (timerEl) {
-    setInterval(() => {
-      if (seconds > 0) seconds--;
-      const h = Math.floor(seconds / 3600);
-      const m = Math.floor((seconds % 3600) / 60);
-      const s = seconds % 60;
-      timerEl.textContent =
-        String(h).padStart(2, '0') + ':' +
-        String(m).padStart(2, '0') + ':' +
-        String(s).padStart(2, '0');
-    }, 1000);
-  }
-
-  // FAQ accordion
-  function toggleFaq(btn) {
-    const item = btn.parentElement;
-    const isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
-    if (!isOpen) item.classList.add('open');
-  }
-
-  // Smooth scroll for nav links
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', e => {
-      const target = document.querySelector(a.getAttribute('href'));
-      if (target) {
-        e.preventDefault();
-        target.scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  });
-
-  // Nav scroll effect
-  window.addEventListener('scroll', () => {
-    const nav = document.querySelector('nav');
-    nav.style.borderBottomColor = window.scrollY > 60 ? 'var(--border-strong)' : 'var(--border)';
-  });
-
-  // Animate cards on scroll
-  const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.style.opacity = '1';
-        entry.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-
-  document.querySelectorAll('.feature-card, .program-card, .testimonial-card, .analytics-card, .pricing-card').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(20px)';
-    el.style.transition = 'opacity 0.5s ease, transform 0.5s ease, box-shadow 0.3s, border-color 0.3s';
-    observer.observe(el);
-  });
-</script>
-
-
-
-<script id="mobile-script">
-document.addEventListener("DOMContentLoaded",function(){
-  // Remove any existing mob-ham buttons first
-  document.querySelectorAll(".mob-ham,.mob-menu-btn").forEach(function(e){e.remove();});
-
-  // Create overlay
-  var ov=document.createElement("div");
-  ov.className="mob-overlay";
-  ov.style.cssText="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9998;";
-  ov.addEventListener("click",closeNav);
-  document.body.appendChild(ov);
-
-  // Create ONE hamburger
-  var ham=document.createElement("button");
-  ham.className="mob-ham";
-  ham.innerHTML="&#9776;";
-  ham.style.cssText="display:none;width:36px;height:36px;border-radius:8px;background:#f5f3ec;border:1.5px solid rgba(26,38,24,.13);align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;flex-shrink:0;color:#1a2618;margin-right:6px;";
-  ham.addEventListener("click",toggleNav);
-
-  // Insert into topbar
-  var tb=document.querySelector(".tb");
-  if(tb) tb.insertBefore(ham,tb.firstChild);
-
-  // Show only on mobile
-  function check(){
-    ham.style.display=window.innerWidth<=860?"flex":"none";
-    if(window.innerWidth>860) closeNav();
-  }
-  check();
-  window.addEventListener("resize",check);
-
-  function toggleNav(){
-    var sb=document.querySelector(".sb");
-    if(!sb) return;
-    sb.classList.contains("mob-open")?closeNav():openNav();
-  }
-  function openNav(){
-    var sb=document.querySelector(".sb");
-    if(sb) sb.classList.add("mob-open");
-    ov.style.display="block";
-    document.body.style.overflow="hidden";
-  }
-  function closeNav(){
-    var sb=document.querySelector(".sb");
-    if(sb) sb.classList.remove("mob-open");
-    ov.style.display="none";
-    document.body.style.overflow="";
-  }
-  // Close on nav click
-  document.querySelectorAll(".sb-nav,.sb a").forEach(function(el){
-    el.addEventListener("click",function(){
-      if(window.innerWidth<=860) closeNav();
-    });
-  });
 });
 </script>
 </body>
