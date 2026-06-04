@@ -340,6 +340,21 @@ var TEST_NAME="JEE Advanced Mock Test";
   }
 }
 </style>
+<style>
+/* Integer keypad fix */
+.calc-pad{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:6px!important;width:230px!important;}
+.integer-input,.int-input{width:230px!important;font-size:1.3rem!important;}
+</style>
+<style>
+/* Integer input - text type for decimal support */
+.calc-pad{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:6px!important;width:240px!important;}
+.integer-input,.int-input{
+  width:240px!important;font-size:1.4rem!important;
+  font-family:'IBM Plex Mono',monospace!important;
+  text-align:center!important;letter-spacing:.04em!important;
+}
+.calc-btn{padding:12px 8px!important;font-size:.9rem!important;border-radius:10px!important;}
+</style>
 </head>
 <body>
 <div id="test-interface" style="display:flex;flex-direction:column;height:100vh;">
@@ -610,12 +625,11 @@ function renderQuestion(){
     optsHtml = `
     <div class="integer-input-wrap">
       <div class="integer-label">Enter your answer (integer value):</div>
-      <input type="number" class="integer-input" id="int-input" value="${st.answer||''}" placeholder="0" oninput="saveInteger(this.value)">
+      <input type="text" inputmode="decimal" class="integer-input" id="int-input" value="${st.answer||''}" placeholder="0" oninput="saveInteger(this.value)">
       <div class="calc-pad">
-        ${[7,8,9,4,5,6,1,2,3].map(n=>`<button class="calc-btn" onclick="appendDigit('${n}')">${n}</button>`).join('')}
-        <button class="calc-btn" onclick="appendDigit('0')">0</button>
-        <button class="calc-btn" onclick="appendDigit('-')">−</button>
-        <button class="calc-btn special" onclick="clearInt()">✕</button>
+        ${[7,8,9,'bs',4,5,6,'neg',1,2,3,'.'].map(n=>`<button class="calc-btn ${n==='bs'||n==='neg'?'special':''}" onclick="appendDigit('${n}')">${n==='bs'?'⌫':n==='neg'?'±':n}</button>`).join('')}
+        <button class="calc-btn" onclick="appendDigit('0')" style="grid-column:span 2;">0</button>
+        <button class="calc-btn special" onclick="appendDigit('clr')">✕</button>
       </div>
     </div>`;
   } else {
@@ -692,11 +706,23 @@ function saveInteger(val){
 }
 
 function appendDigit(d){
-  const inp = document.getElementById('int-input');
+  var inp = document.getElementById('int-input');
   if(!inp) return;
-  if(d==='-') inp.value = inp.value.startsWith('-') ? inp.value.slice(1) : '-'+inp.value;
-  else inp.value = inp.value + d;
-  saveInteger(inp.value);
+  var v = inp.value || '';
+  if(d==='neg'){
+    v = v.startsWith('-') ? v.slice(1) : (v ? '-'+v : '-');
+  } else if(d==='.'){
+    if(!v.includes('.')) v = v + '.';
+  } else if(d==='bs'){
+    v = v.slice(0,-1);
+  } else if(d==='clr'){
+    v = '';
+  } else {
+    if(v==='' || v==='-'){v = v+d;}
+    else{v = v+d;}
+  }
+  inp.value = v;
+  saveInteger(v);
 }
 
 function clearInt(){
@@ -1214,5 +1240,6 @@ function reportQ(){if(confirm("Report this question for an error? Our team revie
   else{fixLogout();}
 })();
 </script>
+
 </body>
 </html>
