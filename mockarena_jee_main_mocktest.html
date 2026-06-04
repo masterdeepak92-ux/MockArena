@@ -196,6 +196,9 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 /* Section tabs rendered by JS */
 .sec-tab-btn{font-family:var(--fd);font-size:.64rem;font-weight:600;padding:3px 10px;border-radius:6px;border:1.5px solid var(--bm);background:var(--cream-w);color:var(--forest-m);cursor:pointer;transition:all .18s;}
 .sec-tab-btn.on,.sec-tab-btn.active{background:var(--forest);color:white;border-color:var(--forest);}
+.stab{font-family:var(--fd);font-size:.64rem;font-weight:600;padding:4px 12px;border-radius:6px;border:1.5px solid var(--bm);background:var(--cream-w);color:var(--forest-m);cursor:pointer;transition:all .18s;}
+.stab:hover{border-color:var(--sage);color:var(--sage);}
+.stab.on{background:var(--forest);color:white;border-color:var(--forest);}
 </style>
 <style>
 /* ── DESKTOP: Always-visible palette panel ── */
@@ -250,6 +253,95 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 var EXAM_TYPE="jee_mains";
 var TEST_NAME="JEE Mains Mock Test";
 </script>
+<style>
+/* ── MOBILE PALETTE FIX — Compact horizontal ── */
+@media(max-width:860px){
+  /* Palette panel becomes compact horizontal strip at bottom */
+  .pal-panel{
+    width:100%!important;
+    flex-direction:column!important;
+    border-left:none!important;
+    border-top:1px solid var(--border)!important;
+    max-height:none!important;
+  }
+  /* Timer — slim single row */
+  .pal-timer{
+    padding:6px 14px!important;
+    display:flex!important;
+    align-items:center!important;
+    justify-content:space-between!important;
+    flex-direction:row!important;
+  }
+  .pal-timer-val{
+    font-size:.9rem!important;
+    display:inline!important;
+  }
+  .pal-timer-lbl{
+    font-size:.6rem!important;
+    margin-left:6px!important;
+  }
+  /* Palette header — slim */
+  .pal-hdr2{
+    padding:5px 12px!important;
+    display:flex!important;
+    align-items:center!important;
+  }
+  .pal-title2{font-size:.7rem!important;}
+  /* Legend — single horizontal row */
+  .pal-legend2{padding:5px 12px!important;}
+  .pal-leg-row{
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:wrap!important;
+    gap:8px!important;
+  }
+  .pal-leg-item{font-size:.58rem!important;}
+  /* Palette grid — horizontal scrollable */
+  .pal-scroll{
+    padding:8px 12px!important;
+    overflow-x:auto!important;
+    overflow-y:hidden!important;
+    max-height:80px!important;
+  }
+  .pal-scroll::-webkit-scrollbar{height:3px!important;}
+  .pal-scroll::-webkit-scrollbar-thumb{background:var(--bm);border-radius:3px;}
+  /* Each subject section inline */
+  .palette-subj-label{
+    font-size:.52rem!important;
+    margin:4px 0 3px!important;
+    white-space:nowrap!important;
+  }
+  /* Grid becomes horizontal single row */
+  .palette-grid{
+    display:flex!important;
+    flex-direction:row!important;
+    flex-wrap:nowrap!important;
+    gap:4px!important;
+    margin-bottom:4px!important;
+  }
+  .p-btn{
+    width:28px!important;
+    height:28px!important;
+    aspect-ratio:1!important;
+    flex-shrink:0!important;
+    font-size:.58rem!important;
+  }
+  /* Summary strip — single row */
+  .pal-sum{padding:6px 12px!important;}
+  .pal-sum-row{
+    display:flex!important;
+    flex-direction:row!important;
+    justify-content:space-around!important;
+    margin-bottom:5px!important;
+  }
+  .ps-n{font-size:.76rem!important;}
+  .ps-l{font-size:.44rem!important;}
+  .pal-sub{
+    padding:7px!important;
+    font-size:.72rem!important;
+  }
+}
+</style>
 </head>
 <body>
 <div id="ti" style="display:flex;flex-direction:column;height:100vh;">
@@ -961,7 +1053,7 @@ function reportQ(){if(confirm("Report this question for an error? Our team revie
       s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
       s2.onload=function(){
         if(!firebase.apps.length)firebase.initializeApp(_c);
-        firebase.auth().onAuthStateChanged(function(u){if(!u)window.location.href="login.html";});
+        firebase.auth().onAuthStateChanged(function(u){try{if(sessionStorage.getItem("ma_logout")==="1"){sessionStorage.removeItem("ma_logout");return;}}catch(e){}if(!u)window.location.replace("login.html");});
       };
       document.head.appendChild(s2);
     };
@@ -1030,6 +1122,61 @@ function reportQ(){if(confirm("Report this question for an error? Our team revie
     var ptv=document.querySelector(".ptd-val");
     if(tv&&ptv)ptv.textContent=tv.textContent;
   },500);
+})();
+</script>
+<script>
+// ── LOGOUT FIX ──────────────────────────────────────────
+(function(){
+  function fixLogout(){
+    document.querySelectorAll("a, button").forEach(function(el){
+      var txt = el.textContent.trim().toLowerCase();
+      var href = el.getAttribute("href")||"";
+      if((txt==="logout"||txt==="sign out"||txt==="log out") && (href==="login.html"||href==="#"||href==="")){
+        el.setAttribute("href","#");
+        el.addEventListener("click",function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          // Set logout flag so login page doesn't auto-redirect
+          try{sessionStorage.setItem("ma_logout","1");}catch(err){}
+          // Load Firebase and sign out
+          function doSignOut(){
+            try{
+              if(typeof firebase!=="undefined"&&firebase.auth){
+                firebase.auth().signOut().then(function(){
+                  window.location.replace("login.html");
+                }).catch(function(){
+                  window.location.replace("login.html");
+                });
+              } else {
+                window.location.replace("login.html");
+              }
+            } catch(err){
+              window.location.replace("login.html");
+            }
+          }
+          if(typeof firebase==="undefined"){
+            var s1=document.createElement("script");
+            s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+            s1.onload=function(){
+              var s2=document.createElement("script");
+              s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+              s2.onload=function(){
+                var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+                if(!firebase.apps.length)firebase.initializeApp(_c);
+                doSignOut();
+              };
+              document.head.appendChild(s2);
+            };
+            document.head.appendChild(s1);
+          } else {
+            doSignOut();
+          }
+        });
+      }
+    });
+  }
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",fixLogout);}
+  else{fixLogout();}
 })();
 </script>
 </body>
