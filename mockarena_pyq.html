@@ -515,6 +515,18 @@ nav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);
 .sb-foot{position:sticky!important;bottom:0!important;background:var(--forest)!important;margin-top:auto!important;padding:10px 8px 18px!important;border-top:1px solid rgba(255,255,255,.06)!important;flex-shrink:0!important;z-index:10!important;}
 .sb-av img,.sb-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
 </style>
+<style>
+/* ── Sidebar text visibility fix ── */
+.sb-nav{color:rgba(255,255,255,.78)!important;}
+.sb-nav:hover{color:white!important;background:rgba(255,255,255,.08)!important;}
+.sb-nav.active{color:white!important;}
+.si{color:rgba(255,255,255,.58)!important;}
+.sb-grp{color:rgba(255,255,255,.4)!important;font-size:.62rem!important;}
+.sb-uname{color:white!important;font-weight:700!important;}
+.sb-urole{color:rgba(255,255,255,.55)!important;}
+.sb-b1{color:white!important;}
+.sb-b2{color:rgba(255,255,255,.45)!important;}
+</style>
 </head>
 <body>
 
@@ -1361,7 +1373,7 @@ document.addEventListener("DOMContentLoaded",function(){
         if(!firebase.apps.length)firebase.initializeApp(_c);
         var _done=false;
         firebase.auth().onAuthStateChanged(function(u){
-          if(!_done&&!u){_done=true;window.location.href="login.html";}
+          if(!_done&&!u){_done=true;try{if(sessionStorage.getItem("ma_logout")==="1"){sessionStorage.removeItem("ma_logout");return;}}catch(e){}window.location.replace("login.html");}
           if(u){
             var nm=u.displayName||u.email||"Student";
             var parts=nm.split(" ");
@@ -1465,6 +1477,61 @@ document.addEventListener("DOMContentLoaded",function(){
   }
   if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_initFirestore);}
   else{_initFirestore();}
+})();
+</script>
+<script>
+// ── LOGOUT FIX ──────────────────────────────────────────
+(function(){
+  function fixLogout(){
+    document.querySelectorAll("a, button").forEach(function(el){
+      var txt = el.textContent.trim().toLowerCase();
+      var href = el.getAttribute("href")||"";
+      if((txt==="logout"||txt==="sign out"||txt==="log out") && (href==="login.html"||href==="#"||href==="")){
+        el.setAttribute("href","#");
+        el.addEventListener("click",function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          // Set logout flag so login page doesn't auto-redirect
+          try{sessionStorage.setItem("ma_logout","1");}catch(err){}
+          // Load Firebase and sign out
+          function doSignOut(){
+            try{
+              if(typeof firebase!=="undefined"&&firebase.auth){
+                firebase.auth().signOut().then(function(){
+                  window.location.replace("login.html");
+                }).catch(function(){
+                  window.location.replace("login.html");
+                });
+              } else {
+                window.location.replace("login.html");
+              }
+            } catch(err){
+              window.location.replace("login.html");
+            }
+          }
+          if(typeof firebase==="undefined"){
+            var s1=document.createElement("script");
+            s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+            s1.onload=function(){
+              var s2=document.createElement("script");
+              s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+              s2.onload=function(){
+                var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+                if(!firebase.apps.length)firebase.initializeApp(_c);
+                doSignOut();
+              };
+              document.head.appendChild(s2);
+            };
+            document.head.appendChild(s1);
+          } else {
+            doSignOut();
+          }
+        });
+      }
+    });
+  }
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",fixLogout);}
+  else{fixLogout();}
 })();
 </script>
 </body>
