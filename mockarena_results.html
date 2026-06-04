@@ -284,11 +284,6 @@ body{font-family:var(--font-b);background:var(--cream);color:var(--forest);displ
 }
 </style>
 
-<style>
-.sb{display:flex!important;flex-direction:column!important;overflow-y:auto!important;}
-.sb-foot{position:sticky!important;bottom:0!important;background:var(--forest)!important;margin-top:auto!important;padding:10px 8px 18px!important;border-top:1px solid rgba(255,255,255,.06)!important;flex-shrink:0!important;z-index:10!important;}
-.sb-av img,.sb-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
-</style>
 </head>
 <body>
 
@@ -994,138 +989,211 @@ document.addEventListener("DOMContentLoaded",function(){
 </script>
 <script>
 (function(){
+  try{if(sessionStorage.getItem("ma_logout")==="1"){sessionStorage.removeItem("ma_logout");return;}}catch(e){}
   var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-  var FAKE=["Rahul Kumar","Arjun Sharma","Rahul","Arjun"];
-  function _rep(el,fn,nm,in2){
-    if(el.nodeType===3){
-      var t=el.textContent;
-      FAKE.forEach(function(n){
-        if(t.indexOf(n)!==-1){
-          t=t.replace(new RegExp(n+"!","g"),fn+"!")
-             .replace(new RegExp("\("+n.split(" ")[0]+" K\.\)","g"),"("+fn+" "+in2.charAt(1)+")")
-             .replace(new RegExp("^"+n+"$"),nm);
-          el.textContent=t;
-        }
-      });
-    } else if(el.nodeType===1&&el.tagName!=="SCRIPT"&&el.tagName!=="STYLE"){
-      Array.from(el.childNodes).forEach(function(c){_rep(c,fn,nm,in2);});
-    }
-  }
-  function _g(){
-    var s1=document.createElement("script");
-    s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-    s1.onload=function(){
-      var s2=document.createElement("script");
-      s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
-      s2.onload=function(){
-        if(!firebase.apps.length)firebase.initializeApp(_c);
-        var _done=false;
-        firebase.auth().onAuthStateChanged(function(u){
-          if(!_done&&!u){_done=true;window.location.href="login.html";}
-          if(u){
-            var nm=u.displayName||u.email||"Student";
-            var parts=nm.split(" ");
-            var in2=(parts[0].charAt(0)+(parts[1]?parts[1].charAt(0):"")).toUpperCase();
-            var photo=u.photoURL;
-            var fn=parts[0];
-            document.querySelectorAll(".sb-av,.sb-avatar").forEach(function(el){
-              if(photo){var img=document.createElement("img");img.src=photo;img.style.cssText="width:100%;height:100%;border-radius:50%;object-fit:cover;";img.onerror=function(){el.textContent=in2;};el.innerHTML="";el.appendChild(img);}
-              else{el.textContent=in2;}
-            });
-            document.querySelectorAll(".sb-uname,.sb-name").forEach(function(el){el.textContent=nm;});
-            var tb=document.querySelector(".tb-title");
-            if(tb&&tb.textContent.indexOf("Good")!==-1){var h=new Date().getHours();var g=h<12?"Good Morning":h<17?"Good Afternoon":"Good Evening";tb.textContent=g+", "+fn+"!";}
-            _rep(document.body,fn,nm,in2);
-          }
-        });
-      };
-      document.head.appendChild(s2);
-    };
-    document.head.appendChild(s1);
-  }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_g);}else{_g();}
-})();
-</script>
-<script>
-(function(){
-  function _il(){
-    document.querySelectorAll("a").forEach(function(link){
-      var txt=link.textContent.trim().toLowerCase();
-      if((txt==="logout"||txt==="sign out")&&link.getAttribute("href")==="login.html"){
-        link.href="#";
-        link.addEventListener("click",function(e){
+  function fixLogout(){
+    document.querySelectorAll("a").forEach(function(el){
+      var txt=el.textContent.trim().toLowerCase();
+      if(txt==="logout"||txt==="sign out"){
+        el.setAttribute("href","#");
+        el.onclick=function(e){
           e.preventDefault();
-          var s1=document.createElement("script");
-          s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-          s1.onload=function(){
-            var s2=document.createElement("script");
-            s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
-            s2.onload=function(){
-              var c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-              if(!firebase.apps.length)firebase.initializeApp(c);
-              firebase.auth().signOut().then(function(){window.location.href="login.html";});
-            };
-            document.head.appendChild(s2);
-          };
-          document.head.appendChild(s1);
-        });
+          try{sessionStorage.setItem("ma_logout","1");}catch(ex){}
+          if(typeof firebase!=="undefined"&&firebase.auth){firebase.auth().signOut().then(function(){window.location.replace("login.html");});}
+          else{window.location.replace("login.html");}
+        };
       }
     });
   }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_il);}else{_il();}
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",fixLogout);}else{fixLogout();}
 })();
 </script>
 <script>
+// ═══════════════════════════════════════════════════
+// MOCKARENA RESULTS — REAL FIRESTORE DATA
+// ═══════════════════════════════════════════════════
 (function(){
-  function _initFirestore(){
-    // Load Firestore SDK
-    var s=document.createElement("script");
-    s.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
-    s.onload=function(){
-      var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-      if(!firebase.apps.length)firebase.initializeApp(_c);
-      var db=firebase.firestore();
+  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
 
-      firebase.auth().onAuthStateChanged(function(user){
-        if(!user)return;
-        var ref=db.collection("users").doc(user.uid);
-        ref.get().then(function(doc){
-          if(!doc.exists){
-            // First login - create profile
-            ref.set({
-              uid:user.uid,
-              name:user.displayName||"Student",
-              email:user.email,
-              photo:user.photoURL||"",
-              role:"student",
-              examTarget:"",
-              className:"",
-              joinDate:firebase.firestore.FieldValue.serverTimestamp(),
-              totalTests:0,
-              avgScore:0,
-              bestScore:0,
-              streak:0,
-              totalPoints:0
-            });
-          } else {
-            // Update last login
-            ref.update({
-              lastLogin:firebase.firestore.FieldValue.serverTimestamp(),
-              name:user.displayName||doc.data().name||"Student",
-              photo:user.photoURL||doc.data().photo||""
-            });
-          }
+  function loadFS(cb){
+    var s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+    s1.onload=function(){var s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+      s2.onload=function(){var s3=document.createElement("script");s3.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
+        s3.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);cb(firebase.firestore(),firebase.auth());};
+        document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);
+  }
+
+  var examNames={jee_advanced:"JEE Advanced Full Mock",jee_mains:"JEE Mains Mock",neet:"NEET UG Full Mock"};
+  var examColors={jee_advanced:"var(--sage-light)",jee_mains:"var(--sky-light)",neet:"var(--purple-light)"};
+  var examTextColors={jee_advanced:"var(--sage)",jee_mains:"var(--sky)",neet:"var(--purple)"};
+
+  function timeAgo(dateStr){
+    if(!dateStr) return "Recently";
+    var now=new Date();
+    var d=new Date(dateStr);
+    var diff=Math.floor((now-d)/86400000);
+    if(diff===0) return "Today";
+    if(diff===1) return "Yesterday";
+    if(diff<7) return diff+" days ago";
+    if(diff<30) return Math.floor(diff/7)+" weeks ago";
+    return Math.floor(diff/30)+" months ago";
+  }
+
+  function updateLatest(test){
+    if(!test) return;
+    // Update LATEST data object used by renderLatest()
+    if(typeof LATEST!=="undefined"){
+      LATEST.score = test.score||0;
+      LATEST.total = test.total||180;
+      LATEST.correct = test.correct||0;
+      LATEST.wrong = test.wrong||0;
+      LATEST.skipped = test.skipped||0;
+      LATEST.exam = (examNames[test.examType]||"Mock Test")+" #"+new Date(test.date||Date.now()).getDate();
+      LATEST.date = test.date||new Date().toISOString().split("T")[0];
+      // Subject breakdown
+      var breakdown = test.subjectBreakdown||{};
+      var subjKeys = Object.keys(breakdown);
+      if(subjKeys.length>=1) LATEST.phy_acc = breakdown[subjKeys[0]]?breakdown[subjKeys[0]].accuracy:0;
+      if(subjKeys.length>=2) LATEST.chem_acc = breakdown[subjKeys[1]]?breakdown[subjKeys[1]].accuracy:0;
+      if(subjKeys.length>=3) LATEST.math_acc = breakdown[subjKeys[2]]?breakdown[subjKeys[2]].accuracy:0;
+    }
+    // Re-render latest tab
+    if(typeof switchTab==="function"){
+      switchTab("latest", document.querySelector(".stab.active"));
+    }
+  }
+
+  function updateHistory(tests){
+    if(!tests||!tests.length) return;
+    // Override HISTORY array
+    if(typeof HISTORY!=="undefined"){
+      // Clear and refill
+      HISTORY.length=0;
+      tests.forEach(function(t,i){
+        var prev = tests[i+1];
+        var delta = prev?(t.score-prev.score):0;
+        HISTORY.push({
+          n:(examNames[t.examType]||"Mock Test"),
+          type:"Full Mock",
+          date:timeAgo(t.date),
+          score:t.score+"/"+(t.total||180),
+          accuracy:t.accuracy+"%",
+          rank:"—",
+          delta:delta>0?"+"+delta:(delta<0?""+delta:""),
+          up:delta>=0,
+          color:examColors[t.examType]||"var(--sage-light)",
+          tc:examTextColors[t.examType]||"var(--sage)",
+          examType:t.examType,
+          date_raw:t.date
         });
       });
-
-      // Expose db globally for other scripts
-      window._maDB=db;
-    };
-    document.head.appendChild(s);
+    }
   }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_initFirestore);}
-  else{_initFirestore();}
+
+  function updateSubjectBreakdown(tests){
+    if(!tests||!tests.length) return;
+    // Calculate avg subject accuracy across last 8 tests
+    var subjData={};
+    tests.slice(0,8).forEach(function(t){
+      var bd=t.subjectBreakdown||{};
+      Object.keys(bd).forEach(function(s){
+        if(!subjData[s]){subjData[s]={total:0,count:0};}
+        subjData[s].total+=(bd[s].accuracy||0);
+        subjData[s].count++;
+      });
+    });
+    // Update progress bars if visible
+    document.querySelectorAll(".pb-row").forEach(function(row){
+      var lbl=row.querySelector(".pb-l");
+      var fill=row.querySelector(".pb-f");
+      var val=row.querySelector(".pb-v");
+      if(!lbl||!fill||!val) return;
+      var txt=lbl.textContent.toLowerCase();
+      Object.keys(subjData).forEach(function(s){
+        if(txt.includes(s.toLowerCase().substring(0,4))){
+          var acc=Math.round(subjData[s].total/subjData[s].count);
+          fill.style.width=acc+"%";
+          val.textContent=acc+"%";
+        }
+      });
+    });
+  }
+
+  function updateUserDisplay(user){
+    var nm=user.displayName||"Student";
+    var init=nm.split(" ").map(function(w){return w[0];}).join("").toUpperCase().substring(0,2);
+    document.querySelectorAll(".sb-av").forEach(function(el){
+      if(user.photoURL){
+        var img=document.createElement("img");img.src=user.photoURL;
+        img.style.cssText="width:100%;height:100%;border-radius:50%;object-fit:cover;";
+        el.innerHTML="";el.appendChild(img);
+      } else {el.textContent=init;}
+    });
+    document.querySelectorAll(".sb-uname,.sb-name").forEach(function(el){el.textContent=nm;});
+  }
+
+  function init(){
+    loadFS(function(db,auth){
+      auth.onAuthStateChanged(function(user){
+        if(!user){window.location.replace("login.html");return;}
+        updateUserDisplay(user);
+        var uid=user.uid;
+
+        // Load all tests
+        db.collection("results").doc(uid).collection("tests")
+          .orderBy("timestamp","desc").limit(50)
+          .get().then(function(snap){
+            var tests=[];
+            snap.forEach(function(d){tests.push(d.data());});
+            if(!tests.length){
+              // Show empty state
+              showEmptyState();
+              return;
+            }
+            // Update latest result
+            updateLatest(tests[0]);
+            // Update history
+            updateHistory(tests);
+            // Update subject bars
+            updateSubjectBreakdown(tests);
+            // Update topbar
+            var tb=document.getElementById("tb-title");
+            if(tb) tb.textContent="My Results";
+            var crumb=document.getElementById("tb-crumb");
+            if(crumb) crumb.textContent="MockArena / Results / "+tests.length+" tests";
+          }).catch(function(e){console.error("Results error:",e);});
+      });
+    });
+  }
+
+  function showEmptyState(){
+    var content=document.getElementById("content");
+    if(!content) return;
+    content.innerHTML=`
+    <div style="text-align:center;padding:80px 20px;max-width:400px;margin:0 auto;">
+      <div style="font-size:3rem;margin-bottom:16px;">📝</div>
+      <div style="font-family:var(--font-d);font-size:1.1rem;font-weight:800;color:var(--forest);margin-bottom:8px;">No Test Results Yet</div>
+      <div style="font-size:.84rem;color:rgba(26,38,24,.45);line-height:1.7;margin-bottom:28px;">
+        Complete a mock test to see your detailed results, subject analysis, and performance trends here.
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;align-items:center;">
+        <a href="mockarena_mocktest.html" style="font-family:var(--font-d);font-size:.86rem;font-weight:700;padding:12px 28px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;text-decoration:none;box-shadow:0 4px 14px var(--sage-glow);">
+          Start JEE Advanced Mock →
+        </a>
+        <a href="mockarena_jee_main_mocktest.html" style="font-family:var(--font-d);font-size:.84rem;font-weight:600;padding:10px 24px;border-radius:11px;border:1.5px solid var(--border-med);color:var(--forest-muted);text-decoration:none;background:white;">
+          Start JEE Mains Mock
+        </a>
+        <a href="mockarena_neet_mocktest.html" style="font-family:var(--font-d);font-size:.84rem;font-weight:600;padding:10px 24px;border-radius:11px;border:1.5px solid var(--border-med);color:var(--forest-muted);text-decoration:none;background:white;">
+          Start NEET Mock
+        </a>
+      </div>
+    </div>`;
+  }
+
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}
+  else{setTimeout(init,100);}
 })();
+
 </script>
 </body>
 </html>
