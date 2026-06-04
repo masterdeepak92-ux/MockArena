@@ -252,95 +252,6 @@ var EXAM_TYPE="jee_advanced";
 var TEST_NAME="JEE Advanced Mock Test";
 </script>
 <style>
-/* ── MOBILE PALETTE FIX — Compact horizontal ── */
-@media(max-width:860px){
-  /* Palette panel becomes compact horizontal strip at bottom */
-  .pal-panel{
-    width:100%!important;
-    flex-direction:column!important;
-    border-left:none!important;
-    border-top:1px solid var(--border)!important;
-    max-height:none!important;
-  }
-  /* Timer — slim single row */
-  .pal-timer{
-    padding:6px 14px!important;
-    display:flex!important;
-    align-items:center!important;
-    justify-content:space-between!important;
-    flex-direction:row!important;
-  }
-  .pal-timer-val{
-    font-size:.9rem!important;
-    display:inline!important;
-  }
-  .pal-timer-lbl{
-    font-size:.6rem!important;
-    margin-left:6px!important;
-  }
-  /* Palette header — slim */
-  .pal-hdr2{
-    padding:5px 12px!important;
-    display:flex!important;
-    align-items:center!important;
-  }
-  .pal-title2{font-size:.7rem!important;}
-  /* Legend — single horizontal row */
-  .pal-legend2{padding:5px 12px!important;}
-  .pal-leg-row{
-    display:flex!important;
-    flex-direction:row!important;
-    flex-wrap:wrap!important;
-    gap:8px!important;
-  }
-  .pal-leg-item{font-size:.58rem!important;}
-  /* Palette grid — horizontal scrollable */
-  .pal-scroll{
-    padding:8px 12px!important;
-    overflow-x:auto!important;
-    overflow-y:hidden!important;
-    max-height:80px!important;
-  }
-  .pal-scroll::-webkit-scrollbar{height:3px!important;}
-  .pal-scroll::-webkit-scrollbar-thumb{background:var(--bm);border-radius:3px;}
-  /* Each subject section inline */
-  .palette-subj-label{
-    font-size:.52rem!important;
-    margin:4px 0 3px!important;
-    white-space:nowrap!important;
-  }
-  /* Grid becomes horizontal single row */
-  .palette-grid{
-    display:flex!important;
-    flex-direction:row!important;
-    flex-wrap:nowrap!important;
-    gap:4px!important;
-    margin-bottom:4px!important;
-  }
-  .p-btn{
-    width:28px!important;
-    height:28px!important;
-    aspect-ratio:1!important;
-    flex-shrink:0!important;
-    font-size:.58rem!important;
-  }
-  /* Summary strip — single row */
-  .pal-sum{padding:6px 12px!important;}
-  .pal-sum-row{
-    display:flex!important;
-    flex-direction:row!important;
-    justify-content:space-around!important;
-    margin-bottom:5px!important;
-  }
-  .ps-n{font-size:.76rem!important;}
-  .ps-l{font-size:.44rem!important;}
-  .pal-sub{
-    padding:7px!important;
-    font-size:.72rem!important;
-  }
-}
-</style>
-<style>
 /* Integer keypad fix */
 .calc-pad{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:6px!important;width:230px!important;}
 .integer-input,.int-input{width:230px!important;font-size:1.3rem!important;}
@@ -354,6 +265,91 @@ var TEST_NAME="JEE Advanced Mock Test";
   text-align:center!important;letter-spacing:.04em!important;
 }
 .calc-btn{padding:12px 8px!important;font-size:.9rem!important;border-radius:10px!important;}
+</style>
+<style>
+/* ── MOBILE PALETTE STRIP ── */
+@media(max-width:860px){
+  /* Keep drawer hidden on mobile - we use inline strip instead */
+  .pal-overlay{display:none!important;}
+  .pal-drawer{display:none!important;}
+  .right-strip{display:none!important;}
+  /* body-wrap stacks vertically */
+  .body-wrap{flex-direction:column!important;overflow:visible!important;}
+  .q-area{overflow:visible!important;}
+  /* Show inline palette strip */
+  #mob-palette-strip{display:flex!important;}
+}
+#mob-palette-strip{
+  display:none;
+  flex-direction:column;
+  background:white;
+  border-top:2px solid rgba(26,38,24,.08);
+  flex-shrink:0;
+}
+.mob-pal-hdr{
+  background:#1a2618;
+  padding:6px 14px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+.mob-pal-title{font-size:.7rem;font-weight:700;color:white;}
+.mob-pal-timer{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:white;font-weight:600;letter-spacing:.04em;}
+.mob-pal-legend{
+  padding:5px 12px;
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  border-bottom:1px solid rgba(26,38,24,.06);
+}
+.mob-pal-leg{display:flex;align-items:center;gap:3px;font-size:.55rem;color:#3d5239;}
+.mob-pal-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.4rem;font-weight:700;}
+.mob-pal-scroll{
+  overflow-x:auto;
+  overflow-y:hidden;
+  padding:7px 12px;
+  max-height:72px;
+}
+.mob-pal-scroll::-webkit-scrollbar{height:3px;}
+.mob-pal-scroll::-webkit-scrollbar-thumb{background:rgba(26,38,24,.13);border-radius:3px;}
+.mob-pal-scroll .palette-subj-label{
+  font-size:.5rem!important;
+  margin:3px 0 2px!important;
+  white-space:nowrap!important;
+  display:flex;align-items:center;gap:4px;
+  color:rgba(26,38,24,.25);
+  text-transform:uppercase;
+  letter-spacing:.06em;
+  font-weight:700;
+}
+.mob-pal-scroll .palette-subj-label::after{content:'';flex:1;height:1px;background:rgba(26,38,24,.08);}
+.mob-pal-scroll .palette-grid{
+  display:flex!important;
+  flex-direction:row!important;
+  flex-wrap:nowrap!important;
+  gap:4px!important;
+  margin-bottom:3px!important;
+}
+.mob-pal-scroll .p-btn{
+  width:26px!important;height:26px!important;min-width:26px!important;
+  border-radius:6px!important;font-size:.54rem!important;
+  flex-shrink:0!important;aspect-ratio:1!important;
+}
+.mob-pal-sum{
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  padding:5px 12px 6px;
+  border-top:1px solid rgba(26,38,24,.06);
+}
+.mob-ps{text-align:center;}
+.mob-ps-n{font-size:.8rem;font-weight:800;display:block;}
+.mob-ps-l{font-size:.44rem;color:rgba(26,38,24,.3);text-transform:uppercase;letter-spacing:.04em;}
+.mob-pal-btn{
+  font-family:'Outfit',sans-serif;font-size:.68rem;font-weight:700;
+  padding:6px 14px;border-radius:7px;border:none;
+  background:linear-gradient(135deg,#6b8f5e,#4a7a3d);color:white;cursor:pointer;
+}
 </style>
 </head>
 <body>
@@ -1241,5 +1237,40 @@ function reportQ(){if(confirm("Report this question for an error? Our team revie
 })();
 </script>
 
+<script>
+// Mobile palette strip sync
+(function(){
+  var _origRender = typeof renderPalette==='function' ? renderPalette : null;
+  function syncMobPalette(){
+    var src = document.getElementById('palette');
+    var dst = document.getElementById('mob-pal-content');
+    if(src && dst) dst.innerHTML = src.innerHTML;
+    // Sync timer
+    var tv = document.getElementById('timer') || document.getElementById('mob-timer-val');
+    var mt = document.getElementById('mob-pal-timer-val');
+    if(tv && mt) mt.textContent = tv.textContent;
+    // Sync counts
+    var ids = ['sum-answered','sum-not-ans','sum-marked','sum-not-vis','s-ans','s-na','s-mk','s-nv'];
+    ids.forEach(function(id){
+      var el = document.getElementById(id);
+      var mel = document.getElementById('mob-'+id);
+      if(el && mel) mel.textContent = el.textContent;
+    });
+  }
+  if(_origRender){
+    renderPalette = function(){
+      _origRender();
+      syncMobPalette();
+    };
+  }
+  // Timer sync
+  setInterval(function(){
+    var tv = document.getElementById('timer') || document.getElementById('mob-timer-val');
+    var mt = document.getElementById('mob-pal-timer-val');
+    if(tv && mt) mt.textContent = tv.textContent;
+  }, 500);
+  window.syncMobPalette = syncMobPalette;
+})();
+</script>
 </body>
 </html>
