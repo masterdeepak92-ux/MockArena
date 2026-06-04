@@ -314,11 +314,6 @@ body{font-family:var(--font-b);background:var(--cream);color:var(--forest);displ
 }
 </style>
 
-<style>
-.sb{display:flex!important;flex-direction:column!important;overflow-y:auto!important;}
-.sb-foot{position:sticky!important;bottom:0!important;background:var(--forest)!important;margin-top:auto!important;padding:10px 8px 18px!important;border-top:1px solid rgba(255,255,255,.06)!important;flex-shrink:0!important;z-index:10!important;}
-.sb-av img,.sb-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
-</style>
 </head>
 <body>
 
@@ -612,16 +607,21 @@ body{font-family:var(--font-b);background:var(--cream);color:var(--forest);displ
         <div class="sp">
           <div class="sp-head"><div class="sp-title">🏘️ Top Districts This Week</div></div>
           <div class="sp-body">
-            ${[
-              ['🥇','#b45309','Kota, Rajasthan','Avg 261 · 4,821 students'],
-              ['🥈','#8a9bb0','Mumbai Suburban','Avg 248 · 6,102 students'],
-              ['🥉','#b87333','Chennai, Tamil Nadu','Avg 244 · 3,890 students'],
-            ].map(([medal,c,district,meta])=>`
             <div class="ri">
-              <div class="ri-pos" style="color:${c}">${medal}</div>
+              <div class="ri-pos" style="color:#b45309">🥇</div>
               <div class="ri-av" style="background:var(--cream-warm);color:var(--forest-muted);font-size:.8rem">🏙️</div>
-              <div style="flex:1"><div class="ri-name">${district}</div><div class="ri-meta">${meta}</div></div>
-            </div>`).join('')}
+              <div style="flex:1"><div class="ri-name">Kota, Rajasthan</div><div class="ri-meta">Avg 261 · 4,821 students</div></div>
+            </div>
+            <div class="ri">
+              <div class="ri-pos" style="color:#8a9bb0">🥈</div>
+              <div class="ri-av" style="background:var(--cream-warm);color:var(--forest-muted);font-size:.8rem">🏙️</div>
+              <div style="flex:1"><div class="ri-name">Mumbai Suburban</div><div class="ri-meta">Avg 248 · 6,102 students</div></div>
+            </div>
+            <div class="ri">
+              <div class="ri-pos" style="color:#b87333">🥉</div>
+              <div class="ri-av" style="background:var(--cream-warm);color:var(--forest-muted);font-size:.8rem">🏙️</div>
+              <div style="flex:1"><div class="ri-name">Chennai, Tamil Nadu</div><div class="ri-meta">Avg 244 · 3,890 students</div></div>
+            </div>
             <div class="ri" style="background:var(--sage-light);border-radius:9px;padding:7px 0 7px 8px;margin-top:4px;">
               <div class="ri-pos" style="color:var(--sage)">#18</div>
               <div class="ri-av" style="background:var(--sage);color:white;font-size:.8rem">📍</div>
@@ -985,137 +985,137 @@ document.addEventListener("DOMContentLoaded",function(){
 </script>
 <script>
 (function(){
+  try{if(sessionStorage.getItem("ma_logout")==="1"){sessionStorage.removeItem("ma_logout");return;}}catch(e){}
   var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-  var FAKE=["Rahul Kumar","Arjun Sharma","Rahul","Arjun"];
-  function _rep(el,fn,nm,in2){
-    if(el.nodeType===3){
-      var t=el.textContent;
-      FAKE.forEach(function(n){
-        if(t.indexOf(n)!==-1){
-          t=t.replace(new RegExp(n+"!","g"),fn+"!")
-             .replace(new RegExp("\("+n.split(" ")[0]+" K\.\)","g"),"("+fn+" "+in2.charAt(1)+")")
-             .replace(new RegExp("^"+n+"$"),nm);
-          el.textContent=t;
-        }
-      });
-    } else if(el.nodeType===1&&el.tagName!=="SCRIPT"&&el.tagName!=="STYLE"){
-      Array.from(el.childNodes).forEach(function(c){_rep(c,fn,nm,in2);});
-    }
-  }
   function _g(){
-    var s1=document.createElement("script");
-    s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-    s1.onload=function(){
-      var s2=document.createElement("script");
-      s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+    var s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+    s1.onload=function(){var s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
       s2.onload=function(){
         if(!firebase.apps.length)firebase.initializeApp(_c);
-        var _done=false;
+        var done=false;
         firebase.auth().onAuthStateChanged(function(u){
-          if(!_done&&!u){_done=true;window.location.href="login.html";}
-          if(u){
-            var nm=u.displayName||u.email||"Student";
-            var parts=nm.split(" ");
-            var in2=(parts[0].charAt(0)+(parts[1]?parts[1].charAt(0):"")).toUpperCase();
-            var photo=u.photoURL;
-            var fn=parts[0];
-            document.querySelectorAll(".sb-av,.sb-avatar").forEach(function(el){
-              if(photo){var img=document.createElement("img");img.src=photo;img.style.cssText="width:100%;height:100%;border-radius:50%;object-fit:cover;";img.onerror=function(){el.textContent=in2;};el.innerHTML="";el.appendChild(img);}
-              else{el.textContent=in2;}
-            });
-            document.querySelectorAll(".sb-uname,.sb-name").forEach(function(el){el.textContent=nm;});
-            var tb=document.querySelector(".tb-title");
-            if(tb&&tb.textContent.indexOf("Good")!==-1){var h=new Date().getHours();var g=h<12?"Good Morning":h<17?"Good Afternoon":"Good Evening";tb.textContent=g+", "+fn+"!";}
-            _rep(document.body,fn,nm,in2);
-          }
+          if(!done&&!u){done=true;try{if(sessionStorage.getItem("ma_logout")==="1"){sessionStorage.removeItem("ma_logout");return;}}catch(ex){}window.location.replace("login.html");}
         });
-      };
-      document.head.appendChild(s2);
-    };
-    document.head.appendChild(s1);
+      };document.head.appendChild(s2);};document.head.appendChild(s1);
   }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_g);}else{_g();}
-})();
-</script>
-<script>
-(function(){
-  function _il(){
-    document.querySelectorAll("a").forEach(function(link){
-      var txt=link.textContent.trim().toLowerCase();
-      if((txt==="logout"||txt==="sign out")&&link.getAttribute("href")==="login.html"){
-        link.href="#";
-        link.addEventListener("click",function(e){
+  function fixLogout(){
+    document.querySelectorAll("a").forEach(function(el){
+      var txt=el.textContent.trim().toLowerCase();
+      if(txt==="logout"||txt==="sign out"){
+        el.setAttribute("href","#");
+        el.onclick=function(e){
           e.preventDefault();
-          var s1=document.createElement("script");
-          s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-          s1.onload=function(){
-            var s2=document.createElement("script");
-            s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
-            s2.onload=function(){
-              var c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-              if(!firebase.apps.length)firebase.initializeApp(c);
-              firebase.auth().signOut().then(function(){window.location.href="login.html";});
-            };
-            document.head.appendChild(s2);
-          };
-          document.head.appendChild(s1);
-        });
+          try{sessionStorage.setItem("ma_logout","1");}catch(ex){}
+          if(typeof firebase!=="undefined"&&firebase.auth){firebase.auth().signOut().then(function(){window.location.replace("login.html");});}
+          else{window.location.replace("login.html");}
+        };
       }
     });
   }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_il);}else{_il();}
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){_g();fixLogout();});}else{_g();fixLogout();}
 })();
 </script>
 <script>
 (function(){
-  function _initFirestore(){
-    // Load Firestore SDK
-    var s=document.createElement("script");
-    s.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
-    s.onload=function(){
-      var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-      if(!firebase.apps.length)firebase.initializeApp(_c);
-      var db=firebase.firestore();
+  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+  var grads=["135deg,#4f46e5,#7c3aed","135deg,#6b8f5e,#4a7a3d","135deg,#c8962a,#e8a830","135deg,#3b82c4,#60a5e8","135deg,#c84b4b,#e06b6b","135deg,#b87333,#d4844a","135deg,#7c5cbf,#a78bfa"];
+  function getGrad(uid){var h=0;for(var i=0;i<(uid||"").length;i++)h+=uid.charCodeAt(i);return grads[h%grads.length];}
+  function inits(name){return (name||"?").split(" ").map(function(w){return w[0]||"";}).join("").toUpperCase().substring(0,2);}
 
-      firebase.auth().onAuthStateChanged(function(user){
-        if(!user)return;
-        var ref=db.collection("users").doc(user.uid);
-        ref.get().then(function(doc){
-          if(!doc.exists){
-            // First login - create profile
-            ref.set({
-              uid:user.uid,
-              name:user.displayName||"Student",
-              email:user.email,
-              photo:user.photoURL||"",
-              role:"student",
-              examTarget:"",
-              className:"",
-              joinDate:firebase.firestore.FieldValue.serverTimestamp(),
-              totalTests:0,
-              avgScore:0,
-              bestScore:0,
-              streak:0,
-              totalPoints:0
-            });
-          } else {
-            // Update last login
-            ref.update({
-              lastLogin:firebase.firestore.FieldValue.serverTimestamp(),
-              name:user.displayName||doc.data().name||"Student",
-              photo:user.photoURL||doc.data().photo||""
-            });
-          }
-        });
-      });
-
-      // Expose db globally for other scripts
-      window._maDB=db;
-    };
-    document.head.appendChild(s);
+  function loadFS(cb){
+    var s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+    s1.onload=function(){var s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+      s2.onload=function(){var s3=document.createElement("script");s3.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
+        s3.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);cb(firebase.firestore(),firebase.auth());};
+        document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);
   }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_initFirestore);}
-  else{_initFirestore();}
+
+  function toRows(scores,myUid){
+    return scores.map(function(s,i){
+      return {r:i+1,i:inits(s.name),n:s.name||"Student",m:(s.examType||"").replace(/_/g," "),score:s.score||0,acc:s.accuracy||0,streak:0,tests:1,move:0,loc:"India",g:getGrad(s.uid),photo:s.photo||"",uid:s.uid,me:s.uid===myUid};
+    });
+  }
+
+  function toPodium(scores){
+    return scores.slice(0,3).map(function(s){
+      return {i:inits(s.name),n:s.name||"Student",s:(s.examType||"").replace(/_/g," "),score:s.score||0,acc:s.accuracy||0,loc:"India",g:getGrad(s.uid),photo:s.photo||""};
+    });
+  }
+
+  function loadExam(db,examType,myUid){
+    var container=document.getElementById("lbt-rows");
+    if(container) container.innerHTML='<div style="text-align:center;padding:40px;color:rgba(26,38,24,.4);font-size:.82rem;">Loading live rankings...</div>';
+    db.collection("leaderboard").doc(examType).collection("scores")
+      .orderBy("score","desc").limit(100).get()
+      .then(function(snap){
+        var scores=[];
+        snap.forEach(function(d){scores.push(d.data());});
+        if(!scores.length){
+          if(typeof switchScope==="function") switchScope("national",document.querySelector(".scope-tab.active"));
+          if(typeof showToast==="function") showToast("No live data yet — showing sample");
+          return;
+        }
+        var rows=toRows(scores,myUid);
+        var podium=toPodium(scores);
+        var myRow=rows.find(function(r){return r.me;});
+        var myRank=myRow?myRow.r:"—";
+        if(typeof scopeData!=="undefined"){
+          scopeData.national.rows=rows;scopeData.national.podium=podium;
+          scopeData.national.myRank=myRank;
+          scopeData.national.label="🇮🇳 National · "+scores.length+" students";
+        }
+        if(typeof buildPodium==="function") buildPodium({podium:podium,ph:"🇮🇳 National"});
+        if(typeof buildRows==="function") buildRows(rows);
+        var sl=document.getElementById("scope-label");
+        if(sl) sl.textContent="🇮🇳 National · "+scores.length+" students";
+        var mrsName=document.querySelector(".mrs-name");
+        if(mrsName&&myRow) mrsName.textContent=(myRow.n||"You")+" · "+examType.replace(/_/g," ");
+        document.querySelectorAll(".mrs-rank").forEach(function(el,i){if(i===2)el.textContent="#"+myRank;});
+        // Update avatar photos in table
+        setTimeout(function(){
+          document.querySelectorAll("#lbt-rows .uc-av").forEach(function(av,i){
+            if(rows[i]&&rows[i].photo){av.innerHTML='<img src="'+rows[i].photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';av.style.background="#f0ede6";}
+          });
+        },100);
+        if(typeof showToast==="function") showToast("✅ Live rankings loaded!");
+      }).catch(function(e){console.error(e);if(typeof showToast==="function")showToast("Using sample data");});
+  }
+
+  function wireExamFilter(db,myUid){
+    var sel=document.querySelector("select.fi");
+    if(!sel) return;
+    sel.addEventListener("change",function(){
+      var map={"JEE Advanced":"jee_advanced","JEE Mains":"jee_mains","NEET UG":"neet","all":"jee_advanced"};
+      loadExam(db,map[this.value]||"jee_advanced",myUid);
+    });
+  }
+
+  function init(){
+    loadFS(function(db,auth){
+      auth.onAuthStateChanged(function(user){
+        if(!user) return;
+        // Update sidebar user info
+        var nm=user.displayName||"Student";
+        var init2=nm.split(" ").map(function(w){return w[0];}).join("").toUpperCase().substring(0,2);
+        document.querySelectorAll(".sb-av,.sb-avatar").forEach(function(el){
+          if(user.photoURL){var img=document.createElement("img");img.src=user.photoURL;img.style.cssText="width:100%;height:100%;border-radius:50%;object-fit:cover;";el.innerHTML="";el.appendChild(img);}
+          else{el.textContent=init2;}
+        });
+        document.querySelectorAll(".sb-uname,.sb-name").forEach(function(el){el.textContent=nm;});
+        // Load leaderboard
+        loadExam(db,"jee_advanced",user.uid);
+        wireExamFilter(db,user.uid);
+        // Override refresh
+        window.refreshData=function(){
+          if(typeof showToast==="function") showToast("⟳ Refreshing live rankings...");
+          loadExam(db,"jee_advanced",user.uid);
+        };
+      });
+    });
+  }
+
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}
+  else{setTimeout(init,200);}
 })();
 </script>
 </body>
