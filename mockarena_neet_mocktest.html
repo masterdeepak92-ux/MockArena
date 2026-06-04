@@ -200,157 +200,51 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 /* NEET specific */
 .q-ncert{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-family:'Outfit',sans-serif;font-size:.68rem;font-weight:600;color:#7c5cbf;background:rgba(124,92,191,.08);border:1px solid rgba(124,92,191,.18);border-radius:100px;padding:4px 12px;}
 </style>
-<style>
-/* ── DESKTOP: Always-visible palette panel ── */
-@media(min-width:861px){
-  /* Hide the small right strip - palette panel replaces it */
-  .right-strip{display:none!important;}
-
-  /* Show palette as always-visible right panel */
-  .body-wrap{display:flex!important;}
-  .q-area{flex:1!important;}
-
-  /* Create always-visible palette */
-  .pal-drawer{
-    position:static!important;
-    right:auto!important;
-    width:220px!important;
-    height:auto!important;
-    flex-shrink:0!important;
-    box-shadow:none!important;
-    border-left:1px solid rgba(26,38,24,.08)!important;
-    display:flex!important;
-    flex-direction:column!important;
-    overflow:hidden!important;
-  }
-  /* Always show palette on desktop */
-  .pal-overlay{display:none!important;}
-  .pal-close{display:none!important;}
-  /* Make palette scroll fill remaining height */
-  .pal-scroll{flex:1!important;overflow-y:auto!important;}
-  /* Palette header styling */
-  .pal-hdr{background:var(--forest,#1a2618)!important;border-bottom:none!important;}
-  /* Timer box inside palette for desktop */
-  .pal-timer-desktop{
-    background:var(--forest,#1a2618);
-    padding:10px 12px;
-    text-align:center;
-    border-bottom:1px solid rgba(255,255,255,.08);
-    flex-shrink:0;
-  }
-  .pal-timer-desktop .ptd-val{
-    font-family:'IBM Plex Mono',monospace;
-    font-size:1.1rem;font-weight:600;
-    color:white;letter-spacing:.04em;display:block;
-  }
-  .pal-timer-desktop .ptd-lbl{
-    font-size:.44rem;color:rgba(255,255,255,.3);
-    text-transform:uppercase;letter-spacing:.08em;
-  }
-}
-</style>
 <script>
 var EXAM_TYPE="neet";
 var TEST_NAME="NEET UG Mock Test";
 </script>
 <style>
-/* Integer keypad fix */
-.calc-pad{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:6px!important;width:230px!important;}
-.integer-input,.int-input{width:230px!important;font-size:1.3rem!important;}
-</style>
-<style>
-/* Integer input - text type for decimal support */
-.calc-pad{display:grid!important;grid-template-columns:repeat(4,1fr)!important;gap:6px!important;width:240px!important;}
-.integer-input,.int-input{
-  width:240px!important;font-size:1.4rem!important;
-  font-family:'IBM Plex Mono',monospace!important;
-  text-align:center!important;letter-spacing:.04em!important;
+/* ═══ PALETTE LAYOUT — CLEAN SINGLE SOURCE OF TRUTH ═══ */
+
+/* DESKTOP (861px+): palette always visible on right */
+@media(min-width:861px){
+  .body-wrap{display:flex!important;flex-direction:row!important;overflow:hidden!important;}
+  .q-area{flex:1!important;overflow:hidden!important;min-width:0!important;}
+  .right-strip{display:none!important;}
+  .pal-overlay{display:none!important;}
+  .pal-drawer{
+    position:static!important;
+    right:auto!important;
+    top:auto!important;
+    width:230px!important;
+    height:100%!important;
+    max-height:100%!important;
+    flex-shrink:0!important;
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:hidden!important;
+    box-shadow:none!important;
+    border-left:1px solid rgba(26,38,24,.08)!important;
+    transition:none!important;
+    z-index:1!important;
+  }
+  .pal-close{display:none!important;}
+  .pal-scroll{flex:1!important;overflow-y:auto!important;}
+  .palette-grid{display:grid!important;grid-template-columns:repeat(5,1fr)!important;gap:4px!important;}
+  .p-btn{width:100%!important;aspect-ratio:1!important;border-radius:8px!important;font-size:.62rem!important;}
+  #mob-palette-strip{display:none!important;}
 }
-.calc-btn{padding:12px 8px!important;font-size:.9rem!important;border-radius:10px!important;}
-</style>
-<style>
-/* ── MOBILE PALETTE STRIP ── */
+
+/* MOBILE (max 860px): palette strip below question */
 @media(max-width:860px){
-  /* Keep drawer hidden on mobile - we use inline strip instead */
+  .body-wrap{display:flex!important;flex-direction:column!important;overflow:visible!important;}
+  .q-area{overflow:visible!important;flex:none!important;}
+  .right-strip{display:none!important;}
   .pal-overlay{display:none!important;}
   .pal-drawer{display:none!important;}
-  .right-strip{display:none!important;}
-  /* body-wrap stacks vertically */
-  .body-wrap{flex-direction:column!important;overflow:visible!important;}
-  .q-area{overflow:visible!important;}
-  /* Show inline palette strip */
   #mob-palette-strip{display:flex!important;}
-}
-#mob-palette-strip{
-  display:none;
-  flex-direction:column;
-  background:white;
-  border-top:2px solid rgba(26,38,24,.08);
-  flex-shrink:0;
-}
-.mob-pal-hdr{
-  background:#1a2618;
-  padding:6px 14px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-}
-.mob-pal-title{font-size:.7rem;font-weight:700;color:white;}
-.mob-pal-timer{font-family:'IBM Plex Mono',monospace;font-size:.82rem;color:white;font-weight:600;letter-spacing:.04em;}
-.mob-pal-legend{
-  padding:5px 12px;
-  display:flex;
-  flex-wrap:wrap;
-  gap:8px;
-  border-bottom:1px solid rgba(26,38,24,.06);
-}
-.mob-pal-leg{display:flex;align-items:center;gap:3px;font-size:.55rem;color:#3d5239;}
-.mob-pal-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.4rem;font-weight:700;}
-.mob-pal-scroll{
-  overflow-x:auto;
-  overflow-y:hidden;
-  padding:7px 12px;
-  max-height:72px;
-}
-.mob-pal-scroll::-webkit-scrollbar{height:3px;}
-.mob-pal-scroll::-webkit-scrollbar-thumb{background:rgba(26,38,24,.13);border-radius:3px;}
-.mob-pal-scroll .palette-subj-label{
-  font-size:.5rem!important;
-  margin:3px 0 2px!important;
-  white-space:nowrap!important;
-  display:flex;align-items:center;gap:4px;
-  color:rgba(26,38,24,.25);
-  text-transform:uppercase;
-  letter-spacing:.06em;
-  font-weight:700;
-}
-.mob-pal-scroll .palette-subj-label::after{content:'';flex:1;height:1px;background:rgba(26,38,24,.08);}
-.mob-pal-scroll .palette-grid{
-  display:flex!important;
-  flex-direction:row!important;
-  flex-wrap:nowrap!important;
-  gap:4px!important;
-  margin-bottom:3px!important;
-}
-.mob-pal-scroll .p-btn{
-  width:26px!important;height:26px!important;min-width:26px!important;
-  border-radius:6px!important;font-size:.54rem!important;
-  flex-shrink:0!important;aspect-ratio:1!important;
-}
-.mob-pal-sum{
-  display:flex;
-  align-items:center;
-  justify-content:space-around;
-  padding:5px 12px 6px;
-  border-top:1px solid rgba(26,38,24,.06);
-}
-.mob-ps{text-align:center;}
-.mob-ps-n{font-size:.8rem;font-weight:800;display:block;}
-.mob-ps-l{font-size:.44rem;color:rgba(26,38,24,.3);text-transform:uppercase;letter-spacing:.04em;}
-.mob-pal-btn{
-  font-family:'Outfit',sans-serif;font-size:.68rem;font-weight:700;
-  padding:6px 14px;border-radius:7px;border:none;
-  background:linear-gradient(135deg,#6b8f5e,#4a7a3d);color:white;cursor:pointer;
+  .q-scroll{padding:10px 12px!important;}
 }
 </style>
 </head>
@@ -406,7 +300,6 @@ var TEST_NAME="NEET UG Mock Test";
     <div class="rs-btn rs-danger" onclick="openSubmit()"><span>✓</span><span class="rs-lbl">Submit</span></div>
   </div>
 </div>
-</div>
 <div class="pal-overlay" id="pal-overlay" onclick="closePalette()"></div>
 <div class="pal-drawer" id="pal-drawer">
   <div class="pal-hdr"><span class="pal-title">🗂 Question Palette</span><button class="pal-close" onclick="closePalette()">✕</button></div>
@@ -430,6 +323,7 @@ var TEST_NAME="NEET UG Mock Test";
     </div>
     <button class="pal-submit" onclick="closePalette();openSubmit();">✓ Submit Test</button>
   </div>
+</div>
 </div>
 <div class="mo" id="submit-modal">
   <div class="mb">
