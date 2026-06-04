@@ -16,7 +16,7 @@
   --amber:#b87333;--amb-l:rgba(184,115,51,.09);
   --purple:#7c5cbf;--pur-l:rgba(124,92,191,.09);
   --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.13);
-  --fd:'Outfit',sans-serif;--fs:'Lora',serif;--fm:'IBM Plex Mono',monospace;
+  --fd:'Outfit',sans-serif;--fs:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html,body{height:100%;-webkit-font-smoothing:antialiased;}
@@ -171,10 +171,10 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 .q-action-btn:hover{border-color:var(--sage);background:var(--sage-l);}
 .q-action-btn.bookmarked{background:var(--gold-d);border-color:rgba(200,150,42,.3);}
 /* Q TEXT */
-.q-text-block{background:white;border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px;box-shadow:0 1px 4px rgba(26,38,24,.03);}
+.q-text-block{background:white;border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:14px;box-shadow:0 1px 4px rgba(26,38,24,.03);}
 .q-subject-tag{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px;display:flex;align-items:center;gap:5px;}
 .qt-phy{color:var(--sky);}.qt-chem{color:var(--sage);}.qt-math{color:var(--gold);}.qt-bio{color:var(--purple);}
-.q-text{font-family:var(--fs);font-size:1.02rem;color:var(--forest);line-height:1.86;}
+.q-text{font-family:'Outfit',sans-serif;font-size:1.05rem;font-weight:500;color:#1a2618;line-height:1.65;letter-spacing:0;word-spacing:.02em;}
 /* OPTIONS */
 .q-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:12px;}
 .opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:12px;border:2px solid var(--bm);background:white;cursor:pointer;transition:all .2s;box-shadow:0 1px 3px rgba(26,38,24,.03);}
@@ -186,7 +186,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 .opt.wrong{border-color:var(--rose);background:var(--rose-l);}
 .opt.wrong .opt-key{background:var(--rose);color:white;}
 .opt-key{width:34px;height:34px;border-radius:9px;border:2px solid var(--bm);background:var(--cream-w);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.76rem;font-weight:800;color:var(--forest-m);flex-shrink:0;transition:all .2s;}
-.opt-text{font-size:.94rem;color:var(--forest);line-height:1.58;}
+.opt-text{font-family:'Outfit',sans-serif;font-size:.98rem;font-weight:500;color:#1a2618;line-height:1.55;letter-spacing:0;}
 /* INTEGER */
 .integer-input-wrap{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
 .integer-label{font-size:.7rem;font-weight:600;color:var(--forest-m);}
@@ -197,7 +197,62 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 .calc-btn:hover{border-color:var(--sage);background:var(--sage-l);}
 .calc-btn.special{background:var(--forest);color:white;border-color:var(--forest);}
 .multi-note{font-size:.68rem;color:var(--purple);background:var(--pur-l);border:1px solid rgba(124,92,191,.18);border-radius:8px;padding:7px 12px;margin-bottom:10px;}
+/* NEET specific */
+.q-ncert{display:inline-flex;align-items:center;gap:5px;margin-top:12px;font-family:'Outfit',sans-serif;font-size:.68rem;font-weight:600;color:#7c5cbf;background:rgba(124,92,191,.08);border:1px solid rgba(124,92,191,.18);border-radius:100px;padding:4px 12px;}
 </style>
+<style>
+/* ── DESKTOP: Always-visible palette panel ── */
+@media(min-width:861px){
+  /* Hide the small right strip - palette panel replaces it */
+  .right-strip{display:none!important;}
+
+  /* Show palette as always-visible right panel */
+  .body-wrap{display:flex!important;}
+  .q-area{flex:1!important;}
+
+  /* Create always-visible palette */
+  .pal-drawer{
+    position:static!important;
+    right:auto!important;
+    width:220px!important;
+    height:auto!important;
+    flex-shrink:0!important;
+    box-shadow:none!important;
+    border-left:1px solid rgba(26,38,24,.08)!important;
+    display:flex!important;
+    flex-direction:column!important;
+    overflow:hidden!important;
+  }
+  /* Always show palette on desktop */
+  .pal-overlay{display:none!important;}
+  .pal-close{display:none!important;}
+  /* Make palette scroll fill remaining height */
+  .pal-scroll{flex:1!important;overflow-y:auto!important;}
+  /* Palette header styling */
+  .pal-hdr{background:var(--forest,#1a2618)!important;border-bottom:none!important;}
+  /* Timer box inside palette for desktop */
+  .pal-timer-desktop{
+    background:var(--forest,#1a2618);
+    padding:10px 12px;
+    text-align:center;
+    border-bottom:1px solid rgba(255,255,255,.08);
+    flex-shrink:0;
+  }
+  .pal-timer-desktop .ptd-val{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:1.1rem;font-weight:600;
+    color:white;letter-spacing:.04em;display:block;
+  }
+  .pal-timer-desktop .ptd-lbl{
+    font-size:.44rem;color:rgba(255,255,255,.3);
+    text-transform:uppercase;letter-spacing:.08em;
+  }
+}
+</style>
+<script>
+var EXAM_TYPE="neet";
+var TEST_NAME="NEET UG Mock Test";
+</script>
 </head>
 <body>
 <div id="test-interface" style="display:flex;flex-direction:column;height:100vh;">
@@ -255,6 +310,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 <div class="pal-overlay" id="pal-overlay" onclick="closePalette()"></div>
 <div class="pal-drawer" id="pal-drawer">
   <div class="pal-hdr"><span class="pal-title">🗂 Question Palette</span><button class="pal-close" onclick="closePalette()">✕</button></div>
+  <div class="pal-timer-desktop"><span class="ptd-val">03:00:00</span><span class="ptd-lbl">Time Remaining</span></div>
   <div class="pal-legend">
     <div class="pal-leg-grid">
       <div class="pal-leg-item"><div class="pal-leg-dot lg-a">✓</div>Answered</div>
@@ -837,6 +893,88 @@ function reportQ(){if(confirm("Report this question for an error? Our team revie
       };document.head.appendChild(s2);};document.head.appendChild(s1);
   }
   if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_g);}else{_g();}
+})();
+</script>
+<script>
+(function(){
+  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+  function _g(){
+    var s1=document.createElement("script");
+    s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+    s1.onload=function(){
+      var s2=document.createElement("script");
+      s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+      s2.onload=function(){
+        if(!firebase.apps.length)firebase.initializeApp(_c);
+        firebase.auth().onAuthStateChanged(function(u){if(!u)window.location.href="login.html";});
+      };
+      document.head.appendChild(s2);
+    };
+    document.head.appendChild(s1);
+  }
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_g);}else{_g();}
+})();
+</script>
+<script>
+(function(){
+  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+  function loadFS(cb){
+    var s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+    s1.onload=function(){var s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+      s2.onload=function(){var s3=document.createElement("script");s3.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
+        s3.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);cb(firebase.firestore());};
+        document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);
+  }
+  var _orig=typeof submitTest==="function"?submitTest:null;
+  if(_orig){
+    submitTest=function(){
+      _orig();
+      setTimeout(function(){
+        loadFS(function(db){
+          var user=firebase.auth().currentUser;if(!user)return;
+          var qs=typeof QUESTIONS!=="undefined"?QUESTIONS:[];
+          var states=typeof qState!=="undefined"?qState:{};
+          var subjs=typeof SUBJECTS!=="undefined"?SUBJECTS:[];
+          var score=0,correct=0,wrong=0,skipped=0,total=qs.length;
+          qs.forEach(function(q){
+            var st=states[q.id];if(!st||!st.answered){skipped++;return;}
+            var subj=subjs[q.subj],sec=subj?subj.sections[q.sec]:null;
+            var marks=sec?parseInt(sec.marks.split("/")[0]):4;
+            var neg=sec?parseInt(sec.marks.split("/")[1]):-1;
+            var ok=false;
+            if(q.multi){var ca=new Set(q.ans),sa=new Set(st.answer);ok=ca.size===sa.size&&[...ca].every(function(x){return sa.has(x);});}
+            else if(q.type==="integer"){ok=String(st.answer).trim()===String(q.ans);}
+            else{ok=st.answer===q.ans;}
+            if(ok){score+=marks;correct++;}else{score+=neg;wrong++;}
+          });
+          var pct=total?Math.round(correct/total*100):0;
+          var examType=typeof EXAM_TYPE!=="undefined"?EXAM_TYPE:"mock";
+          var testName=typeof TEST_NAME!=="undefined"?TEST_NAME:"Mock Test";
+          var testId=examType+"_"+Date.now();
+          db.collection("results").doc(user.uid).collection("tests").doc(testId).set({
+            uid:user.uid,examType:examType,testName:testName,score:score,correct:correct,
+            wrong:wrong,skipped:skipped,total:total,accuracy:pct,
+            timestamp:firebase.firestore.FieldValue.serverTimestamp(),
+            date:new Date().toISOString().split("T")[0]
+          }).catch(function(e){console.error(e);});
+          db.collection("users").doc(user.uid).get().then(function(doc){
+            var d=doc.exists?doc.data():{totalTests:0,totalScore:0,bestScore:0};
+            var tt=(d.totalTests||0)+1,ts=(d.totalScore||0)+score,bs=Math.max(d.bestScore||0,score);
+            db.collection("users").doc(user.uid).update({totalTests:tt,totalScore:ts,bestScore:bs,avgScore:Math.round(ts/tt),lastTestScore:score,lastTestAccuracy:pct,lastTestExam:examType,lastTestDate:firebase.firestore.FieldValue.serverTimestamp()});
+          });
+          db.collection("leaderboard").doc(examType).collection("scores").doc(user.uid).set({
+            uid:user.uid,name:user.displayName||"Student",photo:user.photoURL||"",score:score,accuracy:pct,timestamp:firebase.firestore.FieldValue.serverTimestamp()
+          },{merge:true});
+        });
+      },800);
+    };
+  }
+  // Sync timer to palette desktop
+  setInterval(function(){
+    var tv=document.getElementById("timer");
+    var ptv=document.querySelector(".ptd-val");
+    if(tv&&ptv)ptv.textContent=tv.textContent;
+  },500);
 })();
 </script>
 </body>
