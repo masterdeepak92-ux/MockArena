@@ -309,21 +309,16 @@ body{font-family:var(--font-d);background:var(--cream);color:var(--forest);-webk
   border:1px solid rgba(255,255,255,.06);}
 
 /* ── ACHIEVEMENT STRIP ── */
-.achieve-strip{background:var(--forest);padding:0;}
-.achieve-inner{display:flex;align-items:stretch;}
-.achieve-item{flex:1;display:flex;align-items:center;gap:14px;padding:22px 16px;}
-.achieve-icon{font-size:1.5rem;flex-shrink:0;}
-.achieve-n{font-family:var(--font-d);font-size:1.3rem;font-weight:800;color:white;letter-spacing:-.03em;line-height:1;}
-.achieve-l{font-size:.62rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;}
-.achieve-div{width:1px;background:rgba(255,255,255,.07);flex-shrink:0;margin:14px 0;}
-.achieve-inner{display:flex;align-items:stretch;border-radius:0;}
-.achieve-item{flex:1;display:flex;align-items:center;gap:14px;padding:24px 20px;}
-.achieve-icon{font-size:1.6rem;flex-shrink:0;}
-.achieve-n{font-family:var(--font-d);font-size:1.35rem;font-weight:800;color:white;
-  letter-spacing:-.03em;line-height:1;}
-.achieve-l{font-size:.65rem;color:rgba(255,255,255,.32);text-transform:uppercase;
-  letter-spacing:.07em;margin-top:3px;}
-.achieve-div{width:1px;background:rgba(255,255,255,.07);flex-shrink:0;margin:16px 0;}
+
+
+
+
+
+
+
+
+
+
 
 /* Hero panel */
 .hero-panel{display:flex;flex-direction:column;gap:12px;animation:fadeUp .7s .3s ease both;}
@@ -351,19 +346,79 @@ body{font-family:var(--font-d);background:var(--cream);color:var(--forest);-webk
   color:var(--forest-muted);background:white;border:1px solid var(--border);
   border-radius:100px;padding:5px 12px;box-shadow:0 1px 4px rgba(26,38,24,.05);}
 
-@media(max-width:1024px){
-  .achieve-inner{flex-wrap:wrap;}
-  .achieve-item{flex:calc(50% - 1px);min-width:140px;}
-  .achieve-div{display:none;}
+  
 }
 @media(max-width:768px){
-  .achieve-item{flex:calc(50% - 8px);}
-  .hero-pills{display:none;}
+  .hero-pills,.hero-pill{display:none!important;}
   .hc-live{display:none;}
+  /* Achievement strip — 2x2 grid, dividers hidden */
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
 }
-@media(max-width:480px){
-  .achieve-item{flex:100%;}
+
+  
 }
+@media(max-width:768px){
+  .hero-pills,.hero-pill{display:none!important;}
+  .hc-live{display:none;}
+  
+  
+  
+  
+  
+  
+  
+  
+}
+
+}
+
+/* Achievement strip */
+
+
+
+
+
+
+
+@media(max-width:768px){
+  
+  
+  
+  
+  
+  
+  
+  
+  
+}
+
+
+.achieve-inner{display:flex;align-items:stretch;}
+.achieve-item{flex:1;display:flex;align-items:center;gap:14px;padding:22px 16px;}
+.achieve-icon{font-size:1.5rem;flex-shrink:0;}
+.achieve-n{font-family:var(--font-d);font-size:1.35rem;font-weight:800;color:white;letter-spacing:-.03em;line-height:1;}
+.achieve-l{font-size:.62rem;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.07em;margin-top:3px;}
+.achieve-div{width:1px;background:rgba(255,255,255,.07);flex-shrink:0;margin:14px 0;}
+@media(max-width:768px){
+  .achieve-inner{display:grid!important;grid-template-columns:1fr 1fr!important;}
+  .achieve-item{flex:none!important;padding:16px 14px!important;border-bottom:1px solid rgba(255,255,255,.06)!important;}
+  .achieve-item:nth-child(odd){border-right:1px solid rgba(255,255,255,.06)!important;}
+  .achieve-item:nth-child(even){border-right:none!important;}
+  .achieve-item.achieve-last{grid-column:1/-1!important;border-bottom:none!important;justify-content:center!important;}
+  .achieve-item:nth-child(3),.achieve-item:nth-child(4){border-bottom:none!important;}
+  .achieve-n{font-size:1.1rem!important;}
+  .achieve-div{display:none!important;}
+}
+
 @keyframes fadeUp{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}
 .reveal{opacity:0;transform:translateY(24px);transition:opacity .65s ease,transform .65s ease;}
 .reveal.vis{opacity:1;transform:translateY(0);}
@@ -506,11 +561,6 @@ body{font-family:var(--font-d);background:var(--cream);color:var(--forest);-webk
           <a href="login.html" style="font-size:.68rem;font-weight:700;color:var(--sage);text-decoration:none;">View Full →</a>
         </div>
       </div>
-      <!-- Mini stat pills -->
-      <div class="hero-pills">
-        <div class="hero-pill"><span>🎯</span> 50K+ Students</div>
-        <div class="hero-pill"><span>🏆</span> 340+ IIT Selections</div>
-        <div class="hero-pill"><span>⭐</span> 98% Satisfaction</div>
       </div>
     </div>
   </div>
@@ -524,23 +574,19 @@ body{font-family:var(--font-d);background:var(--cream);color:var(--forest);-webk
         <div class="achieve-icon">🎯</div>
         <div><div class="achieve-n">50,000+</div><div class="achieve-l">Students Enrolled</div></div>
       </div>
-      <div class="achieve-div"></div>
       <div class="achieve-item">
         <div class="achieve-icon">📝</div>
         <div><div class="achieve-n">10,000+</div><div class="achieve-l">Practice Questions</div></div>
       </div>
-      <div class="achieve-div"></div>
       <div class="achieve-item">
         <div class="achieve-icon">⭐</div>
         <div><div class="achieve-n">98%</div><div class="achieve-l">Student Satisfaction</div></div>
       </div>
-      <div class="achieve-div"></div>
       <div class="achieve-item">
         <div class="achieve-icon">🏆</div>
         <div><div class="achieve-n">340+</div><div class="achieve-l">IIT &amp; NEET Selections</div></div>
       </div>
-      <div class="achieve-div"></div>
-      <div class="achieve-item">
+      <div class="achieve-item achieve-last">
         <div class="achieve-icon">🔥</div>
         <div><div class="achieve-n">4.9 ★</div><div class="achieve-l">Average Rating</div></div>
       </div>
