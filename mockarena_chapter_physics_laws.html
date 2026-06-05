@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MockArena — JEE Mains | Physics | Units & Measurement</title>
+<title>MockArena — JEE Mains | Physics | Laws of Motion</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -197,7 +197,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
   <div class="tb-pipe"></div>
   <div class="tb-info">
     <span class="tb-exam">JEE Mains · Physics</span>
-    <span>Units & Measurement &middot; 30 Qs</span>
+    <span>Laws of Motion &middot; 30 Qs</span>
   </div>
   <div class="tb-right">
     <div class="tb-timer" id="timer-box">
@@ -286,7 +286,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 <div class="mo" id="submit-modal">
   <div class="mb">
     <div class="mb-t">Submit Chapter Test?</div>
-    <div class="mb-s">Units & Measurement &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
+    <div class="mb-s">Laws of Motion &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
     <div class="mb-g" id="modal-stats"></div>
     <div class="mb-w" id="modal-warn"></div>
     <div class="mb-row">
@@ -298,36 +298,36 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 
 <script>
 const QUESTIONS = [
-  {id:'um1',sec:'A',type:'single',text:'The dimensional formula of angular momentum is:',opts:['[ML²T⁻²]','[ML²T⁻¹]','[MLT⁻¹]','[ML⁻¹T⁻¹]'],ans:1},
-  {id:'um2',sec:'A',type:'single',text:"Which of the following has the same dimensions as Planck's constant?",opts:['Linear momentum','Angular momentum','Energy','Force'],ans:1},
-  {id:'um3',sec:'A',type:'single',text:'The SI unit of magnetic flux is:',opts:['Tesla','Weber','Henry','Gauss'],ans:1},
-  {id:'um4',sec:'A',type:'single',text:'Dimensional formula of electric field intensity is:',opts:['[MLT⁻³A⁻¹]','[ML²T⁻³A⁻¹]','[MLT⁻²A⁻¹]','[ML⁻¹T⁻²A]'],ans:0},
-  {id:'um5',sec:'A',type:'single',text:'The number of significant figures in 0.006700 is:',opts:['2','4','6','7'],ans:1},
-  {id:'um6',sec:'A',type:'single',text:'If L, C, R denote inductance, capacitance and resistance, then √(L/C) has dimensions of:',opts:['Resistance','Frequency','Impedance','Admittance'],ans:0},
-  {id:'um7',sec:'A',type:'single',text:'Percentage error in mass is 2% and in speed is 3%. Maximum error in kinetic energy is:',opts:['11%','5%','8%','1%'],ans:2},
-  {id:'um8',sec:'A',type:'single',text:'Light year is a unit of:',opts:['Time','Mass','Distance','Energy'],ans:2},
-  {id:'um9',sec:'A',type:'single',text:'The dimensions of (μ₀ε₀)^(−1/2) are same as that of:',opts:['Velocity','Acceleration','Force','Energy'],ans:0},
-  {id:'um10',sec:'A',type:'single',text:'If x = a + bt + ct², where x is in metres and t in seconds, then unit of c is:',opts:['m','ms⁻¹','ms⁻²','m²s⁻¹'],ans:2},
-  {id:'um11',sec:'A',type:'single',text:'The physical quantity that has no dimensions is:',opts:['Angular velocity','Linear momentum','Strain','Angular momentum'],ans:2},
-  {id:'um12',sec:'A',type:'single',text:'Correct dimension of coefficient of viscosity is:',opts:['[ML⁻¹T⁻²]','[MLT⁻¹]','[ML⁻¹T⁻¹]','[ML⁻²T⁻²]'],ans:2},
-  {id:'um13',sec:'A',type:'single',text:'Dimensions of pressure are same as that of:',opts:['Force','Energy per unit volume','Momentum','Power'],ans:1},
-  {id:'um14',sec:'A',type:'single',text:'A quantity P = B²l²/m where B is magnetic induction, l is length, m is mass. Dimensions of P are:',opts:['[MLT⁻³]','[M⁻¹L²T⁴A²]','[M⁻¹L²T⁻²A⁻²]','[ML²T⁻²A]'],ans:1},
-  {id:'um15',sec:'A',type:'single',text:'Least count of a stopwatch is 0.2s. Time of 20 oscillations measured as 25s. Maximum percentage error is:',opts:['1.6%','0.8%','0.4%','1.2%'],ans:1},
-  {id:'um16',sec:'A',type:'single',text:'In P = (α/β)e^(−αZ/kθ), P is pressure, Z is distance, k is Boltzmann constant, θ is temperature. Dimensional formula of β is:',opts:['[M⁰L²T⁰]','[ML²T]','[ML⁰T⁻¹]','[M⁰L⁰T⁰]'],ans:0},
-  {id:'um17',sec:'A',type:'single',text:'Which pair does NOT have same dimensions?',opts:['Work and Torque','Angular momentum and Planck constant','Tension and Surface energy','Energy and Torque'],ans:2},
-  {id:'um18',sec:'A',type:'single',text:'Number of significant figures in 5.003 × 10⁴ is:',opts:['2','4','5','6'],ans:1},
-  {id:'um19',sec:'A',type:'single',text:'Dimensions of electrical resistance are:',opts:['[ML²T⁻³A⁻²]','[ML²T⁻²A⁻²]','[ML²T⁻³A²]','[ML⁻²T⁻³A⁻²]'],ans:0},
-  {id:'um20',sec:'A',type:'single',text:'If unit of length is doubled, which remains the same?',opts:['Numerical value of speed','Numerical value of force','Numerical value of time','Numerical value of area'],ans:2},
-  {id:'um21',sec:'B',type:'integer',text:'In 1 light year, the power of 10 in metres (9.46 × 10ˣ m). Enter x:',ans:'15'},
-  {id:'um22',sec:'B',type:'integer',text:'Rectangle dimensions are (5.7±0.1)cm and (3.4±0.1)cm. Percentage error in area (round to nearest integer):',ans:'5'},
-  {id:'um23',sec:'B',type:'integer',text:'Surface tension formula is [M¹LˣT⁻²]. Value of x is:',ans:'0'},
-  {id:'um24',sec:'B',type:'integer',text:'Screw gauge pitch = 0.5mm, 50 divisions on circular scale. Least count in units of 0.01mm is:',ans:'1'},
-  {id:'um25',sec:'B',type:'integer',text:'Density = 8 g/cm³. In SI units it is (x × 10³) kg/m³. Value of x is:',ans:'8'},
-  {id:'um26',sec:'B',type:'integer',text:'If V, F, T are fundamental quantities, mass = [VᵃFᵇTᶜ]. Value of (a+b+c) is:',ans:'1'},
-  {id:'um27',sec:'B',type:'integer',text:'Number of significant figures in 0.02340:',ans:'4'},
-  {id:'um28',sec:'B',type:'integer',text:'Dimension of El²/(m⁵G²) where E=energy, l=angular momentum, m=mass, G=gravitational constant. It is dimensionless (enter 0) or not (enter 1):',ans:'0'},
-  {id:'um29',sec:'B',type:'integer',text:'Radius of sphere = (5.3 ± 0.1) cm. Percentage error in volume (round to nearest integer):',ans:'6'},
-  {id:'um30',sec:'B',type:'integer',text:'In vernier caliper, 10 vernier divisions = 9 main scale divisions, main scale LC = 1mm. Vernier LC in units of 0.1mm is:',ans:'1'},
+  {id:'l1',sec:'A',type:'single',text:"A block of mass 5 kg is placed on a rough surface. The coefficient of static friction is 0.4 and kinetic friction is 0.3. What is the minimum force required to start moving the block? (g = 10 m/s²)",opts:['15 N','20 N','25 N','30 N'],ans:1},
+  {id:'l2',sec:'A',type:'single',text:"A body of mass 2 kg is acted upon by two forces 3 N and 4 N perpendicular to each other. The acceleration produced is:",opts:['2.5 m/s²','3.5 m/s²','5 m/s²','2 m/s²'],ans:0},
+  {id:'l3',sec:'A',type:'single',text:"A man of mass 60 kg is in a lift. The lift accelerates upward at 2 m/s². The apparent weight of the man is: (g = 10 m/s²)",opts:['480 N','600 N','720 N','840 N'],ans:2},
+  {id:'l4',sec:'A',type:'single',text:"Two blocks A (2 kg) and B (3 kg) are connected by a string over a frictionless pulley. What is the acceleration of the system? (g = 10 m/s²)",opts:['1 m/s²','2 m/s²','4 m/s²','5 m/s²'],ans:1},
+  {id:'l5',sec:'A',type:'single',text:"A bullet of mass 20 g moving at 500 m/s embeds into a block of mass 980 g at rest. The velocity of the block-bullet system after collision is:",opts:['5 m/s','10 m/s','15 m/s','20 m/s'],ans:1},
+  {id:'l6',sec:'A',type:'single',text:"A 10 kg block rests on a 5 kg block on a frictionless surface. Force of 30 N applied to upper block. Friction between blocks (μ = 0.2). Acceleration of lower block is: (g = 10 m/s²)",opts:['0 m/s²','1 m/s²','2 m/s²','3 m/s²'],ans:2},
+  {id:'l7',sec:'A',type:'single',text:"Newton's third law states that action and reaction:",opts:['Act on the same body','Act on different bodies','Are unequal in magnitude','Have the same direction'],ans:1},
+  {id:'l8',sec:'A',type:'single',text:"A body of mass m is on a frictionless surface inclined at 30°. The acceleration of the body down the incline is:",opts:['g','g/2','g√3/2','g/√2'],ans:1},
+  {id:'l9',sec:'A',type:'single',text:"A rocket of mass 1000 kg ejects gas at rate 10 kg/s with exhaust velocity 500 m/s. The thrust force on the rocket is:",opts:['500 N','5000 N','50000 N','500000 N'],ans:1},
+  {id:'l10',sec:'A',type:'single',text:"A car of mass 1000 kg is moving at 20 m/s. Brakes are applied and it stops in 10s. The braking force is:",opts:['1000 N','2000 N','3000 N','4000 N'],ans:1},
+  {id:'l11',sec:'A',type:'single',text:"A horse pulls a cart with force F. By Newton's 3rd law, cart pulls horse with equal and opposite force. Yet the horse moves forward because:",opts:['The horse is stronger','Net force on horse from ground is forward','Newton 3rd law does not apply here','The cart is lighter'],ans:1},
+  {id:'l12',sec:'A',type:'single',text:"A block is placed on a rough inclined plane. The angle of friction is φ. The block will just start to slide when the angle of inclination θ satisfies:",opts:['θ < φ','θ = φ','θ > φ','θ = 90° - φ'],ans:1},
+  {id:'l13',sec:'A',type:'single',text:"A block of mass 3 kg slides on a frictionless surface and hits a wall elastically. If its velocity was 4 m/s before collision, the change in momentum is:",opts:['0 kg·m/s','12 kg·m/s','24 kg·m/s','6 kg·m/s'],ans:2},
+  {id:'l14',sec:'A',type:'single',text:"A person stands on a weighing machine in a lift. When lift moves down with acceleration a, the reading is:",opts:['m(g+a)','m(g-a)','mg','ma'],ans:1},
+  {id:'l15',sec:'A',type:'single',text:"Two masses m₁ = 4 kg and m₂ = 6 kg are connected over a pulley. If m₂ descends 1m from rest, velocity of m₁ is: (g = 10 m/s²)",opts:['1 m/s','2 m/s','3 m/s','4 m/s'],ans:1},
+  {id:'l16',sec:'A',type:'single',text:"A 2 kg block is pushed against a rough wall with horizontal force 20 N. If μ = 0.3, frictional force on block is: (g = 10 m/s²)",opts:['6 N','20 N','14 N','None of these'],ans:1},
+  {id:'l17',sec:'A',type:'single',text:"The impulse of a force equals:",opts:['Force × displacement','Change in momentum','Rate of change of momentum','Force × velocity'],ans:1},
+  {id:'l18',sec:'A',type:'single',text:"A ball of mass 0.1 kg moving at 10 m/s hits a wall and bounces back at 8 m/s. Time of contact = 0.01s. Average force exerted on wall is:",opts:['18 N','180 N','1.8 N','0.18 N'],ans:1},
+  {id:'l19',sec:'A',type:'single',text:"Three blocks A, B, C of masses 2, 3, 4 kg are placed in contact on frictionless surface. A force of 18 N is applied on A. Force on B from C is:",opts:['4 N','6 N','8 N','12 N'],ans:2},
+  {id:'l20',sec:'A',type:'single',text:"A block of mass m on a rough floor (μk = 0.2) is given velocity 10 m/s. Distance it travels before stopping is: (g = 10 m/s²)",opts:['10 m','25 m','50 m','100 m'],ans:1},
+  {id:'l21',sec:'B',type:'integer',text:"A 5 kg block is pulled up a 30° inclined plane (μk = 0.2) with acceleration 2 m/s². Applied force in Newtons is: (g = 10 m/s², take √3 = 1.73)",ans:'43'},
+  {id:'l22',sec:'B',type:'integer',text:"Two blocks 4 kg and 6 kg on frictionless surface connected by string. Force of 20 N applied on 6 kg block. Tension in string in Newtons is:",ans:'8'},
+  {id:'l23',sec:'B',type:'integer',text:"A lift of mass 500 kg accelerates upward at 2 m/s². Tension in cable in Newtons is: (g = 10 m/s²)",ans:'6000'},
+  {id:'l24',sec:'B',type:'integer',text:"A 3 kg block on frictionless surface connected via string over pulley to hanging 2 kg mass. Acceleration of system in m/s² is: (g = 10 m/s²)",ans:'4'},
+  {id:'l25',sec:'B',type:'integer',text:"Maximum static friction between 4 kg block and surface (μs = 0.5) is ____ N: (g = 10 m/s²)",ans:'20'},
+  {id:'l26',sec:'B',type:'integer',text:"A 1000 kg car accelerates from 0 to 20 m/s in 10s on frictionless road. Engine force in Newtons is:",ans:'2000'},
+  {id:'l27',sec:'B',type:'integer',text:"Force on 2 kg mass in Atwood machine with masses 2 kg and 3 kg. Tension T in Newtons is: (g = 10 m/s²)",ans:'24'},
+  {id:'l28',sec:'B',type:'integer',text:"A body of mass 5 kg is thrown upward with velocity 20 m/s. At highest point, net force on body in Newtons is: (g = 10 m/s²)",ans:'50'},
+  {id:'l29',sec:'B',type:'integer',text:"Coefficient of friction between tyres and road is 0.5. Maximum speed (in m/s) at which car can be driven on straight road without skidding? (Braking deceleration = μg, find stopping distance from 20 m/s in metres)",ans:'40'},
+  {id:'l30',sec:'B',type:'integer',text:"A 10 kg block sits on a 5 kg block. The 5 kg block is pulled with 30 N on frictionless surface. μ between blocks = 0.2. Friction on upper block in Newtons is: (g = 10 m/s²)",ans:'10'},
 ];
 
 const qState={};
@@ -359,7 +359,7 @@ function renderQ(){
     <div class="q-actions"><button class="q-ab ${st.marked?'bm':''}" onclick="toggleMark()">🔖</button>
     <button class="q-ab" onclick="alert('Hint: Apply concepts carefully!')">💡</button></div>
   </div>
-  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Units & Measurement</div>
+  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Laws of Motion</div>
   <div class="q-text">${q.text}</div></div>`;
   if(q.type==='integer'){
     const val=st.answer!==null?st.answer:'';
@@ -494,7 +494,7 @@ function submitTest(){
     <div style="text-align:center;padding:40px 20px;animation:fadeIn .4s ease;">
       <div style="font-size:2.5rem;margin-bottom:16px;">${pct>=80?'🏆':pct>=60?'👍':'📚'}</div>
       <div style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#1a2618;margin-bottom:6px;">${pct>=80?'Excellent!':pct>=60?'Good Work!':'Keep Practicing!'}</div>
-      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Units & Measurement · JEE Mains Physics</div>
+      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Laws of Motion · JEE Mains Physics</div>
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:400px;margin:0 auto 28px;">
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;">${score}</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Score</div></div>
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#6b8f5e;">${pct}%</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Accuracy</div></div>
@@ -521,9 +521,9 @@ renderQ();startTimer();
         document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);}
   window.saveToFirestore=function(score,correct,wrong,skipped,pct){
     loadFS(function(db,auth){var user=auth.currentUser;if(!user)return;
-      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_units_'+Date.now()).set({
+      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_laws_'+Date.now()).set({
         uid:user.uid,examType:'jee_mains',testType:'chapter',subject:'Physics',
-        chapter:'Units and Measurement',testName:'JEE Mains | Physics | Units & Measurement',
+        chapter:'Laws of Motion',testName:'JEE Mains | Physics | Laws of Motion',
         score:score,correct:correct,wrong:wrong,skipped:skipped,total:30,accuracy:pct,
         timestamp:firebase.firestore.FieldValue.serverTimestamp(),date:new Date().toISOString().split("T")[0]
       }).catch(function(e){console.error(e);});});};

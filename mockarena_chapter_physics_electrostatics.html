@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MockArena — JEE Mains | Physics | Units & Measurement</title>
+<title>MockArena — JEE Mains | Physics | Electrostatics</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -197,7 +197,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
   <div class="tb-pipe"></div>
   <div class="tb-info">
     <span class="tb-exam">JEE Mains · Physics</span>
-    <span>Units & Measurement &middot; 30 Qs</span>
+    <span>Electrostatics &middot; 30 Qs</span>
   </div>
   <div class="tb-right">
     <div class="tb-timer" id="timer-box">
@@ -286,7 +286,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 <div class="mo" id="submit-modal">
   <div class="mb">
     <div class="mb-t">Submit Chapter Test?</div>
-    <div class="mb-s">Units & Measurement &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
+    <div class="mb-s">Electrostatics &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
     <div class="mb-g" id="modal-stats"></div>
     <div class="mb-w" id="modal-warn"></div>
     <div class="mb-row">
@@ -298,36 +298,36 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 
 <script>
 const QUESTIONS = [
-  {id:'um1',sec:'A',type:'single',text:'The dimensional formula of angular momentum is:',opts:['[ML²T⁻²]','[ML²T⁻¹]','[MLT⁻¹]','[ML⁻¹T⁻¹]'],ans:1},
-  {id:'um2',sec:'A',type:'single',text:"Which of the following has the same dimensions as Planck's constant?",opts:['Linear momentum','Angular momentum','Energy','Force'],ans:1},
-  {id:'um3',sec:'A',type:'single',text:'The SI unit of magnetic flux is:',opts:['Tesla','Weber','Henry','Gauss'],ans:1},
-  {id:'um4',sec:'A',type:'single',text:'Dimensional formula of electric field intensity is:',opts:['[MLT⁻³A⁻¹]','[ML²T⁻³A⁻¹]','[MLT⁻²A⁻¹]','[ML⁻¹T⁻²A]'],ans:0},
-  {id:'um5',sec:'A',type:'single',text:'The number of significant figures in 0.006700 is:',opts:['2','4','6','7'],ans:1},
-  {id:'um6',sec:'A',type:'single',text:'If L, C, R denote inductance, capacitance and resistance, then √(L/C) has dimensions of:',opts:['Resistance','Frequency','Impedance','Admittance'],ans:0},
-  {id:'um7',sec:'A',type:'single',text:'Percentage error in mass is 2% and in speed is 3%. Maximum error in kinetic energy is:',opts:['11%','5%','8%','1%'],ans:2},
-  {id:'um8',sec:'A',type:'single',text:'Light year is a unit of:',opts:['Time','Mass','Distance','Energy'],ans:2},
-  {id:'um9',sec:'A',type:'single',text:'The dimensions of (μ₀ε₀)^(−1/2) are same as that of:',opts:['Velocity','Acceleration','Force','Energy'],ans:0},
-  {id:'um10',sec:'A',type:'single',text:'If x = a + bt + ct², where x is in metres and t in seconds, then unit of c is:',opts:['m','ms⁻¹','ms⁻²','m²s⁻¹'],ans:2},
-  {id:'um11',sec:'A',type:'single',text:'The physical quantity that has no dimensions is:',opts:['Angular velocity','Linear momentum','Strain','Angular momentum'],ans:2},
-  {id:'um12',sec:'A',type:'single',text:'Correct dimension of coefficient of viscosity is:',opts:['[ML⁻¹T⁻²]','[MLT⁻¹]','[ML⁻¹T⁻¹]','[ML⁻²T⁻²]'],ans:2},
-  {id:'um13',sec:'A',type:'single',text:'Dimensions of pressure are same as that of:',opts:['Force','Energy per unit volume','Momentum','Power'],ans:1},
-  {id:'um14',sec:'A',type:'single',text:'A quantity P = B²l²/m where B is magnetic induction, l is length, m is mass. Dimensions of P are:',opts:['[MLT⁻³]','[M⁻¹L²T⁴A²]','[M⁻¹L²T⁻²A⁻²]','[ML²T⁻²A]'],ans:1},
-  {id:'um15',sec:'A',type:'single',text:'Least count of a stopwatch is 0.2s. Time of 20 oscillations measured as 25s. Maximum percentage error is:',opts:['1.6%','0.8%','0.4%','1.2%'],ans:1},
-  {id:'um16',sec:'A',type:'single',text:'In P = (α/β)e^(−αZ/kθ), P is pressure, Z is distance, k is Boltzmann constant, θ is temperature. Dimensional formula of β is:',opts:['[M⁰L²T⁰]','[ML²T]','[ML⁰T⁻¹]','[M⁰L⁰T⁰]'],ans:0},
-  {id:'um17',sec:'A',type:'single',text:'Which pair does NOT have same dimensions?',opts:['Work and Torque','Angular momentum and Planck constant','Tension and Surface energy','Energy and Torque'],ans:2},
-  {id:'um18',sec:'A',type:'single',text:'Number of significant figures in 5.003 × 10⁴ is:',opts:['2','4','5','6'],ans:1},
-  {id:'um19',sec:'A',type:'single',text:'Dimensions of electrical resistance are:',opts:['[ML²T⁻³A⁻²]','[ML²T⁻²A⁻²]','[ML²T⁻³A²]','[ML⁻²T⁻³A⁻²]'],ans:0},
-  {id:'um20',sec:'A',type:'single',text:'If unit of length is doubled, which remains the same?',opts:['Numerical value of speed','Numerical value of force','Numerical value of time','Numerical value of area'],ans:2},
-  {id:'um21',sec:'B',type:'integer',text:'In 1 light year, the power of 10 in metres (9.46 × 10ˣ m). Enter x:',ans:'15'},
-  {id:'um22',sec:'B',type:'integer',text:'Rectangle dimensions are (5.7±0.1)cm and (3.4±0.1)cm. Percentage error in area (round to nearest integer):',ans:'5'},
-  {id:'um23',sec:'B',type:'integer',text:'Surface tension formula is [M¹LˣT⁻²]. Value of x is:',ans:'0'},
-  {id:'um24',sec:'B',type:'integer',text:'Screw gauge pitch = 0.5mm, 50 divisions on circular scale. Least count in units of 0.01mm is:',ans:'1'},
-  {id:'um25',sec:'B',type:'integer',text:'Density = 8 g/cm³. In SI units it is (x × 10³) kg/m³. Value of x is:',ans:'8'},
-  {id:'um26',sec:'B',type:'integer',text:'If V, F, T are fundamental quantities, mass = [VᵃFᵇTᶜ]. Value of (a+b+c) is:',ans:'1'},
-  {id:'um27',sec:'B',type:'integer',text:'Number of significant figures in 0.02340:',ans:'4'},
-  {id:'um28',sec:'B',type:'integer',text:'Dimension of El²/(m⁵G²) where E=energy, l=angular momentum, m=mass, G=gravitational constant. It is dimensionless (enter 0) or not (enter 1):',ans:'0'},
-  {id:'um29',sec:'B',type:'integer',text:'Radius of sphere = (5.3 ± 0.1) cm. Percentage error in volume (round to nearest integer):',ans:'6'},
-  {id:'um30',sec:'B',type:'integer',text:'In vernier caliper, 10 vernier divisions = 9 main scale divisions, main scale LC = 1mm. Vernier LC in units of 0.1mm is:',ans:'1'},
+  {id:'e1',sec:'A',type:'single',text:"Coulomb's law: if both charges are doubled and distance halved, the force becomes:",opts:['F','4F','8F','16F'],ans:3},
+  {id:'e2',sec:'A',type:'single',text:'Electric field inside a uniformly charged hollow spherical shell is:',opts:['Maximum at centre','Non-zero everywhere','Zero everywhere','Same as outside'],ans:2},
+  {id:'e3',sec:'A',type:'single',text:'The SI unit of electric potential is:',opts:['Newton/Coulomb','Joule/Coulomb','Coulomb/Farad','Volt metre'],ans:1},
+  {id:'e4',sec:'A',type:'single',text:'A parallel plate capacitor separation is doubled. Capacitance becomes:',opts:['2C','C/2','4C','C/4'],ans:1},
+  {id:'e5',sec:'A',type:'single',text:'Work done moving a charge between two points on an equipotential surface is:',opts:['Maximum','Minimum','Zero','Depends on path'],ans:2},
+  {id:'e6',sec:'A',type:'single',text:'Charge q is at centre of a cube. Electric flux through one face is:',opts:['q/e0','q/6e0','q/4e0','6q/e0'],ans:1},
+  {id:'e7',sec:'A',type:'single',text:'Three capacitors of capacitance C each connected in series. Equivalent capacitance is:',opts:['3C','C/3','C','3/C'],ans:1},
+  {id:'e8',sec:'A',type:'single',text:'Electric potential at distance r from point charge q is:',opts:['kq/r2','kq/r','kq2/r','q/4pi e0 r2'],ans:1},
+  {id:'e9',sec:'A',type:'single',text:'An electric dipole in a uniform electric field experiences:',opts:['Net force only','Net torque only','Both force and torque','Neither force nor torque'],ans:1},
+  {id:'e10',sec:'A',type:'single',text:'Energy stored in capacitor of capacitance C charged to voltage V is:',opts:['CV','CV2','0.5CV2','2CV2'],ans:2},
+  {id:'e11',sec:'A',type:'single',text:'Gauss law relates electric flux through closed surface to:',opts:['Total charge in universe','Charge on surface','Total enclosed charge','Surface area'],ans:2},
+  {id:'e12',sec:'A',type:'single',text:'Dielectric constant of medium is 4. Its permittivity compared to free space is:',opts:['4 times','1/4 times','2 times','16 times'],ans:0},
+  {id:'e13',sec:'A',type:'single',text:'Parallel plate capacitor charged then disconnected from battery. Dielectric (K=2) inserted. Energy stored:',opts:['Doubles','Halves','Remains same','Quadruples'],ans:1},
+  {id:'e14',sec:'A',type:'single',text:'Electric field lines always emerge from:',opts:['Negative charge','Positive charge','Both charges','Neutral points'],ans:1},
+  {id:'e15',sec:'A',type:'single',text:'Potential at midpoint between two equal and opposite charges (+q and -q) separated by 2a is:',opts:['kq/a','-kq/a','Zero','2kq/a'],ans:2},
+  {id:'e16',sec:'A',type:'single',text:'Capacitors C1 and C2 in parallel. Equivalent capacitance is:',opts:['C1C2/(C1+C2)','C1+C2','(C1+C2)/C1C2','C1-C2'],ans:1},
+  {id:'e17',sec:'A',type:'single',text:'Electric flux through closed surface is zero means:',opts:['E=0 everywhere on surface','Net enclosed charge is zero','Both A and B','No charge exists anywhere'],ans:1},
+  {id:'e18',sec:'A',type:'single',text:'Hollow metallic sphere radius R carries charge Q. Electric field at its surface is:',opts:['Zero','kQ/R','kQ/R2','kQ2/R2'],ans:2},
+  {id:'e19',sec:'A',type:'single',text:'Torque on electric dipole of moment p in uniform field E at angle theta is:',opts:['pE sin(theta)','pE cos(theta)','pE tan(theta)','pE'],ans:0},
+  {id:'e20',sec:'A',type:'single',text:'Two capacitors C and 2C in series charged by voltage V. Charge on each is:',opts:['CV','2CV/3','2CV','CV/3'],ans:1},
+  {id:'e21',sec:'B',type:'integer',text:'Capacitor 5 microF charged to 100V. Energy stored in milli-Joules is:',ans:'25'},
+  {id:'e22',sec:'B',type:'integer',text:'Three capacitors of 6 microF each in series. Equivalent capacitance in microF is:',ans:'2'},
+  {id:'e23',sec:'B',type:'integer',text:'Electric flux through closed surface enclosing 8.85 microC in units of 10^5 N.m2/C is:',ans:'10'},
+  {id:'e24',sec:'B',type:'integer',text:'Work done moving +2C charge through potential difference of 5V in Joules is:',ans:'10'},
+  {id:'e25',sec:'B',type:'integer',text:'Two charges +3 microC and +12 microC are 12cm apart. Distance from +3 microC where E=0 in cm is:',ans:'4'},
+  {id:'e26',sec:'B',type:'integer',text:'Potential at surface of sphere of radius 0.1m carrying 1 microC in kV is (k=9x10^9):',ans:'90'},
+  {id:'e27',sec:'B',type:'integer',text:'A capacitor of 2 microF is charged to 200V then connected to uncharged 2 microF capacitor. Final voltage in Volts is:',ans:'100'},
+  {id:'e28',sec:'B',type:'integer',text:'Capacitor plate area 2m2, separation 2mm, with dielectric K=5. Capacitance in nF is (e0=8.85x10^-12, round to nearest integer):',ans:'44'},
+  {id:'e29',sec:'B',type:'integer',text:'Force between two charges of 1 microC each at 1m in units of 10^-3 N is (k=9x10^9):',ans:'9'},
+  {id:'e30',sec:'B',type:'integer',text:'A 10 microF capacitor is charged to 50V. It is connected in parallel with uncharged 40 microF. Final voltage in Volts is:',ans:'10'},
 ];
 
 const qState={};
@@ -359,7 +359,7 @@ function renderQ(){
     <div class="q-actions"><button class="q-ab ${st.marked?'bm':''}" onclick="toggleMark()">🔖</button>
     <button class="q-ab" onclick="alert('Hint: Apply concepts carefully!')">💡</button></div>
   </div>
-  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Units & Measurement</div>
+  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Electrostatics</div>
   <div class="q-text">${q.text}</div></div>`;
   if(q.type==='integer'){
     const val=st.answer!==null?st.answer:'';
@@ -494,7 +494,7 @@ function submitTest(){
     <div style="text-align:center;padding:40px 20px;animation:fadeIn .4s ease;">
       <div style="font-size:2.5rem;margin-bottom:16px;">${pct>=80?'🏆':pct>=60?'👍':'📚'}</div>
       <div style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#1a2618;margin-bottom:6px;">${pct>=80?'Excellent!':pct>=60?'Good Work!':'Keep Practicing!'}</div>
-      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Units & Measurement · JEE Mains Physics</div>
+      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Electrostatics · JEE Mains Physics</div>
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:400px;margin:0 auto 28px;">
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;">${score}</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Score</div></div>
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#6b8f5e;">${pct}%</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Accuracy</div></div>
@@ -521,9 +521,9 @@ renderQ();startTimer();
         document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);}
   window.saveToFirestore=function(score,correct,wrong,skipped,pct){
     loadFS(function(db,auth){var user=auth.currentUser;if(!user)return;
-      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_units_'+Date.now()).set({
+      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_elec_'+Date.now()).set({
         uid:user.uid,examType:'jee_mains',testType:'chapter',subject:'Physics',
-        chapter:'Units and Measurement',testName:'JEE Mains | Physics | Units & Measurement',
+        chapter:'Electrostatics',testName:'JEE Mains | Physics | Electrostatics',
         score:score,correct:correct,wrong:wrong,skipped:skipped,total:30,accuracy:pct,
         timestamp:firebase.firestore.FieldValue.serverTimestamp(),date:new Date().toISOString().split("T")[0]
       }).catch(function(e){console.error(e);});});};

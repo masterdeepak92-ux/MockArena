@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MockArena — JEE Mains | Physics | Units & Measurement</title>
+<title>MockArena — JEE Mains | Physics | Current Electricity</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -197,7 +197,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
   <div class="tb-pipe"></div>
   <div class="tb-info">
     <span class="tb-exam">JEE Mains · Physics</span>
-    <span>Units & Measurement &middot; 30 Qs</span>
+    <span>Current Electricity &middot; 30 Qs</span>
   </div>
   <div class="tb-right">
     <div class="tb-timer" id="timer-box">
@@ -286,7 +286,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 <div class="mo" id="submit-modal">
   <div class="mb">
     <div class="mb-t">Submit Chapter Test?</div>
-    <div class="mb-s">Units & Measurement &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
+    <div class="mb-s">Current Electricity &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
     <div class="mb-g" id="modal-stats"></div>
     <div class="mb-w" id="modal-warn"></div>
     <div class="mb-row">
@@ -298,36 +298,36 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 
 <script>
 const QUESTIONS = [
-  {id:'um1',sec:'A',type:'single',text:'The dimensional formula of angular momentum is:',opts:['[ML²T⁻²]','[ML²T⁻¹]','[MLT⁻¹]','[ML⁻¹T⁻¹]'],ans:1},
-  {id:'um2',sec:'A',type:'single',text:"Which of the following has the same dimensions as Planck's constant?",opts:['Linear momentum','Angular momentum','Energy','Force'],ans:1},
-  {id:'um3',sec:'A',type:'single',text:'The SI unit of magnetic flux is:',opts:['Tesla','Weber','Henry','Gauss'],ans:1},
-  {id:'um4',sec:'A',type:'single',text:'Dimensional formula of electric field intensity is:',opts:['[MLT⁻³A⁻¹]','[ML²T⁻³A⁻¹]','[MLT⁻²A⁻¹]','[ML⁻¹T⁻²A]'],ans:0},
-  {id:'um5',sec:'A',type:'single',text:'The number of significant figures in 0.006700 is:',opts:['2','4','6','7'],ans:1},
-  {id:'um6',sec:'A',type:'single',text:'If L, C, R denote inductance, capacitance and resistance, then √(L/C) has dimensions of:',opts:['Resistance','Frequency','Impedance','Admittance'],ans:0},
-  {id:'um7',sec:'A',type:'single',text:'Percentage error in mass is 2% and in speed is 3%. Maximum error in kinetic energy is:',opts:['11%','5%','8%','1%'],ans:2},
-  {id:'um8',sec:'A',type:'single',text:'Light year is a unit of:',opts:['Time','Mass','Distance','Energy'],ans:2},
-  {id:'um9',sec:'A',type:'single',text:'The dimensions of (μ₀ε₀)^(−1/2) are same as that of:',opts:['Velocity','Acceleration','Force','Energy'],ans:0},
-  {id:'um10',sec:'A',type:'single',text:'If x = a + bt + ct², where x is in metres and t in seconds, then unit of c is:',opts:['m','ms⁻¹','ms⁻²','m²s⁻¹'],ans:2},
-  {id:'um11',sec:'A',type:'single',text:'The physical quantity that has no dimensions is:',opts:['Angular velocity','Linear momentum','Strain','Angular momentum'],ans:2},
-  {id:'um12',sec:'A',type:'single',text:'Correct dimension of coefficient of viscosity is:',opts:['[ML⁻¹T⁻²]','[MLT⁻¹]','[ML⁻¹T⁻¹]','[ML⁻²T⁻²]'],ans:2},
-  {id:'um13',sec:'A',type:'single',text:'Dimensions of pressure are same as that of:',opts:['Force','Energy per unit volume','Momentum','Power'],ans:1},
-  {id:'um14',sec:'A',type:'single',text:'A quantity P = B²l²/m where B is magnetic induction, l is length, m is mass. Dimensions of P are:',opts:['[MLT⁻³]','[M⁻¹L²T⁴A²]','[M⁻¹L²T⁻²A⁻²]','[ML²T⁻²A]'],ans:1},
-  {id:'um15',sec:'A',type:'single',text:'Least count of a stopwatch is 0.2s. Time of 20 oscillations measured as 25s. Maximum percentage error is:',opts:['1.6%','0.8%','0.4%','1.2%'],ans:1},
-  {id:'um16',sec:'A',type:'single',text:'In P = (α/β)e^(−αZ/kθ), P is pressure, Z is distance, k is Boltzmann constant, θ is temperature. Dimensional formula of β is:',opts:['[M⁰L²T⁰]','[ML²T]','[ML⁰T⁻¹]','[M⁰L⁰T⁰]'],ans:0},
-  {id:'um17',sec:'A',type:'single',text:'Which pair does NOT have same dimensions?',opts:['Work and Torque','Angular momentum and Planck constant','Tension and Surface energy','Energy and Torque'],ans:2},
-  {id:'um18',sec:'A',type:'single',text:'Number of significant figures in 5.003 × 10⁴ is:',opts:['2','4','5','6'],ans:1},
-  {id:'um19',sec:'A',type:'single',text:'Dimensions of electrical resistance are:',opts:['[ML²T⁻³A⁻²]','[ML²T⁻²A⁻²]','[ML²T⁻³A²]','[ML⁻²T⁻³A⁻²]'],ans:0},
-  {id:'um20',sec:'A',type:'single',text:'If unit of length is doubled, which remains the same?',opts:['Numerical value of speed','Numerical value of force','Numerical value of time','Numerical value of area'],ans:2},
-  {id:'um21',sec:'B',type:'integer',text:'In 1 light year, the power of 10 in metres (9.46 × 10ˣ m). Enter x:',ans:'15'},
-  {id:'um22',sec:'B',type:'integer',text:'Rectangle dimensions are (5.7±0.1)cm and (3.4±0.1)cm. Percentage error in area (round to nearest integer):',ans:'5'},
-  {id:'um23',sec:'B',type:'integer',text:'Surface tension formula is [M¹LˣT⁻²]. Value of x is:',ans:'0'},
-  {id:'um24',sec:'B',type:'integer',text:'Screw gauge pitch = 0.5mm, 50 divisions on circular scale. Least count in units of 0.01mm is:',ans:'1'},
-  {id:'um25',sec:'B',type:'integer',text:'Density = 8 g/cm³. In SI units it is (x × 10³) kg/m³. Value of x is:',ans:'8'},
-  {id:'um26',sec:'B',type:'integer',text:'If V, F, T are fundamental quantities, mass = [VᵃFᵇTᶜ]. Value of (a+b+c) is:',ans:'1'},
-  {id:'um27',sec:'B',type:'integer',text:'Number of significant figures in 0.02340:',ans:'4'},
-  {id:'um28',sec:'B',type:'integer',text:'Dimension of El²/(m⁵G²) where E=energy, l=angular momentum, m=mass, G=gravitational constant. It is dimensionless (enter 0) or not (enter 1):',ans:'0'},
-  {id:'um29',sec:'B',type:'integer',text:'Radius of sphere = (5.3 ± 0.1) cm. Percentage error in volume (round to nearest integer):',ans:'6'},
-  {id:'um30',sec:'B',type:'integer',text:'In vernier caliper, 10 vernier divisions = 9 main scale divisions, main scale LC = 1mm. Vernier LC in units of 0.1mm is:',ans:'1'},
+  {id:'c1',sec:'A',type:'single',text:'In the circuit, a battery of emf 12V and internal resistance 2 ohm is connected to three resistors 4 ohm, 6 ohm and 12 ohm in parallel. The terminal voltage of the battery is:',opts:['6 V','8 V','10 V','12 V'],ans:1},
+  {id:'c2',sec:'A',type:'single',text:'A wire of resistance R is stretched uniformly to double its length. Its new resistance is:',opts:['R/2','R','2R','4R'],ans:3},
+  {id:'c3',sec:'A',type:'single',text:'In a Wheatstone bridge P/Q = R/S. The bridge is balanced. If P and R are both increased by 10%, the bridge:',opts:['Remains balanced','Gets unbalanced','Current through galvanometer doubles','Voltage across galvanometer changes'],ans:0},
+  {id:'c4',sec:'A',type:'single',text:'A cell of emf E and internal resistance r is connected to an external resistance R. Maximum power is delivered to R when:',opts:['R = r/2','R = r','R = 2r','R = 0'],ans:1},
+  {id:'c5',sec:'A',type:'single',text:'The drift velocity of electrons in a conductor of cross-section A carrying current I with n free electrons per unit volume is:',opts:['I/nAe','nAeI','nAe/I','I/nAe2'],ans:0},
+  {id:'c6',sec:'A',type:'single',text:'A potentiometer wire of length 1m and resistance 10 ohm is connected to a 2V battery and 40 ohm series resistance. A cell balances at 60 cm. Its emf is:',opts:['0.24 V','0.48 V','0.96 V','1.2 V'],ans:0},
+  {id:'c7',sec:'A',type:'single',text:'Three identical bulbs each of resistance R are connected: first two in parallel and this combination in series with third. Compared to all three in series, the current from battery is:',opts:['Same','3/2 times','9/4 times','4/3 times'],ans:3},
+  {id:'c8',sec:'A',type:'single',text:'The temperature coefficient of resistance of a conductor is 0.004/°C. If resistance at 0°C is 100 ohm, resistance at 100°C is:',opts:['104 ohm','140 ohm','400 ohm','1400 ohm'],ans:1},
+  {id:'c9',sec:'A',type:'single',text:'In a meter bridge, the balance point is at 40 cm when unknown resistance X is in left gap and 10 ohm in right gap. X is:',opts:['4 ohm','6.67 ohm','15 ohm','25 ohm'],ans:1},
+  {id:'c10',sec:'A',type:'single',text:'Two wires A and B have the same length. A has twice the cross-section area and four times the resistivity of B. The ratio of their resistances RA:RB is:',opts:['1:2','2:1','4:1','8:1'],ans:1},
+  {id:'c11',sec:'A',type:'single',text:'A 100W, 220V bulb and a 60W, 220V bulb are connected in series to 220V supply. Which is brighter?',opts:['100W bulb','60W bulb','Both equally bright','Neither glows'],ans:0},
+  {id:'c12',sec:'A',type:'single',text:'Kirchhoff junction rule states algebraic sum of currents at any node is zero. This is based on conservation of:',opts:['Energy','Momentum','Charge','Angular momentum'],ans:2},
+  {id:'c13',sec:'A',type:'single',text:'A cell of emf 1.5V and internal resistance 0.5 ohm delivers maximum power to an external circuit. The maximum power delivered is:',opts:['1.125 W','2.25 W','0.75 W','3 W'],ans:0},
+  {id:'c14',sec:'A',type:'single',text:'Resistivity of a semiconductor with rise in temperature:',opts:['Increases','Decreases','Remains same','First increases then decreases'],ans:1},
+  {id:'c15',sec:'A',type:'single',text:'In a potentiometer experiment with a standard cell of emf 1.02V balancing at 51 cm, an unknown cell balances at 60 cm. The emf of unknown cell is:',opts:['1.2 V','1.02 V','0.87 V','1.5 V'],ans:0},
+  {id:'c16',sec:'A',type:'single',text:'Five resistors each of 5 ohm are connected such that they form a letter H (two parallel groups of two in series, joined by a bridge). The equivalent resistance between opposite ends is:',opts:['5 ohm','7 ohm','7.5 ohm','3.5 ohm'],ans:2},
+  {id:'c17',sec:'A',type:'single',text:'An electric heater draws 2A from a 220V source for 1 hour. Energy consumed in kWh is:',opts:['0.44','0.22','0.66','0.11'],ans:0},
+  {id:'c18',sec:'A',type:'single',text:'A battery of 6V with internal resistance 1 ohm is connected to a parallel combination of 3 ohm and 6 ohm. Current through 6 ohm resistor is:',opts:['1 A','2 A','0.67 A','3 A'],ans:2},
+  {id:'c19',sec:'A',type:'single',text:'The sensitivity of a potentiometer can be increased by:',opts:['Decreasing the length of wire','Increasing the emf of battery','Decreasing the potential gradient','Increasing the current'],ans:2},
+  {id:'c20',sec:'A',type:'single',text:'Mobility of charge carriers is defined as drift velocity per unit:',opts:['Current','Voltage','Electric field','Resistance'],ans:2},
+  {id:'c21',sec:'B',type:'integer',text:'A wire has resistance 16 ohm. It is bent into a circle and opposite ends of diameter are connected to a circuit. Effective resistance in ohm is:',ans:'4'},
+  {id:'c22',sec:'B',type:'integer',text:'A 60W bulb at 220V. Current drawn in milli-amperes (rounded to nearest integer) is:',ans:'273'},
+  {id:'c23',sec:'B',type:'integer',text:'Battery of emf 20V, internal resistance 2 ohm connected to 8 ohm resistor. Power dissipated in external resistance in Watts is:',ans:'16'},
+  {id:'c24',sec:'B',type:'integer',text:'In a Wheatstone bridge P=10, Q=30, R=15. For balance, S in ohm is:',ans:'45'},
+  {id:'c25',sec:'B',type:'integer',text:'A conductor has 8x10^28 free electrons per m3. Cross section 1mm2, current 1.6A. Drift velocity in mm/s is (e=1.6x10^-19, enter as decimal):',ans:'0.1'},
+  {id:'c26',sec:'B',type:'integer',text:'Resistance of wire at 20°C is 5 ohm and at 120°C is 6 ohm. Temperature coefficient per °C in units of 10^-3 is:',ans:'2'},
+  {id:'c27',sec:'B',type:'integer',text:'Three resistors 1, 2, 3 ohm in parallel. Equivalent resistance as fraction, multiply answer by 6 (i.e., if R=6/11, enter 6/11 numerator = 6):',ans:'6'},
+  {id:'c28',sec:'B',type:'integer',text:'A cell gives 2A through 2 ohm and 1A through 5 ohm. Internal resistance of cell in ohm is:',ans:'1'},
+  {id:'c29',sec:'B',type:'integer',text:'5 resistors of 10 ohm each in series with 10 equal cells (each 2V, 0.5 ohm internal). Current in circuit in Amperes (enter as decimal):',ans:'1.6'},
+  {id:'c30',sec:'B',type:'integer',text:'Current through 5 ohm in the circuit: 10V battery connected to 5 ohm and 10 ohm in parallel then in series with 3.33 ohm. Total current from battery in Amperes (enter as decimal):',ans:'2'},
 ];
 
 const qState={};
@@ -359,7 +359,7 @@ function renderQ(){
     <div class="q-actions"><button class="q-ab ${st.marked?'bm':''}" onclick="toggleMark()">🔖</button>
     <button class="q-ab" onclick="alert('Hint: Apply concepts carefully!')">💡</button></div>
   </div>
-  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Units & Measurement</div>
+  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Current Electricity</div>
   <div class="q-text">${q.text}</div></div>`;
   if(q.type==='integer'){
     const val=st.answer!==null?st.answer:'';
@@ -494,7 +494,7 @@ function submitTest(){
     <div style="text-align:center;padding:40px 20px;animation:fadeIn .4s ease;">
       <div style="font-size:2.5rem;margin-bottom:16px;">${pct>=80?'🏆':pct>=60?'👍':'📚'}</div>
       <div style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#1a2618;margin-bottom:6px;">${pct>=80?'Excellent!':pct>=60?'Good Work!':'Keep Practicing!'}</div>
-      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Units & Measurement · JEE Mains Physics</div>
+      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Current Electricity · JEE Mains Physics</div>
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:400px;margin:0 auto 28px;">
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;">${score}</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Score</div></div>
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#6b8f5e;">${pct}%</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Accuracy</div></div>
@@ -521,9 +521,9 @@ renderQ();startTimer();
         document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);}
   window.saveToFirestore=function(score,correct,wrong,skipped,pct){
     loadFS(function(db,auth){var user=auth.currentUser;if(!user)return;
-      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_units_'+Date.now()).set({
+      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_curr_'+Date.now()).set({
         uid:user.uid,examType:'jee_mains',testType:'chapter',subject:'Physics',
-        chapter:'Units and Measurement',testName:'JEE Mains | Physics | Units & Measurement',
+        chapter:'Current Electricity',testName:'JEE Mains | Physics | Current Electricity',
         score:score,correct:correct,wrong:wrong,skipped:skipped,total:30,accuracy:pct,
         timestamp:firebase.firestore.FieldValue.serverTimestamp(),date:new Date().toISOString().split("T")[0]
       }).catch(function(e){console.error(e);});});};

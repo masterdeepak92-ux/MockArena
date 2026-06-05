@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MockArena — JEE Mains | Physics | Units & Measurement</title>
+<title>MockArena — JEE Mains | Physics | Gravitation</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -197,7 +197,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
   <div class="tb-pipe"></div>
   <div class="tb-info">
     <span class="tb-exam">JEE Mains · Physics</span>
-    <span>Units & Measurement &middot; 30 Qs</span>
+    <span>Gravitation &middot; 30 Qs</span>
   </div>
   <div class="tb-right">
     <div class="tb-timer" id="timer-box">
@@ -286,7 +286,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 <div class="mo" id="submit-modal">
   <div class="mb">
     <div class="mb-t">Submit Chapter Test?</div>
-    <div class="mb-s">Units & Measurement &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
+    <div class="mb-s">Gravitation &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
     <div class="mb-g" id="modal-stats"></div>
     <div class="mb-w" id="modal-warn"></div>
     <div class="mb-row">
@@ -298,36 +298,36 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 
 <script>
 const QUESTIONS = [
-  {id:'um1',sec:'A',type:'single',text:'The dimensional formula of angular momentum is:',opts:['[ML²T⁻²]','[ML²T⁻¹]','[MLT⁻¹]','[ML⁻¹T⁻¹]'],ans:1},
-  {id:'um2',sec:'A',type:'single',text:"Which of the following has the same dimensions as Planck's constant?",opts:['Linear momentum','Angular momentum','Energy','Force'],ans:1},
-  {id:'um3',sec:'A',type:'single',text:'The SI unit of magnetic flux is:',opts:['Tesla','Weber','Henry','Gauss'],ans:1},
-  {id:'um4',sec:'A',type:'single',text:'Dimensional formula of electric field intensity is:',opts:['[MLT⁻³A⁻¹]','[ML²T⁻³A⁻¹]','[MLT⁻²A⁻¹]','[ML⁻¹T⁻²A]'],ans:0},
-  {id:'um5',sec:'A',type:'single',text:'The number of significant figures in 0.006700 is:',opts:['2','4','6','7'],ans:1},
-  {id:'um6',sec:'A',type:'single',text:'If L, C, R denote inductance, capacitance and resistance, then √(L/C) has dimensions of:',opts:['Resistance','Frequency','Impedance','Admittance'],ans:0},
-  {id:'um7',sec:'A',type:'single',text:'Percentage error in mass is 2% and in speed is 3%. Maximum error in kinetic energy is:',opts:['11%','5%','8%','1%'],ans:2},
-  {id:'um8',sec:'A',type:'single',text:'Light year is a unit of:',opts:['Time','Mass','Distance','Energy'],ans:2},
-  {id:'um9',sec:'A',type:'single',text:'The dimensions of (μ₀ε₀)^(−1/2) are same as that of:',opts:['Velocity','Acceleration','Force','Energy'],ans:0},
-  {id:'um10',sec:'A',type:'single',text:'If x = a + bt + ct², where x is in metres and t in seconds, then unit of c is:',opts:['m','ms⁻¹','ms⁻²','m²s⁻¹'],ans:2},
-  {id:'um11',sec:'A',type:'single',text:'The physical quantity that has no dimensions is:',opts:['Angular velocity','Linear momentum','Strain','Angular momentum'],ans:2},
-  {id:'um12',sec:'A',type:'single',text:'Correct dimension of coefficient of viscosity is:',opts:['[ML⁻¹T⁻²]','[MLT⁻¹]','[ML⁻¹T⁻¹]','[ML⁻²T⁻²]'],ans:2},
-  {id:'um13',sec:'A',type:'single',text:'Dimensions of pressure are same as that of:',opts:['Force','Energy per unit volume','Momentum','Power'],ans:1},
-  {id:'um14',sec:'A',type:'single',text:'A quantity P = B²l²/m where B is magnetic induction, l is length, m is mass. Dimensions of P are:',opts:['[MLT⁻³]','[M⁻¹L²T⁴A²]','[M⁻¹L²T⁻²A⁻²]','[ML²T⁻²A]'],ans:1},
-  {id:'um15',sec:'A',type:'single',text:'Least count of a stopwatch is 0.2s. Time of 20 oscillations measured as 25s. Maximum percentage error is:',opts:['1.6%','0.8%','0.4%','1.2%'],ans:1},
-  {id:'um16',sec:'A',type:'single',text:'In P = (α/β)e^(−αZ/kθ), P is pressure, Z is distance, k is Boltzmann constant, θ is temperature. Dimensional formula of β is:',opts:['[M⁰L²T⁰]','[ML²T]','[ML⁰T⁻¹]','[M⁰L⁰T⁰]'],ans:0},
-  {id:'um17',sec:'A',type:'single',text:'Which pair does NOT have same dimensions?',opts:['Work and Torque','Angular momentum and Planck constant','Tension and Surface energy','Energy and Torque'],ans:2},
-  {id:'um18',sec:'A',type:'single',text:'Number of significant figures in 5.003 × 10⁴ is:',opts:['2','4','5','6'],ans:1},
-  {id:'um19',sec:'A',type:'single',text:'Dimensions of electrical resistance are:',opts:['[ML²T⁻³A⁻²]','[ML²T⁻²A⁻²]','[ML²T⁻³A²]','[ML⁻²T⁻³A⁻²]'],ans:0},
-  {id:'um20',sec:'A',type:'single',text:'If unit of length is doubled, which remains the same?',opts:['Numerical value of speed','Numerical value of force','Numerical value of time','Numerical value of area'],ans:2},
-  {id:'um21',sec:'B',type:'integer',text:'In 1 light year, the power of 10 in metres (9.46 × 10ˣ m). Enter x:',ans:'15'},
-  {id:'um22',sec:'B',type:'integer',text:'Rectangle dimensions are (5.7±0.1)cm and (3.4±0.1)cm. Percentage error in area (round to nearest integer):',ans:'5'},
-  {id:'um23',sec:'B',type:'integer',text:'Surface tension formula is [M¹LˣT⁻²]. Value of x is:',ans:'0'},
-  {id:'um24',sec:'B',type:'integer',text:'Screw gauge pitch = 0.5mm, 50 divisions on circular scale. Least count in units of 0.01mm is:',ans:'1'},
-  {id:'um25',sec:'B',type:'integer',text:'Density = 8 g/cm³. In SI units it is (x × 10³) kg/m³. Value of x is:',ans:'8'},
-  {id:'um26',sec:'B',type:'integer',text:'If V, F, T are fundamental quantities, mass = [VᵃFᵇTᶜ]. Value of (a+b+c) is:',ans:'1'},
-  {id:'um27',sec:'B',type:'integer',text:'Number of significant figures in 0.02340:',ans:'4'},
-  {id:'um28',sec:'B',type:'integer',text:'Dimension of El²/(m⁵G²) where E=energy, l=angular momentum, m=mass, G=gravitational constant. It is dimensionless (enter 0) or not (enter 1):',ans:'0'},
-  {id:'um29',sec:'B',type:'integer',text:'Radius of sphere = (5.3 ± 0.1) cm. Percentage error in volume (round to nearest integer):',ans:'6'},
-  {id:'um30',sec:'B',type:'integer',text:'In vernier caliper, 10 vernier divisions = 9 main scale divisions, main scale LC = 1mm. Vernier LC in units of 0.1mm is:',ans:'1'},
+  {id:'g1',sec:'A',type:'single',text:"Newton's law of gravitation states that the force between two masses is proportional to:",opts:['Sum of masses','Product of masses','Difference of masses','Square of sum of masses'],ans:1},
+  {id:'g2',sec:'A',type:'single',text:'If the distance between two masses is doubled, the gravitational force becomes:',opts:['Double','Half','Four times','One-fourth'],ans:3},
+  {id:'g3',sec:'A',type:'single',text:'The acceleration due to gravity at height h above the surface of earth (h << R) is approximately:',opts:['g(1 + 2h/R)','g(1 − 2h/R)','g(1 − h/R)','g(1 + h/R)'],ans:1},
+  {id:'g4',sec:'A',type:'single',text:'The orbital velocity of a satellite revolving near the surface of the earth is: (R = radius, g = acceleration due to gravity)',opts:['√(gR)','√(2gR)','√(gR/2)','√(g/R)'],ans:0},
+  {id:'g5',sec:'A',type:'single',text:'The escape velocity from the surface of earth is: (g = 9.8 m/s², R = 6400 km)',opts:['9.8 km/s','11.2 km/s','7.9 km/s','13.4 km/s'],ans:1},
+  {id:'g6',sec:'A',type:'single',text:"Kepler's third law states that T² ∝ r³. If the orbital radius is increased by 4 times, the time period becomes:",opts:['2T','4T','8T','16T'],ans:2},
+  {id:'g7',sec:'A',type:'single',text:'Gravitational potential energy of a body of mass m at height h above earth surface is: (M = mass of earth, R = radius)',opts:['-GMm/R','-GMm/(R+h)','GMm/(R+h)','-GMmh/R²'],ans:1},
+  {id:'g8',sec:'A',type:'single',text:'At what depth below the surface of earth is the acceleration due to gravity equal to half its surface value?',opts:['R/4','R/2','R/3','2R/3'],ans:1},
+  {id:'g9',sec:'A',type:'single',text:'The time period of a geostationary satellite is:',opts:['6 hours','12 hours','24 hours','48 hours'],ans:2},
+  {id:'g10',sec:'A',type:'single',text:'The gravitational potential at the centre of a uniform ring of mass M and radius R is:',opts:['-GM/R','-2GM/R','Zero','-GM/2R'],ans:0},
+  {id:'g11',sec:'A',type:'single',text:'A satellite is orbiting at height h above earth. Its total mechanical energy is:',opts:['-GMm/2r','GMm/2r','-GMm/r','Zero'],ans:0},
+  {id:'g12',sec:'A',type:'single',text:'The weight of a person at the centre of the earth is:',opts:['Maximum','Minimum but not zero','Zero','Same as surface weight'],ans:2},
+  {id:'g13',sec:'A',type:'single',text:"Kepler's second law (law of areas) is a consequence of conservation of:",opts:['Energy','Linear momentum','Angular momentum','Mass'],ans:2},
+  {id:'g14',sec:'A',type:'single',text:'If earth stops rotating, the weight of a person at the equator would:',opts:['Increase slightly','Decrease slightly','Remain same','Become zero'],ans:0},
+  {id:'g15',sec:'A',type:'single',text:'The gravitational field intensity at a point on the axis of a circular ring at distance x from centre (ring radius R, mass M) is maximum when:',opts:['x = 0','x = R','x = R/√2','x = R√2'],ans:2},
+  {id:'g16',sec:'A',type:'single',text:'Two planets have same density but different radii R₁ and R₂. The ratio of their acceleration due to gravity g₁:g₂ is:',opts:['R₁:R₂','R₂:R₁','R₁²:R₂²','R₁³:R₂³'],ans:0},
+  {id:'g17',sec:'A',type:'single',text:'Orbital velocity of a satellite does NOT depend on:',opts:['Mass of earth','Radius of orbit','Mass of satellite','Gravitational constant'],ans:2},
+  {id:'g18',sec:'A',type:'single',text:'The binding energy of a satellite of mass m in circular orbit of radius r is:',opts:['GMm/r','GMm/2r','-GMm/r','-GMm/2r'],ans:1},
+  {id:'g19',sec:'A',type:'single',text:'If the mass of earth is doubled and radius halved, the value of g on surface would become:',opts:['2g','4g','8g','g/2'],ans:2},
+  {id:'g20',sec:'A',type:'single',text:'A tunnel is bored through the earth along its diameter. A ball dropped from one end will reach the other end in time equal to:',opts:['T/4 (where T = orbital period of surface satellite)','T/2','T','2T'],ans:1},
+  {id:'g21',sec:'B',type:'integer',text:'The height above earth surface where g becomes g/4 in km is: (R = 6400 km)',ans:'6400'},
+  {id:'g22',sec:'B',type:'integer',text:'Escape velocity from earth = 11.2 km/s. Escape velocity from a planet of same mass but double the radius in km/s is (round to 1 decimal, enter without decimal as integer if whole number):',ans:'8'},
+  {id:'g23',sec:'B',type:'integer',text:'A satellite orbits at R (= earth radius) above surface. Its orbital period in hours is approximately: (T_surface ≈ 84 min, T ∝ r^(3/2), r = 2R)',ans:'4'},
+  {id:'g24',sec:'B',type:'integer',text:'Gravitational PE of 10 kg mass at surface of earth in units of 10⁸ J is: (g = 10 m/s², R = 6.4×10⁶ m, PE = mgR)',ans:'64'},
+  {id:'g25',sec:'B',type:'integer',text:'Two bodies of masses 10 kg and 40 kg are placed 0.5 m apart. Gravitational force in units of 10⁻⁷ N is: (G = 6.67×10⁻¹¹)',ans:'107'},
+  {id:'g26',sec:'B',type:'integer',text:'A planet has radius 2R and mass 8M. Surface gravity in terms of g of earth is: (enter coefficient)',ans:'2'},
+  {id:'g27',sec:'B',type:'integer',text:'Time period of satellite at radius 4R from earth centre in hours if T at radius R is 2 hours is:',ans:'16'},
+  {id:'g28',sec:'B',type:'integer',text:'g at depth d = R/2 from surface as fraction of surface g is (enter percentage):',ans:'50'},
+  {id:'g29',sec:'B',type:'integer',text:'Orbital speed of satellite near earth surface in km/s is approximately: (g=10 m/s², R=6400 km, round to nearest integer)',ans:'8'},
+  {id:'g30',sec:'B',type:'integer',text:'If the earth shrinks to half its radius (mass constant), the duration of day in hours becomes:',ans:'6'},
 ];
 
 const qState={};
@@ -359,7 +359,7 @@ function renderQ(){
     <div class="q-actions"><button class="q-ab ${st.marked?'bm':''}" onclick="toggleMark()">🔖</button>
     <button class="q-ab" onclick="alert('Hint: Apply concepts carefully!')">💡</button></div>
   </div>
-  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Units & Measurement</div>
+  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Gravitation</div>
   <div class="q-text">${q.text}</div></div>`;
   if(q.type==='integer'){
     const val=st.answer!==null?st.answer:'';
@@ -494,7 +494,7 @@ function submitTest(){
     <div style="text-align:center;padding:40px 20px;animation:fadeIn .4s ease;">
       <div style="font-size:2.5rem;margin-bottom:16px;">${pct>=80?'🏆':pct>=60?'👍':'📚'}</div>
       <div style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#1a2618;margin-bottom:6px;">${pct>=80?'Excellent!':pct>=60?'Good Work!':'Keep Practicing!'}</div>
-      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Units & Measurement · JEE Mains Physics</div>
+      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Gravitation · JEE Mains Physics</div>
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:400px;margin:0 auto 28px;">
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;">${score}</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Score</div></div>
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#6b8f5e;">${pct}%</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Accuracy</div></div>
@@ -521,9 +521,9 @@ renderQ();startTimer();
         document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);}
   window.saveToFirestore=function(score,correct,wrong,skipped,pct){
     loadFS(function(db,auth){var user=auth.currentUser;if(!user)return;
-      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_units_'+Date.now()).set({
+      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_grav_'+Date.now()).set({
         uid:user.uid,examType:'jee_mains',testType:'chapter',subject:'Physics',
-        chapter:'Units and Measurement',testName:'JEE Mains | Physics | Units & Measurement',
+        chapter:'Gravitation',testName:'JEE Mains | Physics | Gravitation',
         score:score,correct:correct,wrong:wrong,skipped:skipped,total:30,accuracy:pct,
         timestamp:firebase.firestore.FieldValue.serverTimestamp(),date:new Date().toISOString().split("T")[0]
       }).catch(function(e){console.error(e);});});};

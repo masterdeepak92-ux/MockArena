@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MockArena — JEE Mains | Physics | Units & Measurement</title>
+<title>MockArena — JEE Mains | Physics | Motion in 1D/2D</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -197,7 +197,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
   <div class="tb-pipe"></div>
   <div class="tb-info">
     <span class="tb-exam">JEE Mains · Physics</span>
-    <span>Units & Measurement &middot; 30 Qs</span>
+    <span>Motion in 1D/2D &middot; 30 Qs</span>
   </div>
   <div class="tb-right">
     <div class="tb-timer" id="timer-box">
@@ -286,7 +286,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 <div class="mo" id="submit-modal">
   <div class="mb">
     <div class="mb-t">Submit Chapter Test?</div>
-    <div class="mb-s">Units & Measurement &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
+    <div class="mb-s">Motion in 1D/2D &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
     <div class="mb-g" id="modal-stats"></div>
     <div class="mb-w" id="modal-warn"></div>
     <div class="mb-row">
@@ -298,36 +298,38 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 
 <script>
 const QUESTIONS = [
-  {id:'um1',sec:'A',type:'single',text:'The dimensional formula of angular momentum is:',opts:['[ML²T⁻²]','[ML²T⁻¹]','[MLT⁻¹]','[ML⁻¹T⁻¹]'],ans:1},
-  {id:'um2',sec:'A',type:'single',text:"Which of the following has the same dimensions as Planck's constant?",opts:['Linear momentum','Angular momentum','Energy','Force'],ans:1},
-  {id:'um3',sec:'A',type:'single',text:'The SI unit of magnetic flux is:',opts:['Tesla','Weber','Henry','Gauss'],ans:1},
-  {id:'um4',sec:'A',type:'single',text:'Dimensional formula of electric field intensity is:',opts:['[MLT⁻³A⁻¹]','[ML²T⁻³A⁻¹]','[MLT⁻²A⁻¹]','[ML⁻¹T⁻²A]'],ans:0},
-  {id:'um5',sec:'A',type:'single',text:'The number of significant figures in 0.006700 is:',opts:['2','4','6','7'],ans:1},
-  {id:'um6',sec:'A',type:'single',text:'If L, C, R denote inductance, capacitance and resistance, then √(L/C) has dimensions of:',opts:['Resistance','Frequency','Impedance','Admittance'],ans:0},
-  {id:'um7',sec:'A',type:'single',text:'Percentage error in mass is 2% and in speed is 3%. Maximum error in kinetic energy is:',opts:['11%','5%','8%','1%'],ans:2},
-  {id:'um8',sec:'A',type:'single',text:'Light year is a unit of:',opts:['Time','Mass','Distance','Energy'],ans:2},
-  {id:'um9',sec:'A',type:'single',text:'The dimensions of (μ₀ε₀)^(−1/2) are same as that of:',opts:['Velocity','Acceleration','Force','Energy'],ans:0},
-  {id:'um10',sec:'A',type:'single',text:'If x = a + bt + ct², where x is in metres and t in seconds, then unit of c is:',opts:['m','ms⁻¹','ms⁻²','m²s⁻¹'],ans:2},
-  {id:'um11',sec:'A',type:'single',text:'The physical quantity that has no dimensions is:',opts:['Angular velocity','Linear momentum','Strain','Angular momentum'],ans:2},
-  {id:'um12',sec:'A',type:'single',text:'Correct dimension of coefficient of viscosity is:',opts:['[ML⁻¹T⁻²]','[MLT⁻¹]','[ML⁻¹T⁻¹]','[ML⁻²T⁻²]'],ans:2},
-  {id:'um13',sec:'A',type:'single',text:'Dimensions of pressure are same as that of:',opts:['Force','Energy per unit volume','Momentum','Power'],ans:1},
-  {id:'um14',sec:'A',type:'single',text:'A quantity P = B²l²/m where B is magnetic induction, l is length, m is mass. Dimensions of P are:',opts:['[MLT⁻³]','[M⁻¹L²T⁴A²]','[M⁻¹L²T⁻²A⁻²]','[ML²T⁻²A]'],ans:1},
-  {id:'um15',sec:'A',type:'single',text:'Least count of a stopwatch is 0.2s. Time of 20 oscillations measured as 25s. Maximum percentage error is:',opts:['1.6%','0.8%','0.4%','1.2%'],ans:1},
-  {id:'um16',sec:'A',type:'single',text:'In P = (α/β)e^(−αZ/kθ), P is pressure, Z is distance, k is Boltzmann constant, θ is temperature. Dimensional formula of β is:',opts:['[M⁰L²T⁰]','[ML²T]','[ML⁰T⁻¹]','[M⁰L⁰T⁰]'],ans:0},
-  {id:'um17',sec:'A',type:'single',text:'Which pair does NOT have same dimensions?',opts:['Work and Torque','Angular momentum and Planck constant','Tension and Surface energy','Energy and Torque'],ans:2},
-  {id:'um18',sec:'A',type:'single',text:'Number of significant figures in 5.003 × 10⁴ is:',opts:['2','4','5','6'],ans:1},
-  {id:'um19',sec:'A',type:'single',text:'Dimensions of electrical resistance are:',opts:['[ML²T⁻³A⁻²]','[ML²T⁻²A⁻²]','[ML²T⁻³A²]','[ML⁻²T⁻³A⁻²]'],ans:0},
-  {id:'um20',sec:'A',type:'single',text:'If unit of length is doubled, which remains the same?',opts:['Numerical value of speed','Numerical value of force','Numerical value of time','Numerical value of area'],ans:2},
-  {id:'um21',sec:'B',type:'integer',text:'In 1 light year, the power of 10 in metres (9.46 × 10ˣ m). Enter x:',ans:'15'},
-  {id:'um22',sec:'B',type:'integer',text:'Rectangle dimensions are (5.7±0.1)cm and (3.4±0.1)cm. Percentage error in area (round to nearest integer):',ans:'5'},
-  {id:'um23',sec:'B',type:'integer',text:'Surface tension formula is [M¹LˣT⁻²]. Value of x is:',ans:'0'},
-  {id:'um24',sec:'B',type:'integer',text:'Screw gauge pitch = 0.5mm, 50 divisions on circular scale. Least count in units of 0.01mm is:',ans:'1'},
-  {id:'um25',sec:'B',type:'integer',text:'Density = 8 g/cm³. In SI units it is (x × 10³) kg/m³. Value of x is:',ans:'8'},
-  {id:'um26',sec:'B',type:'integer',text:'If V, F, T are fundamental quantities, mass = [VᵃFᵇTᶜ]. Value of (a+b+c) is:',ans:'1'},
-  {id:'um27',sec:'B',type:'integer',text:'Number of significant figures in 0.02340:',ans:'4'},
-  {id:'um28',sec:'B',type:'integer',text:'Dimension of El²/(m⁵G²) where E=energy, l=angular momentum, m=mass, G=gravitational constant. It is dimensionless (enter 0) or not (enter 1):',ans:'0'},
-  {id:'um29',sec:'B',type:'integer',text:'Radius of sphere = (5.3 ± 0.1) cm. Percentage error in volume (round to nearest integer):',ans:'6'},
-  {id:'um30',sec:'B',type:'integer',text:'In vernier caliper, 10 vernier divisions = 9 main scale divisions, main scale LC = 1mm. Vernier LC in units of 0.1mm is:',ans:'1'},
+  // Section A - MCQ (20 questions +4/-1)
+  {id:'m1',sec:'A',type:'single',text:'A body starts from rest and travels with uniform acceleration. If it travels distances s₁ and s₂ in the first and second seconds respectively, then:',opts:['s₂ = 3s₁','s₂ = 2s₁','s₂ = s₁','s₂ = s₁/2'],ans:0},
+  {id:'m2',sec:'A',type:'single',text:'A ball is thrown vertically upward with velocity u. The ratio of time of ascent to time of descent is:',opts:['1:2','2:1','1:1','1:√2'],ans:2},
+  {id:'m3',sec:'A',type:'single',text:'A projectile is fired at 45° to the horizontal. If the horizontal range is R, what is the maximum height reached?',opts:['R/4','R/2','R','2R'],ans:0},
+  {id:'m4',sec:'A',type:'single',text:'A car accelerates from rest at a constant rate α for some time after which it decelerates at a constant rate β and comes to rest. If the total time elapsed is t, the maximum velocity acquired by the car is:',opts:['αβt/(α+β)','(α+β)t/αβ','αt/(α+β)','βt/(α+β)'],ans:0},
+  {id:'m5',sec:'A',type:'single',text:'Two bodies are thrown simultaneously from the same point — one straight up and the other at 60° with the horizontal. The ratio of their initial speeds is 1:2. What is the ratio of time to reach maximum height?',opts:['1:1','1:2','1:√3','1:4'],ans:0},
+  {id:'m6',sec:'A',type:'single',text:'A particle moves along a straight line. Its position x varies with time t as x = t³ − 6t² + 3t + 4. The velocity of the particle when the acceleration is zero is:',opts:['−9 m/s','−3 m/s','3 m/s','9 m/s'],ans:0},
+  {id:'m7',sec:'A',type:'single',text:'A stone is dropped from a height h. Simultaneously another stone is thrown up from the ground with speed v. They meet when the first stone has descended by:',opts:['h/2','h − v²/2g','h(1 − g/2v²)','v²/2g'],ans:0},
+  {id:'m8',sec:'A',type:'single',text:'The horizontal range and maximum height of a projectile are equal. The angle of projection is:',opts:['tan⁻¹(1/4)','tan⁻¹(4)','45°','60°'],ans:1},
+  {id:'m9',sec:'A',type:'single',text:'A particle starts from rest and moves with constant acceleration a. The ratio of distance covered in the nth second to total distance covered in n seconds is:',opts:['(2n−1)/n²','(2n−1)/2n','2(2n−1)/n²','(2n+1)/n²'],ans:0},
+  {id:'m10',sec:'A',type:'single',text:'A bullet is fired horizontally from a height of 19.6 m. At what horizontal distance from the muzzle will it strike the ground? (g = 9.8 m/s², muzzle speed = 100 m/s)',opts:['100 m','200 m','300 m','400 m'],ans:1},
+  {id:'m11',sec:'A',type:'single',text:'The velocity of a particle is v = v₀ + gt + ft². Its displacement after time t = 1s when v₀ = 0 is:',opts:['g/2 + f/3','g + f','g/2 + f','g + f/2'],ans:0},
+  {id:'m12',sec:'A',type:'single',text:'A car moves with speed 60 km/h for 1 hour and then with 80 km/h for another hour. Average speed is:',opts:['60 km/h','70 km/h','68.6 km/h','72 km/h'],ans:1},
+  {id:'m13',sec:'A',type:'single',text:'A particle is projected at 60° above horizontal with speed 20 m/s. The time after which velocity makes 45° with horizontal is (g = 10 m/s²):',opts:['1s','2s','√3 s','(2−√3) s'],ans:0},
+  {id:'m14',sec:'A',type:'single',text:'The acceleration of a particle is increasing linearly with time t as a = bt. If the particle starts from rest, the distance travelled in time t is:',opts:['bt³/6','bt²/2','bt³/3','bt²/6'],ans:0},
+  {id:'m15',sec:'A',type:'single',text:'A ball rolls off the edge of a horizontal table of height h. The velocity of the ball at the moment it reaches the ground makes an angle θ with the horizontal. If the horizontal velocity is u, then:',opts:['tanθ = √(2gh)/u','tanθ = √(2gh/u)','tanθ = 2gh/u²','tanθ = u/√(2gh)'],ans:0},
+  {id:'m16',sec:'A',type:'single',text:'A particle moves along the x-axis according to x = A sin(ωt). Its acceleration is maximum at:',opts:['x = 0','x = A','x = A/2','x = A/√2'],ans:1},
+  {id:'m17',sec:'A',type:'single',text:'Two trains A and B are moving in the same direction with velocities 30 m/s and 10 m/s. The driver of train A blows a horn of frequency 600 Hz. The apparent frequency heard by the driver of train B is (speed of sound = 330 m/s):',opts:['660 Hz','630 Hz','600 Hz','580 Hz'],ans:1},
+  {id:'m18',sec:'A',type:'single',text:'A ball is projected from a point on the floor with speed u at angle θ. It strikes a wall at distance d making an angle φ with the floor. Then:',opts:['d tanφ = u² sin2θ/g − d tanθ','tanθ − tanφ = gd/u²cos²θ','tanφ = tanθ − gd/u²cos²θ','None of these'],ans:2},
+  {id:'m19',sec:'A',type:'single',text:'From a building two balls A and B are thrown such that A is thrown upward and B downward with the same speed u. If vₐ and v_b are their respective velocities on reaching the ground, then:',opts:['vb > va','va > vb','va = vb','Depends on the height'],ans:2},
+  {id:'m20',sec:'A',type:'single',text:'A particle is moving eastward with velocity 5 m/s. In 10s the velocity changes to 5 m/s northward. The average acceleration in this time is:',opts:['(1/√2) m/s² toward N-W','(1/√2) m/s² toward N-E','(√2) m/s² toward N-W','Zero'],ans:0},
+  // Section B - Integer (10 questions +4/0)
+  {id:'m21',sec:'B',type:'integer',text:'A body falls freely from rest. The distance covered in the 5th second is ____ m. (g = 10 m/s²)',ans:'45'},
+  {id:'m22',sec:'B',type:'integer',text:'A projectile has range R and maximum height H. If the angle of projection is 30°, the ratio R/H is:',ans:'12'},
+  {id:'m23',sec:'B',type:'integer',text:'A car starts from rest and attains velocity 72 km/h in 10s. The acceleration in m/s² is:',ans:'2'},
+  {id:'m24',sec:'B',type:'integer',text:'A ball is thrown up with velocity 20 m/s. Total time in air (in seconds) is: (g = 10 m/s²)',ans:'4'},
+  {id:'m25',sec:'B',type:'integer',text:'A stone is thrown horizontally from a cliff 80 m high with speed 20 m/s. Horizontal distance from base when it hits ground (g = 10 m/s²) in metres is:',ans:'80'},
+  {id:'m26',sec:'B',type:'integer',text:'A particle covers half the distance with velocity v₀ and the remaining half with velocity v₁. Average velocity = 2v₀v₁/(v₀+v₁). If v₀ = 4 m/s and v₁ = 6 m/s, average velocity in m/s is (enter as decimal):',ans:'4.8'},
+  {id:'m27',sec:'B',type:'integer',text:'A body thrown vertically upward returns to the starting point in 4s. Maximum height reached in metres is: (g = 10 m/s²)',ans:'20'},
+  {id:'m28',sec:'B',type:'integer',text:'For a projectile at 45°, if maximum height is 25 m, what is the horizontal range in metres? (g = 10 m/s²)',ans:'100'},
+  {id:'m29',sec:'B',type:'integer',text:'A particle moves in a straight line with initial velocity 10 m/s and uniform acceleration 2 m/s². Distance covered in 5th second in metres is:',ans:'18'},
+  {id:'m30',sec:'B',type:'integer',text:'Two cars start from rest at the same point and move in the same direction. Car A with acceleration 2 m/s² and Car B with 4 m/s². After t = 10s, the separation between them in metres is:',ans:'100'},
 ];
 
 const qState={};
@@ -359,7 +361,7 @@ function renderQ(){
     <div class="q-actions"><button class="q-ab ${st.marked?'bm':''}" onclick="toggleMark()">🔖</button>
     <button class="q-ab" onclick="alert('Hint: Apply concepts carefully!')">💡</button></div>
   </div>
-  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Units & Measurement</div>
+  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Motion in 1D/2D</div>
   <div class="q-text">${q.text}</div></div>`;
   if(q.type==='integer'){
     const val=st.answer!==null?st.answer:'';
@@ -494,7 +496,7 @@ function submitTest(){
     <div style="text-align:center;padding:40px 20px;animation:fadeIn .4s ease;">
       <div style="font-size:2.5rem;margin-bottom:16px;">${pct>=80?'🏆':pct>=60?'👍':'📚'}</div>
       <div style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#1a2618;margin-bottom:6px;">${pct>=80?'Excellent!':pct>=60?'Good Work!':'Keep Practicing!'}</div>
-      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Units & Measurement · JEE Mains Physics</div>
+      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Motion in 1D/2D · JEE Mains Physics</div>
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:400px;margin:0 auto 28px;">
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;">${score}</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Score</div></div>
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#6b8f5e;">${pct}%</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Accuracy</div></div>
@@ -521,9 +523,9 @@ renderQ();startTimer();
         document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);}
   window.saveToFirestore=function(score,correct,wrong,skipped,pct){
     loadFS(function(db,auth){var user=auth.currentUser;if(!user)return;
-      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_units_'+Date.now()).set({
+      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_motion_'+Date.now()).set({
         uid:user.uid,examType:'jee_mains',testType:'chapter',subject:'Physics',
-        chapter:'Units and Measurement',testName:'JEE Mains | Physics | Units & Measurement',
+        chapter:'Motion in 1D 2D',testName:'JEE Mains | Physics | Motion in 1D/2D',
         score:score,correct:correct,wrong:wrong,skipped:skipped,total:30,accuracy:pct,
         timestamp:firebase.firestore.FieldValue.serverTimestamp(),date:new Date().toISOString().split("T")[0]
       }).catch(function(e){console.error(e);});});};

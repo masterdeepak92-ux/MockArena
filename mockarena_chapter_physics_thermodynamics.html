@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>MockArena — JEE Mains | Physics | Units & Measurement</title>
+<title>MockArena — JEE Mains | Physics | Thermodynamics</title>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
 <style>
 :root{
@@ -197,7 +197,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
   <div class="tb-pipe"></div>
   <div class="tb-info">
     <span class="tb-exam">JEE Mains · Physics</span>
-    <span>Units & Measurement &middot; 30 Qs</span>
+    <span>Thermodynamics &middot; 30 Qs</span>
   </div>
   <div class="tb-right">
     <div class="tb-timer" id="timer-box">
@@ -286,7 +286,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 <div class="mo" id="submit-modal">
   <div class="mb">
     <div class="mb-t">Submit Chapter Test?</div>
-    <div class="mb-s">Units & Measurement &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
+    <div class="mb-s">Thermodynamics &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
     <div class="mb-g" id="modal-stats"></div>
     <div class="mb-w" id="modal-warn"></div>
     <div class="mb-row">
@@ -298,36 +298,36 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display
 
 <script>
 const QUESTIONS = [
-  {id:'um1',sec:'A',type:'single',text:'The dimensional formula of angular momentum is:',opts:['[ML²T⁻²]','[ML²T⁻¹]','[MLT⁻¹]','[ML⁻¹T⁻¹]'],ans:1},
-  {id:'um2',sec:'A',type:'single',text:"Which of the following has the same dimensions as Planck's constant?",opts:['Linear momentum','Angular momentum','Energy','Force'],ans:1},
-  {id:'um3',sec:'A',type:'single',text:'The SI unit of magnetic flux is:',opts:['Tesla','Weber','Henry','Gauss'],ans:1},
-  {id:'um4',sec:'A',type:'single',text:'Dimensional formula of electric field intensity is:',opts:['[MLT⁻³A⁻¹]','[ML²T⁻³A⁻¹]','[MLT⁻²A⁻¹]','[ML⁻¹T⁻²A]'],ans:0},
-  {id:'um5',sec:'A',type:'single',text:'The number of significant figures in 0.006700 is:',opts:['2','4','6','7'],ans:1},
-  {id:'um6',sec:'A',type:'single',text:'If L, C, R denote inductance, capacitance and resistance, then √(L/C) has dimensions of:',opts:['Resistance','Frequency','Impedance','Admittance'],ans:0},
-  {id:'um7',sec:'A',type:'single',text:'Percentage error in mass is 2% and in speed is 3%. Maximum error in kinetic energy is:',opts:['11%','5%','8%','1%'],ans:2},
-  {id:'um8',sec:'A',type:'single',text:'Light year is a unit of:',opts:['Time','Mass','Distance','Energy'],ans:2},
-  {id:'um9',sec:'A',type:'single',text:'The dimensions of (μ₀ε₀)^(−1/2) are same as that of:',opts:['Velocity','Acceleration','Force','Energy'],ans:0},
-  {id:'um10',sec:'A',type:'single',text:'If x = a + bt + ct², where x is in metres and t in seconds, then unit of c is:',opts:['m','ms⁻¹','ms⁻²','m²s⁻¹'],ans:2},
-  {id:'um11',sec:'A',type:'single',text:'The physical quantity that has no dimensions is:',opts:['Angular velocity','Linear momentum','Strain','Angular momentum'],ans:2},
-  {id:'um12',sec:'A',type:'single',text:'Correct dimension of coefficient of viscosity is:',opts:['[ML⁻¹T⁻²]','[MLT⁻¹]','[ML⁻¹T⁻¹]','[ML⁻²T⁻²]'],ans:2},
-  {id:'um13',sec:'A',type:'single',text:'Dimensions of pressure are same as that of:',opts:['Force','Energy per unit volume','Momentum','Power'],ans:1},
-  {id:'um14',sec:'A',type:'single',text:'A quantity P = B²l²/m where B is magnetic induction, l is length, m is mass. Dimensions of P are:',opts:['[MLT⁻³]','[M⁻¹L²T⁴A²]','[M⁻¹L²T⁻²A⁻²]','[ML²T⁻²A]'],ans:1},
-  {id:'um15',sec:'A',type:'single',text:'Least count of a stopwatch is 0.2s. Time of 20 oscillations measured as 25s. Maximum percentage error is:',opts:['1.6%','0.8%','0.4%','1.2%'],ans:1},
-  {id:'um16',sec:'A',type:'single',text:'In P = (α/β)e^(−αZ/kθ), P is pressure, Z is distance, k is Boltzmann constant, θ is temperature. Dimensional formula of β is:',opts:['[M⁰L²T⁰]','[ML²T]','[ML⁰T⁻¹]','[M⁰L⁰T⁰]'],ans:0},
-  {id:'um17',sec:'A',type:'single',text:'Which pair does NOT have same dimensions?',opts:['Work and Torque','Angular momentum and Planck constant','Tension and Surface energy','Energy and Torque'],ans:2},
-  {id:'um18',sec:'A',type:'single',text:'Number of significant figures in 5.003 × 10⁴ is:',opts:['2','4','5','6'],ans:1},
-  {id:'um19',sec:'A',type:'single',text:'Dimensions of electrical resistance are:',opts:['[ML²T⁻³A⁻²]','[ML²T⁻²A⁻²]','[ML²T⁻³A²]','[ML⁻²T⁻³A⁻²]'],ans:0},
-  {id:'um20',sec:'A',type:'single',text:'If unit of length is doubled, which remains the same?',opts:['Numerical value of speed','Numerical value of force','Numerical value of time','Numerical value of area'],ans:2},
-  {id:'um21',sec:'B',type:'integer',text:'In 1 light year, the power of 10 in metres (9.46 × 10ˣ m). Enter x:',ans:'15'},
-  {id:'um22',sec:'B',type:'integer',text:'Rectangle dimensions are (5.7±0.1)cm and (3.4±0.1)cm. Percentage error in area (round to nearest integer):',ans:'5'},
-  {id:'um23',sec:'B',type:'integer',text:'Surface tension formula is [M¹LˣT⁻²]. Value of x is:',ans:'0'},
-  {id:'um24',sec:'B',type:'integer',text:'Screw gauge pitch = 0.5mm, 50 divisions on circular scale. Least count in units of 0.01mm is:',ans:'1'},
-  {id:'um25',sec:'B',type:'integer',text:'Density = 8 g/cm³. In SI units it is (x × 10³) kg/m³. Value of x is:',ans:'8'},
-  {id:'um26',sec:'B',type:'integer',text:'If V, F, T are fundamental quantities, mass = [VᵃFᵇTᶜ]. Value of (a+b+c) is:',ans:'1'},
-  {id:'um27',sec:'B',type:'integer',text:'Number of significant figures in 0.02340:',ans:'4'},
-  {id:'um28',sec:'B',type:'integer',text:'Dimension of El²/(m⁵G²) where E=energy, l=angular momentum, m=mass, G=gravitational constant. It is dimensionless (enter 0) or not (enter 1):',ans:'0'},
-  {id:'um29',sec:'B',type:'integer',text:'Radius of sphere = (5.3 ± 0.1) cm. Percentage error in volume (round to nearest integer):',ans:'6'},
-  {id:'um30',sec:'B',type:'integer',text:'In vernier caliper, 10 vernier divisions = 9 main scale divisions, main scale LC = 1mm. Vernier LC in units of 0.1mm is:',ans:'1'},
+  {id:'t1',sec:'A',type:'single',text:'The first law of thermodynamics is a statement of conservation of:',opts:['Momentum','Energy','Mass','Entropy'],ans:1},
+  {id:'t2',sec:'A',type:'single',text:'In an isothermal process, which quantity remains constant?',opts:['Pressure','Volume','Temperature','Internal energy of ideal gas'],ans:2},
+  {id:'t3',sec:'A',type:'single',text:'Work done in an adiabatic process is:',opts:['Q','−ΔU','ΔU','Zero'],ans:1},
+  {id:'t4',sec:'A',type:'single',text:'For an ideal gas in an isothermal expansion, the change in internal energy is:',opts:['Positive','Negative','Zero','Cannot be determined'],ans:2},
+  {id:'t5',sec:'A',type:'single',text:'The efficiency of a Carnot engine working between temperatures T₁ (hot) and T₂ (cold) is:',opts:['1 − T₁/T₂','1 − T₂/T₁','T₂/T₁','T₁/T₂'],ans:1},
+  {id:'t6',sec:'A',type:'single',text:'In an isochoric (isovolumetric) process:',opts:['W = Q','ΔU = 0','W = 0','Q = 0'],ans:2},
+  {id:'t7',sec:'A',type:'single',text:'The second law of thermodynamics states that heat cannot spontaneously flow from:',opts:['Hot to cold','Cold to hot','Cold to hot without work','All directions'],ans:1},
+  {id:'t8',sec:'A',type:'single',text:'For a monoatomic ideal gas, the ratio γ = Cp/Cv is:',opts:['1.4','1.67','1.3','1.5'],ans:1},
+  {id:'t9',sec:'A',type:'single',text:'In a cyclic process, the net change in internal energy is:',opts:['Maximum','Minimum','Zero','Depends on path'],ans:2},
+  {id:'t10',sec:'A',type:'single',text:'A Carnot engine has efficiency 40%. If the sink temperature is 27°C, the source temperature is:',opts:['227°C','327°C','500°C','127°C'],ans:2},
+  {id:'t11',sec:'A',type:'single',text:'The work done by an ideal gas in an isobaric process when volume changes from V₁ to V₂ at pressure P is:',opts:['P(V₁−V₂)','P(V₂−V₁)','P(V₁+V₂)','Zero'],ans:1},
+  {id:'t12',sec:'A',type:'single',text:'Which thermodynamic process is represented by a vertical line on a P-V diagram?',opts:['Isothermal','Adiabatic','Isobaric','Isochoric'],ans:3},
+  {id:'t13',sec:'A',type:'single',text:'Internal energy of an ideal gas depends on:',opts:['Pressure only','Volume only','Temperature only','Both pressure and volume'],ans:2},
+  {id:'t14',sec:'A',type:'single',text:'In an adiabatic process for an ideal gas, PV^γ = constant. For diatomic gas, γ equals:',opts:['1.4','1.67','1.3','1.5'],ans:0},
+  {id:'t15',sec:'A',type:'single',text:'The coefficient of performance (COP) of a refrigerator working between T₁ (hot) and T₂ (cold) is:',opts:['T₁/(T₁−T₂)','T₂/(T₁−T₂)','(T₁−T₂)/T₂','T₁/T₂'],ans:1},
+  {id:'t16',sec:'A',type:'single',text:'In an isothermal process for an ideal gas, the work done is:',opts:['nRT ln(V₁/V₂)','nRT ln(V₂/V₁)','nCvΔT','Zero'],ans:1},
+  {id:'t17',sec:'A',type:'single',text:'Which process has the steepest slope on a P-V diagram?',opts:['Isothermal','Isobaric','Isochoric','Adiabatic'],ans:3},
+  {id:'t18',sec:'A',type:'single',text:'Heat supplied to a system equals the increase in internal energy plus:',opts:['Temperature','Work done by the system','Entropy','Pressure'],ans:1},
+  {id:'t19',sec:'A',type:'single',text:'A refrigerator extracts 200 J of heat from the cold reservoir and rejects 250 J to the hot reservoir. Work done on it is:',opts:['50 J','200 J','250 J','450 J'],ans:0},
+  {id:'t20',sec:'A',type:'single',text:'The efficiency of a reversible heat engine is maximum when it operates between:',opts:['Equal temperatures','Maximum temperature difference','Minimum temperatures','None of these'],ans:1},
+  {id:'t21',sec:'B',type:'integer',text:'A Carnot engine operates between 600 K and 300 K. Efficiency in percentage is:',ans:'50'},
+  {id:'t22',sec:'B',type:'integer',text:'2 moles of monoatomic ideal gas heated at constant volume from 300 K to 600 K. Heat absorbed in units of R is (Q = nCvΔT, Cv = 3R/2):',ans:'900'},
+  {id:'t23',sec:'B',type:'integer',text:'An ideal gas expands at constant pressure of 10⁵ Pa, volume changes from 1L to 3L. Work done in Joules is:',ans:'200'},
+  {id:'t24',sec:'B',type:'integer',text:'A heat engine absorbs 1000 J and rejects 600 J. Efficiency in percentage is:',ans:'40'},
+  {id:'t25',sec:'B',type:'integer',text:'For a diatomic gas (γ = 1.4), if pressure doubles in adiabatic process, volume becomes V/x where x = 2^(1/γ) ≈ 2^(5/7). Enter 1 if V decreases else 0:',ans:'1'},
+  {id:'t26',sec:'B',type:'integer',text:'COP of Carnot refrigerator between 7°C and 27°C is: (T₂=280K, T₁=300K)',ans:'14'},
+  {id:'t27',sec:'B',type:'integer',text:'1 mole ideal gas at 300 K expands isothermally to double its volume. Work done in units of R×300 = nRT is (W = nRT ln2, ln2 ≈ 0.693, round to nearest integer × 300R):',ans:'1'},
+  {id:'t28',sec:'B',type:'integer',text:'Internal energy of 3 moles monoatomic ideal gas at 400 K in units of R is (U = 3/2 nRT):',ans:'1800'},
+  {id:'t29',sec:'B',type:'integer',text:'A gas absorbs 500 J of heat and does 200 J of work. Change in internal energy in Joules is:',ans:'300'},
+  {id:'t30',sec:'B',type:'integer',text:'Source temperature of a Carnot engine with 50% efficiency and sink at 127°C in Kelvin is:',ans:'800'},
 ];
 
 const qState={};
@@ -359,7 +359,7 @@ function renderQ(){
     <div class="q-actions"><button class="q-ab ${st.marked?'bm':''}" onclick="toggleMark()">🔖</button>
     <button class="q-ab" onclick="alert('Hint: Apply concepts carefully!')">💡</button></div>
   </div>
-  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Units & Measurement</div>
+  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Thermodynamics</div>
   <div class="q-text">${q.text}</div></div>`;
   if(q.type==='integer'){
     const val=st.answer!==null?st.answer:'';
@@ -494,7 +494,7 @@ function submitTest(){
     <div style="text-align:center;padding:40px 20px;animation:fadeIn .4s ease;">
       <div style="font-size:2.5rem;margin-bottom:16px;">${pct>=80?'🏆':pct>=60?'👍':'📚'}</div>
       <div style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#1a2618;margin-bottom:6px;">${pct>=80?'Excellent!':pct>=60?'Good Work!':'Keep Practicing!'}</div>
-      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Units & Measurement · JEE Mains Physics</div>
+      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Thermodynamics · JEE Mains Physics</div>
       <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:400px;margin:0 auto 28px;">
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;">${score}</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Score</div></div>
         <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#6b8f5e;">${pct}%</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Accuracy</div></div>
@@ -521,9 +521,9 @@ renderQ();startTimer();
         document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);}
   window.saveToFirestore=function(score,correct,wrong,skipped,pct){
     loadFS(function(db,auth){var user=auth.currentUser;if(!user)return;
-      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_units_'+Date.now()).set({
+      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_thermo_'+Date.now()).set({
         uid:user.uid,examType:'jee_mains',testType:'chapter',subject:'Physics',
-        chapter:'Units and Measurement',testName:'JEE Mains | Physics | Units & Measurement',
+        chapter:'Thermodynamics',testName:'JEE Mains | Physics | Thermodynamics',
         score:score,correct:correct,wrong:wrong,skipped:skipped,total:30,accuracy:pct,
         timestamp:firebase.firestore.FieldValue.serverTimestamp(),date:new Date().toISOString().split("T")[0]
       }).catch(function(e){console.error(e);});});};
