@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MockArena — JEE Mains | Physics | Units & Measurement</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --cream:#faf9f5;--cream-w:#f5f3ec;
+  --forest:#1a2618;--forest-m:#3d5239;
+  --sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);
+  --gold:#c8962a;--rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
+  --sky:#3b82c4;--sky-l:rgba(59,130,196,.09);
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.13);
+  --fd:'Outfit',sans-serif;--fs:'Lora',serif;--fm:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;-webkit-font-smoothing:antialiased;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display:flex;flex-direction:column;overflow:hidden;}
+@media(max-width:860px){html,body{height:auto!important;overflow-y:auto!important;overflow-x:hidden!important;}}
+
+/* TOPBAR */
+.topbar{height:52px;background:var(--forest);display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0;}
+.tb-logo{display:flex;align-items:center;gap:7px;text-decoration:none;}
+.tb-mark{width:28px;height:28px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:white;}
+.tb-n1{color:white;font-size:.86rem;font-weight:800;}
+.tb-n2{font-size:.86rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tb-pipe{width:1px;height:14px;background:rgba(255,255,255,.12);}
+.tb-info{font-size:.62rem;color:rgba(255,255,255,.35);display:flex;flex-direction:column;gap:1px;}
+.tb-exam{font-size:.6rem;color:var(--gold);font-weight:600;}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:6px;}
+.tb-timer{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:3px 9px;text-align:center;}
+.tb-tv{font-family:var(--fm);font-size:.78rem;font-weight:600;color:white;letter-spacing:.04em;display:block;}
+.tb-tl{font-size:.44rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;}
+.tb-timer.warn{background:rgba(200,150,42,.15);border-color:rgba(200,150,42,.3);}
+.tb-timer.warn .tb-tv{color:var(--gold);}
+.tb-timer.danger{background:rgba(200,75,75,.15);border-color:rgba(200,75,75,.3);}
+.tb-timer.danger .tb-tv{color:#ff6b6b;animation:blink .8s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+.tb-btn{font-family:var(--fd);font-size:.66rem;font-weight:700;padding:6px 11px;border-radius:7px;border:none;cursor:pointer;transition:all .2s;}
+.tb-submit{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;}
+.tb-av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:white;overflow:hidden;}
+
+/* SEC BAR */
+.sec-bar{background:white;border-bottom:1px solid var(--border);padding:5px 14px;display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.sec-lbl{font-size:.58rem;font-weight:700;color:rgba(26,38,24,.26);text-transform:uppercase;letter-spacing:.07em;}
+.sec-tab{font-family:var(--fd);font-size:.64rem;font-weight:600;padding:3px 10px;border-radius:6px;border:1.5px solid var(--bm);background:var(--cream-w);color:var(--forest-m);cursor:pointer;transition:all .18s;}
+.sec-tab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.sec-inf{margin-left:auto;font-family:var(--fm);font-size:.58rem;color:rgba(26,38,24,.24);}
+.prog{height:2px;background:var(--border);}
+.prog-f{height:100%;background:linear-gradient(90deg,var(--sage),#4a7a3d);transition:width .3s;}
+
+/* BODY */
+.q-area{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+.q-scroll{flex:1;overflow-y:auto;padding:14px 18px;}
+.q-scroll::-webkit-scrollbar{width:4px;}
+.q-scroll::-webkit-scrollbar-thumb{background:var(--bm);border-radius:4px;}
+@media(min-width:861px){.q-scroll{flex:none!important;overflow-y:visible!important;}.q-area{overflow-y:auto!important;}}
+
+/* Q HEADER */
+.q-header{background:white;border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 4px rgba(26,38,24,.04);}
+.q-num{width:36px;height:36px;border-radius:9px;background:var(--forest);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.78rem;font-weight:600;}
+.q-type{font-size:.6rem;font-weight:700;padding:2px 9px;border-radius:100px;}
+.qt-mcq{background:var(--sky-l);color:var(--sky);border:1px solid rgba(59,130,196,.2);}
+.qt-int{background:rgba(184,115,51,.09);color:#b87333;border:1px solid rgba(184,115,51,.2);}
+.q-marks{font-size:.6rem;color:rgba(26,38,24,.35);}
+.q-marks span{font-weight:700;}
+.q-marks .pos{color:var(--sage);}
+.q-marks .neg{color:var(--rose);}
+.q-actions{margin-left:auto;display:flex;gap:5px;}
+.q-ab{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--bm);background:var(--cream-w);cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.q-ab:hover{border-color:var(--sage);background:var(--sage-l);}
+.q-ab.bm{background:rgba(200,150,42,.08);border-color:rgba(200,150,42,.3);}
+
+/* Q TEXT */
+.q-text-block{background:white;border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px;box-shadow:0 1px 4px rgba(26,38,24,.03);}
+.q-tag{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sky);margin-bottom:10px;display:flex;align-items:center;gap:5px;}
+.q-text{font-family:'Outfit',sans-serif;font-size:1.12rem;font-weight:500;color:var(--forest);line-height:1.72;}
+
+/* OPTIONS */
+.q-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:12px;}
+.opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:12px;border:2px solid var(--bm);background:white;cursor:pointer;transition:all .2s;}
+.opt:hover{border-color:var(--sage);background:var(--sage-l);transform:translateX(3px);}
+.opt.selected{border-color:var(--sky);background:var(--sky-l);}
+.opt.selected .opt-key{background:var(--sky);color:white;border-color:var(--sky);}
+.opt.correct{border-color:var(--sage);background:rgba(107,143,94,.08);}
+.opt.correct .opt-key{background:var(--sage);color:white;}
+.opt.wrong{border-color:var(--rose);background:var(--rose-l);}
+.opt.wrong .opt-key{background:var(--rose);color:white;}
+.opt-key{width:34px;height:34px;border-radius:9px;border:2px solid var(--bm);background:var(--cream-w);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.76rem;font-weight:800;color:var(--forest-m);flex-shrink:0;transition:all .2s;}
+.opt-text{font-family:'Outfit',sans-serif;font-size:1.02rem;font-weight:500;color:var(--forest);line-height:1.6;}
+
+/* INTEGER */
+.int-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
+.int-lbl{font-size:.72rem;font-weight:600;color:var(--forest-m);}
+.int-input{font-family:var(--fm);font-size:1.4rem;font-weight:700;color:var(--forest);background:white;border:2px solid var(--bm);border-radius:12px;padding:12px 18px;outline:none;width:220px;text-align:center;transition:all .2s;}
+.int-input:focus{border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-l);}
+.calc-pad{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;width:220px;}
+.calc-btn{font-family:var(--fm);font-size:.82rem;font-weight:600;padding:10px;border-radius:8px;border:1.5px solid var(--bm);background:white;color:var(--forest);cursor:pointer;transition:all .18s;text-align:center;}
+.calc-btn:hover{border-color:var(--sage);background:var(--sage-l);}
+.calc-btn.sp{background:var(--forest);color:white;border-color:var(--forest);}
+
+/* FOOTER */
+.q-footer{background:white;border-top:1px solid var(--border);padding:9px 14px;display:flex;align-items:center;gap:7px;flex-shrink:0;box-shadow:0 -2px 8px rgba(26,38,24,.05);flex-wrap:wrap;}
+.fn-btn{font-family:var(--fd);font-size:.7rem;font-weight:700;padding:8px 13px;border-radius:9px;border:none;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.fn-mark{background:var(--gold);color:white;}
+.fn-mark.on{background:#e8a020;}
+.fn-clear{background:none!important;border:1.5px solid var(--bm)!important;color:var(--forest-m);}
+.fn-save{background:var(--sage);color:white;}
+.fn-sp{flex:1;}
+.fn-ctr{font-family:var(--fm);font-size:.6rem;color:rgba(26,38,24,.25);}
+.fn-prev{background:none!important;border:1.5px solid var(--bm)!important;color:var(--forest-m);}
+.fn-next{background:var(--forest);color:white;}
+
+/* PALETTE STRIP */
+#pal-strip{background:white;border-top:2px solid rgba(26,38,24,.1);position:sticky;bottom:0;z-index:10;}
+#pal-strip .ps-hdr{background:#1a2618;padding:7px 16px;display:flex;align-items:center;justify-content:space-between;}
+#pal-strip .ps-title{font-size:.72rem;font-weight:700;color:white;}
+#pal-strip .ps-timer{font-family:'IBM Plex Mono',monospace;font-size:.86rem;color:white;font-weight:600;}
+#pal-strip .ps-legend{padding:5px 16px;display:flex;flex-wrap:wrap;gap:8px;background:#f5f4ef;}
+#pal-strip .ps-leg{display:flex;align-items:center;gap:3px;font-size:.6rem;color:#3d5239;font-weight:500;}
+#pal-strip .ps-dot{width:12px;height:12px;border-radius:50%;}
+#pal-strip .ps-scroll{overflow-x:auto;overflow-y:hidden;padding:8px 16px;background:#f5f4ef;}
+#pal-strip .ps-scroll::-webkit-scrollbar{height:3px;}
+#pal-strip .ps-scroll::-webkit-scrollbar-thumb{background:rgba(26,38,24,.15);border-radius:3px;}
+#pal-strip .palette-subj-label{font-size:.54rem!important;white-space:nowrap!important;margin:3px 0 2px!important;display:flex;align-items:center;gap:4px;color:rgba(26,38,24,.3);text-transform:uppercase;letter-spacing:.07em;font-weight:700;}
+#pal-strip .palette-subj-label::after{content:'';flex:1;height:1px;background:rgba(26,38,24,.08);}
+#pal-strip .palette-grid{display:flex!important;flex-direction:row!important;flex-wrap:nowrap!important;gap:5px!important;margin-bottom:4px!important;}
+#pal-strip .p-btn{width:30px!important;height:30px!important;min-width:30px!important;border-radius:7px!important;font-size:.6rem!important;flex-shrink:0!important;}
+#pal-strip .ps-sum{display:flex;align-items:center;justify-content:space-around;padding:6px 16px 7px;background:#f5f4ef;border-top:1px solid rgba(26,38,24,.06);}
+#pal-strip .ps-stat{text-align:center;}
+#pal-strip .ps-num{font-size:.86rem;font-weight:800;display:block;}
+#pal-strip .ps-lbl{font-size:.44rem;color:rgba(26,38,24,.3);text-transform:uppercase;letter-spacing:.04em;}
+#pal-strip .ps-sub{font-family:'Outfit',sans-serif;font-size:.72rem;font-weight:700;padding:7px 16px;border-radius:7px;border:none;background:linear-gradient(135deg,#6b8f5e,#4a7a3d);color:white;cursor:pointer;}
+
+/* MODAL */
+.mo{position:fixed;inset:0;z-index:500;background:rgba(26,38,24,.65);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:14px;}
+.mo.open{display:flex;}
+.mb{background:white;border-radius:17px;padding:22px;width:400px;max-width:95vw;box-shadow:0 20px 60px rgba(26,38,24,.18);animation:pop .22s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+.mb-t{font-size:.94rem;font-weight:800;color:var(--forest);margin-bottom:3px;}
+.mb-s{font-size:.7rem;color:rgba(26,38,24,.4);margin-bottom:13px;}
+.mb-g{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:12px;}
+.mb-c{background:var(--cream-w);border:1px solid var(--border);border-radius:9px;padding:10px 12px;}
+.mb-cn{font-family:var(--fd);font-size:1.08rem;font-weight:800;margin-bottom:2px;}
+.mb-cl{font-size:.54rem;font-weight:500;color:rgba(26,38,24,.34);text-transform:uppercase;letter-spacing:.05em;}
+.mb-w{background:var(--rose-l);border:1px solid rgba(200,75,75,.16);border-radius:8px;padding:8px 11px;font-size:.68rem;color:var(--rose);margin-bottom:12px;}
+.mb-row{display:flex;gap:7px;}
+.mb-cc{flex:1;font-family:var(--fd);font-size:.72rem;font-weight:600;padding:9px;border-radius:8px;border:1.5px solid var(--bm);background:none;color:var(--forest-m);cursor:pointer;}
+.mb-ok{flex:2;font-family:var(--fd);font-size:.74rem;font-weight:700;padding:9px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;}
+
+/* p-btn states */
+.p-btn{width:100%;aspect-ratio:1;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.62rem;font-weight:700;cursor:pointer;transition:all .18s;}
+.p-not-visited{background:#f0f0f0;border-color:#ccc;color:#999;}
+.p-answered{background:var(--sage);border-color:#4a7a3d;color:white;}
+.p-not-answered{background:var(--rose);border-color:#a83535;color:white;}
+.p-marked{background:var(--gold);border-color:#b8832a;color:white;}
+.p-marked-answered{background:#7c5cbf;border-color:#6b4ba8;color:white;}
+.p-btn.current{box-shadow:0 0 0 2px var(--forest),0 0 0 3px rgba(26,38,24,.1);}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <a href="mockarena_dashboard.html" class="tb-logo">
+    <div class="tb-mark">MA</div>
+    <span class="tb-n1">Mock</span><span class="tb-n2">Arena</span>
+  </a>
+  <div class="tb-pipe"></div>
+  <div class="tb-info">
+    <span class="tb-exam">JEE Mains · Physics</span>
+    <span>Units &amp; Measurement · 30 Qs</span>
+  </div>
+  <div class="tb-right">
+    <div class="tb-timer" id="timer-box">
+      <span class="tb-tv" id="timer">01:00:00</span>
+      <span class="tb-tl">Remaining</span>
+    </div>
+    <button class="tb-btn tb-submit" onclick="openSubmit()">Submit</button>
+    <div class="tb-av" id="user-av">S</div>
+  </div>
+</div>
+
+<div class="sec-bar">
+  <span class="sec-lbl">Section:</span>
+  <button class="sec-tab on" id="tab-a" onclick="switchSection('A',this)">Section A (MCQ)</button>
+  <button class="sec-tab" id="tab-b" onclick="switchSection('B',this)">Section B (Integer)</button>
+  <span class="sec-inf" id="sec-info"></span>
+</div>
+<div class="prog"><div class="prog-f" id="prog-f" style="width:0%"></div></div>
+
+<div class="q-area">
+  <div class="q-scroll"><div id="q-body"></div></div>
+  <div class="q-footer">
+    <button class="fn-btn fn-mark" id="mark-btn" onclick="toggleMark()">🔖 Mark for Review</button>
+    <button class="fn-btn fn-clear" onclick="clearAnswer()">✕ Clear</button>
+    <button class="fn-btn fn-save" onclick="navigate(1)">Save &amp; Next ✓</button>
+    <div class="fn-sp"></div>
+    <span class="fn-ctr" id="q-ctr"></span>
+    <button class="fn-btn fn-prev" onclick="navigate(-1)">← Back</button>
+    <button class="fn-btn fn-next" onclick="navigate(1)">Next →</button>
+  </div>
+</div>
+
+<!-- Palette strip -->
+<div id="pal-strip">
+  <div class="ps-hdr">
+    <span class="ps-title">🗂 Question Palette</span>
+    <span class="ps-timer" id="ps-timer">01:00:00</span>
+  </div>
+  <div class="ps-legend">
+    <div class="ps-leg"><div class="ps-dot" style="background:#6b8f5e"></div>Answered</div>
+    <div class="ps-leg"><div class="ps-dot" style="background:#c84b4b"></div>Not Answered</div>
+    <div class="ps-leg"><div class="ps-dot" style="background:#bbb"></div>Not Visited</div>
+    <div class="ps-leg"><div class="ps-dot" style="background:#c8962a"></div>Marked</div>
+  </div>
+  <div class="ps-scroll" id="ps-content"></div>
+  <div class="ps-sum">
+    <div class="ps-stat"><span class="ps-num" style="color:#6b8f5e" id="ps-ans">0</span><span class="ps-lbl">Answered</span></div>
+    <div class="ps-stat"><span class="ps-num" style="color:#c84b4b" id="ps-na">0</span><span class="ps-lbl">Not Ans</span></div>
+    <div class="ps-stat"><span class="ps-num" style="color:#c8962a" id="ps-mk">0</span><span class="ps-lbl">Marked</span></div>
+    <div class="ps-stat"><span class="ps-num" id="ps-nv">30</span><span class="ps-lbl">Not Vis</span></div>
+    <button class="ps-sub" onclick="openSubmit()">✓ Submit</button>
+  </div>
+</div>
+
+<!-- Submit modal -->
+<div class="mo" id="submit-modal">
+  <div class="mb">
+    <div class="mb-t">Submit Chapter Test?</div>
+    <div class="mb-s">Units &amp; Measurement · <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
+    <div class="mb-g" id="modal-stats"></div>
+    <div class="mb-w" id="modal-warn"></div>
+    <div class="mb-row">
+      <button class="mb-cc" onclick="closeSubmit()">← Continue</button>
+      <button class="mb-ok" onclick="submitTest()">✓ Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {id:'um1',sec:'A',type:'single',text:'The dimensional formula of angular momentum is:',opts:['[ML²T⁻²]','[ML²T⁻¹]','[MLT⁻¹]','[ML⁻¹T⁻¹]'],ans:1},
+  {id:'um2',sec:'A',type:'single',text:"Which of the following has the same dimensions as Planck's constant?",opts:['Linear momentum','Angular momentum','Energy','Force'],ans:1},
+  {id:'um3',sec:'A',type:'single',text:'The SI unit of magnetic flux is:',opts:['Tesla','Weber','Henry','Gauss'],ans:1},
+  {id:'um4',sec:'A',type:'single',text:'Dimensional formula of electric field intensity is:',opts:['[MLT⁻³A⁻¹]','[ML²T⁻³A⁻¹]','[MLT⁻²A⁻¹]','[ML⁻¹T⁻²A]'],ans:0},
+  {id:'um5',sec:'A',type:'single',text:'The number of significant figures in 0.006700 is:',opts:['2','4','6','7'],ans:1},
+  {id:'um6',sec:'A',type:'single',text:'If L, C, R denote inductance, capacitance and resistance, then √(L/C) has dimensions of:',opts:['Resistance','Frequency','Impedance','Admittance'],ans:0},
+  {id:'um7',sec:'A',type:'single',text:'Percentage error in mass is 2% and in speed is 3%. Maximum error in kinetic energy is:',opts:['11%','5%','8%','1%'],ans:2},
+  {id:'um8',sec:'A',type:'single',text:'Light year is a unit of:',opts:['Time','Mass','Distance','Energy'],ans:2},
+  {id:'um9',sec:'A',type:'single',text:'The dimensions of (μ₀ε₀)^(−1/2) are same as that of:',opts:['Velocity','Acceleration','Force','Energy'],ans:0},
+  {id:'um10',sec:'A',type:'single',text:'If x = a + bt + ct², where x is in metres and t in seconds, then unit of c is:',opts:['m','ms⁻¹','ms⁻²','m²s⁻¹'],ans:2},
+  {id:'um11',sec:'A',type:'single',text:'The physical quantity that has no dimensions is:',opts:['Angular velocity','Linear momentum','Strain','Angular momentum'],ans:2},
+  {id:'um12',sec:'A',type:'single',text:'Correct dimension of coefficient of viscosity is:',opts:['[ML⁻¹T⁻²]','[MLT⁻¹]','[ML⁻¹T⁻¹]','[ML⁻²T⁻²]'],ans:2},
+  {id:'um13',sec:'A',type:'single',text:'Dimensions of pressure are same as that of:',opts:['Force','Energy per unit volume','Momentum','Power'],ans:1},
+  {id:'um14',sec:'A',type:'single',text:'A quantity P = B²l²/m where B is magnetic induction, l is length, m is mass. Dimensions of P are:',opts:['[MLT⁻³]','[M⁻¹L²T⁴A²]','[M⁻¹L²T⁻²A⁻²]','[ML²T⁻²A]'],ans:1},
+  {id:'um15',sec:'A',type:'single',text:'Least count of a stopwatch is 0.2s. Time of 20 oscillations measured as 25s. Maximum percentage error is:',opts:['1.6%','0.8%','0.4%','1.2%'],ans:1},
+  {id:'um16',sec:'A',type:'single',text:'In P = (α/β)e^(−αZ/kθ), P is pressure, Z is distance, k is Boltzmann constant, θ is temperature. Dimensional formula of β is:',opts:['[M⁰L²T⁰]','[ML²T]','[ML⁰T⁻¹]','[M⁰L⁰T⁰]'],ans:0},
+  {id:'um17',sec:'A',type:'single',text:'Which pair does NOT have same dimensions?',opts:['Work and Torque','Angular momentum and Planck constant','Tension and Surface energy','Energy and Torque'],ans:2},
+  {id:'um18',sec:'A',type:'single',text:'Number of significant figures in 5.003 × 10⁴ is:',opts:['2','4','5','6'],ans:1},
+  {id:'um19',sec:'A',type:'single',text:'Dimensions of electrical resistance are:',opts:['[ML²T⁻³A⁻²]','[ML²T⁻²A⁻²]','[ML²T⁻³A²]','[ML⁻²T⁻³A⁻²]'],ans:0},
+  {id:'um20',sec:'A',type:'single',text:'If unit of length is doubled, which remains the same?',opts:['Numerical value of speed','Numerical value of force','Numerical value of time','Numerical value of area'],ans:2},
+  {id:'um21',sec:'B',type:'integer',text:'In 1 light year, the power of 10 in metres (9.46 × 10ˣ m). Enter x:',ans:'15'},
+  {id:'um22',sec:'B',type:'integer',text:'Rectangle dimensions are (5.7±0.1)cm and (3.4±0.1)cm. Percentage error in area (round to nearest integer):',ans:'5'},
+  {id:'um23',sec:'B',type:'integer',text:'Surface tension formula is [M¹LˣT⁻²]. Value of x is:',ans:'0'},
+  {id:'um24',sec:'B',type:'integer',text:'Screw gauge pitch = 0.5mm, 50 divisions on circular scale. Least count in units of 0.01mm is:',ans:'1'},
+  {id:'um25',sec:'B',type:'integer',text:'Density = 8 g/cm³. In SI units it is (x × 10³) kg/m³. Value of x is:',ans:'8'},
+  {id:'um26',sec:'B',type:'integer',text:'If V, F, T are fundamental quantities, mass = [VᵃFᵇTᶜ]. Value of (a+b+c) is:',ans:'1'},
+  {id:'um27',sec:'B',type:'integer',text:'Number of significant figures in 0.02340:',ans:'4'},
+  {id:'um28',sec:'B',type:'integer',text:'Dimension of El²/(m⁵G²) where E=energy, l=angular momentum, m=mass, G=gravitational constant. It is dimensionless (enter 0) or not (enter 1):',ans:'0'},
+  {id:'um29',sec:'B',type:'integer',text:'Radius of sphere = (5.3 ± 0.1) cm. Percentage error in volume (round to nearest integer):',ans:'6'},
+  {id:'um30',sec:'B',type:'integer',text:'In vernier caliper, 10 vernier divisions = 9 main scale divisions, main scale LC = 1mm. Vernier LC in units of 0.1mm is:',ans:'1'},
+];
+
+// State
+const qState = {};
+QUESTIONS.forEach(q => { qState[q.id]={visited:false,answered:false,marked:false,answer:null}; });
+let curIdx = 0;
+let curSec = 'A';
+let timeLeft = 3600; // 60 min
+let timerInt;
+
+function getSecQs(sec){ return QUESTIONS.filter(q=>q.sec===sec); }
+function getCurSec(){ return curSec; }
+
+function switchSection(sec, el){
+  curSec = sec;
+  document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('on'));
+  if(el) el.classList.add('on');
+  const qs = getSecQs(sec);
+  curIdx = QUESTIONS.indexOf(qs[0]);
+  renderQ();
+}
+
+function renderQ(){
+  const q = QUESTIONS[curIdx];
+  if(!q) return;
+  const st = qState[q.id];
+  st.visited = true;
+
+  // Section info
+  const secQs = getSecQs(q.sec);
+  const secIdx = secQs.indexOf(q);
+  document.getElementById('sec-info').textContent = `Q ${secIdx+1} of ${secQs.length}`;
+
+  // Progress
+  const answered = QUESTIONS.filter(q=>qState[q.id].answered).length;
+  document.getElementById('prog-f').style.width = (answered/QUESTIONS.length*100)+'%';
+
+  // Q counter
+  document.getElementById('q-ctr').textContent = `${curIdx+1} / ${QUESTIONS.length}`;
+
+  // Mark btn
+  const mb = document.getElementById('mark-btn');
+  mb.textContent = st.marked ? '★ Marked' : '🔖 Mark for Review';
+  mb.className = 'fn-btn fn-mark' + (st.marked?' on':'');
+
+  let html = '';
+  // Header
+  html += `<div class="q-header">
+    <div class="q-num">Q${curIdx+1}</div>
+    <div>
+      <span class="q-type ${q.type==='integer'?'qt-int':'qt-mcq'}">${q.type==='integer'?'Integer Type':'Single Correct'}</span>
+      <div class="q-marks">${q.type==='integer'?'<span class="pos">+4</span> · <span style="color:rgba(26,38,24,.35)">0 wrong</span>':'<span class="pos">+4</span> correct · <span class="neg">−1</span> wrong'}</div>
+    </div>
+    <div class="q-actions">
+      <button class="q-ab ${st.marked?'bm':''}" onclick="toggleMark()" title="Bookmark">🔖</button>
+      <button class="q-ab" onclick="alert('Hint: Apply dimensional analysis carefully!')" title="Hint">💡</button>
+    </div>
+  </div>`;
+
+  // Text block
+  html += `<div class="q-text-block">
+    <div class="q-tag">⚛️ Physics · Units &amp; Measurement</div>
+    <div class="q-text">${q.text}</div>
+  </div>`;
+
+  // Options or Integer
+  if(q.type === 'integer'){
+    const val = st.answer !== null ? st.answer : '';
+    html += `<div class="int-wrap">
+      <div class="int-lbl">Enter your answer (decimal values allowed):</div>
+      <input type="text" inputmode="decimal" class="int-input" id="int-input" value="${val}" placeholder="0" oninput="saveInteger(this.value)">
+      <div class="calc-pad">
+        <button class="calc-btn" onclick="appendDigit('7')">7</button>
+        <button class="calc-btn" onclick="appendDigit('8')">8</button>
+        <button class="calc-btn" onclick="appendDigit('9')">9</button>
+        <button class="calc-btn sp" onclick="appendDigit('bs')">⌫</button>
+        <button class="calc-btn" onclick="appendDigit('4')">4</button>
+        <button class="calc-btn" onclick="appendDigit('5')">5</button>
+        <button class="calc-btn" onclick="appendDigit('6')">6</button>
+        <button class="calc-btn sp" onclick="appendDigit('neg')">±</button>
+        <button class="calc-btn" onclick="appendDigit('1')">1</button>
+        <button class="calc-btn" onclick="appendDigit('2')">2</button>
+        <button class="calc-btn" onclick="appendDigit('3')">3</button>
+        <button class="calc-btn" onclick="appendDigit('.')">.</button>
+        <button class="calc-btn" onclick="appendDigit('0')" style="grid-column:span 3;">0</button>
+        <button class="calc-btn sp" onclick="appendDigit('clr')">✕</button>
+      </div>
+    </div>`;
+  } else {
+    html += '<div class="q-opts">';
+    q.opts.forEach((opt,i) => {
+      let cls = '';
+      if(st.answered && st.answer===i) cls = 'selected';
+      html += `<div class="opt ${cls}" onclick="selectOpt(${i})">
+        <div class="opt-key">${String.fromCharCode(65+i)}</div>
+        <div class="opt-text">${opt}</div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  document.getElementById('q-body').innerHTML = html;
+  renderPalette();
+}
+
+function selectOpt(i){
+  const q = QUESTIONS[curIdx];
+  const st = qState[q.id];
+  st.answer = i; st.answered = true;
+  renderQ();
+}
+
+function saveInteger(val){
+  const q = QUESTIONS[curIdx];
+  const st = qState[q.id];
+  st.answer = val; st.answered = val!=='' && val!==null;
+  renderPalette();
+}
+
+function appendDigit(d){
+  const inp = document.getElementById('int-input');
+  if(!inp) return;
+  let v = inp.value || '';
+  if(d==='neg'){ v = v.startsWith('-') ? v.slice(1) : (v ? '-'+v : '-'); }
+  else if(d==='.'){ if(!v.includes('.')) v+='.'; }
+  else if(d==='bs'){ v = v.slice(0,-1); }
+  else if(d==='clr'){ v = ''; }
+  else { v += d; }
+  inp.value = v;
+  saveInteger(v);
+}
+
+function toggleMark(){
+  const q = QUESTIONS[curIdx];
+  qState[q.id].marked = !qState[q.id].marked;
+  renderQ();
+}
+
+function clearAnswer(){
+  const q = QUESTIONS[curIdx];
+  qState[q.id].answer = null; qState[q.id].answered = false;
+  renderQ();
+}
+
+function navigate(dir){
+  const newIdx = curIdx + dir;
+  if(newIdx < 0 || newIdx >= QUESTIONS.length) return;
+  curIdx = newIdx;
+  // Switch section tab if needed
+  const q = QUESTIONS[curIdx];
+  if(q.sec !== curSec){
+    curSec = q.sec;
+    document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('on'));
+    document.getElementById('tab-'+q.sec.toLowerCase()).classList.add('on');
+  }
+  renderQ();
+}
+
+function jumpToQ(idx){
+  curIdx = idx;
+  const q = QUESTIONS[idx];
+  if(q.sec !== curSec){
+    curSec = q.sec;
+    document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('on'));
+    document.getElementById('tab-'+q.sec.toLowerCase()).classList.add('on');
+  }
+  renderQ();
+}
+
+function renderPalette(){
+  let html = '';
+  // Section A
+  html += '<div class="palette-subj-label">Section A (MCQ)</div><div class="palette-grid">';
+  getSecQs('A').forEach((q,i) => {
+    const st = qState[q.id];
+    const isCur = QUESTIONS[curIdx]===q;
+    let cls = 'p-not-visited';
+    if(st.answered && st.marked) cls='p-marked-answered';
+    else if(st.answered) cls='p-answered';
+    else if(st.marked) cls='p-marked';
+    else if(st.visited) cls='p-not-answered';
+    const globalN = QUESTIONS.indexOf(q)+1;
+    html += `<button class="p-btn ${cls}${isCur?' current':''}" onclick="jumpToQ(${QUESTIONS.indexOf(q)})">${globalN}</button>`;
+  });
+  html += '</div>';
+  // Section B
+  html += '<div class="palette-subj-label">Section B (Integer)</div><div class="palette-grid">';
+  getSecQs('B').forEach((q,i) => {
+    const st = qState[q.id];
+    const isCur = QUESTIONS[curIdx]===q;
+    let cls = 'p-not-visited';
+    if(st.answered && st.marked) cls='p-marked-answered';
+    else if(st.answered) cls='p-answered';
+    else if(st.marked) cls='p-marked';
+    else if(st.visited) cls='p-not-answered';
+    const globalN = QUESTIONS.indexOf(q)+1;
+    html += `<button class="p-btn ${cls}${isCur?' current':''}" onclick="jumpToQ(${QUESTIONS.indexOf(q)})">${globalN}</button>`;
+  });
+  html += '</div>';
+
+  document.getElementById('ps-content').innerHTML = html;
+
+  // Update counts
+  const ans = QUESTIONS.filter(q=>qState[q.id].answered).length;
+  const na = QUESTIONS.filter(q=>qState[q.id].visited&&!qState[q.id].answered).length;
+  const mk = QUESTIONS.filter(q=>qState[q.id].marked).length;
+  const nv = QUESTIONS.filter(q=>!qState[q.id].visited).length;
+  document.getElementById('ps-ans').textContent = ans;
+  document.getElementById('ps-na').textContent = na;
+  document.getElementById('ps-mk').textContent = mk;
+  document.getElementById('ps-nv').textContent = nv;
+
+  // Sync timer
+  const tv = document.getElementById('timer');
+  const mt = document.getElementById('ps-timer');
+  if(tv&&mt) mt.textContent = tv.textContent;
+}
+
+// Timer
+function startTimer(){
+  timerInt = setInterval(() => {
+    timeLeft--;
+    const h = Math.floor(timeLeft/3600);
+    const m = Math.floor((timeLeft%3600)/60);
+    const s = timeLeft%60;
+    const str = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    document.getElementById('timer').textContent = str;
+    document.getElementById('ps-timer').textContent = str;
+    const box = document.getElementById('timer-box');
+    if(timeLeft<=300){ box.className='tb-timer danger'; }
+    else if(timeLeft<=600){ box.className='tb-timer warn'; }
+    if(timeLeft<=0){ clearInterval(timerInt); submitTest(); }
+  },1000);
+}
+
+function openSubmit(){
+  const ans = QUESTIONS.filter(q=>qState[q.id].answered).length;
+  const na = QUESTIONS.filter(q=>!qState[q.id].answered).length;
+  const mk = QUESTIONS.filter(q=>qState[q.id].marked).length;
+  document.getElementById('modal-stats').innerHTML = `
+    <div class="mb-c"><div class="mb-cn" style="color:#6b8f5e">${ans}</div><div class="mb-cl">Answered</div></div>
+    <div class="mb-c"><div class="mb-cn" style="color:#c84b4b">${na}</div><div class="mb-cl">Not Answered</div></div>
+    <div class="mb-c"><div class="mb-cn" style="color:#c8962a">${mk}</div><div class="mb-cl">Marked</div></div>
+    <div class="mb-c"><div class="mb-cn">${QUESTIONS.length}</div><div class="mb-cl">Total</div></div>`;
+  const h=Math.floor(timeLeft/3600),m=Math.floor((timeLeft%3600)/60),s=timeLeft%60;
+  document.getElementById('modal-time').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  const unanswered = QUESTIONS.length - ans;
+  document.getElementById('modal-warn').innerHTML = unanswered>0
+    ? `⚠️ ${unanswered} question${unanswered>1?'s':''} unanswered`
+    : '✅ All questions attempted!';
+  document.getElementById('submit-modal').classList.add('open');
+}
+
+function closeSubmit(){ document.getElementById('submit-modal').classList.remove('open'); }
+
+function submitTest(){
+  clearInterval(timerInt);
+  closeSubmit();
+  // Calculate score
+  let score=0, correct=0, wrong=0, skipped=0;
+  QUESTIONS.forEach(q => {
+    const st = qState[q.id];
+    if(!st.answered){ skipped++; return; }
+    const isCorrect = q.type==='integer'
+      ? String(st.answer).trim()===String(q.ans)
+      : st.answer===q.ans;
+    if(isCorrect){ score+=4; correct++; }
+    else if(q.type!=='integer'){ score-=1; wrong++; }
+  });
+  const pct = Math.round(correct/QUESTIONS.length*100);
+  const timeTaken = 3600 - timeLeft;
+  const mm = Math.floor(timeTaken/60), ss = timeTaken%60;
+
+  document.getElementById('q-body').innerHTML = `
+    <div style="text-align:center;padding:40px 20px;animation:fadeIn .4s ease;">
+      <div style="font-size:2.5rem;margin-bottom:16px;">${pct>=80?'🏆':pct>=60?'👍':'📚'}</div>
+      <div style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#1a2618;margin-bottom:6px;">
+        ${pct>=80?'Excellent!':pct>=60?'Good Work!':'Keep Practicing!'}
+      </div>
+      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">
+        Units &amp; Measurement · JEE Mains Physics
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:400px;margin:0 auto 28px;">
+        <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#1a2618;">${score}</div>
+          <div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;letter-spacing:.06em;">Score</div>
+        </div>
+        <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#6b8f5e;">${pct}%</div>
+          <div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;letter-spacing:.06em;">Accuracy</div>
+        </div>
+        <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#6b8f5e;">${correct}</div>
+          <div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;letter-spacing:.06em;">Correct</div>
+        </div>
+        <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#c84b4b;">${wrong}</div>
+          <div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;letter-spacing:.06em;">Wrong</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a href="mockarena_test_catalog.html" style="font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;padding:10px 20px;border-radius:9px;border:1.5px solid rgba(26,38,24,.13);color:#3d5239;text-decoration:none;">← Back to Tests</a>
+        <button onclick="location.reload()" style="font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;padding:10px 20px;border-radius:9px;border:none;background:linear-gradient(135deg,#6b8f5e,#4a7a3d);color:white;cursor:pointer;">🔄 Reattempt</button>
+        <a href="mockarena_dashboard.html" style="font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;padding:10px 20px;border-radius:9px;border:none;background:#1a2618;color:white;text-decoration:none;">📊 Dashboard</a>
+      </div>
+    </div>`;
+  document.getElementById('pal-strip').style.display='none';
+  document.querySelector('.q-footer').style.display='none';
+  saveToFirestore(score, correct, wrong, skipped, pct);
+}
+function toggleInstructions(){ alert('Units & Measurement Chapter Test\n\nSection A: 20 MCQ (+4/-1)\nSection B: 10 Integer (+4/0)\nTotal: 30 Questions\nDuration: 60 minutes'); }
+
+// Init
+renderQ();
+startTimer();
+</script>
+
+<script>
+// Firebase save
+(function(){
+  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+  function loadFS(cb){
+    var s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+    s1.onload=function(){var s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+      s2.onload=function(){var s3=document.createElement("script");s3.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
+        s3.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);cb(firebase.firestore(),firebase.auth());};
+        document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);
+  }
+  function _g(){
+    var s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+    s1.onload=function(){var s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+      s2.onload=function(){
+        if(!firebase.apps.length)firebase.initializeApp(_c);
+        firebase.auth().onAuthStateChanged(function(u){
+          if(!u){window.location.replace("login.html");return;}
+          var nm=u.displayName||"Student";
+          var av=document.getElementById("user-av");
+          if(av){if(u.photoURL){av.innerHTML='<img src="'+u.photoURL+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';}
+          else{av.textContent=nm.split(" ").map(function(w){return w[0];}).join("").toUpperCase().substring(0,2);}}
+        });
+      };document.head.appendChild(s2);};document.head.appendChild(s1);
+  }
+  window.saveToFirestore=function(score,correct,wrong,skipped,pct){
+    loadFS(function(db,auth){
+      var user=auth.currentUser;if(!user)return;
+      var testId='chapter_phy_units_'+Date.now();
+      db.collection("results").doc(user.uid).collection("tests").doc(testId).set({
+        uid:user.uid,examType:'jee_mains',testType:'chapter',
+        subject:'Physics',chapter:'Units & Measurement',
+        testName:'JEE Mains | Physics | Units & Measurement',
+        score:score,correct:correct,wrong:wrong,skipped:skipped,
+        total:30,accuracy:pct,
+        timestamp:firebase.firestore.FieldValue.serverTimestamp(),
+        date:new Date().toISOString().split("T")[0]
+      }).catch(function(e){console.error(e);});
+    });
+  };
+  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_g);}else{_g();}
+})();
+</script>
+</body>
+</html>
