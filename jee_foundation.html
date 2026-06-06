@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>JEE Foundation — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --forest:#1a2618;--forest-m:#3d5239;--forest-l:#243420;
+  --sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-glow:rgba(107,143,94,.2);
+  --gold:#c8962a;--rose:#c84b4b;--sky:#3b82c4;
+  --cream:#faf9f5;--cream-w:#f5f3ec;
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.12);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);overflow-x:hidden;}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(26,38,24,.96);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);height:56px;display:flex;align-items:center;padding:0 16px;gap:10px;}
+.nav-logo{display:flex;align-items:center;gap:7px;text-decoration:none;}
+.nav-mark{width:30px;height:30px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.66rem;font-weight:800;color:white;}
+.nav-n1{color:white;font-size:.88rem;font-weight:800;}
+.nav-n2{font-size:.88rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-badge{background:rgba(107,143,94,.2);border:1px solid rgba(107,143,94,.3);color:var(--sage);font-size:.54rem;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.06em;}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-dash{font-family:var(--fd);font-size:.7rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);cursor:pointer;text-decoration:none;transition:all .18s;}
+.nav-dash:hover{background:rgba(255,255,255,.1);color:white;}
+.nav-av{width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:white;overflow:hidden;cursor:pointer;flex-shrink:0;}
+
+/* ── HERO ── */
+.hero{min-height:100vh;background:var(--forest);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px 60px;text-align:center;position:relative;overflow:hidden;}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 30%,rgba(107,143,94,.1),transparent 70%);}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
+.hero-content{position:relative;z-index:1;max-width:640px;}
+.hero-pill{display:inline-flex;align-items:center;gap:6px;background:rgba(107,143,94,.12);border:1px solid rgba(107,143,94,.2);border-radius:100px;padding:5px 14px;margin-bottom:22px;}
+.hero-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1;}50%{transform:scale(1.4);opacity:.6;}}
+.hero-pill-txt{font-size:.6rem;font-weight:700;color:var(--sage);letter-spacing:.09em;text-transform:uppercase;}
+.hero-title{font-size:clamp(2rem,8vw,3.8rem);font-weight:900;color:white;line-height:1.1;margin-bottom:16px;letter-spacing:-.02em;}
+.hero-title .ht-green{background:linear-gradient(135deg,var(--sage),#a8d498);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-sub{font-size:clamp(.84rem,2.5vw,1rem);color:rgba(255,255,255,.42);line-height:1.75;margin-bottom:28px;max-width:520px;margin-left:auto;margin-right:auto;}
+.hero-class-row{display:flex;gap:8px;justify-content:center;margin-bottom:28px;flex-wrap:wrap;}
+.hcr-item{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:10px 16px;min-width:72px;transition:all .2s;}
+.hcr-item:hover,.hcr-item.active{background:rgba(107,143,94,.12);border-color:rgba(107,143,94,.25);}
+.hcr-num{font-family:var(--fm);font-size:1.1rem;font-weight:700;color:white;display:block;}
+.hcr-lbl{font-size:.52rem;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.08em;}
+.hcr-arrow{background:rgba(107,143,94,.15);border-color:rgba(107,143,94,.25);}
+.hcr-arrow .hcr-num{color:var(--sage);}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
+.btn-green{font-family:var(--fd);font-size:.84rem;font-weight:700;padding:11px 22px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s;box-shadow:0 4px 16px var(--sage-glow);}
+.btn-green:hover{transform:translateY(-2px);box-shadow:0 7px 22px var(--sage-glow);}
+.btn-ghost{font-family:var(--fd);font-size:.84rem;font-weight:700;padding:11px 22px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.7);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:all .2s;}
+.btn-ghost:hover{border-color:var(--sage);color:white;}
+.hero-stats{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;}
+.hs{text-align:center;}
+.hs-n{font-family:var(--fm);font-size:1.3rem;font-weight:700;color:white;display:block;}
+.hs-l{font-size:.58rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;}
+
+/* ── SECTIONS ── */
+section{padding:64px 20px;}
+.container{max-width:1060px;margin:0 auto;}
+.slabel{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--sage);margin-bottom:8px;}
+.stitle{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:var(--forest);line-height:1.2;margin-bottom:10px;}
+.ssub{font-size:.94rem;color:rgba(26,38,24,.42);line-height:1.7;max-width:520px;}
+
+/* ── WHY CARDS ── */
+.why-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:32px;}
+.why-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;transition:all .22s;}
+.why-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,38,24,.07);}
+.wc-icon{font-size:1.5rem;margin-bottom:10px;display:block;}
+.wc-title{font-size:.9rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.wc-desc{font-size:.8rem;color:rgba(26,38,24,.44);line-height:1.6;}
+
+/* ── ROADMAP ── */
+.rm-wrap{margin-top:36px;display:flex;flex-direction:column;gap:16px;}
+.rm-row{display:flex;gap:16px;align-items:flex-start;}
+.rm-left{display:flex;flex-direction:column;align-items:center;flex-shrink:0;width:48px;}
+.rm-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.88rem;font-weight:800;color:white;flex-shrink:0;}
+.rm-line{width:2px;height:100%;min-height:16px;background:var(--border);flex:1;}
+.rm-card{background:white;border:1px solid var(--border);border-radius:14px;padding:18px 20px;flex:1;}
+.rm-title{font-size:.94rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.rm-desc{font-size:.78rem;color:rgba(26,38,24,.44);line-height:1.6;margin-bottom:10px;}
+.rm-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.rm-tag{font-size:.56rem;font-weight:600;padding:2px 8px;border-radius:100px;background:var(--sage-l);color:var(--sage-m,var(--forest-m));}
+
+/* ── SUBJECTS ── */
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:32px;}
+.subj-card{background:white;border:1px solid var(--border);border-radius:16px;padding:22px;transition:all .22s;}
+.subj-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(26,38,24,.08);}
+.sc-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.sc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.sc-name{font-size:.9rem;font-weight:800;color:var(--forest);}
+.sc-sub{font-size:.62rem;color:rgba(26,38,24,.3);}
+.sc-topics{display:flex;flex-direction:column;gap:6px;}
+.sc-topic{display:flex;align-items:flex-start;gap:7px;font-size:.78rem;color:var(--forest-m);line-height:1.5;}
+.sc-topic::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--sage);flex-shrink:0;margin-top:5px;}
+.sc-note{margin-top:14px;padding:9px 12px;background:var(--sage-l);border-radius:8px;font-size:.66rem;color:var(--forest-m);line-height:1.5;}
+
+/* ── COMPARISON ── */
+.ct{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:32px;}
+.ct-head{display:grid;grid-template-columns:1.4fr 1fr 1fr;background:var(--forest);padding:12px 18px;gap:8px;}
+.ct-hc{font-size:.62rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.06em;}
+.ct-hc:first-child{color:rgba(255,255,255,.25);}
+.ct-row{display:grid;grid-template-columns:1.4fr 1fr 1fr;padding:11px 18px;border-bottom:1px solid var(--border);gap:8px;transition:background .18s;}
+.ct-row:last-child{border-bottom:none;}
+.ct-row:hover{background:var(--cream-w);}
+.ct-c{font-size:.78rem;color:rgba(26,38,24,.5);}
+.ct-c:first-child{font-weight:600;color:var(--forest);}
+.yes{color:var(--sage);font-weight:700;}
+.partial{color:var(--gold);font-weight:600;}
+.no{color:rgba(26,38,24,.2);}
+
+/* ── TESTS ── */
+.tests-wrap{background:var(--forest);border-radius:18px;padding:32px 24px;margin-top:32px;}
+.test-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:22px;}
+.test-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:18px;transition:all .22s;text-decoration:none;display:block;}
+.test-card:hover{background:rgba(255,255,255,.07);border-color:rgba(107,143,94,.25);transform:translateY(-2px);}
+.tc-badge{display:inline-block;font-size:.52rem;font-weight:700;padding:2px 7px;border-radius:100px;text-transform:uppercase;letter-spacing:.06em;margin-bottom:9px;}
+.tcb-green{background:rgba(107,143,94,.18);color:#9bc48a;}
+.tcb-lock{background:rgba(255,255,255,.06);color:rgba(255,255,255,.25);}
+.tc-title{font-size:.92rem;font-weight:700;color:white;margin-bottom:5px;}
+.tc-desc{font-size:.74rem;color:rgba(255,255,255,.32);line-height:1.5;margin-bottom:11px;}
+.tc-meta{display:flex;gap:10px;margin-bottom:12px;}
+.tc-m{font-size:.6rem;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:3px;}
+.tc-btn{width:100%;font-family:var(--fd);font-size:.7rem;font-weight:700;padding:8px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;transition:all .2s;}
+.tc-btn:hover{box-shadow:0 4px 12px var(--sage-glow);}
+.tc-btn-lock{background:rgba(255,255,255,.06);color:rgba(255,255,255,.25);cursor:not-allowed;}
+
+/* ── TIPS ── */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:32px;}
+.tip-card{background:white;border:1px solid var(--border);border-radius:13px;padding:18px;display:flex;gap:12px;transition:all .22s;}
+.tip-card:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(26,38,24,.06);}
+.tip-num{width:32px;height:32px;border-radius:9px;background:var(--forest);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.76rem;font-weight:700;flex-shrink:0;}
+.tip-title{font-size:.88rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
+.tip-desc{font-size:.76rem;color:rgba(26,38,24,.42);line-height:1.6;}
+
+/* ── CTA ── */
+.cta-block{background:var(--forest);border-radius:18px;padding:44px 28px;text-align:center;position:relative;overflow:hidden;margin-top:32px;}
+.cta-block::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(107,143,94,.08),transparent);}
+.cta-title{font-size:clamp(1.4rem,4vw,2.1rem);font-weight:900;color:white;margin-bottom:10px;line-height:1.2;position:relative;z-index:1;}
+.cta-sub{font-size:.86rem;color:rgba(255,255,255,.38);margin-bottom:24px;position:relative;z-index:1;max-width:440px;margin-left:auto;margin-right:auto;}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
+
+/* ── FOOTER ── */
+.footer{background:var(--forest);padding:36px 20px 20px;}
+.ft{display:flex;flex-wrap:wrap;gap:28px;max-width:1060px;margin:0 auto 24px;}
+.ft-brand{flex:1;min-width:180px;}
+.ft-logo{display:flex;align-items:center;gap:7px;margin-bottom:10px;}
+.ft-desc{font-size:.68rem;color:rgba(255,255,255,.25);line-height:1.7;max-width:220px;}
+.ft-col{flex:1;min-width:120px;}
+.ft-ct{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.18);margin-bottom:10px;}
+.ft-link{display:block;font-size:.76rem;color:rgba(255,255,255,.35);text-decoration:none;margin-bottom:6px;transition:color .18s;}
+.ft-link:hover{color:var(--sage);}
+.ft-bottom{max-width:1060px;margin:0 auto;padding-top:16px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.ft-copy{font-size:.6rem;color:rgba(255,255,255,.18);}
+
+.nav-links{display:none;}@media(max-width:600px){
+  section{padding:48px 16px;}
+  .why-grid{grid-template-columns:1fr 1fr;}
+  .hero-class-row{gap:6px;}
+  .hcr-item{min-width:60px;padding:8px 12px;}
+  .hcr-num{font-size:.96rem;}
+  .tests-wrap{padding:22px 14px;}
+  .subj-grid,.test-grid{grid-template-columns:1fr;}
+  .ct-head,.ct-row{grid-template-columns:1.2fr 1fr 1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-mark">MA</div>
+    <span class="nav-n1">Mock</span><span class="nav-n2">Arena</span>
+  </a>
+  <span class="nav-badge">Foundation</span>
+  <div class="nav-links" style="display:flex;align-items:center;gap:4px;margin-left:auto;margin-right:8px;"><a href="#roadmap" class="nav-link" style="font-size:.68rem;font-weight:600;color:rgba(255,255,255,.5);text-decoration:none;padding:4px 9px;border-radius:6px;transition:all .18s;">Roadmap</a><a href="#syllabus" class="nav-link" style="font-size:.68rem;font-weight:600;color:rgba(255,255,255,.5);text-decoration:none;padding:4px 9px;border-radius:6px;transition:all .18s;">Syllabus</a><a href="#tests" class="nav-link" style="font-size:.68rem;font-weight:600;color:rgba(255,255,255,.5);text-decoration:none;padding:4px 9px;border-radius:6px;transition:all .18s;">Tests</a><a href="#tips" class="nav-link" style="font-size:.68rem;font-weight:600;color:rgba(255,255,255,.5);text-decoration:none;padding:4px 9px;border-radius:6px;transition:all .18s;">Tips</a></div><div class="nav-right">
+    <a href="mockarena_dashboard.html" class="nav-dash">Dashboard</a>
+    <div class="nav-av" id="nav-av">S</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-pill">
+      <div class="hero-pill-dot"></div>
+      <span class="hero-pill-txt">Class 8, 9 & 10 · Pre-JEE Foundation</span>
+    </div>
+    <h1 class="hero-title">
+      Start Your<br/><span class="ht-green">IIT Dream</span><br/>in Class 8 Itself
+    </h1>
+    <p class="hero-sub">The students who crack IIT-JEE don't start in Class 11. They start here — building rock-solid fundamentals in PCM, years before the competition begins.</p>
+    <div class="hero-class-row">
+      <div class="hcr-item">
+        <span class="hcr-num">8th</span>
+        <span class="hcr-lbl">Class</span>
+      </div>
+      <div class="hcr-item">
+        <span class="hcr-num">9th</span>
+        <span class="hcr-lbl">Class</span>
+      </div>
+      <div class="hcr-item">
+        <span class="hcr-num">10th</span>
+        <span class="hcr-lbl">Class</span>
+      </div>
+      <div class="hcr-item hcr-arrow">
+        <span class="hcr-num">IIT</span>
+        <span class="hcr-lbl">Target</span>
+      </div>
+    </div>
+    <div class="hero-btns">
+      <a href="#roadmap" class="btn-green">📍 See Roadmap</a>
+      <a href="#tests" class="btn-ghost">🎯 Practice Now</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><span class="hs-n">3 yrs</span><span class="hs-l">Head Start</span></div>
+      <div class="hs"><span class="hs-n">PCM</span><span class="hs-l">All Subjects</span></div>
+      <div class="hs"><span class="hs-n">NTSE</span><span class="hs-l">Level Prep</span></div>
+      <div class="hs"><span class="hs-n">Free</span><span class="hs-l">Full Access</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY START EARLY -->
+<section style="background:white;">
+  <div class="container">
+    <div class="slabel">Why Foundation?</div>
+    <h2 class="stitle">Why Start in Class 8?</h2>
+    <p class="ssub">Every IIT topper has one thing in common — they started early. Here's why it matters.</p>
+    <div class="why-grid">
+      <div class="why-card">
+        <span class="wc-icon">🧠</span>
+        <div class="wc-title">Concept Clarity</div>
+        <div class="wc-desc">Class 8–10 is when your brain forms the strongest conceptual connections. Build correct mental models now — no cramming later.</div>
+      </div>
+      <div class="why-card">
+        <span class="wc-icon">⏳</span>
+        <div class="wc-title">3-Year Advantage</div>
+        <div class="wc-desc">3 full years of practice before JEE. Foundation students reach Class 11 already knowing 60% of the JEE syllabus.</div>
+      </div>
+      <div class="why-card">
+        <span class="wc-icon">📈</span>
+        <div class="wc-title">95%+ in Boards</div>
+        <div class="wc-desc">Foundation prep makes Class 10 boards effortless. Score top marks in boards while simultaneously building JEE skills.</div>
+      </div>
+      <div class="why-card">
+        <span class="wc-icon">🏆</span>
+        <div class="wc-title">NTSE & Olympiads</div>
+        <div class="wc-desc">Naturally prepares you for NTSE, NSO, NMTC — scholarships that boost your profile and self-confidence.</div>
+      </div>
+      <div class="why-card">
+        <span class="wc-icon">😌</span>
+        <div class="wc-title">Less Stress in Class 12</div>
+        <div class="wc-desc">Strong fundamentals from Class 8–10 means Class 11–12 is manageable — not overwhelming like it is for most students.</div>
+      </div>
+      <div class="why-card">
+        <span class="wc-icon">🔬</span>
+        <div class="wc-title">Deeper Understanding</div>
+        <div class="wc-desc">Foundation students understand WHY a formula works — not just HOW to apply it. That depth is what separates AIR 1 from AIR 1000.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Your Journey</div>
+    <h2 class="stitle">Class-by-Class Roadmap</h2>
+    <p class="ssub">Exactly what to focus on each year to maximize your JEE rank.</p>
+    <div class="rm-wrap">
+      <div class="rm-row">
+        <div class="rm-left">
+          <div class="rm-circle" style="background:linear-gradient(135deg,#3b82c4,#2563eb);">8</div>
+          <div class="rm-line"></div>
+        </div>
+        <div class="rm-card">
+          <div class="rm-title">Class 8 — Ignite the Curiosity</div>
+          <div class="rm-desc">Strengthen Maths (Algebra, Geometry, Mensuration) and basic Science. Develop a love for problem-solving. Read NCERT carefully and solve all examples.</div>
+          <div class="rm-tags"><span class="rm-tag">NCERT Maths</span><span class="rm-tag">Basic Physics</span><span class="rm-tag">Chemistry Intro</span><span class="rm-tag">Logical Reasoning</span></div>
+        </div>
+      </div>
+      <div class="rm-row">
+        <div class="rm-left">
+          <div class="rm-circle" style="background:linear-gradient(135deg,#7c3aed,#6d28d9);">9</div>
+          <div class="rm-line"></div>
+        </div>
+        <div class="rm-card">
+          <div class="rm-title">Class 9 — Build the Foundation</div>
+          <div class="rm-desc">Real JEE concepts begin here — Motion, Force, Work & Energy in Physics; Atoms & Matter in Chemistry; Polynomials & Coordinate Geometry in Maths. Master these deeply.</div>
+          <div class="rm-tags"><span class="rm-tag">Kinematics</span><span class="rm-tag">Atomic Structure</span><span class="rm-tag">Coordinate Geometry</span><span class="rm-tag">AP & GP</span></div>
+        </div>
+      </div>
+      <div class="rm-row">
+        <div class="rm-left">
+          <div class="rm-circle" style="background:linear-gradient(135deg,var(--sage),#4a7a3d);">10</div>
+          <div class="rm-line"></div>
+        </div>
+        <div class="rm-card">
+          <div class="rm-title">Class 10 — Strengthen & Excel</div>
+          <div class="rm-desc">Board year + deep foundation. Master Electricity, Optics, Chemical Reactions, Acids & Bases, Trigonometry, Quadratic Equations. Target 95%+ boards + NTSE.</div>
+          <div class="rm-tags"><span class="rm-tag">Electricity</span><span class="rm-tag">Light & Optics</span><span class="rm-tag">Trigonometry</span><span class="rm-tag">NTSE Prep</span></div>
+        </div>
+      </div>
+      <div class="rm-row">
+        <div class="rm-left">
+          <div class="rm-circle" style="background:linear-gradient(135deg,var(--gold),#b8832a);">11</div>
+          <div class="rm-line"></div>
+        </div>
+        <div class="rm-card">
+          <div class="rm-title">Class 11 — JEE Level Begins</div>
+          <div class="rm-desc">With strong foundation, Class 11 is your power year. Thermodynamics, Rotational Motion, Organic Chemistry, Complex Numbers — foundation students find this manageable while others struggle.</div>
+          <div class="rm-tags"><span class="rm-tag">Rotational Motion</span><span class="rm-tag">Thermodynamics</span><span class="rm-tag">Organic Chemistry</span><span class="rm-tag">Calculus</span></div>
+        </div>
+      </div>
+      <div class="rm-row">
+        <div class="rm-left">
+          <div class="rm-circle" style="background:linear-gradient(135deg,var(--rose),#a83535);">12</div>
+        </div>
+        <div class="rm-card">
+          <div class="rm-title">Class 12 — Crack JEE & Secure IIT</div>
+          <div class="rm-desc">Full mock tests, PYQ practice, revision. Foundation students reach here with 4 years of JEE prep advantage. This is where you convert preparation into an IIT rank.</div>
+          <div class="rm-tags"><span class="rm-tag">Full Mocks</span><span class="rm-tag">PYQ Practice</span><span class="rm-tag">Revision</span><span class="rm-tag">JEE Advanced</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYLLABUS -->
+<section id="syllabus" style="background:white;">
+  <div class="container">
+    <div class="slabel">Syllabus</div>
+    <h2 class="stitle">Foundation Syllabus (Class 8–10)</h2>
+    <p class="ssub">NCERT-aligned with JEE conceptual depth across all 3 subjects.</p>
+    <div class="subj-grid">
+      <div class="subj-card">
+        <div class="sc-hdr">
+          <div class="sc-icon" style="background:rgba(59,130,196,.1);">⚛️</div>
+          <div><div class="sc-name">Physics Foundation</div><div class="sc-sub">Class 8-10 · NCERT + JEE Level</div></div>
+        </div>
+        <div class="sc-topics">
+          <div class="sc-topic">Motion — Distance, Speed, Velocity, Acceleration</div>
+          <div class="sc-topic">Force & Laws of Motion — Newton's Laws, Friction</div>
+          <div class="sc-topic">Work, Energy & Power — KE, PE, Conservation</div>
+          <div class="sc-topic">Gravitation — Universal law, g, Kepler's laws</div>
+          <div class="sc-topic">Pressure, Buoyancy, Archimedes Principle</div>
+          <div class="sc-topic">Sound — Waves, Echo, Frequency, Ultrasound</div>
+          <div class="sc-topic">Light — Reflection, Refraction, Lenses, Eye</div>
+          <div class="sc-topic">Electricity — Ohm's law, Circuits, Power</div>
+          <div class="sc-topic">Magnetic Effects of Current</div>
+          <div class="sc-topic">Heat & Thermodynamics Basics</div>
+        </div>
+        <div class="sc-note">🎯 Try our JEE Mains Physics chapter tests — they directly extend your Class 9-10 concepts!</div>
+      </div>
+      <div class="subj-card">
+        <div class="sc-hdr">
+          <div class="sc-icon" style="background:rgba(107,143,94,.1);">🧪</div>
+          <div><div class="sc-name">Chemistry Foundation</div><div class="sc-sub">Class 8-10 · NCERT + JEE Level</div></div>
+        </div>
+        <div class="sc-topics">
+          <div class="sc-topic">Matter — States, Changes, Pure Substances</div>
+          <div class="sc-topic">Atoms & Molecules — Atomic Theory, Mole Concept</div>
+          <div class="sc-topic">Structure of Atom — Bohr Model, Electron Config.</div>
+          <div class="sc-topic">Chemical Reactions & Equations — Types</div>
+          <div class="sc-topic">Acids, Bases & Salts — pH, Neutralization</div>
+          <div class="sc-topic">Metals & Non-Metals — Properties, Reactivity</div>
+          <div class="sc-topic">Carbon & Compounds — Organic Basics, IUPAC</div>
+          <div class="sc-topic">Periodic Classification of Elements</div>
+          <div class="sc-topic">Chemical Bonding Introduction</div>
+          <div class="sc-topic">Solutions, Mixtures & Colloids</div>
+        </div>
+        <div class="sc-note">🔒 Foundation Chemistry chapter tests — coming soon!</div>
+      </div>
+      <div class="subj-card">
+        <div class="sc-hdr">
+          <div class="sc-icon" style="background:rgba(200,150,42,.1);">📐</div>
+          <div><div class="sc-name">Mathematics Foundation</div><div class="sc-sub">Class 8-10 · NCERT + JEE Level</div></div>
+        </div>
+        <div class="sc-topics">
+          <div class="sc-topic">Number Systems — Real, Rational, Irrational</div>
+          <div class="sc-topic">Algebra — Polynomials, Linear Equations, Identities</div>
+          <div class="sc-topic">Quadratic Equations — Roots, Discriminant</div>
+          <div class="sc-topic">Arithmetic Progressions — nth term, Sum</div>
+          <div class="sc-topic">Coordinate Geometry — Distance, Section formula</div>
+          <div class="sc-topic">Trigonometry — Ratios, Identities, Applications</div>
+          <div class="sc-topic">Geometry — Triangles, Circles, Theorems</div>
+          <div class="sc-topic">Mensuration — Areas, Volumes, Surface Areas</div>
+          <div class="sc-topic">Statistics & Probability</div>
+          <div class="sc-topic">Introduction to Sets & Functions</div>
+        </div>
+        <div class="sc-note">🔒 Foundation Maths chapter tests — coming soon!</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Foundation vs Direct</div>
+    <h2 class="stitle">Foundation vs Non-Foundation Student</h2>
+    <p class="ssub">The difference early preparation makes at every stage of your journey.</p>
+    <div class="ct">
+      <div class="ct-head">
+        <div class="ct-hc">Stage</div>
+        <div class="ct-hc">Foundation ✅</div>
+        <div class="ct-hc">Non-Foundation</div>
+      </div>
+      <div class="ct-row"><div class="ct-c">Class 10 Boards</div><div class="ct-c"><span class="yes">95%+ easily</span></div><div class="ct-c"><span class="partial">80-90%</span></div></div>
+      <div class="ct-row"><div class="ct-c">Starting Class 11</div><div class="ct-c"><span class="yes">Smooth transition</span></div><div class="ct-c"><span class="partial">Struggling</span></div></div>
+      <div class="ct-row"><div class="ct-c">JEE Mock Scores</div><div class="ct-c"><span class="yes">150+ / 300</span></div><div class="ct-c"><span class="partial">60-100 / 300</span></div></div>
+      <div class="ct-row"><div class="ct-c">NTSE / Olympiads</div><div class="ct-c"><span class="yes">Qualified</span></div><div class="ct-c"><span class="no">Usually miss</span></div></div>
+      <div class="ct-row"><div class="ct-c">Stress in Class 12</div><div class="ct-c"><span class="yes">Manageable</span></div><div class="ct-c"><span class="partial">Very high</span></div></div>
+      <div class="ct-row"><div class="ct-c">Final JEE Rank</div><div class="ct-c"><span class="yes">Top 10,000</span></div><div class="ct-c"><span class="partial">Varies widely</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTS -->
+<section id="tests" style="background:white;">
+  <div class="container">
+    <div class="slabel">Practice Tests</div>
+    <h2 class="stitle">Tests Available for Foundation Students</h2>
+    <p class="ssub">Try JEE Mains level tests now — they directly build on your Class 9-10 concepts.</p>
+    <div class="tests-wrap">
+      <div style="margin-bottom:18px;">
+        <div style="font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.25);margin-bottom:5px;">Physics · JEE Level</div>
+        <div style="font-size:.92rem;font-weight:700;color:white;">Start with topics you already know from Class 9-10 ↓</div>
+      </div>
+      <div class="test-grid">
+        <a href="mockarena_chapter_physics_motion.html" class="test-card">
+          <div class="tc-badge tcb-green">Chapter Test</div>
+          <div class="tc-title">Motion in 1D & 2D</div>
+          <div class="tc-desc">Extends your Class 9 Motion chapter into JEE level kinematics and projectile motion.</div>
+          <div class="tc-meta"><div class="tc-m">⏱️ 60 min</div><div class="tc-m">📝 30 Qs</div></div>
+          <button class="tc-btn">Start Test →</button>
+        </a>
+        <a href="mockarena_chapter_physics_laws.html" class="test-card">
+          <div class="tc-badge tcb-green">Chapter Test</div>
+          <div class="tc-title">Laws of Motion</div>
+          <div class="tc-desc">Newton's 3 laws + friction at JEE depth. Builds on Class 9 Force & Motion chapter.</div>
+          <div class="tc-meta"><div class="tc-m">⏱️ 60 min</div><div class="tc-m">📝 30 Qs</div></div>
+          <button class="tc-btn">Start Test →</button>
+        </a>
+        <a href="mockarena_chapter_physics_gravitation.html" class="test-card">
+          <div class="tc-badge tcb-green">Chapter Test</div>
+          <div class="tc-title">Gravitation</div>
+          <div class="tc-desc">Extends Class 9 Gravitation into Kepler's laws, orbital velocity, satellites — beautiful topic!</div>
+          <div class="tc-meta"><div class="tc-m">⏱️ 60 min</div><div class="tc-m">📝 30 Qs</div></div>
+          <button class="tc-btn">Start Test →</button>
+        </a>
+        <a href="mockarena_chapter_physics_optics.html" class="test-card">
+          <div class="tc-badge tcb-green">Chapter Test</div>
+          <div class="tc-title">Optics</div>
+          <div class="tc-desc">Extends Class 10 Light chapter into lens maker's equation, interference, diffraction at JEE level.</div>
+          <div class="tc-meta"><div class="tc-m">⏱️ 60 min</div><div class="tc-m">📝 30 Qs</div></div>
+          <button class="tc-btn">Start Test →</button>
+        </a>
+        <div class="test-card" style="opacity:.5;pointer-events:none;">
+          <div class="tc-badge tcb-lock">Coming Soon</div>
+          <div class="tc-title">Foundation Physics Tests</div>
+          <div class="tc-desc">Dedicated Class 8-10 level tests at NTSE difficulty — motion, force, electricity, light.</div>
+          <div class="tc-meta"><div class="tc-m">⏱️ 45 min</div><div class="tc-m">📝 25 Qs</div></div>
+          <button class="tc-btn tc-btn-lock" disabled>Coming Soon</button>
+        </div>
+        <div class="test-card" style="opacity:.5;pointer-events:none;">
+          <div class="tc-badge tcb-lock">Coming Soon</div>
+          <div class="tc-title">Foundation Maths Tests</div>
+          <div class="tc-desc">Class 9-10 Maths — Quadratics, Trigonometry, Coordinate Geometry, Statistics.</div>
+          <div class="tc-meta"><div class="tc-m">⏱️ 45 min</div><div class="tc-m">📝 25 Qs</div></div>
+          <button class="tc-btn tc-btn-lock" disabled>Coming Soon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section id="tips" style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Study Strategy</div>
+    <h2 class="stitle">How to Study Smart in Class 8–10</h2>
+    <p class="ssub">Strategies from students who cracked IIT-JEE starting their prep from Class 8.</p>
+    <div class="tips-grid">
+      <div class="tip-card"><div class="tip-num">1</div><div><div class="tip-title">NCERT is Your Bible</div><div class="tip-desc">Read every word — theory, examples, exercises. NCERT mastery in Class 9-10 means JEE concepts feel familiar in Class 11.</div></div></div>
+      <div class="tip-card"><div class="tip-num">2</div><div><div class="tip-title">Understand, Don't Memorise</div><div class="tip-desc">Ask "Why?" after every formula. If you understand why F = ma, you'll never forget it and can solve any variant.</div></div></div>
+      <div class="tip-card"><div class="tip-num">3</div><div><div class="tip-title">Daily Problem Practice</div><div class="tip-desc">30 minutes daily for 3 years beats 3 months of cramming. Solve at least 10 problems daily — consistency is everything.</div></div></div>
+      <div class="tip-card"><div class="tip-num">4</div><div><div class="tip-title">Try Harder Problems</div><div class="tip-desc">After mastering NCERT, try JEE-level problems on MockArena. The struggle is how you grow — don't be afraid to attempt hard questions.</div></div></div>
+      <div class="tip-card"><div class="tip-num">5</div><div><div class="tip-title">Appear for Olympiads</div><div class="tip-desc">NSO, NMTC, NTSE — these push your thinking beyond school and are great for confidence, scholarships and college applications.</div></div></div>
+      <div class="tip-card"><div class="tip-num">6</div><div><div class="tip-title">Track Your Mistakes</div><div class="tip-desc">Maintain an error notebook. Every wrong answer shows exactly what to fix. Review before every test — this is how toppers improve fast.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="background:white;padding:60px 20px;">
+  <div class="container">
+    <div class="cta-block">
+      <h2 class="cta-title">Every IIT Topper Was<br/>Once in Class 8</h2>
+      <p class="cta-sub">The only difference between them and others is they started early. Your journey begins today.</p>
+      <div class="cta-btns">
+        <a href="mockarena_chapter_physics_motion.html" class="btn-green">⚡ Try First Chapter Test</a>
+        <a href="#roadmap" class="btn-ghost" style="color:rgba(255,255,255,.6);">📍 See Your Roadmap</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="ft">
+    <div class="ft-brand">
+      <div class="ft-logo">
+        <div class="nav-mark">MA</div>
+        <span class="nav-n1">Mock</span><span class="nav-n2">Arena</span>
+      </div>
+      <p class="ft-desc">India's smartest test prep platform. Built for IIT-JEE & NEET aspirants who start early and win big.</p>
+    </div>
+    <div class="ft-col">
+      <div class="ft-ct">Exam Pages</div>
+      <a href="jee_foundation.html" class="ft-link">JEE Foundation</a>
+      <a href="jee_main.html" class="ft-link">JEE Mains</a>
+      <a href="jee_advanced.html" class="ft-link">JEE Advanced</a>
+      <a href="neet_ug.html" class="ft-link">NEET UG</a>
+    </div>
+    <div class="ft-col">
+      <div class="ft-ct">Quick Tests</div>
+      <a href="mockarena_chapter_physics_motion.html" class="ft-link">Motion in 1D/2D</a>
+      <a href="mockarena_chapter_physics_laws.html" class="ft-link">Laws of Motion</a>
+      <a href="mockarena_chapter_physics_gravitation.html" class="ft-link">Gravitation</a>
+      <a href="mockarena_chapter_physics_optics.html" class="ft-link">Optics</a>
+    </div>
+    <div class="ft-col">
+      <div class="ft-ct">Account</div>
+      <a href="mockarena_dashboard.html" class="ft-link">Dashboard</a>
+      <a href="mockarena_analytics.html" class="ft-link">Analytics</a>
+      <a href="mockarena_results.html" class="ft-link">My Results</a>
+      <a href="login.html" class="ft-link">Login</a>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span class="ft-copy">© 2026 MockArena. All rights reserved.</span>
+    <span class="ft-copy">Built for IIT dreamers 🚀</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+  function _g(){
+    var s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+    s1.onload=function(){var s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+      s2.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);
+        firebase.auth().onAuthStateChanged(function(u){
+          if(!u) return;
+          var nm=u.displayName||"S";
+          var av=document.getElementById("nav-av");
+          if(av){if(u.photoURL){av.innerHTML='<img src="'+u.photoURL+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';}
+          else{av.textContent=nm.split(" ").map(function(w){return w[0];}).join("").toUpperCase().substring(0,2);}}
+        });
+      };document.head.appendChild(s2);};document.head.appendChild(s1);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",_g);else _g();
+  document.querySelectorAll('a[href^="#"]').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var el=document.getElementById(this.getAttribute('href').slice(1));
+      if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}
+    });
+  });
+})();
+</script>
+</body>
+</html>
