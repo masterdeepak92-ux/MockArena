@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MockArena — JEE Mains | Physics | Magnetic Effects</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --cream:#faf9f5;--cream-w:#f5f3ec;
+  --forest:#1a2618;--forest-m:#3d5239;
+  --sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);
+  --gold:#c8962a;--rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
+  --sky:#3b82c4;--sky-l:rgba(59,130,196,.09);
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.13);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;-webkit-font-smoothing:antialiased;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);display:flex;flex-direction:column;height:100%;overflow:hidden;}
+
+/* TOPBAR */
+.topbar{height:52px;background:var(--forest);display:flex;align-items:center;padding:0 14px;gap:8px;flex-shrink:0;}
+.tb-logo{display:flex;align-items:center;gap:7px;text-decoration:none;}
+.tb-mark{width:28px;height:28px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:white;}
+.tb-n1{color:white;font-size:.86rem;font-weight:800;}
+.tb-n2{font-size:.86rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.tb-pipe{width:1px;height:14px;background:rgba(255,255,255,.12);}
+.tb-info{font-size:.62rem;color:rgba(255,255,255,.35);display:flex;flex-direction:column;gap:1px;}
+.tb-exam{font-size:.6rem;color:var(--gold);font-weight:600;}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:6px;}
+.tb-timer{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:7px;padding:3px 9px;text-align:center;}
+.tb-tv{font-family:var(--fm);font-size:.78rem;font-weight:600;color:white;letter-spacing:.04em;display:block;}
+.tb-tl{font-size:.44rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;}
+.tb-timer.warn .tb-tv{color:var(--gold);}
+.tb-timer.danger .tb-tv{color:#ff6b6b;animation:blink .8s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.4;}}
+.tb-btn{font-family:var(--fd);font-size:.66rem;font-weight:700;padding:6px 11px;border-radius:7px;border:none;cursor:pointer;}
+.tb-submit{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;}
+.tb-av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;color:white;overflow:hidden;}
+
+/* SEC BAR */
+.sec-bar{background:white;border-bottom:1px solid var(--border);padding:5px 14px;display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.sec-lbl{font-size:.58rem;font-weight:700;color:rgba(26,38,24,.26);text-transform:uppercase;letter-spacing:.07em;}
+.sec-tab{font-family:var(--fd);font-size:.64rem;font-weight:600;padding:4px 12px;border-radius:6px;border:1.5px solid var(--bm);background:var(--cream-w);color:var(--forest-m);cursor:pointer;transition:all .18s;}
+.sec-tab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.sec-inf{margin-left:auto;font-family:var(--fm);font-size:.58rem;color:rgba(26,38,24,.24);}
+.prog{height:2px;background:var(--border);flex-shrink:0;}
+.prog-f{height:100%;background:linear-gradient(90deg,var(--sage),#4a7a3d);transition:width .3s;}
+
+/* MAIN LAYOUT */
+.layout{display:flex;flex:1;overflow:hidden;min-height:0;}
+
+/* Question column */
+.q-col{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;}
+.q-scroll{flex:1;overflow-y:auto;padding:16px 20px;}
+.q-scroll::-webkit-scrollbar{width:4px;}
+.q-scroll::-webkit-scrollbar-thumb{background:var(--bm);border-radius:4px;}
+
+/* Footer */
+.q-footer{background:white;border-top:1px solid var(--border);padding:9px 14px;display:flex;align-items:center;gap:7px;flex-shrink:0;flex-wrap:wrap;}
+.fn-btn{font-family:var(--fd);font-size:.7rem;font-weight:700;padding:8px 13px;border-radius:9px;border:none;cursor:pointer;white-space:nowrap;}
+.fn-mark{background:var(--gold);color:white;}
+.fn-mark.on{background:#e8a020;}
+.fn-clear{background:none!important;border:1.5px solid var(--bm)!important;color:var(--forest-m);}
+.fn-save{background:var(--sage);color:white;}
+.fn-pal{background:none!important;border:1.5px solid var(--bm)!important;color:var(--forest-m);display:none;}
+.fn-sp{flex:1;}
+.fn-ctr{font-family:var(--fm);font-size:.6rem;color:rgba(26,38,24,.25);}
+.fn-prev{background:none!important;border:1.5px solid var(--bm)!important;color:var(--forest-m);}
+.fn-next{background:var(--forest);color:white;}
+
+/* RIGHT PALETTE PANEL — desktop only */
+.pal-col{width:260px;flex-shrink:0;background:white;border-left:2px solid rgba(26,38,24,.09);display:flex;flex-direction:column;overflow:hidden;}
+.pc-hdr{background:#1a2618;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.pc-title{font-size:.72rem;font-weight:700;color:white;}
+.pc-timer{font-family:var(--fm);font-size:.86rem;color:white;font-weight:600;letter-spacing:.04em;}
+.pc-legend{padding:7px 12px;display:flex;flex-wrap:wrap;gap:6px;border-bottom:1px solid rgba(26,38,24,.07);background:#faf9f5;flex-shrink:0;}
+.pc-leg{display:flex;align-items:center;gap:3px;font-size:.58rem;color:#3d5239;font-weight:500;}
+.pc-dot{width:11px;height:11px;border-radius:50%;}
+.pc-scroll{flex:1;overflow-y:auto;padding:10px 12px;}
+.pc-scroll::-webkit-scrollbar{width:3px;}
+.pc-scroll::-webkit-scrollbar-thumb{background:rgba(26,38,24,.13);border-radius:3px;}
+.pc-sec-lbl{font-size:.54rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(26,38,24,.28);margin:8px 0 5px;display:flex;align-items:center;gap:5px;}
+.pc-sec-lbl::after{content:'';flex:1;height:1px;background:rgba(26,38,24,.08);}
+.pc-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:4px;}
+.p-btn{width:100%;aspect-ratio:1;border-radius:50%;border:2px solid;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.62rem;font-weight:700;cursor:pointer;transition:all .18s;}
+.p-btn:hover{transform:scale(1.08);}
+.p-btn.current{box-shadow:0 0 0 2px var(--forest),0 0 0 3px rgba(26,38,24,.1);}
+.p-not-visited{background:#f0f0f0;border-color:#ccc;color:#999;}
+.p-answered{background:var(--sage);border-color:#4a7a3d;color:white;}
+.p-not-answered{background:var(--rose);border-color:#a83535;color:white;}
+.p-marked{background:var(--gold);border-color:#b8832a;color:white;}
+.p-marked-answered{background:#7c5cbf;border-color:#6b4ba8;color:white;}
+.pc-sum{padding:8px 12px;border-top:1px solid rgba(26,38,24,.07);background:#faf9f5;flex-shrink:0;}
+.pc-sum-row{display:flex;justify-content:space-around;margin-bottom:8px;}
+.pc-stat{text-align:center;}
+.pc-num{font-size:.88rem;font-weight:800;display:block;}
+.pc-lbl{font-size:.44rem;color:rgba(26,38,24,.3);text-transform:uppercase;letter-spacing:.04em;}
+.pc-submit{width:100%;font-family:var(--fd);font-size:.76rem;font-weight:700;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;}
+
+/* MOBILE DRAWER */
+.mob-overlay{display:none;position:fixed;inset:0;background:rgba(26,38,24,.55);backdrop-filter:blur(4px);z-index:200;}
+.mob-overlay.open{display:block;}
+.mob-drawer{position:fixed;bottom:-100%;left:0;right:0;background:white;border-radius:18px 18px 0 0;z-index:300;transition:bottom .32s cubic-bezier(.22,1,.36,1);max-height:75vh;display:flex;flex-direction:column;box-shadow:0 -8px 32px rgba(26,38,24,.18);}
+.mob-drawer.open{bottom:0;}
+.md-hdr{background:#1a2618;border-radius:18px 18px 0 0;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.md-title{font-size:.76rem;font-weight:700;color:white;}
+.md-timer{font-family:var(--fm);font-size:.88rem;color:white;font-weight:600;}
+.md-close{width:26px;height:26px;border-radius:7px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);color:white;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:.8rem;}
+.md-legend{padding:8px 16px;display:flex;flex-wrap:wrap;gap:8px;border-bottom:1px solid rgba(26,38,24,.07);flex-shrink:0;}
+.md-leg{display:flex;align-items:center;gap:3px;font-size:.62rem;color:#3d5239;font-weight:500;}
+.md-dot{width:12px;height:12px;border-radius:50%;}
+.md-body{overflow-y:auto;padding:12px 16px;flex:1;}
+.md-sec-lbl{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:rgba(26,38,24,.28);margin:10px 0 6px;display:flex;align-items:center;gap:5px;}
+.md-sec-lbl::after{content:'';flex:1;height:1px;background:rgba(26,38,24,.08);}
+.md-grid{display:grid;grid-template-columns:repeat(8,1fr);gap:6px;margin-bottom:4px;}
+.md-grid .p-btn{font-size:.6rem;border-radius:8px;}
+.md-sum{padding:10px 16px;border-top:1px solid rgba(26,38,24,.07);display:flex;align-items:center;justify-content:space-around;flex-shrink:0;background:#faf9f5;}
+.md-stat{text-align:center;}
+.md-num{font-size:.9rem;font-weight:800;display:block;}
+.md-lbl{font-size:.46rem;color:rgba(26,38,24,.3);text-transform:uppercase;letter-spacing:.04em;}
+.md-submit{font-family:var(--fd);font-size:.76rem;font-weight:700;padding:8px 18px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;}
+
+/* Q elements */
+.q-header{background:white;border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 4px rgba(26,38,24,.04);}
+.q-num{width:36px;height:36px;border-radius:9px;background:var(--forest);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.78rem;font-weight:600;}
+.q-type{font-size:.6rem;font-weight:700;padding:2px 9px;border-radius:100px;}
+.qt-mcq{background:var(--sky-l);color:var(--sky);border:1px solid rgba(59,130,196,.2);}
+.qt-int{background:rgba(184,115,51,.09);color:#b87333;border:1px solid rgba(184,115,51,.2);}
+.q-marks{font-size:.6rem;color:rgba(26,38,24,.35);}
+.q-marks .pos{color:var(--sage);font-weight:700;}
+.q-marks .neg{color:var(--rose);font-weight:700;}
+.q-actions{margin-left:auto;display:flex;gap:5px;}
+.q-ab{width:28px;height:28px;border-radius:7px;border:1.5px solid var(--bm);background:var(--cream-w);cursor:pointer;font-size:.7rem;display:flex;align-items:center;justify-content:center;}
+.q-ab.bm{background:rgba(200,150,42,.08);border-color:rgba(200,150,42,.3);}
+.q-text-block{background:white;border:1px solid var(--border);border-radius:14px;padding:18px 22px;margin-bottom:12px;}
+.q-tag{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sky);margin-bottom:10px;}
+.q-text{font-family:'Outfit',sans-serif;font-size:1.1rem;font-weight:500;color:var(--forest);line-height:1.72;}
+.q-opts{display:flex;flex-direction:column;gap:9px;margin-bottom:12px;}
+.opt{display:flex;align-items:center;gap:12px;padding:13px 16px;border-radius:12px;border:2px solid var(--bm);background:white;cursor:pointer;transition:all .2s;}
+.opt:hover{border-color:var(--sage);background:var(--sage-l);transform:translateX(3px);}
+.opt.selected{border-color:var(--sky);background:var(--sky-l);}
+.opt.selected .opt-key{background:var(--sky);color:white;border-color:var(--sky);}
+.opt-key{width:34px;height:34px;border-radius:9px;border:2px solid var(--bm);background:var(--cream-w);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:.76rem;font-weight:800;color:var(--forest-m);flex-shrink:0;transition:all .2s;}
+.opt-text{font-family:'Outfit',sans-serif;font-size:1rem;font-weight:500;color:var(--forest);line-height:1.6;}
+.int-wrap{display:flex;flex-direction:column;gap:10px;margin-bottom:12px;}
+.int-lbl{font-size:.72rem;font-weight:600;color:var(--forest-m);}
+.int-input{font-family:var(--fm);font-size:1.4rem;font-weight:700;color:var(--forest);background:white;border:2px solid var(--bm);border-radius:12px;padding:12px 18px;outline:none;width:220px;text-align:center;transition:all .2s;}
+.int-input:focus{border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-l);}
+.calc-pad{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;width:220px;}
+.calc-btn{font-family:var(--fm);font-size:.82rem;font-weight:600;padding:10px;border-radius:8px;border:1.5px solid var(--bm);background:white;color:var(--forest);cursor:pointer;transition:all .18s;text-align:center;}
+.calc-btn:hover{border-color:var(--sage);background:var(--sage-l);}
+.calc-btn.sp{background:var(--forest);color:white;border-color:var(--forest);}
+
+/* Modal */
+.mo{position:fixed;inset:0;z-index:500;background:rgba(26,38,24,.65);backdrop-filter:blur(8px);display:none;align-items:center;justify-content:center;padding:14px;}
+.mo.open{display:flex;}
+.mb{background:white;border-radius:17px;padding:22px;width:400px;max-width:95vw;animation:pop .22s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{from{transform:scale(.9);opacity:0;}to{transform:scale(1);opacity:1;}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.mb-t{font-size:.94rem;font-weight:800;color:var(--forest);margin-bottom:3px;}
+.mb-s{font-size:.7rem;color:rgba(26,38,24,.4);margin-bottom:13px;}
+.mb-g{display:grid;grid-template-columns:repeat(2,1fr);gap:6px;margin-bottom:12px;}
+.mb-c{background:var(--cream-w);border:1px solid var(--border);border-radius:9px;padding:10px 12px;}
+.mb-cn{font-family:var(--fd);font-size:1.08rem;font-weight:800;margin-bottom:2px;}
+.mb-cl{font-size:.54rem;font-weight:500;color:rgba(26,38,24,.34);text-transform:uppercase;letter-spacing:.05em;}
+.mb-w{background:var(--rose-l);border:1px solid rgba(200,75,75,.16);border-radius:8px;padding:8px 11px;font-size:.68rem;color:var(--rose);margin-bottom:12px;}
+.mb-row{display:flex;gap:7px;}
+.mb-cc{flex:1;font-family:var(--fd);font-size:.72rem;font-weight:600;padding:9px;border-radius:8px;border:1.5px solid var(--bm);background:none;color:var(--forest-m);cursor:pointer;}
+.mb-ok{flex:2;font-family:var(--fd);font-size:.74rem;font-weight:700;padding:9px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;}
+
+/* RESPONSIVE */
+@media(max-width:860px){
+  html,body{height:auto!important;overflow-y:auto!important;overflow-x:hidden!important;}
+  .layout{flex-direction:column;overflow:visible;}
+  .q-col{overflow:visible;}
+  .q-scroll{overflow-y:visible;padding:10px 12px;}
+  /* Hide desktop right panel */
+  .pal-col{display:none!important;}
+  /* Show palette button in footer */
+  .fn-pal{display:flex!important;}
+}
+@media(min-width:861px){
+  /* Hide mobile drawer elements on desktop */
+  .mob-overlay,.mob-drawer{display:none!important;}
+  .fn-pal{display:none!important;}
+}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <a href="mockarena_dashboard.html" class="tb-logo">
+    <div class="tb-mark">MA</div>
+    <span class="tb-n1">Mock</span><span class="tb-n2">Arena</span>
+  </a>
+  <div class="tb-pipe"></div>
+  <div class="tb-info">
+    <span class="tb-exam">JEE Mains · Physics</span>
+    <span>Magnetic Effects &middot; 30 Qs</span>
+  </div>
+  <div class="tb-right">
+    <div class="tb-timer" id="timer-box">
+      <span class="tb-tv" id="timer">01:00:00</span>
+      <span class="tb-tl">Remaining</span>
+    </div>
+    <button class="tb-btn tb-submit" onclick="openSubmit()">Submit</button>
+    <div class="tb-av" id="user-av">S</div>
+  </div>
+</div>
+
+<div class="sec-bar">
+  <span class="sec-lbl">Section:</span>
+  <button class="sec-tab on" id="tab-a" onclick="switchSection('A',this)">Section A (MCQ)</button>
+  <button class="sec-tab" id="tab-b" onclick="switchSection('B',this)">Section B (Integer)</button>
+  <span class="sec-inf" id="sec-info"></span>
+</div>
+<div class="prog"><div class="prog-f" id="prog-f" style="width:0%"></div></div>
+
+<div class="layout">
+  <!-- Question -->
+  <div class="q-col">
+    <div class="q-scroll"><div id="q-body"></div></div>
+    <div class="q-footer">
+      <button class="fn-btn fn-mark" id="mark-btn" onclick="toggleMark()">&#128278; Mark for Review</button>
+      <button class="fn-btn fn-clear" onclick="clearAnswer()">&times; Clear</button>
+      <button class="fn-btn fn-save" onclick="navigate(1)">Save &amp; Next &#10003;</button>
+      <button class="fn-btn fn-pal" onclick="openDrawer()">&#128210; Palette</button>
+      <div class="fn-sp"></div>
+      <span class="fn-ctr" id="q-ctr"></span>
+      <button class="fn-btn fn-prev" onclick="navigate(-1)">&larr; Back</button>
+      <button class="fn-btn fn-next" onclick="navigate(1)">Next &rarr;</button>
+    </div>
+  </div>
+
+  <!-- Desktop right palette -->
+  <div class="pal-col">
+    <div class="pc-hdr">
+      <span class="pc-title">&#128210; Question Palette</span>
+      <span class="pc-timer" id="pc-timer">01:00:00</span>
+    </div>
+    <div class="pc-legend">
+      <div class="pc-leg"><div class="pc-dot" style="background:#6b8f5e"></div>Answered</div>
+      <div class="pc-leg"><div class="pc-dot" style="background:#c84b4b"></div>Not Ans</div>
+      <div class="pc-leg"><div class="pc-dot" style="background:#bbb"></div>Not Vis</div>
+      <div class="pc-leg"><div class="pc-dot" style="background:#c8962a"></div>Marked</div>
+    </div>
+    <div class="pc-scroll" id="pc-content"></div>
+    <div class="pc-sum">
+      <div class="pc-sum-row">
+        <div class="pc-stat"><span class="pc-num" style="color:#6b8f5e" id="pc-ans">0</span><span class="pc-lbl">Answered</span></div>
+        <div class="pc-stat"><span class="pc-num" style="color:#c84b4b" id="pc-na">0</span><span class="pc-lbl">Not Ans</span></div>
+        <div class="pc-stat"><span class="pc-num" style="color:#c8962a" id="pc-mk">0</span><span class="pc-lbl">Marked</span></div>
+        <div class="pc-stat"><span class="pc-num" id="pc-nv">30</span><span class="pc-lbl">Not Vis</span></div>
+      </div>
+      <button class="pc-submit" onclick="openSubmit()">&#10003; Submit Test</button>
+    </div>
+  </div>
+</div>
+
+<!-- Mobile slide-up drawer -->
+<div class="mob-overlay" id="mob-overlay" onclick="closeDrawer()"></div>
+<div class="mob-drawer" id="mob-drawer">
+  <div class="md-hdr">
+    <span class="md-title">&#128210; Question Palette</span>
+    <span class="md-timer" id="md-timer">01:00:00</span>
+    <button class="md-close" onclick="closeDrawer()">&times;</button>
+  </div>
+  <div class="md-legend">
+    <div class="md-leg"><div class="md-dot" style="background:#6b8f5e"></div>Answered</div>
+    <div class="md-leg"><div class="md-dot" style="background:#c84b4b"></div>Not Answered</div>
+    <div class="md-leg"><div class="md-dot" style="background:#bbb"></div>Not Visited</div>
+    <div class="md-leg"><div class="md-dot" style="background:#c8962a"></div>Marked</div>
+  </div>
+  <div class="md-body" id="md-content"></div>
+  <div class="md-sum">
+    <div class="md-stat"><span class="md-num" style="color:#6b8f5e" id="md-ans">0</span><span class="md-lbl">Answered</span></div>
+    <div class="md-stat"><span class="md-num" style="color:#c84b4b" id="md-na">0</span><span class="md-lbl">Not Ans</span></div>
+    <div class="md-stat"><span class="md-num" style="color:#c8962a" id="md-mk">0</span><span class="md-lbl">Marked</span></div>
+    <div class="md-stat"><span class="md-num" id="md-nv">30</span><span class="md-lbl">Not Vis</span></div>
+    <button class="md-submit" onclick="openSubmit();closeDrawer();">&#10003; Submit</button>
+  </div>
+</div>
+
+<!-- Submit Modal -->
+<div class="mo" id="submit-modal">
+  <div class="mb">
+    <div class="mb-t">Submit Chapter Test?</div>
+    <div class="mb-s">Magnetic Effects &middot; <span id="modal-time" style="font-family:var(--fm);color:var(--sage);font-weight:700;"></span> remaining</div>
+    <div class="mb-g" id="modal-stats"></div>
+    <div class="mb-w" id="modal-warn"></div>
+    <div class="mb-row">
+      <button class="mb-cc" onclick="closeSubmit()">&larr; Continue</button>
+      <button class="mb-ok" onclick="submitTest()">&#10003; Submit Now</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const QUESTIONS = [
+  {id:'mg1',sec:'A',type:'single',text:'A long straight wire carries current I. The magnetic field at perpendicular distance r from wire is:',opts:['μ₀I/2πr','μ₀I/πr','2μ₀I/πr','μ₀I/4πr'],ans:0},
+  {id:'mg2',sec:'A',type:'single',text:'A charged particle moves in a uniform magnetic field. The work done by the magnetic force on the particle is:',opts:['Maximum','Minimum','Zero','Depends on sign of charge'],ans:2},
+  {id:'mg3',sec:'A',type:'single',text:'The force on a current-carrying conductor of length L carrying current I in magnetic field B at angle θ to the field is:',opts:['BIL','BIL sinθ','BIL cosθ','BIL tanθ'],ans:1},
+  {id:'mg4',sec:'A',type:'single',text:'A proton and an electron enter the same uniform magnetic field with the same speed perpendicular to B. The ratio of radii of circular paths r_p : r_e is:',opts:['1 : 1','m_p : m_e','m_e : m_p','1 : 2'],ans:1},
+  {id:'mg5',sec:'A',type:'single',text:'The magnetic moment of a current loop of N turns, area A carrying current I is:',opts:['I/A','NIA','NI/A','NA/I'],ans:1},
+  {id:'mg6',sec:'A',type:'single',text:'Two parallel wires carry currents in opposite directions. They will:',opts:['Attract each other','Repel each other','Neither attract nor repel','Rotate about each other'],ans:1},
+  {id:'mg7',sec:'A',type:'single',text:'The SI unit of magnetic field intensity B is:',opts:['Gauss','Oersted','Tesla','Weber/m'],ans:2},
+  {id:'mg8',sec:'A',type:'single',text:'The magnetic field at the centre of a circular loop of radius R carrying current I is:',opts:['μ₀I/R','μ₀I/2R','μ₀I/4R','2μ₀I/R'],ans:1},
+  {id:'mg9',sec:'A',type:'single',text:'The cyclotron frequency of a charged particle in a magnetic field is:',opts:['Proportional to speed','Proportional to radius','Independent of speed and radius','Proportional to mass'],ans:2},
+  {id:'mg10',sec:'A',type:'single',text:'A rectangular coil of N turns, area A, carrying current I placed in uniform field B. Maximum torque is:',opts:['NIAB','NIB/A','NAB/I','NI/AB'],ans:0},
+  {id:'mg11',sec:'A',type:'single',text:'Biot-Savart law states that the magnetic field due to a current element Idl is proportional to:',opts:['Idl/r','Idl sinθ/r²','Idl cosθ/r','Idl/r²'],ans:1},
+  {id:'mg12',sec:'A',type:'single',text:'A solenoid of n turns per unit length carries current I. Magnetic field inside the solenoid is:',opts:['μ₀nI','μ₀I/n','nI/μ₀','μ₀n²I'],ans:0},
+  {id:'mg13',sec:'A',type:'single',text:'The magnetic force on a stationary positive charge placed in a magnetic field B is:',opts:['qvB','qvB sinθ','Zero','qE'],ans:2},
+  {id:'mg14',sec:'A',type:'single',text:'In a moving coil galvanometer, sensitivity = NBA/k. To increase current sensitivity:',opts:['Increase spring constant k','Decrease number of turns N','Increase B or A','Decrease area A'],ans:2},
+  {id:'mg15',sec:'A',type:'single',text:'An alpha particle (charge 2e, mass 4m_p) and a proton enter the same magnetic field with same speed. Ratio of radii r_α : r_p is:',opts:['1 : 1','2 : 1','1 : 2','4 : 1'],ans:1},
+  {id:'mg16',sec:'A',type:'single',text:"Ampere's circuital law: The line integral ∮B·dl around a closed loop equals:",opts:['μ₀ × (total current enclosed)','μ₀/2 × (total current)','Total charge enclosed/ε₀','μ₀ε₀ × (electric flux)'],ans:0},
+  {id:'mg17',sec:'A',type:'single',text:'A current-carrying circular loop is placed in a uniform magnetic field. It will experience:',opts:['Only net force','Only net torque','Both net force and torque','Neither force nor torque'],ans:1},
+  {id:'mg18',sec:'A',type:'single',text:'In a velocity selector with crossed E and B fields, a charged particle passes undeflected when:',opts:['E = vB','v = E/B','v = B/E','E = v²B'],ans:1},
+  {id:'mg19',sec:'A',type:'single',text:'A toroid has N total turns, mean radius R, carries current I. Magnetic field inside the toroid is:',opts:['μ₀NI/2πR','μ₀I/2πR','2πRNI/μ₀','Zero'],ans:0},
+  {id:'mg20',sec:'A',type:'single',text:'A long straight wire carries current I upward. A rectangular loop to its right also carries current. The net force on the loop is:',opts:['Towards the wire','Away from the wire','Zero','Perpendicular to wire'],ans:0},
+  {id:'mg21',sec:'B',type:'integer',text:'A proton (m = 1.67×10⁻²⁷ kg, q = 1.6×10⁻¹⁹ C) moves at 10⁶ m/s perpendicular to B = 0.1 T. Radius of circular path in cm is (round to nearest integer):',ans:'10'},
+  {id:'mg22',sec:'B',type:'integer',text:'Two parallel wires 0.1 m apart carry 10 A each in same direction. Force per unit length in units of 10⁻⁴ N/m is (F/L = μ₀I₁I₂/2πd):',ans:'2'},
+  {id:'mg23',sec:'B',type:'integer',text:'Solenoid: 1000 turns, length 0.5 m, current 2 A. Magnetic field inside in mT is (μ₀ = 4π×10⁻⁷, round to nearest integer):',ans:'5'},
+  {id:'mg24',sec:'B',type:'integer',text:'Circular coil: 50 turns, radius 0.1 m, current 1 A. Magnetic moment in A·m² is:',ans:'2'},
+  {id:'mg25',sec:'B',type:'integer',text:'Galvanometer: resistance 20 Ω, full-scale deflection at 5 mA. Shunt resistance to convert to 1 A ammeter in ohm (enter as decimal):',ans:'0.1'},
+  {id:'mg26',sec:'B',type:'integer',text:'Magnetic field at centre of circular loop, radius 0.2 m, current 2 A in units of 10⁻⁶ T (B = μ₀I/2R, round to nearest integer):',ans:'6'},
+  {id:'mg27',sec:'B',type:'integer',text:'Electron with KE = 1 keV enters perpendicular to B = 0.01 T. Radius in cm (m_e = 9.1×10⁻³¹ kg, e = 1.6×10⁻¹⁹ C, round to nearest integer):',ans:'6'},
+  {id:'mg28',sec:'B',type:'integer',text:'Rectangular coil: 100 turns, 0.1 m × 0.2 m, in B = 0.5 T, current 2 A. Maximum torque in N·m is:',ans:'2'},
+  {id:'mg29',sec:'B',type:'integer',text:'Galvanometer: 50 Ω resistance, full-scale 1 mA. Series resistance needed for 5 V voltmeter in kΩ is:',ans:'5'},
+  {id:'mg30',sec:'B',type:'integer',text:'Wire of length 2 m carries 5 A at 90° to B = 0.4 T. Force on wire in Newtons is:',ans:'4'},
+];
+
+const qState={};
+QUESTIONS.forEach(q=>{qState[q.id]={visited:false,answered:false,marked:false,answer:null};} );
+let curIdx=0,curSec='A',timeLeft=3600,timerInt;
+
+function getSecQs(sec){return QUESTIONS.filter(q=>q.sec===sec);}
+function switchSection(sec,el){
+  curSec=sec;
+  document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('on'));
+  if(el)el.classList.add('on');
+  curIdx=QUESTIONS.indexOf(getSecQs(sec)[0]);
+  renderQ();
+}
+function renderQ(){
+  const q=QUESTIONS[curIdx];if(!q)return;
+  const st=qState[q.id];st.visited=true;
+  const secQs=getSecQs(q.sec);
+  document.getElementById('sec-info').textContent=`Q ${secQs.indexOf(q)+1} of ${secQs.length}`;
+  document.getElementById('prog-f').style.width=(QUESTIONS.filter(q=>qState[q.id].answered).length/QUESTIONS.length*100)+'%';
+  document.getElementById('q-ctr').textContent=`${curIdx+1} / ${QUESTIONS.length}`;
+  const mb=document.getElementById('mark-btn');
+  mb.textContent=st.marked?'★ Marked':'🔖 Mark for Review';
+  mb.className='fn-btn fn-mark'+(st.marked?' on':'');
+  let html=`<div class="q-header">
+    <div class="q-num">Q${curIdx+1}</div>
+    <div><span class="q-type ${q.type==='integer'?'qt-int':'qt-mcq'}">${q.type==='integer'?'Integer Type':'Single Correct'}</span>
+    <div class="q-marks">${q.type==='integer'?'<span class="pos">+4</span> · <span style="color:rgba(26,38,24,.35)">0 wrong</span>':'<span class="pos">+4</span> correct · <span class="neg">−1</span> wrong'}</div></div>
+    <div class="q-actions"><button class="q-ab ${st.marked?'bm':''}" onclick="toggleMark()">🔖</button>
+    <button class="q-ab" onclick="alert('Hint: Apply concepts carefully!')">💡</button></div>
+  </div>
+  <div class="q-text-block"><div class="q-tag">⚛️ Physics · Magnetic Effects</div>
+  <div class="q-text">${q.text}</div></div>`;
+  if(q.type==='integer'){
+    const val=st.answer!==null?st.answer:'';
+    html+=`<div class="int-wrap"><div class="int-lbl">Enter your answer (decimal values allowed):</div>
+      <input type="text" inputmode="decimal" class="int-input" id="int-input" value="${val}" placeholder="0" oninput="saveInteger(this.value)">
+      <div class="calc-pad">
+        <button class="calc-btn" onclick="appendDigit('7')">7</button><button class="calc-btn" onclick="appendDigit('8')">8</button>
+        <button class="calc-btn" onclick="appendDigit('9')">9</button><button class="calc-btn sp" onclick="appendDigit('bs')">&#9003;</button>
+        <button class="calc-btn" onclick="appendDigit('4')">4</button><button class="calc-btn" onclick="appendDigit('5')">5</button>
+        <button class="calc-btn" onclick="appendDigit('6')">6</button><button class="calc-btn sp" onclick="appendDigit('neg')">&plusmn;</button>
+        <button class="calc-btn" onclick="appendDigit('1')">1</button><button class="calc-btn" onclick="appendDigit('2')">2</button>
+        <button class="calc-btn" onclick="appendDigit('3')">3</button><button class="calc-btn" onclick="appendDigit('.')">.</button>
+        <button class="calc-btn" onclick="appendDigit('0')" style="grid-column:span 3;">0</button>
+        <button class="calc-btn sp" onclick="appendDigit('clr')">&times;</button>
+      </div></div>`;
+  }else{
+    html+='<div class="q-opts">';
+    q.opts.forEach((opt,i)=>{
+      html+=`<div class="opt ${st.answered&&st.answer===i?'selected':''}" onclick="selectOpt(${i})">
+        <div class="opt-key">${String.fromCharCode(65+i)}</div><div class="opt-text">${opt}</div></div>`;
+    });
+    html+='</div>';
+  }
+  document.getElementById('q-body').innerHTML=html;
+  renderPalette();
+}
+
+function selectOpt(i){const q=QUESTIONS[curIdx];qState[q.id].answer=i;qState[q.id].answered=true;renderQ();}
+function saveInteger(val){const q=QUESTIONS[curIdx];qState[q.id].answer=val;qState[q.id].answered=val!==''&&val!==null;renderPalette();}
+function appendDigit(d){
+  const inp=document.getElementById('int-input');if(!inp)return;
+  let v=inp.value||'';
+  if(d==='neg')v=v.startsWith('-')?v.slice(1):(v?'-'+v:'-');
+  else if(d==='.'){if(!v.includes('.'))v+='.';}
+  else if(d==='bs')v=v.slice(0,-1);
+  else if(d==='clr')v='';
+  else v+=d;
+  inp.value=v;saveInteger(v);
+}
+function toggleMark(){const q=QUESTIONS[curIdx];qState[q.id].marked=!qState[q.id].marked;renderQ();}
+function clearAnswer(){const q=QUESTIONS[curIdx];qState[q.id].answer=null;qState[q.id].answered=false;renderQ();}
+function navigate(dir){
+  const n=curIdx+dir;if(n<0||n>=QUESTIONS.length)return;curIdx=n;
+  const q=QUESTIONS[curIdx];
+  if(q.sec!==curSec){curSec=q.sec;document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('on'));document.getElementById('tab-'+q.sec.toLowerCase()).classList.add('on');}
+  renderQ();
+}
+function jumpToQ(idx){
+  curIdx=idx;const q=QUESTIONS[idx];
+  if(q.sec!==curSec){curSec=q.sec;document.querySelectorAll('.sec-tab').forEach(t=>t.classList.remove('on'));document.getElementById('tab-'+q.sec.toLowerCase()).classList.add('on');}
+  closeDrawer();
+  renderQ();
+}
+function openDrawer(){document.getElementById('mob-overlay').classList.add('open');document.getElementById('mob-drawer').classList.add('open');renderPalette();}
+function closeDrawer(){document.getElementById('mob-overlay').classList.remove('open');document.getElementById('mob-drawer').classList.remove('open');}
+
+function makePalHTML(gridClass){
+  let html='';
+  ['A','B'].forEach(sec=>{
+    html+=`<div class="pc-sec-lbl">Section ${sec} (${sec==='A'?'MCQ':'Integer'})</div><div class="${gridClass}">`;
+    getSecQs(sec).forEach(q=>{
+      const st=qState[q.id],isCur=QUESTIONS[curIdx]===q;
+      let cls='p-not-visited';
+      if(st.answered&&st.marked)cls='p-marked-answered';
+      else if(st.answered)cls='p-answered';
+      else if(st.marked)cls='p-marked';
+      else if(st.visited)cls='p-not-answered';
+      html+=`<button class="p-btn ${cls}${isCur?' current':''}" onclick="jumpToQ(${QUESTIONS.indexOf(q)})">${QUESTIONS.indexOf(q)+1}</button>`;
+    });
+    html+='</div>';
+  });
+  return html;
+}
+
+function renderPalette(){
+  const pc=document.getElementById('pc-content');
+  const md=document.getElementById('md-content');
+  if(pc)pc.innerHTML=makePalHTML('pc-grid');
+  if(md)md.innerHTML=makePalHTML('md-grid');
+  const a=QUESTIONS.filter(q=>qState[q.id].answered).length;
+  const na=QUESTIONS.filter(q=>qState[q.id].visited&&!qState[q.id].answered).length;
+  const mk=QUESTIONS.filter(q=>qState[q.id].marked).length;
+  const nv=QUESTIONS.filter(q=>!qState[q.id].visited).length;
+  ['pc-ans','md-ans'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=a;});
+  ['pc-na','md-na'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=na;});
+  ['pc-mk','md-mk'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=mk;});
+  ['pc-nv','md-nv'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=nv;});
+  const tv=document.getElementById('timer');
+  ['pc-timer','md-timer'].forEach(id=>{const el=document.getElementById(id);if(el&&tv)el.textContent=tv.textContent;});
+}
+
+function startTimer(){
+  timerInt=setInterval(()=>{
+    timeLeft--;
+    const h=Math.floor(timeLeft/3600),m=Math.floor((timeLeft%3600)/60),s=timeLeft%60;
+    const str=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    document.getElementById('timer').textContent=str;
+    ['pc-timer','md-timer'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=str;});
+    const box=document.getElementById('timer-box');
+    if(timeLeft<=300)box.className='tb-timer danger';
+    else if(timeLeft<=600)box.className='tb-timer warn';
+    if(timeLeft<=0){clearInterval(timerInt);submitTest();}
+  },1000);
+}
+
+function openSubmit(){
+  const a=QUESTIONS.filter(q=>qState[q.id].answered).length,na=QUESTIONS.length-a,mk=QUESTIONS.filter(q=>qState[q.id].marked).length;
+  document.getElementById('modal-stats').innerHTML=`
+    <div class="mb-c"><div class="mb-cn" style="color:#6b8f5e">${a}</div><div class="mb-cl">Answered</div></div>
+    <div class="mb-c"><div class="mb-cn" style="color:#c84b4b">${na}</div><div class="mb-cl">Not Answered</div></div>
+    <div class="mb-c"><div class="mb-cn" style="color:#c8962a">${mk}</div><div class="mb-cl">Marked</div></div>
+    <div class="mb-c"><div class="mb-cn">${QUESTIONS.length}</div><div class="mb-cl">Total</div></div>`;
+  const h=Math.floor(timeLeft/3600),m=Math.floor((timeLeft%3600)/60),s=timeLeft%60;
+  document.getElementById('modal-time').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+  document.getElementById('modal-warn').innerHTML=na>0?`⚠️ ${na} question${na>1?'s':''} unanswered`:'✅ All questions attempted!';
+  document.getElementById('submit-modal').classList.add('open');
+}
+function closeSubmit(){document.getElementById('submit-modal').classList.remove('open');}
+
+function submitTest(){
+  clearInterval(timerInt);closeSubmit();
+  let score=0,correct=0,wrong=0,skipped=0;
+  QUESTIONS.forEach(q=>{
+    const st=qState[q.id];if(!st.answered){skipped++;return;}
+    const ok=q.type==='integer'?String(st.answer).trim()===String(q.ans):st.answer===q.ans;
+    if(ok){score+=4;correct++;}else if(q.type!=='integer'){score-=1;wrong++;}
+  });
+  const pct=Math.round(correct/QUESTIONS.length*100);
+  document.querySelector('.pal-col').style.display='none';
+  document.querySelector('.q-footer').style.display='none';
+  document.getElementById('q-body').innerHTML=`
+    <div style="text-align:center;padding:40px 20px;animation:fadeIn .4s ease;">
+      <div style="font-size:2.5rem;margin-bottom:16px;">${pct>=80?'🏆':pct>=60?'👍':'📚'}</div>
+      <div style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#1a2618;margin-bottom:6px;">${pct>=80?'Excellent!':pct>=60?'Good Work!':'Keep Practicing!'}</div>
+      <div style="font-size:.84rem;color:rgba(26,38,24,.45);margin-bottom:28px;">Magnetic Effects · JEE Mains Physics</div>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:12px;max-width:400px;margin:0 auto 28px;">
+        <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;">${score}</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Score</div></div>
+        <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#6b8f5e;">${pct}%</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Accuracy</div></div>
+        <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#6b8f5e;">${correct}</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Correct</div></div>
+        <div style="background:white;border:1px solid rgba(26,38,24,.08);border-radius:12px;padding:16px;"><div style="font-family:'IBM Plex Mono',monospace;font-size:1.8rem;font-weight:800;color:#c84b4b;">${wrong}</div><div style="font-size:.62rem;color:rgba(26,38,24,.3);text-transform:uppercase;">Wrong</div></div>
+      </div>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
+        <a href="mockarena_test_catalog.html" style="font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;padding:10px 20px;border-radius:9px;border:1.5px solid rgba(26,38,24,.13);color:#3d5239;text-decoration:none;">← Back to Tests</a>
+        <button onclick="location.reload()" style="font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;padding:10px 20px;border-radius:9px;border:none;background:linear-gradient(135deg,#6b8f5e,#4a7a3d);color:white;cursor:pointer;">🔄 Reattempt</button>
+        <a href="mockarena_dashboard.html" style="font-family:'Outfit',sans-serif;font-size:.82rem;font-weight:700;padding:10px 20px;border-radius:9px;border:none;background:#1a2618;color:white;text-decoration:none;">📊 Dashboard</a>
+      </div>
+    </div>`;
+  saveToFirestore(score,correct,wrong,skipped,pct);
+}
+renderQ();startTimer();
+</script>
+<script>
+(function(){
+  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+  function loadFS(cb){var s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+    s1.onload=function(){var s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+      s2.onload=function(){var s3=document.createElement("script");s3.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
+        s3.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);cb(firebase.firestore(),firebase.auth());};
+        document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);}
+  window.saveToFirestore=function(score,correct,wrong,skipped,pct){
+    loadFS(function(db,auth){var user=auth.currentUser;if(!user)return;
+      db.collection("results").doc(user.uid).collection("tests").doc('chapter_phy_mag_'+Date.now()).set({
+        uid:user.uid,examType:'jee_mains',testType:'chapter',subject:'Physics',
+        chapter:'Magnetic Effects',testName:'JEE Mains | Physics | Magnetic Effects',
+        score:score,correct:correct,wrong:wrong,skipped:skipped,total:30,accuracy:pct,
+        timestamp:firebase.firestore.FieldValue.serverTimestamp(),date:new Date().toISOString().split("T")[0]
+      }).catch(function(e){console.error(e);});});};
+  function _g(){var s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
+    s1.onload=function(){var s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
+      s2.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);
+        firebase.auth().onAuthStateChanged(function(u){if(!u){window.location.replace("login.html");return;}
+          var nm=u.displayName||"Student";var av=document.getElementById("user-av");
+          if(av){if(u.photoURL){av.innerHTML='<img src="'+u.photoURL+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';}
+          else{av.textContent=nm.split(" ").map(function(w){return w[0];}).join("").toUpperCase().substring(0,2);}}});};
+      document.head.appendChild(s2);};document.head.appendChild(s1);}
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",_g);else _g();
+})();
+</script>
+</body>
+</html>
