@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NEET UG 2026 — Become a Doctor | MockArena</title>
+<meta name="description" content="India's most complete NEET UG preparation. Biology 360 marks. Full mocks, chapter tests, AIIMS cutoffs, PYQ strategy. Crack NEET on MockArena."/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+
+:root{
+  --black:#080c08;--dark:#0e150d;--forest:#1a2618;--forest-m:#3d5239;
+  --sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-glow:rgba(107,143,94,.2);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.08);--gold-glow:rgba(200,150,42,.25);
+  --rose:#c84b4b;--rose-l:rgba(200,75,75,.08);
+  --sky:#3b82c4;--sky-l:rgba(59,130,196,.1);
+  --cream:#faf9f5;--cream-w:#f5f3ec;
+  --border:rgba(26,38,24,.07);--bm:rgba(26,38,24,.11);
+  --w8:rgba(255,255,255,.08);--w12:rgba(255,255,255,.12);--w25:rgba(255,255,255,.25);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);overflow-x:hidden;}
+
+/* ── NAV ── */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:58px;background:rgba(8,12,8,.97);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;padding:0 20px;gap:12px;}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.nav-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:white;}
+.nav-n1{color:white;font-size:.92rem;font-weight:800;}
+.nav-n2{font-size:.92rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-sep{width:1px;height:16px;background:rgba(255,255,255,.08);}
+.nav-exam{font-size:.66rem;font-weight:700;color:var(--gold);letter-spacing:.03em;white-space:nowrap;}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:16px;}
+.nav-link{font-size:.7rem;font-weight:600;color:rgba(255,255,255,.62);text-decoration:none;padding:5px 10px;border-radius:7px;transition:all .18s;white-space:nowrap;}
+.nav-link:hover{color:white;background:rgba(255,255,255,.06);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-dash{font-family:var(--fd);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#b8832a);color:white;text-decoration:none;white-space:nowrap;}
+.nav-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:white;overflow:hidden;cursor:pointer;flex-shrink:0;}
+@media(max-width:860px){.nav-links{display:none;}}
+
+/* ── HERO — dark cinematic ── */
+.hero{min-height:100vh;background:var(--black);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:80px 20px 60px;}
+.hero-noise{position:absolute;inset:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px;}
+.hero-glow1{position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.05),transparent 65%);top:-200px;left:-200px;pointer-events:none;}
+.hero-glow2{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(107,143,94,.04),transparent 65%);bottom:-150px;right:-150px;pointer-events:none;}
+.hero-line{display:none;}
+.hero-inner{position:relative;z-index:1;max-width:760px;text-align:center;}
+.hero-rank{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;}
+.hr-line{height:1px;width:40px;background:linear-gradient(90deg,transparent,var(--gold));}
+.hr-line.r{background:linear-gradient(90deg,var(--gold),transparent);}
+.hr-txt{font-size:.64rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;}
+.hero-title{font-size:clamp(2.4rem,8vw,4.8rem);font-weight:900;color:white;line-height:1.0;letter-spacing:-.03em;margin-bottom:8px;}
+.hero-title .ht-gold{color:var(--gold);}
+.hero-title .ht-dim{color:rgba(255,255,255,.5);font-weight:300;}
+.hero-tagline{font-size:clamp(.62rem,2vw,.78rem);color:rgba(255,255,255,.5);letter-spacing:.07em;text-transform:uppercase;margin-bottom:20px;font-weight:500;}
+.hero-quote{font-size:clamp(.82rem,2.5vw,1rem);color:rgba(255,255,255,.66);line-height:1.72;max-width:560px;margin:0 auto 28px;font-style:italic;border-left:2px solid var(--gold);padding-left:14px;text-align:left;}
+
+/* PAPER STRIP */
+.paper-strip{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:680px;margin:0 auto 28px;}
+.ps-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 20px;flex:1;min-width:160px;text-align:center;}
+.ps-paper{font-size:.62rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:10px;}
+.ps-vals{display:flex;flex-direction:column;gap:6px;}
+.ps-val{font-size:.88rem;color:white;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px;}
+.ps-val .lbl{font-size:.58rem;color:rgba(255,255,255,.55);font-weight:400;}
+.ps-sep{display:none;}
+
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;}
+.btn-gold{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--gold),#a87820);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 20px var(--gold-glow);}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--gold-glow);}
+.btn-sage{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-glow);}
+.btn-sage:hover{transform:translateY(-2px);}
+.btn-ghost{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;}
+.btn-ghost:hover{border-color:var(--gold);color:white;}
+
+.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;}
+.hs{text-align:center;}
+.hs-n{font-family:var(--fm);font-size:1.45rem;font-weight:700;color:white;display:block;}
+.hs-l{font-size:.58rem;color:rgba(255,255,255,.48);text-transform:uppercase;letter-spacing:.07em;}
+
+/* ── SHARED ── */
+section{padding:72px 20px;}
+.container{max-width:1080px;margin:0 auto;}
+.slabel{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:8px;}
+.slabel.green{color:var(--sage);}
+.stitle{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:var(--forest);line-height:1.2;margin-bottom:10px;}
+.stitle.white{color:white;}
+.ssub{font-size:.92rem;color:rgba(26,38,24,.52);line-height:1.72;max-width:540px;}
+.ssub.white{color:rgba(255,255,255,.55);}
+
+/* ── WHAT IS JEE ADVANCED ── */
+.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:32px;}
+@media(max-width:640px){.intro-grid{grid-template-columns:1fr;}}
+.intro-left{background:var(--black);border-radius:18px;padding:28px;border:1px solid rgba(255,255,255,.05);}
+.intro-right{display:flex;flex-direction:column;gap:14px;}
+.intro-stat{background:white;border:1px solid var(--border);border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;transition:all .2s;}
+.is-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px;}
+.is-val{font-family:var(--fd);font-size:.98rem;font-weight:800;color:var(--forest);display:block;}
+.is-lbl{font-size:.62rem;font-weight:700;color:rgba(26,38,24,.4);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+.is-desc{font-size:.74rem;color:rgba(26,38,24,.5);line-height:1.58;margin-top:4px;}
+
+/* ELITE BOX */
+.elite-box{border-radius:14px;border:1px solid rgba(200,150,42,.15);background:linear-gradient(135deg,rgba(200,150,42,.04),rgba(200,150,42,.01));padding:24px;margin-bottom:14px;}
+.eb-title{font-size:.8rem;font-weight:800;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.eb-item{display:flex;align-items:flex-start;gap:8px;font-size:.74rem;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:6px;}
+.eb-item::before{content:'▸';color:var(--gold);flex-shrink:0;margin-top:1px;}
+
+/* ── QUESTION TYPES ── */
+.qt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:28px;}
+.qt-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:all .22s;}
+.qt-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.qt-card.q1::before{background:linear-gradient(90deg,var(--gold),#e8a830);}
+.qt-card.q2::before{background:linear-gradient(90deg,var(--rose),#a83535);}
+.qt-card.q3::before{background:linear-gradient(90deg,var(--sky),#2563eb);}
+.qt-card.q4::before{background:linear-gradient(90deg,var(--sage),#4a7a3d);}
+.qt-card.q5::before{background:linear-gradient(90deg,#7c3aed,#5b21b6);}
+.qt-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,38,24,.08);}
+.qt-icon{font-size:1.4rem;margin-bottom:10px;display:block;}
+.qt-type{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:rgba(26,38,24,.54);margin-bottom:4px;}
+.qt-name{font-size:.88rem;font-weight:800;color:var(--forest);margin-bottom:8px;}
+.qt-mark{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
+.qm{font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.qm-pos{background:rgba(107,143,94,.1);color:var(--sage);}
+.qm-neg{background:var(--rose-l);color:var(--rose);}
+.qm-zero{background:rgba(26,38,24,.06);color:rgba(26,38,24,.4);}
+.qt-desc{font-size:.7rem;color:rgba(26,38,24,.54);line-height:1.6;}
+.qt-eg{font-family:var(--fm);font-size:.62rem;background:var(--cream-w);border-radius:7px;padding:7px 10px;margin-top:8px;color:var(--forest-m);}
+
+/* ── PAPER PATTERN ── */
+.pp-wrap{background:var(--black);border-radius:20px;padding:36px 28px;border:1px solid rgba(255,255,255,.05);margin-top:28px;}
+.pp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px;}
+@media(max-width:600px){.pp-grid{grid-template-columns:1fr;}}
+.pp-paper{border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px;}
+.pp-title{font-size:.78rem;font-weight:800;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
+.pp-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);}
+.pp-row:last-child{border-bottom:none;}
+.pp-key{font-size:.7rem;color:rgba(255,255,255,.58);}
+.pp-val{font-family:var(--fm);font-size:.78rem;font-weight:600;color:white;}
+.pp-val.gold{color:var(--gold);}
+.pp-val.green{color:#9bc48a;}
+.pp-val.rose{color:#ff8080;}
+
+/* ── CHAPTERS ── */
+.subj-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.stab{font-family:var(--fd);font-size:.72rem;font-weight:600;padding:6px 16px;border-radius:8px;border:1.5px solid var(--bm);background:white;color:var(--forest-m);cursor:pointer;transition:all .18s;}
+.stab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.subj-panel{display:none;}
+.subj-panel.on{display:block;}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.ch-card{background:white;border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;transition:all .2s;gap:8px;}
+.ch-card:hover{border-color:var(--gold);background:var(--gold-l);transform:translateX(3px);}
+.ch-card.coming{opacity:.45;pointer-events:none;}
+.ch-left{display:flex;align-items:center;gap:9px;}
+.ch-num{width:28px;height:28px;border-radius:8px;background:var(--gold-l);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.62rem;font-weight:700;color:var(--gold);flex-shrink:0;}
+.ch-name{font-size:.8rem;font-weight:600;color:var(--forest);}
+.ch-right{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.ch-live{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(107,143,94,.12);color:var(--sage);}
+.ch-soon{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(26,38,24,.06);color:rgba(26,38,24,.54);}
+.ch-adv{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(200,150,42,.1);color:var(--gold);}
+.ch-arr{font-size:.7rem;color:rgba(26,38,24,.2);}
+.subj-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+.subj-stat{font-size:.72rem;color:rgba(26,38,24,.5);}
+.subj-stat span{font-weight:700;color:var(--sage);}
+
+/* ── MOCK TESTS ── */
+.mock-wrap{background:var(--black);border-radius:20px;padding:36px 28px;border:1px solid rgba(255,255,255,.05);margin-top:28px;}
+.mock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:24px;}
+.mock-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px;transition:all .22s;text-decoration:none;display:block;}
+.mock-card:hover{background:rgba(255,255,255,.06);border-color:rgba(200,150,42,.2);transform:translateY(-2px);}
+.mock-card.locked{opacity:.45;pointer-events:none;}
+.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.mc-badge{font-size:.52rem;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.05em;}
+.mcb-adv{background:rgba(200,150,42,.18);color:#e8a830;}
+.mcb-lock{background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);}
+.mc-paper{font-size:.58rem;color:rgba(255,255,255,.5);font-weight:600;}
+.mc-title{font-size:.9rem;font-weight:800;color:white;margin-bottom:5px;}
+.mc-desc{font-size:.72rem;color:rgba(255,255,255,.55);line-height:1.55;margin-bottom:12px;}
+.mc-meta{display:flex;gap:10px;margin-bottom:13px;flex-wrap:wrap;}
+.mc-m{font-size:.62rem;color:rgba(255,255,255,.48);display:flex;align-items:center;gap:3px;}
+.mc-btn{width:100%;font-family:var(--fd);font-size:.72rem;font-weight:700;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--gold),#a87820);color:white;cursor:pointer;transition:all .2s;}
+.mc-btn:hover{box-shadow:0 4px 14px var(--gold-glow);}
+.mc-btn-lock{background:rgba(255,255,255,.05);color:rgba(255,255,255,.2);cursor:not-allowed;}
+
+/* ── DIFFICULTY ── */
+.diff-wrap{background:var(--forest);border-radius:20px;padding:36px 28px;margin-top:28px;}
+.diff-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px;}
+.diff-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px;}
+.dc-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.dc-icon{font-size:1.2rem;}
+.dc-name{font-size:.88rem;font-weight:800;color:white;}
+.dc-topics{display:flex;flex-direction:column;gap:7px;}
+.dc-topic{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.03);}
+.dct-name{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.55);}
+.dct-level{font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:100px;}
+.dl-elite{background:rgba(200,75,75,.15);color:#ff8080;}
+.dl-hard{background:rgba(200,150,42,.15);color:#e8a830;}
+.dl-med{background:rgba(107,143,94,.15);color:#9bc48a;}
+
+/* ── IIT CUTOFF ── */
+.cutoff-table{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:28px;}
+.ct-head{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;background:var(--black);padding:12px 18px;gap:8px;}
+.ct-hc{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.58);text-transform:uppercase;letter-spacing:.07em;}
+.ct-row{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;padding:11px 18px;border-bottom:1px solid var(--border);gap:8px;transition:background .18s;}
+.ct-row:hover{background:var(--cream-w);}
+.ct-row:last-child{border-bottom:none;}
+.ct-c{font-size:.74rem;color:rgba(26,38,24,.62);}
+.ct-c:first-child{font-weight:700;color:var(--forest);}
+.ct-c.gold{color:var(--gold);font-weight:700;}
+.ct-c.green{color:var(--sage);font-weight:700;}
+
+/* ── PROGRESS ── */
+.prog-wrap{background:white;border:1px solid var(--border);border-radius:18px;padding:28px;margin-top:28px;}
+.prog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-top:20px;}
+.pg-card{text-align:center;padding:16px 12px;border-radius:12px;background:var(--cream-w);}
+.pg-n{font-family:var(--fm);font-size:1.5rem;font-weight:800;display:block;margin-bottom:3px;}
+.pg-l{font-size:.58rem;text-transform:uppercase;letter-spacing:.07em;color:rgba(26,38,24,.54);}
+.pg-bar{height:3px;border-radius:3px;background:var(--border);margin-top:8px;overflow:hidden;}
+.pg-bar-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),#b8832a);}
+
+/* ── TIPS — dark premium ── */
+.tips-dark{background:var(--black);border-radius:20px;padding:36px 28px;border:1px solid rgba(255,255,255,.04);margin-top:28px;}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px;}
+.tip-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:13px;padding:18px;display:flex;gap:12px;transition:all .22s;}
+.tip-card:hover{background:rgba(255,255,255,.05);border-color:rgba(200,150,42,.18);}
+.tip-num{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--gold),#a87820);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.76rem;font-weight:700;flex-shrink:0;}
+.tip-title{font-size:.85rem;font-weight:800;color:white;margin-bottom:4px;}
+.tip-desc{font-size:.74rem;color:rgba(255,255,255,.6);line-height:1.62;}
+
+/* ── CTA — most premium ── */
+.cta-block{position:relative;border-radius:20px;overflow:hidden;margin-top:28px;padding:56px 32px;text-align:center;background:var(--black);border:1px solid rgba(200,150,42,.12);}
+.cta-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.07),transparent 65%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
+.cta-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(200,150,42,.025) 1px,transparent 1px);background-size:100% 48px;}
+.cta-title{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;color:white;line-height:1.15;margin-bottom:12px;position:relative;z-index:1;}
+.cta-title .ct-gold{color:var(--gold);}
+.cta-sub{font-size:.92rem;color:rgba(255,255,255,.55);margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.7;}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
+
+/* ── FOOTER ── */
+.footer{background:var(--black);padding:44px 20px 22px;border-top:1px solid rgba(255,255,255,.04);}
+.ft{display:flex;flex-wrap:wrap;gap:30px;max-width:1080px;margin:0 auto 28px;}
+.ft-brand{flex:1.5;min-width:180px;}
+.ft-logo{display:flex;align-items:center;gap:8px;margin-bottom:11px;}
+.ft-desc{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.7;max-width:240px;}
+.ft-col{flex:1;min-width:120px;}
+.ft-ct{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.14);margin-bottom:12px;}
+.ft-link{display:block;font-size:.74rem;color:rgba(255,255,255,.48);text-decoration:none;margin-bottom:7px;transition:color .18s;}
+.ft-link:hover{color:var(--gold);}
+.ft-bottom{max-width:1080px;margin:0 auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.ft-copy{font-size:.6rem;color:rgba(255,255,255,.14);}
+
+@media(max-width:640px){
+  section{padding:52px 16px;}
+  .mock-wrap,.diff-wrap,.tips-dark,.pp-wrap{padding:22px 14px;}
+  .cta-block{padding:36px 18px;}
+  .ct-head,.ct-row{grid-template-columns:1.5fr 1fr 1fr;}
+  .ct-head .ct-hc:last-child,.ct-row .ct-c:last-child{display:none;}
+  .hero-stats{gap:18px;}
+  .hero-btns{flex-direction:column;align-items:center;}
+  .btn-gold,.btn-sage,.btn-ghost{width:100%;max-width:300px;justify-content:center;}
+  .ps-item{min-width:130px;}
+  .nav-exam{display:none;}
+}
+
+/* ═══ NEET UG EXTRA CSS ═══ */
+/* Marking Cards */
+.mark-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-top:28px;}
+.mark-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:all .22s;position:relative;overflow:hidden;}
+.mark-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.mark-card.c-correct::before{background:linear-gradient(90deg,var(--sage),#4a7a3d);}
+.mark-card.c-wrong::before{background:linear-gradient(90deg,var(--rose),#a83535);}
+.mark-card.c-skip::before{background:linear-gradient(90deg,rgba(26,38,24,.2),rgba(26,38,24,.1));}
+.mark-card.c-bio::before{background:linear-gradient(90deg,var(--gold),#b8832a);}
+.mark-card.c-phy::before{background:linear-gradient(90deg,var(--sky),#2563eb);}
+.mark-card.c-total::before{background:linear-gradient(90deg,#7c3aed,#5b21b6);}
+.mark-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,38,24,.08);}
+.mark-icon{font-size:1.5rem;display:block;margin-bottom:8px;}
+.mark-val{font-family:var(--fm);font-size:1.7rem;font-weight:800;display:block;margin-bottom:4px;line-height:1;}
+.mark-lbl{font-size:.6rem;font-weight:700;color:rgba(26,38,24,.56);text-transform:uppercase;letter-spacing:.08em;}
+.mark-desc{font-size:.7rem;color:rgba(26,38,24,.56);margin-top:7px;line-height:1.55;}
+
+/* Weightage Dark Panel */
+.wt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px;}
+.wt-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:22px;}
+.wt-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.wt-subj{display:flex;align-items:center;gap:9px;}
+.wt-icon{font-size:1.3rem;}
+.wt-name{font-size:.9rem;font-weight:800;color:white;}
+.wt-marks{font-family:var(--fm);font-size:1rem;font-weight:800;color:var(--gold);}
+.wt-bar-bg{height:4px;background:rgba(255,255,255,.06);border-radius:4px;margin-bottom:16px;overflow:hidden;}
+.wt-bar-fill{height:100%;border-radius:4px;}
+.wt-rows{display:flex;flex-direction:column;gap:7px;}
+.wt-row{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.03);}
+.wt-tname{font-size:.74rem;color:rgba(255,255,255,.75);}
+.wt-badge{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;}
+.wb-vh{background:rgba(200,150,42,.18);color:#e8a830;}
+.wb-hi{background:rgba(107,143,94,.15);color:#9bc48a;}
+.wb-md{background:rgba(255,255,255,.07);color:rgba(255,255,255,.58);}
+
+/* Career Cards */
+.career-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:28px;}
+.career-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:all .22s;}
+.career-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(26,38,24,.1);}
+.cc-icon{font-size:2.2rem;margin-bottom:10px;display:block;}
+.cc-title{font-size:.86rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.cc-seats{display:inline-block;font-size:.58rem;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--gold-l);color:var(--gold);margin-bottom:7px;}
+.cc-desc{font-size:.72rem;color:rgba(26,38,24,.54);line-height:1.62;}
+
+/* Board vs NEET comparison */
+.compare-table{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:28px;}
+.cmp-head{display:grid;grid-template-columns:1.4fr 1fr 1fr;background:var(--black);padding:12px 18px;gap:8px;}
+.cmp-hc{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.58);text-transform:uppercase;letter-spacing:.07em;}
+.cmp-row{display:grid;grid-template-columns:1.4fr 1fr 1fr;padding:11px 18px;border-bottom:1px solid var(--border);gap:8px;transition:background .18s;}
+.cmp-row:hover{background:var(--cream-w);}
+.cmp-row:last-child{border-bottom:none;}
+.cmp-c{font-size:.74rem;color:rgba(26,38,24,.62);}
+.cmp-c:first-child{font-weight:700;color:var(--forest);}
+.cmp-yes{color:var(--sage);font-weight:700;}
+.cmp-no{color:var(--rose);font-weight:700;}
+.cmp-both{color:var(--gold);font-weight:700;}
+
+/* Study Plan dark */
+.plan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px;}
+.plan-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px;}
+.plan-phase{font-size:.54rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:6px;}
+.plan-title{font-size:.88rem;font-weight:800;color:white;margin-bottom:10px;}
+.plan-items{display:flex;flex-direction:column;gap:6px;}
+.plan-item{display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.68);line-height:1.55;}
+.plan-item::before{content:'▸';color:var(--gold);flex-shrink:0;margin-top:1px;}
+.plan-tag{font-size:.54rem;font-weight:700;padding:1px 6px;border-radius:100px;background:rgba(200,150,42,.15);color:#e8a830;margin-left:auto;flex-shrink:0;}
+
+/* Mistake cards */
+.mistake-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:28px;}
+.mistake-card{background:white;border:1px solid var(--border);border-radius:13px;padding:18px;border-left:3px solid var(--rose);transition:all .22s;}
+.mistake-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(26,38,24,.06);}
+.mk-num{font-family:var(--fm);font-size:.62rem;font-weight:700;color:var(--rose);margin-bottom:6px;}
+.mk-title{font-size:.84rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.mk-desc{font-size:.74rem;color:rgba(26,38,24,.54);line-height:1.62;}
+.mk-fix{font-size:.7rem;font-weight:600;color:var(--sage);margin-top:8px;display:flex;align-items:flex-start;gap:5px;}
+.mk-fix::before{content:'✓';flex-shrink:0;}
+
+/* Stitle white variant */
+.stitle.white{color:white;}
+.ssub.white{color:rgba(255,255,255,.55);}
+
+</style>
+</head>
+<body>
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-mark">MA</div>
+    <span class="nav-n1">Mock</span><span class="nav-n2">Arena</span>
+  </a>
+  <div class="nav-sep"></div>
+  <span class="nav-exam">🩺 NEET UG</span>
+  <div class="nav-links">
+    <a href="#overview" class="nav-link">About</a>
+    <a href="#marking" class="nav-link">Marking</a>
+    <a href="#weightage" class="nav-link">Weightage</a>
+    <a href="#chapters" class="nav-link">Chapters</a>
+    <a href="#mocks" class="nav-link">Mock Tests</a>
+    <a href="#cutoff" class="nav-link">AIIMS Cutoff</a>
+    <a href="#strategy" class="nav-link">Strategy</a>
+  </div>
+  <div class="nav-right">
+    <a href="mockarena_dashboard.html" class="nav-dash">Dashboard →</a>
+    <div class="nav-av" id="nav-av">S</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-glow1"></div>
+  <div class="hero-glow2"></div>
+  <div class="hero-inner">
+    <div class="hero-rank">
+      <div class="hr-line"></div>
+      <span class="hr-txt">India's Most Competitive Medical Entrance · NTA 2026</span>
+      <div class="hr-line r"></div>
+    </div>
+    <h1 class="hero-title">
+      NEET <span class="ht-gold">UG</span><br/>
+      <span style="color:rgba(255,255,255,.55);font-weight:300;">The Stethoscope</span><br/>
+      Starts <span class="ht-gold">Here.</span>
+    </h1>
+    <p class="hero-tagline">AIIMS Delhi · AIIMS Mumbai · JIPMER · 660+ Medical Colleges · ~1 Lakh MBBS Seats</p>
+    <p class="hero-quote">"NEET doesn't ask who is the smartest. It asks who prepared the most. 90% of NEET Biology is straight from NCERT — that alone is 300+ marks waiting for you."</p>
+    <div class="paper-strip">
+      <div class="ps-item">
+        <span class="ps-paper">Biology</span>
+        <div class="ps-vals">
+          <span class="ps-val">90 Qs <span class="lbl">questions</span></span>
+          <span class="ps-val">360 <span class="lbl">marks</span></span>
+          <span class="ps-val" style="color:var(--gold);">50% <span class="lbl" style="color:rgba(255,255,255,.52);">of total</span></span>
+        </div>
+      </div>
+      <div class="ps-item">
+        <span class="ps-paper">Phy + Chem</span>
+        <div class="ps-vals">
+          <span class="ps-val">45+45 <span class="lbl">questions</span></span>
+          <span class="ps-val">180+180 <span class="lbl">marks</span></span>
+          <span class="ps-val">50% <span class="lbl">of total</span></span>
+        </div>
+      </div>
+      <div class="ps-item">
+        <span class="ps-paper" style="color:var(--gold);">Combined</span>
+        <div class="ps-vals">
+          <span class="ps-val" style="color:var(--gold);">720 <span class="lbl" style="color:rgba(255,255,255,.52);">total marks</span></span>
+          <span class="ps-val" style="color:#9bc48a;">+4 <span class="lbl" style="color:rgba(255,255,255,.52);">correct</span></span>
+          <span class="ps-val" style="color:#ff8080;">−1 <span class="lbl" style="color:rgba(255,255,255,.52);">wrong</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="hero-btns">
+      <a href="mockarena_neet_mocktest.html" class="btn-gold">🩺 Take Full NEET Mock</a>
+      <a href="#chapters" class="btn-sage">📚 Chapter Practice</a>
+      <a href="#overview" class="btn-ghost">📋 Exam Details</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hs"><span class="hs-n">~23L</span><span class="hs-l">Appear Yearly</span></div>
+      <div class="hs"><span class="hs-n">~1L</span><span class="hs-l">MBBS Seats</span></div>
+      <div class="hs"><span class="hs-n">720</span><span class="hs-l">Total Marks</span></div>
+      <div class="hs"><span class="hs-n">Free</span><span class="hs-l">Full Access</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT THE EXAM — white -->
+<section id="overview" style="background:white;">
+  <div class="container">
+    <div class="slabel">About the Exam</div>
+    <h2 class="stitle">What is NEET UG?</h2>
+    <p class="ssub">The single most important medical entrance exam in India. One exam, one score, every MBBS seat in the country.</p>
+    <div class="intro-grid">
+      <div class="intro-left">
+        <div class="elite-box">
+          <div class="eb-title">🏥 Why NEET UG is Unique</div>
+          <div class="eb-item">Single exam for ALL medical colleges in India — government and private</div>
+          <div class="eb-item">Biology = 50% of total marks. Class 11+12 NCERT Biology is the exam</div>
+          <div class="eb-item">Unlimited attempts — unlike JEE, you can appear every year until you qualify</div>
+          <div class="eb-item">Single correct MCQ only — no multi-correct complexity. Clean +4/−1 system</div>
+          <div class="eb-item">NTA conducts it consistently — previous year patterns repeat reliably</div>
+          <div class="eb-item">Board exam prep and NEET prep are almost the same — dual benefit</div>
+        </div>
+        <div style="border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:14px;margin-top:14px;">
+          <div style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.5);margin-bottom:9px;">Top Colleges via NEET</div>
+          <div style="display:flex;flex-wrap:wrap;gap:6px;">
+            <span style="font-size:.64rem;padding:3px 9px;border-radius:100px;background:rgba(200,150,42,.12);color:var(--gold);font-weight:600;">19 AIIMS</span>
+            <span style="font-size:.64rem;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.62);font-weight:600;">JIPMER</span>
+            <span style="font-size:.64rem;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.62);font-weight:600;">AFMC Pune</span>
+            <span style="font-size:.64rem;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.62);font-weight:600;">660+ Colleges</span>
+          </div>
+        </div>
+      </div>
+      <div class="intro-right">
+        <div class="intro-stat"><span class="is-icon">📅</span><div><span class="is-val">May 2026</span><div class="is-lbl">Exam Date (Tentative)</div><div class="is-desc">Usually held on a Sunday in May. Results June. Counselling from July via MCC</div></div></div>
+        <div class="intro-stat"><span class="is-icon">🔁</span><div><span class="is-val">Unlimited Attempts</span><div class="is-lbl">No Attempt Limit</div><div class="is-desc">No upper limit on attempts. Must have PCB in Class 12. Minimum 50% marks (40% SC/ST)</div></div></div>
+        <div class="intro-stat"><span class="is-icon">⏱️</span><div><span class="is-val">3 Hours 20 Minutes</span><div class="is-lbl">Exam Duration</div><div class="is-desc">200 minutes for 180 questions. Start with Biology — you are freshest and it is 50% marks</div></div></div>
+        <div class="intro-stat"><span class="is-icon">🏥</span><div><span class="is-val">~1.09 Lakh Seats</span><div class="is-lbl">Total MBBS Seats</div><div class="is-desc">Government + Private across India. BDS, BAMS, BUMS also admitted through NEET score</div></div></div>
+        <div class="intro-stat"><span class="is-icon">📊</span><div><span class="is-val">Class 11 + 12 NCERT</span><div class="is-lbl">Syllabus Source</div><div class="is-desc">100% based on NCERT textbooks. No external books needed — deep NCERT mastery is enough</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARKING SCHEME — cream-w -->
+<section id="marking" style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Marking Scheme</div>
+    <h2 class="stitle">Master the Scoring System</h2>
+    <p class="ssub">Understanding NEET marking perfectly changes your entire strategy — when to attempt, when to skip, how to maximise.</p>
+    <div class="mark-grid">
+      <div class="mark-card c-correct"><span class="mark-icon">✅</span><span class="mark-val" style="color:var(--sage);">+4</span><span class="mark-lbl">Correct Answer</span><div class="mark-desc">Full 4 marks for every correct answer — Biology, Physics and Chemistry all equal</div></div>
+      <div class="mark-card c-wrong"><span class="mark-icon">❌</span><span class="mark-val" style="color:var(--rose);">−1</span><span class="mark-lbl">Wrong Answer</span><div class="mark-desc">1 mark deducted for wrong answer. Blind guessing loses marks fast — think first</div></div>
+      <div class="mark-card c-skip"><span class="mark-icon">⏭️</span><span class="mark-val" style="color:rgba(26,38,24,.54);">0</span><span class="mark-lbl">Unattempted</span><div class="mark-desc">Zero penalty for skipping. If you are below 70% confident — skip and move on</div></div>
+      <div class="mark-card c-bio"><span class="mark-icon">🧬</span><span class="mark-val" style="color:var(--gold);">360</span><span class="mark-lbl">Biology Maximum</span><div class="mark-desc">90 Qs × 4 marks. Score 80+ in Biology to secure a government MBBS seat comfortably</div></div>
+      <div class="mark-card c-phy"><span class="mark-icon">⚛️</span><span class="mark-val" style="color:var(--sky);">180</span><span class="mark-lbl">Physics Maximum</span><div class="mark-desc">Physics separates top 1000 from everyone else. Don't sacrifice it for Biology revision</div></div>
+      <div class="mark-card c-total"><span class="mark-icon">🏆</span><span class="mark-val" style="color:var(--gold);">720</span><span class="mark-lbl">Total Maximum</span><div class="mark-desc">650+ → AIIMS target · 600+ → Govt MBBS · 500+ → Private MBBS secured</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SUBJECT WEIGHTAGE — white with black diff-wrap -->
+<section id="weightage" style="background:white;">
+  <div class="container">
+    <div class="slabel">High-Weightage Topics</div>
+    <h2 class="stitle">Focus on These First</h2>
+    <p class="ssub">NEET PYQ analysis 2016–2024. These topics appear every single year — master them before anything else.</p>
+    <div class="diff-wrap">
+      <div class="wt-grid">
+        <div class="wt-card">
+          <div class="wt-hdr">
+            <div class="wt-subj"><span class="wt-icon">🧬</span><span class="wt-name">Biology</span></div>
+            <span class="wt-marks">360 marks</span>
+          </div>
+          <div class="wt-bar-bg"><div class="wt-bar-fill" style="width:100%;background:linear-gradient(90deg,var(--sage),#9bc48a);"></div></div>
+          <div class="wt-rows">
+            <div class="wt-row"><span class="wt-tname">Genetics & Evolution</span><span class="wt-badge wb-vh">Very High</span></div>
+            <div class="wt-row"><span class="wt-tname">Plant & Animal Kingdom</span><span class="wt-badge wb-vh">Very High</span></div>
+            <div class="wt-row"><span class="wt-tname">Human Physiology</span><span class="wt-badge wb-vh">Very High</span></div>
+            <div class="wt-row"><span class="wt-tname">Cell Biology & Biomolecules</span><span class="wt-badge wb-hi">High</span></div>
+            <div class="wt-row"><span class="wt-tname">Ecology & Environment</span><span class="wt-badge wb-hi">High</span></div>
+            <div class="wt-row"><span class="wt-tname">Photosynthesis & Respiration</span><span class="wt-badge wb-md">Medium</span></div>
+          </div>
+        </div>
+        <div class="wt-card">
+          <div class="wt-hdr">
+            <div class="wt-subj"><span class="wt-icon">⚛️</span><span class="wt-name">Physics</span></div>
+            <span class="wt-marks">180 marks</span>
+          </div>
+          <div class="wt-bar-bg"><div class="wt-bar-fill" style="width:50%;background:linear-gradient(90deg,var(--sky),#60a5fa);"></div></div>
+          <div class="wt-rows">
+            <div class="wt-row"><span class="wt-tname">Optics (Ray + Wave)</span><span class="wt-badge wb-vh">Very High</span></div>
+            <div class="wt-row"><span class="wt-tname">Electrostatics & Current</span><span class="wt-badge wb-vh">Very High</span></div>
+            <div class="wt-row"><span class="wt-tname">Modern Physics</span><span class="wt-badge wb-hi">High</span></div>
+            <div class="wt-row"><span class="wt-tname">Laws of Motion + WEP</span><span class="wt-badge wb-hi">High</span></div>
+            <div class="wt-row"><span class="wt-tname">Thermodynamics</span><span class="wt-badge wb-md">Medium</span></div>
+            <div class="wt-row"><span class="wt-tname">Magnetic Effects</span><span class="wt-badge wb-md">Medium</span></div>
+          </div>
+        </div>
+        <div class="wt-card">
+          <div class="wt-hdr">
+            <div class="wt-subj"><span class="wt-icon">🧪</span><span class="wt-name">Chemistry</span></div>
+            <span class="wt-marks">180 marks</span>
+          </div>
+          <div class="wt-bar-bg"><div class="wt-bar-fill" style="width:50%;background:linear-gradient(90deg,var(--gold),#fbbf24);"></div></div>
+          <div class="wt-rows">
+            <div class="wt-row"><span class="wt-tname">Organic Chemistry (GOC)</span><span class="wt-badge wb-vh">Very High</span></div>
+            <div class="wt-row"><span class="wt-tname">Chemical Bonding</span><span class="wt-badge wb-vh">Very High</span></div>
+            <div class="wt-row"><span class="wt-tname">Coordination Compounds</span><span class="wt-badge wb-hi">High</span></div>
+            <div class="wt-row"><span class="wt-tname">Equilibrium</span><span class="wt-badge wb-hi">High</span></div>
+            <div class="wt-row"><span class="wt-tname">p-Block Elements</span><span class="wt-badge wb-md">Medium</span></div>
+            <div class="wt-row"><span class="wt-tname">Electrochemistry</span><span class="wt-badge wb-md">Medium</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHAPTERS — cream-w -->
+<section id="chapters" style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Chapter Practice</div>
+    <h2 class="stitle">Master Every Chapter</h2>
+    <p class="ssub">30 questions per chapter · +4/−1 marking · 60-minute timer. Build subject strength chapter by chapter.</p>
+    <div class="subj-tabs">
+      <button class="stab on" onclick="showSubj('phy',this)">⚛️ Physics — 13 Live</button>
+      <button class="stab" onclick="showSubj('chem',this)">🧪 Chemistry</button>
+      <button class="stab" onclick="showSubj('bio',this)">🧬 Biology</button>
+    </div>
+    <div class="subj-panel on" id="subj-phy">
+      <div class="ch-grid">
+        <a href="mockarena_chapter_physics_units.html" class="ch-card"><div class="ch-left"><div class="ch-num">01</div><span class="ch-name">Units & Measurement</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_motion.html" class="ch-card"><div class="ch-left"><div class="ch-num">02</div><span class="ch-name">Motion in 1D & 2D</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_laws.html" class="ch-card"><div class="ch-left"><div class="ch-num">03</div><span class="ch-name">Laws of Motion</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_wep.html" class="ch-card"><div class="ch-left"><div class="ch-num">04</div><span class="ch-name">Work, Energy & Power</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_rotation.html" class="ch-card"><div class="ch-left"><div class="ch-num">05</div><span class="ch-name">Rotational Motion</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_gravitation.html" class="ch-card"><div class="ch-left"><div class="ch-num">06</div><span class="ch-name">Gravitation</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_thermodynamics.html" class="ch-card"><div class="ch-left"><div class="ch-num">07</div><span class="ch-name">Thermodynamics</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_waves.html" class="ch-card"><div class="ch-left"><div class="ch-num">08</div><span class="ch-name">Oscillations & Waves</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_electrostatics.html" class="ch-card"><div class="ch-left"><div class="ch-num">09</div><span class="ch-name">Electrostatics</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_current.html" class="ch-card"><div class="ch-left"><div class="ch-num">10</div><span class="ch-name">Current Electricity</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_magnetic.html" class="ch-card"><div class="ch-left"><div class="ch-num">11</div><span class="ch-name">Magnetic Effects</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_optics.html" class="ch-card"><div class="ch-left"><div class="ch-num">12</div><span class="ch-name">Optics ⭐ Highest Weightage</span></div><div class="ch-right"><span class="ch-adv">Top</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_modern.html" class="ch-card"><div class="ch-left"><div class="ch-num">13</div><span class="ch-name">Modern Physics</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
+      </div>
+      <div class="subj-footer"><span class="subj-stat"><span>13/13</span> Physics chapters live · Start with Optics for highest impact</span><a href="mockarena_chapter_physics_optics.html" class="btn-gold" style="font-size:.74rem;padding:8px 16px;">Start Optics →</a></div>
+    </div>
+    <div class="subj-panel" id="subj-chem">
+      <div class="ch-grid">
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">01</div><span class="ch-name">Mole Concept & Stoichiometry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">02</div><span class="ch-name">Atomic Structure</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">03</div><span class="ch-name">Chemical Bonding & MOT</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">04</div><span class="ch-name">Thermodynamics & Thermochemistry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">05</div><span class="ch-name">Equilibrium</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">06</div><span class="ch-name">Electrochemistry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">07</div><span class="ch-name">Organic Chemistry — GOC</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">08</div><span class="ch-name">Hydrocarbons & Halides</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">09</div><span class="ch-name">Coordination Compounds</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">10</div><span class="ch-name">p-Block & d-Block Elements</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+      </div>
+      <div class="subj-footer"><span class="subj-stat"><span>0/10</span> available · Chemistry chapters launching soon</span></div>
+    </div>
+    <div class="subj-panel" id="subj-bio">
+      <div class="ch-grid">
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">01</div><span class="ch-name">The Living World & Classification</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">02</div><span class="ch-name">Plant & Animal Kingdom</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">03</div><span class="ch-name">Cell — Structure & Function</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">04</div><span class="ch-name">Biomolecules & Cell Cycle</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">05</div><span class="ch-name">Photosynthesis & Respiration</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">06</div><span class="ch-name">Human Physiology — Digestion & Breathing</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">07</div><span class="ch-name">Circulation & Excretion</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">08</div><span class="ch-name">Nervous & Endocrine System</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">09</div><span class="ch-name">Reproduction in Organisms</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">10</div><span class="ch-name">Genetics & Molecular Biology</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">11</div><span class="ch-name">Evolution</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">12</div><span class="ch-name">Human Health & Disease</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">13</div><span class="ch-name">Ecology & Environment</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+      </div>
+      <div class="subj-footer"><span class="subj-stat"><span>0/13</span> available · Biology chapters — the most critical for NEET — launching soon!</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- MOCK TESTS — white with black mock-wrap -->
+<section id="mocks" style="background:white;">
+  <div class="container">
+    <div class="slabel">Mock Tests</div>
+    <h2 class="stitle">Simulate the Real NEET Exam</h2>
+    <p class="ssub">Full 180-question mock · Real 3h 20min timer · Detailed result analysis · Score saved to profile.</p>
+    <div class="mock-wrap">
+      <div style="margin-bottom:22px;">
+        <div class="slabel green">Available Now</div>
+        <div class="stitle white" style="font-size:1.2rem;">NEET UG Mock Tests</div>
+        <p class="ssub white" style="font-size:.8rem;">Bio 90 + Phy 45 + Chem 45 · +4/−1 · 720 marks · NTA exact pattern</p>
+      </div>
+      <div class="mock-grid">
+        <a href="mockarena_neet_mocktest.html" class="mock-card">
+          <div class="mc-top"><span class="mc-badge mcb-adv">Full NEET Mock</span><span class="mc-paper">NTA Pattern</span></div>
+          <div class="mc-title">NEET UG Full Mock #1</div>
+          <div class="mc-desc">Complete 180-question NEET mock. Biology 90 + Physics 45 + Chemistry 45. Exact NTA pattern. Real timer. Score saved automatically to your profile.</div>
+          <div class="mc-meta"><div class="mc-m">⏱️ 3h 20min</div><div class="mc-m">📝 180 Questions</div><div class="mc-m">🎯 720 Marks</div></div>
+          <button class="mc-btn">Start NEET Mock Now →</button>
+        </a>
+        <a href="mockarena_chapter_physics_optics.html" class="mock-card">
+          <div class="mc-top"><span class="mc-badge mcb-adv">Chapter Test</span><span class="mc-paper">Top Physics Topic</span></div>
+          <div class="mc-title">Optics — Highest Weightage</div>
+          <div class="mc-desc">The single most important NEET Physics chapter. 30 questions, 60 minutes. Lenses, mirrors, wave optics, the human eye — complete.</div>
+          <div class="mc-meta"><div class="mc-m">⏱️ 60 min</div><div class="mc-m">📝 30 Qs</div><div class="mc-m">🎯 +4/−1</div></div>
+          <button class="mc-btn" style="background:linear-gradient(135deg,var(--sage),#4a7a3d);">Start Optics Test →</button>
+        </a>
+        <div class="mock-card locked">
+          <div class="mc-top"><span class="mc-badge mcb-lock">Coming Soon</span></div>
+          <div class="mc-title">NEET UG Full Mock #2</div>
+          <div class="mc-desc">Second full mock with fresh question set. New Biology, Physics and Chemistry questions at exact NEET difficulty.</div>
+          <div class="mc-meta"><div class="mc-m">⏱️ 3h 20min</div><div class="mc-m">📝 180 Qs</div></div>
+          <button class="mc-btn mc-btn-lock" disabled>Coming Soon</button>
+        </div>
+        <div class="mock-card locked">
+          <div class="mc-top"><span class="mc-badge mcb-lock">Coming Soon</span></div>
+          <div class="mc-title">Biology Only — 90 Qs</div>
+          <div class="mc-desc">90-question Biology NEET mock. Botany + Zoology. 2-hour deep Biology practice — the most important subject in NEET.</div>
+          <div class="mc-meta"><div class="mc-m">⏱️ 2 Hours</div><div class="mc-m">📝 90 Qs</div><div class="mc-m">🎯 360 Marks</div></div>
+          <button class="mc-btn mc-btn-lock" disabled>Coming Soon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEET vs BOARDS — cream-w -->
+<section style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Dual Benefit</div>
+    <h2 class="stitle">NEET Prep = Board Prep</h2>
+    <p class="ssub">Unlike JEE, NEET preparation perfectly aligns with Class 11 & 12 board exams. Preparing for NEET makes you score better in boards automatically.</p>
+    <div class="compare-table">
+      <div class="cmp-head">
+        <div class="cmp-hc">Topic / Skill</div>
+        <div class="cmp-hc">Needed for NEET</div>
+        <div class="cmp-hc">Needed for Boards</div>
+      </div>
+      <div class="cmp-row"><div class="cmp-c">NCERT Biology (Class 11+12)</div><div class="cmp-c"><span class="cmp-yes">100% Core</span></div><div class="cmp-c"><span class="cmp-yes">100% Core</span></div></div>
+      <div class="cmp-row"><div class="cmp-c">NCERT Physics Concepts</div><div class="cmp-c"><span class="cmp-yes">Full Syllabus</span></div><div class="cmp-c"><span class="cmp-yes">Full Syllabus</span></div></div>
+      <div class="cmp-row"><div class="cmp-c">NCERT Chemistry</div><div class="cmp-c"><span class="cmp-yes">Full Syllabus</span></div><div class="cmp-c"><span class="cmp-yes">Full Syllabus</span></div></div>
+      <div class="cmp-row"><div class="cmp-c">Diagram-based questions</div><div class="cmp-c"><span class="cmp-yes">Essential</span></div><div class="cmp-c"><span class="cmp-yes">Essential</span></div></div>
+      <div class="cmp-row"><div class="cmp-c">Derivations & Proofs</div><div class="cmp-c"><span class="cmp-no">Not Required</span></div><div class="cmp-c"><span class="cmp-both">Required</span></div></div>
+      <div class="cmp-row"><div class="cmp-c">Long Answer Writing</div><div class="cmp-c"><span class="cmp-no">Not Required</span></div><div class="cmp-c"><span class="cmp-both">Required</span></div></div>
+      <div class="cmp-row"><div class="cmp-c">MCQ Speed & Accuracy</div><div class="cmp-c"><span class="cmp-yes">Critical</span></div><div class="cmp-c"><span class="cmp-no">Less Critical</span></div></div>
+      <div class="cmp-row"><div class="cmp-c">NCERT Intext Questions</div><div class="cmp-c"><span class="cmp-yes">Directly Appears</span></div><div class="cmp-c"><span class="cmp-yes">Directly Appears</span></div></div>
+    </div>
+    <p style="font-size:.74rem;color:rgba(26,38,24,.36);margin-top:12px;line-height:1.6;">✅ Conclusion: NEET prep completes 90% of board prep automatically. Study NEET = score well in boards. The extra 10% for boards is just long-answer writing practice.</p>
+  </div>
+</section>
+
+<!-- CAREER PATHS — white -->
+<section style="background:white;">
+  <div class="container">
+    <div class="slabel">Career Paths</div>
+    <h2 class="stitle">Where NEET Takes You</h2>
+    <p class="ssub">NEET opens multiple medical career paths. Know your destination before you begin — it gives every study session a purpose.</p>
+    <div class="career-grid">
+      <div class="career-card"><span class="cc-icon">👨‍⚕️</span><div class="cc-title">MBBS Doctor</div><span class="cc-seats">~1.09L Seats</span><div class="cc-desc">Government & Private. 5.5-year course including 1-year internship. The most prestigious medical career in India.</div></div>
+      <div class="career-card"><span class="cc-icon">🦷</span><div class="cc-title">BDS Dentist</div><span class="cc-seats">~27K Seats</span><div class="cc-desc">Bachelor of Dental Surgery. 5-year course. Excellent career in dental practice, orthodontics or oral surgery.</div></div>
+      <div class="career-card"><span class="cc-icon">🏥</span><div class="cc-title">AIIMS / JIPMER</div><span class="cc-seats">19 AIIMS</span><div class="cc-desc">AIIMS Delhi, Mumbai, Bhopal, Jodhpur + JIPMER Puducherry. India's top medical institutions. Need 700+/720.</div></div>
+      <div class="career-card"><span class="cc-icon">🐾</span><div class="cc-title">BVSc Veterinary</div><span class="cc-seats">~6K Seats</span><div class="cc-desc">Bachelor of Veterinary Science. Animal medicine, wildlife research, animal care. NEET score accepted.</div></div>
+      <div class="career-card"><span class="cc-icon">🔬</span><div class="cc-title">Medical Research</div><span class="cc-seats">ICMR + AIIMS</span><div class="cc-desc">MBBS + MD/MS → Research. Drug development, disease research, public health — contribute to medicine's future.</div></div>
+      <div class="career-card"><span class="cc-icon">🧬</span><div class="cc-title">AYUSH Medicine</div><span class="cc-seats">BAMS/BUMS/BHMS</span><div class="cc-desc">Ayurveda, Unani, Homeopathy — all via NEET score. Growing sector with strong career prospects across India.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- AIIMS CUTOFFS — cream-w -->
+<section id="cutoff" style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Medical Cutoffs</div>
+    <h2 class="stitle">AIIMS & Medical College Cutoffs</h2>
+    <p class="ssub">Approximate cutoffs from NEET 2024. Set your target score now and work backwards from it every single day.</p>
+    <div class="cutoff-table">
+      <div class="ct-head">
+        <div class="ct-hc">College & Course</div>
+        <div class="ct-hc">General</div>
+        <div class="ct-hc">OBC-NCL</div>
+        <div class="ct-hc">SC / ST</div>
+      </div>
+      <div class="ct-row"><div class="ct-c">AIIMS Delhi — MBBS</div><div class="ct-c gold">715+</div><div class="ct-c">680+</div><div class="ct-c">620+</div></div>
+      <div class="ct-row"><div class="ct-c">AIIMS Mumbai — MBBS</div><div class="ct-c gold">710+</div><div class="ct-c">668+</div><div class="ct-c">610+</div></div>
+      <div class="ct-row"><div class="ct-c">JIPMER Puducherry — MBBS</div><div class="ct-c gold">680+</div><div class="ct-c">640+</div><div class="ct-c">580+</div></div>
+      <div class="ct-row"><div class="ct-c">Top Govt. Medical Colleges</div><div class="ct-c green">600+</div><div class="ct-c">560+</div><div class="ct-c">480+</div></div>
+      <div class="ct-row"><div class="ct-c">State Govt. MBBS</div><div class="ct-c green">550+</div><div class="ct-c">500+</div><div class="ct-c">420+</div></div>
+      <div class="ct-row"><div class="ct-c">Private MBBS (Top Colleges)</div><div class="ct-c green">500+</div><div class="ct-c">470+</div><div class="ct-c">400+</div></div>
+      <div class="ct-row"><div class="ct-c">BDS Government Colleges</div><div class="ct-c green">480+</div><div class="ct-c">440+</div><div class="ct-c">380+</div></div>
+      <div class="ct-row"><div class="ct-c">Any MBBS Seat in India</div><div class="ct-c green">~450+</div><div class="ct-c">—</div><div class="ct-c">—</div></div>
+    </div>
+    <p style="font-size:.68rem;color:rgba(26,38,24,.56);margin-top:10px;">* Approximate from NEET 2024 MCC counselling. Check official MCC / state counselling for exact figures. Cutoffs vary yearly.</p>
+  </div>
+</section>
+
+<!-- PROGRESS — white -->
+<section style="background:white;">
+  <div class="container">
+    <div class="slabel">Your Progress</div>
+    <h2 class="stitle">Track Your NEET Readiness</h2>
+    <p class="ssub">Live performance data from every MockArena test — your real preparation snapshot, updated automatically.</p>
+    <div class="prog-wrap">
+      <div class="prog-grid">
+        <div class="pg-card"><span class="pg-n" style="color:var(--gold)" id="pg-tests">0</span><span class="pg-l">Tests Taken</span><div class="pg-bar"><div class="pg-bar-f" id="pg-tests-bar" style="width:0%"></div></div></div>
+        <div class="pg-card"><span class="pg-n" style="color:var(--sage)" id="pg-acc">0%</span><span class="pg-l">Accuracy</span><div class="pg-bar"><div class="pg-bar-f" id="pg-acc-bar" style="width:0%"></div></div></div>
+        <div class="pg-card"><span class="pg-n" style="color:var(--gold)" id="pg-best">0</span><span class="pg-l">Best Score</span><div class="pg-bar"><div class="pg-bar-f" id="pg-best-bar" style="width:0%"></div></div></div>
+        <div class="pg-card"><span class="pg-n" style="color:var(--forest)" id="pg-correct">0</span><span class="pg-l">Total Correct</span><div class="pg-bar"><div class="pg-bar-f" id="pg-correct-bar" style="width:0%"></div></div></div>
+        <div class="pg-card"><span class="pg-n" style="color:var(--rose)" id="pg-wrong">0</span><span class="pg-l">Total Wrong</span><div class="pg-bar"><div class="pg-bar-f" id="pg-wrong-bar" style="width:0%;background:var(--rose)"></div></div></div>
+        <div class="pg-card"><span class="pg-n" style="color:var(--gold)">13</span><span class="pg-l">Chapters Live</span><div class="pg-bar"><div class="pg-bar-f" style="width:100%"></div></div></div>
+      </div>
+      <div style="text-align:center;margin-top:20px;">
+        <a href="mockarena_analytics.html" class="btn-gold" style="display:inline-flex;font-size:.78rem;">📊 Full Analytics Dashboard →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMMON MISTAKES — cream-w -->
+<section style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Common Mistakes</div>
+    <h2 class="stitle">Top NEET Mistakes to Avoid</h2>
+    <p class="ssub">These are the exact mistakes that cost students 50-100 marks in NEET. Know them. Avoid them. They are the difference between a seat and no seat.</p>
+    <div class="mistake-grid">
+      <div class="mistake-card"><div class="mk-num">MISTAKE 01</div><div class="mk-title">Skipping NCERT for Coaching Notes</div><div class="mk-desc">90% of NEET Biology is directly from NCERT. Students who rely only on coaching notes miss exact NCERT phrasing that NEET uses in questions.</div><div class="mk-fix">Fix: Read NCERT first, coaching notes second — always.</div></div>
+      <div class="mistake-card"><div class="mk-num">MISTAKE 02</div><div class="mk-title">Neglecting Physics Completely</div><div class="mk-desc">Many students spend 80% of time on Biology and ignore Physics. Then Physics pulls their rank from top 5000 to top 50,000 single-handedly.</div><div class="mk-fix">Fix: Minimum 2 hours Physics daily, even during Biology-heavy phases.</div></div>
+      <div class="mistake-card"><div class="mk-num">MISTAKE 03</div><div class="mk-title">Guessing Randomly on MCQs</div><div class="mk-desc">Random guessing with −1 penalty is statistically guaranteed to lose marks. 4 options, −1 wrong, +4 correct = expected value of random guess is −0.25 per question.</div><div class="mk-fix">Fix: Only attempt if 70%+ confident. Skip otherwise — 0 is better than −1.</div></div>
+      <div class="mistake-card"><div class="mk-num">MISTAKE 04</div><div class="mk-title">No Full Mock Practice</div><div class="mk-desc">Students practice chapters but never simulate a full 3h 20min NEET. On exam day, they mentally fatigue in hour 2 — Biology answers become careless.</div><div class="mk-fix">Fix: Full mock every 2 weeks from 6 months before exam.</div></div>
+      <div class="mistake-card"><div class="mk-num">MISTAKE 05</div><div class="mk-title">Ignoring Diagrams in Biology</div><div class="mk-desc">NEET asks 15-20 diagram-based questions every year — mitosis, meiosis, heart, kidney, neuron, flower. Students who skip diagrams lose 60-80 marks instantly.</div><div class="mk-fix">Fix: Draw every NCERT diagram from memory weekly. No shortcuts.</div></div>
+      <div class="mistake-card"><div class="mk-num">MISTAKE 06</div><div class="mk-title">Not Reviewing Wrong Answers</div><div class="mk-desc">Taking mocks without reviewing wrong answers is the single biggest waste of preparation time. The lesson is in the wrong answer — not the correct one.</div><div class="mk-fix">Fix: Spend equal time reviewing wrong answers as taking the test itself.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDY PLAN — white with black dark panel -->
+<section style="background:white;">
+  <div class="container">
+    <div class="slabel">Study Plan</div>
+    <h2 class="stitle">Phase-wise NEET Preparation Plan</h2>
+    <p class="ssub">A proven 12-month roadmap from Chapter 1 to NEET rank. Follow this sequence — it is not random.</p>
+    <div class="diff-wrap">
+      <div class="plan-grid">
+        <div class="plan-card">
+          <div class="plan-phase">Phase 1 · Months 1-3</div>
+          <div class="plan-title">Foundation — Build the Base</div>
+          <div class="plan-items">
+            <div class="plan-item">Complete Class 11 Biology NCERT cover to cover <span class="plan-tag">Priority 1</span></div>
+            <div class="plan-item">Physics Chapters 1-7 (Mechanics, WEP, Gravitation)</div>
+            <div class="plan-item">Chemistry: Mole Concept, Atomic Structure, Bonding</div>
+            <div class="plan-item">Solve NCERT in-text + end chapter questions daily</div>
+            <div class="plan-item">Take 1 chapter test per week on MockArena</div>
+          </div>
+        </div>
+        <div class="plan-card">
+          <div class="plan-phase">Phase 2 · Months 4-7</div>
+          <div class="plan-title">Depth — Master the Hard Chapters</div>
+          <div class="plan-items">
+            <div class="plan-item">Class 12 Biology NCERT — Genetics, Reproduction, Ecology <span class="plan-tag">Priority 1</span></div>
+            <div class="plan-item">Physics: Optics, Electrostatics, Modern Physics (highest weightage)</div>
+            <div class="plan-item">Organic Chemistry — GOC, Hydrocarbons, Reactions</div>
+            <div class="plan-item">First full NEET mock at end of Month 5</div>
+            <div class="plan-item">PYQ practice — 5 years (2020-2024)</div>
+          </div>
+        </div>
+        <div class="plan-card">
+          <div class="plan-phase">Phase 3 · Months 8-10</div>
+          <div class="plan-title">Revision — Deep Revision Cycles</div>
+          <div class="plan-items">
+            <div class="plan-item">Revise all NCERT Biology — 3 full passes <span class="plan-tag">Critical</span></div>
+            <div class="plan-item">All Physics chapter tests on MockArena — every single one</div>
+            <div class="plan-item">Solve PYQ 2015-2024 — full 10 years</div>
+            <div class="plan-item">Full mock every 2 weeks — review every wrong answer</div>
+            <div class="plan-item">Weak chapter identification and targeted revision</div>
+          </div>
+        </div>
+        <div class="plan-card">
+          <div class="plan-phase">Phase 4 · Months 11-12</div>
+          <div class="plan-title">Peak — Final Sprint to Exam</div>
+          <div class="plan-items">
+            <div class="plan-item">4th and 5th NCERT Biology revision <span class="plan-tag">Non-Negotiable</span></div>
+            <div class="plan-item">Full mock every week — build exam stamina for 3h 20min</div>
+            <div class="plan-item">Only high-weightage topics — no new topics after Month 10</div>
+            <div class="plan-item">Sleep 8 hours minimum — exam performance is biology</div>
+            <div class="plan-item">Last 7 days: light revision, stay calm, trust the preparation</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGY — cream-w with black tips-dark -->
+<section id="strategy" style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">NEET Strategy</div>
+    <h2 class="stitle">How to Crack NEET UG</h2>
+    <p class="ssub">Proven strategies from students who scored 650+ and secured AIIMS or top government MBBS seats on first attempt.</p>
+    <div class="tips-dark">
+      <div class="tips-grid">
+        <div class="tip-card"><div class="tip-num">1</div><div><div class="tip-title">NCERT = 90% of NEET Biology</div><div class="tip-desc">Read every line, every diagram, every intext question — minimum 5-6 revisions. NCERT mastery alone gives 300+ marks. There are absolutely zero shortcuts here.</div></div></div>
+        <div class="tip-card"><div class="tip-num">2</div><div><div class="tip-title">70%+ Confident = Always Attempt</div><div class="tip-desc">Educated elimination gives positive expected marks. The −1 penalty only hurts pure random guessing. Think 15 seconds — if 70%+ confident, mark and move.</div></div></div>
+        <div class="tip-card"><div class="tip-num">3</div><div><div class="tip-title">Biology First in Every Mock</div><div class="tip-desc">You are freshest at the start. Biology = 50% marks, tests recall not calculation. Save Physics for peak focus. Never start with Physics — you will waste freshness.</div></div></div>
+        <div class="tip-card"><div class="tip-num">4</div><div><div class="tip-title">Physics Decides Your Final Rank</div><div class="tip-desc">Top scorers all score similarly in Bio and Chem. Physics separates AIR 100 from AIR 10,000. Complete all 13 Physics chapter tests on MockArena — every single one.</div></div></div>
+        <div class="tip-card"><div class="tip-num">5</div><div><div class="tip-title">10 Years of PYQ is Non-Negotiable</div><div class="tip-desc">NEET repeats concept patterns every single year. 10 years of PYQ trains deep pattern recognition — you will see familiar question types on exam day and answer faster.</div></div></div>
+        <div class="tip-card"><div class="tip-num">6</div><div><div class="tip-title">Full Mock Every 2 Weeks</div><div class="tip-desc">Full 3h 20min NEET mock every 2 weeks minimum. Review every wrong answer the next morning. Your accuracy must improve with every mock. Track it — or it won't.</div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA — exact JEE Advanced style -->
+<section style="background:white;padding:60px 20px;">
+  <div class="container">
+    <div class="cta-block">
+      <div class="cta-glow"></div>
+      <div class="cta-lines"></div>
+      <h2 class="cta-title">
+        <span class="ct-gold">~23 Lakh</span> Students.<br/>
+        Only <span class="ct-gold">~1 Lakh</span> MBBS Seats.<br/>
+        The White Coat Is Waiting.
+      </h2>
+      <p class="cta-sub">NEET rewards the most prepared student — not the most talented one. Every chapter test, every mock, every revision session compounds. The student who starts today finishes ahead. Start right now.</p>
+      <div class="cta-btns">
+        <a href="mockarena_neet_mocktest.html" class="btn-gold">🩺 Take Full NEET Mock</a>
+        <a href="mockarena_chapter_physics_optics.html" class="btn-sage">📚 Start Chapter Practice</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="ft">
+    <div class="ft-brand">
+      <div class="ft-logo"><div class="nav-mark">MA</div><span class="nav-n1">Mock</span><span class="nav-n2">Arena</span></div>
+      <p class="ft-desc">India's most complete test prep platform for NEET UG and JEE. Chapter tests, full mocks, analytics — all free.</p>
+    </div>
+    <div class="ft-col"><div class="ft-ct">Exam Pages</div>
+      <a href="neet_foundation.html" class="ft-link">NEET Foundation</a>
+      <a href="neet_ug.html" class="ft-link">NEET UG</a>
+      <a href="jee_foundation.html" class="ft-link">JEE Foundation</a>
+      <a href="jee_main.html" class="ft-link">JEE Mains</a>
+      <a href="jee_advanced.html" class="ft-link">JEE Advanced</a>
+    </div>
+    <div class="ft-col"><div class="ft-ct">Physics Tests</div>
+      <a href="mockarena_chapter_physics_optics.html" class="ft-link">Optics ⭐ Top NEET</a>
+      <a href="mockarena_chapter_physics_electrostatics.html" class="ft-link">Electrostatics</a>
+      <a href="mockarena_chapter_physics_modern.html" class="ft-link">Modern Physics</a>
+      <a href="mockarena_chapter_physics_current.html" class="ft-link">Current Electricity</a>
+      <a href="mockarena_chapter_physics_rotation.html" class="ft-link">Rotational Motion</a>
+    </div>
+    <div class="ft-col"><div class="ft-ct">Practice</div>
+      <a href="mockarena_neet_mocktest.html" class="ft-link">NEET Full Mock</a>
+      <a href="mockarena_test_catalog.html" class="ft-link">All Tests</a>
+      <a href="mockarena_pyq.html" class="ft-link">PYQ Papers</a>
+      <a href="mockarena_leaderboard.html" class="ft-link">Leaderboard</a>
+    </div>
+    <div class="ft-col"><div class="ft-ct">Account</div>
+      <a href="mockarena_dashboard.html" class="ft-link">Dashboard</a>
+      <a href="mockarena_analytics.html" class="ft-link">Analytics</a>
+      <a href="mockarena_results.html" class="ft-link">My Results</a>
+      <a href="login.html" class="ft-link">Login</a>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span class="ft-copy">© 2026 MockArena. All rights reserved.</span>
+    <span class="ft-copy">Built for future doctors 🩺</span>
+  </div>
+</footer>
+<script>
+
+function showSubj(id,el){
+  document.querySelectorAll('.subj-panel').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.stab').forEach(function(t){t.classList.remove('on');});
+  document.getElementById('subj-'+id).classList.add('on');
+  el.classList.add('on');
+}
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var el=document.getElementById(this.getAttribute('href').slice(1));
+    if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+
+
+function showSubj(id,el){
+  document.querySelectorAll('.subj-panel').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.stab').forEach(function(t){t.classList.remove('on');});
+  document.getElementById('subj-'+id).classList.add('on');
+  el.classList.add('on');
+}
+document.querySelectorAll('a[href^="#"]').forEach(function(a){
+  a.addEventListener('click',function(e){
+    var el=document.getElementById(this.getAttribute('href').slice(1));
+    if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}
+  });
+});
+(function(){
+  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+  function load(cb){
+    var s1=document.createElement('script');s1.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
+    s1.onload=function(){var s2=document.createElement('script');s2.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js';
+      s2.onload=function(){var s3=document.createElement('script');s3.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js';
+        s3.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);cb(firebase.firestore(),firebase.auth());};
+        document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);
+  }
+  function set(id,val){var el=document.getElementById(id);if(el)el.textContent=val;}
+  function bar(id,pct,col){var el=document.getElementById(id);if(el){el.style.width=Math.min(pct,100)+'%';if(col)el.style.background=col;}}
+  load(function(db,auth){
+    auth.onAuthStateChanged(function(u){
+      if(!u)return;
+      var nm=u.displayName||'S';
+      var av=document.getElementById('nav-av');
+      if(av){if(u.photoURL){av.innerHTML='<img src="'+u.photoURL+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';}
+      else{av.textContent=nm.split(' ').map(function(w){return w[0];}).join('').toUpperCase().substring(0,2);}}
+      db.collection('results').doc(u.uid).collection('tests').orderBy('timestamp','desc').limit(100)
+        .get().then(function(snap){
+          var tests=[];snap.forEach(function(d){tests.push(d.data());});
+          if(!tests.length)return;
+          var totalC=tests.reduce(function(a,t){return a+(t.correct||0);},0);
+          var totalW=tests.reduce(function(a,t){return a+(t.wrong||0);},0);
+          var totalQ=tests.reduce(function(a,t){return a+(t.total||0);},0);
+          var best=Math.max.apply(null,tests.map(function(t){return t.score||0;}));
+          var acc=totalQ?Math.round(totalC/totalQ*100):0;
+          set('pg-tests',tests.length);set('pg-acc',acc+'%');
+          set('pg-best',best);set('pg-correct',totalC);set('pg-wrong',totalW);
+          bar('pg-tests-bar',Math.min(tests.length*5,100));
+          bar('pg-acc-bar',acc);bar('pg-best-bar',Math.min(best/3,100));
+          bar('pg-correct-bar',Math.min(totalC,100));
+          bar('pg-wrong-bar',Math.min(totalW,100),'#c84b4b');
+        });
+    });
+  });
+})();
+
+</script>
+</body>
+</html>

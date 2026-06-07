@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NEET Foundation — MockArena | Class 8-10 Medical Prep</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<style>
+/* ── EXACT SAME AS JEE MAINS ── */
+:root{
+  --forest:#1a2618;--forest-m:#3d5239;--forest-l:#243420;
+  --sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-m:rgba(107,143,94,.18);--sage-glow:rgba(107,143,94,.22);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);
+  --rose:#c84b4b;--rose-l:rgba(200,75,75,.08);
+  --sky:#3b82c4;--sky-l:rgba(59,130,196,.1);
+  --cream:#faf9f5;--cream-w:#f5f3ec;
+  --border:rgba(26,38,24,.07);--bm:rgba(26,38,24,.11);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);overflow-x:hidden;}
+
+/* NAV — exact jee_main */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:58px;background:rgba(26,38,24,.97);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;padding:0 20px;gap:12px;}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.nav-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:white;}
+.nav-n1{color:white;font-size:.92rem;font-weight:800;}
+.nav-n2{font-size:.92rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.nav-badge{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;font-size:.52rem;font-weight:800;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.07em;}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:24px;}
+.nav-link{font-size:.7rem;font-weight:600;color:rgba(255,255,255,.45);text-decoration:none;padding:5px 10px;border-radius:7px;transition:all .18s;white-space:nowrap;}
+.nav-link:hover{color:white;background:rgba(255,255,255,.07);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-dash{font-family:var(--fd);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;text-decoration:none;border:none;cursor:pointer;white-space:nowrap;}
+.nav-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:white;overflow:hidden;cursor:pointer;flex-shrink:0;}
+@media(max-width:860px){.nav-links{display:none;}}
+
+/* HERO — exact jee_main style */
+.hero{min-height:100vh;background:linear-gradient(145deg,#0e1a0c 0%,#1a2618 50%,#0e1a0c 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:80px 20px 60px;}
+.hero-bg1{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(107,143,94,.07),transparent 65%);top:-150px;right:-180px;pointer-events:none;}
+.hero-bg2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.04),transparent 65%);bottom:-100px;left:-120px;pointer-events:none;}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:48px 48px;}
+.hero-inner{position:relative;z-index:1;max-width:720px;text-align:center;}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(107,143,94,.1);border:1px solid rgba(107,143,94,.2);border-radius:100px;padding:5px 14px;margin-bottom:24px;}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:hpulse 2s infinite;}
+@keyframes hpulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.5);}}
+.hero-eyebrow-txt{font-size:.6rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.1em;}
+.hero-title{font-size:clamp(2.2rem,7.5vw,4rem);font-weight:900;color:white;line-height:1.08;letter-spacing:-.025em;margin-bottom:14px;}
+.hero-title .ht1{background:linear-gradient(135deg,var(--sage),#b5e09a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.hero-title .ht2{color:var(--gold);}
+.hero-sub{font-size:clamp(.88rem,2.5vw,1.05rem);color:rgba(255,255,255,.4);line-height:1.75;margin-bottom:28px;max-width:560px;margin-left:auto;margin-right:auto;}
+
+/* EXAM STRIP — same as jee_main */
+.exam-strip{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:28px;}
+.es-item{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 14px;}
+.es-label{font-size:.58rem;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.07em;display:block;}
+.es-value{font-family:var(--fm);font-size:.8rem;font-weight:700;color:white;}
+.es-value.gold{color:var(--gold);}
+.es-value.green{color:#9bc48a;}
+.es-value.rose{color:#ff8080;}
+
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;}
+.btn-gold{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--gold),#b8832a);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px rgba(200,150,42,.25);}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(200,150,42,.3);}
+.btn-sage{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-glow);}
+.btn-sage:hover{transform:translateY(-2px);}
+.btn-ghost{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.65);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;}
+.btn-ghost:hover{border-color:var(--sage);color:white;}
+
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;max-width:560px;margin:0 auto;}
+.hs-item{padding:14px 8px;text-align:center;background:rgba(255,255,255,.02);}
+.hs-n{font-family:var(--fm);font-size:1.2rem;font-weight:700;color:white;display:block;}
+.hs-l{font-size:.52rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;}
+@media(max-width:500px){.hero-stats{grid-template-columns:repeat(2,1fr);}}
+
+/* SHARED — exact jee_main */
+section{padding:72px 20px;}
+.container{max-width:1080px;margin:0 auto;}
+.slabel{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.13em;color:var(--sage);margin-bottom:8px;}
+.stitle{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:var(--forest);line-height:1.2;margin-bottom:10px;}
+.stitle.white{color:white;}
+.ssub{font-size:.9rem;color:rgba(26,38,24,.42);line-height:1.72;max-width:540px;}
+.ssub.white{color:rgba(255,255,255,.35);}
+.sec-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap;}
+
+/* OV CARDS — jee_main style */
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:28px;}
+.ov-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:all .22s;}
+.ov-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
+.ov-card.c1::after{background:linear-gradient(90deg,var(--sage),#4a7a3d);}
+.ov-card.c2::after{background:linear-gradient(90deg,var(--gold),#b8832a);}
+.ov-card.c3::after{background:linear-gradient(90deg,var(--sky),#2563eb);}
+.ov-card.c4::after{background:linear-gradient(90deg,var(--rose),#a83535);}
+.ov-card.c5::after{background:linear-gradient(90deg,#7c3aed,#6d28d9);}
+.ov-card.c6::after{background:linear-gradient(90deg,#0891b2,#0e7490);}
+.ov-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,38,24,.08);}
+.ov-icon{font-size:1.6rem;margin-bottom:12px;display:block;}
+.ov-label{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(26,38,24,.28);margin-bottom:3px;}
+.ov-value{font-size:1rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.ov-desc{font-size:.72rem;color:rgba(26,38,24,.42);line-height:1.6;}
+
+/* ROADMAP */
+.rm-wrap{margin-top:28px;display:flex;flex-direction:column;gap:14px;}
+.rm-row{display:flex;gap:14px;align-items:flex-start;}
+.rm-left{display:flex;flex-direction:column;align-items:center;width:48px;flex-shrink:0;}
+.rm-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.82rem;font-weight:800;color:white;flex-shrink:0;}
+.rm-connector{width:2px;flex:1;min-height:14px;background:var(--border);}
+.rm-card{background:white;border:1px solid var(--border);border-radius:13px;padding:16px 18px;flex:1;}
+.rm-title{font-size:.86rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
+.rm-desc{font-size:.74rem;color:rgba(26,38,24,.44);line-height:1.62;margin-bottom:9px;}
+.rm-tags{display:flex;flex-wrap:wrap;gap:5px;}
+.rm-tag{font-size:.56rem;font-weight:600;padding:2px 8px;border-radius:100px;background:var(--sage-l);color:var(--forest-m);}
+
+/* SUBJECT TABS — jee_main */
+.subj-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.stab{font-family:var(--fd);font-size:.72rem;font-weight:600;padding:6px 16px;border-radius:8px;border:1.5px solid var(--bm);background:white;color:var(--forest-m);cursor:pointer;transition:all .18s;}
+.stab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.subj-panel{display:none;}
+.subj-panel.on{display:block;}
+.subj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;}
+.subj-card{background:white;border:1px solid var(--border);border-radius:16px;padding:22px;transition:all .22s;}
+.subj-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(26,38,24,.08);}
+.sc-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);}
+.sc-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.sc-name{font-size:.9rem;font-weight:800;color:var(--forest);}
+.sc-sub{font-size:.62rem;color:rgba(26,38,24,.3);}
+.sc-topics{display:flex;flex-direction:column;gap:6px;}
+.sc-topic{display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:var(--forest-m);line-height:1.5;}
+.sc-topic::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--sage);flex-shrink:0;margin-top:5px;}
+.sc-note{margin-top:12px;padding:9px 12px;background:var(--sage-l);border-radius:8px;font-size:.68rem;color:var(--forest-m);line-height:1.5;}
+.sc-note.highlight{background:var(--gold-l);color:var(--gold);}
+.subj-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
+.subj-stat{font-size:.7rem;color:rgba(26,38,24,.38);}
+.subj-stat span{font-weight:700;color:var(--sage);}
+
+/* MOCK/TESTS DARK PANEL — jee_main */
+.mock-wrap{background:var(--forest);border-radius:20px;padding:36px 28px;margin-top:28px;}
+.mock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:24px;}
+.mock-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:20px;transition:all .22s;text-decoration:none;display:block;}
+.mock-card:hover{background:rgba(255,255,255,.07);border-color:rgba(107,143,94,.25);transform:translateY(-2px);}
+.mock-card.locked{opacity:.45;pointer-events:none;}
+.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
+.mc-badge{font-size:.52rem;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.05em;}
+.mcb-full{background:rgba(107,143,94,.2);color:#9bc48a;}
+.mcb-gold{background:rgba(200,150,42,.18);color:#e8a830;}
+.mcb-lock{background:rgba(255,255,255,.07);color:rgba(255,255,255,.25);}
+.mc-title{font-size:.9rem;font-weight:800;color:white;margin-bottom:5px;}
+.mc-desc{font-size:.7rem;color:rgba(255,255,255,.32);line-height:1.55;margin-bottom:12px;}
+.mc-meta{display:flex;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+.mc-m{font-size:.62rem;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:3px;}
+.mc-btn{width:100%;font-family:var(--fd);font-size:.72rem;font-weight:700;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;transition:all .2s;}
+.mc-btn:hover{box-shadow:0 4px 14px var(--sage-glow);}
+.mc-btn-gold{background:linear-gradient(135deg,var(--gold),#b8832a);}
+.mc-btn-lock{background:rgba(255,255,255,.06);color:rgba(255,255,255,.22);cursor:not-allowed;}
+
+/* HW GRID — jee_main */
+.hw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:28px;}
+.hw-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;}
+.hw-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.hw-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.hw-name{font-size:.88rem;font-weight:800;color:var(--forest);}
+.hw-topics{display:flex;flex-direction:column;gap:7px;}
+.hw-topic{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;background:var(--cream-w);}
+.hw-tname{font-size:.72rem;font-weight:600;color:var(--forest-m);}
+.hw-twt{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:100px;}
+.wt-high{background:rgba(200,75,75,.1);color:var(--rose);}
+.wt-med{background:rgba(200,150,42,.1);color:var(--gold);}
+
+/* COMPARE */
+.ct{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:28px;}
+.ct-head{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;background:var(--forest);padding:12px 18px;gap:8px;}
+.ct-hc{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em;}
+.ct-row{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;padding:11px 18px;border-bottom:1px solid var(--border);gap:8px;transition:background .18s;}
+.ct-row:hover{background:var(--cream-w);}
+.ct-row:last-child{border-bottom:none;}
+.ct-c{font-size:.72rem;color:rgba(26,38,24,.5);}
+.ct-c:first-child{font-weight:700;color:var(--forest);}
+.yes{color:var(--sage);font-weight:700;}
+.partial{color:var(--gold);font-weight:600;}
+.no{color:rgba(26,38,24,.2);}
+
+/* CAREER GRID */
+.career-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:28px;}
+.career-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:all .22s;}
+.career-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,38,24,.08);}
+.cc-icon{font-size:2rem;margin-bottom:10px;display:block;}
+.cc-title{font-size:.86rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.cc-seats{display:inline-block;font-size:.6rem;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--sage-l);color:var(--sage);margin-bottom:7px;}
+.cc-desc{font-size:.7rem;color:rgba(26,38,24,.44);line-height:1.6;}
+
+/* PROGRESS — jee_main */
+.prog-wrap{background:white;border:1px solid var(--border);border-radius:18px;padding:28px;margin-top:28px;}
+.prog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-top:20px;}
+.pg-card{text-align:center;padding:16px 12px;border-radius:12px;background:var(--cream-w);}
+.pg-n{font-family:var(--fm);font-size:1.5rem;font-weight:800;display:block;margin-bottom:3px;}
+.pg-l{font-size:.56rem;text-transform:uppercase;letter-spacing:.07em;color:rgba(26,38,24,.28);}
+.pg-bar{height:3px;border-radius:3px;background:var(--border);margin-top:8px;overflow:hidden;}
+.pg-bar-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sage),#4a7a3d);}
+
+/* TIPS — jee_main */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:28px;}
+.tip-card{background:white;border:1px solid var(--border);border-radius:13px;padding:18px;display:flex;gap:12px;transition:all .22s;}
+.tip-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(26,38,24,.06);}
+.tip-num{width:34px;height:34px;border-radius:9px;background:var(--forest);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.76rem;font-weight:700;flex-shrink:0;}
+.tip-title{font-size:.82rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
+.tip-desc{font-size:.72rem;color:rgba(26,38,24,.42);line-height:1.62;}
+
+/* CTA — jee_main */
+.cta-block{background:linear-gradient(135deg,var(--forest),var(--forest-l));border-radius:20px;padding:48px 32px;text-align:center;position:relative;overflow:hidden;margin-top:28px;}
+.cta-block::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(107,143,94,.07),transparent);}
+.cta-title{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:900;color:white;margin-bottom:10px;line-height:1.2;position:relative;z-index:1;}
+.cta-title .ct-g{background:linear-gradient(135deg,var(--sage),#b5e09a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.cta-sub{font-size:.88rem;color:rgba(255,255,255,.35);margin-bottom:24px;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.7;}
+.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
+
+/* FOOTER — jee_main */
+.footer{background:var(--forest);padding:44px 20px 22px;}
+.ft{display:flex;flex-wrap:wrap;gap:30px;max-width:1080px;margin:0 auto 28px;}
+.ft-brand{flex:1.5;min-width:180px;}
+.ft-logo{display:flex;align-items:center;gap:8px;margin-bottom:11px;}
+.ft-desc{font-size:.7rem;color:rgba(255,255,255,.24);line-height:1.7;max-width:240px;}
+.ft-col{flex:1;min-width:120px;}
+.ft-ct{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.16);margin-bottom:12px;}
+.ft-link{display:block;font-size:.72rem;color:rgba(255,255,255,.34);text-decoration:none;margin-bottom:7px;transition:color .18s;}
+.ft-link:hover{color:var(--sage);}
+.ft-bottom{max-width:1080px;margin:0 auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.ft-copy{font-size:.6rem;color:rgba(255,255,255,.16);}
+
+@media(max-width:640px){
+  section{padding:52px 16px;}
+  .mock-wrap{padding:22px 14px;}
+  .cta-block{padding:32px 18px;}
+  .ct-head,.ct-row{grid-template-columns:1.4fr 1fr 1fr;}
+  .ct-head .ct-hc:last-child,.ct-row .ct-c:last-child{display:none;}
+  .hero-btns{flex-direction:column;align-items:center;}
+  .btn-gold,.btn-sage,.btn-ghost{width:100%;max-width:300px;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <div class="nav-mark">MA</div>
+    <span class="nav-n1">Mock</span><span class="nav-n2">Arena</span>
+  </a>
+  <span class="nav-badge">NEET Foundation</span>
+  <div class="nav-links">
+    <a href="#overview" class="nav-link">Overview</a>
+    <a href="#roadmap" class="nav-link">Roadmap</a>
+    <a href="#syllabus" class="nav-link">Syllabus</a>
+    <a href="#tests" class="nav-link">Tests</a>
+    <a href="#careers" class="nav-link">Careers</a>
+    <a href="#strategy" class="nav-link">Strategy</a>
+  </div>
+  <div class="nav-right">
+    <a href="mockarena_dashboard.html" class="nav-dash">Dashboard →</a>
+    <div class="nav-av" id="nav-av">S</div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg1"></div><div class="hero-bg2"></div><div class="hero-grid"></div>
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <div class="hero-dot"></div>
+      <span class="hero-eyebrow-txt">Class 8, 9 & 10 · Pre-NEET Foundation</span>
+    </div>
+    <h1 class="hero-title">
+      Become a <span class="ht1">Doctor</span>.<br/>
+      Start in Class 8.<br/>
+      <span style="color:rgba(255,255,255,.35);font-weight:300;">Not Class 11.</span>
+    </h1>
+    <p class="hero-sub">NEET is India's toughest medical entrance. The students who crack it with top ranks don't start in Class 11 — they build Biology, Physics & Chemistry foundations years before the race begins.</p>
+    <div class="exam-strip">
+      <div class="es-item"><span class="es-label">Biology</span><span class="es-value green">360 Marks</span></div>
+      <div class="es-item"><span class="es-label">Physics</span><span class="es-value">180 Marks</span></div>
+      <div class="es-item"><span class="es-label">Chemistry</span><span class="es-value">180 Marks</span></div>
+      <div class="es-item"><span class="es-label">Total</span><span class="es-value green">720 Marks</span></div>
+      <div class="es-item"><span class="es-label">Duration</span><span class="es-value">3h 20min</span></div>
+      <div class="es-item"><span class="es-label">Marking</span><span class="es-value rose">+4 / −1</span></div>
+    </div>
+    <div class="hero-btns">
+      <a href="mockarena_neet_mocktest.html" class="btn-sage">🩺 Take NEET Mock Test</a>
+      <a href="#roadmap" class="btn-ghost">📍 Doctor Roadmap</a>
+      <a href="#syllabus" class="btn-ghost">📋 View Syllabus</a>
+    </div>
+    <div class="hero-stats">
+      <div class="hs-item"><span class="hs-n">3 yrs</span><span class="hs-l">Head Start</span></div>
+      <div class="hs-item"><span class="hs-n">50%</span><span class="hs-l">Bio in NEET</span></div>
+      <div class="hs-item"><span class="hs-n">~1L</span><span class="hs-l">MBBS Seats</span></div>
+      <div class="hs-item"><span class="hs-n">Free</span><span class="hs-l">Full Access</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEET OVERVIEW -->
+<section id="overview" style="background:white;">
+  <div class="container">
+    <div class="slabel">Exam Overview</div>
+    <h2 class="stitle">Everything About NEET UG</h2>
+    <p class="ssub">Knowing the exam from Class 8 gives you clarity and purpose — you know exactly what you are building toward.</p>
+    <div class="ov-grid">
+      <div class="ov-card c1"><span class="ov-icon">🏛️</span><div class="ov-label">Conducted By</div><div class="ov-value">NTA · Once a Year</div><div class="ov-desc">National Testing Agency. Held once yearly in May. Single chance per year — preparation matters most</div></div>
+      <div class="ov-card c2"><span class="ov-icon">🧬</span><div class="ov-label">Biology Weightage</div><div class="ov-value">360 / 720 Marks</div><div class="ov-desc">Biology = 50% of total NEET marks. Class 9-10 NCERT Biology directly appears in NEET. Start now!</div></div>
+      <div class="ov-card c3"><span class="ov-icon">⏱️</span><div class="ov-label">Duration</div><div class="ov-value">3 Hours 20 Mins</div><div class="ov-desc">200 minutes for 180 questions. Biology volume is massive — speed reading and recall are critical skills</div></div>
+      <div class="ov-card c4"><span class="ov-icon">🎯</span><div class="ov-label">Marking Scheme</div><div class="ov-value">+4 / −1</div><div class="ov-desc">+4 correct, −1 wrong, 0 unattempted. Single correct MCQ. No multi-correct unlike JEE Advanced</div></div>
+      <div class="ov-card c5"><span class="ov-icon">🏥</span><div class="ov-label">Medical Seats</div><div class="ov-value">~1 Lakh Seats</div><div class="ov-desc">~660 medical colleges. AIIMS Delhi, AIIMS Mumbai, JIPMER + top government & private colleges</div></div>
+      <div class="ov-card c6"><span class="ov-icon">📊</span><div class="ov-label">Target Score</div><div class="ov-value">700+ for AIIMS</div><div class="ov-desc">AIIMS Delhi needs 700+/720. Government MBBS ~550+. Even 450+ secures a private MBBS seat</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY EARLY -->
+<section style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Why Foundation?</div>
+    <h2 class="stitle">Why Start NEET Prep in Class 8?</h2>
+    <p class="ssub">Top NEET rankers almost always start Biology and Science prep early. Here is why it creates an unbeatable advantage.</p>
+    <div class="hw-grid">
+      <div class="hw-card"><div class="hw-hdr"><div class="hw-icon" style="background:rgba(107,143,94,.1);">🧬</div><div class="hw-name">Biology is 50% of NEET</div></div><div class="hw-topics"><div style="font-size:.74rem;color:rgba(26,38,24,.44);line-height:1.65;">Biology = 360 of 720 marks. Class 9-10 NCERT Biology directly appears in NEET questions. Starting early means mastering it deeply — not cramming it in Class 12.</div></div></div>
+      <div class="hw-card"><div class="hw-hdr"><div class="hw-icon" style="background:rgba(59,130,196,.1);">⏳</div><div class="hw-name">3-Year Advantage</div></div><div class="hw-topics"><div style="font-size:.74rem;color:rgba(26,38,24,.44);line-height:1.65;">Class 8-10 gives you 3 full years to master NCERT Biology, build Physics foundations and understand Chemistry — before real NEET prep even begins in Class 11.</div></div></div>
+      <div class="hw-card"><div class="hw-hdr"><div class="hw-icon" style="background:rgba(200,150,42,.1);">📈</div><div class="hw-name">95%+ in Class 10 Boards</div></div><div class="hw-topics"><div style="font-size:.74rem;color:rgba(26,38,24,.44);line-height:1.65;">NEET foundation prep perfectly aligns with Class 10 Science boards. Score top marks in boards while simultaneously building your medical career foundation.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ROADMAP -->
+<section id="roadmap" style="background:white;">
+  <div class="container">
+    <div class="slabel">Doctor's Roadmap</div>
+    <h2 class="stitle">Class-by-Class Journey to MBBS</h2>
+    <p class="ssub">Exactly what to focus on each year from Class 8 to become a doctor with a top NEET rank.</p>
+    <div class="rm-wrap">
+      <div class="rm-row">
+        <div class="rm-left"><div class="rm-circle" style="background:linear-gradient(135deg,var(--sky),#2563eb);">8</div><div class="rm-connector"></div></div>
+        <div class="rm-card"><div class="rm-title">Class 8 — Ignite the Medical Curiosity</div><div class="rm-desc">Start with Cell Biology, basic Life Processes, Motion & Force. Develop love for Biology. Read Class 8 NCERT Science thoroughly — understand why, not just what.</div><div class="rm-tags"><span class="rm-tag">Cell Biology</span><span class="rm-tag">Life Processes</span><span class="rm-tag">NCERT Science</span><span class="rm-tag">Human Body</span></div></div>
+      </div>
+      <div class="rm-row">
+        <div class="rm-left"><div class="rm-circle" style="background:linear-gradient(135deg,#7c3aed,#5b21b6);">9</div><div class="rm-connector"></div></div>
+        <div class="rm-card"><div class="rm-title">Class 9 — Build the Bio-Physics-Chemistry Triangle</div><div class="rm-desc">Class 9 NCERT is gold for NEET — Tissues, Diversity in Living Organisms, Motion, Atoms & Molecules. Every line of Class 9 Biology NCERT appears somewhere in NEET. Read, memorise, revise.</div><div class="rm-tags"><span class="rm-tag">Tissues</span><span class="rm-tag">Diversity in Life</span><span class="rm-tag">Fundamental Unit</span><span class="rm-tag">Atoms & Molecules</span></div></div>
+      </div>
+      <div class="rm-row">
+        <div class="rm-left"><div class="rm-circle" style="background:linear-gradient(135deg,var(--sage),#4a7a3d);">10</div><div class="rm-connector"></div></div>
+        <div class="rm-card"><div class="rm-title">Class 10 — Master NCERT, Crack Boards + NTSE</div><div class="rm-desc">Class 10 Biology — Life Processes, Control & Coordination, Reproduction, Heredity & Evolution — all directly appear in NEET. Target 95% boards + NTSE qualification.</div><div class="rm-tags"><span class="rm-tag">Life Processes</span><span class="rm-tag">Reproduction</span><span class="rm-tag">Heredity & Evolution</span><span class="rm-tag">NTSE Bio</span></div></div>
+      </div>
+      <div class="rm-row">
+        <div class="rm-left"><div class="rm-circle" style="background:linear-gradient(135deg,var(--gold),#b8832a);">11</div><div class="rm-connector"></div></div>
+        <div class="rm-card"><div class="rm-title">Class 11 — Deep NEET Preparation Begins</div><div class="rm-desc">With strong foundation, Class 11 Biology (Plant & Animal Kingdom, Cell Biology, Biomolecules) feels manageable. Physics: Rotational Motion, Thermodynamics. Chemistry: Bonding, Equilibrium, Organic.</div><div class="rm-tags"><span class="rm-tag">Plant Kingdom</span><span class="rm-tag">Cell Biology</span><span class="rm-tag">Biomolecules</span><span class="rm-tag">Organic Chem</span></div></div>
+      </div>
+      <div class="rm-row">
+        <div class="rm-left"><div class="rm-circle" style="background:linear-gradient(135deg,var(--rose),#a83535);">12</div></div>
+        <div class="rm-card"><div class="rm-title">Class 12 — NEET Rank Secured</div><div class="rm-desc">Genetics, Evolution, Ecology, Reproduction, Human Health — highest-scoring NEET topics. Full mocks, PYQ practice, weak area revision. Foundation students reach here with 4 years of Biology depth.</div><div class="rm-tags"><span class="rm-tag">Genetics & Evolution</span><span class="rm-tag">Ecology</span><span class="rm-tag">Full Mocks</span><span class="rm-tag">PYQ Practice</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SYLLABUS -->
+<section id="syllabus" style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Foundation Syllabus</div>
+    <h2 class="stitle">What to Study in Class 8–10</h2>
+    <p class="ssub">NCERT-aligned Biology, Physics & Chemistry. Every topic connects directly to your NEET future.</p>
+    <div class="subj-tabs">
+      <button class="stab on" onclick="showSubj('bio',this)">🧬 Biology</button>
+      <button class="stab" onclick="showSubj('phy',this)">⚛️ Physics</button>
+      <button class="stab" onclick="showSubj('chem',this)">🧪 Chemistry</button>
+    </div>
+    <div class="subj-panel on" id="subj-bio">
+      <div class="subj-grid">
+        <div class="subj-card"><div class="sc-hdr"><div class="sc-icon" style="background:rgba(107,143,94,.1);">🧬</div><div><div class="sc-name">Biology — Class 8</div><div class="sc-sub">Foundation Level</div></div></div><div class="sc-topics"><div class="sc-topic">Crop Production & Microorganisms</div><div class="sc-topic">Conservation of Plants & Animals</div><div class="sc-topic">Cell — Structure & Functions</div><div class="sc-topic">Reproduction in Animals & Plants</div><div class="sc-topic">Reaching the Age of Adolescence</div></div><div class="sc-note">🎯 Focus on Cell Structure — directly links to NEET Class 11 Cell Biology chapter!</div></div>
+        <div class="subj-card"><div class="sc-hdr"><div class="sc-icon" style="background:rgba(107,143,94,.1);">🧬</div><div><div class="sc-name">Biology — Class 9</div><div class="sc-sub">NEET Foundation · High Priority</div></div></div><div class="sc-topics"><div class="sc-topic">The Fundamental Unit of Life (Cell)</div><div class="sc-topic">Tissues — Plant & Animal Tissues</div><div class="sc-topic">Diversity in Living Organisms</div><div class="sc-topic">Why Do We Fall Ill? (Diseases)</div><div class="sc-topic">Natural Resources</div></div><div class="sc-note highlight">🔥 NEET Direct: Cell, Tissues, Classification = 30-40 marks in actual NEET!</div></div>
+        <div class="subj-card"><div class="sc-hdr"><div class="sc-icon" style="background:rgba(107,143,94,.1);">🧬</div><div><div class="sc-name">Biology — Class 10</div><div class="sc-sub">NEET Core · Most Important</div></div></div><div class="sc-topics"><div class="sc-topic">Life Processes — Nutrition, Respiration, Transport</div><div class="sc-topic">Control & Coordination (Nervous System)</div><div class="sc-topic">How Do Organisms Reproduce?</div><div class="sc-topic">Heredity and Evolution</div><div class="sc-topic">Our Environment & Ecosystem</div></div><div class="sc-note highlight">🔥 Class 10 Biology = 80+ marks in NEET. Master every single line of NCERT!</div></div>
+      </div>
+      <div class="subj-footer"><span class="subj-stat">Class 9 & 10 Biology — <span>highest NEET direct content</span></span></div>
+    </div>
+    <div class="subj-panel" id="subj-phy">
+      <div class="subj-grid">
+        <div class="subj-card"><div class="sc-hdr"><div class="sc-icon" style="background:rgba(59,130,196,.1);">⚛️</div><div><div class="sc-name">Physics — Class 8-9</div><div class="sc-sub">NEET Physics Foundation</div></div></div><div class="sc-topics"><div class="sc-topic">Motion — Distance, Speed, Velocity, Acceleration</div><div class="sc-topic">Force & Laws of Motion — Newton's 3 Laws</div><div class="sc-topic">Gravitation — Universal Law, Weight, Pressure</div><div class="sc-topic">Work, Energy & Power — KE, PE, Conservation</div><div class="sc-topic">Sound — Waves, Frequency, Ultrasound, Echo</div><div class="sc-topic">Light — Reflection, Refraction, Human Eye</div></div><div class="sc-note">🎯 NEET Physics is application-based. Strong Class 9 base makes Class 11 transition smooth.</div></div>
+        <div class="subj-card"><div class="sc-hdr"><div class="sc-icon" style="background:rgba(59,130,196,.1);">⚛️</div><div><div class="sc-name">Physics — Class 10</div><div class="sc-sub">NEET Physics Foundation</div></div></div><div class="sc-topics"><div class="sc-topic">Electricity — Ohm's law, Circuits, Power</div><div class="sc-topic">Magnetic Effects of Current</div><div class="sc-topic">Light — Lenses, Mirrors, Eye Defects</div><div class="sc-topic">Human Eye & Colourful World</div><div class="sc-topic">Sources of Energy</div></div><div class="sc-note">🎯 Electricity + Optics from Class 10 directly builds into NEET Physics chapters.</div></div>
+      </div>
+    </div>
+    <div class="subj-panel" id="subj-chem">
+      <div class="subj-grid">
+        <div class="subj-card"><div class="sc-hdr"><div class="sc-icon" style="background:rgba(200,150,42,.1);">🧪</div><div><div class="sc-name">Chemistry — Class 8-9</div><div class="sc-sub">NEET Chemistry Foundation</div></div></div><div class="sc-topics"><div class="sc-topic">Matter — States, Properties, Purity</div><div class="sc-topic">Atoms & Molecules — Mole Concept</div><div class="sc-topic">Structure of Atom — Bohr Model</div><div class="sc-topic">Chemical Reactions & Equations</div><div class="sc-topic">Is Matter Around Us Pure? (Mixtures)</div></div><div class="sc-note">🎯 Atomic Structure + Mole Concept = foundation of NEET Inorganic & Physical Chemistry.</div></div>
+        <div class="subj-card"><div class="sc-hdr"><div class="sc-icon" style="background:rgba(200,150,42,.1);">🧪</div><div><div class="sc-name">Chemistry — Class 10</div><div class="sc-sub">NEET Chemistry Foundation</div></div></div><div class="sc-topics"><div class="sc-topic">Acids, Bases & Salts — pH, Neutralization</div><div class="sc-topic">Metals & Non-Metals — Reactivity Series</div><div class="sc-topic">Carbon & Its Compounds — Organic Basics</div><div class="sc-topic">Periodic Classification of Elements</div><div class="sc-topic">Chemical Bonding Introduction</div></div><div class="sc-note">🎯 Acids/Bases + Organic basics directly appear in NEET Chemistry. Master these!</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTS -->
+<section id="tests" style="background:white;">
+  <div class="container">
+    <div class="slabel">Practice Tests</div>
+    <h2 class="stitle">Available Tests for Foundation Students</h2>
+    <p class="ssub">Start with our full NEET mock and Physics chapter tests — building the same foundation NEET demands.</p>
+    <div class="mock-wrap">
+      <div style="margin-bottom:22px;">
+        <div class="slabel" style="color:rgba(107,143,94,.7);">Available Now</div>
+        <div class="stitle white" style="font-size:1.2rem;">NEET Mock + Physics Chapter Tests</div>
+        <p class="ssub white" style="font-size:.8rem;">Real exam pattern · Timer · Detailed results · Firestore score saving</p>
+      </div>
+      <div class="mock-grid">
+        <a href="mockarena_neet_mocktest.html" class="mock-card">
+          <div class="mc-top"><span class="mc-badge mcb-full">Full NEET Mock</span></div>
+          <div class="mc-title">NEET UG Full Mock Test</div>
+          <div class="mc-desc">180 questions — Biology 90 + Physics 45 + Chemistry 45. Real 3h 20min timer. Exact NEET UG pattern.</div>
+          <div class="mc-meta"><div class="mc-m">⏱️ 3h 20min</div><div class="mc-m">📝 180 Qs</div><div class="mc-m">🎯 720 Marks</div></div>
+          <button class="mc-btn">Start NEET Mock →</button>
+        </a>
+        <a href="mockarena_chapter_physics_motion.html" class="mock-card">
+          <div class="mc-top"><span class="mc-badge mcb-full">Chapter Test</span></div>
+          <div class="mc-title">Motion in 1D & 2D</div>
+          <div class="mc-desc">Extends Class 9 Motion chapter. Velocity, acceleration, projectile. Core NEET Physics topic.</div>
+          <div class="mc-meta"><div class="mc-m">⏱️ 60 min</div><div class="mc-m">📝 30 Qs</div><div class="mc-m">🎯 +4/−1</div></div>
+          <button class="mc-btn">Start Test →</button>
+        </a>
+        <a href="mockarena_chapter_physics_gravitation.html" class="mock-card">
+          <div class="mc-top"><span class="mc-badge mcb-full">Chapter Test</span></div>
+          <div class="mc-title">Gravitation</div>
+          <div class="mc-desc">Universal gravitation, Kepler's laws, orbital velocity. Extends Class 9 Gravitation chapter.</div>
+          <div class="mc-meta"><div class="mc-m">⏱️ 60 min</div><div class="mc-m">📝 30 Qs</div><div class="mc-m">🎯 +4/−1</div></div>
+          <button class="mc-btn">Start Test →</button>
+        </a>
+        <a href="mockarena_chapter_physics_optics.html" class="mock-card">
+          <div class="mc-top"><span class="mc-badge mcb-full">Chapter Test</span></div>
+          <div class="mc-title">Optics</div>
+          <div class="mc-desc">Lenses, mirrors, refraction, interference. Builds on Class 10 Light. Big NEET Physics topic.</div>
+          <div class="mc-meta"><div class="mc-m">⏱️ 60 min</div><div class="mc-m">📝 30 Qs</div><div class="mc-m">🎯 +4/−1</div></div>
+          <button class="mc-btn">Start Test →</button>
+        </a>
+        <div class="mock-card locked">
+          <div class="mc-top"><span class="mc-badge mcb-lock">Coming Soon</span></div>
+          <div class="mc-title">Foundation Biology Tests</div>
+          <div class="mc-desc">Dedicated Class 8-10 Biology — Cell, Tissues, Life Processes, Heredity at NTSE difficulty level.</div>
+          <div class="mc-meta"><div class="mc-m">⏱️ 45 min</div><div class="mc-m">📝 25 Qs</div></div>
+          <button class="mc-btn mc-btn-lock" disabled>Coming Soon</button>
+        </div>
+        <div class="mock-card locked">
+          <div class="mc-top"><span class="mc-badge mcb-lock">Coming Soon</span></div>
+          <div class="mc-title">Foundation Chemistry Tests</div>
+          <div class="mc-desc">Acids/Bases, Atoms, Carbon compounds — Class 9-10 Chemistry with NEET-level approach.</div>
+          <div class="mc-meta"><div class="mc-m">⏱️ 45 min</div><div class="mc-m">📝 25 Qs</div></div>
+          <button class="mc-btn mc-btn-lock" disabled>Coming Soon</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CAREER PATHS -->
+<section id="careers" style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Career Paths</div>
+    <h2 class="stitle">Where NEET Takes You</h2>
+    <p class="ssub">NEET opens doors to multiple medical careers. Know your destination from Class 8 — it gives you purpose and direction every single day.</p>
+    <div class="career-grid">
+      <div class="career-card"><span class="cc-icon">👨‍⚕️</span><div class="cc-title">MBBS Doctor</div><span class="cc-seats">~1.09L Seats</span><div class="cc-desc">Government & Private medical colleges. 5.5 year course including 1-year internship. The ultimate medical career.</div></div>
+      <div class="career-card"><span class="cc-icon">🦷</span><div class="cc-title">BDS Dentist</div><span class="cc-seats">~27K Seats</span><div class="cc-desc">Bachelor of Dental Surgery. 5-year course. Excellent specialized dental practice or academic career.</div></div>
+      <div class="career-card"><span class="cc-icon">🏥</span><div class="cc-title">AIIMS / JIPMER</div><span class="cc-seats">Elite Institutions</span><div class="cc-desc">AIIMS Delhi, Mumbai, Bhopal + JIPMER Puducherry. India's most prestigious medical institutes. Need 700+/720.</div></div>
+      <div class="career-card"><span class="cc-icon">🐾</span><div class="cc-title">BVSc Veterinary</div><span class="cc-seats">~6K Seats</span><div class="cc-desc">Animal medicine. Rewarding career in animal care, research or wildlife. NEET score accepted.</div></div>
+      <div class="career-card"><span class="cc-icon">🔬</span><div class="cc-title">Medical Research</div><span class="cc-seats">ICMR + AIIMS</span><div class="cc-desc">MBBS + MD/MS → Research at ICMR, AIIMS. Contribute to drug development and disease cure.</div></div>
+      <div class="career-card"><span class="cc-icon">🧬</span><div class="cc-title">Nursing & Allied</div><span class="cc-seats">Various</span><div class="cc-desc">Nursing, Physiotherapy, Pharmacy admissions use NEET scores in many states. Wide healthcare options.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPARISON -->
+<section style="background:white;">
+  <div class="container">
+    <div class="slabel">Foundation Advantage</div>
+    <h2 class="stitle">Foundation vs Non-Foundation Student</h2>
+    <p class="ssub">The measurable difference early preparation makes at every stage of the medical journey.</p>
+    <div class="ct">
+      <div class="ct-head">
+        <div class="ct-hc">Stage</div>
+        <div class="ct-hc">Foundation ✅</div>
+        <div class="ct-hc">Non-Foundation</div>
+        <div class="ct-hc">Advantage</div>
+      </div>
+      <div class="ct-row"><div class="ct-c">Class 10 Boards</div><div class="ct-c"><span class="yes">95%+ easily</span></div><div class="ct-c"><span class="partial">80-90%</span></div><div class="ct-c"><span class="yes">+10-15%</span></div></div>
+      <div class="ct-row"><div class="ct-c">NCERT Biology Depth</div><div class="ct-c"><span class="yes">3-yr mastery</span></div><div class="ct-c"><span class="partial">Surface level</span></div><div class="ct-c"><span class="yes">Huge edge</span></div></div>
+      <div class="ct-row"><div class="ct-c">Starting Class 11</div><div class="ct-c"><span class="yes">Smooth, confident</span></div><div class="ct-c"><span class="partial">Overwhelmed</span></div><div class="ct-c"><span class="yes">Major edge</span></div></div>
+      <div class="ct-row"><div class="ct-c">NEET Mock Score</div><div class="ct-c"><span class="yes">500-580 / 720</span></div><div class="ct-c"><span class="partial">300-420 / 720</span></div><div class="ct-c"><span class="yes">100+ marks</span></div></div>
+      <div class="ct-row"><div class="ct-c">NTSE / Bio Olympiad</div><div class="ct-c"><span class="yes">Qualified</span></div><div class="ct-c"><span class="no">Usually miss</span></div><div class="ct-c"><span class="yes">Scholarship</span></div></div>
+      <div class="ct-row"><div class="ct-c">Final NEET Rank</div><div class="ct-c"><span class="yes">Top 10,000</span></div><div class="ct-c"><span class="partial">Varies widely</span></div><div class="ct-c"><span class="yes">MBBS secured</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRESS -->
+<section style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Your Progress</div>
+    <h2 class="stitle">Track Your Medical Journey</h2>
+    <p class="ssub">Live data from your MockArena tests — your real preparation snapshot.</p>
+    <div class="prog-wrap">
+      <div class="prog-grid">
+        <div class="pg-card"><span class="pg-n" style="color:var(--sage)" id="pg-tests">0</span><span class="pg-l">Tests Taken</span><div class="pg-bar"><div class="pg-bar-f" id="pg-tests-bar" style="width:0%"></div></div></div>
+        <div class="pg-card"><span class="pg-n" style="color:var(--sky)" id="pg-acc">0%</span><span class="pg-l">Accuracy</span><div class="pg-bar"><div class="pg-bar-f" id="pg-acc-bar" style="width:0%"></div></div></div>
+        <div class="pg-card"><span class="pg-n" style="color:var(--sage)" id="pg-best">0</span><span class="pg-l">Best Score</span><div class="pg-bar"><div class="pg-bar-f" id="pg-best-bar" style="width:0%"></div></div></div>
+        <div class="pg-card"><span class="pg-n" style="color:var(--forest)" id="pg-correct">0</span><span class="pg-l">Total Correct</span><div class="pg-bar"><div class="pg-bar-f" id="pg-correct-bar" style="width:0%"></div></div></div>
+      </div>
+      <div style="text-align:center;margin-top:20px;">
+        <a href="mockarena_analytics.html" class="btn-sage" style="display:inline-flex;font-size:.78rem;">📊 Full Analytics →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGY -->
+<section id="strategy" style="background:white;">
+  <div class="container">
+    <div class="slabel">Study Strategy</div>
+    <h2 class="stitle">How to Study Smart in Class 8–10</h2>
+    <p class="ssub">Strategies from students who cracked NEET with top ranks — starting their preparation from Class 8.</p>
+    <div class="tips-grid">
+      <div class="tip-card"><div class="tip-num">1</div><div><div class="tip-title">NCERT Biology = NEET Bible</div><div class="tip-desc">90% of NEET Biology is directly from NCERT. Read every line, every diagram, every example box. Revise minimum 5 times. There are no shortcuts.</div></div></div>
+      <div class="tip-card"><div class="tip-num">2</div><div><div class="tip-title">Draw Diagrams Regularly</div><div class="tip-desc">Biology is visual. Draw Cell structure, Flower, Human Heart, Digestive system from memory every week. NEET has 10-15 direct diagram marks.</div></div></div>
+      <div class="tip-card"><div class="tip-num">3</div><div><div class="tip-title">Make a Biology Notebook</div><div class="tip-desc">Write every fact, exception and scientific name. Your Class 8-10 notes become the most valuable revision material in your Class 12 final sprint.</div></div></div>
+      <div class="tip-card"><div class="tip-num">4</div><div><div class="tip-title">Solve NCERT Questions Daily</div><div class="tip-desc">Many NEET questions are direct or slightly modified NCERT questions. Solve every in-text and end-of-chapter question. Don't skip a single one.</div></div></div>
+      <div class="tip-card"><div class="tip-num">5</div><div><div class="tip-title">Build Physics & Chemistry Too</div><div class="tip-desc">Biology is 50% but Physics (25%) and Chemistry (25%) decide your rank among top scorers. Build all 3 subjects simultaneously from Class 8 itself.</div></div></div>
+      <div class="tip-card"><div class="tip-num">6</div><div><div class="tip-title">Take Mock Tests Monthly</div><div class="tip-desc">Use MockArena NEET mock monthly to assess your level. Reviewing wrong answers teaches 10x more than reading correct ones. Track your progress.</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section style="background:var(--cream-w);padding:60px 20px;">
+  <div class="container">
+    <div class="cta-block">
+      <h2 class="cta-title">Every Great Doctor Was<br/>Once in <span class="ct-g">Class 8</span></h2>
+      <p class="cta-sub">The stethoscope you dream of wearing begins with the NCERT Biology you read today. Your medical journey starts right now.</p>
+      <div class="cta-btns">
+        <a href="mockarena_neet_mocktest.html" class="btn-sage">🩺 Take NEET Mock Test</a>
+        <a href="mockarena_chapter_physics_motion.html" class="btn-sage">📚 Start Chapter Practice</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="ft">
+    <div class="ft-brand">
+      <div class="ft-logo"><div class="nav-mark">MA</div><span class="nav-n1">Mock</span><span class="nav-n2">Arena</span></div>
+      <p class="ft-desc">India's smartest test prep platform. Built for students who want to become doctors and engineers.</p>
+    </div>
+    <div class="ft-col"><div class="ft-ct">Exam Pages</div>
+      <a href="jee_foundation.html" class="ft-link">JEE Foundation</a>
+      <a href="jee_main.html" class="ft-link">JEE Mains</a>
+      <a href="jee_advanced.html" class="ft-link">JEE Advanced</a>
+      <a href="neet_foundation.html" class="ft-link">NEET Foundation</a>
+      <a href="neet_ug.html" class="ft-link">NEET UG</a>
+    </div>
+    <div class="ft-col"><div class="ft-ct">Quick Tests</div>
+      <a href="mockarena_neet_mocktest.html" class="ft-link">NEET Mock Test</a>
+      <a href="mockarena_chapter_physics_motion.html" class="ft-link">Motion in 1D/2D</a>
+      <a href="mockarena_chapter_physics_optics.html" class="ft-link">Optics</a>
+      <a href="mockarena_chapter_physics_modern.html" class="ft-link">Modern Physics</a>
+    </div>
+    <div class="ft-col"><div class="ft-ct">Account</div>
+      <a href="mockarena_dashboard.html" class="ft-link">Dashboard</a>
+      <a href="mockarena_analytics.html" class="ft-link">Analytics</a>
+      <a href="mockarena_results.html" class="ft-link">My Results</a>
+      <a href="login.html" class="ft-link">Login</a>
+    </div>
+  </div>
+  <div class="ft-bottom">
+    <span class="ft-copy">© 2026 MockArena. All rights reserved.</span>
+    <span class="ft-copy">Built for future doctors 🩺</span>
+  </div>
+</footer>
+
+<script>
+function showSubj(id,el){document.querySelectorAll('.subj-panel').forEach(function(p){p.classList.remove('on');});document.querySelectorAll('.stab').forEach(function(t){t.classList.remove('on');});document.getElementById('subj-'+id).classList.add('on');el.classList.add('on');}
+document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var el=document.getElementById(this.getAttribute('href').slice(1));if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}});});
+(function(){
+  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
+  function load(cb){var s1=document.createElement('script');s1.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';s1.onload=function(){var s2=document.createElement('script');s2.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js';s2.onload=function(){var s3=document.createElement('script');s3.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js';s3.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);cb(firebase.firestore(),firebase.auth());};document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);}
+  function set(id,val){var el=document.getElementById(id);if(el)el.textContent=val;}
+  function bar(id,pct){var el=document.getElementById(id);if(el)el.style.width=Math.min(pct,100)+'%';}
+  load(function(db,auth){auth.onAuthStateChanged(function(u){if(!u)return;var nm=u.displayName||'S';var av=document.getElementById('nav-av');if(av){if(u.photoURL){av.innerHTML='<img src="'+u.photoURL+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';}else{av.textContent=nm.split(' ').map(function(w){return w[0];}).join('').toUpperCase().substring(0,2);}}db.collection('results').doc(u.uid).collection('tests').orderBy('timestamp','desc').limit(100).get().then(function(snap){var tests=[];snap.forEach(function(d){tests.push(d.data());});if(!tests.length)return;var totalC=tests.reduce(function(a,t){return a+(t.correct||0);},0);var totalQ=tests.reduce(function(a,t){return a+(t.total||0);},0);var best=Math.max.apply(null,tests.map(function(t){return t.score||0;}));var acc=totalQ?Math.round(totalC/totalQ*100):0;set('pg-tests',tests.length);set('pg-acc',acc+'%');set('pg-best',best);set('pg-correct',totalC);bar('pg-tests-bar',Math.min(tests.length*5,100));bar('pg-acc-bar',acc);bar('pg-best-bar',Math.min(best/3,100));bar('pg-correct-bar',Math.min(totalC,100));});});});
+})();
+</script>
+</body>
+</html>
