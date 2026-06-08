@@ -8,84 +8,348 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --forest:#1a2618;--forest-m:#3d5239;--forest-l:#243420;
-  --sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-m:rgba(107,143,94,.18);--sage-glow:rgba(107,143,94,.22);
+  --forest:#1a2618;--forest-d:#0e1a0c;--forest-m:#3d5239;--forest-l:#243420;
+  --sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-m:rgba(107,143,94,.2);
   --gold:#c8962a;--gold-l:rgba(200,150,42,.1);
-  --rose:#c84b4b;--rose-l:rgba(200,75,75,.08);
-  --sky:#3b82c4;--sky-l:rgba(59,130,196,.1);
+  --rose:#c84b4b;--sky:#3b82c4;
   --cream:#faf9f5;--cream-w:#f5f3ec;
-  --border:rgba(26,38,24,.07);--bm:rgba(26,38,24,.11);
+  --border:rgba(26,38,24,.09);--bm:rgba(26,38,24,.14);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.68);--txt-lo:rgba(26,38,24,.48);
   --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);overflow-x:hidden;}
+html{scroll-behavior:smooth;scroll-padding-top:68px;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--txt);overflow-x:hidden;font-size:16px;}
+a,a:hover,a:visited{text-decoration:none;}
 
-/* ── NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:58px;background:rgba(26,38,24,.97);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;padding:0 20px;gap:12px;}
-.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
-.nav-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:white;letter-spacing:-.01em;}
-.nav-n1{color:white;font-size:.92rem;font-weight:800;}
-.nav-n2{font-size:.92rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.nav-badge{background:linear-gradient(135deg,var(--gold),#b8832a);color:white;font-size:.52rem;font-weight:800;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.07em;}
-.nav-links{display:flex;align-items:center;gap:2px;margin-left:24px;}
-.nav-link{font-size:.7rem;font-weight:600;color:rgba(255,255,255,.45);text-decoration:none;padding:5px 10px;border-radius:7px;transition:all .18s;white-space:nowrap;}
-.nav-link:hover{color:white;background:rgba(255,255,255,.07);}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
-.nav-dash{font-family:var(--fd);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;text-decoration:none;border:none;cursor:pointer;white-space:nowrap;}
-.nav-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:white;overflow:hidden;cursor:pointer;flex-shrink:0;}
-@media(max-width:860px){.nav-links{display:none;}}
+/* ══ NAV ══ */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:300;
+  height:60px;
+  background:rgba(6,11,6,.96);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(107,143,94,.15);
+  display:flex;align-items:center;
+  padding:0 24px;
+  gap:0;
+}
+.nav-logo{
+  display:flex;align-items:center;gap:9px;
+  text-decoration:none;flex-shrink:0;
+}
+.nav-mark{
+  width:32px;height:32px;
+  background:linear-gradient(135deg,var(--sage),#3a6830);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:800;color:white;flex-shrink:0;
+}
+.nav-n1{color:white;font-size:.96rem;font-weight:800;}
+.nav-n2{font-size:.96rem;font-weight:800;color:var(--sage);}
 
-/* ── HERO ── */
-.hero{min-height:100vh;background:linear-gradient(145deg,#0e1a0c 0%,#1a2618 50%,#0e1a0c 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:80px 20px 60px;}
-.hero-bg1{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(107,143,94,.07),transparent 70%);top:-100px;right:-150px;pointer-events:none;}
-.hero-bg2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.04),transparent 70%);bottom:-100px;left:-100px;pointer-events:none;}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:48px 48px;}
-.hero-inner{position:relative;z-index:1;max-width:720px;text-align:center;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(107,143,94,.1);border:1px solid rgba(107,143,94,.2);border-radius:100px;padding:5px 14px;margin-bottom:24px;}
-.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:hpulse 2s infinite;}
-@keyframes hpulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.5);}}
-.hero-eyebrow-txt{font-size:.6rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.1em;}
-.hero-title{font-size:clamp(2.2rem,7.5vw,4rem);font-weight:900;color:white;line-height:1.08;letter-spacing:-.025em;margin-bottom:14px;}
-.hero-title .ht1{background:linear-gradient(135deg,var(--sage),#b5e09a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero-title .ht2{color:var(--gold);}
-.hero-sub{font-size:clamp(.88rem,2.5vw,1.05rem);color:rgba(255,255,255,.4);line-height:1.75;margin-bottom:32px;max-width:560px;margin-left:auto;margin-right:auto;}
+/* Center pill — exam label */
+.nav-pill{
+  margin:0 auto;
+  background:rgba(107,143,94,.12);
+  border:1px solid rgba(107,143,94,.22);
+  border-radius:100px;
+  padding:5px 18px;
+  display:flex;align-items:center;gap:7px;
+}
+.nav-pill-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--sage);flex-shrink:0;
+  animation:ndot 2.5s ease-in-out infinite;
+}
+@keyframes ndot{0%,100%{opacity:1;}50%{opacity:.25;}}
+.nav-pill-txt{
+  font-size:.76rem;font-weight:800;
+  color:rgba(255,255,255,.88);
+  letter-spacing:.06em;text-transform:uppercase;
+  white-space:nowrap;
+}
+.nav-pill-sub{
+  font-size:.74rem;font-weight:600;
+  color:rgba(107,143,94,.78);
+  letter-spacing:.04em;
+  white-space:nowrap;
+}
+.nav-pill-sep{color:rgba(255,255,255,.25);font-size:.76rem;}
 
-/* EXAM STRIP */
-.exam-strip{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px;}
-.es-item{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 14px;}
-.es-label{font-size:.58rem;color:rgba(255,255,255,.28);text-transform:uppercase;letter-spacing:.07em;display:block;}
-.es-value{font-family:var(--fm);font-size:.8rem;font-weight:700;color:white;}
-.es-value.gold{color:var(--gold);}
-.es-value.green{color:#9bc48a;}
-.es-value.rose{color:#ff8080;}
+.nav-right{
+  display:flex;align-items:center;gap:8px;flex-shrink:0;
+}
+.nav-links{display:flex;align-items:center;gap:2px;margin-right:10px;}
+.nav-link{
+  font-size:.76rem;font-weight:600;
+  color:rgba(255,255,255,.58);
+  padding:5px 9px;border-radius:6px;
+  transition:all .16s;white-space:nowrap;
+}
+.nav-link:hover{color:rgba(255,255,255,.88);background:rgba(255,255,255,.07);}
+.nav-dash{
+  font-size:.78rem;font-weight:700;
+  padding:7px 14px;border-radius:8px;
+  background:var(--sage);
+  color:white;border:none;cursor:pointer;
+  white-space:nowrap;transition:opacity .18s;display:block;
+}
+.nav-dash:hover{opacity:.82;}
+.nav-av{
+  width:32px;height:32px;border-radius:50%;
+  background:linear-gradient(135deg,var(--gold),#d4a035);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.78rem;font-weight:700;color:white;
+  cursor:pointer;flex-shrink:0;overflow:hidden;
+}
+.nav-hamburger{
+  display:none;flex-direction:column;gap:4px;
+  background:none;border:none;cursor:pointer;
+  padding:6px;width:36px;height:36px;
+  align-items:center;justify-content:center;
+  border-radius:7px;transition:background .16s;
+}
+.nav-hamburger:hover{background:rgba(255,255,255,.07);}
+.nav-hamburger span{
+  display:block;width:18px;height:2px;
+  background:rgba(255,255,255,.75);border-radius:2px;
+  transition:all .22s;
+}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
 
-.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
-.btn-gold{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--gold),#b8832a);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px rgba(200,150,42,.25);}
-.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(200,150,42,.3);}
-.btn-sage{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-glow);}
-.btn-sage:hover{transform:translateY(-2px);}
-.btn-ghost{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.65);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;}
-.btn-ghost:hover{border-color:var(--sage);color:white;}
+/* Mobile nav drawer */
+.mob-nav{
+  display:none;position:fixed;
+  top:60px;left:0;right:0;z-index:299;
+  background:rgba(6,11,6,.98);
+  backdrop-filter:blur(20px);
+  border-bottom:1.5px solid rgba(107,143,94,.15);
+  padding:10px 16px 18px;
+  flex-direction:column;gap:2px;
+}
+.mob-nav.open{display:flex;}
+.mob-nav-label{
+  font-size:.72rem;font-weight:700;letter-spacing:.1em;
+  text-transform:uppercase;color:rgba(107,143,94,.65);
+  padding:6px 10px 8px;
+}
+.mob-link{
+  font-size:.94rem;font-weight:600;
+  color:rgba(255,255,255,.68);
+  padding:11px 12px;border-radius:9px;
+  transition:all .16s;
+}
+.mob-link:hover{background:rgba(255,255,255,.06);color:white;}
+.mob-dash{
+  margin-top:10px;
+  background:var(--sage);
+  color:white!important;text-align:center;
+  border-radius:10px;font-weight:700;
+  padding:12px!important;
+}
 
-.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;max-width:560px;margin:0 auto;}
-.hs-item{padding:14px 8px;text-align:center;background:rgba(255,255,255,.02);}
-.hs-n{font-family:var(--fm);font-size:1.2rem;font-weight:700;color:white;display:block;}
-.hs-l{font-size:.52rem;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.07em;}
-@media(max-width:500px){.hero-stats{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:960px){
+  .nav-links{display:none;}
+  .nav-hamburger{display:flex;}
+}
+@media(max-width:600px){
+  .nav-hamburger{display:flex;}
+  .nav-pill-sub,.nav-pill-sep{display:none;}
+  .nav-pill{padding:5px 14px;}
+  .nav-pill-txt{font-size:.72rem;}
+  .nav-dash{display:none;}
+  .nav{padding:0 14px;}
+}
 
-/* ── SHARED ── */
-section{padding:72px 20px;}
-.container{max-width:1080px;margin:0 auto;}
-.slabel{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.13em;color:var(--sage);margin-bottom:8px;}
-.stitle{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:var(--forest);line-height:1.2;margin-bottom:10px;}
-.ssub{font-size:.9rem;color:rgba(26,38,24,.42);line-height:1.72;max-width:540px;}
-.sec-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap;}
-.sec-hdr-right a{font-size:.74rem;font-weight:700;color:var(--sage);text-decoration:none;}
 
-/* ── EXAM OVERVIEW CARDS ── */
-.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:32px;}
-.ov-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:all .22s;}
+/* ══ HERO ══ */
+.hero{
+  min-height:100vh;
+  background:
+    radial-gradient(ellipse 100% 55% at 50% -5%,rgba(40,78,34,.6) 0%,transparent 60%),
+    linear-gradient(180deg,#060c05 0%,#0c1a0a 40%,#060c05 100%);
+  position:relative;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  padding:clamp(72px,10vh,100px) 20px clamp(48px,6vh,72px);
+}
+.hero-glow{
+  position:absolute;width:600px;height:600px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(107,143,94,.08) 0%,transparent 70%);
+  top:-80px;left:50%;transform:translateX(-50%);
+  pointer-events:none;
+}
+.hero-grid{
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(107,143,94,.03) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(107,143,94,.03) 1px,transparent 1px);
+  background-size:44px 44px;
+  pointer-events:none;
+}
+.hero-inner{
+  position:relative;z-index:1;
+  max-width:720px;width:100%;
+  text-align:center;
+}
+
+/* Tag chip */
+.hero-tag{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(107,143,94,.1);
+  border:1px solid rgba(107,143,94,.2);
+  border-radius:100px;padding:6px 16px;
+  margin-bottom:28px;
+}
+.hero-tag-dot{
+  width:6px;height:6px;border-radius:50%;
+  background:var(--sage);
+  animation:hpulse 2.5s ease-in-out infinite;
+}
+@keyframes hpulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.2;transform:scale(1.9);}}
+.hero-tag-txt{
+  font-size:.78rem;font-weight:700;
+  color:var(--sage);text-transform:uppercase;letter-spacing:.08em;
+}
+
+/* Main title */
+.hero-title{
+  font-size:clamp(2.6rem,7vw,4.8rem);
+  font-weight:900;color:white;
+  line-height:1.05;letter-spacing:-.03em;
+  margin-bottom:18px;
+}
+.ht1{color:var(--sage);}
+.ht2{color:var(--gold);}
+
+/* Subtitle */
+.hero-sub{
+  font-size:clamp(.92rem,2vw,1.08rem);
+  color:rgba(255,255,255,.72);
+  line-height:1.75;
+  max-width:500px;
+  margin:0 auto 32px;
+}
+
+/* Exam quick stats row */
+.hero-stats-row{
+  display:flex;flex-wrap:wrap;gap:8px;
+  justify-content:center;
+  margin-bottom:32px;
+  max-width:600px;
+  margin-left:auto;margin-right:auto;
+}
+.hsr-item{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.09);
+  border-radius:10px;
+  padding:8px 14px;
+}
+.hsr-val{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:.92rem;font-weight:700;color:white;
+}
+.hsr-val.g{color:#8fd47a;}
+.hsr-val.gold{color:var(--gold);}
+.hsr-val.r{color:#ff7070;}
+.hsr-lbl{
+  font-size:.7rem;font-weight:600;
+  color:rgba(255,255,255,.32);
+  text-transform:uppercase;letter-spacing:.05em;
+}
+
+/* CTA Buttons */
+.hero-btns{
+  display:flex;gap:10px;justify-content:center;
+  flex-wrap:wrap;margin-bottom:40px;
+}
+.btn-primary{
+  font-family:'Outfit',sans-serif;
+  font-size:.95rem;font-weight:700;
+  padding:13px 26px;border-radius:11px;border:none;
+  background:linear-gradient(135deg,var(--gold),#b8832a);
+  color:white;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all .2s;
+  box-shadow:0 4px 18px rgba(200,150,42,.3);
+}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,150,42,.38);}
+.btn-secondary{
+  font-family:'Outfit',sans-serif;
+  font-size:.95rem;font-weight:700;
+  padding:13px 26px;border-radius:11px;border:none;
+  background:var(--sage);
+  color:white;cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all .2s;
+}
+.btn-secondary:hover{background:#5a7a50;transform:translateY(-2px);}
+.btn-outline{
+  font-family:'Outfit',sans-serif;
+  font-size:.95rem;font-weight:600;
+  padding:13px 26px;border-radius:11px;
+  border:1.5px solid rgba(255,255,255,.15);
+  background:transparent;color:rgba(255,255,255,.65);
+  cursor:pointer;
+  display:inline-flex;align-items:center;gap:8px;
+  transition:all .2s;
+}
+.btn-outline:hover{border-color:rgba(255,255,255,.3);color:white;}
+
+/* Bottom stat bar */
+.hero-stat-bar{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;overflow:hidden;
+  max-width:520px;margin:0 auto;
+}
+.hsb-item{
+  padding:14px 8px;text-align:center;
+  border-right:1px solid rgba(255,255,255,.06);
+}
+.hsb-item:last-child{border-right:none;}
+.hsb-n{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:1.1rem;font-weight:700;
+  color:white;display:block;margin-bottom:2px;
+}
+.hsb-l{
+  font-size:.7rem;color:rgba(255,255,255,.52);
+  text-transform:uppercase;letter-spacing:.06em;
+}
+
+@media(max-width:480px){
+  .hero{padding:78px 16px 48px;}
+  .hero-btns{flex-direction:column;align-items:stretch;gap:8px;}
+  .btn-primary,.btn-secondary,.btn-outline{justify-content:center;}
+  .hero-stat-bar{grid-template-columns:repeat(2,1fr);}
+  .hsb-item:nth-child(2){border-right:none;}
+  .hsb-item:nth-child(3),.hsb-item:nth-child(4){border-top:1px solid rgba(255,255,255,.06);}
+  .hero-stats-row{gap:6px;}
+  .hsr-item{padding:7px 11px;}
+  .hsr-val{font-size:.84rem;}
+  .hsr-lbl{font-size:.64rem;}
+}
+
+/* ══ SHARED ══ */
+section{padding:80px 24px;}
+.container{max-width:1100px;margin:0 auto;}
+.slabel{font-size:.84rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sage);margin-bottom:10px;}
+.stitle{font-size:clamp(1.7rem,3.5vw,2.4rem);font-weight:800;color:var(--forest);line-height:1.18;margin-bottom:12px;}
+.ssub{font-size:1rem;color:var(--txt-m);line-height:1.78;max-width:560px;}
+.sec-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;gap:16px;flex-wrap:wrap;}
+.sec-hdr-right a{font-size:.82rem;font-weight:700;color:var(--sage);}
+
+/* ══ EXAM OVERVIEW CARDS ══ */
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:36px;}
+.ov-card{
+  background:white;border:1px solid var(--border);border-radius:16px;
+  padding:24px;position:relative;overflow:hidden;transition:all .22s;
+}
 .ov-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
 .ov-card.c1::after{background:linear-gradient(90deg,var(--sage),#4a7a3d);}
 .ov-card.c2::after{background:linear-gradient(90deg,var(--gold),#b8832a);}
@@ -93,120 +357,366 @@ section{padding:72px 20px;}
 .ov-card.c4::after{background:linear-gradient(90deg,var(--rose),#a83535);}
 .ov-card.c5::after{background:linear-gradient(90deg,#7c3aed,#6d28d9);}
 .ov-card.c6::after{background:linear-gradient(90deg,#0891b2,#0e7490);}
-.ov-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,38,24,.08);}
-.ov-icon{font-size:1.6rem;margin-bottom:12px;display:block;}
-.ov-label{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(26,38,24,.28);margin-bottom:3px;}
-.ov-value{font-size:1rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
-.ov-desc{font-size:.72rem;color:rgba(26,38,24,.42);line-height:1.6;}
+.ov-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(26,38,24,.09);}
+.ov-icon{font-size:1.8rem;margin-bottom:14px;display:block;}
+.ov-label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt-lo);margin-bottom:4px;}
+.ov-value{font-size:1.12rem;font-weight:800;color:var(--forest);margin-bottom:7px;}
+.ov-desc{font-size:.86rem;color:var(--txt-m);line-height:1.68;}
 
-/* ── MARKING SCHEME ── */
-.mark-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:28px;}
-.mark-card{background:white;border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
-.mark-icon{font-size:1.3rem;display:block;margin-bottom:8px;}
-.mark-val{font-family:var(--fm);font-size:1.4rem;font-weight:800;display:block;margin-bottom:4px;}
-.mark-lbl{font-size:.62rem;font-weight:600;color:rgba(26,38,24,.38);text-transform:uppercase;letter-spacing:.06em;}
-.mark-desc{font-size:.68rem;color:rgba(26,38,24,.38);margin-top:5px;line-height:1.5;}
+/* ══ MARKING SCHEME ══ */
+.mark-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:32px;}
+.mark-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;}
+.mark-icon{font-size:1.5rem;display:block;margin-bottom:10px;}
+.mark-val{font-family:var(--fm);font-size:1.6rem;font-weight:800;display:block;margin-bottom:5px;}
+.mark-lbl{font-size:.84rem;font-weight:700;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.06em;}
+.mark-desc{font-size:.8rem;color:var(--txt-m);margin-top:7px;line-height:1.58;}
 
-/* ── SUBJECTS / CHAPTERS ── */
-.subj-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
-.stab{font-family:var(--fd);font-size:.72rem;font-weight:600;padding:6px 16px;border-radius:8px;border:1.5px solid var(--bm);background:white;color:var(--forest-m);cursor:pointer;transition:all .18s;}
+/* ══ CHAPTERS / TABS ══ */
+.subj-tabs{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap;}
+.stab{
+  font-family:var(--fd);font-size:.84rem;font-weight:700;
+  padding:8px 20px;border-radius:9px;
+  border:1.5px solid var(--bm);background:white;
+  color:var(--forest-m);cursor:pointer;transition:all .18s;
+}
+.stab:hover{border-color:var(--sage);color:var(--forest);}
 .stab.on{background:var(--forest);color:white;border-color:var(--forest);}
 .subj-panel{display:none;}
 .subj-panel.on{display:block;}
-.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
-.ch-card{background:white;border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;transition:all .2s;gap:8px;}
+
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
+.ch-card{
+  background:white;border:1px solid var(--border);border-radius:12px;
+  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
+  transition:all .2s;gap:8px;
+}
 .ch-card:hover{border-color:var(--sage);background:var(--sage-l);transform:translateX(3px);}
-.ch-card.coming{opacity:.5;pointer-events:none;}
-.ch-left{display:flex;align-items:center;gap:9px;}
-.ch-num{width:28px;height:28px;border-radius:8px;background:var(--sage-l);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.62rem;font-weight:700;color:var(--sage);flex-shrink:0;}
-.ch-name{font-size:.78rem;font-weight:600;color:var(--forest);}
-.ch-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
-.ch-avail{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;background:var(--sage-m);color:var(--sage);}
-.ch-soon{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(26,38,24,.06);color:rgba(26,38,24,.3);}
-.ch-arr{font-size:.7rem;color:rgba(26,38,24,.2);}
-.subj-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
-.subj-stat{font-size:.7rem;color:rgba(26,38,24,.38);}
+.ch-card.coming{opacity:.45;pointer-events:none;}
+.ch-left{display:flex;align-items:center;gap:10px;}
+.ch-num{
+  width:30px;height:30px;border-radius:8px;
+  background:var(--sage-l);display:flex;align-items:center;justify-content:center;
+  font-family:var(--fm);font-size:.82rem;font-weight:700;color:var(--sage);flex-shrink:0;
+}
+.ch-name{font-size:.92rem;font-weight:600;color:var(--forest);}
+.ch-right{display:flex;align-items:center;gap:7px;flex-shrink:0;}
+.ch-avail{font-size:.82rem;font-weight:800;padding:4px 10px;border-radius:100px;background:var(--sage-m);color:var(--sage);}
+.ch-soon{font-size:.82rem;font-weight:700;padding:4px 10px;border-radius:100px;background:rgba(26,38,24,.06);color:var(--txt-lo);}
+.ch-arr{font-size:.8rem;color:var(--txt-lo);}
+.subj-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:18px;padding-top:16px;border-top:1px solid var(--border);
+}
+.subj-stat{font-size:.88rem;color:var(--txt-m);}
 .subj-stat span{font-weight:700;color:var(--sage);}
 
-/* ── MOCK TESTS ── */
-.mock-wrap{background:var(--forest);border-radius:20px;padding:36px 28px;margin-top:28px;}
-.mock-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px;}
+/* ══ MOCK TESTS ══ */
+.mock-wrap{background:var(--forest);border-radius:22px;padding:40px 32px;margin-top:32px;}
+.mock-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:32px;}
 .mock-hdr-l .slabel{color:rgba(107,143,94,.8);}
-.mock-hdr-l .stitle{color:white;font-size:1.4rem;}
-.mock-hdr-l .ssub{color:rgba(255,255,255,.35);font-size:.82rem;}
-.mock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
-.mock-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:20px;transition:all .22s;text-decoration:none;display:block;}
-.mock-card:hover{background:rgba(255,255,255,.07);border-color:rgba(107,143,94,.25);transform:translateY(-2px);}
-.mock-card.locked{opacity:.5;pointer-events:none;}
-.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
-.mc-badge{font-size:.52rem;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.05em;}
-.mcb-full{background:rgba(107,143,94,.2);color:#9bc48a;}
-.mcb-chapter{background:rgba(200,150,42,.18);color:#e8a830;}
-.mcb-lock{background:rgba(255,255,255,.07);color:rgba(255,255,255,.25);}
-.mc-title{font-size:.9rem;font-weight:700;color:white;margin-bottom:5px;}
-.mc-desc{font-size:.7rem;color:rgba(255,255,255,.32);line-height:1.5;margin-bottom:13px;}
-.mc-meta{display:flex;gap:12px;margin-bottom:14px;}
-.mc-m{font-size:.62rem;color:rgba(255,255,255,.25);display:flex;align-items:center;gap:3px;}
-.mc-btn{width:100%;font-family:var(--fd);font-size:.72rem;font-weight:700;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;transition:all .2s;}
-.mc-btn:hover{box-shadow:0 4px 14px var(--sage-glow);}
-.mc-btn-lock{background:rgba(255,255,255,.06);color:rgba(255,255,255,.22);cursor:not-allowed;}
+.mock-hdr-l .stitle{color:white;font-size:1.6rem;}
+.mock-hdr-l .ssub{color:rgba(255,255,255,.65);font-size:.92rem;}
+.mock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
+.mock-card{
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
+  border-radius:14px;padding:22px;transition:all .22s;display:block;
+}
+.mock-card:hover{background:rgba(255,255,255,.08);border-color:rgba(107,143,94,.28);transform:translateY(-3px);}
+.mock-card.locked{opacity:.45;pointer-events:none;}
+.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.mc-badge{font-size:.82rem;font-weight:700;padding:4px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:.05em;}
+.mcb-full{background:rgba(107,143,94,.22);color:#9bc48a;}
+.mcb-chapter{background:rgba(200,150,42,.2);color:#e8a830;}
+.mcb-lock{background:rgba(255,255,255,.1);color:rgba(255,255,255,.48);}
+.mc-title{font-size:1rem;font-weight:700;color:white;margin-bottom:6px;}
+.mc-desc{font-size:.86rem;color:rgba(255,255,255,.62);line-height:1.58;margin-bottom:16px;}
+.mc-meta{display:flex;gap:14px;margin-bottom:16px;}
+.mc-m{font-size:.84rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:4px;}
+.mc-btn{
+  width:100%;font-family:var(--fd);font-size:.84rem;font-weight:700;
+  padding:11px;border-radius:10px;border:none;
+  background:linear-gradient(135deg,var(--sage),#4a7a3d);
+  color:white;cursor:pointer;transition:all .2s;
+}
+.mc-btn:hover{box-shadow:0 4px 16px rgba(107,143,94,.3);}
+.mc-btn-lock{background:rgba(255,255,255,.08);color:rgba(255,255,255,.38);cursor:not-allowed;box-shadow:none!important;}
 
-/* ── HIGH WEIGHTAGE ── */
-.hw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:28px;}
-.hw-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;}
-.hw-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.hw-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
-.hw-name{font-size:.88rem;font-weight:800;color:var(--forest);}
-.hw-topics{display:flex;flex-direction:column;gap:7px;}
-.hw-topic{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;background:var(--cream-w);}
-.hw-tname{font-size:.72rem;font-weight:600;color:var(--forest-m);}
-.hw-twt{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:100px;}
+/* ══ HIGH WEIGHTAGE ══ */
+.hw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:32px;}
+.hw-card{background:white;border:1px solid var(--border);border-radius:16px;padding:22px;}
+.hw-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.hw-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
+.hw-name{font-size:.98rem;font-weight:800;color:var(--forest);}
+.hw-topics{display:flex;flex-direction:column;gap:8px;}
+.hw-topic{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 12px;border-radius:9px;background:var(--cream-w);
+}
+.hw-tname{font-size:.82rem;font-weight:600;color:var(--forest-m);}
+.hw-twt{font-size:.82rem;font-weight:700;padding:4px 10px;border-radius:100px;}
 .wt-high{background:rgba(200,75,75,.1);color:var(--rose);}
 .wt-med{background:rgba(200,150,42,.1);color:var(--gold);}
 
-/* ── PROGRESS ── */
-.prog-wrap{background:white;border:1px solid var(--border);border-radius:18px;padding:28px;margin-top:28px;}
-.prog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-top:20px;}
-.pg-card{text-align:center;padding:16px 12px;border-radius:12px;background:var(--cream-w);}
-.pg-n{font-family:var(--fm);font-size:1.5rem;font-weight:800;display:block;margin-bottom:3px;}
-.pg-l{font-size:.56rem;text-transform:uppercase;letter-spacing:.07em;color:rgba(26,38,24,.28);}
-.pg-bar{height:3px;border-radius:3px;background:var(--border);margin-top:8px;overflow:hidden;}
+/* ══ PROGRESS ══ */
+.prog-wrap{background:white;border:1px solid var(--border);border-radius:20px;padding:32px;margin-top:32px;}
+.prog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-top:24px;}
+.pg-card{text-align:center;padding:18px 14px;border-radius:12px;background:var(--cream-w);}
+.pg-n{font-family:var(--fm);font-size:1.7rem;font-weight:800;display:block;margin-bottom:4px;}
+.pg-l{font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;color:var(--txt-lo);}
+.pg-bar{height:3px;border-radius:3px;background:var(--border);margin-top:10px;overflow:hidden;}
 .pg-bar-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sage),#4a7a3d);}
 
-/* ── STRATEGY TIPS ── */
-.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:28px;}
-.tip-card{background:white;border:1px solid var(--border);border-radius:13px;padding:18px;display:flex;gap:12px;transition:all .22s;}
-.tip-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(26,38,24,.06);}
-.tip-num{width:34px;height:34px;border-radius:9px;background:var(--forest);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.76rem;font-weight:700;flex-shrink:0;}
-.tip-title{font-size:.82rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
-.tip-desc{font-size:.72rem;color:rgba(26,38,24,.42);line-height:1.62;}
+/* ══ STRATEGY TIPS ══ */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:32px;}
+.tip-card{
+  background:white;border:1px solid var(--border);border-radius:14px;
+  padding:22px;display:flex;gap:14px;transition:all .22s;
+}
+.tip-card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(26,38,24,.07);}
+.tip-num{
+  width:36px;height:36px;border-radius:9px;background:var(--forest);
+  color:white;display:flex;align-items:center;justify-content:center;
+  font-family:var(--fm);font-size:.82rem;font-weight:700;flex-shrink:0;
+}
+.tip-title{font-size:.95rem;font-weight:800;color:var(--forest);margin-bottom:6px;}
+.tip-desc{font-size:.86rem;color:var(--txt-m);line-height:1.72;}
 
-/* ── CTA ── */
-.cta-block{background:linear-gradient(135deg,var(--forest),var(--forest-l));border-radius:20px;padding:48px 32px;text-align:center;position:relative;overflow:hidden;margin-top:28px;}
-.cta-block::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(107,143,94,.07),transparent);}
-.cta-title{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:900;color:white;margin-bottom:10px;line-height:1.2;position:relative;z-index:1;}
-.cta-sub{font-size:.88rem;color:rgba(255,255,255,.36);margin-bottom:24px;max-width:440px;margin-left:auto;margin-right:auto;position:relative;z-index:1;}
-.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
+/* ══ CTA ══ */
+.cta-block{
+  background:linear-gradient(135deg,var(--forest),var(--forest-l));
+  border-radius:22px;padding:64px 80px;text-align:center;
+  position:relative;overflow:hidden;margin-top:32px;
+}
+.cta-block::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(107,143,94,.08),transparent);}
+.cta-title{font-size:clamp(1.7rem,4vw,2.5rem);font-weight:900;color:white;margin-bottom:12px;line-height:1.18;position:relative;z-index:1;}
+.cta-sub{font-size:1rem;color:rgba(255,255,255,.75);margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.7;}
+.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
 
-/* ── FOOTER ── */
-.footer{background:var(--forest);padding:44px 20px 22px;}
-.ft{display:flex;flex-wrap:wrap;gap:30px;max-width:1080px;margin:0 auto 28px;}
-.ft-brand{flex:1.5;min-width:180px;}
-.ft-logo{display:flex;align-items:center;gap:8px;margin-bottom:11px;}
-.ft-desc{font-size:.7rem;color:rgba(255,255,255,.24);line-height:1.7;max-width:240px;}
-.ft-col{flex:1;min-width:120px;}
-.ft-ct{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.16);margin-bottom:12px;}
-.ft-link{display:block;font-size:.72rem;color:rgba(255,255,255,.34);text-decoration:none;margin-bottom:7px;transition:color .18s;}
+/* ══ FOOTER ══ */
+.footer{background:var(--forest-d);padding:64px 32px 28px;}
+.ft{display:flex;flex-wrap:wrap;gap:36px;max-width:1100px;margin:0 auto 36px;}
+.ft-brand{flex:1.5;min-width:200px;}
+.ft-logo{display:flex;align-items:center;gap:9px;margin-bottom:13px;}
+.ft-desc{font-size:.84rem;color:rgba(255,255,255,.52);line-height:1.72;max-width:260px;}
+.ft-col{flex:1;min-width:130px;}
+.ft-ct{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.5);margin-bottom:14px;}
+.ft-link{display:block;font-size:.82rem;color:rgba(255,255,255,.58);margin-bottom:8px;transition:color .18s;}
 .ft-link:hover{color:var(--sage);}
-.ft-bottom{max-width:1080px;margin:0 auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.ft-copy{font-size:.6rem;color:rgba(255,255,255,.16);}
+.ft-bottom{
+  max-width:1100px;margin:0 auto;padding-top:20px;
+  border-top:1px solid rgba(255,255,255,.06);
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
+}
+.ft-copy{font-size:.84rem;color:rgba(255,255,255,.45);}
 
+/* ══ RESPONSIVE ══ */
 @media(max-width:640px){
-  section{padding:52px 16px;}
-  .mock-wrap{padding:22px 14px;}
-  .cta-block{padding:32px 18px;}
+  section{padding:56px 16px;}
+  .mock-wrap{padding:24px 16px;}
+  .cta-block{padding:36px 20px;}
   .ov-grid,.mark-grid{grid-template-columns:repeat(2,1fr);}
   .hero-stats{grid-template-columns:repeat(2,1fr);}
+  .btn-gold,.btn-sage,.btn-ghost{font-size:.86rem;padding:12px 20px;}
+}
+
+@media(max-width:480px){
+  .nav{padding:0 16px;}
+  .nav-n1,.nav-n2{font-size:.95rem;}
+  .nav-dash{font-size:.82rem;padding:8px 14px;}
+  section{padding:44px 14px;}
+  .hero{padding:80px 14px 52px;}
+  .stitle{font-size:1.6rem;}
+  .ssub{font-size:.95rem;}
+  .slabel{font-size:.82rem;}
+  .ov-grid,.mark-grid{grid-template-columns:1fr;}
+  .ov-desc,.mark-desc{font-size:.88rem;}
+  .ch-name{font-size:.95rem;}
+  .ch-card{padding:13px 14px;}
+  .es-label{font-size:.8rem;}
+  .es-value{font-size:.92rem;}
+  .es-item{padding:8px 12px;}
+  .hero-eyebrow-txt{font-size:.82rem;}
+  .hs-l{font-size:.8rem;}
+  .hw-tname{font-size:.88rem;}
+  .hw-twt{font-size:.8rem;}
+  .pg-l{font-size:.8rem;}
+  .pg-n{font-size:1.5rem;}
+  .tip-title{font-size:.95rem;}
+  .tip-desc{font-size:.88rem;}
+  .ft-link{font-size:.88rem;}
+  .ft-ct{font-size:.8rem;}
+  .ft-desc{font-size:.86rem;}
+  .mock-wrap{border-radius:14px;}
+  .mc-title{font-size:1rem;}
+  .mc-desc{font-size:.88rem;}
+  .cta-block{padding:28px 16px;border-radius:14px;}
+  .cta-title{font-size:1.5rem;}
+  .prog-wrap{padding:20px 14px;}
+  .btn-gold,.btn-sage,.btn-ghost{font-size:.9rem;padding:12px 18px;width:100%;justify-content:center;}
+  .hero-btns{flex-direction:column;gap:10px;padding:0 8px;}
+  .subj-tabs{gap:7px;}
+  .stab{font-size:.82rem;padding:10px 16px;}
+}
+
+/* ══ HAMBURGER + MOBILE NAV ══ */
+.nav-hamburger{
+  display:none;flex-direction:column;gap:5px;
+  background:none;border:none;cursor:pointer;padding:6px;
+  width:38px;height:38px;align-items:center;justify-content:center;
+  border-radius:8px;transition:background .18s;
+}
+.nav-hamburger:hover{background:rgba(255,255,255,.08);}
+.nav-hamburger span{
+  display:block;width:20px;height:2px;
+  background:rgba(255,255,255,.8);border-radius:2px;
+  transition:all .25s;
+}
+.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-hamburger.open span:nth-child(2){opacity:0;}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.mob-nav{
+  display:none;
+  position:fixed;top:60px;left:0;right:0;z-index:199;
+  background:rgba(14,26,12,.98);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid rgba(255,255,255,.06);
+  padding:12px 20px 20px;
+  flex-direction:column;gap:4px;
+}
+.mob-nav.open{display:flex;}
+.mob-link{
+  font-size:1rem;font-weight:600;color:rgba(255,255,255,.7);
+  padding:12px 14px;border-radius:8px;transition:all .18s;
+  border-bottom:1px solid rgba(255,255,255,.05);
+}
+.mob-link:last-child{border-bottom:none;}
+.mob-link:hover{background:rgba(255,255,255,.06);color:white;}
+.mob-dash{
+  margin-top:8px;
+  background:linear-gradient(135deg,var(--sage),#4a7a3d);
+  color:white!important;text-align:center;border-radius:10px;
+  border-bottom:none!important;font-weight:700;
+}
+
+
+
+
+/* ══ PYQ ══ */
+.pyq-stats-banner{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 28px;background:var(--forest);border-radius:16px;padding:20px 24px;}
+.pyq-banner-item{text-align:center;}
+.pyq-banner-n{font-family:var(--fm);font-size:1.35rem;font-weight:700;color:white;display:block;margin-bottom:3px;}
+.pyq-banner-l{font-size:.78rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.05em;}
+.pyq-year-tabs,.pyqm-year-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
+.pyq-ytab{font-family:var(--fm);font-size:.84rem;font-weight:700;padding:8px 16px;border-radius:9px;border:1.5px solid var(--bm);background:white;color:var(--forest-m);cursor:pointer;transition:all .18s;}
+.pyq-ytab:hover,.pyq-ytab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.pyqm-ytab{font-family:var(--fm);font-size:.82rem;font-weight:700;padding:7px 14px;border-radius:8px;border:1.5px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);cursor:pointer;transition:all .18s;}
+.pyqm-ytab:hover,.pyqm-ytab.on{background:var(--sage);color:white;border-color:var(--sage);}
+.pyq-session-label{font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sage);margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
+.pyq-session-label::after{content:'';flex:1;height:1px;background:rgba(26,38,24,.1);}
+.pyq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:6px;}
+.pyq-card{background:white;border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px;transition:all .2s;}
+.pyq-card:hover{border-color:var(--sage);box-shadow:0 6px 20px rgba(26,38,24,.07);transform:translateY(-2px);}
+.pyq-card-top{display:flex;align-items:center;justify-content:space-between;}
+.pyq-date{font-family:var(--fm);font-size:.82rem;font-weight:700;color:var(--forest);}
+.pyq-shift-badge{font-size:.76rem;font-weight:700;padding:3px 10px;border-radius:100px;background:rgba(107,143,94,.12);color:var(--sage);}
+.pyq-shift-badge.upcoming{background:rgba(26,38,24,.06);color:var(--txt-lo);}
+.pyq-stats{display:flex;gap:14px;}
+.pyq-stat{font-size:.82rem;color:var(--txt-m);}
+.pyq-stat strong{font-weight:700;color:var(--forest);}
+.pyq-actions{display:flex;gap:8px;}
+.btn-pyq-view{flex:1;font-family:var(--fd);font-size:.84rem;font-weight:700;padding:9px;border-radius:9px;border:1.5px solid var(--bm);background:white;color:var(--forest);cursor:pointer;transition:all .18s;text-align:center;}
+.btn-pyq-view:hover{border-color:var(--sage);background:var(--sage-l);}
+.btn-pyq-view:disabled{opacity:.4;cursor:not-allowed;}
+.btn-pyq-solve{flex:1;font-family:var(--fd);font-size:.84rem;font-weight:700;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;transition:all .18s;text-align:center;}
+.btn-pyq-solve:hover{box-shadow:0 4px 14px rgba(107,143,94,.3);}
+/* PYQ MOCK */
+.pyqm-wrap{background:linear-gradient(135deg,#0a1409,#1a2618);border-radius:22px;padding:32px;margin-top:28px;border:1px solid rgba(107,143,94,.15);position:relative;overflow:hidden;}
+.pyqm-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px;}
+.pyqm-hdr-l .stitle{color:white;}
+.pyqm-hdr-l .ssub{color:rgba(255,255,255,.55);}
+.pyqm-info-strip{display:flex;flex-wrap:wrap;gap:10px;padding:14px 18px;background:rgba(255,255,255,.04);border-radius:12px;margin-bottom:22px;border:1px solid rgba(255,255,255,.06);}
+.pyqm-info-item{display:flex;align-items:center;gap:6px;font-size:.84rem;color:rgba(255,255,255,.55);}
+.pyqm-info-item strong{color:white;font-weight:700;}
+.pyqm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+.pyqm-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:all .22s;}
+.pyqm-card:hover{background:rgba(255,255,255,.08);border-color:rgba(107,143,94,.3);transform:translateY(-2px);}
+.pyqm-card-top{display:flex;align-items:center;justify-content:space-between;}
+.pyqm-year-badge{font-family:var(--fm);font-size:.84rem;font-weight:700;color:var(--gold);background:rgba(200,150,42,.12);border:1px solid rgba(200,150,42,.25);padding:4px 12px;border-radius:8px;}
+.pyqm-diff{font-size:.76rem;font-weight:700;padding:3px 9px;border-radius:100px;}
+.diff-moderate{background:rgba(107,143,94,.15);color:#9bc48a;}
+.diff-hard{background:rgba(224,82,82,.15);color:#ff8080;}
+.diff-mh{background:rgba(200,150,42,.15);color:#e8a830;}
+.pyqm-title{font-size:1rem;font-weight:700;color:white;}
+.pyqm-sub{font-size:.84rem;color:rgba(255,255,255,.52);line-height:1.58;}
+.pyqm-meta{display:flex;flex-wrap:wrap;gap:12px;}
+.pyqm-m{font-size:.82rem;color:rgba(255,255,255,.5);}
+.pyqm-m strong{color:rgba(255,255,255,.88);font-weight:700;}
+.pyqm-attempt{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;justify-content:space-between;}
+.pyqm-pbar{height:3px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;}
+.pyqm-pfill{height:100%;background:linear-gradient(90deg,var(--gold),#e8a830);border-radius:3px;transition:width .3s;}
+.pyqm-actions{display:flex;gap:10px;}
+.btn-pyqm-start{flex:2;font-family:var(--fd);font-size:.88rem;font-weight:700;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--gold),#b8832a);color:white;cursor:pointer;transition:all .2s;text-align:center;}
+.btn-pyqm-start:hover{box-shadow:0 4px 16px rgba(200,150,42,.3);}
+.btn-pyqm-sol{flex:1;font-family:var(--fd);font-size:.88rem;font-weight:700;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);cursor:pointer;transition:all .18s;text-align:center;}
+.btn-pyqm-sol:hover{border-color:var(--sage);color:white;}
+@media(max-width:640px){
+  .pyq-stats-banner{grid-template-columns:repeat(2,1fr);}
+  .pyqm-wrap{padding:20px 16px;border-radius:16px;}
+  .pyqm-grid,.pyq-grid{grid-template-columns:1fr;}
+  .pyqm-actions,.pyq-actions{flex-direction:column;}
+}
+@media(max-width:480px){
+  .pyq-stats-banner{padding:16px;}
+  .pyq-banner-n{font-size:1.2rem;}
+}
+
+
+/* ══ MISSING BUTTON ALIASES ══ */
+.btn-gold{
+  font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;
+  padding:13px 26px;border-radius:11px;border:none;
+  background:linear-gradient(135deg,var(--gold),#b8832a);
+  color:white;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .2s;box-shadow:0 4px 18px rgba(200,150,42,.28);
+}
+.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,150,42,.38);}
+.btn-sage{
+  font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;
+  padding:13px 26px;border-radius:11px;border:none;
+  background:var(--sage);
+  color:white;cursor:pointer;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  transition:all .2s;
+}
+.btn-sage:hover{background:#5a7a50;transform:translateY(-2px);}
+
+/* ══ DESKTOP LARGE SCREENS (1280px+) ══ */
+@media(min-width:1280px){
+  .stitle{font-size:2.6rem;}
+  .ssub{font-size:1.05rem;}
+  .ov-desc,.mark-desc,.tip-desc,.mc-desc{font-size:.9rem;}
+  .ch-name{font-size:.95rem;}
+  .nav-link{font-size:.82rem;padding:6px 12px;}
+  .nav-pill-txt{font-size:.82rem;}
+  .nav-pill-sub{font-size:.76rem;}
+  .nav-dash{font-size:.84rem;padding:8px 18px;}
+  section{padding:88px 32px;}
+  .hero-title{font-size:5rem;}
+  .hero-sub{font-size:1.15rem;}
+}
+
+/* ══ DESKTOP MAX COLUMN CAPS ══ */
+@media(min-width:1100px){
+  /* Cap overview at 3 cols for better visual balance */
+  .ov-grid{grid-template-columns:repeat(3,1fr);}
+  /* Cap marking scheme at 3 cols */
+  .mark-grid{grid-template-columns:repeat(3,1fr);}
+  /* Tips at 3 cols */
+  .tips-grid{grid-template-columns:repeat(3,1fr);}
+  /* Chapter grid 3 cols */
+  .ch-grid{grid-template-columns:repeat(3,1fr);}
 }
 </style>
 </head>
@@ -218,79 +728,90 @@ section{padding:72px 20px;}
     <div class="nav-mark">MA</div>
     <span class="nav-n1">Mock</span><span class="nav-n2">Arena</span>
   </a>
-  <span class="nav-badge">JEE Mains</span>
-  <div class="nav-links">
-    <a href="#overview" class="nav-link">Overview</a>
-    <a href="#chapters" class="nav-link">Chapters</a>
-    <a href="#mocks" class="nav-link">Mock Tests</a>
-    <a href="#weightage" class="nav-link">Key Topics</a>
-    <a href="#strategy" class="nav-link">Strategy</a>
+
+  <!-- CENTER PILL -->
+  <div class="nav-pill">
+    <div class="nav-pill-dot"></div>
+    <span class="nav-pill-txt">JEE Mains</span>
+    <span class="nav-pill-sep">|</span>
+    <span class="nav-pill-sub">NTA 2026</span>
   </div>
+
   <div class="nav-right">
+    <div class="nav-links">
+      <a href="#overview" class="nav-link">Overview</a>
+      <a href="#chapters" class="nav-link">Chapters</a>
+      <a href="#mocks" class="nav-link">Mocks</a>
+      <a href="#pyq" class="nav-link">PYQ</a>
+      <a href="#weightage" class="nav-link">Topics</a>
+      <a href="#strategy" class="nav-link">Strategy</a>
+    </div>
     <a href="mockarena_dashboard.html" class="nav-dash">Dashboard →</a>
     <div class="nav-av" id="nav-av">S</div>
+    <button class="nav-hamburger" id="navHamburger" onclick="toggleMobNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
 
+<div class="mob-nav" id="mobNav">
+  <div class="mob-nav-label">JEE Mains 2026</div>
+  <a href="#overview" class="mob-link" onclick="toggleMobNav()">📋 Overview</a>
+  <a href="#chapters" class="mob-link" onclick="toggleMobNav()">📚 Chapter Tests</a>
+  <a href="#mocks" class="mob-link" onclick="toggleMobNav()">🎯 Mock Tests</a>
+  <a href="#pyq" class="mob-link" onclick="toggleMobNav()">📄 PYQ Papers</a>
+  <a href="#pyq-mock" class="mob-link" onclick="toggleMobNav()">🚀 PYQ Mocks</a>
+  <a href="#weightage" class="mob-link" onclick="toggleMobNav()">⭐ Key Topics</a>
+  <a href="#strategy" class="mob-link" onclick="toggleMobNav()">💡 Strategy</a>
+  <a href="mockarena_dashboard.html" class="mob-link mob-dash">Dashboard →</a>
+</div>
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-bg1"></div>
-  <div class="hero-bg2"></div>
+  <div class="hero-glow"></div>
   <div class="hero-grid"></div>
   <div class="hero-inner">
-    <div class="hero-eyebrow">
-      <div class="hero-dot"></div>
-      <span class="hero-eyebrow-txt">Class 11 & 12 · NTA JEE Mains 2026</span>
+
+    <!-- Tag -->
+    <div class="hero-tag">
+      <div class="hero-tag-dot"></div>
+      <span class="hero-tag-txt">Class 11 &amp; 12 &nbsp;·&nbsp; NTA JEE Mains 2026</span>
     </div>
+
+    <!-- Title -->
     <h1 class="hero-title">
-      Crack <span class="ht1">JEE Mains</span><br/>
+      Crack <span class="ht1">JEE Mains</span><br>
       Secure Your <span class="ht2">IIT Seat</span>
     </h1>
-    <p class="hero-sub">The most complete JEE Mains preparation platform. Chapter-wise tests, full mocks, high-weightage topic analysis, and real-time performance tracking — everything in one place.</p>
 
-    <!-- Exam strip -->
-    <div class="exam-strip">
-      <div class="es-item">
-        <span class="es-label">Questions</span>
-        <span class="es-value green">90 Qs</span>
-      </div>
-      <div class="es-item">
-        <span class="es-label">Duration</span>
-        <span class="es-value">3 Hours</span>
-      </div>
-      <div class="es-item">
-        <span class="es-label">Max Marks</span>
-        <span class="es-value gold">300</span>
-      </div>
-      <div class="es-item">
-        <span class="es-label">Correct</span>
-        <span class="es-value green">+4</span>
-      </div>
-      <div class="es-item">
-        <span class="es-label">Wrong MCQ</span>
-        <span class="es-value rose">−1</span>
-      </div>
-      <div class="es-item">
-        <span class="es-label">Wrong Int.</span>
-        <span class="es-value">0</span>
-      </div>
+    <!-- Subtitle -->
+    <p class="hero-sub">The most complete JEE Mains prep platform — chapter tests, full mocks, PYQ papers and real-time analytics, all in one place.</p>
+
+    <!-- Quick exam stats -->
+    <div class="hero-stats-row">
+      <div class="hsr-item"><span class="hsr-val g">90 Qs</span><span class="hsr-lbl">Questions</span></div>
+      <div class="hsr-item"><span class="hsr-val">3 Hrs</span><span class="hsr-lbl">Duration</span></div>
+      <div class="hsr-item"><span class="hsr-val gold">300</span><span class="hsr-lbl">Max Marks</span></div>
+      <div class="hsr-item"><span class="hsr-val g">+4</span><span class="hsr-lbl">Correct</span></div>
+      <div class="hsr-item"><span class="hsr-val r">−1</span><span class="hsr-lbl">Wrong MCQ</span></div>
     </div>
 
+    <!-- Buttons -->
     <div class="hero-btns">
-      <a href="#mocks" class="btn-gold">🚀 Take Full Mock Test</a>
-      <a href="#chapters" class="btn-sage">📚 Chapter Tests</a>
-      <a href="#overview" class="btn-ghost">📋 Exam Details</a>
+      <a href="#mocks" class="btn-primary">🚀 Take Full Mock Test</a>
+      <a href="#chapters" class="btn-secondary">📚 Chapter Tests</a>
+      <a href="#overview" class="btn-outline">📋 Exam Details</a>
     </div>
 
-    <div class="hero-stats">
-      <div class="hs-item"><span class="hs-n">13+</span><span class="hs-l">Physics Chapters</span></div>
-      <div class="hs-item"><span class="hs-n">390+</span><span class="hs-l">Practice Qs</span></div>
-      <div class="hs-item"><span class="hs-n">60 min</span><span class="hs-l">Per Chapter</span></div>
-      <div class="hs-item"><span class="hs-n">Free</span><span class="hs-l">Full Access</span></div>
+    <!-- Stat bar -->
+    <div class="hero-stat-bar">
+      <div class="hsb-item"><span class="hsb-n">26+</span><span class="hsb-l">Chapters Live</span></div>
+      <div class="hsb-item"><span class="hsb-n">780+</span><span class="hsb-l">Practice Qs</span></div>
+      <div class="hsb-item"><span class="hsb-n">11 Yrs</span><span class="hsb-l">PYQ Papers</span></div>
+      <div class="hsb-item"><span class="hsb-n">Free</span><span class="hsb-l">Full Access</span></div>
     </div>
+
   </div>
 </section>
-
 <!-- EXAM OVERVIEW -->
 <section id="overview" style="background:white;">
   <div class="container">
@@ -365,13 +886,13 @@ section{padding:72px 20px;}
       </div>
       <div class="mark-card">
         <span class="mark-icon">⭕</span>
-        <span class="mark-val" style="color:rgba(26,38,24,.3);">0</span>
+        <span class="mark-val" style="color:var(--txt-lo);">0</span>
         <span class="mark-lbl">Wrong Integer</span>
         <div class="mark-desc">No negative marking for integer type! Always attempt all integer questions</div>
       </div>
       <div class="mark-card">
         <span class="mark-icon">⏭️</span>
-        <span class="mark-val" style="color:rgba(26,38,24,.3);">0</span>
+        <span class="mark-val" style="color:var(--txt-lo);">0</span>
         <span class="mark-lbl">Unattempted</span>
         <div class="mark-desc">No marks deducted for skipped questions. Skip if unsure about MCQ</div>
       </div>
@@ -392,7 +913,7 @@ section{padding:72px 20px;}
       <div>
         <div class="slabel">Chapter-wise Practice</div>
         <h2 class="stitle">Master Every Chapter</h2>
-        <p class="ssub">30 questions per chapter. Section A MCQ + Section B Integer. 60 minute timer. Real JEE pattern.</p>
+        <p class="ssub">30 questions per chapter. +4/−1 marking. 60 minute timer. Real JEE Mains pattern.</p>
       </div>
     </div>
     <div class="subj-tabs">
@@ -404,14 +925,14 @@ section{padding:72px 20px;}
     <!-- PHYSICS -->
     <div class="subj-panel on" id="subj-phy">
       <div class="ch-grid">
-        <a href="mockarena_chapter_physics_units.html" class="ch-card"><div class="ch-left"><div class="ch-num">01</div><span class="ch-name">Units & Measurement</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_motion.html" class="ch-card"><div class="ch-left"><div class="ch-num">02</div><span class="ch-name">Motion in 1D & 2D</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_units.html" class="ch-card"><div class="ch-left"><div class="ch-num">01</div><span class="ch-name">Units &amp; Measurement</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_motion.html" class="ch-card"><div class="ch-left"><div class="ch-num">02</div><span class="ch-name">Motion in 1D &amp; 2D</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
         <a href="mockarena_chapter_physics_laws.html" class="ch-card"><div class="ch-left"><div class="ch-num">03</div><span class="ch-name">Laws of Motion</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_wep.html" class="ch-card"><div class="ch-left"><div class="ch-num">04</div><span class="ch-name">Work, Energy & Power</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_wep.html" class="ch-card"><div class="ch-left"><div class="ch-num">04</div><span class="ch-name">Work, Energy &amp; Power</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
         <a href="mockarena_chapter_physics_rotation.html" class="ch-card"><div class="ch-left"><div class="ch-num">05</div><span class="ch-name">Rotational Motion</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
         <a href="mockarena_chapter_physics_gravitation.html" class="ch-card"><div class="ch-left"><div class="ch-num">06</div><span class="ch-name">Gravitation</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
         <a href="mockarena_chapter_physics_thermodynamics.html" class="ch-card"><div class="ch-left"><div class="ch-num">07</div><span class="ch-name">Thermodynamics</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_waves.html" class="ch-card"><div class="ch-left"><div class="ch-num">08</div><span class="ch-name">Oscillations & Waves</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_physics_waves.html" class="ch-card"><div class="ch-left"><div class="ch-num">08</div><span class="ch-name">Oscillations &amp; Waves</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
         <a href="mockarena_chapter_physics_electrostatics.html" class="ch-card"><div class="ch-left"><div class="ch-num">09</div><span class="ch-name">Electrostatics</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
         <a href="mockarena_chapter_physics_current.html" class="ch-card"><div class="ch-left"><div class="ch-num">10</div><span class="ch-name">Current Electricity</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
         <a href="mockarena_chapter_physics_magnetic.html" class="ch-card"><div class="ch-left"><div class="ch-num">11</div><span class="ch-name">Magnetic Effects</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
@@ -420,51 +941,52 @@ section{padding:72px 20px;}
       </div>
       <div class="subj-footer">
         <span class="subj-stat"><span>13/13</span> chapters available</span>
-        <a href="mockarena_chapter_physics_units.html" class="btn-sage" style="font-size:.74rem;padding:8px 16px;">Start Physics →</a>
+        <a href="mockarena_chapter_physics_units.html" class="btn-sage" style="font-size:.88rem;padding:11px 20px;">Start Physics →</a>
       </div>
     </div>
 
-    <!-- CHEMISTRY -->
+    <!-- CHEMISTRY — now LIVE -->
     <div class="subj-panel" id="subj-chem">
       <div class="ch-grid">
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">01</div><span class="ch-name">Basic Concepts & Mole</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">02</div><span class="ch-name">Atomic Structure</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">03</div><span class="ch-name">Chemical Bonding</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">04</div><span class="ch-name">Periodic Table</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">05</div><span class="ch-name">States of Matter</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">06</div><span class="ch-name">Thermochemistry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">07</div><span class="ch-name">Equilibrium</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">08</div><span class="ch-name">Redox Reactions</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">09</div><span class="ch-name">Electrochemistry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">10</div><span class="ch-name">Chemical Kinetics</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">11</div><span class="ch-name">Organic Chemistry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">12</div><span class="ch-name">Hydrocarbons</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">13</div><span class="ch-name">Biomolecules & Polymers</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <a href="mockarena_chapter_chem_mole_concept.html" class="ch-card"><div class="ch-left"><div class="ch-num">01</div><span class="ch-name">Mole Concept</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_atomic_structure.html" class="ch-card"><div class="ch-left"><div class="ch-num">02</div><span class="ch-name">Atomic Structure</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_chemical_bonding.html" class="ch-card"><div class="ch-left"><div class="ch-num">03</div><span class="ch-name">Chemical Bonding</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_states_of_matter.html" class="ch-card"><div class="ch-left"><div class="ch-num">04</div><span class="ch-name">States of Matter</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_thermodynamics.html" class="ch-card"><div class="ch-left"><div class="ch-num">05</div><span class="ch-name">Thermodynamics</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_equilibrium.html" class="ch-card"><div class="ch-left"><div class="ch-num">06</div><span class="ch-name">Equilibrium</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_goc.html" class="ch-card"><div class="ch-left"><div class="ch-num">07</div><span class="ch-name">GOC</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_hydrocarbons.html" class="ch-card"><div class="ch-left"><div class="ch-num">08</div><span class="ch-name">Hydrocarbons</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_coordination.html" class="ch-card"><div class="ch-left"><div class="ch-num">09</div><span class="ch-name">Coordination Compounds</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_p_block.html" class="ch-card"><div class="ch-left"><div class="ch-num">10</div><span class="ch-name">p-Block Elements</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_electrochemistry.html" class="ch-card"><div class="ch-left"><div class="ch-num">11</div><span class="ch-name">Electrochemistry</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_solutions.html" class="ch-card"><div class="ch-left"><div class="ch-num">12</div><span class="ch-name">Solutions</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+        <a href="mockarena_chapter_chem_chemical_kinetics.html" class="ch-card"><div class="ch-left"><div class="ch-num">13</div><span class="ch-name">Chemical Kinetics</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
       </div>
       <div class="subj-footer">
-        <span class="subj-stat"><span>0/13</span> chapters available · Chemistry launching soon!</span>
+        <span class="subj-stat"><span>13/13</span> chapters available</span>
+        <a href="mockarena_chapter_chem_mole_concept.html" class="btn-sage" style="font-size:.88rem;padding:11px 20px;">Start Chemistry →</a>
       </div>
     </div>
 
     <!-- MATHS -->
     <div class="subj-panel" id="subj-math">
       <div class="ch-grid">
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">01</div><span class="ch-name">Sets, Relations & Functions</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">02</div><span class="ch-name">Complex Numbers</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">03</div><span class="ch-name">Quadratic Equations</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">04</div><span class="ch-name">Sequences & Series</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">05</div><span class="ch-name">Permutations & Combinations</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">06</div><span class="ch-name">Binomial Theorem</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">07</div><span class="ch-name">Trigonometry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">08</div><span class="ch-name">Coordinate Geometry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">09</div><span class="ch-name">3D Geometry & Vectors</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">10</div><span class="ch-name">Limits & Continuity</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">11</div><span class="ch-name">Differentiation</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">12</div><span class="ch-name">Integration</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.05);color:rgba(26,38,24,.25);">13</div><span class="ch-name">Probability & Statistics</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">01</div><span class="ch-name">Sets, Relations &amp; Functions</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">02</div><span class="ch-name">Complex Numbers</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">03</div><span class="ch-name">Quadratic Equations</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">04</div><span class="ch-name">Sequences &amp; Series</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">05</div><span class="ch-name">Permutations &amp; Combinations</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">06</div><span class="ch-name">Binomial Theorem</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">07</div><span class="ch-name">Trigonometry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">08</div><span class="ch-name">Coordinate Geometry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">09</div><span class="ch-name">3D Geometry &amp; Vectors</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">10</div><span class="ch-name">Limits &amp; Continuity</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">11</div><span class="ch-name">Differentiation</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">12</div><span class="ch-name">Integration</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">13</div><span class="ch-name">Probability &amp; Statistics</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
       </div>
       <div class="subj-footer">
-        <span class="subj-stat"><span>0/13</span> chapters available · Maths launching soon!</span>
+        <span class="subj-stat"><span>0/13</span> chapters · Maths launching soon!</span>
       </div>
     </div>
   </div>
@@ -480,8 +1002,8 @@ section{padding:72px 20px;}
       <div class="mock-hdr">
         <div class="mock-hdr-l">
           <div class="slabel">Available Now</div>
-          <div class="stitle" style="font-size:1.3rem;color:white;">Full Mock Tests</div>
-          <p class="ssub" style="color:rgba(255,255,255,.35);font-size:.8rem;">JEE Mains pattern — 90 questions, 3 hours, +4/−1 marking</p>
+          <div class="stitle" style="font-size:1.55rem;color:white;">Full Mock Tests</div>
+          <p class="ssub" style="color:rgba(255,255,255,.68);font-size:.92rem;">JEE Mains pattern — 90 questions, 3 hours, +4/−1 marking</p>
         </div>
       </div>
       <div class="mock-grid">
@@ -495,14 +1017,14 @@ section{padding:72px 20px;}
         <a href="mockarena_mocktest.html" class="mock-card">
           <div class="mc-top"><span class="mc-badge mcb-full">Full Mock</span></div>
           <div class="mc-title">JEE Advanced Full Mock #1</div>
-          <div class="mc-desc">JEE Advanced pattern mock — harder questions, multiple correct type. Great for JEE Mains practice too.</div>
+          <div class="mc-desc">JEE Advanced pattern mock — harder questions, multiple correct type. Great for JEE Mains advanced practice.</div>
           <div class="mc-meta"><div class="mc-m">⏱️ 3 Hours</div><div class="mc-m">📝 60 Qs</div><div class="mc-m">🎯 Advanced Level</div></div>
           <button class="mc-btn">Start Mock Test →</button>
         </a>
         <div class="mock-card locked">
           <div class="mc-top"><span class="mc-badge mcb-lock">Coming Soon</span></div>
           <div class="mc-title">JEE Mains Mock #2</div>
-          <div class="mc-desc">Second full mock with different question set. New chapters, new difficulty calibration.</div>
+          <div class="mc-desc">Second full mock with a fresh question set — new chapters, new difficulty calibration.</div>
           <div class="mc-meta"><div class="mc-m">⏱️ 3 Hours</div><div class="mc-m">📝 90 Qs</div></div>
           <button class="mc-btn mc-btn-lock" disabled>Coming Soon</button>
         </div>
@@ -531,7 +1053,7 @@ section{padding:72px 20px;}
           <div class="hw-name">Physics</div>
         </div>
         <div class="hw-topics">
-          <div class="hw-topic"><span class="hw-tname">Electrostatics & Current</span><span class="hw-twt wt-high">Very High</span></div>
+          <div class="hw-topic"><span class="hw-tname">Electrostatics &amp; Current</span><span class="hw-twt wt-high">Very High</span></div>
           <div class="hw-topic"><span class="hw-tname">Modern Physics</span><span class="hw-twt wt-high">Very High</span></div>
           <div class="hw-topic"><span class="hw-tname">Optics</span><span class="hw-twt wt-high">Very High</span></div>
           <div class="hw-topic"><span class="hw-tname">Rotational Motion</span><span class="hw-twt wt-med">High</span></div>
@@ -561,8 +1083,8 @@ section{padding:72px 20px;}
         <div class="hw-topics">
           <div class="hw-topic"><span class="hw-tname">Coordinate Geometry</span><span class="hw-twt wt-high">Very High</span></div>
           <div class="hw-topic"><span class="hw-tname">Calculus (Integral)</span><span class="hw-twt wt-high">Very High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Matrices & Determinants</span><span class="hw-twt wt-high">Very High</span></div>
-          <div class="hw-topic"><span class="hw-tname">3D Geometry & Vectors</span><span class="hw-twt wt-med">High</span></div>
+          <div class="hw-topic"><span class="hw-tname">Matrices &amp; Determinants</span><span class="hw-twt wt-high">Very High</span></div>
+          <div class="hw-topic"><span class="hw-tname">3D Geometry &amp; Vectors</span><span class="hw-twt wt-med">High</span></div>
           <div class="hw-topic"><span class="hw-tname">Probability</span><span class="hw-twt wt-med">High</span></div>
           <div class="hw-topic"><span class="hw-tname">Complex Numbers</span><span class="hw-twt wt-med">High</span></div>
         </div>
@@ -576,7 +1098,7 @@ section{padding:72px 20px;}
   <div class="container">
     <div class="slabel">Your Progress</div>
     <h2 class="stitle">Track Your JEE Journey</h2>
-    <p class="ssub">Your real-time performance data fetched from your test history.</p>
+    <p class="ssub">Your real-time performance data fetched live from your test history.</p>
     <div class="prog-wrap">
       <div class="prog-grid">
         <div class="pg-card"><span class="pg-n" style="color:var(--sage)" id="pg-tests">0</span><span class="pg-l">Tests Taken</span><div class="pg-bar"><div class="pg-bar-f" id="pg-tests-bar" style="width:0%"></div></div></div>
@@ -584,14 +1106,77 @@ section{padding:72px 20px;}
         <div class="pg-card"><span class="pg-n" style="color:var(--gold)" id="pg-best">0</span><span class="pg-l">Best Score</span><div class="pg-bar"><div class="pg-bar-f" id="pg-best-bar" style="width:0%"></div></div></div>
         <div class="pg-card"><span class="pg-n" style="color:var(--forest)" id="pg-correct">0</span><span class="pg-l">Total Correct</span><div class="pg-bar"><div class="pg-bar-f" id="pg-correct-bar" style="width:0%"></div></div></div>
         <div class="pg-card"><span class="pg-n" style="color:var(--rose)" id="pg-wrong">0</span><span class="pg-l">Total Wrong</span><div class="pg-bar"><div class="pg-bar-f" id="pg-wrong-bar" style="width:0%;background:var(--rose)"></div></div></div>
-        <div class="pg-card"><span class="pg-n" style="color:var(--sage)">13</span><span class="pg-l">Chapters Live</span><div class="pg-bar"><div class="pg-bar-f" style="width:100%"></div></div></div>
+        <div class="pg-card"><span class="pg-n" style="color:var(--sage)">26</span><span class="pg-l">Chapters Live</span><div class="pg-bar"><div class="pg-bar-f" style="width:100%"></div></div></div>
       </div>
-      <div style="text-align:center;margin-top:20px;">
-        <a href="mockarena_analytics.html" class="btn-sage" style="display:inline-flex;font-size:.78rem;">📊 Full Analytics →</a>
+      <div style="text-align:center;margin-top:24px;">
+        <a href="mockarena_analytics.html" class="btn-sage" style="display:inline-flex;font-size:.86rem;">📊 Full Analytics →</a>
       </div>
     </div>
   </div>
 </section>
+
+
+<!-- PYQ SECTION -->
+<section id="pyq" style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Previous Year Questions</div>
+    <h2 class="stitle">JEE Mains PYQ — 2016 to 2026</h2>
+    <p class="ssub">Browse and study previous year questions with solutions. 11 years of papers, all sessions covered.</p>
+    <div class="pyq-stats-banner">
+      <div class="pyq-banner-item"><span class="pyq-banner-n">11</span><span class="pyq-banner-l">Years Covered</span></div>
+      <div class="pyq-banner-item"><span class="pyq-banner-n">22+</span><span class="pyq-banner-l">Paper Sessions</span></div>
+      <div class="pyq-banner-item"><span class="pyq-banner-n">1980+</span><span class="pyq-banner-l">Questions</span></div>
+      <div class="pyq-banner-item"><span class="pyq-banner-n">100%</span><span class="pyq-banner-l">With Solutions</span></div>
+    </div>
+    <div class="pyq-year-tabs" id="pyqYearTabs"></div>
+    <div id="pyqPaperGrid"></div>
+  </div>
+</section>
+
+<!-- PYQ MOCK TESTS -->
+<section id="pyq-mock" style="background:white;">
+  <div class="container">
+    <div class="slabel">PYQ Practice Mocks</div>
+    <h2 class="stitle">Attempt Real JEE Mains Papers</h2>
+    <p class="ssub">Sit for actual previous year papers in exam conditions — 3-hour timer, real marking, auto-evaluated with solutions.</p>
+    <div class="pyqm-wrap">
+      <div class="pyqm-hdr">
+        <div class="pyqm-hdr-l">
+          <div class="slabel">Exam Simulation Mode</div>
+          <div class="stitle" style="font-size:1.45rem;color:white;">PYQ Full Paper Mocks — 2016 to 2026</div>
+          <p class="ssub" style="color:rgba(255,255,255,.55);font-size:.9rem;">Real 3-hour exam · Real marking scheme · Solutions revealed after submit</p>
+        </div>
+      </div>
+      <div class="pyqm-info-strip">
+        <div class="pyqm-info-item">⏱️ <strong>3 Hours</strong> strict timer</div>
+        <div class="pyqm-info-item">📝 <strong>90 Questions</strong> (post-2020)</div>
+        <div class="pyqm-info-item">🎯 <strong>+4 / −1</strong> marking</div>
+        <div class="pyqm-info-item">📊 <strong>Instant</strong> result + rank</div>
+        <div class="pyqm-info-item">💡 <strong>Solutions</strong> after submit</div>
+        <div class="pyqm-info-item">🔒 <strong>No pause</strong> — real conditions</div>
+      </div>
+      <div class="pyqm-year-tabs" id="pyqmYearTabs"></div>
+      <div id="pyqmMockGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PYQ MODAL -->
+<div id="pyqModal" style="display:none;position:fixed;inset:0;background:rgba(10,16,10,.93);z-index:600;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#1a2618;border:1.5px solid rgba(107,143,94,.28);border-radius:16px;max-width:520px;width:100%;padding:28px 24px;position:relative;max-height:90vh;overflow-y:auto;">
+    <button onclick="closePyqModal()" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.12);border:none;color:rgba(255,255,255,.88);width:30px;height:30px;border-radius:50%;font-size:.9rem;cursor:pointer;font-weight:700;">✕</button>
+    <div style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sage);margin-bottom:8px;">JEE Mains PYQ</div>
+    <div id="pyqModalTitle" style="font-size:1.15rem;font-weight:800;color:white;margin-bottom:6px;padding-right:32px;"></div>
+    <div id="pyqModalSub" style="font-size:.86rem;color:rgba(255,255,255,.55);margin-bottom:20px;line-height:1.6;"></div>
+    <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:16px;margin-bottom:18px;border:1px solid rgba(255,255,255,.12);font-size:.86rem;color:rgba(255,255,255,.72);line-height:1.7;">
+      📌 Full questions and solutions are available on the dedicated PYQ page. You can also attempt this as a timed mock below.
+    </div>
+    <div style="display:flex;gap:10px;">
+      <a href="mockarena_pyq.html" style="flex:2;text-align:center;padding:11px;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;border-radius:10px;font-weight:700;font-size:.88rem;display:block;">📚 Go to PYQ Page</a>
+      <button onclick="closePyqModal()" style="flex:1;padding:11px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);border:1.5px solid rgba(255,255,255,.28);border-radius:10px;font-size:.88rem;cursor:pointer;font-weight:700;">Close</button>
+    </div>
+  </div>
+</div>
 
 <!-- STRATEGY -->
 <section id="strategy" style="background:white;">
@@ -600,25 +1185,25 @@ section{padding:72px 20px;}
     <h2 class="stitle">How to Crack JEE Mains</h2>
     <p class="ssub">Proven strategies from students who cracked JEE Mains with 200+ marks.</p>
     <div class="tips-grid">
-      <div class="tip-card"><div class="tip-num">1</div><div><div class="tip-title">Start with High-Weightage</div><div class="tip-desc">Don't study all chapters equally. Physics: Electrostatics, Modern Physics, Optics first. These 3 alone contribute 30-40% of marks.</div></div></div>
+      <div class="tip-card"><div class="tip-num">1</div><div><div class="tip-title">Start with High-Weightage</div><div class="tip-desc">Don't study all chapters equally. Physics: Electrostatics, Modern Physics, Optics first. These 3 alone contribute 30–40% of marks.</div></div></div>
       <div class="tip-card"><div class="tip-num">2</div><div><div class="tip-title">Never Skip Integer Type</div><div class="tip-desc">Integer type has NO negative marking. Always attempt all 10 integer questions in each subject. Even a guess gives you +4 with zero risk.</div></div></div>
-      <div class="tip-card"><div class="tip-num">3</div><div><div class="tip-title">NCERT Chemistry = 40 Marks</div><div class="tip-desc">JEE Mains Chemistry is 70% NCERT. Read every line of NCERT Chem — reactions, properties, exceptions. 40 marks are almost free if you do this.</div></div></div>
-      <div class="tip-card"><div class="tip-num">4</div><div><div class="tip-title">Chapter Test Before Mock</div><div class="tip-desc">Don't jump to full mocks directly. Complete all 13 Physics chapter tests first. Build chapter by chapter — then full mock performance will be consistent.</div></div></div>
+      <div class="tip-card"><div class="tip-num">3</div><div><div class="tip-title">NCERT Chemistry = 40 Marks</div><div class="tip-desc">JEE Mains Chemistry is 70% NCERT. Read every line — reactions, properties, exceptions. 40 marks are almost free if you do this.</div></div></div>
+      <div class="tip-card"><div class="tip-num">4</div><div><div class="tip-title">Chapter Test Before Mock</div><div class="tip-desc">Don't jump to full mocks directly. Complete all chapter tests first — build subject by subject. Mock performance will be consistent.</div></div></div>
       <div class="tip-card"><div class="tip-num">5</div><div><div class="tip-title">Solve PYQ Last 10 Years</div><div class="tip-desc">JEE Mains repeats concepts in similar format. Solving 10 years of PYQs trains your brain for the exact type of questions NTA asks.</div></div></div>
-      <div class="tip-card"><div class="tip-num">6</div><div><div class="tip-title">Time Management in Exam</div><div class="tip-desc">Start with your strongest subject. Spend max 2 min per question. Skip and come back. Never spend 10 min on one question — use "Mark for Review".</div></div></div>
+      <div class="tip-card"><div class="tip-num">6</div><div><div class="tip-title">Time Management in Exam</div><div class="tip-desc">Start with your strongest subject. Spend max 2 min per question. Skip and come back. Never spend 10 min on one question.</div></div></div>
     </div>
   </div>
 </section>
 
 <!-- CTA -->
-<section style="background:var(--cream-w);padding:60px 20px;">
+<section style="background:var(--cream-w);padding:60px 24px;">
   <div class="container">
     <div class="cta-block">
       <h2 class="cta-title">Your IIT Seat is One<br/>Consistent Effort Away</h2>
-      <p class="cta-sub">Every chapter test you complete, every mock you give — it all adds up. Start with Physics today.</p>
+      <p class="cta-sub">Every chapter test you complete, every mock you give — it all adds up. Start with Physics or Chemistry today.</p>
       <div class="cta-btns">
-        <a href="mockarena_chapter_physics_units.html" class="btn-sage">⚡ Start Chapter Test</a>
-        <a href="mockarena_jee_main_mocktest.html" class="btn-gold">🎯 Take Full Mock</a>
+        <a href="mockarena_chapter_physics_units.html" class="btn-secondary" style="font-size:1rem;padding:14px 28px;">⚡ Start Chapter Test</a>
+        <a href="mockarena_jee_main_mocktest.html" class="btn-primary" style="font-size:1rem;padding:14px 28px;">🎯 Take Full Mock</a>
       </div>
     </div>
   </div>
@@ -632,7 +1217,7 @@ section{padding:72px 20px;}
         <div class="nav-mark">MA</div>
         <span class="nav-n1">Mock</span><span class="nav-n2">Arena</span>
       </div>
-      <p class="ft-desc">India's smartest test prep platform for IIT-JEE & NEET. Chapter tests, full mocks, analytics.</p>
+      <p class="ft-desc">India's smartest test prep platform for IIT-JEE &amp; NEET. Chapter tests, full mocks, analytics.</p>
     </div>
     <div class="ft-col">
       <div class="ft-ct">Exam Pages</div>
@@ -644,17 +1229,17 @@ section{padding:72px 20px;}
     </div>
     <div class="ft-col">
       <div class="ft-ct">Physics Tests</div>
-      <a href="mockarena_chapter_physics_units.html" class="ft-link">Units & Measurement</a>
+      <a href="mockarena_chapter_physics_units.html" class="ft-link">Units &amp; Measurement</a>
       <a href="mockarena_chapter_physics_electrostatics.html" class="ft-link">Electrostatics</a>
       <a href="mockarena_chapter_physics_optics.html" class="ft-link">Optics</a>
       <a href="mockarena_chapter_physics_modern.html" class="ft-link">Modern Physics</a>
     </div>
     <div class="ft-col">
-      <div class="ft-ct">Practice</div>
-      <a href="mockarena_jee_main_mocktest.html" class="ft-link">JEE Mains Mock</a>
-      <a href="mockarena_mocktest.html" class="ft-link">JEE Advanced Mock</a>
-      <a href="mockarena_test_catalog.html" class="ft-link">All Tests</a>
-      <a href="mockarena_pyq.html" class="ft-link">PYQ Papers</a>
+      <div class="ft-ct">Chemistry Tests</div>
+      <a href="mockarena_chapter_chem_mole_concept.html" class="ft-link">Mole Concept</a>
+      <a href="mockarena_chapter_chem_atomic_structure.html" class="ft-link">Atomic Structure</a>
+      <a href="mockarena_chapter_chem_electrochemistry.html" class="ft-link">Electrochemistry</a>
+      <a href="mockarena_chapter_chem_chemical_kinetics.html" class="ft-link">Chemical Kinetics</a>
     </div>
     <div class="ft-col">
       <div class="ft-ct">Account</div>
@@ -672,23 +1257,18 @@ section{padding:72px 20px;}
 </footer>
 
 <script>
-// Subject tabs
-function showSubj(id, el){
+function showSubj(id,el){
   document.querySelectorAll('.subj-panel').forEach(function(p){p.classList.remove('on');});
   document.querySelectorAll('.stab').forEach(function(t){t.classList.remove('on');});
   document.getElementById('subj-'+id).classList.add('on');
   el.classList.add('on');
 }
-
-// Smooth scroll
 document.querySelectorAll('a[href^="#"]').forEach(function(a){
   a.addEventListener('click',function(e){
     var el=document.getElementById(this.getAttribute('href').slice(1));
     if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}
   });
 });
-
-// Firebase auth + stats
 (function(){
   var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
   function load(cb){
@@ -716,20 +1296,280 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
           var totalQ=tests.reduce(function(a,t){return a+(t.total||0);},0);
           var best=Math.max.apply(null,tests.map(function(t){return t.score||0;}));
           var acc=totalQ?Math.round(totalC/totalQ*100):0;
-          set('pg-tests',tests.length);
-          set('pg-acc',acc+'%');
-          set('pg-best',best);
-          set('pg-correct',totalC);
-          set('pg-wrong',totalW);
-          bar('pg-tests-bar',Math.min(tests.length*5,100));
-          bar('pg-acc-bar',acc);
-          bar('pg-best-bar',Math.min(best/3,100));
-          bar('pg-correct-bar',Math.min(totalC,100));
+          set('pg-tests',tests.length);set('pg-acc',acc+'%');
+          set('pg-best',best);set('pg-correct',totalC);set('pg-wrong',totalW);
+          bar('pg-tests-bar',Math.min(tests.length*5,100));bar('pg-acc-bar',acc);
+          bar('pg-best-bar',Math.min(best/3,100));bar('pg-correct-bar',Math.min(totalC,100));
           bar('pg-wrong-bar',Math.min(totalW,100));
         });
     });
   });
 })();
+
+function toggleMobNav(){
+  var nav = document.getElementById('mobNav');
+  var btn = document.getElementById('navHamburger');
+  nav.classList.toggle('open');
+  btn.classList.toggle('open');
+}
+// Close mob nav on outside click
+document.addEventListener('click', function(e){
+  var nav = document.getElementById('mobNav');
+  var btn = document.getElementById('navHamburger');
+  if(nav && nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)){
+    nav.classList.remove('open');
+    btn.classList.remove('open');
+  }
+});
+
+
+
+// ══ PYQ DATA ══
+var PYQ_PAPERS = {
+  '2026': [
+    {session:'Session 1 · January 2026', papers:[
+      {date:'22 Jan 2026',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2026-jan-sh1'},
+      {date:'22 Jan 2026',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2026-jan-sh2'},
+      {date:'23 Jan 2026',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2026-jan-sh3'}
+    ]},
+    {session:'Session 2 · April 2026', papers:[
+      {date:'April 2026',shift:'Upcoming',tag:'upcoming',qs:90,marks:300,id:'',upcoming:true}
+    ]}
+  ],
+  '2025': [
+    {session:'Session 1 · January 2025', papers:[
+      {date:'22 Jan 2025',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2025-jan-sh1'},
+      {date:'22 Jan 2025',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2025-jan-sh2'},
+      {date:'23 Jan 2025',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2025-jan-sh3'},
+      {date:'29 Jan 2025',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2025-jan-sh4'}
+    ]},
+    {session:'Session 2 · April 2025', papers:[
+      {date:'2 Apr 2025',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2025-apr-sh1'},
+      {date:'3 Apr 2025',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2025-apr-sh2'}
+    ]}
+  ],
+  '2024': [
+    {session:'Session 1 · January 2024', papers:[
+      {date:'27 Jan 2024',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2024-jan-sh1'},
+      {date:'27 Jan 2024',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2024-jan-sh2'},
+      {date:'29 Jan 2024',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2024-jan-sh3'},
+      {date:'31 Jan 2024',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2024-jan-sh4'}
+    ]},
+    {session:'Session 2 · April 2024', papers:[
+      {date:'4 Apr 2024',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2024-apr-sh1'},
+      {date:'6 Apr 2024',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2024-apr-sh2'}
+    ]}
+  ],
+  '2023': [
+    {session:'January 2023', papers:[
+      {date:'24 Jan 2023',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2023-jan-sh1'},
+      {date:'25 Jan 2023',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2023-jan-sh2'},
+      {date:'31 Jan 2023',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2023-jan-sh3'}
+    ]},
+    {session:'April 2023', papers:[
+      {date:'6 Apr 2023',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2023-apr-sh1'},
+      {date:'8 Apr 2023',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2023-apr-sh2'}
+    ]}
+  ],
+  '2022': [
+    {session:'June & July 2022', papers:[
+      {date:'24 Jun 2022',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2022-jun-sh1'},
+      {date:'25 Jul 2022',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2022-jul-sh2'},
+      {date:'26 Jul 2022',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2022-jul-sh3'}
+    ]}
+  ],
+  '2021': [
+    {session:'Feb, Mar, Jul, Aug 2021', papers:[
+      {date:'Feb 2021',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2021-feb-sh1'},
+      {date:'Mar 2021',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2021-mar-sh2'},
+      {date:'Aug 2021',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2021-aug-sh1'}
+    ]}
+  ],
+  '2020': [
+    {session:'January & September 2020', papers:[
+      {date:'7 Jan 2020',shift:'Shift 1',tag:'Morning',qs:75,marks:300,id:'2020-jan-sh1'},
+      {date:'8 Jan 2020',shift:'Shift 2',tag:'Evening',qs:75,marks:300,id:'2020-jan-sh2'},
+      {date:'3 Sep 2020',shift:'Shift 1',tag:'Morning',qs:75,marks:300,id:'2020-sep-sh1'}
+    ]}
+  ],
+  '2019': [
+    {session:'January & April 2019', papers:[
+      {date:'9 Jan 2019',shift:'Shift 1',tag:'Morning',qs:90,marks:360,id:'2019-jan-sh1'},
+      {date:'10 Jan 2019',shift:'Shift 2',tag:'Evening',qs:90,marks:360,id:'2019-jan-sh2'},
+      {date:'12 Apr 2019',shift:'Shift 1',tag:'Morning',qs:90,marks:360,id:'2019-apr-sh1'},
+      {date:'12 Apr 2019',shift:'Shift 2',tag:'Evening',qs:90,marks:360,id:'2019-apr-sh2'}
+    ]}
+  ],
+  '2018': [
+    {session:'2018 — Offline + Online', papers:[
+      {date:'8 Apr 2018',shift:'Offline',tag:'Offline',qs:90,marks:360,id:'2018-apr-p1'},
+      {date:'15 Apr 2018',shift:'Online',tag:'Online',qs:90,marks:360,id:'2018-apr-ol'}
+    ]}
+  ],
+  '2017': [
+    {session:'2017 — Offline + Online', papers:[
+      {date:'2 Apr 2017',shift:'Offline',tag:'Offline',qs:90,marks:360,id:'2017-apr-p1'},
+      {date:'8 Apr 2017',shift:'Online',tag:'Online',qs:90,marks:360,id:'2017-apr-ol'}
+    ]}
+  ],
+  '2016': [
+    {session:'2016 — Offline + Online', papers:[
+      {date:'3 Apr 2016',shift:'Offline',tag:'Offline',qs:90,marks:360,id:'2016-apr-p1'},
+      {date:'9 Apr 2016',shift:'Online',tag:'Online',qs:90,marks:360,id:'2016-apr-ol'}
+    ]}
+  ]
+};
+
+var PYQ_MOCKS = [
+  {group:'recent', label:'Recent (2023-26)',
+   mocks:[
+    {year:'2026 · Jan',title:'JEE Mains Jan 2026 — Shift 1',sub:'Latest paper. Strong on Calculus, Organic Chem, Modern Physics.',diff:'Hard',diffcls:'diff-hard',qs:90,marks:300,time:'3 Hrs',id:'2026-jan-sh1'},
+    {year:'2025 · Jan',title:'JEE Mains Jan 2025 — Shift 1',sub:'Matrices, Electrostatics and Mole Concept heavy. Great benchmark.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:90,marks:300,time:'3 Hrs',id:'2025-jan-sh1'},
+    {year:'2025 · Apr',title:'JEE Mains Apr 2025 — Shift 2',sub:'April papers are harder. Organic, 3D Geometry, Thermodynamics focused.',diff:'Hard',diffcls:'diff-hard',qs:90,marks:300,time:'3 Hrs',id:'2025-apr-sh2'},
+    {year:'2024 · Jan',title:'JEE Mains Jan 2024 — Shift 1',sub:'New NTA question formats. Must-attempt for pattern awareness.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:90,marks:300,time:'3 Hrs',id:'2024-jan-sh1'},
+    {year:'2023 · Apr',title:'JEE Mains Apr 2023 — Shift 2',sub:'One of the toughest recent papers. Heavily calculus-based Maths.',diff:'Hard',diffcls:'diff-hard',qs:90,marks:300,time:'3 Hrs',id:'2023-apr-sh2'}
+  ]},
+  {group:'mid', label:'2019–2022',
+   mocks:[
+    {year:'2022 · Jul',title:'JEE Mains Jul 2022',sub:'Post-COVID offline paper. Balanced difficulty. Good for confidence.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:90,marks:300,time:'3 Hrs',id:'2022-jul'},
+    {year:'2021 · Mar',title:'JEE Mains Mar 2021',sub:'New 90-question format introduced. Moderate. Great first attempt.',diff:'Moderate',diffcls:'diff-moderate',qs:90,marks:300,time:'3 Hrs',id:'2021-mar'},
+    {year:'2020 · Sep',title:'JEE Mains Sep 2020',sub:'75-question format. Online paper. Excellent topic spread.',diff:'Moderate',diffcls:'diff-moderate',qs:75,marks:300,time:'3 Hrs',id:'2020-sep'},
+    {year:'2019 · Jan',title:'JEE Mains Jan 2019',sub:'First 2-session year. Classic paper with strong Maths questions.',diff:'Moderate',diffcls:'diff-moderate',qs:90,marks:360,time:'3 Hrs',id:'2019-jan'}
+  ]},
+  {group:'old', label:'2016–2018',
+   mocks:[
+    {year:'2018',title:'JEE Mains Apr 2018 — Offline',sub:'Straightforward Chem, tricky Physics. Traditional pen-paper format.',diff:'Moderate',diffcls:'diff-moderate',qs:90,marks:360,time:'3 Hrs',id:'2018-apr'},
+    {year:'2017',title:'JEE Mains Apr 2017 — Offline',sub:'Balanced paper. Good starting point for PYQ practice.',diff:'Moderate',diffcls:'diff-moderate',qs:90,marks:360,time:'3 Hrs',id:'2017-apr'},
+    {year:'2016',title:'JEE Mains Apr 2016 — Offline',sub:'Strong NCERT Chemistry. Good for early-stage warm-up.',diff:'Moderate',diffcls:'diff-moderate',qs:90,marks:360,time:'3 Hrs',id:'2016-apr'}
+  ]}
+];
+
+var currentPyqYear = '2026';
+var currentPyqmGroup = 'recent';
+
+function initPyq(){
+  // Build year tabs
+  var years = Object.keys(PYQ_PAPERS);
+  var tabsEl = document.getElementById('pyqYearTabs');
+  if(!tabsEl) return;
+  tabsEl.innerHTML = years.map(function(y){
+    return '<button class="pyq-ytab'+(y===currentPyqYear?' on':'')+'" onclick="showPyqYear(this.dataset.yr,this)" data-yr="'+y+'">'+y+'</button>';
+  }).join('');
+  renderPyqGrid(currentPyqYear);
+
+  // Build mock tabs
+  var mTabsEl = document.getElementById('pyqmYearTabs');
+  if(mTabsEl){
+    mTabsEl.innerHTML = PYQ_MOCKS.map(function(g,i){
+      return '<button class="pyqm-ytab'+(i===0?' on':'')+'" onclick="showPyqmGroup(this.dataset.grp,this)" data-grp="'+g.group+'">'+g.label+'</button>';
+    }).join('');
+  }
+  renderPyqmGrid(currentPyqmGroup);
+}
+
+function renderPyqGrid(year){
+  var el = document.getElementById('pyqPaperGrid');
+  if(!el) return;
+  var sessions = PYQ_PAPERS[year] || [];
+  var html = '';
+  sessions.forEach(function(s){
+    html += '<div class="pyq-session-label">'+s.session+'</div>';
+    html += '<div class="pyq-grid">';
+    s.papers.forEach(function(p){
+      var upcoming = p.upcoming;
+      html += '<div class="pyq-card"'+(upcoming?' style="opacity:.5;"':'')+'>'+
+        '<div class="pyq-card-top"><span class="pyq-date">'+p.date+' · '+p.shift+'</span>'+
+        '<span class="pyq-shift-badge'+(upcoming?' upcoming':'')+'">'+p.tag+'</span></div>'+
+        '<div class="pyq-stats">'+
+          '<span class="pyq-stat"><strong>'+p.qs+'</strong> Qs</span>'+
+          '<span class="pyq-stat"><strong>3</strong> Hours</span>'+
+          '<span class="pyq-stat"><strong>'+p.marks+'</strong> Marks</span>'+
+        '</div>'+
+        '<div class="pyq-actions">'+
+          (upcoming
+            ? '<button class="btn-pyq-view" disabled style="opacity:.4;cursor:not-allowed;flex:2;">Not yet released</button>'
+            : '<button class="btn-pyq-view" data-pid="'+p.id+'" onclick="openPyqModal(this.dataset.pid)">📖 View Paper</button>'+
+              '<button class="btn-pyq-solve" data-pid="'+p.id+'-sol" onclick="openPyqModal(this.dataset.pid)">💡 Solutions</button>'
+          )+
+        '</div>'+
+      '</div>';
+    });
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function renderPyqmGrid(group){
+  var el = document.getElementById('pyqmMockGrid');
+  if(!el) return;
+  var groupData = null;
+  PYQ_MOCKS.forEach(function(g){ if(g.group===group) groupData=g; });
+  if(!groupData){ el.innerHTML=''; return; }
+  var html = '<div class="pyqm-grid">';
+  groupData.mocks.forEach(function(m){
+    html += '<div class="pyqm-card">'+
+      '<div class="pyqm-card-top"><span class="pyqm-year-badge">'+m.year+'</span><span class="pyqm-diff '+m.diffcls+'">'+m.diff+'</span></div>'+
+      '<div class="pyqm-title">'+m.title+'</div>'+
+      '<div class="pyqm-sub">'+m.sub+'</div>'+
+      '<div class="pyqm-meta">'+
+        '<div class="pyqm-m">⏱️ <strong>'+m.time+'</strong></div>'+
+        '<div class="pyqm-m">📝 <strong>'+m.qs+' Qs</strong></div>'+
+        '<div class="pyqm-m">🎯 <strong>'+m.marks+' Marks</strong></div>'+
+      '</div>'+
+      '<div class="pyqm-attempt">Not attempted<span>0 / '+m.qs+'</span></div>'+
+      '<div class="pyqm-pbar"><div class="pyqm-pfill" style="width:0%"></div></div>'+
+      '<div class="pyqm-actions">'+
+        '<button class="btn-pyqm-start" data-mid="'+m.id+'" onclick="startPyqMock(this.dataset.mid)">🚀 Start Mock</button>'+
+        '<button class="btn-pyqm-sol" data-mid="'+m.id+'-sol" onclick="openPyqModal(this.dataset.mid)">💡 Solutions</button>'+
+      '</div>'+
+    '</div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function showPyqYear(yr, el){
+  document.querySelectorAll('.pyq-ytab').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on');
+  currentPyqYear = yr;
+  renderPyqGrid(yr);
+}
+function showPyqmGroup(group, el){
+  document.querySelectorAll('.pyqm-ytab').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on');
+  currentPyqmGroup = group;
+  renderPyqmGrid(group);
+}
+function openPyqModal(paperId){
+  var isSol = paperId.indexOf('-sol') > -1;
+  var base = paperId.replace('-sol','');
+  var parts = base.split('-');
+  var title = 'JEE Mains ' + parts.map(function(p){ return p.charAt(0).toUpperCase()+p.slice(1); }).join(' ');
+  document.getElementById('pyqModalTitle').textContent = title;
+  document.getElementById('pyqModalSub').textContent = isSol
+    ? 'Step-by-step solutions for every question in this paper.'
+    : 'Browse all questions from this paper with subject-wise breakdown.';
+  var modal = document.getElementById('pyqModal');
+  modal.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closePyqModal(){
+  document.getElementById('pyqModal').style.display = 'none';
+  document.body.style.overflow = '';
+}
+function startPyqMock(paperId){
+  window.location.href = 'mockarena_jee_main_mocktest.html?pyq=' + paperId;
+}
+document.addEventListener('click', function(e){
+  var modal = document.getElementById('pyqModal');
+  if(modal && modal.style.display==='flex' && e.target===modal) closePyqModal();
+});
+// Init on load
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', initPyq);
+} else {
+  initPyq();
+}
 </script>
 </body>
 </html>
