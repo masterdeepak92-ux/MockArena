@@ -67,24 +67,24 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);overflo
 @media(max-width:600px){.nav-pill-sub,.nav-pill-sep{display:none;}.nav-pill{padding:5px 14px;}.nav-pill-txt{font-size:.84rem;}.nav-dash{display:none;}.nav{padding:0 14px;}}
 
 /* ── HERO — dark cinematic ── */
-.hero{min-height:100vh;background:var(--black);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:clamp(72px,10vh,100px) 20px clamp(48px,6vh,72px);}
+.hero{min-height:auto;background:var(--black);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:clamp(80px,8vh,108px) 20px clamp(52px,5vh,68px);}
 .hero-noise{position:absolute;inset:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px;}
 .hero-glow1{position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.05),transparent 65%);top:-200px;left:-200px;pointer-events:none;}
 .hero-glow2{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(107,143,94,.04),transparent 65%);bottom:-150px;right:-150px;pointer-events:none;}
 .hero-line{display:none;}
-.hero-inner{position:relative;z-index:1;max-width:760px;text-align:center;}
-.hero-rank{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;}
+.hero-inner{position:relative;z-index:1;max-width:680px;width:100%;text-align:center;}
+.hero-rank{display:inline-flex;align-items:center;gap:8px;margin-bottom:16px;}
 .hr-line{height:1px;width:40px;background:linear-gradient(90deg,transparent,var(--gold));}
 .hr-line.r{background:linear-gradient(90deg,var(--gold),transparent);}
 .hr-txt{font-size:.78rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.16em;}
-.hero-title{font-size:clamp(2.4rem,8vw,4.8rem);font-weight:900;color:white;line-height:1.0;letter-spacing:-.03em;margin-bottom:8px;}
+.hero-title{font-size:clamp(2.2rem,4.2vw,3.4rem);font-weight:900;color:white;line-height:1.04;letter-spacing:-.03em;margin-bottom:12px;}
 .hero-title .ht-gold{color:var(--gold);}
 .hero-title .ht-dim{color:rgba(255,255,255,.55);font-weight:300;}
-.hero-tagline{font-size:clamp(.78rem,2vw,.88rem);color:rgba(255,255,255,.62);letter-spacing:.07em;text-transform:uppercase;margin-bottom:20px;font-weight:500;}
-.hero-quote{font-size:clamp(.82rem,2.5vw,1rem);color:rgba(255,255,255,.72);line-height:1.72;max-width:560px;margin:0 auto 28px;font-style:italic;border-left:2px solid var(--gold);padding-left:14px;text-align:left;}
+.hero-tagline{font-size:clamp(.78rem,1.2vw,.86rem);color:rgba(255,255,255,.62);letter-spacing:.07em;text-transform:uppercase;margin-bottom:20px;font-weight:500;}
+.hero-quote{font-size:clamp(.88rem,1.5vw,.98rem);color:rgba(255,255,255,.72);line-height:1.72;max-width:560px;margin:0 auto 28px;font-style:italic;border-left:2px solid var(--gold);padding-left:14px;text-align:left;}
 
 /* PAPER STRIP */
-.paper-strip{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:720px;margin:0 auto 32px;}
+.paper-strip{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:680px;margin:0 auto 24px;}
 .ps-item{background:rgba(255,255,255,.07);border:1px solid rgba(200,150,42,.22);border-radius:12px;padding:14px 20px;flex:1;min-width:160px;text-align:center;}
 .ps-paper{font-size:.78rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:10px;}
 .ps-vals{display:flex;flex-direction:column;gap:6px;}
@@ -92,7 +92,7 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);overflo
 .ps-val .lbl{font-size:.78rem;color:rgba(255,255,255,.55);font-weight:500;}
 .ps-sep{display:none;}
 
-.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:26px;}
 .btn-gold{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--gold),#a87820);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 20px var(--gold-glow);}
 .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--gold-glow);}
 .btn-sage{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-glow);}
@@ -100,17 +100,17 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);overflo
 .btn-ghost{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;}
 .btn-ghost:hover{border-color:var(--gold);color:white;}
 
-.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;}
+.hero-stats{display:flex;gap:24px;justify-content:center;flex-wrap:wrap;}
 .hs{text-align:center;}
-.hs-n{font-family:var(--fm);font-size:1.4rem;font-weight:700;color:white;display:block;}
+.hs-n{font-family:var(--fm);font-size:1.2rem;font-weight:700;color:white;display:block;}
 .hs-l{font-size:.80rem;color:rgba(255,255,255,.68);text-transform:uppercase;letter-spacing:.07em;}
 
 /* ── SHARED ── */
-section{padding:80px 24px;}
+section{padding:68px 24px;}
 .container{max-width:1100px;margin:0 auto;}
 .slabel{font-size:.80rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:8px;}
 .slabel.green{color:var(--sage);}
-.stitle{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:var(--forest);line-height:1.2;margin-bottom:10px;}
+.stitle{font-size:clamp(1.5rem,2.6vw,2rem);font-weight:800;color:var(--forest);line-height:1.2;margin-bottom:10px;}
 .stitle.white{color:white;}
 .ssub{font-size:.92rem;color:rgba(26,38,24,.7);line-height:1.72;max-width:540px;}
 .ssub.white{color:rgba(255,255,255,.65);}
@@ -184,7 +184,7 @@ section{padding:80px 24px;}
 .ch-live{font-size:.76rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(107,143,94,.12);color:var(--sage);}
 .ch-soon{font-size:.76rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(26,38,24,.06);color:rgba(26,38,24,.28);}
 .ch-adv{font-size:.76rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(200,150,42,.1);color:var(--gold);}
-.ch-arr{font-size:.80rem;color:rgba(26,38,24,.2);}
+.ch-arr{font-size:.80rem;color:rgba(26,38,24,.45);}
 .subj-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
 .subj-stat{font-size:.84rem;color:rgba(26,38,24,.58);}
 .subj-stat span{font-weight:700;color:var(--sage);}
@@ -257,7 +257,7 @@ section{padding:80px 24px;}
 .cta-block{position:relative;border-radius:20px;overflow:hidden;margin-top:28px;padding:56px 32px;text-align:center;background:#0a0e0a;border:1px solid rgba(200,150,42,.3);}
 .cta-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.07),transparent 65%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
 .cta-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(200,150,42,.025) 1px,transparent 1px);background-size:100% 48px;}
-.cta-title{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;color:white;line-height:1.15;margin-bottom:12px;position:relative;z-index:1;}
+.cta-title{font-size:clamp(1.5rem,2.8vw,2.1rem);font-weight:900;color:white;line-height:1.15;margin-bottom:12px;position:relative;z-index:1;}
 .cta-title .ct-gold{color:var(--gold);}
 .cta-sub{font-size:.96rem;color:rgba(255,255,255,.72);margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.7;}
 .cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
@@ -273,7 +273,7 @@ section{padding:80px 24px;}
 .ft-link{display:block;font-size:.84rem;color:rgba(255,255,255,.58);text-decoration:none;margin-bottom:7px;transition:color .18s;}
 .ft-link:hover{color:var(--gold);}
 .ft-bottom{max-width:1100px;margin:0 auto;padding-top:18px;border-top:1px solid rgba(200,150,42,.15);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.ft-copy{font-size:.82rem;color:rgba(255,255,255,.42);}
+.ft-copy{font-size:.82rem;color:rgba(255,255,255,.52);}
 
 @media(max-width:640px){
   section{padding:52px 16px;}
@@ -288,7 +288,7 @@ section{padding:80px 24px;}
   .nav-exam{display:none;}
 }
 
-/* ── DESKTOP LARGE SCREENS ── */
+/* ── DESKTOP COLUMN CAPS (1100px+) ── */
 @media(min-width:1100px){
   .qt-grid{grid-template-columns:repeat(3,1fr);}
   .diff-grid{grid-template-columns:repeat(3,1fr);}
@@ -296,19 +296,98 @@ section{padding:80px 24px;}
   .ch-grid{grid-template-columns:repeat(3,1fr);}
   .mock-grid{grid-template-columns:repeat(3,1fr);}
   .prog-grid{grid-template-columns:repeat(4,1fr);}
+  .hero-inner{max-width:660px;}
+  .hero-title{font-size:3.2rem;}
 }
-@media(min-width:1280px){
-  .stitle{font-size:2.6rem;}
-  .ssub{font-size:1.05rem;}
-  .nav-link{font-size:.84rem;padding:6px 12px;}
-  .nav-dash{font-size:.84rem;padding:8px 18px;}
-  section{padding:88px 32px;}
-  .mock-wrap,.pp-wrap,.diff-wrap,.tips-dark{padding:44px 36px;}
-  .cta-block{padding:72px 100px;}
-  .hero-quote{font-size:1.05rem;}
-  .qt-name{font-size:.96rem;}
-  .mc-title{font-size:1.02rem;}
-  .tip-title{font-size:.98rem;}
+/* ── DESKTOP (1024px+) ── */
+@media(min-width:1024px){
+  .nav-link{font-size:.80rem;padding:5px 11px;}
+  .nav-dash{font-size:.82rem;padding:7px 16px;}
+  section{padding:68px 32px;}
+  .ssub{font-size:.96rem;}
+  .mock-wrap,.pp-wrap,.diff-wrap,.tips-dark{padding:32px 28px;}
+  .cta-block{padding:48px 56px;}
+}
+/* ── LARGE DESKTOP (1400px+) ── */
+@media(min-width:1400px){
+  section{padding:76px 48px;}
+  .cta-block{padding:56px 80px;}
+  .hero-title{font-size:3.4rem;}
+}
+
+/* ── DESKTOP HERO OVERRIDE ── */
+@media(min-width:768px){
+  .hero{min-height:auto;}
+}
+
+/* ══ PYQ ADVANCED ══ */
+.pyq-adv-wrap{background:#0a0e0a;border-radius:20px;padding:32px;border:1px solid rgba(200,150,42,.2);margin-top:0;}
+.pyq-adv-banner{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:0 0 28px;background:rgba(200,150,42,.07);border:1px solid rgba(200,150,42,.18);border-radius:14px;padding:20px 24px;}
+.pyq-adv-bn{text-align:center;}
+.pyq-adv-bn-n{font-family:var(--fm);font-size:1.3rem;font-weight:700;color:white;display:block;margin-bottom:3px;}
+.pyq-adv-bn-l{font-size:.78rem;color:rgba(255,255,255,.58);text-transform:uppercase;letter-spacing:.05em;}
+.pyq-yr-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+.pyq-ytab{font-family:var(--fm);font-size:.84rem;font-weight:700;padding:8px 15px;border-radius:9px;border:1.5px solid rgba(200,150,42,.25);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;transition:all .18s;}
+.pyq-ytab:hover,.pyq-ytab.on{background:var(--gold);color:black;border-color:var(--gold);font-weight:800;}
+.pyq-session-lbl{font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(200,150,42,.7);margin:18px 0 12px;display:flex;align-items:center;gap:8px;}
+.pyq-session-lbl::after{content:'';flex:1;height:1px;background:rgba(200,150,42,.15);}
+.pyq-papers-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.pyq-paper-card{background:rgba(255,255,255,.04);border:1px solid rgba(200,150,42,.15);border-radius:13px;padding:18px;display:flex;flex-direction:column;gap:12px;transition:all .2s;}
+.pyq-paper-card:hover{border-color:rgba(200,150,42,.38);background:rgba(200,150,42,.07);transform:translateY(-2px);}
+.pyq-card-top{display:flex;align-items:center;justify-content:space-between;}
+.pyq-paper-date{font-family:var(--fm);font-size:.82rem;font-weight:700;color:rgba(255,255,255,.88);}
+.pyq-paper-tag{font-size:.76rem;font-weight:700;padding:3px 10px;border-radius:100px;background:rgba(200,150,42,.18);color:#f0b840;}
+.pyq-paper-stats{display:flex;gap:14px;}
+.pyq-pstat{font-size:.82rem;color:rgba(255,255,255,.5);}
+.pyq-pstat strong{font-weight:700;color:rgba(255,255,255,.85);}
+.pyq-paper-actions{display:flex;gap:8px;}
+.btn-pyq-view{flex:1;font-family:var(--fd);font-size:.84rem;font-weight:700;padding:9px;border-radius:9px;border:1.5px solid rgba(200,150,42,.3);background:transparent;color:rgba(255,255,255,.78);cursor:pointer;transition:all .18s;text-align:center;}
+.btn-pyq-view:hover{border-color:var(--gold);color:white;background:rgba(200,150,42,.08);}
+.btn-pyq-view:disabled{opacity:.3;cursor:not-allowed;}
+.btn-pyq-sol{flex:1;font-family:var(--fd);font-size:.84rem;font-weight:800;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--gold),#a07020);color:black;cursor:pointer;transition:all .18s;text-align:center;}
+.btn-pyq-sol:hover{box-shadow:0 4px 14px rgba(200,150,42,.4);}
+/* PYQ MOCK */
+.pyqm-adv-wrap{background:rgba(200,150,42,.05);border:1px solid rgba(200,150,42,.18);border-radius:20px;padding:32px;margin-top:0;position:relative;overflow:hidden;}
+.pyqm-adv-wrap::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.06),transparent 70%);pointer-events:none;}
+.pyqm-info{display:flex;flex-wrap:wrap;gap:10px;padding:14px 18px;background:rgba(255,255,255,.04);border-radius:12px;margin-bottom:22px;border:1px solid rgba(200,150,42,.12);}
+.pyqm-info-item{display:flex;align-items:center;gap:6px;font-size:.84rem;color:rgba(255,255,255,.58);}
+.pyqm-info-item strong{color:white;font-weight:700;}
+.pyqm-yr-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+.pyqm-ytab{font-family:var(--fm);font-size:.82rem;font-weight:700;padding:7px 14px;border-radius:8px;border:1.5px solid rgba(200,150,42,.2);background:rgba(200,150,42,.05);color:rgba(255,255,255,.58);cursor:pointer;transition:all .18s;}
+.pyqm-ytab:hover,.pyqm-ytab.on{background:var(--gold);color:black;border-color:var(--gold);font-weight:800;}
+.pyqm-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+.pyqm-card{background:rgba(255,255,255,.04);border:1px solid rgba(200,150,42,.14);border-radius:13px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:all .22s;}
+.pyqm-card:hover{background:rgba(200,150,42,.07);border-color:rgba(200,150,42,.32);transform:translateY(-2px);}
+.pyqm-card-top{display:flex;align-items:center;justify-content:space-between;}
+.pyqm-yr-badge{font-family:var(--fm);font-size:.84rem;font-weight:700;color:#f0b840;background:rgba(200,150,42,.14);border:1px solid rgba(200,150,42,.28);padding:4px 12px;border-radius:8px;}
+.pyqm-diff{font-size:.76rem;font-weight:700;padding:3px 9px;border-radius:100px;}
+.diff-extreme{background:rgba(180,60,200,.2);color:#d070f0;}
+.diff-hard{background:rgba(224,82,82,.2);color:#ff9090;}
+.diff-mh{background:rgba(200,150,42,.18);color:#f0b840;}
+.pyqm-title{font-size:1rem;font-weight:700;color:white;}
+.pyqm-sub{font-size:.84rem;color:rgba(255,255,255,.55);line-height:1.58;}
+.pyqm-meta{display:flex;flex-wrap:wrap;gap:12px;}
+.pyqm-m{font-size:.82rem;color:rgba(255,255,255,.5);}
+.pyqm-m strong{color:rgba(255,255,255,.88);font-weight:700;}
+.pyqm-attempt{font-size:.78rem;color:rgba(255,255,255,.52);display:flex;justify-content:space-between;}
+.pyqm-pbar{height:3px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;}
+.pyqm-pfill{height:100%;background:linear-gradient(90deg,var(--gold),#f0b840);border-radius:3px;}
+.pyqm-actions{display:flex;gap:10px;}
+.btn-pyqm-go{flex:2;font-family:var(--fd);font-size:.88rem;font-weight:800;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--gold),#a07020);color:black;cursor:pointer;transition:all .2s;text-align:center;}
+.btn-pyqm-go:hover{box-shadow:0 4px 18px rgba(200,150,42,.45);}
+.btn-pyqm-sol{flex:1;font-family:var(--fd);font-size:.88rem;font-weight:700;padding:11px;border-radius:10px;border:1.5px solid rgba(200,150,42,.3);background:rgba(200,150,42,.06);color:rgba(255,255,255,.78);cursor:pointer;transition:all .18s;text-align:center;}
+.btn-pyqm-sol:hover{border-color:var(--gold);color:white;}
+/* PYQ MODAL */
+#pyqAdvModal{display:none;position:fixed;inset:0;background:rgba(2,4,2,.95);z-index:600;align-items:center;justify-content:center;padding:16px;}
+@media(max-width:640px){
+  .pyq-papers-grid,.pyqm-cards-grid{grid-template-columns:1fr;}
+  .pyq-adv-banner{grid-template-columns:repeat(2,1fr);}
+  .pyqm-actions,.pyq-paper-actions{flex-direction:column;}
+  .pyqm-adv-wrap,.pyq-adv-wrap{padding:20px 16px;}
+}
+@media(min-width:1100px){
+  .pyq-papers-grid{grid-template-columns:repeat(3,1fr);}
+  .pyqm-cards-grid{grid-template-columns:repeat(3,1fr);}
 }
 </style>
 </head>
@@ -332,6 +411,8 @@ section{padding:80px 24px;}
       <a href="#questions" class="nav-link">Q Types</a>
       <a href="#chapters" class="nav-link">Chapters</a>
       <a href="#mocks" class="nav-link">Mocks</a>
+      <a href="#pyq" class="nav-link">PYQ</a>
+      <a href="#pyq-mock" class="nav-link">PYQ Mocks</a>
       <a href="#cutoff" class="nav-link">Cutoffs</a>
       <a href="#strategy" class="nav-link">Strategy</a>
     </div>
@@ -348,6 +429,8 @@ section{padding:80px 24px;}
   <a href="#questions" class="mob-link" onclick="toggleMobNav()">❓ Question Types</a>
   <a href="#chapters" class="mob-link" onclick="toggleMobNav()">📚 Chapter Tests</a>
   <a href="#mocks" class="mob-link" onclick="toggleMobNav()">🎯 Mock Tests</a>
+  <a href="#pyq" class="mob-link" onclick="toggleMobNav()">📄 PYQ Papers</a>
+  <a href="#pyq-mock" class="mob-link" onclick="toggleMobNav()">🚀 PYQ Mocks</a>
   <a href="#cutoff" class="mob-link" onclick="toggleMobNav()">🏛️ IIT Cutoffs</a>
   <a href="#strategy" class="mob-link" onclick="toggleMobNav()">💡 Strategy</a>
   <a href="mockarena_dashboard.html" class="mob-link mob-dash">Dashboard →</a>
@@ -728,7 +811,7 @@ section{padding:80px 24px;}
       <div class="ct-row"><div class="ct-c">IIT Delhi — Mechanical</div><div class="ct-c green">~1800</div><div class="ct-c">~4000</div><div class="ct-c">~2500</div></div>
       <div class="ct-row"><div class="ct-c">Any IIT (any branch)</div><div class="ct-c green">~Top 16K</div><div class="ct-c">—</div><div class="ct-c">—</div></div>
     </div>
-    <p style="font-size:.82rem;color:rgba(26,38,24,.3);margin-top:10px;">* Ranks are approximate from JoSAA 2024. Actual cutoffs vary yearly. Always check official JoSAA data.</p>
+    <p style="font-size:.82rem;color:rgba(26,38,24,.58);margin-top:10px;">* Ranks are approximate from JoSAA 2024. Actual cutoffs vary yearly. Always check official JoSAA data.</p>
   </div>
 </section>
 
@@ -753,6 +836,64 @@ section{padding:80px 24px;}
     </div>
   </div>
 </section>
+
+
+<!-- PYQ SECTION -->
+<section id="pyq" style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Previous Year Questions</div>
+    <h2 class="stitle">JEE Advanced PYQ — 2016 to 2026</h2>
+    <p class="ssub">Both Paper 1 and Paper 2 for every year. Detailed step-by-step solutions. Understand the depth and style IITs demand.</p>
+    <div class="pyq-adv-wrap" style="margin-top:28px;">
+      <div class="pyq-adv-banner">
+        <div class="pyq-adv-bn"><span class="pyq-adv-bn-n">11</span><span class="pyq-adv-bn-l">Years</span></div>
+        <div class="pyq-adv-bn"><span class="pyq-adv-bn-n">22</span><span class="pyq-adv-bn-l">Papers (P1+P2)</span></div>
+        <div class="pyq-adv-bn"><span class="pyq-adv-bn-n">2376+</span><span class="pyq-adv-bn-l">Questions</span></div>
+        <div class="pyq-adv-bn"><span class="pyq-adv-bn-n">100%</span><span class="pyq-adv-bn-l">With Solutions</span></div>
+      </div>
+      <div class="pyq-yr-tabs" id="pyqYearTabs"></div>
+      <div id="pyqPaperGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PYQ MOCK TESTS -->
+<section id="pyq-mock" style="background:white;">
+  <div class="container">
+    <div class="slabel">PYQ Practice Mocks</div>
+    <h2 class="stitle">Attempt Real JEE Advanced Papers</h2>
+    <p class="ssub">Sit for actual IIT papers under exam conditions — 3-hour timer, real question types, instant result with solutions.</p>
+    <div class="pyqm-adv-wrap" style="margin-top:28px;">
+      <div class="pyqm-info">
+        <div class="pyqm-info-item">⏱️ <strong>3 Hours</strong> strict</div>
+        <div class="pyqm-info-item">📝 <strong>54 Questions</strong></div>
+        <div class="pyqm-info-item">🎯 <strong>Multi-type</strong> marking</div>
+        <div class="pyqm-info-item">📊 <strong>Instant</strong> result</div>
+        <div class="pyqm-info-item">💡 <strong>Full solutions</strong> after submit</div>
+        <div class="pyqm-info-item">🔒 <strong>No pause</strong> — real exam mode</div>
+      </div>
+      <div class="pyqm-yr-tabs" id="pyqmYearTabs"></div>
+      <div id="pyqmCardsGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PYQ MODAL -->
+<div id="pyqAdvModal" style="display:none;position:fixed;inset:0;background:rgba(2,4,2,.95);z-index:600;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#0e1208;border:1.5px solid rgba(200,150,42,.28);border-radius:16px;max-width:520px;width:100%;padding:28px 24px;position:relative;max-height:90vh;overflow-y:auto;">
+    <button onclick="closePyqAdvModal()" style="position:absolute;top:14px;right:14px;background:rgba(200,150,42,.12);border:none;color:rgba(255,255,255,.88);width:30px;height:30px;border-radius:50%;font-size:.9rem;cursor:pointer;font-weight:700;">✕</button>
+    <div style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:8px;">JEE Advanced PYQ</div>
+    <div id="pyqAdvModalTitle" style="font-size:1.15rem;font-weight:800;color:white;margin-bottom:6px;padding-right:32px;"></div>
+    <div id="pyqAdvModalSub" style="font-size:.86rem;color:rgba(255,255,255,.55);margin-bottom:20px;line-height:1.6;"></div>
+    <div style="background:rgba(200,150,42,.07);border-radius:10px;padding:16px;margin-bottom:18px;border:1px solid rgba(200,150,42,.18);font-size:.86rem;color:rgba(255,255,255,.72);line-height:1.7;">
+      📌 Full questions and detailed solutions available on the dedicated PYQ page. Attempt as a timed mock in the section above.
+    </div>
+    <div style="display:flex;gap:10px;">
+      <a href="mockarena_pyq.html" style="flex:2;text-align:center;padding:11px;background:linear-gradient(135deg,var(--gold),#a07020);color:black;border-radius:10px;font-weight:800;font-size:.88rem;display:block;">📚 Go to PYQ Page</a>
+      <button onclick="closePyqAdvModal()" style="flex:1;padding:11px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.78);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;font-size:.88rem;cursor:pointer;font-weight:700;">Close</button>
+    </div>
+  </div>
+</div>
 
 <!-- STRATEGY -->
 <section id="strategy" style="background:white;">
@@ -901,6 +1042,181 @@ document.addEventListener('click',function(e){
     nav.classList.remove('open');btn.classList.remove('open');
   }
 });
+
+// ══ JEE ADVANCED PYQ DATA ══
+var ADV_PAPERS = {
+  '2026':[{session:'JEE Advanced 2026 — IIT Bombay',papers:[
+    {date:'18 May 2026',shift:'Paper 1',tag:'P1',qs:54,marks:180,id:'2026-p1'},
+    {date:'18 May 2026',shift:'Paper 2',tag:'P2',qs:54,marks:180,id:'2026-p2'}
+  ]}],
+  '2025':[{session:'JEE Advanced 2025 — IIT Kanpur',papers:[
+    {date:'18 May 2025',shift:'Paper 1',tag:'P1',qs:54,marks:180,id:'2025-p1'},
+    {date:'18 May 2025',shift:'Paper 2',tag:'P2',qs:54,marks:180,id:'2025-p2'}
+  ]}],
+  '2024':[{session:'JEE Advanced 2024 — IIT Madras',papers:[
+    {date:'26 May 2024',shift:'Paper 1',tag:'P1',qs:54,marks:180,id:'2024-p1'},
+    {date:'26 May 2024',shift:'Paper 2',tag:'P2',qs:54,marks:180,id:'2024-p2'}
+  ]}],
+  '2023':[{session:'JEE Advanced 2023 — IIT Guwahati',papers:[
+    {date:'4 Jun 2023',shift:'Paper 1',tag:'P1',qs:54,marks:180,id:'2023-p1'},
+    {date:'4 Jun 2023',shift:'Paper 2',tag:'P2',qs:54,marks:180,id:'2023-p2'}
+  ]}],
+  '2022':[{session:'JEE Advanced 2022 — IIT Bombay',papers:[
+    {date:'28 Aug 2022',shift:'Paper 1',tag:'P1',qs:54,marks:180,id:'2022-p1'},
+    {date:'28 Aug 2022',shift:'Paper 2',tag:'P2',qs:54,marks:180,id:'2022-p2'}
+  ]}],
+  '2021':[{session:'JEE Advanced 2021 — IIT Kharagpur',papers:[
+    {date:'3 Oct 2021',shift:'Paper 1',tag:'P1',qs:57,marks:198,id:'2021-p1'},
+    {date:'3 Oct 2021',shift:'Paper 2',tag:'P2',qs:57,marks:198,id:'2021-p2'}
+  ]}],
+  '2020':[{session:'JEE Advanced 2020 — IIT Delhi',papers:[
+    {date:'27 Sep 2020',shift:'Paper 1',tag:'P1',qs:54,marks:198,id:'2020-p1'},
+    {date:'27 Sep 2020',shift:'Paper 2',tag:'P2',qs:54,marks:198,id:'2020-p2'}
+  ]}],
+  '2019':[{session:'JEE Advanced 2019 — IIT Roorkee',papers:[
+    {date:'27 May 2019',shift:'Paper 1',tag:'P1',qs:54,marks:183,id:'2019-p1'},
+    {date:'27 May 2019',shift:'Paper 2',tag:'P2',qs:54,marks:183,id:'2019-p2'}
+  ]}],
+  '2018':[{session:'JEE Advanced 2018 — IIT Kanpur',papers:[
+    {date:'20 May 2018',shift:'Paper 1',tag:'P1',qs:54,marks:183,id:'2018-p1'},
+    {date:'20 May 2018',shift:'Paper 2',tag:'P2',qs:54,marks:183,id:'2018-p2'}
+  ]}],
+  '2017':[{session:'JEE Advanced 2017 — IIT Madras',papers:[
+    {date:'21 May 2017',shift:'Paper 1',tag:'P1',qs:54,marks:183,id:'2017-p1'},
+    {date:'21 May 2017',shift:'Paper 2',tag:'P2',qs:54,marks:183,id:'2017-p2'}
+  ]}],
+  '2016':[{session:'JEE Advanced 2016 — IIT Guwahati',papers:[
+    {date:'22 May 2016',shift:'Paper 1',tag:'P1',qs:54,marks:183,id:'2016-p1'},
+    {date:'22 May 2016',shift:'Paper 2',tag:'P2',qs:54,marks:183,id:'2016-p2'}
+  ]}]
+};
+
+var ADV_MOCKS = [
+  {group:'recent',label:'Recent (2023–26)',mocks:[
+    {year:'2026 · P1',title:'JEE Advanced 2026 — Paper 1',iit:'IIT Bombay',sub:'Latest paper. New question formats. Exceptional difficulty across all 3 subjects.',diff:'Extreme',diffcls:'diff-extreme',qs:54,marks:180,id:'2026-p1'},
+    {year:'2026 · P2',title:'JEE Advanced 2026 — Paper 2',iit:'IIT Bombay',sub:'Paper 2 is historically harder. Complex multi-correct and paragraph problems.',diff:'Extreme',diffcls:'diff-extreme',qs:54,marks:180,id:'2026-p2'},
+    {year:'2025 · P1',title:'JEE Advanced 2025 — Paper 1',iit:'IIT Kanpur',sub:'Strong on Integral Calculus, Organic Chemistry mechanisms and Electrostatics.',diff:'Extreme',diffcls:'diff-extreme',qs:54,marks:180,id:'2025-p1'},
+    {year:'2025 · P2',title:'JEE Advanced 2025 — Paper 2',iit:'IIT Kanpur',sub:'Renowned for the toughest Maths section in recent years. Attempt if prepared.',diff:'Extreme',diffcls:'diff-extreme',qs:54,marks:180,id:'2025-p2'},
+    {year:'2024 · P1',title:'JEE Advanced 2024 — Paper 1',iit:'IIT Madras',sub:'IIT Madras paper. Challenging Physics — rotational and electrostatics heavy.',diff:'Extreme',diffcls:'diff-extreme',qs:54,marks:180,id:'2024-p1'},
+    {year:'2023 · P1',title:'JEE Advanced 2023 — Paper 1',iit:'IIT Guwahati',sub:'Hardest Chemistry paper of the decade. Intricate organic mechanisms throughout.',diff:'Extreme',diffcls:'diff-extreme',qs:54,marks:180,id:'2023-p1'}
+  ]},
+  {group:'mid',label:'2019–2022',mocks:[
+    {year:'2022 · P1',title:'JEE Advanced 2022 — Paper 1',iit:'IIT Bombay',sub:'First in-person post-COVID paper. Balanced but tough. Good benchmark paper.',diff:'Hard',diffcls:'diff-hard',qs:54,marks:180,id:'2022-p1'},
+    {year:'2022 · P2',title:'JEE Advanced 2022 — Paper 2',iit:'IIT Bombay',sub:'Harder than P1. Strong Maths and Physics. Must-attempt for stamina training.',diff:'Hard',diffcls:'diff-hard',qs:54,marks:180,id:'2022-p2'},
+    {year:'2021 · P1',title:'JEE Advanced 2021 — Paper 1',iit:'IIT Kharagpur',sub:'Online mode. New integer type formats. Great for pattern familiarisation.',diff:'Hard',diffcls:'diff-hard',qs:57,marks:198,id:'2021-p1'},
+    {year:'2020 · P1',title:'JEE Advanced 2020 — Paper 1',iit:'IIT Delhi',sub:'COVID year — online exam. IIT Delhi paper. Good topic spread across subjects.',diff:'Hard',diffcls:'diff-hard',qs:54,marks:198,id:'2020-p1'},
+    {year:'2019 · P1',title:'JEE Advanced 2019 — Paper 1',iit:'IIT Roorkee',sub:'Legendary Maths section. One of the most challenging papers in the last decade.',diff:'Extreme',diffcls:'diff-extreme',qs:54,marks:183,id:'2019-p1'}
+  ]},
+  {group:'old',label:'2016–2018',mocks:[
+    {year:'2018 · P1',title:'JEE Advanced 2018 — Paper 1',iit:'IIT Kanpur',sub:'Highly praised for balanced coverage and original questions. Classic Advanced style.',diff:'Hard',diffcls:'diff-hard',qs:54,marks:183,id:'2018-p1'},
+    {year:'2018 · P2',title:'JEE Advanced 2018 — Paper 2',iit:'IIT Kanpur',sub:'Strong organic chemistry and calculus. Great for concept depth assessment.',diff:'Hard',diffcls:'diff-hard',qs:54,marks:183,id:'2018-p2'},
+    {year:'2017 · P1',title:'JEE Advanced 2017 — Paper 1',iit:'IIT Madras',sub:'Classic JEE Advanced pattern. Good starting point for PYQ mock practice.',diff:'Hard',diffcls:'diff-hard',qs:54,marks:183,id:'2017-p1'},
+    {year:'2016 · P1',title:'JEE Advanced 2016 — Paper 1',iit:'IIT Guwahati',sub:'Foundational Advanced paper. Moderate-hard difficulty — ideal for early stage.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:54,marks:183,id:'2016-p1'},
+    {year:'2016 · P2',title:'JEE Advanced 2016 — Paper 2',iit:'IIT Guwahati',sub:'Strong NCERT-plus-level Chemistry. Good warm-up before harder recent papers.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:54,marks:183,id:'2016-p2'}
+  ]}
+];
+
+var curPyqYear = '2026';
+var curPyqmGrp = 'recent';
+
+function initAdvPyq(){
+  // Build year tabs
+  var yrs = Object.keys(ADV_PAPERS);
+  var tabsEl = document.getElementById('pyqYearTabs');
+  if(tabsEl) tabsEl.innerHTML = yrs.map(function(y){
+    return '<button class="pyq-ytab'+(y===curPyqYear?' on':'')+'" data-yr="'+y+'" onclick="showAdvPyqYear(this.dataset.yr,this)">'+y+'</button>';
+  }).join('');
+  renderAdvPyqGrid(curPyqYear);
+
+  // Build mock group tabs
+  var mTabsEl = document.getElementById('pyqmYearTabs');
+  if(mTabsEl) mTabsEl.innerHTML = ADV_MOCKS.map(function(g,i){
+    return '<button class="pyqm-ytab'+(i===0?' on':'')+'" data-grp="'+g.group+'" onclick="showAdvPyqmGrp(this.dataset.grp,this)">'+g.label+'</button>';
+  }).join('');
+  renderAdvPyqmGrid(curPyqmGrp);
+}
+
+function renderAdvPyqGrid(year){
+  var el = document.getElementById('pyqPaperGrid');
+  if(!el) return;
+  var sessions = ADV_PAPERS[year] || [];
+  var html = '';
+  sessions.forEach(function(s){
+    html += '<div class="pyq-session-lbl">'+s.session+'</div><div class="pyq-papers-grid">';
+    s.papers.forEach(function(p){
+      html += '<div class="pyq-paper-card">'+
+        '<div class="pyq-card-top"><span class="pyq-paper-date">'+p.date+' · '+p.shift+'</span><span class="pyq-paper-tag">'+p.tag+'</span></div>'+
+        '<div class="pyq-paper-stats"><span class="pyq-pstat"><strong>'+p.qs+'</strong> Qs</span><span class="pyq-pstat"><strong>3</strong> Hours</span><span class="pyq-pstat"><strong>'+p.marks+'</strong> Marks</span></div>'+
+        '<div class="pyq-paper-actions">'+
+          '<button class="btn-pyq-view" data-pid="'+p.id+'" onclick="openPyqAdvModal(this.dataset.pid)">📖 View Paper</button>'+
+          '<button class="btn-pyq-sol" data-pid="'+p.id+'-sol" onclick="openPyqAdvModal(this.dataset.pid)">💡 Solutions</button>'+
+        '</div></div>';
+    });
+    html += '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function renderAdvPyqmGrid(group){
+  var el = document.getElementById('pyqmCardsGrid');
+  if(!el) return;
+  var gd = null;
+  ADV_MOCKS.forEach(function(g){ if(g.group===group) gd=g; });
+  if(!gd){ el.innerHTML=''; return; }
+  var html = '<div class="pyqm-cards-grid">';
+  gd.mocks.forEach(function(m){
+    html += '<div class="pyqm-card">'+
+      '<div class="pyqm-card-top"><span class="pyqm-yr-badge">'+m.year+'</span><span class="pyqm-diff '+m.diffcls+'">'+m.diff+'</span></div>'+
+      '<div class="pyqm-title">'+m.title+'</div>'+
+      '<div class="pyqm-sub">'+m.sub+'</div>'+
+      '<div class="pyqm-meta"><div class="pyqm-m">⏱️ <strong>3 Hrs</strong></div><div class="pyqm-m">📝 <strong>'+m.qs+' Qs</strong></div><div class="pyqm-m">🏛️ <strong>'+m.iit+'</strong></div></div>'+
+      '<div class="pyqm-attempt">Not attempted<span>0 / '+m.qs+'</span></div>'+
+      '<div class="pyqm-pbar"><div class="pyqm-pfill" style="width:0%"></div></div>'+
+      '<div class="pyqm-actions">'+
+        '<button class="btn-pyqm-go" data-mid="'+m.id+'" onclick="startAdvPyqMock(this.dataset.mid)">🚀 Start Mock</button>'+
+        '<button class="btn-pyqm-sol" data-mid="'+m.id+'-sol" onclick="openPyqAdvModal(this.dataset.mid)">💡 Solutions</button>'+
+      '</div></div>';
+  });
+  html += '</div>';
+  el.innerHTML = html;
+}
+
+function showAdvPyqYear(yr, el){
+  document.querySelectorAll('.pyq-ytab').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on'); curPyqYear=yr; renderAdvPyqGrid(yr);
+}
+function showAdvPyqmGrp(grp, el){
+  document.querySelectorAll('.pyqm-ytab').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on'); curPyqmGrp=grp; renderAdvPyqmGrid(grp);
+}
+function openPyqAdvModal(id){
+  var isSol = id.indexOf('-sol')>-1;
+  var base = id.replace('-sol','');
+  var parts = base.split('-');
+  var yr = parts[0]; var paper = parts[1] ? parts[1].toUpperCase() : '';
+  var title = 'JEE Advanced ' + yr + (paper ? ' — ' + paper : '');
+  document.getElementById('pyqAdvModalTitle').textContent = title;
+  document.getElementById('pyqAdvModalSub').textContent = isSol
+    ? 'Detailed step-by-step solutions with concept notes for every question.'
+    : 'Browse all questions with subject-wise and type-wise breakdown.';
+  var modal = document.getElementById('pyqAdvModal');
+  modal.style.display='flex'; document.body.style.overflow='hidden';
+}
+function closePyqAdvModal(){
+  document.getElementById('pyqAdvModal').style.display='none';
+  document.body.style.overflow='';
+}
+function startAdvPyqMock(id){
+  window.location.href = 'mockarena_mocktest.html?pyq=adv_'+id;
+}
+document.addEventListener('click', function(e){
+  var modal = document.getElementById('pyqAdvModal');
+  if(modal && modal.style.display==='flex' && e.target===modal) closePyqAdvModal();
+});
+// Init on load
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', initAdvPyq);
+} else { initAdvPyq(); }
 </script>
 </body>
 </html>
