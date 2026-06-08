@@ -20,52 +20,71 @@
   --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);overflow-x:hidden;}
+html{scroll-behavior:smooth;scroll-padding-top:68px;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);overflow-x:hidden;font-size:16px;}
 
 /* ── NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:58px;background:rgba(8,12,8,.97);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.04);display:flex;align-items:center;padding:0 20px;gap:12px;}
-.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
-.nav-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:white;}
-.nav-n1{color:white;font-size:.92rem;font-weight:800;}
-.nav-n2{font-size:.92rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.nav-sep{width:1px;height:16px;background:rgba(255,255,255,.08);}
-.nav-exam{font-size:.66rem;font-weight:700;color:var(--gold);letter-spacing:.03em;white-space:nowrap;}
-.nav-links{display:flex;align-items:center;gap:2px;margin-left:16px;}
-.nav-link{font-size:.7rem;font-weight:600;color:rgba(255,255,255,.62);text-decoration:none;padding:5px 10px;border-radius:7px;transition:all .18s;white-space:nowrap;}
-.nav-link:hover{color:white;background:rgba(255,255,255,.06);}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
-.nav-dash{font-family:var(--fd);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#b8832a);color:white;text-decoration:none;white-space:nowrap;}
-.nav-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:white;overflow:hidden;cursor:pointer;flex-shrink:0;}
-@media(max-width:860px){.nav-links{display:none;}}
+.nav{position:fixed;top:0;left:0;right:0;z-index:300;height:60px;background:rgba(4,6,4,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(200,150,42,.18);display:flex;align-items:center;padding:0 24px;gap:0;}
+.nav-logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0;}
+.nav-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--gold),#a07020);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;color:black;flex-shrink:0;}
+.nav-n1{color:white;font-size:.96rem;font-weight:800;}
+.nav-n2{font-size:.96rem;font-weight:800;color:var(--gold);}
+.nav-pill{margin:0 auto;background:rgba(200,150,42,.1);border:1px solid rgba(200,150,42,.28);border-radius:100px;padding:5px 18px;display:flex;align-items:center;gap:7px;}
+.nav-pill-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;animation:ndot 2.5s ease-in-out infinite;}
+@keyframes ndot{0%,100%{opacity:1;}50%{opacity:.2;}}
+.nav-pill-txt{font-size:.78rem;font-weight:800;color:rgba(255,255,255,.92);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap;}
+.nav-pill-sep{color:rgba(200,150,42,.4);font-size:.76rem;}
+.nav-pill-sub{font-size:.84rem;font-weight:600;color:rgba(200,150,42,.78);letter-spacing:.04em;white-space:nowrap;}
+.nav-right{display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.nav-links{display:flex;align-items:center;gap:2px;margin-right:10px;}
+.nav-link{font-size:.78rem;font-weight:600;color:rgba(255,255,255,.58);text-decoration:none;padding:5px 9px;border-radius:6px;transition:all .16s;white-space:nowrap;}
+.nav-link:hover{color:rgba(255,255,255,.92);background:rgba(255,255,255,.07);}
+.nav-dash{font-size:.8rem;font-weight:800;padding:7px 14px;border-radius:8px;background:linear-gradient(135deg,var(--gold),#a07020);color:black;border:none;cursor:pointer;white-space:nowrap;transition:opacity .18s;display:block;text-decoration:none;}
+.nav-dash:hover{opacity:.85;}
+.nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4a035);display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:black;cursor:pointer;flex-shrink:0;overflow:hidden;}
+.nav-hamburger{display:none;flex-direction:column;gap:4px;background:none;border:none;cursor:pointer;padding:6px;width:36px;height:36px;align-items:center;justify-content:center;border-radius:7px;transition:background .16s;}
+.nav-hamburger:hover{background:rgba(255,255,255,.07);}
+.nav-hamburger span{display:block;width:18px;height:2px;background:rgba(255,255,255,.75);border-radius:2px;transition:all .22s;}
+.nav-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+.nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.nav-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+.mob-nav{display:none;position:fixed;top:60px;left:0;right:0;z-index:299;background:rgba(4,6,4,.98);backdrop-filter:blur(20px);border-bottom:1.5px solid rgba(200,150,42,.18);padding:10px 16px 18px;flex-direction:column;gap:2px;}
+.mob-nav.open{display:flex;}
+.mob-nav-label{font-size:.84rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(200,150,42,.6);padding:6px 10px 8px;}
+.mob-link{font-size:.94rem;font-weight:600;color:rgba(255,255,255,.72);padding:11px 12px;border-radius:9px;transition:all .16s;text-decoration:none;}
+.mob-link:hover{background:rgba(255,255,255,.05);color:white;}
+.mob-dash{margin-top:10px;background:linear-gradient(135deg,var(--gold),#a07020);color:black!important;text-align:center;border-radius:10px;font-weight:800;padding:12px!important;}
+@media(max-width:960px){.nav-links{display:none;}.nav-hamburger{display:flex;}}
+@media(min-width:961px){.nav-hamburger{display:none;}}
+@media(max-width:600px){.nav-pill-sub,.nav-pill-sep{display:none;}.nav-pill{padding:5px 14px;}.nav-pill-txt{font-size:.84rem;}.nav-dash{display:none;}.nav{padding:0 14px;}}
 
 /* ── HERO — dark cinematic ── */
-.hero{min-height:100vh;background:var(--black);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:80px 20px 60px;}
+.hero{min-height:auto;background:var(--black);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:clamp(80px,8vh,108px) 20px clamp(52px,5vh,68px);}
 .hero-noise{position:absolute;inset:0;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");background-size:200px;}
 .hero-glow1{position:absolute;width:800px;height:800px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.05),transparent 65%);top:-200px;left:-200px;pointer-events:none;}
 .hero-glow2{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(107,143,94,.04),transparent 65%);bottom:-150px;right:-150px;pointer-events:none;}
 .hero-line{display:none;}
-.hero-inner{position:relative;z-index:1;max-width:760px;text-align:center;}
+.hero-inner{position:relative;z-index:1;max-width:680px;width:100%;text-align:center;}
 .hero-rank{display:inline-flex;align-items:center;gap:8px;margin-bottom:20px;}
 .hr-line{height:1px;width:40px;background:linear-gradient(90deg,transparent,var(--gold));}
 .hr-line.r{background:linear-gradient(90deg,var(--gold),transparent);}
-.hr-txt{font-size:.64rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;}
-.hero-title{font-size:clamp(2.4rem,8vw,4.8rem);font-weight:900;color:white;line-height:1.0;letter-spacing:-.03em;margin-bottom:8px;}
+.hr-txt{font-size:.82rem;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:.12em;}
+.hero-title{font-size:clamp(2.2rem,4.2vw,3.4rem);font-weight:900;color:white;line-height:1.04;letter-spacing:-.03em;margin-bottom:12px;}
 .hero-title .ht-gold{color:var(--gold);}
 .hero-title .ht-dim{color:rgba(255,255,255,.5);font-weight:300;}
-.hero-tagline{font-size:clamp(.62rem,2vw,.78rem);color:rgba(255,255,255,.5);letter-spacing:.07em;text-transform:uppercase;margin-bottom:20px;font-weight:500;}
-.hero-quote{font-size:clamp(.82rem,2.5vw,1rem);color:rgba(255,255,255,.66);line-height:1.72;max-width:560px;margin:0 auto 28px;font-style:italic;border-left:2px solid var(--gold);padding-left:14px;text-align:left;}
+.hero-tagline{font-size:clamp(.80rem,1.4vw,.9rem);color:rgba(255,255,255,.72);letter-spacing:.07em;text-transform:uppercase;margin-bottom:20px;font-weight:500;}
+.hero-quote{font-size:clamp(.88rem,1.5vw,.98rem);color:rgba(255,255,255,.78);line-height:1.72;max-width:560px;margin:0 auto 28px;font-style:italic;border-left:2px solid var(--gold);padding-left:14px;text-align:left;}
 
 /* PAPER STRIP */
-.paper-strip{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-width:680px;margin:0 auto 28px;}
+.paper-strip{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;max-width:700px;margin:0 auto 24px;}
 .ps-item{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px 20px;flex:1;min-width:160px;text-align:center;}
-.ps-paper{font-size:.62rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:10px;}
+.ps-paper{font-size:.80rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.1em;display:block;margin-bottom:10px;}
 .ps-vals{display:flex;flex-direction:column;gap:6px;}
 .ps-val{font-size:.88rem;color:white;font-weight:700;display:flex;align-items:center;justify-content:center;gap:5px;}
-.ps-val .lbl{font-size:.58rem;color:rgba(255,255,255,.55);font-weight:400;}
+.ps-val .lbl{font-size:.80rem;color:rgba(255,255,255,.68);font-weight:400;}
 .ps-sep{display:none;}
 
-.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:36px;}
+.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:26px;}
 .btn-gold{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--gold),#a87820);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 20px var(--gold-glow);}
 .btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--gold-glow);}
 .btn-sage{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-glow);}
@@ -73,36 +92,36 @@ body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);overflo
 .btn-ghost{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:1.5px solid rgba(255,255,255,.1);background:transparent;color:rgba(255,255,255,.55);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;}
 .btn-ghost:hover{border-color:var(--gold);color:white;}
 
-.hero-stats{display:flex;gap:32px;justify-content:center;flex-wrap:wrap;}
+.hero-stats{display:flex;gap:28px;justify-content:center;flex-wrap:wrap;max-width:600px;margin:0 auto;}
 .hs{text-align:center;}
-.hs-n{font-family:var(--fm);font-size:1.45rem;font-weight:700;color:white;display:block;}
-.hs-l{font-size:.58rem;color:rgba(255,255,255,.48);text-transform:uppercase;letter-spacing:.07em;}
+.hs-n{font-family:var(--fm);font-size:1.2rem;font-weight:700;color:white;display:block;}
+.hs-l{font-size:.78rem;color:rgba(255,255,255,.65);text-transform:uppercase;letter-spacing:.07em;}
 
 /* ── SHARED ── */
-section{padding:72px 20px;}
-.container{max-width:1080px;margin:0 auto;}
-.slabel{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--gold);margin-bottom:8px;}
+section{padding:68px 24px;}
+.container{max-width:1100px;margin:0 auto;}
+.slabel{font-size:.80rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:8px;}
 .slabel.green{color:var(--sage);}
-.stitle{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:var(--forest);line-height:1.2;margin-bottom:10px;}
+.stitle{font-size:clamp(1.5rem,2.4vw,1.95rem);font-weight:800;color:var(--forest);line-height:1.18;margin-bottom:10px;}
 .stitle.white{color:white;}
-.ssub{font-size:.92rem;color:rgba(26,38,24,.52);line-height:1.72;max-width:540px;}
-.ssub.white{color:rgba(255,255,255,.55);}
+.ssub{font-size:.94rem;color:rgba(26,38,24,.68);line-height:1.72;max-width:540px;}
+.ssub.white{color:rgba(255,255,255,.72);}
 
 /* ── WHAT IS JEE ADVANCED ── */
-.intro-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:32px;}
+.intro-grid{display:grid;grid-template-columns:1.15fr 0.85fr;gap:24px;margin-top:32px;}
 @media(max-width:640px){.intro-grid{grid-template-columns:1fr;}}
-.intro-left{background:var(--black);border-radius:18px;padding:28px;border:1px solid rgba(255,255,255,.05);}
+.intro-left{background:#0e1410;border-radius:18px;padding:28px;border:1px solid rgba(200,150,42,.2);}
 .intro-right{display:flex;flex-direction:column;gap:14px;}
 .intro-stat{background:white;border:1px solid var(--border);border-radius:14px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start;transition:all .2s;}
 .is-icon{font-size:1.3rem;flex-shrink:0;margin-top:2px;}
 .is-val{font-family:var(--fd);font-size:.98rem;font-weight:800;color:var(--forest);display:block;}
-.is-lbl{font-size:.62rem;font-weight:700;color:rgba(26,38,24,.4);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
-.is-desc{font-size:.74rem;color:rgba(26,38,24,.5);line-height:1.58;margin-top:4px;}
+.is-lbl{font-size:.82rem;font-weight:700;color:rgba(26,38,24,.58);text-transform:uppercase;letter-spacing:.06em;margin-top:2px;}
+.is-desc{font-size:.84rem;color:rgba(26,38,24,.5);line-height:1.58;margin-top:4px;}
 
 /* ELITE BOX */
 .elite-box{border-radius:14px;border:1px solid rgba(200,150,42,.15);background:linear-gradient(135deg,rgba(200,150,42,.04),rgba(200,150,42,.01));padding:24px;margin-bottom:14px;}
 .eb-title{font-size:.8rem;font-weight:800;color:var(--gold);margin-bottom:10px;display:flex;align-items:center;gap:6px;}
-.eb-item{display:flex;align-items:flex-start;gap:8px;font-size:.74rem;color:rgba(255,255,255,.65);line-height:1.6;margin-bottom:6px;}
+.eb-item{display:flex;align-items:flex-start;gap:8px;font-size:.88rem;color:rgba(255,255,255,.88);line-height:1.6;margin-bottom:6px;}
 .eb-item::before{content:'▸';color:var(--gold);flex-shrink:0;margin-top:1px;}
 
 /* ── QUESTION TYPES ── */
@@ -116,25 +135,25 @@ section{padding:72px 20px;}
 .qt-card.q5::before{background:linear-gradient(90deg,#7c3aed,#5b21b6);}
 .qt-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,38,24,.08);}
 .qt-icon{font-size:1.4rem;margin-bottom:10px;display:block;}
-.qt-type{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:rgba(26,38,24,.54);margin-bottom:4px;}
+.qt-type{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:rgba(26,38,24,.54);margin-bottom:4px;}
 .qt-name{font-size:.88rem;font-weight:800;color:var(--forest);margin-bottom:8px;}
 .qt-mark{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap;}
-.qm{font-size:.58rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.qm{font-size:.80rem;font-weight:700;padding:2px 8px;border-radius:100px;}
 .qm-pos{background:rgba(107,143,94,.1);color:var(--sage);}
 .qm-neg{background:var(--rose-l);color:var(--rose);}
 .qm-zero{background:rgba(26,38,24,.06);color:rgba(26,38,24,.4);}
-.qt-desc{font-size:.7rem;color:rgba(26,38,24,.54);line-height:1.6;}
-.qt-eg{font-family:var(--fm);font-size:.62rem;background:var(--cream-w);border-radius:7px;padding:7px 10px;margin-top:8px;color:var(--forest-m);}
+.qt-desc{font-size:.86rem;color:rgba(26,38,24,.68);line-height:1.65;}
+.qt-eg{font-family:var(--fm);font-size:.80rem;background:var(--cream-w);border-radius:7px;padding:7px 10px;margin-top:8px;color:var(--forest-m);}
 
 /* ── PAPER PATTERN ── */
-.pp-wrap{background:var(--black);border-radius:20px;padding:36px 28px;border:1px solid rgba(255,255,255,.05);margin-top:28px;}
+.pp-wrap{background:#0a0e0a;border-radius:20px;padding:36px 28px;border:1px solid rgba(200,150,42,.2);margin-top:28px;}
 .pp-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:24px;}
 @media(max-width:600px){.pp-grid{grid-template-columns:1fr;}}
-.pp-paper{border:1px solid rgba(255,255,255,.07);border-radius:14px;padding:20px;}
+.pp-paper{border:1px solid rgba(200,150,42,.22);border-radius:14px;padding:20px;}
 .pp-title{font-size:.78rem;font-weight:800;color:var(--gold);margin-bottom:14px;display:flex;align-items:center;gap:7px;}
 .pp-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.04);}
 .pp-row:last-child{border-bottom:none;}
-.pp-key{font-size:.7rem;color:rgba(255,255,255,.58);}
+.pp-key{font-size:.84rem;color:rgba(255,255,255,.78);}
 .pp-val{font-family:var(--fm);font-size:.78rem;font-weight:600;color:white;}
 .pp-val.gold{color:var(--gold);}
 .pp-val.green{color:#9bc48a;}
@@ -142,7 +161,7 @@ section{padding:72px 20px;}
 
 /* ── CHAPTERS ── */
 .subj-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
-.stab{font-family:var(--fd);font-size:.72rem;font-weight:600;padding:6px 16px;border-radius:8px;border:1.5px solid var(--bm);background:white;color:var(--forest-m);cursor:pointer;transition:all .18s;}
+.stab{font-family:var(--fd);font-size:.84rem;font-weight:600;padding:6px 16px;border-radius:8px;border:1.5px solid var(--bm);background:white;color:var(--forest-m);cursor:pointer;transition:all .18s;}
 .stab.on{background:var(--forest);color:white;border-color:var(--forest);}
 .subj-panel{display:none;}
 .subj-panel.on{display:block;}
@@ -151,33 +170,33 @@ section{padding:72px 20px;}
 .ch-card:hover{border-color:var(--gold);background:var(--gold-l);transform:translateX(3px);}
 .ch-card.coming{opacity:.45;pointer-events:none;}
 .ch-left{display:flex;align-items:center;gap:9px;}
-.ch-num{width:28px;height:28px;border-radius:8px;background:var(--gold-l);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.62rem;font-weight:700;color:var(--gold);flex-shrink:0;}
+.ch-num{width:28px;height:28px;border-radius:8px;background:var(--gold-l);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.80rem;font-weight:700;color:var(--gold);flex-shrink:0;}
 .ch-name{font-size:.8rem;font-weight:600;color:var(--forest);}
 .ch-right{display:flex;align-items:center;gap:5px;flex-shrink:0;}
-.ch-live{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(107,143,94,.12);color:var(--sage);}
-.ch-soon{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(26,38,24,.06);color:rgba(26,38,24,.54);}
-.ch-adv{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(200,150,42,.1);color:var(--gold);}
-.ch-arr{font-size:.7rem;color:rgba(26,38,24,.2);}
+.ch-live{font-size:.78rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(107,143,94,.12);color:var(--sage);}
+.ch-soon{font-size:.78rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(26,38,24,.06);color:rgba(26,38,24,.54);}
+.ch-adv{font-size:.78rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(200,150,42,.1);color:var(--gold);}
+.ch-arr{font-size:.82rem;color:rgba(26,38,24,.45);}
 .subj-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
-.subj-stat{font-size:.72rem;color:rgba(26,38,24,.5);}
+.subj-stat{font-size:.86rem;color:rgba(26,38,24,.65);}
 .subj-stat span{font-weight:700;color:var(--sage);}
 
 /* ── MOCK TESTS ── */
-.mock-wrap{background:var(--black);border-radius:20px;padding:36px 28px;border:1px solid rgba(255,255,255,.05);margin-top:28px;}
+.mock-wrap{background:#0a0e0a;border-radius:20px;padding:36px 28px;border:1px solid rgba(200,150,42,.2);margin-top:28px;}
 .mock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:24px;}
-.mock-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px;transition:all .22s;text-decoration:none;display:block;}
+.mock-card{background:rgba(255,255,255,.06);border:1px solid rgba(200,150,42,.16);border-radius:14px;padding:20px;transition:all .22s;text-decoration:none;display:block;}
 .mock-card:hover{background:rgba(255,255,255,.06);border-color:rgba(200,150,42,.2);transform:translateY(-2px);}
 .mock-card.locked{opacity:.45;pointer-events:none;}
 .mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-.mc-badge{font-size:.52rem;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.05em;}
+.mc-badge{font-size:.78rem;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.05em;}
 .mcb-adv{background:rgba(200,150,42,.18);color:#e8a830;}
 .mcb-lock{background:rgba(255,255,255,.07);color:rgba(255,255,255,.5);}
-.mc-paper{font-size:.58rem;color:rgba(255,255,255,.5);font-weight:600;}
+.mc-paper{font-size:.80rem;color:rgba(255,255,255,.5);font-weight:600;}
 .mc-title{font-size:.9rem;font-weight:800;color:white;margin-bottom:5px;}
-.mc-desc{font-size:.72rem;color:rgba(255,255,255,.55);line-height:1.55;margin-bottom:12px;}
+.mc-desc{font-size:.88rem;color:rgba(255,255,255,.78);line-height:1.55;margin-bottom:12px;}
 .mc-meta{display:flex;gap:10px;margin-bottom:13px;flex-wrap:wrap;}
-.mc-m{font-size:.62rem;color:rgba(255,255,255,.48);display:flex;align-items:center;gap:3px;}
-.mc-btn{width:100%;font-family:var(--fd);font-size:.72rem;font-weight:700;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--gold),#a87820);color:white;cursor:pointer;transition:all .2s;}
+.mc-m{font-size:.82rem;color:rgba(255,255,255,.68);display:flex;align-items:center;gap:3px;}
+.mc-btn{width:100%;font-family:var(--fd);font-size:.84rem;font-weight:700;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--gold),#a87820);color:white;cursor:pointer;transition:all .2s;}
 .mc-btn:hover{box-shadow:0 4px 14px var(--gold-glow);}
 .mc-btn-lock{background:rgba(255,255,255,.05);color:rgba(255,255,255,.2);cursor:not-allowed;}
 
@@ -190,8 +209,8 @@ section{padding:72px 20px;}
 .dc-name{font-size:.88rem;font-weight:800;color:white;}
 .dc-topics{display:flex;flex-direction:column;gap:7px;}
 .dc-topic{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.03);}
-.dct-name{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.55);}
-.dct-level{font-size:.58rem;font-weight:700;padding:2px 7px;border-radius:100px;}
+.dct-name{font-size:.86rem;font-weight:600;color:rgba(255,255,255,.85);}
+.dct-level{font-size:.80rem;font-weight:700;padding:2px 7px;border-radius:100px;}
 .dl-elite{background:rgba(200,75,75,.15);color:#ff8080;}
 .dl-hard{background:rgba(200,150,42,.15);color:#e8a830;}
 .dl-med{background:rgba(107,143,94,.15);color:#9bc48a;}
@@ -199,11 +218,11 @@ section{padding:72px 20px;}
 /* ── IIT CUTOFF ── */
 .cutoff-table{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:28px;}
 .ct-head{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;background:var(--black);padding:12px 18px;gap:8px;}
-.ct-hc{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.58);text-transform:uppercase;letter-spacing:.07em;}
+.ct-hc{font-size:.80rem;font-weight:700;color:rgba(255,255,255,.72);text-transform:uppercase;letter-spacing:.07em;}
 .ct-row{display:grid;grid-template-columns:1.8fr 1fr 1fr 1fr;padding:11px 18px;border-bottom:1px solid var(--border);gap:8px;transition:background .18s;}
 .ct-row:hover{background:var(--cream-w);}
 .ct-row:last-child{border-bottom:none;}
-.ct-c{font-size:.74rem;color:rgba(26,38,24,.62);}
+.ct-c{font-size:.86rem;color:rgba(26,38,24,.72);}
 .ct-c:first-child{font-weight:700;color:var(--forest);}
 .ct-c.gold{color:var(--gold);font-weight:700;}
 .ct-c.green{color:var(--sage);font-weight:700;}
@@ -213,40 +232,40 @@ section{padding:72px 20px;}
 .prog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-top:20px;}
 .pg-card{text-align:center;padding:16px 12px;border-radius:12px;background:var(--cream-w);}
 .pg-n{font-family:var(--fm);font-size:1.5rem;font-weight:800;display:block;margin-bottom:3px;}
-.pg-l{font-size:.58rem;text-transform:uppercase;letter-spacing:.07em;color:rgba(26,38,24,.54);}
+.pg-l{font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;color:rgba(26,38,24,.62);}
 .pg-bar{height:3px;border-radius:3px;background:var(--border);margin-top:8px;overflow:hidden;}
 .pg-bar-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--gold),#b8832a);}
 
 /* ── TIPS — dark premium ── */
-.tips-dark{background:var(--black);border-radius:20px;padding:36px 28px;border:1px solid rgba(255,255,255,.04);margin-top:28px;}
+.tips-dark{background:#0a0e0a;border-radius:20px;padding:36px 28px;border:1px solid rgba(200,150,42,.2);margin-top:28px;}
 .tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px;}
-.tip-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:13px;padding:18px;display:flex;gap:12px;transition:all .22s;}
+.tip-card{background:rgba(255,255,255,.07);border:1px solid rgba(200,150,42,.15);border-radius:13px;padding:18px;display:flex;gap:12px;transition:all .22s;}
 .tip-card:hover{background:rgba(255,255,255,.05);border-color:rgba(200,150,42,.18);}
 .tip-num{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--gold),#a87820);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.76rem;font-weight:700;flex-shrink:0;}
 .tip-title{font-size:.85rem;font-weight:800;color:white;margin-bottom:4px;}
-.tip-desc{font-size:.74rem;color:rgba(255,255,255,.6);line-height:1.62;}
+.tip-desc{font-size:.88rem;color:rgba(255,255,255,.80);line-height:1.62;}
 
 /* ── CTA — most premium ── */
-.cta-block{position:relative;border-radius:20px;overflow:hidden;margin-top:28px;padding:56px 32px;text-align:center;background:var(--black);border:1px solid rgba(200,150,42,.12);}
+.cta-block{position:relative;border-radius:20px;overflow:hidden;margin-top:28px;padding:52px 48px;text-align:center;background:#0a0e0a;border:1px solid rgba(200,150,42,.28);}
 .cta-glow{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.07),transparent 65%);top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;}
 .cta-lines{position:absolute;inset:0;background-image:linear-gradient(rgba(200,150,42,.025) 1px,transparent 1px);background-size:100% 48px;}
-.cta-title{font-size:clamp(1.6rem,4vw,2.6rem);font-weight:900;color:white;line-height:1.15;margin-bottom:12px;position:relative;z-index:1;}
+.cta-title{font-size:clamp(1.5rem,2.8vw,2.1rem);font-weight:900;color:white;line-height:1.15;margin-bottom:12px;position:relative;z-index:1;}
 .cta-title .ct-gold{color:var(--gold);}
-.cta-sub{font-size:.92rem;color:rgba(255,255,255,.55);margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.7;}
+.cta-sub{font-size:.96rem;color:rgba(255,255,255,.75);margin-bottom:28px;max-width:480px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.7;}
 .cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
 
 /* ── FOOTER ── */
-.footer{background:var(--black);padding:44px 20px 22px;border-top:1px solid rgba(255,255,255,.04);}
-.ft{display:flex;flex-wrap:wrap;gap:30px;max-width:1080px;margin:0 auto 28px;}
+.footer{background:#060906;padding:56px 28px 24px;border-top:1px solid rgba(200,150,42,.18);}
+.ft{display:flex;flex-wrap:wrap;gap:36px;max-width:1100px;margin:0 auto 32px;}
 .ft-brand{flex:1.5;min-width:180px;}
 .ft-logo{display:flex;align-items:center;gap:8px;margin-bottom:11px;}
-.ft-desc{font-size:.72rem;color:rgba(255,255,255,.6);line-height:1.7;max-width:240px;}
+.ft-desc{font-size:.86rem;color:rgba(255,255,255,.72);line-height:1.7;max-width:240px;}
 .ft-col{flex:1;min-width:120px;}
-.ft-ct{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.14);margin-bottom:12px;}
-.ft-link{display:block;font-size:.74rem;color:rgba(255,255,255,.48);text-decoration:none;margin-bottom:7px;transition:color .18s;}
+.ft-ct{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.55);margin-bottom:14px;}
+.ft-link{display:block;font-size:.84rem;color:rgba(255,255,255,.62);text-decoration:none;margin-bottom:7px;transition:color .18s;}
 .ft-link:hover{color:var(--gold);}
-.ft-bottom{max-width:1080px;margin:0 auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.04);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.ft-copy{font-size:.6rem;color:rgba(255,255,255,.14);}
+.ft-bottom{max-width:1100px;margin:0 auto;padding-top:18px;border-top:1px solid rgba(200,150,42,.15);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.ft-copy{font-size:.82rem;color:rgba(255,255,255,.48);}
 
 @media(max-width:640px){
   section{padding:52px 16px;}
@@ -263,7 +282,7 @@ section{padding:72px 20px;}
 
 /* ═══ NEET UG EXTRA CSS ═══ */
 /* Marking Cards */
-.mark-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:12px;margin-top:28px;}
+.mark-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:28px;}
 .mark-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:all .22s;position:relative;overflow:hidden;}
 .mark-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
 .mark-card.c-correct::before{background:linear-gradient(90deg,var(--sage),#4a7a3d);}
@@ -275,8 +294,8 @@ section{padding:72px 20px;}
 .mark-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,38,24,.08);}
 .mark-icon{font-size:1.5rem;display:block;margin-bottom:8px;}
 .mark-val{font-family:var(--fm);font-size:1.7rem;font-weight:800;display:block;margin-bottom:4px;line-height:1;}
-.mark-lbl{font-size:.6rem;font-weight:700;color:rgba(26,38,24,.56);text-transform:uppercase;letter-spacing:.08em;}
-.mark-desc{font-size:.7rem;color:rgba(26,38,24,.56);margin-top:7px;line-height:1.55;}
+.mark-lbl{font-size:.82rem;font-weight:700;color:rgba(26,38,24,.68);text-transform:uppercase;letter-spacing:.08em;}
+.mark-desc{font-size:.86rem;color:rgba(26,38,24,.68);margin-top:8px;line-height:1.55;}
 
 /* Weightage Dark Panel */
 .wt-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:24px;}
@@ -290,8 +309,8 @@ section{padding:72px 20px;}
 .wt-bar-fill{height:100%;border-radius:4px;}
 .wt-rows{display:flex;flex-direction:column;gap:7px;}
 .wt-row{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;background:rgba(255,255,255,.03);}
-.wt-tname{font-size:.74rem;color:rgba(255,255,255,.75);}
-.wt-badge{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;}
+.wt-tname{font-size:.86rem;color:rgba(255,255,255,.88);}
+.wt-badge{font-size:.78rem;font-weight:700;padding:2px 7px;border-radius:100px;}
 .wb-vh{background:rgba(200,150,42,.18);color:#e8a830;}
 .wb-hi{background:rgba(107,143,94,.15);color:#9bc48a;}
 .wb-md{background:rgba(255,255,255,.07);color:rgba(255,255,255,.58);}
@@ -302,17 +321,17 @@ section{padding:72px 20px;}
 .career-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(26,38,24,.1);}
 .cc-icon{font-size:2.2rem;margin-bottom:10px;display:block;}
 .cc-title{font-size:.86rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
-.cc-seats{display:inline-block;font-size:.58rem;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--gold-l);color:var(--gold);margin-bottom:7px;}
-.cc-desc{font-size:.72rem;color:rgba(26,38,24,.54);line-height:1.62;}
+.cc-seats{display:inline-block;font-size:.80rem;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--gold-l);color:var(--gold);margin-bottom:7px;}
+.cc-desc{font-size:.86rem;color:rgba(26,38,24,.68);line-height:1.62;}
 
 /* Board vs NEET comparison */
 .compare-table{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:28px;}
 .cmp-head{display:grid;grid-template-columns:1.4fr 1fr 1fr;background:var(--black);padding:12px 18px;gap:8px;}
-.cmp-hc{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.58);text-transform:uppercase;letter-spacing:.07em;}
+.cmp-hc{font-size:.80rem;font-weight:700;color:rgba(255,255,255,.72);text-transform:uppercase;letter-spacing:.07em;}
 .cmp-row{display:grid;grid-template-columns:1.4fr 1fr 1fr;padding:11px 18px;border-bottom:1px solid var(--border);gap:8px;transition:background .18s;}
 .cmp-row:hover{background:var(--cream-w);}
 .cmp-row:last-child{border-bottom:none;}
-.cmp-c{font-size:.74rem;color:rgba(26,38,24,.62);}
+.cmp-c{font-size:.86rem;color:rgba(26,38,24,.72);}
 .cmp-c:first-child{font-weight:700;color:var(--forest);}
 .cmp-yes{color:var(--sage);font-weight:700;}
 .cmp-no{color:var(--rose);font-weight:700;}
@@ -321,27 +340,154 @@ section{padding:72px 20px;}
 /* Study Plan dark */
 .plan-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:24px;}
 .plan-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:20px;}
-.plan-phase{font-size:.54rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:6px;}
+.plan-phase{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--gold);margin-bottom:6px;}
 .plan-title{font-size:.88rem;font-weight:800;color:white;margin-bottom:10px;}
 .plan-items{display:flex;flex-direction:column;gap:6px;}
-.plan-item{display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:rgba(255,255,255,.68);line-height:1.55;}
+.plan-item{display:flex;align-items:flex-start;gap:7px;font-size:.88rem;color:rgba(255,255,255,.82);line-height:1.55;}
 .plan-item::before{content:'▸';color:var(--gold);flex-shrink:0;margin-top:1px;}
-.plan-tag{font-size:.54rem;font-weight:700;padding:1px 6px;border-radius:100px;background:rgba(200,150,42,.15);color:#e8a830;margin-left:auto;flex-shrink:0;}
+.plan-tag{font-size:.78rem;font-weight:700;padding:1px 6px;border-radius:100px;background:rgba(200,150,42,.15);color:#e8a830;margin-left:auto;flex-shrink:0;}
 
 /* Mistake cards */
 .mistake-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:28px;}
 .mistake-card{background:white;border:1px solid var(--border);border-radius:13px;padding:18px;border-left:3px solid var(--rose);transition:all .22s;}
 .mistake-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(26,38,24,.06);}
-.mk-num{font-family:var(--fm);font-size:.62rem;font-weight:700;color:var(--rose);margin-bottom:6px;}
+.mk-num{font-family:var(--fm);font-size:.80rem;font-weight:700;color:var(--rose);margin-bottom:6px;}
 .mk-title{font-size:.84rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
-.mk-desc{font-size:.74rem;color:rgba(26,38,24,.54);line-height:1.62;}
-.mk-fix{font-size:.7rem;font-weight:600;color:var(--sage);margin-top:8px;display:flex;align-items:flex-start;gap:5px;}
+.mk-desc{font-size:.86rem;color:rgba(26,38,24,.68);line-height:1.62;}
+.mk-fix{font-size:.84rem;font-weight:600;color:var(--sage);margin-top:8px;display:flex;align-items:flex-start;gap:5px;}
 .mk-fix::before{content:'✓';flex-shrink:0;}
 
 /* Stitle white variant */
 .stitle.white{color:white;}
-.ssub.white{color:rgba(255,255,255,.55);}
+.ssub.white{color:rgba(255,255,255,.72);}
 
+
+/* ══ DESKTOP COLUMN CAPS (1100px+) ══ */
+@media(min-width:1100px){
+  /* Grid caps */
+  .qt-grid{grid-template-columns:repeat(3,1fr);}
+  .diff-grid,.wt-grid{grid-template-columns:repeat(3,1fr);}
+  .tips-grid{grid-template-columns:repeat(3,1fr);}
+  .ch-grid{grid-template-columns:repeat(3,1fr);}
+  .mock-grid{grid-template-columns:repeat(3,1fr);}
+  .mark-grid{grid-template-columns:repeat(3,1fr);}
+  .career-grid{grid-template-columns:repeat(4,1fr);}
+  .mistake-grid{grid-template-columns:repeat(3,1fr);}
+  .plan-grid{grid-template-columns:repeat(4,1fr);}
+  .prog-grid{grid-template-columns:repeat(4,1fr);}
+  .pyq-cards{grid-template-columns:repeat(3,1fr);}
+  .pyqm-cards-grid{grid-template-columns:repeat(3,1fr);}
+  /* Hero */
+  .hero-title{font-size:3.2rem;}
+  .hero-inner{max-width:660px;}
+  /* Intro grid proportion */
+  .intro-grid{grid-template-columns:1.2fr 0.8fr;}
+  /* Paper strip */
+  .paper-strip{max-width:700px;}
+  /* cutoff table stays 4 col — fine */
+}
+/* ══ DESKTOP SPACING (1024px+) ══ */
+@media(min-width:1024px){
+  .nav-link{font-size:.80rem;padding:5px 11px;}
+  .nav-dash{font-size:.82rem;padding:7px 16px;}
+  section{padding:68px 32px;}
+  .mock-wrap,.pp-wrap,.diff-wrap,.tips-dark{padding:32px 28px;}
+  .neet-pyq-wrap,.neet-pyqm-wrap{padding:32px 28px;}
+  .cta-block{padding:48px 64px;}
+  /* Typography bump for desktop reading */
+  .ssub{font-size:.98rem;line-height:1.8;}
+  .eb-item{font-size:.9rem;}
+  .tip-desc{font-size:.9rem;}
+  .mk-desc{font-size:.88rem;}
+  .cc-desc{font-size:.88rem;}
+  .plan-item{font-size:.9rem;}
+  /* Progress wrap */
+  .prog-wrap{padding:32px;}
+  /* compare table stays readable */
+  .cmp-c,.ct-c{font-size:.88rem;}
+  /* footer breathing room */
+  .ft{gap:44px;}
+}
+/* ══ LARGE DESKTOP (1400px+) ══ */
+@media(min-width:1400px){
+  section{padding:76px 56px;}
+  .hero-title{font-size:3.4rem;}
+  .stitle{font-size:2.05rem;}
+  .mock-wrap,.neet-pyq-wrap,.neet-pyqm-wrap,.tips-dark,.diff-wrap{padding:36px 32px;}
+  .cta-block{padding:56px 80px;}
+  .prog-grid{grid-template-columns:repeat(6,1fr);}
+  .career-grid{grid-template-columns:repeat(5,1fr);}
+}
+/* ══ DESKTOP HERO ══ */
+@media(min-width:768px){.hero{min-height:auto;}}
+
+/* ══ NEET PYQ ══ */
+.neet-pyq-wrap{background:#0a0e0a;border-radius:20px;padding:32px;border:1px solid rgba(200,150,42,.2);margin-top:28px;}
+.neet-pyq-banner{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:28px;background:rgba(200,150,42,.07);border:1px solid rgba(200,150,42,.18);border-radius:14px;padding:20px 24px;}
+.npb-item{text-align:center;}
+.npb-n{font-family:var(--fm);font-size:1.3rem;font-weight:700;color:white;display:block;margin-bottom:3px;}
+.npb-l{font-size:.78rem;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.05em;}
+.pyq-yr-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+.pyq-ytab{font-family:var(--fm);font-size:.84rem;font-weight:700;padding:8px 15px;border-radius:9px;border:1.5px solid rgba(200,150,42,.25);background:transparent;color:rgba(255,255,255,.58);cursor:pointer;transition:all .18s;}
+.pyq-ytab:hover,.pyq-ytab.on{background:var(--gold);color:black;border-color:var(--gold);font-weight:800;}
+.pyq-sess-lbl{font-size:.80rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:rgba(200,150,42,.72);margin:18px 0 12px;display:flex;align-items:center;gap:8px;}
+.pyq-sess-lbl::after{content:'';flex:1;height:1px;background:rgba(200,150,42,.15);}
+.pyq-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px;}
+.pyq-card{background:rgba(255,255,255,.04);border:1px solid rgba(200,150,42,.16);border-radius:13px;padding:18px;display:flex;flex-direction:column;gap:12px;transition:all .2s;}
+.pyq-card:hover{border-color:rgba(200,150,42,.38);background:rgba(200,150,42,.07);transform:translateY(-2px);}
+.pyq-card-top{display:flex;align-items:center;justify-content:space-between;}
+.pyq-date{font-family:var(--fm);font-size:.82rem;font-weight:700;color:rgba(255,255,255,.88);}
+.pyq-shift-tag{font-size:.76rem;font-weight:700;padding:3px 10px;border-radius:100px;background:rgba(200,150,42,.18);color:#f0b840;}
+.pyq-shift-tag.upcoming{background:rgba(255,255,255,.07);color:rgba(255,255,255,.4);}
+.pyq-stats{display:flex;gap:14px;}
+.pyq-st{font-size:.82rem;color:rgba(255,255,255,.52);}
+.pyq-st strong{font-weight:700;color:rgba(255,255,255,.88);}
+.pyq-actions{display:flex;gap:8px;}
+.btn-pyq-view{flex:1;font-family:var(--fd);font-size:.84rem;font-weight:700;padding:9px;border-radius:9px;border:1.5px solid rgba(200,150,42,.3);background:transparent;color:rgba(255,255,255,.78);cursor:pointer;transition:all .18s;text-align:center;}
+.btn-pyq-view:hover{border-color:var(--gold);color:white;background:rgba(200,150,42,.08);}
+.btn-pyq-view:disabled{opacity:.3;cursor:not-allowed;}
+.btn-pyq-sol{flex:1;font-family:var(--fd);font-size:.84rem;font-weight:800;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--gold),#a07020);color:black;cursor:pointer;transition:all .18s;text-align:center;}
+.btn-pyq-sol:hover{box-shadow:0 4px 14px rgba(200,150,42,.4);}
+/* PYQ MOCK */
+.neet-pyqm-wrap{background:#0a0e0a;border:1px solid rgba(200,150,42,.22);border-radius:20px;padding:32px;margin-top:28px;position:relative;overflow:hidden;}
+.neet-pyqm-wrap::before{content:'';position:absolute;top:-80px;right:-80px;width:280px;height:280px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.06),transparent 70%);pointer-events:none;}
+.pyqm-info{display:flex;flex-wrap:wrap;gap:10px;padding:14px 18px;background:rgba(255,255,255,.06);border-radius:12px;margin-bottom:22px;border:1px solid rgba(200,150,42,.18);}
+.pyqm-info-item{display:flex;align-items:center;gap:6px;font-size:.86rem;color:rgba(255,255,255,.75);}
+.pyqm-info-item strong{color:white;font-weight:800;}
+.pyqm-yr-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px;}
+.pyqm-ytab{font-family:var(--fm);font-size:.82rem;font-weight:700;padding:7px 14px;border-radius:8px;border:1.5px solid rgba(200,150,42,.3);background:rgba(200,150,42,.08);color:rgba(255,255,255,.75);cursor:pointer;transition:all .18s;}
+.pyqm-ytab:hover,.pyqm-ytab.on{background:var(--gold);color:black;border-color:var(--gold);font-weight:800;}
+.pyqm-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
+.pyqm-card{background:rgba(255,255,255,.06);border:1px solid rgba(200,150,42,.22);border-radius:13px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:all .22s;}
+.pyqm-card:hover{background:rgba(200,150,42,.12);border-color:rgba(200,150,42,.45);transform:translateY(-2px);}
+.pyqm-card-top{display:flex;align-items:center;justify-content:space-between;}
+.pyqm-yr-badge{font-family:var(--fm);font-size:.84rem;font-weight:700;color:#f0b840;background:rgba(200,150,42,.14);border:1px solid rgba(200,150,42,.28);padding:4px 12px;border-radius:8px;}
+.pyqm-diff{font-size:.76rem;font-weight:700;padding:3px 9px;border-radius:100px;}
+.diff-moderate{background:rgba(107,143,94,.2);color:#9bc48a;}
+.diff-hard{background:rgba(224,82,82,.2);color:#ff9090;}
+.diff-mh{background:rgba(200,150,42,.18);color:#f0b840;}
+.pyqm-title{font-size:1.02rem;font-weight:700;color:white;line-height:1.35;}
+.pyqm-sub{font-size:.86rem;color:rgba(255,255,255,.72);line-height:1.6;}
+.pyqm-meta{display:flex;flex-wrap:wrap;gap:12px;}
+.pyqm-m{font-size:.84rem;color:rgba(255,255,255,.68);}
+.pyqm-m strong{color:white;font-weight:700;}
+.pyqm-attempt{font-size:.80rem;color:rgba(255,255,255,.62);display:flex;justify-content:space-between;}
+.pyqm-pbar{height:3px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;}
+.pyqm-pfill{height:100%;background:linear-gradient(90deg,var(--gold),#f0b840);border-radius:3px;}
+.pyqm-actions{display:flex;gap:10px;}
+.btn-pyqm-go{flex:2;font-family:var(--fd);font-size:.88rem;font-weight:800;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--gold),#a07020);color:black;cursor:pointer;transition:all .2s;text-align:center;}
+.btn-pyqm-go:hover{box-shadow:0 4px 18px rgba(200,150,42,.45);}
+.btn-pyqm-sol{flex:1;font-family:var(--fd);font-size:.88rem;font-weight:700;padding:11px;border-radius:10px;border:1.5px solid rgba(200,150,42,.4);background:rgba(200,150,42,.1);color:rgba(255,255,255,.88);cursor:pointer;transition:all .18s;text-align:center;}
+.btn-pyqm-sol:hover{border-color:var(--gold);color:white;}
+/* MODAL */
+#neetPyqModal{display:none;position:fixed;inset:0;background:rgba(2,4,2,.95);z-index:600;align-items:center;justify-content:center;padding:16px;}
+@media(max-width:640px){
+  .pyq-cards,.pyqm-cards-grid{grid-template-columns:1fr;}
+  .neet-pyq-banner{grid-template-columns:repeat(2,1fr);}
+  .pyqm-actions,.pyq-actions{flex-direction:column;}
+  .neet-pyq-wrap,.neet-pyqm-wrap{padding:22px 16px;border-radius:14px;}
+}
+/* pyq grids capped in main 1100px block above */
 </style>
 </head>
 <body>
@@ -351,22 +497,42 @@ section{padding:72px 20px;}
     <div class="nav-mark">MA</div>
     <span class="nav-n1">Mock</span><span class="nav-n2">Arena</span>
   </a>
-  <div class="nav-sep"></div>
-  <span class="nav-exam">🩺 NEET UG</span>
-  <div class="nav-links">
-    <a href="#overview" class="nav-link">About</a>
-    <a href="#marking" class="nav-link">Marking</a>
-    <a href="#weightage" class="nav-link">Weightage</a>
-    <a href="#chapters" class="nav-link">Chapters</a>
-    <a href="#mocks" class="nav-link">Mock Tests</a>
-    <a href="#cutoff" class="nav-link">AIIMS Cutoff</a>
-    <a href="#strategy" class="nav-link">Strategy</a>
+  <div class="nav-pill">
+    <div class="nav-pill-dot"></div>
+    <span class="nav-pill-txt">NEET UG</span>
+    <span class="nav-pill-sep">|</span>
+    <span class="nav-pill-sub">NTA 2026</span>
   </div>
   <div class="nav-right">
+    <div class="nav-links">
+      <a href="#overview" class="nav-link">About</a>
+      <a href="#marking" class="nav-link">Marking</a>
+      <a href="#chapters" class="nav-link">Chapters</a>
+      <a href="#mocks" class="nav-link">Mocks</a>
+      <a href="#pyq" class="nav-link">PYQ</a>
+      <a href="#pyq-mock" class="nav-link">PYQ Mocks</a>
+      <a href="#cutoff" class="nav-link">Cutoffs</a>
+      <a href="#strategy" class="nav-link">Strategy</a>
+    </div>
     <a href="mockarena_dashboard.html" class="nav-dash">Dashboard →</a>
     <div class="nav-av" id="nav-av">S</div>
+    <button class="nav-hamburger" id="navHamburger" onclick="toggleMobNav()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
   </div>
 </nav>
+<div class="mob-nav" id="mobNav">
+  <div class="mob-nav-label">NEET UG 2026</div>
+  <a href="#overview" class="mob-link" onclick="toggleMobNav()">📋 About the Exam</a>
+  <a href="#marking" class="mob-link" onclick="toggleMobNav()">📊 Marking Scheme</a>
+  <a href="#chapters" class="mob-link" onclick="toggleMobNav()">📚 Chapter Tests</a>
+  <a href="#mocks" class="mob-link" onclick="toggleMobNav()">🎯 Mock Tests</a>
+  <a href="#pyq" class="mob-link" onclick="toggleMobNav()">📄 PYQ Papers</a>
+  <a href="#pyq-mock" class="mob-link" onclick="toggleMobNav()">🚀 PYQ Mocks</a>
+  <a href="#cutoff" class="mob-link" onclick="toggleMobNav()">🏥 AIIMS Cutoffs</a>
+  <a href="#strategy" class="mob-link" onclick="toggleMobNav()">💡 Strategy</a>
+  <a href="mockarena_dashboard.html" class="mob-link mob-dash">Dashboard →</a>
+</div>
 
 <!-- HERO -->
 <section class="hero">
@@ -443,13 +609,13 @@ section{padding:72px 20px;}
           <div class="eb-item">NTA conducts it consistently — previous year patterns repeat reliably</div>
           <div class="eb-item">Board exam prep and NEET prep are almost the same — dual benefit</div>
         </div>
-        <div style="border:1px solid rgba(255,255,255,.05);border-radius:10px;padding:14px;margin-top:14px;">
-          <div style="font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.5);margin-bottom:9px;">Top Colleges via NEET</div>
+        <div style="border:1px solid rgba(200,150,42,.2);border-radius:12px;padding:16px;margin-top:14px;background:rgba(200,150,42,.04);">
+          <div style="font-size:.80rem;font-weight:700;text-transform:uppercase;letter-spacing:.09em;color:rgba(255,255,255,.5);margin-bottom:9px;">Top Colleges via NEET</div>
           <div style="display:flex;flex-wrap:wrap;gap:6px;">
-            <span style="font-size:.64rem;padding:3px 9px;border-radius:100px;background:rgba(200,150,42,.12);color:var(--gold);font-weight:600;">19 AIIMS</span>
-            <span style="font-size:.64rem;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.62);font-weight:600;">JIPMER</span>
-            <span style="font-size:.64rem;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.62);font-weight:600;">AFMC Pune</span>
-            <span style="font-size:.64rem;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.62);font-weight:600;">660+ Colleges</span>
+            <span style="font-size:.82rem;padding:3px 9px;border-radius:100px;background:rgba(200,150,42,.12);color:var(--gold);font-weight:600;">19 AIIMS</span>
+            <span style="font-size:.82rem;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.62);font-weight:600;">JIPMER</span>
+            <span style="font-size:.82rem;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.62);font-weight:600;">AFMC Pune</span>
+            <span style="font-size:.82rem;padding:3px 9px;border-radius:100px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.62);font-weight:600;">660+ Colleges</span>
           </div>
         </div>
       </div>
@@ -566,7 +732,7 @@ section{padding:72px 20px;}
         <a href="mockarena_chapter_physics_optics.html" class="ch-card"><div class="ch-left"><div class="ch-num">12</div><span class="ch-name">Optics ⭐ Highest Weightage</span></div><div class="ch-right"><span class="ch-adv">Top</span><span class="ch-arr">→</span></div></a>
         <a href="mockarena_chapter_physics_modern.html" class="ch-card"><div class="ch-left"><div class="ch-num">13</div><span class="ch-name">Modern Physics</span></div><div class="ch-right"><span class="ch-live">Live</span><span class="ch-arr">→</span></div></a>
       </div>
-      <div class="subj-footer"><span class="subj-stat"><span>13/13</span> Physics chapters live · Start with Optics for highest impact</span><a href="mockarena_chapter_physics_optics.html" class="btn-gold" style="font-size:.74rem;padding:8px 16px;">Start Optics →</a></div>
+      <div class="subj-footer"><span class="subj-stat"><span>13/13</span> Physics chapters live · Start with Optics for highest impact</span><a href="mockarena_chapter_physics_optics.html" class="btn-gold" style="font-size:.84rem;padding:8px 16px;">Start Optics →</a></div>
     </div>
     <div class="subj-panel" id="subj-chem">
       <div class="ch-grid">
@@ -671,7 +837,7 @@ section{padding:72px 20px;}
       <div class="cmp-row"><div class="cmp-c">MCQ Speed & Accuracy</div><div class="cmp-c"><span class="cmp-yes">Critical</span></div><div class="cmp-c"><span class="cmp-no">Less Critical</span></div></div>
       <div class="cmp-row"><div class="cmp-c">NCERT Intext Questions</div><div class="cmp-c"><span class="cmp-yes">Directly Appears</span></div><div class="cmp-c"><span class="cmp-yes">Directly Appears</span></div></div>
     </div>
-    <p style="font-size:.74rem;color:rgba(26,38,24,.36);margin-top:12px;line-height:1.6;">✅ Conclusion: NEET prep completes 90% of board prep automatically. Study NEET = score well in boards. The extra 10% for boards is just long-answer writing practice.</p>
+    <p style="font-size:.84rem;color:rgba(26,38,24,.6);margin-top:12px;line-height:1.65;">✅ Conclusion: NEET prep completes 90% of board prep automatically. Study NEET = score well in boards. The extra 10% for boards is just long-answer writing practice.</p>
   </div>
 </section>
 
@@ -714,7 +880,7 @@ section{padding:72px 20px;}
       <div class="ct-row"><div class="ct-c">BDS Government Colleges</div><div class="ct-c green">480+</div><div class="ct-c">440+</div><div class="ct-c">380+</div></div>
       <div class="ct-row"><div class="ct-c">Any MBBS Seat in India</div><div class="ct-c green">~450+</div><div class="ct-c">—</div><div class="ct-c">—</div></div>
     </div>
-    <p style="font-size:.68rem;color:rgba(26,38,24,.56);margin-top:10px;">* Approximate from NEET 2024 MCC counselling. Check official MCC / state counselling for exact figures. Cutoffs vary yearly.</p>
+    <p style="font-size:.82rem;color:rgba(26,38,24,.56);margin-top:10px;">* Approximate from NEET 2024 MCC counselling. Check official MCC / state counselling for exact figures. Cutoffs vary yearly.</p>
   </div>
 </section>
 
@@ -853,6 +1019,64 @@ section{padding:72px 20px;}
   </div>
 </section>
 
+
+<!-- PYQ SECTION -->
+<section id="pyq" style="background:var(--cream-w);">
+  <div class="container">
+    <div class="slabel">Previous Year Questions</div>
+    <h2 class="stitle">NEET UG PYQ — 2016 to 2026</h2>
+    <p class="ssub">Every NEET paper with full solutions. 11 years, 2+ sessions per year. Understand exactly how NTA sets questions.</p>
+    <div class="neet-pyq-wrap">
+      <div class="neet-pyq-banner">
+        <div class="npb-item"><span class="npb-n">11</span><span class="npb-l">Years</span></div>
+        <div class="npb-item"><span class="npb-n">22+</span><span class="npb-l">Papers</span></div>
+        <div class="npb-item"><span class="npb-n">3960+</span><span class="npb-l">Questions</span></div>
+        <div class="npb-item"><span class="npb-n">100%</span><span class="npb-l">With Solutions</span></div>
+      </div>
+      <div class="pyq-yr-tabs" id="pyqYearTabs"></div>
+      <div id="pyqPaperGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- PYQ MOCK TESTS -->
+<section id="pyq-mock" style="background:#080c08;">
+  <div class="container">
+    <div class="slabel">PYQ Practice Mocks</div>
+    <h2 class="stitle white">Attempt Real NEET Papers</h2>
+    <p class="ssub white">Sit for actual NEET papers in exam conditions — 3hr 20min timer, 180 questions, instant result with full solutions.</p>
+    <div class="neet-pyqm-wrap">
+      <div class="pyqm-info">
+        <div class="pyqm-info-item">⏱️ <strong>3h 20min</strong> strict</div>
+        <div class="pyqm-info-item">📝 <strong>180 Questions</strong></div>
+        <div class="pyqm-info-item">🎯 <strong>+4 / −1</strong> marking</div>
+        <div class="pyqm-info-item">📊 <strong>Instant</strong> result</div>
+        <div class="pyqm-info-item">💡 <strong>Full solutions</strong> after submit</div>
+        <div class="pyqm-info-item">🔒 <strong>No pause</strong> — real exam mode</div>
+      </div>
+      <div class="pyqm-yr-tabs" id="pyqmYearTabs"></div>
+      <div id="pyqmCardsGrid"></div>
+    </div>
+  </div>
+</section>
+
+<!-- NEET PYQ MODAL -->
+<div id="neetPyqModal" style="display:none;position:fixed;inset:0;background:rgba(2,4,2,.95);z-index:600;align-items:center;justify-content:center;padding:16px;">
+  <div style="background:#0e1410;border:1.5px solid rgba(200,150,42,.28);border-radius:16px;max-width:520px;width:100%;padding:28px 24px;position:relative;max-height:90vh;overflow-y:auto;">
+    <button onclick="closeNeetPyqModal()" style="position:absolute;top:14px;right:14px;background:rgba(200,150,42,.12);border:none;color:rgba(255,255,255,.88);width:30px;height:30px;border-radius:50%;font-size:.9rem;cursor:pointer;font-weight:700;">✕</button>
+    <div style="font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--gold);margin-bottom:8px;">NEET UG PYQ</div>
+    <div id="neetPyqModalTitle" style="font-size:1.15rem;font-weight:800;color:white;margin-bottom:6px;padding-right:32px;"></div>
+    <div id="neetPyqModalSub" style="font-size:.86rem;color:rgba(255,255,255,.58);margin-bottom:20px;line-height:1.6;"></div>
+    <div style="background:rgba(200,150,42,.07);border-radius:10px;padding:16px;margin-bottom:18px;border:1px solid rgba(200,150,42,.18);font-size:.86rem;color:rgba(255,255,255,.72);line-height:1.7;">
+      📌 Full questions and solutions available on the PYQ page. Attempt as a timed mock in the section above.
+    </div>
+    <div style="display:flex;gap:10px;">
+      <a href="mockarena_pyq.html" style="flex:2;text-align:center;padding:11px;background:linear-gradient(135deg,var(--gold),#a07020);color:black;border-radius:10px;font-weight:800;font-size:.88rem;display:block;">📚 Go to PYQ Page</a>
+      <button onclick="closeNeetPyqModal()" style="flex:1;padding:11px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.78);border:1.5px solid rgba(255,255,255,.2);border-radius:10px;font-size:.88rem;cursor:pointer;font-weight:700;">Close</button>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer class="footer">
   <div class="ft">
@@ -893,19 +1117,6 @@ section{padding:72px 20px;}
   </div>
 </footer>
 <script>
-
-function showSubj(id,el){
-  document.querySelectorAll('.subj-panel').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.stab').forEach(function(t){t.classList.remove('on');});
-  document.getElementById('subj-'+id).classList.add('on');
-  el.classList.add('on');
-}
-document.querySelectorAll('a[href^="#"]').forEach(function(a){
-  a.addEventListener('click',function(e){
-    var el=document.getElementById(this.getAttribute('href').slice(1));
-    if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}
-  });
-});
 
 
 function showSubj(id,el){
@@ -958,6 +1169,193 @@ document.querySelectorAll('a[href^="#"]').forEach(function(a){
   });
 })();
 
+
+function toggleMobNav(){
+  var nav=document.getElementById('mobNav');
+  var btn=document.getElementById('navHamburger');
+  nav.classList.toggle('open');btn.classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  var nav=document.getElementById('mobNav');
+  var btn=document.getElementById('navHamburger');
+  if(nav&&nav.classList.contains('open')&&!nav.contains(e.target)&&!btn.contains(e.target)){
+    nav.classList.remove('open');btn.classList.remove('open');
+  }
+});
+
+// ══ NEET UG PYQ DATA ══
+var NEET_PAPERS = {
+  '2026':[{session:'NEET UG 2026 — May',papers:[
+    {date:'4 May 2026',shift:'Paper 1',tag:'Morning',qs:180,marks:720,id:'2026-s1'},
+    {date:'4 May 2026',shift:'Paper 2',tag:'Afternoon',qs:180,marks:720,id:'2026-s2',upcoming:true}
+  ]}],
+  '2025':[{session:'NEET UG 2025 — May',papers:[
+    {date:'4 May 2025',shift:'Shift 1',tag:'Morning',qs:180,marks:720,id:'2025-s1'},
+    {date:'4 May 2025',shift:'Shift 2',tag:'Afternoon',qs:180,marks:720,id:'2025-s2'}
+  ]}],
+  '2024':[{session:'NEET UG 2024 — May',papers:[
+    {date:'5 May 2024',shift:'Shift 1',tag:'Morning',qs:180,marks:720,id:'2024-s1'},
+    {date:'5 May 2024',shift:'Shift 2',tag:'Afternoon',qs:180,marks:720,id:'2024-s2'}
+  ]}],
+  '2023':[{session:'NEET UG 2023 — May',papers:[
+    {date:'7 May 2023',shift:'Code P1',tag:'P1',qs:180,marks:720,id:'2023-p1'},
+    {date:'7 May 2023',shift:'Code P2',tag:'P2',qs:180,marks:720,id:'2023-p2'}
+  ]}],
+  '2022':[{session:'NEET UG 2022 — July',papers:[
+    {date:'17 Jul 2022',shift:'Code P1',tag:'P1',qs:180,marks:720,id:'2022-p1'},
+    {date:'17 Jul 2022',shift:'Code P2',tag:'P2',qs:180,marks:720,id:'2022-p2'}
+  ]}],
+  '2021':[{session:'NEET UG 2021 — September',papers:[
+    {date:'12 Sep 2021',shift:'Code P1',tag:'P1',qs:180,marks:720,id:'2021-p1'},
+    {date:'12 Sep 2021',shift:'Code P2',tag:'P2',qs:180,marks:720,id:'2021-p2'}
+  ]}],
+  '2020':[{session:'NEET UG 2020 — September',papers:[
+    {date:'13 Sep 2020',shift:'Code E1',tag:'E1',qs:180,marks:720,id:'2020-e1'},
+    {date:'13 Sep 2020',shift:'Code F1',tag:'F1',qs:180,marks:720,id:'2020-f1'}
+  ]}],
+  '2019':[{session:'NEET UG 2019 — May',papers:[
+    {date:'5 May 2019',shift:'Code P1',tag:'P1',qs:180,marks:720,id:'2019-p1'},
+    {date:'5 May 2019',shift:'Code Q1',tag:'Q1',qs:180,marks:720,id:'2019-q1'}
+  ]}],
+  '2018':[{session:'NEET UG 2018 — May',papers:[
+    {date:'6 May 2018',shift:'Code AA',tag:'AA',qs:180,marks:720,id:'2018-aa'},
+    {date:'6 May 2018',shift:'Code BB',tag:'BB',qs:180,marks:720,id:'2018-bb'}
+  ]}],
+  '2017':[{session:'NEET UG 2017 — May',papers:[
+    {date:'7 May 2017',shift:'Code AA',tag:'AA',qs:180,marks:720,id:'2017-aa'},
+    {date:'7 May 2017',shift:'Code BB',tag:'BB',qs:180,marks:720,id:'2017-bb'}
+  ]}],
+  '2016':[{session:'NEET UG 2016 — May',papers:[
+    {date:'1 May 2016',shift:'Phase 1',tag:'P1',qs:180,marks:720,id:'2016-p1'},
+    {date:'24 Jul 2016',shift:'Phase 2',tag:'P2',qs:180,marks:720,id:'2016-p2'}
+  ]}]
+};
+
+var NEET_MOCKS = [
+  {group:'recent',label:'Recent (2023-26)',mocks:[
+    {year:'2026',title:'NEET UG 2026 — Shift 1',sub:'Latest paper. High Biology difficulty. Strong Genetics and Human Physiology.',diff:'Hard',diffcls:'diff-hard',qs:180,marks:720,id:'2026-s1'},
+    {year:'2025',title:'NEET UG 2025 — Shift 1',sub:'NCERT-heavy Biology. Good benchmark — moderate Physics, tricky Chem.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:180,marks:720,id:'2025-s1'},
+    {year:'2025',title:'NEET UG 2025 — Shift 2',sub:'Shift 2 is historically harder. Expect tough Organic Chemistry.',diff:'Hard',diffcls:'diff-hard',qs:180,marks:720,id:'2025-s2'},
+    {year:'2024',title:'NEET UG 2024 — Shift 1',sub:'Controversy year — still great practice. Strong Botany and Optics.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:180,marks:720,id:'2024-s1'},
+    {year:'2023',title:'NEET UG 2023 — Code P1',sub:'Balanced paper. Excellent for calibration. All 3 subjects well-represented.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:180,marks:720,id:'2023-p1'}
+  ]},
+  {group:'mid',label:'2019–2022',mocks:[
+    {year:'2022',title:'NEET UG 2022 — Code P1',sub:'Post-COVID July paper. Strong Biology, moderate Physics. Good confidence builder.',diff:'Moderate',diffcls:'diff-moderate',qs:180,marks:720,id:'2022-p1'},
+    {year:'2021',title:'NEET UG 2021 — Code P1',sub:'Zoom-based prep year. High NCERT direct questions. Best for Biology revision.',diff:'Moderate',diffcls:'diff-moderate',qs:180,marks:720,id:'2021-p1'},
+    {year:'2020',title:'NEET UG 2020 — Code E1',sub:'COVID year paper. Slightly easier Biology, moderate Chemistry. Great warm-up.',diff:'Moderate',diffcls:'diff-moderate',qs:180,marks:720,id:'2020-e1'},
+    {year:'2019',title:'NEET UG 2019 — Code P1',sub:'Classic NEET pattern. Excellent coverage of all high-weightage topics.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:180,marks:720,id:'2019-p1'}
+  ]},
+  {group:'old',label:'2016–2018',mocks:[
+    {year:'2018',title:'NEET UG 2018 — Code AA',sub:'Standard NTA pattern. Strong Human Physiology and Organic. Good baseline.',diff:'Moderate',diffcls:'diff-moderate',qs:180,marks:720,id:'2018-aa'},
+    {year:'2017',title:'NEET UG 2017 — Code AA',sub:'Classic CBSE-era paper. NCERT-straight questions. Great for early practice.',diff:'Moderate',diffcls:'diff-moderate',qs:180,marks:720,id:'2017-aa'},
+    {year:'2016',title:'NEET UG 2016 — Phase 1',sub:'Foundation paper. Easiest in the decade. Ideal starting point for PYQ practice.',diff:'Moderate',diffcls:'diff-moderate',qs:180,marks:720,id:'2016-p1'},
+    {year:'2016',title:'NEET UG 2016 — Phase 2',sub:'Second phase after court order. Good alternate question set for 2016.',diff:'Moderate',diffcls:'diff-moderate',qs:180,marks:720,id:'2016-p2'}
+  ]}
+];
+
+var curNeetPyqYr='2026', curNeetPyqmGrp='recent';
+
+function initNeetPyq(){
+  var yrs=Object.keys(NEET_PAPERS);
+  var tabsEl=document.getElementById('pyqYearTabs');
+  if(tabsEl) tabsEl.innerHTML=yrs.map(function(y){
+    return '<button class="pyq-ytab'+(y===curNeetPyqYr?' on':'')+'" data-yr="'+y+'" onclick="showNeetPyqYear(this.dataset.yr,this)">'+y+'</button>';
+  }).join('');
+  renderNeetPyqGrid(curNeetPyqYr);
+
+  var mTabsEl=document.getElementById('pyqmYearTabs');
+  if(mTabsEl) mTabsEl.innerHTML=NEET_MOCKS.map(function(g,i){
+    return '<button class="pyqm-ytab'+(i===0?' on':'')+'" data-grp="'+g.group+'" onclick="showNeetPyqmGrp(this.dataset.grp,this)">'+g.label+'</button>';
+  }).join('');
+  renderNeetPyqmGrid(curNeetPyqmGrp);
+}
+
+function renderNeetPyqGrid(year){
+  var el=document.getElementById('pyqPaperGrid');
+  if(!el) return;
+  var sessions=NEET_PAPERS[year]||[];
+  var html='';
+  sessions.forEach(function(s){
+    html+='<div class="pyq-sess-lbl">'+s.session+'</div><div class="pyq-cards">';
+    s.papers.forEach(function(p){
+      var up=p.upcoming;
+      html+='<div class="pyq-card"'+(up?' style="opacity:.5;"':'')+'>'+
+        '<div class="pyq-card-top"><span class="pyq-date">'+p.date+' · '+p.shift+'</span>'+
+        '<span class="pyq-shift-tag'+(up?' upcoming':'')+'">'+p.tag+'</span></div>'+
+        '<div class="pyq-stats"><span class="pyq-st"><strong>'+p.qs+'</strong> Qs</span>'+
+        '<span class="pyq-st"><strong>3h 20m</strong></span>'+
+        '<span class="pyq-st"><strong>'+p.marks+'</strong> Marks</span></div>'+
+        '<div class="pyq-actions">'+
+        (up?'<button class="btn-pyq-view" disabled style="opacity:.4;cursor:not-allowed;flex:2;">Not yet released</button>'
+          :'<button class="btn-pyq-view" data-pid="'+p.id+'" onclick="openNeetPyqModal(this.dataset.pid)">📖 View Paper</button>'+
+           '<button class="btn-pyq-sol" data-pid="'+p.id+'-sol" onclick="openNeetPyqModal(this.dataset.pid)">💡 Solutions</button>')+
+        '</div></div>';
+    });
+    html+='</div>';
+  });
+  el.innerHTML=html;
+}
+
+function renderNeetPyqmGrid(group){
+  var el=document.getElementById('pyqmCardsGrid');
+  if(!el) return;
+  var gd=null; NEET_MOCKS.forEach(function(g){if(g.group===group)gd=g;});
+  if(!gd){el.innerHTML='';return;}
+  var html='<div class="pyqm-cards-grid">';
+  gd.mocks.forEach(function(m){
+    html+='<div class="pyqm-card">'+
+      '<div class="pyqm-card-top"><span class="pyqm-yr-badge">'+m.year+'</span><span class="pyqm-diff '+m.diffcls+'">'+m.diff+'</span></div>'+
+      '<div class="pyqm-title">'+m.title+'</div>'+
+      '<div class="pyqm-sub">'+m.sub+'</div>'+
+      '<div class="pyqm-meta"><div class="pyqm-m">⏱️ <strong>3h 20m</strong></div>'+
+      '<div class="pyqm-m">📝 <strong>'+m.qs+' Qs</strong></div>'+
+      '<div class="pyqm-m">🎯 <strong>'+m.marks+' Marks</strong></div></div>'+
+      '<div class="pyqm-attempt">Not attempted<span>0 / '+m.qs+'</span></div>'+
+      '<div class="pyqm-pbar"><div class="pyqm-pfill" style="width:0%"></div></div>'+
+      '<div class="pyqm-actions">'+
+      '<button class="btn-pyqm-go" data-mid="'+m.id+'" onclick="startNeetPyqMock(this.dataset.mid)">🚀 Start Mock</button>'+
+      '<button class="btn-pyqm-sol" data-mid="'+m.id+'-sol" onclick="openNeetPyqModal(this.dataset.mid)">💡 Solutions</button>'+
+      '</div></div>';
+  });
+  html+='</div>';
+  el.innerHTML=html;
+}
+
+function showNeetPyqYear(yr,el){
+  document.querySelectorAll('.pyq-ytab').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on'); curNeetPyqYr=yr; renderNeetPyqGrid(yr);
+}
+function showNeetPyqmGrp(grp,el){
+  document.querySelectorAll('.pyqm-ytab').forEach(function(t){t.classList.remove('on');});
+  el.classList.add('on'); curNeetPyqmGrp=grp; renderNeetPyqmGrid(grp);
+}
+function openNeetPyqModal(id){
+  var isSol=id.indexOf('-sol')>-1;
+  var base=id.replace('-sol','');
+  var parts=base.split('-');
+  var yr=parts[0];
+  var title='NEET UG '+yr+' — '+parts.slice(1).map(function(p){return p.toUpperCase();}).join(' ');
+  document.getElementById('neetPyqModalTitle').textContent=title;
+  document.getElementById('neetPyqModalSub').textContent=isSol
+    ?'Step-by-step solutions with NCERT references for every question.'
+    :'Browse all 180 questions with subject-wise breakdown.';
+  var modal=document.getElementById('neetPyqModal');
+  modal.style.display='flex'; document.body.style.overflow='hidden';
+}
+function closeNeetPyqModal(){
+  document.getElementById('neetPyqModal').style.display='none';
+  document.body.style.overflow='';
+}
+function startNeetPyqMock(id){
+  window.location.href='mockarena_neet_mocktest.html?pyq='+id;
+}
+document.addEventListener('click',function(e){
+  var modal=document.getElementById('neetPyqModal');
+  if(modal&&modal.style.display==='flex'&&e.target===modal)closeNeetPyqModal();
+});
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',initNeetPyq);
+}else{initNeetPyq();}
 </script>
 </body>
 </html>
