@@ -719,6 +719,19 @@ section{padding:72px 24px;}
   .hero-inner{max-width:680px;text-align:center;}
   .hero-right{display:none;}
 }
+
+/* Switch exam button */
+.nav-switch{
+  font-family:var(--fd);font-size:.78rem;font-weight:700;
+  padding:6px 14px;border-radius:100px;
+  border:1.5px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.82);
+  cursor:pointer;transition:all .18s;
+  text-decoration:none;display:inline-flex;
+  align-items:center;gap:5px;white-space:nowrap;
+}
+.nav-switch:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.35);color:white;}
 </style>
 </head>
 <body>
@@ -746,6 +759,7 @@ section{padding:72px 24px;}
       <a href="#weightage" class="nav-link">Topics</a>
       <a href="#strategy" class="nav-link">Strategy</a>
     </div>
+        <a href="mockarena_onboarding.html" class="nav-switch">⇄ Switch Exam</a>
     <a href="mockarena_dashboard.html" class="nav-dash">Dashboard →</a>
     <div class="nav-av" id="nav-av">S</div>
     <button class="nav-hamburger" id="navHamburger" onclick="toggleMobNav()" aria-label="Menu">

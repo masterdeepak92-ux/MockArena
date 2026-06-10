@@ -4,156 +4,205 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
 <title>MockArena — Choose Your Exam</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --forest:#1a2618;--sage:#6b8f5e;--gold:#c8962a;
+  --forest:#1a2618;--sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.08);
   --cream:#faf9f5;--cream-w:#f5f3ec;
-  --border:rgba(26,38,24,.1);--border-m:rgba(26,38,24,.16);
-  --txt:#1a2618;--txt-m:rgba(26,38,24,.65);--txt-lo:rgba(26,38,24,.45);
-  --fd:'Outfit',sans-serif;
+  --border:rgba(26,38,24,.09);--border-m:rgba(26,38,24,.15);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.42);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 body{
-  font-family:var(--fd);
-  background:var(--cream-w);
-  color:var(--txt);
-  min-height:100vh;
-  -webkit-font-smoothing:antialiased;
+  font-family:var(--fd);background:var(--cream-w);color:var(--txt);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
 }
+a,a:visited{text-decoration:none;color:inherit;}
 
 /* ── NAV ── */
 .nav{
-  height:58px;display:flex;align-items:center;
-  padding:0 18px;background:white;
+  height:62px;display:flex;align-items:center;padding:0 20px;
+  background:white;
   border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:100;
 }
-.nav-logo{font-size:1.15rem;font-weight:900;color:var(--forest);letter-spacing:-.02em;text-decoration:none;}
-.nav-logo span{color:var(--sage);}
+.nav-brand{font-size:1.1rem;font-weight:900;color:var(--forest);letter-spacing:-.02em;}
+.nav-brand span{color:var(--sage);}
 .nav-av{
   margin-left:auto;width:34px;height:34px;border-radius:50%;
   background:linear-gradient(135deg,var(--gold),#d4a035);
   display:flex;align-items:center;justify-content:center;
-  font-size:.84rem;font-weight:700;color:white;overflow:hidden;flex-shrink:0;
+  font-size:.8rem;font-weight:700;color:white;overflow:hidden;flex-shrink:0;
 }
 
 /* ── HERO ── */
 .hero{
   background:var(--cream);
+  padding:40px 20px 36px;
   border-bottom:1px solid var(--border);
-  padding:24px 18px 20px;
-}
-.hero-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  background:rgba(107,143,94,.1);border:1px solid rgba(107,143,94,.22);
-  border-radius:100px;padding:5px 14px;margin-bottom:14px;
-}
-.hero-badge-dot{
-  width:6px;height:6px;border-radius:50%;background:var(--sage);
-  animation:blink 2.5s ease-in-out infinite;
-}
-@keyframes blink{0%,100%{opacity:1;}50%{opacity:.15;}}
-.hero-badge-txt{
-  font-size:.82rem;font-weight:700;color:var(--sage);
-  text-transform:uppercase;letter-spacing:.07em;
-}
-.hero h1{
-  font-size:1.95rem;font-weight:900;color:var(--forest);
-  line-height:1.08;letter-spacing:-.03em;margin-bottom:9px;
-}
-.hero h1 .g1{color:var(--sage);}
-.hero h1 .g2{color:var(--gold);}
-.hero-p{
-  font-size:.95rem;font-weight:500;color:var(--txt-m);
-  line-height:1.68;margin-bottom:6px;
-}
-.hero-greet{font-size:.9rem;font-weight:600;color:var(--txt-lo);}
-.hero-greet strong{color:var(--sage);font-weight:700;}
-
-/* ── BODY CONTENT ── */
-.body{padding:18px 18px 0;}
-
-/* ── SECTION LABEL ── */
-.sec{margin-bottom:11px;display:flex;align-items:center;gap:7px;}
-.sec-icon{font-size:.95rem;}
-.sec-txt{
-  font-size:.82rem;font-weight:700;color:var(--txt);
-  text-transform:uppercase;letter-spacing:.06em;
-  opacity:.6;
-}
-
-/* ── GRID ── */
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
-.g2{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px;max-width:400px;}
-.g2b{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:18px;}
-
-/* ── CARD ── */
-.card{
-  background:white;
-  border:1.5px solid var(--border);
-  border-radius:14px;
-  padding:16px 10px 13px;
-  cursor:pointer;
-  display:flex;flex-direction:column;
-  align-items:center;text-align:center;gap:7px;
-  transition:transform .2s cubic-bezier(.34,1.3,.64,1),
-             border-color .2s,box-shadow .2s;
   position:relative;overflow:hidden;
 }
-.card::after{
+.hero::before{display:none;}
+.hero::after{display:none;}
+.hero-inner{position:relative;z-index:1;max-width:640px;}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--sage-l);border:1px solid rgba(107,143,94,.22);
+  border-radius:100px;padding:5px 14px;margin-bottom:18px;
+}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:dp 2.5s ease-in-out infinite;}
+@keyframes dp{0%,100%{opacity:1;}50%{opacity:.15;}}
+.hero-eyebrow-txt{font-size:.8rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.08em;}
+.hero h1{
+  font-size:clamp(1.9rem,5vw,2.8rem);font-weight:900;
+  color:var(--forest);line-height:1.06;letter-spacing:-.03em;margin-bottom:12px;
+}
+.hero h1 .c1{color:var(--sage);}
+.hero h1 .c2{color:var(--gold);}
+.hero-sub{
+  font-size:.96rem;color:var(--txt-m);
+  line-height:1.72;margin-bottom:20px;font-weight:500;max-width:520px;
+}
+.hero-trust{
+  display:flex;align-items:center;gap:0;flex-wrap:wrap;
+}
+.trust-item{
+  display:flex;align-items:center;gap:6px;
+  font-size:.82rem;font-weight:600;color:var(--txt-m);
+  padding-right:16px;margin-right:16px;
+  border-right:1px solid var(--border);
+}
+.trust-item:last-child{border-right:none;padding-right:0;margin-right:0;}
+.trust-item span{color:var(--sage);font-weight:700;}
+.hero-greet{
+  margin-top:14px;font-size:.88rem;
+  color:var(--txt-lo);font-weight:500;
+}
+.hero-greet strong{color:var(--sage);font-weight:700;}
+
+/* ── SECTION ── */
+.section{padding:28px 20px 0;background:var(--cream-w);}
+.section-last{padding-bottom:40px;}
+
+/* Section header */
+.sec-hdr{margin-bottom:16px;}
+.sec-label{
+  font-size:.76rem;font-weight:700;color:var(--sage);
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px;
+}
+.sec-title{
+  font-size:1.15rem;font-weight:800;color:var(--forest);
+  letter-spacing:-.02em;line-height:1.2;
+}
+.sec-sub{font-size:.88rem;color:var(--txt-m);margin-top:3px;line-height:1.6;}
+
+/* ── CARD GRID ── */
+.grid{display:grid;gap:12px;}
+.g3{grid-template-columns:repeat(3,1fr);}
+.g2{grid-template-columns:repeat(2,1fr);}
+
+/* ── EXAM CARD — premium style ── */
+.ecard{
+  background:white;
+  border:1.5px solid var(--border);
+  border-radius:16px;
+  padding:18px 14px 16px;
+  cursor:pointer;
+  display:flex;flex-direction:column;
+  align-items:flex-start;
+  gap:0;
+  position:relative;overflow:hidden;
+  transition:all .22s cubic-bezier(.34,1.2,.64,1);
+  box-shadow:0 1px 4px rgba(26,38,24,.06);
+}
+/* Colored left border */
+.ecard::before{
   content:'';position:absolute;
-  top:0;left:0;right:0;height:3px;
-  background:var(--ac);opacity:0;
-  transition:opacity .2s;
-  border-radius:14px 14px 0 0;
+  left:0;top:0;bottom:0;width:4px;
+  background:var(--ec);
+  border-radius:16px 0 0 16px;
+  opacity:.3;transition:opacity .22s;
 }
-.card:hover,.card:active{
+.ecard:hover{
   transform:translateY(-4px);
-  border-color:var(--ac);
-  box-shadow:0 6px 22px var(--as);
+  border-color:var(--ec);
+  box-shadow:0 8px 28px var(--es);
 }
-.card:hover::after{opacity:1;}
+.ecard:hover::before{opacity:1;}
+.ecard:active{transform:translateY(-1px);}
 
-/* accent colors */
-.ac-jm{--ac:#6b8f5e;--as:rgba(107,143,94,.18);}
-.ac-ja{--ac:#c8962a;--as:rgba(200,150,42,.2);}
-.ac-nu{--ac:#3b82c4;--as:rgba(59,130,196,.18);}
-.ac-nf{--ac:#14b8a6;--as:rgba(20,184,166,.18);}
-.ac-jf{--ac:#f97316;--as:rgba(249,115,22,.18);}
-.ac-b12{--ac:#7c3aed;--as:rgba(124,58,237,.18);}
-.ac-b10{--ac:#f43f5e;--as:rgba(244,63,94,.18);}
+/* Icon box */
+.ecard-icon-box{
+  width:44px;height:44px;border-radius:12px;
+  background:color-mix(in srgb,var(--ec) 12%,transparent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;margin-bottom:12px;flex-shrink:0;
+  transition:background .22s;
+}
+.ecard:hover .ecard-icon-box{
+  background:color-mix(in srgb,var(--ec) 18%,transparent);
+}
 
-/* card content */
-.ci{font-size:1.9rem;line-height:1;}
-.cn{
-  font-size:.92rem;font-weight:800;
-  color:var(--forest);line-height:1.18;
-  letter-spacing:-.01em;
+/* Card text */
+.ecard-name{
+  font-size:.98rem;font-weight:800;color:var(--forest);
+  line-height:1.18;letter-spacing:-.01em;margin-bottom:3px;
 }
-.cs{
-  font-size:.80rem;font-weight:500;
-  color:var(--txt-m);line-height:1.4;
+.ecard-class{
+  font-family:var(--fm);font-size:.76rem;font-weight:600;
+  color:var(--txt-lo);margin-bottom:9px;
 }
-.ct{
-  font-size:.78rem;font-weight:700;
-  padding:3px 10px;border-radius:100px;
-  color:var(--ac);
-  background:color-mix(in srgb,var(--ac) 12%,transparent);
-  border:1px solid color-mix(in srgb,var(--ac) 22%,transparent);
+.ecard-stats{
+  display:flex;flex-wrap:wrap;gap:5px;margin-bottom:10px;width:100%;
 }
+.ecard-stat{
+  font-size:.78rem;font-weight:600;
+  padding:2px 8px;border-radius:100px;
+  background:var(--cream-w);color:var(--txt-m);
+  border:1px solid var(--border);
+}
+.ecard-tag{
+  font-size:.76rem;font-weight:700;
+  padding:4px 10px;border-radius:100px;
+  background:color-mix(in srgb,var(--ec) 10%,transparent);
+  color:var(--ec);
+  border:1px solid color-mix(in srgb,var(--ec) 20%,transparent);
+  margin-top:auto;
+}
+.ecard-arrow{
+  position:absolute;top:14px;right:14px;
+  width:26px;height:26px;border-radius:50%;
+  background:var(--cream-w);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.76rem;color:var(--txt-lo);
+  transition:all .2s;
+}
+.ecard:hover .ecard-arrow{
+  background:var(--ec);color:white;border-color:var(--ec);
+}
+
+/* Per-exam accent colors */
+.e-jm{--ec:#6b8f5e;--es:rgba(107,143,94,.18);}
+.e-ja{--ec:#c8962a;--es:rgba(200,150,42,.22);}
+.e-nu{--ec:#3b82c4;--es:rgba(59,130,196,.18);}
+.e-nf{--ec:#14b8a6;--es:rgba(20,184,166,.18);}
+.e-jf{--ec:#f97316;--es:rgba(249,115,22,.18);}
+.e-b12{--ec:#7c3aed;--es:rgba(124,58,237,.18);}
+.e-b10{--ec:#f43f5e;--es:rgba(244,63,94,.18);}
 
 /* ── DIVIDER ── */
-.dvd{height:1px;background:var(--border);margin:4px 0 18px;}
+.divider{height:1px;background:var(--border);margin:24px 20px 0;}
 
 /* ── SKIP ── */
-.skip-area{text-align:center;padding:14px 0 36px;}
+.skip-wrap{text-align:center;padding:22px 20px 44px;}
 .skip-btn{
   font-family:var(--fd);font-size:.9rem;font-weight:600;
   color:var(--txt-lo);background:none;
   border:1.5px solid var(--border);border-radius:100px;
-  cursor:pointer;padding:9px 22px;transition:all .18s;
+  cursor:pointer;padding:10px 24px;transition:all .18s;
 }
 .skip-btn:hover{color:var(--txt-m);border-color:var(--border-m);}
 
@@ -164,54 +213,65 @@ body{
   flex-direction:column;align-items:center;justify-content:center;gap:14px;
 }
 .ldr.on{display:flex;}
-.spin{
-  width:40px;height:40px;
-  border:3px solid rgba(107,143,94,.18);
-  border-top-color:var(--sage);
-  border-radius:50%;animation:spin .75s linear infinite;
-}
-@keyframes spin{to{transform:rotate(360deg);}}
+.spin{width:40px;height:40px;border:3px solid rgba(107,143,94,.18);border-top-color:var(--sage);border-radius:50%;animation:rot .75s linear infinite;}
+@keyframes rot{to{transform:rotate(360deg);}}
 .ldr-n{font-size:1rem;font-weight:700;color:var(--forest);}
 .ldr-s{font-size:.88rem;font-weight:500;color:var(--txt-m);}
 
 /* ── DESKTOP ── */
-@media(min-width:640px){
-  .hero{padding:32px 28px 26px;}
-  .hero h1{font-size:2.4rem;}
-  .body{padding:24px 28px 0;}
-  .g3{gap:12px;}
-  .g2{gap:12px;}
-  .g2b{gap:12px;}
-  .card{padding:20px 14px 16px;}
-  .ci{font-size:2.1rem;}
-  .cn{font-size:.96rem;}
-  .cs{font-size:.84rem;}
-  .ct{font-size:.80rem;}
+@media(min-width:768px){
+  .hero{padding:52px 32px 44px;}
+  .hero h1{font-size:2.6rem;}
+  .sec-title{font-size:1.22rem;}
+  .section{padding:32px 32px 0;}
+  .divider{margin:28px 32px 0;}
+  .skip-wrap{padding:26px 32px 52px;}
+  .grid{gap:14px;}
+  .ecard{padding:24px 20px 20px;}
+  .ecard-icon-box{width:50px;height:50px;font-size:1.55rem;border-radius:13px;}
+  .ecard-name{font-size:1.05rem;}
+  .ecard-class{font-size:.80rem;}
+  .ecard-stat{font-size:.78rem;}
 }
-@media(min-width:1000px){
-  .hero{padding:40px 0 32px;}
-  .hero h1{font-size:2.8rem;}
-  .body{max-width:1060px;margin:0 auto;padding:28px 0 0;}
-  .hero-inner{max-width:1060px;margin:0 auto;padding:0 40px;}
-  .hero{padding-left:40px;padding-right:40px;}
-  .card{padding:22px 16px 18px;}
-  .ci{font-size:2.2rem;}
-  .cn{font-size:1rem;}
-  .cs{font-size:.88rem;}
-  .ct{font-size:.82rem;}
-  .sec-txt{font-size:.86rem;}
-  .g2{max-width:460px;}
+@media(min-width:1100px){
+  .hero h1{font-size:2.9rem;}
+  .hero-inner{max-width:700px;}
+  .section{padding:36px 0 0;max-width:1060px;margin-left:auto;margin-right:auto;}
+  .divider{max-width:1060px;margin-left:auto;margin-right:auto;}
+  .skip-wrap{max-width:1060px;margin-left:auto;margin-right:auto;text-align:left;}
+  body{padding:0 40px;}
+  .hero{padding:64px 40px 52px;}
+  .nav{padding:0 40px;}
+  .g3{grid-template-columns:repeat(3,1fr);}
+  .g2{grid-template-columns:repeat(2,1fr);max-width:500px;}
+  .ecard-name{font-size:1.05rem;}
 }
-@media(min-width:1300px){
-  .hero-inner,.body{max-width:1200px;}
+@media(min-width:1400px){
+  body{padding:0 60px;}
+  .section,.divider{max-width:1200px;}
+  .hero h1{font-size:3.2rem;}
+  .hero-inner{max-width:800px;}
+  .ecard{padding:26px 22px 22px;}
 }
-/* small mobile — keep 3 col for competitive */
-@media(max-width:400px){
-  .card{padding:13px 7px 11px;}
-  .ci{font-size:1.6rem;}
-  .cn{font-size:.82rem;}
-  .cs{font-size:.78rem;}
-  .ct{font-size:.78rem;padding:3px 9px;}
+
+/* Mobile compact */
+@media(max-width:480px){
+  .ecard{padding:14px 10px 13px;}
+  .ecard-icon-box{width:38px;height:38px;font-size:1.25rem;margin-bottom:9px;border-radius:10px;}
+  .ecard-name{font-size:.86rem;}
+  .ecard-class{font-size:.78rem;margin-bottom:6px;}
+  .ecard-stats{gap:4px;margin-bottom:7px;}
+  .ecard-stat{font-size:.78rem;padding:2px 6px;}
+  .ecard-tag{font-size:.78rem;padding:3px 8px;}
+  .ecard-arrow{width:22px;height:22px;font-size:.78rem;}
+  .hero{padding:28px 16px 24px;}
+  .section{padding:20px 16px 0;}
+  .divider{margin:18px 16px 0;}
+  .skip-wrap{padding:16px 16px 36px;}
+  .trust-item{font-size:.76rem;}
+}
+@media(max-width:360px){
+  .g3{grid-template-columns:repeat(2,1fr);}
 }
 </style>
 </head>
@@ -219,101 +279,152 @@ body{
 
 <!-- NAV -->
 <nav class="nav">
-  <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
+  <a href="index.html" class="nav-brand">Mock<span>Arena</span></a>
   <div class="nav-av" id="navAv">S</div>
 </nav>
 
 <!-- HERO -->
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-badge">
-      <div class="hero-badge-dot"></div>
-      <span class="hero-badge-txt">Tap your exam — opens instantly</span>
+    <div class="hero-eyebrow">
+      <div class="hero-dot"></div>
+      <span class="hero-eyebrow-txt">India's Smartest Exam Prep</span>
     </div>
-    <h1>Which exam are<br/>you <span class="g1">preparing</span> <span class="g2">for?</span></h1>
-    <p class="hero-p">Your personalised chapters, mock tests and PYQ papers open the moment you tap.</p>
+    <h1>Choose Your <span class="c1">Exam</span><br/>Get <span class="c2">Started Free.</span></h1>
+    <p class="hero-sub">Tap your exam below — your personalised chapter tests, full mock tests and previous year papers open instantly.</p>
+    <div class="hero-trust">
+      <div class="trust-item"><span>✓</span> 50,000+ Students</div>
+      <div class="trust-item"><span>✓</span> Free Forever</div>
+      <div class="trust-item"><span>✓</span> No Credit Card</div>
+    </div>
     <p class="hero-greet" id="greetEl"></p>
   </div>
 </div>
 
-<!-- BODY -->
-<div class="body">
-
-  <!-- COMPETITIVE -->
-  <div class="sec">
-    <span class="sec-icon">🎯</span>
-    <span class="sec-txt">Competitive Exams — Class 11 &amp; 12</span>
+<!-- COMPETITIVE EXAMS -->
+<div class="section">
+  <div class="sec-hdr">
+    <div class="sec-label">🎯 Competitive Exams</div>
+    <div class="sec-title">Class 11 &amp; 12 — Engineering &amp; Medical</div>
+    <div class="sec-sub">Full chapter tests, mock exams and 11 years of PYQ papers</div>
   </div>
-  <div class="g3">
-    <div class="card ac-jm" onclick="go('jee_main.html','JEE Mains')">
-      <span class="ci">⚡</span>
-      <div class="cn">JEE Mains</div>
-      <div class="cs">Cl. 11–12 · PCM</div>
-      <span class="ct">NITs + IIITs</span>
+  <div class="grid g3">
+
+    <div class="ecard e-jm" onclick="go('jee_main.html','JEE Mains')">
+      <div class="ecard-icon-box">⚡</div>
+      <div class="ecard-arrow">→</div>
+      <div class="ecard-name">JEE Mains</div>
+      <div class="ecard-class">Class 11–12 · PCM</div>
+      <div class="ecard-stats">
+        <span class="ecard-stat">90 Qs</span>
+        <span class="ecard-stat">300 Marks</span>
+        <span class="ecard-stat">3 Hrs</span>
+      </div>
+      <span class="ecard-tag">NITs + IIITs</span>
     </div>
-    <div class="card ac-ja" onclick="go('jee_advanced.html','JEE Advanced')">
-      <span class="ci">🏛️</span>
-      <div class="cn">JEE Advanced</div>
-      <div class="cs">Cl. 11–12 · PCM</div>
-      <span class="ct">23 IITs</span>
+
+    <div class="ecard e-ja" onclick="go('jee_advanced.html','JEE Advanced')">
+      <div class="ecard-icon-box">🏛️</div>
+      <div class="ecard-arrow">→</div>
+      <div class="ecard-name">JEE Advanced</div>
+      <div class="ecard-class">Class 11–12 · PCM</div>
+      <div class="ecard-stats">
+        <span class="ecard-stat">2 Papers</span>
+        <span class="ecard-stat">6 Hrs</span>
+      </div>
+      <span class="ecard-tag">23 IITs</span>
     </div>
-    <div class="card ac-nu" onclick="go('neet_ug.html','NEET UG')">
-      <span class="ci">🩺</span>
-      <div class="cn">NEET UG</div>
-      <div class="cs">Cl. 11–12 · PCB</div>
-      <span class="ct">AIIMS</span>
+
+    <div class="ecard e-nu" onclick="go('neet_ug.html','NEET UG')">
+      <div class="ecard-icon-box">🩺</div>
+      <div class="ecard-arrow">→</div>
+      <div class="ecard-name">NEET UG</div>
+      <div class="ecard-class">Class 11–12 · PCB</div>
+      <div class="ecard-stats">
+        <span class="ecard-stat">180 Qs</span>
+        <span class="ecard-stat">720 Marks</span>
+      </div>
+      <span class="ecard-tag">AIIMS + 660 Colleges</span>
     </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- FOUNDATION -->
+<div class="section" style="background:white;">
+  <div class="sec-hdr">
+    <div class="sec-label">🔬 Foundation</div>
+    <div class="sec-title">Class 8, 9 &amp; 10 — Start Early</div>
+    <div class="sec-sub">Build strong fundamentals before Class 11</div>
+  </div>
+  <div class="grid g2">
+
+    <div class="ecard e-nf" onclick="go('neet_foundation.html','NEET Foundation')">
+      <div class="ecard-icon-box">🔬</div>
+      <div class="ecard-arrow">→</div>
+      <div class="ecard-name">NEET Foundation</div>
+      <div class="ecard-class">Class 8–10</div>
+      <div class="ecard-stats">
+        <span class="ecard-stat">Biology + Science</span>
+      </div>
+      <span class="ecard-tag">Future Doctor</span>
+    </div>
+
+    <div class="ecard e-jf" onclick="go('jee_foundation.html','JEE Foundation')">
+      <div class="ecard-icon-box">📐</div>
+      <div class="ecard-arrow">→</div>
+      <div class="ecard-name">JEE Foundation</div>
+      <div class="ecard-class">Class 8–10</div>
+      <div class="ecard-stats">
+        <span class="ecard-stat">Maths + Physics</span>
+      </div>
+      <span class="ecard-tag">Future IITian</span>
+    </div>
+
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- BOARDS -->
+<div class="section section-last" style="background:var(--cream);">
+  <div class="sec-hdr">
+    <div class="sec-label">📋 Board Exams</div>
+    <div class="sec-title">CBSE &amp; State Board Preparation</div>
+    <div class="sec-sub">Chapter tests and previous year board papers</div>
+  </div>
+  <div class="grid g2">
+
+    <div class="ecard e-b12" onclick="go('boards_12.html','Class 12 Boards')">
+      <div class="ecard-icon-box">🎓</div>
+      <div class="ecard-arrow">→</div>
+      <div class="ecard-name">Class 12</div>
+      <div class="ecard-class">CBSE / State Boards</div>
+      <div class="ecard-stats">
+        <span class="ecard-stat">PCM or PCB</span>
+      </div>
+      <span class="ecard-tag">Class 12</span>
+    </div>
+
+    <div class="ecard e-b10" onclick="go('boards_10.html','Class 10 Boards')">
+      <div class="ecard-icon-box">📘</div>
+      <div class="ecard-arrow">→</div>
+      <div class="ecard-name">Class 10</div>
+      <div class="ecard-class">CBSE / State Boards</div>
+      <div class="ecard-stats">
+        <span class="ecard-stat">All Subjects</span>
+      </div>
+      <span class="ecard-tag">Class 10</span>
+    </div>
+
   </div>
 
-  <div class="dvd"></div>
-
-  <!-- FOUNDATION -->
-  <div class="sec">
-    <span class="sec-icon">🔬</span>
-    <span class="sec-txt">Foundation — Class 8, 9 &amp; 10</span>
+  <!-- Skip -->
+  <div class="skip-wrap">
+    <button class="skip-btn" onclick="skipNow()">Not sure yet — explore the platform →</button>
   </div>
-  <div class="g2">
-    <div class="card ac-nf" onclick="go('neet_foundation.html','NEET Foundation')">
-      <span class="ci">🔬</span>
-      <div class="cn">NEET Foundation</div>
-      <div class="cs">Class 8–10</div>
-      <span class="ct">Future Doctor</span>
-    </div>
-    <div class="card ac-jf" onclick="go('jee_foundation.html','JEE Foundation')">
-      <span class="ci">📐</span>
-      <div class="cn">JEE Foundation</div>
-      <div class="cs">Class 8–10</div>
-      <span class="ct">Future IITian</span>
-    </div>
-  </div>
-
-  <div class="dvd"></div>
-
-  <!-- BOARDS -->
-  <div class="sec">
-    <span class="sec-icon">📋</span>
-    <span class="sec-txt">Board Exams — Class 10 &amp; 12</span>
-  </div>
-  <div class="g2b">
-    <div class="card ac-b12" onclick="go('boards_12.html','Class 12 Boards')">
-      <span class="ci">🎓</span>
-      <div class="cn">Class 12</div>
-      <div class="cs">CBSE / State Boards</div>
-      <span class="ct">Class 12</span>
-    </div>
-    <div class="card ac-b10" onclick="go('boards_10.html','Class 10 Boards')">
-      <span class="ci">📘</span>
-      <div class="cn">Class 10</div>
-      <div class="cs">CBSE / State Boards</div>
-      <span class="ct">Class 10</span>
-    </div>
-  </div>
-
-  <!-- SKIP -->
-  <div class="skip-area">
-    <button class="skip-btn" onclick="skipNow()">Not sure yet — explore first →</button>
-  </div>
-
 </div>
 
 <!-- LOADER -->
@@ -356,10 +467,23 @@ onAuthStateChanged(auth, async(user)=>{
   }
   const name=(user.displayName||user.email?.split('@')[0]||'Student').split(' ')[0];
   const el=document.getElementById('greetEl');
-  if(el) el.innerHTML=`Hi <strong>${name}</strong> 👋 tap to begin`;
+  if(el) el.innerHTML=`Hi <strong>${name}</strong> — tap your exam to begin 👇`;
+
+  // Highlight current exam if already set
   try{
     const snap=await getDoc(doc(db,'users',user.uid));
-    if(snap.exists()&&snap.data().stream) window.location.href='mockarena_dashboard.html';
+    if(snap.exists()&&snap.data().stream){
+      const cur=snap.data().stream;
+      document.querySelectorAll('.ecard').forEach(c=>{
+        const fn=c.getAttribute('onclick')||'';
+        if(fn.includes(cur)){
+          c.style.borderColor='var(--sage)';
+          c.style.boxShadow='0 8px 28px rgba(107,143,94,.2)';
+          c.querySelector('.ecard-arrow').style.background='var(--sage)';
+          c.querySelector('.ecard-arrow').style.color='white';
+        }
+      });
+    }
   }catch(e){}
 });
 
