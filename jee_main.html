@@ -313,7 +313,7 @@ section{padding:72px 24px;}
 .sec-hdr-right a{font-size:.82rem;font-weight:700;color:var(--sage);}
 
 /* ══ EXAM OVERVIEW CARDS ══ */
-.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:36px;}
+.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:36px;}
 .ov-card{
   background:white;border:1px solid var(--border);border-radius:16px;
   padding:24px;position:relative;overflow:hidden;transition:all .22s;
@@ -664,7 +664,7 @@ section{padding:72px 24px;}
 @media(min-width:1024px){
   .nav-link{font-size:.80rem;padding:5px 11px;}
   .nav-dash{font-size:.82rem;padding:7px 16px;}
-  section{padding:72px 32px;}
+  section{padding:72px 40px;}
   .ssub{font-size:.98rem;}
   .ov-desc,.mark-desc,.tip-desc,.mc-desc{font-size:.88rem;}
   .ch-name{font-size:.92rem;}
@@ -683,7 +683,7 @@ section{padding:72px 24px;}
 /* ══ DESKTOP MAX COLUMN CAPS ══ */
 @media(min-width:1100px){
   .ov-grid{grid-template-columns:repeat(3,1fr);}
-  .mark-grid{grid-template-columns:repeat(3,1fr);}
+  .mark-grid{grid-template-columns:repeat(5,1fr);}
   .tips-grid{grid-template-columns:repeat(3,1fr);}
   .ch-grid{grid-template-columns:repeat(3,1fr);}
   .mock-grid{grid-template-columns:repeat(3,1fr);}
@@ -698,12 +698,26 @@ section{padding:72px 24px;}
   .hero-inner{max-width:680px;}
 }
 @media(min-width:1100px){
-  .hero-title{font-size:3.4rem;}
-  .hero-stat-bar{max-width:520px;margin:0;}
-  .hero-stats-row{max-width:600px;justify-content:flex-start;}
-  .hero-inner{max-width:760px;text-align:left;}
+  .hero{padding:80px 40px 72px;justify-content:flex-start;}
+  .hero-inner{
+    max-width:1100px;width:100%;
+    text-align:left;
+    display:grid;
+    grid-template-columns:1fr 380px;
+    gap:48px;
+    align-items:center;
+  }
+  .hero-left{display:flex;flex-direction:column;}
+  .hero-title{font-size:3.2rem;}
+  .hero-sub{margin:0 0 22px;max-width:480px;}
+  .hero-stats-row{justify-content:flex-start;margin-bottom:22px;}
   .hero-btns{justify-content:flex-start;}
-  .hero-sub{margin:0 0 24px;}
+  .hero-stat-bar{max-width:100%;margin:0;}
+  .hero-right{display:flex;flex-direction:column;gap:16px;}
+}
+@media(min-width:768px) and (max-width:1099px){
+  .hero-inner{max-width:680px;text-align:center;}
+  .hero-right{display:none;}
 }
 </style>
 </head>
@@ -756,40 +770,35 @@ section{padding:72px 24px;}
   
   
   <div class="hero-inner">
-
-<!-- Title -->
-    <h1 class="hero-title">
-      Crack <span class="ht1">JEE Mains</span><br>
-      Secure Your <span class="ht2">IIT Seat</span>
-    </h1>
-
-    <!-- Subtitle -->
-    <p class="hero-sub">The most complete JEE Mains prep platform — chapter tests, full mocks, PYQ papers and real-time analytics, all in one place.</p>
-
-    <!-- Quick exam stats -->
-    <div class="hero-stats-row">
-      <div class="hsr-item"><span class="hsr-val g">90 Qs</span><span class="hsr-lbl">Questions</span></div>
-      <div class="hsr-item"><span class="hsr-val">3 Hrs</span><span class="hsr-lbl">Duration</span></div>
-      <div class="hsr-item"><span class="hsr-val gold">300</span><span class="hsr-lbl">Max Marks</span></div>
-      <div class="hsr-item"><span class="hsr-val g">+4</span><span class="hsr-lbl">Correct</span></div>
-      <div class="hsr-item"><span class="hsr-val r">−1</span><span class="hsr-lbl">Wrong MCQ</span></div>
+    <!-- LEFT: title + subtitle + stats + buttons -->
+    <div class="hero-left">
+      <h1 class="hero-title">
+        Crack <span class="ht1">JEE Mains</span><br/>
+        Secure Your <span class="ht2">IIT Seat</span>
+      </h1>
+      <p class="hero-sub">The most complete JEE Mains prep platform — chapter tests, full mocks, PYQ papers and real-time analytics, all in one place.</p>
+      <div class="hero-stats-row">
+        <div class="hsr-item"><span class="hsr-val g">90 Qs</span><span class="hsr-lbl">Questions</span></div>
+        <div class="hsr-item"><span class="hsr-val">3 Hrs</span><span class="hsr-lbl">Duration</span></div>
+        <div class="hsr-item"><span class="hsr-val gold">300</span><span class="hsr-lbl">Max Marks</span></div>
+        <div class="hsr-item"><span class="hsr-val g">+4</span><span class="hsr-lbl">Correct</span></div>
+        <div class="hsr-item"><span class="hsr-val r">−1</span><span class="hsr-lbl">Wrong MCQ</span></div>
+      </div>
+      <div class="hero-btns">
+        <a href="#mocks" class="btn-primary">🚀 Take Full Mock Test</a>
+        <a href="#chapters" class="btn-secondary">📚 Chapter Tests</a>
+        <a href="#overview" class="btn-outline">📋 Exam Details</a>
+      </div>
     </div>
-
-    <!-- Buttons -->
-    <div class="hero-btns">
-      <a href="#mocks" class="btn-primary">🚀 Take Full Mock Test</a>
-      <a href="#chapters" class="btn-secondary">📚 Chapter Tests</a>
-      <a href="#overview" class="btn-outline">📋 Exam Details</a>
+    <!-- RIGHT: stat bar (desktop only) -->
+    <div class="hero-right">
+      <div class="hero-stat-bar" style="grid-template-columns:repeat(2,1fr);">
+        <div class="hsb-item"><span class="hsb-n">26+</span><span class="hsb-l">Chapters Live</span></div>
+        <div class="hsb-item"><span class="hsb-n">780+</span><span class="hsb-l">Practice Qs</span></div>
+        <div class="hsb-item"><span class="hsb-n">11 Yrs</span><span class="hsb-l">PYQ Papers</span></div>
+        <div class="hsb-item"><span class="hsb-n">Free</span><span class="hsb-l">Full Access</span></div>
+      </div>
     </div>
-
-    <!-- Stat bar -->
-    <div class="hero-stat-bar">
-      <div class="hsb-item"><span class="hsb-n">26+</span><span class="hsb-l">Chapters Live</span></div>
-      <div class="hsb-item"><span class="hsb-n">780+</span><span class="hsb-l">Practice Qs</span></div>
-      <div class="hsb-item"><span class="hsb-n">11 Yrs</span><span class="hsb-l">PYQ Papers</span></div>
-      <div class="hsb-item"><span class="hsb-n">Free</span><span class="hsb-l">Full Access</span></div>
-    </div>
-
   </div>
 </section>
 <!-- EXAM OVERVIEW -->
