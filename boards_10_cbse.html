@@ -345,7 +345,7 @@ section{padding:56px 20px;}
     <div class="hero-left">
       <div class="hero-tag">
         <div class="hero-tag-dot"></div>
-        <span class="hero-tag-txt">CBSE Class 10 · Board Examination 2026</span>
+        <span class="hero-tag-txt">CBSE Class 10 · Board Examinations 2015–2026</span>
       </div>
       <h1 class="hero-title">
         Score Big in<br/>
@@ -357,7 +357,7 @@ section{padding:56px 20px;}
         <a href="#upload" class="btn-secondary">📤 Upload Answer Sheet</a>
       </div>
       <div class="hero-trust">
-        <div class="trust-item"><span>✓</span> 2015–2024 Papers</div>
+        <div class="trust-item"><span>✓</span> 2015–2026 Papers</div>
         <div class="trust-item"><span>✓</span> Delhi + Outside Delhi</div>
         <div class="trust-item"><span>✓</span> Full Solutions</div>
         <div class="trust-item"><span>✓</span> Free</div>
@@ -367,7 +367,7 @@ section{padding:56px 20px;}
       <div class="hero-stat-card">
         <div class="hsc-title">Class 10 at a Glance</div>
         <div class="hsc-grid">
-          <div class="hsc-item"><span class="hsc-n">10 Yrs</span><span class="hsc-l">PYQ Papers</span></div>
+          <div class="hsc-item"><span class="hsc-n">11 Yrs</span><span class="hsc-l">PYQ Papers</span></div>
           <div class="hsc-item"><span class="hsc-n">2 Sets</span><span class="hsc-l">Delhi + OD</span></div>
           <div class="hsc-item"><span class="hsc-n">80</span><span class="hsc-l">Theory Marks</span></div>
           <div class="hsc-item"><span class="hsc-n">20</span><span class="hsc-l">Internal</span></div>
@@ -392,7 +392,7 @@ section{padding:56px 20px;}
 <section id="pyq" style="background:var(--cream-w);">
 <div class="container">
   <div class="sec-label">📄 Previous Year Papers</div>
-  <h2 class="sec-title">CBSE Class 10 Board Papers — 2015 to 2024</h2>
+  <h2 class="sec-title">CBSE Class 10 Board Papers — 2015 to 2026</h2>
   <p class="sec-sub">Question papers and step-by-step solutions for both Delhi and Outside Delhi sets. All papers link directly to the official CBSE academic website (cbseacademic.nic.in) and trusted free sources.</p>
 
   <!-- Subject Tabs -->
@@ -496,7 +496,7 @@ section{padding:56px 20px;}
           <label class="form-label">Year of Paper</label>
           <select class="form-select" id="up-year">
             <option value="">Select year</option>
-            <option>2024</option><option>2023</option><option>2022</option>
+            <option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option>
             <option>2020</option><option>2019</option><option>2018</option>
             <option>2017</option><option>2016</option><option>2015</option>
           </select>
@@ -675,11 +675,13 @@ onAuthStateChanged(auth,(user)=>{
 });
 
 // ── ALL DATA FIRST ──
-const YEARS=[2024,2023,2022,2020,2019,2018,2017,2016,2015];
+const YEARS=[2026,2025,2024,2023,2022,2020,2019,2018,2017,2016,2015];
 let currentSubject='Mathematics';
 let currentIcon='📐';
 
 const CBSE_URLS={
+  2026:'https://cbseacademic.nic.in/Question_Paper2026.html',
+  2025:'https://cbseacademic.nic.in/Question_Paper2025.html',
   2024:'https://cbseacademic.nic.in/Question_Paper2024.html',
   2023:'https://cbseacademic.nic.in/Question_Paper2023.html',
   2022:'https://cbseacademic.nic.in/Question_Paper2022.html',
