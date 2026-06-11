@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Class 12 State Boards — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --forest:#1a2618;--sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-g:rgba(107,143,94,.2);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.08);
+  --rose:#c84b4b;--sky:#3b82c4;--sky-l:rgba(59,130,196,.1);
+  --cream:#faf9f5;--cream-w:#f5f3ec;
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.13);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.64);--txt-lo:rgba(26,38,24,.44);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--txt);overflow-x:hidden;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;font-size:16px;line-height:1.6;}
+a,a:hover,a:visited{text-decoration:none;color:inherit;}
+
+/* ── NAV ── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  height:60px;background:rgba(26,38,24,.97);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(107,143,94,.12);
+  display:flex;align-items:center;padding:0 20px;gap:10px;
+}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.nav-n1{color:white;font-size:1.05rem;font-weight:900;letter-spacing:-.02em;}
+.nav-n2{font-size:1rem;font-weight:900;color:var(--sage);}
+.nav-pill{
+  display:flex;align-items:center;gap:6px;
+  background:rgba(107,143,94,.12);border:1px solid rgba(107,143,94,.2);
+  border-radius:100px;padding:4px 12px;margin-left:6px;
+}
+.nav-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);animation:np 2.5s ease-in-out infinite;}
+@keyframes np{0%,100%{opacity:1;}50%{opacity:.2;}}
+.nav-pill-txt{font-size:.94rem;font-weight:700;color:rgba(255,255,255,.9);}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:16px;}
+.nav-link{font-size:.94rem;font-weight:600;color:rgba(255,255,255,.65);padding:5px 10px;border-radius:7px;transition:all .18s;white-space:nowrap;}
+.nav-link:hover{color:white;background:rgba(255,255,255,.07);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-switch{font-family:var(--fd);font-size:.94rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.78);cursor:pointer;white-space:nowrap;transition:all .18s;text-decoration:none;}
+.nav-switch:hover{background:rgba(255,255,255,.12);color:white;}
+.nav-dash{font-family:var(--fd);font-size:.94rem;font-weight:700;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;border:none;cursor:pointer;white-space:nowrap;text-decoration:none;}
+.nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4a035);display:flex;align-items:center;justify-content:center;font-size:.94rem;font-weight:700;color:black;overflow:hidden;flex-shrink:0;}
+.nav-ham{display:none;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);align-items:center;justify-content:center;font-size:1rem;color:white;cursor:pointer;flex-shrink:0;}
+@media(max-width:960px){.nav-links{display:none;}.nav-ham{display:flex;}}
+
+
+/* ── SECTION JUMP BAR (mobile) ── */
+.jump-bar{
+  display:flex;gap:8px;flex-wrap:nowrap;
+  overflow-x:auto;padding:14px 16px;
+  background:white;border-bottom:1px solid var(--border);
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+}
+.jump-bar::-webkit-scrollbar{display:none;}
+.jump-btn{
+  font-family:var(--fd);font-size:.96rem;font-weight:700;
+  padding:9px 18px;border-radius:100px;
+  border:1.5px solid var(--border);
+  background:var(--cream-w);color:var(--txt);
+  white-space:nowrap;cursor:pointer;
+  transition:all .18s;flex-shrink:0;
+  text-decoration:none;display:inline-block;
+}
+.jump-btn:hover{border-color:var(--sage);color:var(--sage);background:white;}
+.jump-btn.active{background:var(--forest);color:white;border-color:var(--forest);}
+
+/* ── HERO ── */
+.hero{
+  min-height:auto;
+  background:var(--cream);
+  border-bottom:1px solid var(--border);
+  padding:clamp(90px,10vh,116px) 20px clamp(52px,6vh,72px);
+}
+.hero-inner{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center;}
+.hero-left{max-width:600px;}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--sage-l);border:1px solid rgba(107,143,94,.22);border-radius:100px;padding:5px 16px;margin-bottom:18px;}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:np 2.5s ease-in-out infinite;}
+.hero-tag-txt{font-size:.94rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.06em;}
+.hero-title{font-size:clamp(2.1rem,4vw,3.2rem);font-weight:900;color:var(--forest);line-height:1.06;letter-spacing:-.03em;margin-bottom:14px;}
+.hero-title .h1{color:var(--sage);}
+.hero-title .h2{color:var(--gold);}
+.hero-sub{font-size:1.02rem;color:var(--txt-m);line-height:1.78;margin-bottom:24px;font-weight:500;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:28px;}
+.btn-primary{font-family:var(--fd);font-size:.94rem;font-weight:800;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-g);text-decoration:none;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--sage-g);}
+.btn-secondary{font-family:var(--fd);font-size:.94rem;font-weight:700;padding:12px 22px;border-radius:11px;border:1.5px solid var(--bm);background:white;color:var(--txt);cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;text-decoration:none;}
+.btn-secondary:hover{border-color:var(--sage);color:var(--sage);}
+.hero-trust{display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.trust-item{font-size:.96rem;font-weight:600;color:var(--txt-m);display:flex;align-items:center;gap:5px;}
+.trust-item span{color:var(--sage);font-weight:700;}
+
+/* Hero right — stat card */
+.hero-right{flex-shrink:0;}
+.hero-stat-card{
+  background:white;border:1.5px solid var(--border);
+  border-radius:18px;padding:22px;
+  min-width:220px;
+  box-shadow:0 4px 20px rgba(26,38,24,.07);
+}
+.hsc-title{font-size:.94rem;font-weight:700;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.07em;margin-bottom:16px;}
+.hsc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-radius:12px;overflow:hidden;}
+.hsc-item{background:var(--cream-w);padding:14px 12px;text-align:center;}
+.hsc-n{font-family:var(--fm);font-size:1.1rem;font-weight:800;color:var(--forest);display:block;margin-bottom:2px;}
+.hsc-l{font-size:.94rem;font-weight:600;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.04em;}
+
+/* Mobile hero — stack */
+@media(max-width:768px){
+  .hero-inner{grid-template-columns:1fr;gap:24px;}
+  .hero-right{display:none;}
+  .hero-title{font-size:2.2rem;}
+}
+
+/* ── SHARED ── */
+section{padding:56px 20px;}
+.container{max-width:1060px;margin:0 auto;}
+.sec-label{font-size:.96rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sage);margin-bottom:8px;}
+.sec-title{font-size:clamp(1.5rem,2.4vw,1.95rem);font-weight:800;color:var(--forest);line-height:1.18;margin-bottom:8px;letter-spacing:-.02em;}
+.sec-sub{font-size:1rem;color:var(--txt-m);line-height:1.78;margin-bottom:28px;}
+
+/* ── SUBJECT TABS ── */
+.subj-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.subj-tab{
+  font-family:var(--fd);font-size:.92rem;font-weight:700;
+  padding:10px 20px;border-radius:10px;
+  border:1.5px solid var(--border);
+  background:white;color:var(--txt-m);
+  cursor:pointer;transition:all .18s;
+}
+.subj-tab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.subj-tab:hover:not(.on){border-color:var(--sage);color:var(--sage);}
+
+/* ── PYQ PAPER CARDS ── */
+.pyq-grid{display:grid;gap:12px;}
+.pyq-card{
+  background:white;border:1.5px solid var(--border);
+  border-radius:16px;padding:18px 20px;
+  display:grid;grid-template-columns:64px 1fr auto;
+  gap:16px;align-items:center;
+  transition:all .2s;
+  box-shadow:0 1px 4px rgba(26,38,24,.05);
+}
+.pyq-card:hover{border-color:var(--sage);box-shadow:0 4px 16px var(--sage-l);}
+
+.pyq-year{
+  width:64px;height:64px;border-radius:14px;
+  background:var(--sage-l);border:1.5px solid rgba(107,143,94,.2);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.pyq-year-n{font-family:var(--fm);font-size:1rem;font-weight:800;color:var(--sage);}
+.pyq-year-l{font-size:.94rem;font-weight:600;color:var(--txt-lo);}
+
+.pyq-info{min-width:0;}
+.pyq-title{font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.pyq-meta{font-size:.96rem;color:var(--txt-m);margin-bottom:9px;line-height:1.6;}
+.pyq-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.pyq-tag{font-size:.92rem;font-weight:600;padding:4px 11px;border-radius:100px;background:var(--cream-w);color:var(--txt-m);border:1px solid var(--border);}
+.pyq-tag.d{background:var(--sky-l);color:var(--sky);border-color:rgba(59,130,196,.2);}
+.pyq-tag.o{background:rgba(200,150,42,.08);color:var(--gold);border-color:rgba(200,150,42,.2);}
+
+.pyq-actions{display:flex;flex-direction:column;gap:7px;flex-shrink:0;}
+.pyq-btn{
+  font-family:var(--fd);font-size:.94rem;font-weight:700;
+  padding:10px 18px;border-radius:9px;
+  border:1.5px solid var(--border);
+  background:white;color:var(--txt);
+  cursor:pointer;transition:all .18s;
+  white-space:nowrap;text-align:center;
+}
+.pyq-btn:hover{border-color:var(--sage);color:var(--sage);}
+.pyq-btn.practice{background:linear-gradient(135deg,var(--sage),#3a6830);color:white;border-color:transparent;}
+.pyq-btn.practice:hover{box-shadow:0 4px 14px var(--sage-g);}
+.pyq-btn.sol{background:var(--gold-l);color:var(--gold);border-color:rgba(200,150,42,.2);}
+
+/* Mobile PYQ card */
+@media(max-width:600px){
+  .pyq-card{grid-template-columns:1fr;gap:12px;}
+  .pyq-year{width:100%;height:auto;flex-direction:row;gap:8px;padding:10px 14px;border-radius:10px;}
+  .pyq-actions{flex-direction:row;flex-wrap:wrap;}
+}
+
+/* ── WEIGHTAGE ── */
+.wt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.wt-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(26,38,24,.05);}
+.wt-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.wt-chapter{font-size:1rem;font-weight:800;color:var(--forest);}
+.wt-marks{font-family:var(--fm);font-size:.94rem;font-weight:700;color:var(--sage);background:var(--sage-l);padding:4px 10px;border-radius:8px;}
+.wt-bar-wrap{height:6px;background:rgba(26,38,24,.07);border-radius:100px;margin-bottom:8px;overflow:hidden;}
+.wt-bar{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--sage),#4a8a3d);transition:width 1s ease;}
+.wt-meta{font-size:.94rem;color:var(--txt-m);}
+
+/* ── SAMPLE PAPERS ── */
+.sample-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+@media(min-width:1100px){.sample-grid{grid-template-columns:repeat(4,1fr);}}
+.sample-card{
+  background:white;border:1.5px solid var(--border);
+  border-radius:16px;padding:22px;
+  transition:all .2s;cursor:pointer;
+  box-shadow:0 1px 4px rgba(26,38,24,.05);
+}
+.sample-card:hover{border-color:var(--sage);transform:translateY(-3px);box-shadow:0 6px 20px var(--sage-l);}
+.sample-icon{width:48px;height:48px;border-radius:12px;background:var(--sage-l);display:flex;align-items:center;justify-content:center;font-size:1.4rem;margin-bottom:14px;}
+.sample-title{font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.sample-meta{font-size:.92rem;color:var(--txt-m);line-height:1.65;margin-bottom:16px;}
+.sample-btn{width:100%;font-family:var(--fd);font-size:.92rem;font-weight:700;padding:11px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;transition:all .18s;}
+.sample-btn:hover{box-shadow:0 4px 14px var(--sage-g);}
+
+/* ── UPLOAD SECTION ── */
+.upload-container{
+  display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;
+}
+.upload-left{background:white;border:1.5px solid var(--border);border-radius:18px;padding:28px;box-shadow:0 2px 12px rgba(26,38,24,.06);}
+.upload-right{background:var(--sage-l);border:1.5px solid rgba(107,143,94,.22);border-radius:18px;padding:28px;}
+.upload-area{
+  border:2px dashed var(--bm);border-radius:14px;
+  padding:36px 20px;text-align:center;
+  cursor:pointer;transition:all .22s;
+  background:var(--cream-w);margin-bottom:20px;
+}
+.upload-area:hover,.upload-area.drag{border-color:var(--sage);background:var(--sage-l);}
+.upload-icon{font-size:2.2rem;margin-bottom:10px;}
+.upload-title{font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:6px;}
+.upload-hint{font-size:.92rem;color:var(--txt-m);margin-bottom:14px;line-height:1.65;}
+.upload-cta{font-family:var(--fd);font-size:.96rem;font-weight:700;padding:10px 22px;border-radius:10px;border:none;background:var(--forest);color:white;cursor:pointer;}
+.upload-input{display:none;}
+.form-group{margin-bottom:14px;}
+.form-label{display:block;font-size:.94rem;font-weight:700;color:var(--txt);margin-bottom:6px;}
+.form-select,.form-input{
+  width:100%;font-family:var(--fd);font-size:.96rem;
+  padding:11px 15px;border-radius:10px;
+  border:1.5px solid var(--border);background:var(--cream-w);
+  color:var(--txt);outline:none;transition:border-color .18s;
+}
+.form-select:focus,.form-input:focus{border-color:var(--sage);}
+.form-submit{width:100%;font-family:var(--fd);font-size:1rem;font-weight:800;padding:14px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--gold),#9a6e18);color:black;cursor:pointer;transition:all .2s;margin-top:4px;}
+.form-submit:hover{box-shadow:0 4px 18px rgba(200,150,42,.3);}
+.upload-status{display:none;margin-top:14px;padding:12px 16px;font-size:.94rem;border-radius:10px;font-size:.94rem;font-weight:600;line-height:1.5;}
+.upload-status.ok{background:rgba(107,143,94,.1);color:var(--sage);border:1px solid rgba(107,143,94,.2);}
+.upload-status.err{background:rgba(200,75,75,.08);color:var(--rose);border:1px solid rgba(200,75,75,.2);}
+.how-it-works{list-style:none;}
+.hiw-item{display:flex;gap:12px;margin-bottom:18px;}
+.hiw-num{width:30px;height:30px;border-radius:50%;background:var(--sage);color:white;font-size:.94rem;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.hiw-text{font-size:.96rem;color:var(--forest);line-height:1.65;padding-top:4px;}
+.hiw-text strong{font-weight:800;display:block;margin-bottom:2px;}
+@media(max-width:768px){.upload-container{grid-template-columns:1fr;}}
+
+/* ── STUDY PLAN ── */
+.plan-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.plan-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:22px;box-shadow:0 1px 4px rgba(26,38,24,.05);}
+.plan-week{font-size:.96rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;}
+.plan-title{font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:10px;}
+.plan-items{list-style:none;}
+.plan-item{font-size:.92rem;color:var(--txt-m);padding:6px 0;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
+.plan-item:last-child{border-bottom:none;}
+.plan-item::before{content:'→';color:var(--sage);font-weight:700;flex-shrink:0;}
+@media(max-width:768px){.plan-grid{grid-template-columns:1fr;}}
+
+/* ── TIPS ── */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.tip-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(26,38,24,.05);}
+.tip-icon{font-size:1.6rem;margin-bottom:10px;}
+.tip-title{font-size:1rem;font-weight:800;color:var(--forest);margin-bottom:7px;}
+.tip-body{font-size:.94rem;color:var(--txt-m);line-height:1.72;}
+
+/* ── FOOTER ── */
+.footer{background:var(--forest);color:white;padding:40px 20px 28px;}
+.ft-inner{max-width:1060px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.ft-brand{font-size:1.15rem;font-weight:900;}
+.ft-brand span{color:var(--sage);}
+.ft-desc{font-size:.96rem;color:rgba(255,255,255,.55);margin-top:6px;max-width:300px;line-height:1.65;}
+.ft-links{display:flex;flex-direction:column;gap:8px;}
+.ft-link{font-size:.96rem;color:rgba(255,255,255,.58);transition:color .18s;}
+.ft-link:hover{color:white;}
+.ft-copy{font-size:.94rem;color:rgba(255,255,255,.38);margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.07);width:100%;}
+
+/* ── DESKTOP ── */
+@media(min-width:1100px){
+  section{padding:68px 40px;}
+  .hero{padding:100px 40px 72px;}
+  .hero-title{font-size:3.2rem;}
+  .sec-title{font-size:2rem;}
+  .sec-sub{font-size:1.05rem;}
+  .pyq-title{font-size:1.1rem;}
+  .pyq-meta{font-size:.96rem;}
+  .wt-chapter{font-size:1.05rem;}
+  .sample-title{font-size:1.1rem;}
+  .plan-title{font-size:1.1rem;}
+  .tip-title{font-size:1.05rem;}
+  .tip-body{font-size:.98rem;}
+  .hiw-text{font-size:1rem;}
+  .hero-sub{font-size:1.08rem;}
+  /* PYQ card — keep 3 col layout on desktop */
+  .pyq-card{grid-template-columns:64px 1fr auto;gap:18px;}
+  .pyq-actions{flex-direction:column;gap:8px;min-width:140px;}
+}
+@media(min-width:1400px){
+  .container{max-width:1200px;}
+  section{padding:76px 48px;}
+  .hero-title{font-size:3.5rem;}
+  .sec-title{font-size:2.1rem;}
+}
+@media(max-width:540px){
+  section{padding:40px 16px;}
+  .hero{padding:80px 16px 40px;}
+  .plan-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">
+    <span class="nav-n1">Mock</span><span class="nav-n2">Arena</span>
+  </a>
+  <div class="nav-pill">
+    <div class="nav-pill-dot"></div>
+    <span class="nav-pill-txt">Class 12 · State Board</span>
+  </div>
+  <div class="nav-links">
+    <a href="#pyq" class="nav-link">PYQ Papers</a>
+    <a href="#weightage" class="nav-link">Weightage</a>
+    <a href="#upload" class="nav-link">Upload Answers</a>
+    <a href="#plan" class="nav-link">Study Plan</a>
+  </div>
+  <div class="nav-right">
+    <a href="mockarena_onboarding.html" class="nav-switch">⇄ Switch Exam</a>
+    <a href="mockarena_dashboard.html" class="nav-dash">Dashboard →</a>
+    <div class="nav-av" id="nav-av">S</div>
+    <button class="nav-ham" onclick="toggleMobileNav()">☰</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag">
+        <div class="hero-tag-dot"></div>
+        <span class="hero-tag-txt">State Board Class 12 · Board Examinations</span>
+      </div>
+      <h1 class="hero-title">
+        Score Big in<br/>
+        <span class="h1">Class 12</span> <span class="h2">State Boards.</span>
+      </h1>
+      <p class="hero-sub">Previous year papers for all major state boards — UP, Maharashtra, Rajasthan, MP, Bihar and more. Practice, analyse your weak areas and get your answer sheets evaluated.</p>
+      <div class="hero-btns">
+        <a href="#pyq" class="btn-primary">📄 Previous Year Papers</a>
+        <a href="#upload" class="btn-secondary">📤 Upload Answer Sheet</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><span>✓</span> Multiple States</div>
+        <div class="trust-item"><span>✓</span> Delhi + Outside Delhi</div>
+        <div class="trust-item"><span>✓</span> Full Solutions</div>
+        <div class="trust-item"><span>✓</span> Free</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-card">
+        <div class="hsc-title">State Board Class 12</div>
+        <div class="hsc-grid">
+          <div class="hsc-item"><span class="hsc-n">11 Yrs</span><span class="hsc-l">PYQ Papers</span></div>
+          <div class="hsc-item"><span class="hsc-n">2 Sets</span><span class="hsc-l">All States</span></div>
+          <div class="hsc-item"><span class="hsc-n">80</span><span class="hsc-l">Theory Marks</span></div>
+          <div class="hsc-item"><span class="hsc-n">20</span><span class="hsc-l">Internal</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- SECTION JUMP BAR -->
+<div class="jump-bar">
+  <a href="#pyq" class="jump-btn active">📄 PYQ Papers</a>
+  <a href="#weightage" class="jump-btn">📊 Weightage</a>
+  <a href="#sample" class="jump-btn">✏️ Practice</a>
+  <a href="#upload" class="jump-btn">📤 Upload Answers</a>
+  <a href="#plan" class="jump-btn">📅 Study Plan</a>
+  <a href="#tips" class="jump-btn">💡 Expert Tips</a>
+</div>
+
+<!-- PYQ PAPERS -->
+<section id="pyq" style="background:var(--cream-w);">
+<div class="container">
+  <div class="sec-label">📄 Previous Year Papers</div>
+  <h2 class="sec-title">State Board Class 12 Papers</h2>
+  <p class="sec-sub">Previous year question papers for UP, Maharashtra, Rajasthan, MP, Bihar and Karnataka state boards. Papers link to official state board websites and trusted free sources.</p>
+
+  <!-- Subject Tabs -->
+  <!-- State selector -->
+  <div class="subj-tabs" style="margin-bottom:12px;">
+    <button class="subj-tab on" onclick="setState(this,'UP Board')">UP Board</button>
+    <button class="subj-tab" onclick="setState(this,'Maharashtra')">Maharashtra</button>
+    <button class="subj-tab" onclick="setState(this,'Rajasthan')">Rajasthan</button>
+    <button class="subj-tab" onclick="setState(this,'MP Board')">MP Board</button>
+    <button class="subj-tab" onclick="setState(this,'Bihar')">Bihar</button>
+    <button class="subj-tab" onclick="setState(this,'Karnataka')">Karnataka</button>
+  </div>
+  <div class="subj-tabs">
+    <button class="subj-tab on" onclick="setSubject(this,'Mathematics','📐')">📐 Mathematics</button>
+    <button class="subj-tab" onclick="setSubject(this,'Physics','⚛️')">⚛️ Physics</button>
+    <button class="subj-tab" onclick="setSubject(this,'Chemistry','🧪')">🧪 Chemistry</button>
+    <button class="subj-tab" onclick="setSubject(this,'Biology','🌿')">🌿 Biology</button>
+    <button class="subj-tab" onclick="setSubject(this,'English','📖')">📖 English</button>
+    <button class="subj-tab" onclick="setSubject(this,'Hindi','🗣️')">🗣️ Hindi</button>
+  </div>
+
+  <div class="pyq-grid" id="pyq-grid">
+    <!-- Generated by JS -->
+  </div>
+</div>
+</section>
+
+<!-- CHAPTER WEIGHTAGE -->
+<section id="weightage" style="background:white;">
+<div class="container">
+  <div class="sec-label">📊 Chapter Weightage</div>
+  <h2 class="sec-title">Most Important Topics — State Board Class 12</h2>
+  <p class="sec-sub">Based on analysis of UP Board, Maharashtra Board and other major state board papers. Focus on high-weightage chapters first.</p>
+  <div class="wt-grid" id="wt-grid">
+    <!-- Generated by JS -->
+  </div>
+</div>
+</section>
+
+<!-- SAMPLE PAPERS -->
+<section id="sample" style="background:var(--cream-w);">
+<div class="container">
+  <div class="sec-label">✏️ Practice Tests</div>
+  <h2 class="sec-title">Practice &amp; Sample Papers</h2>
+  <p class="sec-sub">State board sample papers, chapter-wise tests and full mock exams for UP, Maharashtra, Rajasthan and more.</p>
+  <div class="sample-grid">
+    <div class="sample-card" onclick="alert('Chapter tests coming soon!')">
+      <div class="sample-icon">📐</div>
+      <div class="sample-title">Mathematics — Chapter Tests</div>
+      <div class="sample-meta">Real Algebra, Geometry, Trigonometry, Statistics &amp; more based on board pattern</div>
+      <button class="sample-btn">Start Practice →</button>
+    </div>
+    <div class="sample-card" onclick="alert('Chapter tests coming soon!')">
+      <div class="sample-icon">🔬</div>
+      <div class="sample-title">Science — Chapter Tests</div>
+      <div class="sample-meta">Physics, Chemistry &amp; Biology topics as per NCERT and CBSE board pattern</div>
+      <button class="sample-btn">Start Practice →</button>
+    </div>
+    <div class="sample-card" onclick="alert('Chapter tests coming soon!')">
+      <div class="sample-icon">🌍</div>
+      <div class="sample-title">Social Science — Full Tests</div>
+      <div class="sample-meta">History, Geography, Political Science &amp; Economics combined paper practice</div>
+      <button class="sample-btn">Start Practice →</button>
+    </div>
+    <div class="sample-card" onclick="alert('Chapter tests coming soon!')">
+      <div class="sample-icon">📋</div>
+      <div class="sample-title">CBSE Sample Paper 2025–26</div>
+      <div class="sample-meta">Official CBSE sample paper for 2026 board exam — all subjects</div>
+      <button class="sample-btn">Start Practice →</button>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- UPLOAD ANSWER SHEET -->
+<section id="upload" style="background:white;">
+<div class="container">
+  <div class="sec-label">📤 Answer Sheet Evaluation</div>
+  <h2 class="sec-title">Upload Your Answer Sheet</h2>
+  <p class="sec-sub">Write your answers, click a photo or scan and upload. Get detailed marks, feedback and improvement suggestions.</p>
+
+  <div class="upload-container">
+    <!-- Upload form -->
+    <div class="upload-left">
+      <div class="upload-area" id="upload-area"
+        ondragover="event.preventDefault();this.classList.add('drag')"
+        ondragleave="this.classList.remove('drag')"
+        ondrop="handleDrop(event)"
+        onclick="document.getElementById('file-input').click()">
+        <div class="upload-icon">📷</div>
+        <div class="upload-title">Click to upload or drag &amp; drop</div>
+        <div class="upload-hint">Photo or scan of your answer sheet<br/>JPG, PNG or PDF · Max 10MB</div>
+        <button class="upload-cta" type="button">Choose File</button>
+        <input type="file" id="file-input" class="upload-input" accept=".jpg,.jpeg,.png,.pdf" multiple onchange="handleFiles(this)"/>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <select class="form-select" id="up-subject">
+          <option value="">Select subject</option>
+          <option>Mathematics</option>
+          <option>Science</option>
+          <option>Social Science</option>
+          <option>English Language &amp; Literature</option>
+          <option>Hindi Course A</option>
+          <option>Hindi Course B</option>
+        </select>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group">
+          <label class="form-label">Year of Paper</label>
+          <select class="form-select" id="up-year">
+            <option value="">Select year</option>
+            <option>2026</option><option>2025</option><option>2024</option><option>2023</option><option>2022</option>
+            <option>2020</option><option>2019</option><option>2018</option>
+            <option>2017</option><option>2016</option><option>2015</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Paper Set</label>
+          <select class="form-select" id="up-set">
+            <option value="">Select set</option>
+            <option>UP Board</option>
+            <option>Maharashtra Board</option>
+            <option>Rajasthan Board</option>
+            <option>MP Board</option>
+            <option>Bihar Board</option>
+            <option>Karnataka Board</option>
+            <option>Other State Board</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Your Name (optional)</label>
+        <input type="text" class="form-input" id="up-name" placeholder="Enter your name"/>
+      </div>
+      <div class="upload-status" id="upload-status"></div>
+      <button class="form-submit" onclick="submitSheet()">🚀 Submit for Evaluation</button>
+    </div>
+
+    <!-- How it works -->
+    <div class="upload-right">
+      <div class="sec-label" style="margin-bottom:16px;">How it works</div>
+      <ul class="how-it-works">
+        <li class="hiw-item">
+          <div class="hiw-num">1</div>
+          <div class="hiw-text"><strong>Attempt the paper</strong>Write answers on paper using the actual CBSE question paper for the year you selected.</div>
+        </li>
+        <li class="hiw-item">
+          <div class="hiw-num">2</div>
+          <div class="hiw-text"><strong>Photograph your answers</strong>Take a clear photo or scan each page of your answer sheet. Make sure it's legible.</div>
+        </li>
+        <li class="hiw-item">
+          <div class="hiw-num">3</div>
+          <div class="hiw-text"><strong>Upload here</strong>Select subject, year and set, then upload your answer sheet files.</div>
+        </li>
+        <li class="hiw-item">
+          <div class="hiw-num">4</div>
+          <div class="hiw-text"><strong>Get evaluation</strong>Receive detailed marks, question-wise feedback and improvement suggestions within 24 hours.</div>
+        </li>
+      </ul>
+      <div style="background:white;border-radius:12px;padding:14px 16px;margin-top:8px;">
+        <div style="font-size:.96rem;font-weight:700;color:var(--forest);margin-bottom:4px;">✓ What you get</div>
+        <div style="font-size:.96rem;color:var(--txt-m);line-height:1.7;">Question-wise marks · Step marking · Common mistakes · Model answers · Score estimate · Improvement tips</div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- STUDY PLAN -->
+<section id="plan" style="background:var(--cream-w);">
+<div class="container">
+  <div class="sec-label">📅 Study Plan</div>
+  <h2 class="sec-title">90-Day Board Preparation Plan</h2>
+  <p class="sec-sub">A structured 3-month plan to cover the full syllabus, practice PYQ and revise before your State Board Class 12 exam.</p>
+  <div class="plan-grid">
+    <div class="plan-card">
+      <div class="plan-week">Month 1 — Weeks 1–4</div>
+      <div class="plan-title">Concept Building</div>
+      <ul class="plan-items">
+        <li class="plan-item">Complete NCERT for each subject</li>
+        <li class="plan-item">Solve examples &amp; exercises</li>
+        <li class="plan-item">Make formula sheets</li>
+        <li class="plan-item">Chapter tests on MockArena</li>
+        <li class="plan-item">Focus on high-weightage topics</li>
+      </ul>
+    </div>
+    <div class="plan-card">
+      <div class="plan-week">Month 2 — Weeks 5–8</div>
+      <div class="plan-title">PYQ Practice</div>
+      <ul class="plan-items">
+        <li class="plan-item">Solve 2015–2020 papers</li>
+        <li class="plan-item">Both Delhi &amp; Outside Delhi sets</li>
+        <li class="plan-item">Upload answers for evaluation</li>
+        <li class="plan-item">Identify weak chapters</li>
+        <li class="plan-item">Revise mistakes daily</li>
+      </ul>
+    </div>
+    <div class="plan-card">
+      <div class="plan-week">Month 3 — Weeks 9–12</div>
+      <div class="plan-title">Revision &amp; Mock Exams</div>
+      <ul class="plan-items">
+        <li class="plan-item">Solve 2021–2024 papers</li>
+        <li class="plan-item">Full timed mock exams</li>
+        <li class="plan-item">CBSE sample paper 2025–26</li>
+        <li class="plan-item">Final chapter revision</li>
+        <li class="plan-item">Answer writing practice</li>
+      </ul>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- EXAM TIPS -->
+<section id="tips" style="background:white;">
+<div class="container">
+  <div class="sec-label">💡 Expert Tips</div>
+  <h2 class="sec-title">Score 90+ in State Board Class 12</h2>
+  <p class="sec-sub">Proven strategies from students who scored 90%+ in state board exams.</p>
+  <div class="tips-grid">
+    <div class="tip-card">
+      <div class="tip-icon">📝</div>
+      <div class="tip-title">Write Neatly &amp; Structure Answers</div>
+      <div class="tip-body">CBSE awards step marks. Even if your final answer is wrong, neat steps with correct method get you partial marks. Use diagrams wherever possible.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">⏱️</div>
+      <div class="tip-title">Manage Time in the Exam Hall</div>
+      <div class="tip-body">Spend 1.5 minutes per mark. For a 3-mark question — 4.5 minutes max. Don't spend 20 minutes on a question you're stuck on. Move on and come back.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">📋</div>
+      <div class="tip-title">Read the Paper First — 15 Minutes</div>
+      <div class="tip-body">CBSE gives 15 minutes reading time before writing. Use every second. Plan which questions to attempt first and which optional questions to choose.</div>
+    </div>
+    <div class="tip-card">
+      <div class="tip-icon">🔄</div>
+      <div class="tip-title">Revise Using PYQ Solutions</div>
+      <div class="tip-body">CBSE often repeats similar question types. Study the official marking scheme — it shows exactly what points to write for full marks.</div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="ft-inner">
+    <div>
+      <div class="ft-brand">Mock<span>Arena</span></div>
+      <div class="ft-desc">India's smartest exam prep platform. Class 10 State Board preparation — UP, Maharashtra, Rajasthan, MP, Bihar and more.</div>
+    </div>
+    <div class="ft-links">
+      <a href="jee_main.html" class="ft-link">JEE Mains</a>
+      <a href="jee_advanced.html" class="ft-link">JEE Advanced</a>
+      <a href="neet_ug.html" class="ft-link">NEET UG</a>
+      <a href="boards_12.html" class="ft-link">Class 12 Boards</a>
+      <a href="mockarena_dashboard.html" class="ft-link">Dashboard</a>
+    </div>
+    <div class="ft-copy">© 2025 MockArena · All rights reserved</div>
+  </div>
+</footer>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getStorage, ref, uploadBytes, getDownloadURL }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-storage.js";
+
+const app = initializeApp({
+  apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
+  authDomain:"mockarena-c18c4.firebaseapp.com",
+  projectId:"mockarena-c18c4",
+  storageBucket:"mockarena-c18c4.appspot.com",
+  appId:"1:861067164791:web:28df5244e34361dd9d5a72"
+});
+const auth=getAuth(app), db=getFirestore(app), storage=getStorage(app);
+let currentUser=null, selectedFiles=[];
+
+// Auth
+onAuthStateChanged(auth,(user)=>{
+  if(!user) return;
+  currentUser=user;
+  const av=document.getElementById('nav-av');
+  if(av){
+    if(user.photoURL) av.innerHTML=`<img src="${user.photoURL}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;
+    else av.textContent=(user.displayName||'S').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);
+  }
+});
+
+// ── ALL DATA FIRST ──
+const YEARS=[2026,2025,2024,2023,2022,2020,2019,2018,2017,2016,2015];
+let currentSubject='Mathematics';
+let currentIcon='📐';
+
+const CBSE_URLS={
+  2026:'https://upmsp.edu.in/Question-Papers.html',
+  2025:'https://upmsp.edu.in/Question-Papers.html',
+  2024:'https://upmsp.edu.in/Question-Papers.html',
+  2023:'https://upmsp.edu.in/Question-Papers.html',
+  2022:'https://upmsp.edu.in/Question-Papers.html',
+  2020:'https://upmsp.edu.in/Question-Papers.html',
+  2019:'https://upmsp.edu.in/Question-Papers.html',
+  2018:'https://upmsp.edu.in/Question-Papers.html',
+  2017:'https://upmsp.edu.in/Question-Papers.html',
+  2016:'https://upmsp.edu.in/Question-Papers.html',
+  2015:'https://upmsp.edu.in/Question-Papers.html'
+};
+
+const FREE_SOURCES={
+  'Mathematics':  'https://www.vedantu.com/previous-year-question-paper/up-board-class-10-maths-question-paper-',
+  'Science':      'https://www.vedantu.com/previous-year-question-paper/up-board-class-10-science-question-paper-',
+  'Social Science':'https://www.vedantu.com/previous-year-question-paper/up-board-class-10-social-science-question-paper-',
+  'English':      'https://www.vedantu.com/previous-year-question-paper/up-board-class-10-english-question-paper-',
+  'Hindi':        'https://www.vedantu.com/previous-year-question-paper/up-board-class-10-hindi-question-paper-',
+};
+
+// ── PAPER PAGE LINKS (MockArena hosted papers) ──
+const PAPER_PAGES={
+  2024:{
+    'Mathematics':{delhi:'cbse_10_maths_2024_delhi_set1.html', outside:'#'}
+  }
+};
+
+function renderPYQ(){
+  const grid=document.getElementById('pyq-grid');
+  if(!grid) return;
+  grid.innerHTML=YEARS.map(y=>{
+    const pp=PAPER_PAGES[y]&&PAPER_PAGES[y][currentSubject];
+    const hasPaper=pp&&pp.delhi&&pp.delhi!=='#';
+    return `<div class="pyq-card">
+      <div class="pyq-year">
+        <span class="pyq-year-n">${y}</span>
+        <span class="pyq-year-l">CBSE</span>
+      </div>
+      <div class="pyq-info">
+        <div class="pyq-title">${currentIcon} ${currentSubject} — ${y}</div>
+        <div class="pyq-meta">State Board Class 12 · Official Question Paper · With Solutions</div>
+        <div class="pyq-tags">
+          <span class="pyq-tag d">Official Paper</span>
+          <span class="pyq-tag o">With Solutions</span>
+          <span class="pyq-tag">Marking Scheme</span>
+        </div>
+      </div>
+      <div class="pyq-actions">
+        <button class="pyq-btn sol" onclick="downloadPaper(${y},'delhi','${currentSubject}')">⬇ Delhi Paper</button>
+        <button class="pyq-btn sol" onclick="downloadPaper(${y},'outside','${currentSubject}')">⬇ Outside Delhi</button>
+        <button class="pyq-btn" onclick="downloadSolutions(${y},'${currentSubject}')">📋 Solutions</button>
+        ${hasPaper
+          ? `<button class="pyq-btn practice" onclick="window.location='${pp.delhi}'">▶ Practice</button>`
+          : `<button class="pyq-btn practice" onclick="practice(${y},'${currentSubject}')">▶ Practice</button>`
+        }
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.setState=function(btn,state){
+  document.querySelectorAll('.subj-tabs:first-of-type .subj-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  currentState=state;
+  // Update CBSE_URLS to match state
+  var stateUrls={
+    'UP Board':'https://upmsp.edu.in/Question-Papers.html',
+    'Maharashtra':'https://www.mahahsscboard.in/model-paper.html',
+    'Rajasthan':'https://rajeduboard.rajasthan.gov.in/',
+    'MP Board':'https://www.mpbse.nic.in/question-paper.htm',
+    'Bihar':'https://biharboardonline.bihar.gov.in/',
+    'Karnataka':'https://kseab.karnataka.gov.in/'
+  };
+  Object.keys(CBSE_URLS).forEach(function(y){ CBSE_URLS[y]=stateUrls[state]||CBSE_URLS[y]; });
+  renderPYQ();
+};
+let currentState='UP Board';
+
+window.setSubject=function(btn,subj,icon){
+  document.querySelectorAll('.subj-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  currentSubject=subj;
+  currentIcon=icon;
+  renderPYQ();
+};
+
+window.downloadPaper=function(year,set,subject){
+  // Open official CBSE page for that year
+  var url=CBSE_URLS[year];
+  if(url) window.open(url,'_blank');
+  else window.open('https://cbseacademic.nic.in','_blank');
+};
+
+window.downloadSolutions=function(year,subject){
+  var url=CBSE_URLS[year];
+  if(url) window.open(url,'_blank');
+};
+
+window.openFreePaper=function(year,subject){
+  var base=FREE_SOURCES[subject]||FREE_SOURCES['Mathematics'];
+  window.open(base+year,'_blank');
+};
+
+window.practice=function(year,subject){
+  var base=FREE_SOURCES[subject]||'https://www.vedantu.com/previous-year-question-paper/cbse-class-10-maths-question-paper-';
+  window.open(base+year,'_blank');
+};
+
+// Weightage data
+const WEIGHTAGE_CLASS10={
+  Mathematics:[
+    {ch:'Algebra &amp; Polynomials',marks:'15-18',pct:92,note:'Highest weightage'},
+    {ch:'Trigonometry',marks:'12-14',pct:90,note:'Always in exam'},
+    {ch:'Geometry (Triangles &amp; Circles)',marks:'12-14',pct:88,note:'Very important'},
+    {ch:'Mensuration',marks:'10-12',pct:86,note:'High weightage'},
+    {ch:'Statistics &amp; Probability',marks:'8-10',pct:85,note:'Easy marks'},
+    {ch:'Coordinate Geometry',marks:'6-8',pct:82,note:'Medium weightage'},
+    {ch:'Real Numbers',marks:'6-8',pct:80,note:'Always in exam'},
+    {ch:'Quadratic Equations',marks:'8-10',pct:84,note:'Important chapter'},
+    {ch:'Arithmetic Progressions',marks:'6-8',pct:80,note:'Regular feature'},
+    {ch:'Surface Areas &amp; Volumes',marks:'8-10',pct:83,note:'Mensuration — important'},
+  ]
+};
+// Call renders after DOM ready
+renderPYQ();
+
+function renderWeightage(){
+  const data=WEIGHTAGE_CLASS10.Mathematics;
+  document.getElementById('wt-grid').innerHTML=data.map(d=>`
+    <div class="wt-card">
+      <div class="wt-top">
+        <div class="wt-chapter">${d.ch}</div>
+        <div class="wt-marks">${d.marks} marks</div>
+      </div>
+      <div class="wt-bar-wrap"><div class="wt-bar" style="width:0%" data-w="${d.pct}"></div></div>
+      <div class="wt-meta">${d.note} · Appears in ${d.pct}% of papers</div>
+    </div>`).join('');
+  // Animate bars
+  setTimeout(()=>{
+    document.querySelectorAll('.wt-bar').forEach(b=>{
+      b.style.width=b.dataset.w+'%';
+    });
+  },400);
+}
+renderWeightage();
+
+// File handling
+window.handleFiles=function(input){
+  if(input.files.length>0){
+    selectedFiles=Array.from(input.files);
+    document.getElementById('upload-area').querySelector('.upload-hint').textContent=
+      selectedFiles.map(f=>f.name).join(', ')+' selected ✓';
+  }
+};
+window.handleDrop=function(e){
+  e.preventDefault();
+  document.getElementById('upload-area').classList.remove('drag');
+  selectedFiles=Array.from(e.dataTransfer.files);
+  document.getElementById('upload-area').querySelector('.upload-hint').textContent=
+    selectedFiles.map(f=>f.name).join(', ')+' selected ✓';
+};
+
+// Submit
+window.submitSheet=async function(){
+  const subject=document.getElementById('up-subject').value;
+  const year=document.getElementById('up-year').value;
+  const set=document.getElementById('up-set').value;
+  const name=document.getElementById('up-name').value;
+  const status=document.getElementById('upload-status');
+  if(!subject||!year||!set){
+    status.textContent='Please select subject, year and paper set.';
+    status.className='upload-status err';status.style.display='block';return;
+  }
+  if(!selectedFiles.length){
+    status.textContent='Please select your answer sheet file first.';
+    status.className='upload-status err';status.style.display='block';return;
+  }
+  status.textContent='Uploading…';
+  status.className='upload-status ok';status.style.display='block';
+  try{
+    const uid=currentUser?currentUser.uid:'guest_'+Date.now();
+    const urls=[];
+    for(const file of selectedFiles){
+      const r=ref(storage,`answer_sheets/state_class12/${uid}/${Date.now()}_${file.name}`);
+      const snap=await uploadBytes(r,file);
+      urls.push(await getDownloadURL(snap.ref));
+    }
+    await addDoc(collection(db,'answer_sheets'),{
+      uid,subject,year,set,studentName:name,fileUrls:urls,
+      grade:'State Board Class 12',submittedAt:serverTimestamp(),status:'pending'
+    });
+    status.textContent='✓ Submitted! Your answer sheet is under evaluation. Check your dashboard for results within 24 hours.';
+  }catch(e){
+    status.textContent='Error: '+e.message+'. Please try again.';
+    status.className='upload-status err';
+  }
+};
+
+// Mobile nav
+window.toggleMobileNav=function(){
+  const links=document.querySelector('.nav-links');
+  links.style.display=links.style.display==='flex'?'none':'flex';
+};
+  // Force scroll to top on load
+  window.scrollTo(0, 0);
+  history.scrollRestoration = 'manual';
+</script>
+</body>
+</html>
