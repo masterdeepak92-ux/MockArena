@@ -57,7 +57,7 @@ body{
 }
 .nav-logo span{color:var(--sage);}
 .nav-pill{
-  font-size:.84rem;font-weight:800;
+  font-size:.9rem;font-weight:800;
   padding:3px 10px;border-radius:100px;
   background:rgba(200,150,42,.18);
   color:var(--gold);
@@ -73,7 +73,7 @@ body{
 }
 .nav-count strong{color:white;font-weight:800;}
 .nav-home{
-  font-family:var(--fd);font-size:.86rem;font-weight:700;
+  font-family:var(--fd);font-size:.9rem;font-weight:700;
   padding:5px 11px;border-radius:8px;
   border:1px solid rgba(255,255,255,.2);
   background:rgba(255,255,255,.08);
@@ -710,7 +710,7 @@ body{
     font-family:var(--fm);font-size:1.3rem;font-weight:900;
     color:var(--forest);display:block;line-height:1;margin-bottom:3px;
   }
-  .d-stat-l{font-size:.86rem;font-weight:600;color:var(--txt-lo);}
+  .d-stat-l{font-size:.9rem;font-weight:600;color:var(--txt-lo);}
   .d-exam-btns{display:flex;flex-direction:column;gap:4px;}
   .d-exam-btn{
     display:flex;align-items:center;gap:9px;
@@ -723,7 +723,7 @@ body{
   .d-exam-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
   .d-exam-name{font-size:.93rem;font-weight:700;color:var(--txt);flex:1;}
   .d-exam-btn.on .d-exam-name{color:var(--sage);}
-  .d-exam-cnt{font-family:var(--fm);font-size:.86rem;font-weight:700;color:var(--txt-lo);}
+  .d-exam-cnt{font-family:var(--fm);font-size:.9rem;font-weight:700;color:var(--txt-lo);}
 
   /* Right preview */
   .d-prev-title{
@@ -753,7 +753,7 @@ body{
     min-width:22px;height:22px;border-radius:6px;
     border:1.5px solid var(--border-m);
     display:flex;align-items:center;justify-content:center;
-    font-size:.84rem;font-weight:800;color:var(--txt-lo);flex-shrink:0;
+    font-size:.9rem;font-weight:800;color:var(--txt-lo);flex-shrink:0;
   }
 }
 @media(max-width:1099px){
@@ -967,6 +967,7 @@ body{
   <button class="tab" id="pt-upload" onclick="showPage('upload')">📤 Upload</button>
   <button class="tab" id="pt-bank" onclick="showPage('bank')">📋 Question Bank <span class="tab-badge" id="pc-bank">0</span></button>
   <button class="tab" id="pt-build" onclick="showPage('build')">🎯 Build Test</button>
+  <button class="tab" id="pt-teachers" onclick="showPage('teachers')">👨‍🏫 Teachers</button>
 </div>
 
 <!-- DESKTOP SHELL (1100px+) -->
@@ -1003,6 +1004,7 @@ body{
       <button class="d-tab" id="dt-bank" onclick="dShowTab('bank')">📋 Question Bank</button>
       <button class="d-tab" id="dt-upload" onclick="dShowTab('upload')">📤 Upload</button>
       <button class="d-tab" id="dt-build" onclick="dShowTab('build')">🎯 Build Test</button>
+      <button class="d-tab" id="dt-teachers" onclick="dShowTab('teachers')">👨‍🏫 Teachers</button>
     </div>
     <div class="d-content" id="d-pane">
       <!-- filled by JS -->
@@ -1355,6 +1357,66 @@ EXP: By Coulomb's law F ∝ 1/r².</div>
     </div>
     <div class="gen-results" id="gen-results"></div>
     <div class="status" id="build-status" style="margin-top:12px;"></div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════ TEACHERS ═══════════════════════════ -->
+<div class="pane" id="page-teachers">
+  <div class="card">
+    <div class="card-title" style="font-size:1.05rem;font-weight:900;color:var(--forest);margin-bottom:18px;display:flex;align-items:center;gap:8px;">👨‍🏫 Create Teacher Account</div>
+
+    <!-- ID Preview -->
+    <div style="background:var(--forest);border-radius:14px;padding:14px 18px;margin-bottom:18px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+      <div style="flex:1;">
+        <div style="font-size:.9rem;font-weight:600;color:rgba(255,255,255,.5);margin-bottom:4px;">Teacher ID (auto-generated)</div>
+        <div style="font-family:var(--fm);font-size:1.1rem;font-weight:800;color:var(--gold);letter-spacing:.05em;" id="t-id-preview">Select subject to generate ID</div>
+      </div>
+      <button onclick="copyTeacherId()" style="font-family:var(--fd);font-size:.9rem;font-weight:700;padding:7px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:white;cursor:pointer;">Copy ID</button>
+    </div>
+
+    <div class="frow frow-3">
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Full Name <span style="color:var(--rose);">*</span></label><input type="text" class="fi" id="t-name" placeholder="e.g. Rahul Sharma"/></div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Subject <span style="color:var(--rose);">*</span></label>
+        <select class="fs" id="t-subject" onchange="genTeacherId()">
+          <option value="">Select subject</option>
+          <option value="PHY">Physics</option>
+          <option value="CHE">Chemistry</option>
+          <option value="MAT">Mathematics</option>
+          <option value="BIO">Biology</option>
+          <option value="ENG">English</option>
+          <option value="GEN">General</option>
+        </select>
+      </div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Password <span style="color:var(--rose);">*</span></label><input type="text" class="fi" id="t-password" placeholder="Set a password"/></div>
+    </div>
+    <div class="frow frow-2" style="margin-top:14px;">
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Email</label><input type="email" class="fi" id="t-email" placeholder="teacher@email.com"/></div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Phone</label><input type="tel" class="fi" id="t-phone" placeholder="9876543210"/></div>
+    </div>
+    <div class="fg" style="margin-top:14px;"><label class="fl">Assigned Exams</label>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;" id="t-exams-wrap">
+        <label style="display:flex;align-items:center;gap:6px;font-size:.96rem;font-weight:600;cursor:pointer;"><input type="checkbox" value="JM" style="width:16px;height:16px;cursor:pointer;"/> JEE Mains</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:.96rem;font-weight:600;cursor:pointer;"><input type="checkbox" value="NT" style="width:16px;height:16px;cursor:pointer;"/> NEET UG</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:.96rem;font-weight:600;cursor:pointer;"><input type="checkbox" value="JA" style="width:16px;height:16px;cursor:pointer;"/> JEE Advanced</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:.96rem;font-weight:600;cursor:pointer;"><input type="checkbox" value="NF" style="width:16px;height:16px;cursor:pointer;"/> NEET Foundation</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:.96rem;font-weight:600;cursor:pointer;"><input type="checkbox" value="CB10" style="width:16px;height:16px;cursor:pointer;"/> Class 10 CBSE</label>
+        <label style="display:flex;align-items:center;gap:6px;font-size:.96rem;font-weight:600;cursor:pointer;"><input type="checkbox" value="CB12" style="width:16px;height:16px;cursor:pointer;"/> Class 12 CBSE</label>
+      </div>
+    </div>
+    <div class="status" id="teacher-status" style="margin-top:12px;"></div>
+    <div class="btn-row">
+      <button class="btn btn-green" onclick="createTeacher()">✓ Create Teacher Account</button>
+      <button class="btn btn-outline" onclick="clearTeacherForm()">✕ Clear</button>
+    </div>
+  </div>
+
+  <!-- Teachers List -->
+  <div style="font-size:1.05rem;font-weight:900;color:var(--forest);margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+    All Teachers <div style="flex:1;height:1.5px;background:linear-gradient(90deg,var(--border),transparent);"></div>
+  </div>
+  <div id="teachers-list">
+    <div class="empty"><div class="empty-icon">👨‍🏫</div><div class="empty-h">No teachers yet</div><div class="empty-s">Create your first teacher account above.</div></div>
   </div>
 </div>
 
@@ -2121,6 +2183,133 @@ window.updatePreview=function(){
 if(window.innerWidth>=1100){
   dShowTab('add');
 }
+
+
+// ══════════════════════════════════════
+// TEACHER MANAGEMENT
+// ══════════════════════════════════════
+let allTeachers = [];
+const SUBJ_NAMES = {PHY:'Physics',CHE:'Chemistry',MAT:'Mathematics',BIO:'Biology',ENG:'English',GEN:'General'};
+
+window.genTeacherId = async function(){
+  const subj = document.getElementById('t-subject')?.value;
+  const el = document.getElementById('t-id-preview');
+  if(!el)return;
+  if(!subj){el.textContent='Select subject to generate ID';return;}
+  try{
+    const snap = await getDocs(collection(db,'teachers'));
+    const count = [...snap.docs].filter(d=>d.id.startsWith('TCH-'+subj+'-')).length;
+    const serial = String(count+1).padStart(3,'0');
+    el.textContent = 'TCH-'+subj+'-'+serial;
+  }catch(e){
+    el.textContent = 'TCH-'+subj+'-001';
+  }
+};
+
+window.copyTeacherId = function(){
+  const id = document.getElementById('t-id-preview')?.textContent;
+  if(!id||id.includes('Select'))return;
+  navigator.clipboard.writeText(id).then(()=>{
+    const btn = document.querySelector('#page-teachers button[onclick="copyTeacherId()"]');
+    if(btn){btn.textContent='✓ Copied!';setTimeout(()=>btn.textContent='Copy ID',2000);}
+  });
+};
+
+window.createTeacher = async function(){
+  const name = document.getElementById('t-name')?.value.trim();
+  const subj = document.getElementById('t-subject')?.value;
+  const pass = document.getElementById('t-password')?.value.trim();
+  const email = document.getElementById('t-email')?.value.trim();
+  const phone = document.getElementById('t-phone')?.value.trim();
+  const tid = document.getElementById('t-id-preview')?.textContent;
+
+  if(!name||!subj||!pass){stat('teacher-status','Please fill Name, Subject and Password.','err');return;}
+  if(!tid||tid.includes('Select')){stat('teacher-status','Generate Teacher ID first.','err');return;}
+
+  const exams = [...document.querySelectorAll('#t-exams-wrap input:checked')].map(cb=>cb.value);
+
+  showLoader('Creating teacher account...','Saving to Firebase...');
+  try{
+    await setDoc(doc(db,'teachers',tid),{
+      id:tid,name,
+      subject:SUBJ_NAMES[subj]||subj,
+      subjCode:subj,password:pass,
+      email,phone,exams,
+      testsGenerated:0,
+      createdAt:new Date().toISOString(),
+      active:true,
+    });
+    hideLoader();
+    stat('teacher-status','✓ Teacher created! ID: '+tid+' · Password: '+pass,'ok');
+    clearTeacherForm();
+    loadTeachers();
+  }catch(e){hideLoader();stat('teacher-status','Error: '+e.message,'err');}
+};
+
+window.clearTeacherForm = function(){
+  ['t-name','t-email','t-phone','t-password'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  const sel=document.getElementById('t-subject');if(sel)sel.value='';
+  document.querySelectorAll('#t-exams-wrap input').forEach(cb=>cb.checked=false);
+  const el=document.getElementById('t-id-preview');if(el)el.textContent='Select subject to generate ID';
+  const s=document.getElementById('teacher-status');if(s)s.className='status';
+};
+
+async function loadTeachers(){
+  try{
+    const snap=await getDocs(collection(db,'teachers'));
+    allTeachers=[];snap.forEach(d=>allTeachers.push(d.data()));
+    renderTeachers();
+  }catch(e){console.log(e);}
+}
+
+function renderTeachers(){
+  const el=document.getElementById('teachers-list');if(!el)return;
+  if(!allTeachers.length){
+    el.innerHTML='<div class="empty"><div class="empty-icon">👨‍🏫</div><div class="empty-h">No teachers yet</div><div class="empty-s">Create your first teacher account above.</div></div>';
+    return;
+  }
+  el.innerHTML=allTeachers.map(t=>`
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:16px 18px;margin-bottom:10px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh);">
+      <div style="width:46px;height:46px;border-radius:50%;background:linear-gradient(135deg,var(--sky),#1d4ed8);display:flex;align-items:center;justify-content:center;font-size:1.1rem;font-weight:800;color:white;flex-shrink:0;">${(t.name||'T').charAt(0).toUpperCase()}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:1rem;font-weight:800;color:var(--forest);">${t.name||'Teacher'}</div>
+        <div style="font-size:.9rem;color:var(--txt-lo);margin-top:2px;">${t.subject||''} · ${t.email||''}</div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:6px;">
+          <span style="font-family:var(--fm);font-size:.9rem;font-weight:700;padding:2px 9px;border-radius:6px;background:var(--forest);color:var(--gold);">${t.id}</span>
+          <span style="font-size:.9rem;font-weight:600;padding:2px 9px;border-radius:100px;background:var(--sage-l);color:var(--sage);border:1px solid var(--sage-g);">🎯 ${t.testsGenerated||0} tests</span>
+          ${t.active?'<span style="font-size:.9rem;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--sage-l);color:var(--sage);">● Active</span>':'<span style="font-size:.9rem;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--rose-l);color:var(--rose);">● Inactive</span>'}
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px;flex-shrink:0;">
+        <button onclick="copyTeacherCreds('${t.id}','${t.password||''}')" style="font-family:var(--fd);font-size:.88rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--txt-m);">📋 Copy Creds</button>
+        <button onclick="deleteTeacher('${t.id}')" style="font-family:var(--fd);font-size:.88rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:white;cursor:pointer;color:var(--rose);">🗑 Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+window.copyTeacherCreds = function(id,pass){
+  const text = 'Teacher Portal: mockarena.co.in/mockarena_teacher.html\nTeacher ID: '+id+'\nPassword: '+pass;
+  navigator.clipboard.writeText(text).then(()=>alert('✓ Credentials copied!\n\n'+text));
+};
+
+window.deleteTeacher = async function(id){
+  if(!confirm('Delete teacher '+id+'? This cannot be undone.'))return;
+  try{
+    await deleteDoc(doc(db,'teachers',id));
+    allTeachers=allTeachers.filter(t=>t.id!==id);
+    renderTeachers();
+  }catch(e){alert('Error: '+e.message);}
+};
+
+// Load teachers when tab opens
+const origShowPage = window.showPage;
+window.showPage = function(page){
+  origShowPage(page);
+  if(page==='teachers')loadTeachers();
+};
+
+// Load on init
+loadTeachers();
 
 // ── HELPERS ──
 function stat(id,msg,type){const el=document.getElementById(id);if(el){el.textContent=msg;el.className='status '+type;}}
