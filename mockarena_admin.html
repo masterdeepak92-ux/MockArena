@@ -12,7 +12,7 @@
 /* ═══════ TOKENS ═══════ */
 :root{
   --forest:#1a2618;
-  --sage:#6b8f5e;--sage-d:#3a6830;
+  --sage:#6b8f5e;--sage-d:#3a6830;--sage-g:rgba(107,143,94,.22);
   --sage-l:rgba(107,143,94,.11);--sage-g:rgba(107,143,94,.22);
   --gold:#c8962a;--gold-l:rgba(200,150,42,.1);
   --rose:#c84b4b;--rose-l:rgba(200,75,75,.1);
@@ -690,6 +690,193 @@ body{
 <body>
 
 <!-- NAV -->
+<!-- ADMIN LOGIN OVERLAY -->
+<style>
+.login-page{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:stretch;
+  font-family:var(--fd);
+}
+.login-left{
+  flex:1;
+  background:linear-gradient(160deg,#1a2618 0%,#243d20 60%,#1a3318 100%);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:40px 32px;
+  position:relative;overflow:hidden;
+}
+.login-left::before{
+  content:'';position:absolute;
+  top:-80px;right:-80px;
+  width:280px;height:280px;border-radius:50%;
+  background:rgba(107,143,94,.08);
+}
+.login-left::after{
+  content:'';position:absolute;
+  bottom:-60px;left:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:rgba(200,150,42,.06);
+}
+.login-left-inner{position:relative;z-index:1;text-align:center;max-width:320px;}
+.login-brand{font-size:1.8rem;font-weight:900;color:white;letter-spacing:-.03em;margin-bottom:8px;}
+.login-brand span{color:#6b8f5e;}
+.login-tagline{font-size:1rem;color:rgba(255,255,255,.5);line-height:1.65;margin-bottom:32px;}
+.login-feature{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:12px 16px;
+  margin-bottom:10px;text-align:left;
+}
+.login-feature-icon{font-size:1.3rem;flex-shrink:0;}
+.login-feature-text{font-size:.97rem;color:rgba(255,255,255,.7);line-height:1.5;}
+.login-feature-text strong{color:white;display:block;font-size:1rem;}
+
+.login-right{
+  width:100%;max-width:440px;
+  background:white;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:40px 36px;
+  overflow-y:auto;
+}
+.login-form-wrap{width:100%;max-width:360px;}
+.login-form-logo{
+  font-size:1.2rem;font-weight:900;
+  color:var(--forest);letter-spacing:-.02em;
+  margin-bottom:4px;
+}
+.login-form-logo span{color:var(--sage);}
+.login-admin-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(200,150,42,.1);
+  border:1px solid rgba(200,150,42,.28);
+  border-radius:100px;padding:4px 12px;
+  margin-bottom:28px;
+}
+.login-admin-badge-txt{font-size:.96rem;font-weight:800;color:var(--gold);}
+.login-heading{font-size:1.4rem;font-weight:900;color:var(--forest);letter-spacing:-.03em;margin-bottom:6px;}
+.login-sub{font-size:1rem;color:var(--txt-lo);margin-bottom:24px;line-height:1.65;}
+.login-field{margin-bottom:16px;}
+.login-label{font-size:1rem;font-weight:700;color:var(--txt);display:block;margin-bottom:7px;}
+.login-input{
+  width:100%;font-family:var(--fd);font-size:1.02rem;
+  padding:13px 16px;border-radius:12px;
+  border:1.5px solid rgba(26,38,24,.12);
+  background:#f8f7f3;color:var(--txt);outline:none;
+  transition:all .2s;
+}
+.login-input:focus{
+  border-color:var(--sage);
+  background:white;
+  box-shadow:0 0 0 3px rgba(107,143,94,.12);
+}
+.pass-wrap{position:relative;}
+.pass-wrap .login-input{padding-right:46px;}
+.pass-eye{
+  position:absolute;right:14px;top:50%;
+  transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;
+  font-size:1rem;color:var(--txt-lo);padding:4px;
+  transition:color .18s;
+}
+.pass-eye:hover{color:var(--txt);}
+.login-err{
+  display:none;
+  background:rgba(200,75,75,.08);color:var(--rose);
+  border:1px solid rgba(200,75,75,.2);
+  border-radius:10px;padding:11px 14px;
+  font-size:.97rem;font-weight:600;
+  margin-bottom:14px;line-height:1.5;
+}
+.login-btn{
+  width:100%;font-family:var(--fd);
+  font-size:1.05rem;font-weight:800;
+  padding:14px;border-radius:13px;border:none;
+  background:linear-gradient(135deg,#6b8f5e,#3a6830);
+  color:white;cursor:pointer;
+  box-shadow:0 4px 16px rgba(107,143,94,.3);
+  transition:all .22s;letter-spacing:.01em;
+  margin-bottom:16px;
+}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 7px 22px rgba(107,143,94,.35);}
+.login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.login-footer{text-align:center;font-size:.96rem;color:var(--txt-lo);line-height:1.6;}
+
+/* Mobile — stack vertically, hide left panel */
+@media(max-width:700px){
+  .login-left{display:none;}
+  .login-right{max-width:100%;padding:36px 24px 28px;}
+  .login-heading{font-size:1.5rem;}
+  .login-label{font-size:1.02rem;}
+  .login-input{font-size:1.04rem;padding:14px 16px;}
+  .login-btn{font-size:1.06rem;padding:15px;}
+}
+</style>
+
+<div class="login-page" id="admin-login">
+  <!-- LEFT — Branding -->
+  <div class="login-left">
+    <div class="login-left-inner">
+      <div class="login-brand">Mock<span>Arena</span></div>
+      <div class="login-tagline">India's most complete exam preparation platform. Admin control centre.</div>
+      <div class="login-feature">
+        <span class="login-feature-icon">📚</span>
+        <div class="login-feature-text"><strong>Question Bank</strong>Add, manage and organise thousands of questions</div>
+      </div>
+      <div class="login-feature">
+        <span class="login-feature-icon">🎯</span>
+        <div class="login-feature-text"><strong>Build Tests</strong>Generate mock tests and chapter tests instantly</div>
+      </div>
+      <div class="login-feature">
+        <span class="login-feature-icon">📷</span>
+        <div class="login-feature-text"><strong>AI Upload</strong>Upload questions via camera with AI extraction</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — Login form -->
+  <div class="login-right">
+    <div class="login-form-wrap">
+      <div class="login-form-logo">Mock<span>Arena</span></div>
+      <div class="login-admin-badge">
+        <span>🔐</span>
+        <span class="login-admin-badge-txt">Admin Access Only</span>
+      </div>
+      <div class="login-heading">Welcome back</div>
+      <div class="login-sub">Sign in with your admin credentials to manage the question bank.</div>
+
+      <div class="login-field">
+        <label class="login-label">Admin ID</label>
+        <input type="text" id="admin-id-inp" class="login-input"
+          placeholder="Enter your Admin ID" autocomplete="username"
+          onkeydown="if(event.key==='Enter')document.getElementById('admin-pass-inp').focus()"/>
+      </div>
+
+      <div class="login-field">
+        <label class="login-label">Password</label>
+        <div class="pass-wrap">
+          <input type="password" id="admin-pass-inp" class="login-input"
+            placeholder="Enter your password" autocomplete="current-password"
+            onkeydown="if(event.key==='Enter')adminLogin()"/>
+          <button class="pass-eye" id="pass-eye" onclick="togglePassVis()">👁</button>
+        </div>
+      </div>
+
+      <div class="login-err" id="login-err"></div>
+
+      <button class="login-btn" id="login-btn" onclick="adminLogin()">
+        Sign In to Admin →
+      </button>
+
+      <div class="login-footer">
+        🔒 Restricted to authorised admin only.<br/>
+        Students &amp; teachers use a different login.
+      </div>
+    </div>
+  </div>
+</div>
+
 <nav class="nav">
   <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
   <span class="nav-pill">⚙ Question Bank</span>
@@ -739,9 +926,7 @@ body{
   </div>
 
   <div class="stitle">Exam Breakdown <div class="stitle-line"></div></div>
-  <div id="exam-breakdown">
-    <div style="font-size:.94rem;color:var(--tl);padding:20px 0;">Loading...</div>
-  </div>
+  <div id="exam-breakdown"></div>
 
   <div class="stitle" style="margin-top:20px;">Quick Actions <div class="stitle-line"></div></div>
   <div class="qa-grid">
@@ -1054,6 +1239,30 @@ EXP: By Coulomb's law F ∝ 1/r².</div>
   <div class="loader-s" id="loader-s">Writing to Firebase...</div>
 </div>
 
+<script>
+// ── UI FUNCTIONS (work without Firebase) ──
+function showPage(page){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  var tab=document.getElementById('pt-'+page);
+  var pane=document.getElementById('page-'+page);
+  if(tab)tab.classList.add('on');
+  if(pane)pane.classList.add('on');
+}
+function setMethod(m){
+  ['csv','json','paste','image','camera'].forEach(function(k){
+    var p=document.getElementById('up-'+k),b=document.getElementById('mc-'+k);
+    if(p)p.className='upane'+(k===m?' on':'');
+    if(b)b.className='method-card'+(k===m?' on':'');
+  });
+}
+// Initialize UI immediately
+document.addEventListener('DOMContentLoaded',function(){
+  showPage('dashboard');
+  setMethod('csv');
+});
+</script>
+
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
@@ -1073,11 +1282,7 @@ const DIFF_CODE={Easy:'EASY',Medium:'MED',Hard:'HARD'};
 let allQs=[], parsedQs=[], genTest=[], correctOpt='A', camStream=null, capturedImg=null;
 
 // ── AUTH ──
-// Show UI immediately — don't wait for auth
-showPage('dashboard');
-renderDashboard(); // Show breakdown immediately with 0s
-
-// Auth check with delay to avoid flash redirect
+// Auth check to avoid flash redirect
 let authChecked = false;
 setTimeout(()=>{
   if(!authChecked) {
@@ -1132,10 +1337,7 @@ function renderDashboard(){
 
 // ── TABS ──
 window.showPage=function(page){
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
-  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
-  document.getElementById('pt-'+page).classList.add('on');
-  document.getElementById('page-'+page).classList.add('on');
+  showPage(page);
   if(page==='bank')renderBank(allQs);
   if(page==='dashboard')renderDashboard();
 };
@@ -1252,12 +1454,8 @@ window.delQ=async function(id){
 
 // ── UPLOAD ──
 window.setMethod=function(m){
-  ['csv','json','paste','image','camera'].forEach(k=>{
-    const p=document.getElementById('up-'+k),b=document.getElementById('mc-'+k);
-    if(p)p.className='upane'+(k===m?' on':'');
-    if(b)b.className='method-card'+(k===m?' on':'');
-  });
-  if(m!=='camera')stopCam();
+  setMethod(m);
+  if(m!=='camera' && typeof stopCam !== 'undefined')stopCam();
 };
 window.dlTemplate=function(){
   const h=['exam','subject','chapter','difficulty','type','question','option_a','option_b','option_c','option_d','correct','explanation','topic','marks','year'];
@@ -1434,13 +1632,285 @@ window.exportTest=function(){
   const exam=document.getElementById('g-exam').value;
   const examName=ENAMES[exam]||name;
   const sc='<'+'script>',ec='<'+'/script>';
-  const html=`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>${name} — MockArena</title><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"/>${sc}src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"${ec}${sc}src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"${ec}<style>:root{--forest:#1a2618;--sage:#6b8f5e;--gold:#c8962a;--cream:#faf9f5;--cw:#f5f3ec;--b:rgba(26,38,24,.09);--fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;}*{box-sizing:border-box;margin:0;padding:0;}body{font-family:var(--fd);background:var(--cw);color:var(--forest);-webkit-font-smoothing:antialiased;}.nav{background:var(--forest);height:58px;display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;z-index:10;}.nb{font-size:1.05rem;font-weight:900;color:white;letter-spacing:-.02em;}.nb span{color:var(--sage);}.nn{font-size:.94rem;font-weight:600;color:rgba(255,255,255,.62);}.nc{margin-left:auto;font-size:.92rem;color:rgba(255,255,255,.55);}.hdr{background:var(--cream);border-bottom:1px solid var(--b);padding:28px 20px;text-align:center;}.ht{font-size:1.7rem;font-weight:900;color:var(--forest);margin-bottom:6px;letter-spacing:-.02em;}.hm{font-size:.95rem;color:rgba(26,38,24,.6);}.body{max-width:860px;margin:0 auto;padding:28px 20px 56px;}.q{background:white;border:1.5px solid var(--b);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 1px 6px rgba(26,38,24,.06);}.qh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}.qn{font-size:.9rem;font-weight:800;color:var(--sage);text-transform:uppercase;letter-spacing:.06em;}.qid{font-family:var(--fm);font-size:.9rem;color:var(--gold);background:var(--forest);padding:3px 10px;border-radius:6px;letter-spacing:.04em;}.qt{font-size:.99rem;line-height:1.78;margin-bottom:16px;font-weight:500;color:var(--forest);}.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;}.opt{display:flex;gap:9px;padding:11px 14px;border-radius:11px;border:1.5px solid var(--b);font-size:.97rem;background:var(--cw);cursor:pointer;transition:all .2s;color:rgba(26,38,24,.72);line-height:1.5;}.opt:hover,.opt.sel{border-color:var(--sage);background:rgba(107,143,94,.1);font-weight:600;}.ol{min-width:24px;height:24px;border-radius:7px;border:1.5px solid rgba(26,38,24,.15);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;flex-shrink:0;}@media(max-width:560px){.opts{grid-template-columns:1fr;}}</style></head><body><nav class="nav"><span class="nb">Mock<span>Arena</span></span><span class="nn">${name}</span><span class="nc">${genTest.length} Questions</span></nav><div class="hdr"><div class="ht">${name}</div><div class="hm">${genTest.length} Questions · ${examName} · Built by MockArena</div></div><div class="body">${genTest.map((q,i)=>`<div class="q"><div class="qh"><span class="qn">Q${i+1}</span><span class="qid">${q.id}</span></div><div class="qt">${q.question}</div>${q.options&&q.options.A?`<div class="opts">${['A','B','C','D'].map(o=>`<div class="opt" onclick="this.classList.toggle('sel')"><span class="ol">${o}</span><span>${q.options[o]||''}</span></div>`).join('')}</div>`:''}</div>`).join('')}</div>${sc}document.addEventListener('DOMContentLoaded',function(){try{renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}catch(_){}});${ec}</body></html>`;
+  const html=`<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/><title>${name} — MockArena</title><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"/>${sc}src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"${ec}${sc}src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"${ec}<style>:root{--forest:#1a2618;--sage:#6b8f5e;--gold:#c8962a;--cream:#faf9f5;--cw:#f5f3ec;--b:rgba(26,38,24,.09);--fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;}*{box-sizing:border-box;margin:0;padding:0;}body{font-family:var(--fd);background:var(--cw);color:var(--forest);-webkit-font-smoothing:antialiased;}.nav{background:var(--forest);height:58px;display:flex;align-items:center;padding:0 20px;gap:12px;position:sticky;top:0;z-index:10;}.nb{font-size:1.05rem;font-weight:900;color:white;letter-spacing:-.02em;}.nb span{color:var(--sage);}.nn{font-size:.94rem;font-weight:600;color:rgba(255,255,255,.62);}.nc{margin-left:auto;font-size:.92rem;color:rgba(255,255,255,.55);}.hdr{background:var(--cream);border-bottom:1px solid var(--b);padding:28px 20px;text-align:center;}.ht{font-size:1.7rem;font-weight:900;color:var(--forest);margin-bottom:6px;letter-spacing:-.02em;}.hm{font-size:.95rem;color:rgba(26,38,24,.6);}.body{max-width:860px;margin:0 auto;padding:28px 20px 56px;}.q{background:white;border:1.5px solid var(--b);border-radius:16px;padding:22px;margin-bottom:16px;box-shadow:0 1px 6px rgba(26,38,24,.06);}.qh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}.qn{font-size:.9rem;font-weight:800;color:var(--sage);text-transform:uppercase;letter-spacing:.06em;}.qid{font-family:var(--fm);font-size:.9rem;color:var(--gold);background:var(--forest);padding:3px 10px;border-radius:6px;letter-spacing:.04em;}.qt{font-size:.99rem;line-height:1.78;margin-bottom:16px;font-weight:500;color:var(--forest);}.opts{display:grid;grid-template-columns:1fr 1fr;gap:9px;}.opt{display:flex;gap:9px;padding:11px 14px;border-radius:11px;border:1.5px solid var(--b);font-size:.97rem;background:var(--cw);cursor:pointer;transition:all .2s;color:rgba(26,38,24,.72);line-height:1.5;}.opt:hover,.opt.sel{border-color:var(--sage);background:rgba(107,143,94,.1);font-weight:600;}.ol{min-width:24px;height:24px;border-radius:7px;border:1.5px solid rgba(26,38,24,.15);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:800;flex-shrink:0;}@media(max-width:560px){.opts{grid-template-columns:1fr;}}</style></head><body><!-- ADMIN LOGIN OVERLAY -->
+<style>
+.login-page{
+  position:fixed;inset:0;z-index:9999;
+  display:flex;align-items:stretch;
+  font-family:var(--fd);
+}
+.login-left{
+  flex:1;
+  background:linear-gradient(160deg,#1a2618 0%,#243d20 60%,#1a3318 100%);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:40px 32px;
+  position:relative;overflow:hidden;
+}
+.login-left::before{
+  content:'';position:absolute;
+  top:-80px;right:-80px;
+  width:280px;height:280px;border-radius:50%;
+  background:rgba(107,143,94,.08);
+}
+.login-left::after{
+  content:'';position:absolute;
+  bottom:-60px;left:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:rgba(200,150,42,.06);
+}
+.login-left-inner{position:relative;z-index:1;text-align:center;max-width:320px;}
+.login-brand{font-size:1.8rem;font-weight:900;color:white;letter-spacing:-.03em;margin-bottom:8px;}
+.login-brand span{color:#6b8f5e;}
+.login-tagline{font-size:1rem;color:rgba(255,255,255,.5);line-height:1.65;margin-bottom:32px;}
+.login-feature{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);
+  border-radius:12px;padding:12px 16px;
+  margin-bottom:10px;text-align:left;
+}
+.login-feature-icon{font-size:1.3rem;flex-shrink:0;}
+.login-feature-text{font-size:.97rem;color:rgba(255,255,255,.7);line-height:1.5;}
+.login-feature-text strong{color:white;display:block;font-size:1rem;}
+
+.login-right{
+  width:100%;max-width:440px;
+  background:white;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:40px 36px;
+  overflow-y:auto;
+}
+.login-form-wrap{width:100%;max-width:360px;}
+.login-form-logo{
+  font-size:1.2rem;font-weight:900;
+  color:var(--forest);letter-spacing:-.02em;
+  margin-bottom:4px;
+}
+.login-form-logo span{color:var(--sage);}
+.login-admin-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(200,150,42,.1);
+  border:1px solid rgba(200,150,42,.28);
+  border-radius:100px;padding:4px 12px;
+  margin-bottom:28px;
+}
+.login-admin-badge-txt{font-size:.96rem;font-weight:800;color:var(--gold);}
+.login-heading{font-size:1.4rem;font-weight:900;color:var(--forest);letter-spacing:-.03em;margin-bottom:6px;}
+.login-sub{font-size:1rem;color:var(--txt-lo);margin-bottom:24px;line-height:1.65;}
+.login-field{margin-bottom:16px;}
+.login-label{font-size:1rem;font-weight:700;color:var(--txt);display:block;margin-bottom:7px;}
+.login-input{
+  width:100%;font-family:var(--fd);font-size:1.02rem;
+  padding:13px 16px;border-radius:12px;
+  border:1.5px solid rgba(26,38,24,.12);
+  background:#f8f7f3;color:var(--txt);outline:none;
+  transition:all .2s;
+}
+.login-input:focus{
+  border-color:var(--sage);
+  background:white;
+  box-shadow:0 0 0 3px rgba(107,143,94,.12);
+}
+.pass-wrap{position:relative;}
+.pass-wrap .login-input{padding-right:46px;}
+.pass-eye{
+  position:absolute;right:14px;top:50%;
+  transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;
+  font-size:1rem;color:var(--txt-lo);padding:4px;
+  transition:color .18s;
+}
+.pass-eye:hover{color:var(--txt);}
+.login-err{
+  display:none;
+  background:rgba(200,75,75,.08);color:var(--rose);
+  border:1px solid rgba(200,75,75,.2);
+  border-radius:10px;padding:11px 14px;
+  font-size:.97rem;font-weight:600;
+  margin-bottom:14px;line-height:1.5;
+}
+.login-btn{
+  width:100%;font-family:var(--fd);
+  font-size:1.05rem;font-weight:800;
+  padding:14px;border-radius:13px;border:none;
+  background:linear-gradient(135deg,#6b8f5e,#3a6830);
+  color:white;cursor:pointer;
+  box-shadow:0 4px 16px rgba(107,143,94,.3);
+  transition:all .22s;letter-spacing:.01em;
+  margin-bottom:16px;
+}
+.login-btn:hover{transform:translateY(-2px);box-shadow:0 7px 22px rgba(107,143,94,.35);}
+.login-btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.login-footer{text-align:center;font-size:.96rem;color:var(--txt-lo);line-height:1.6;}
+
+/* Mobile — stack vertically, hide left panel */
+@media(max-width:700px){
+  .login-left{display:none;}
+  .login-right{max-width:100%;padding:36px 24px 28px;}
+  .login-heading{font-size:1.5rem;}
+  .login-label{font-size:1.02rem;}
+  .login-input{font-size:1.04rem;padding:14px 16px;}
+  .login-btn{font-size:1.06rem;padding:15px;}
+}
+</style>
+
+<div class="login-page" id="admin-login">
+  <!-- LEFT — Branding -->
+  <div class="login-left">
+    <div class="login-left-inner">
+      <div class="login-brand">Mock<span>Arena</span></div>
+      <div class="login-tagline">India's most complete exam preparation platform. Admin control centre.</div>
+      <div class="login-feature">
+        <span class="login-feature-icon">📚</span>
+        <div class="login-feature-text"><strong>Question Bank</strong>Add, manage and organise thousands of questions</div>
+      </div>
+      <div class="login-feature">
+        <span class="login-feature-icon">🎯</span>
+        <div class="login-feature-text"><strong>Build Tests</strong>Generate mock tests and chapter tests instantly</div>
+      </div>
+      <div class="login-feature">
+        <span class="login-feature-icon">📷</span>
+        <div class="login-feature-text"><strong>AI Upload</strong>Upload questions via camera with AI extraction</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT — Login form -->
+  <div class="login-right">
+    <div class="login-form-wrap">
+      <div class="login-form-logo">Mock<span>Arena</span></div>
+      <div class="login-admin-badge">
+        <span>🔐</span>
+        <span class="login-admin-badge-txt">Admin Access Only</span>
+      </div>
+      <div class="login-heading">Welcome back</div>
+      <div class="login-sub">Sign in with your admin credentials to manage the question bank.</div>
+
+      <div class="login-field">
+        <label class="login-label">Admin ID</label>
+        <input type="text" id="admin-id-inp" class="login-input"
+          placeholder="Enter your Admin ID" autocomplete="username"
+          onkeydown="if(event.key==='Enter')document.getElementById('admin-pass-inp').focus()"/>
+      </div>
+
+      <div class="login-field">
+        <label class="login-label">Password</label>
+        <div class="pass-wrap">
+          <input type="password" id="admin-pass-inp" class="login-input"
+            placeholder="Enter your password" autocomplete="current-password"
+            onkeydown="if(event.key==='Enter')adminLogin()"/>
+          <button class="pass-eye" id="pass-eye" onclick="togglePassVis()">👁</button>
+        </div>
+      </div>
+
+      <div class="login-err" id="login-err"></div>
+
+      <button class="login-btn" id="login-btn" onclick="adminLogin()">
+        Sign In to Admin →
+      </button>
+
+      <div class="login-footer">
+        🔒 Restricted to authorised admin only.<br/>
+        Students &amp; teachers use a different login.
+      </div>
+    </div>
+  </div>
+</div>
+
+<nav class="nav"><span class="nb">Mock<span>Arena</span></span><span class="nn">${name}</span><span class="nc">${genTest.length} Questions</span></nav><div class="hdr"><div class="ht">${name}</div><div class="hm">${genTest.length} Questions · ${examName} · Built by MockArena</div></div><div class="body">${genTest.map((q,i)=>`<div class="q"><div class="qh"><span class="qn">Q${i+1}</span><span class="qid">${q.id}</span></div><div class="qt">${q.question}</div>${q.options&&q.options.A?`<div class="opts">${['A','B','C','D'].map(o=>`<div class="opt" onclick="this.classList.toggle('sel')"><span class="ol">${o}</span><span>${q.options[o]||''}</span></div>`).join('')}</div>`:''}</div>`).join('')}</div>${sc}document.addEventListener('DOMContentLoaded',function(){try{renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}catch(_){}});${ec}</body></html>`;
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=(name.replace(/\s+/g,'_')+'_'+Date.now()+'.html');a.click();
 };
 
 // ── HELPERS ──
 function stat(id,msg,type){const el=document.getElementById(id);if(el){el.textContent=msg;el.className='status '+type;}}
 function loader(show,t,s){document.getElementById('loader').className='loader'+(show?' on':'');if(t)document.getElementById('loader-t').textContent=t;if(s)document.getElementById('loader-s').textContent=s;}
+
+// ══════════════════════════════════════
+// ADMIN LOGIN
+// ══════════════════════════════════════
+const ADMIN_ID = 'DEEPAKSARASWAT92';
+const ADMIN_PASS = 'Deepak@1992';
+const SESSION_KEY = 'ma_admin_session';
+let loginAttempts = 0;
+
+function checkSession(){
+  const session = sessionStorage.getItem(SESSION_KEY);
+  if(session === btoa(ADMIN_ID + ADMIN_PASS)){
+    document.getElementById('admin-login').style.display = 'none';
+    return true;
+  }
+  return false;
+}
+
+window.adminLogin = function(){
+  const id = document.getElementById('admin-id-inp').value.trim();
+  const pass = document.getElementById('admin-pass-inp').value;
+  const errEl = document.getElementById('login-err');
+  const btn = document.getElementById('login-btn');
+
+  if(!id || !pass){
+    errEl.textContent = 'Please enter both Admin ID and Password.';
+    errEl.style.display = 'block';
+    return;
+  }
+
+  // Simulate checking delay
+  btn.textContent = 'Verifying...';
+  btn.disabled = true;
+
+  setTimeout(()=>{
+    if(id === ADMIN_ID && pass === ADMIN_PASS){
+      // Save session
+      sessionStorage.setItem(SESSION_KEY, btoa(ADMIN_ID + ADMIN_PASS));
+      // Animate out
+      const overlay = document.getElementById('admin-login');
+      overlay.style.transition = 'opacity .4s ease';
+      overlay.style.opacity = '0';
+      setTimeout(()=>{
+        overlay.style.display = 'none';
+        // Load data now
+        loadAll();
+      }, 400);
+    } else {
+      loginAttempts++;
+      btn.textContent = 'Sign In to Admin →';
+      btn.disabled = false;
+      if(loginAttempts >= 3){
+        errEl.textContent = '❌ Too many failed attempts. Try again in 30 seconds.';
+        errEl.style.display = 'block';
+        btn.disabled = true;
+        setTimeout(()=>{
+          btn.disabled = false;
+          loginAttempts = 0;
+          errEl.style.display = 'none';
+        }, 30000);
+      } else {
+        errEl.textContent = '❌ Incorrect Admin ID or Password. (' + loginAttempts + '/3 attempts)';
+        errEl.style.display = 'block';
+        document.getElementById('admin-pass-inp').value = '';
+        document.getElementById('admin-pass-inp').focus();
+      }
+    }
+  }, 600);
+};
+
+window.togglePassVis = function(){
+  const inp = document.getElementById('admin-pass-inp');
+  const eye = document.getElementById('pass-eye');
+  if(inp.type === 'password'){
+    inp.type = 'text';
+    eye.textContent = '🙈';
+  } else {
+    inp.type = 'password';
+    eye.textContent = '👁';
+  }
+};
+
+// Check session on load — if already logged in this session, skip login
+checkSession();
+
 </script>
 </body>
 </html>
