@@ -647,51 +647,117 @@ body{
 
 /* ═══════ DESKTOP 2-COL ═══════ */
 @media(min-width:1100px){
-  .page-container{
-    display:grid;grid-template-columns:1fr 360px;
-    min-height:calc(100vh - 116px);
+  /* 3-panel layout */
+  body{overflow:hidden;height:100vh;}
+  .tabs-bar{display:none;}
+  .pane{display:none !important;}
+  .pane.on{display:none !important;}
+
+  /* Override pane — use desktop-app grid instead */
+  #page-dashboard,#page-add,#page-upload,#page-bank,#page-build{
+    display:none;
   }
-  .main-col{border-right:1px solid var(--border);overflow-y:auto;}
-  .preview-col{
-    padding:24px;background:var(--white);
-    position:sticky;top:116px;
-    height:calc(100vh - 116px);overflow-y:auto;
+
+  /* Desktop container */
+  .desktop-shell{
+    display:grid;
+    grid-template-columns:220px 1fr 340px;
+    height:calc(100vh - 56px);
+    overflow:hidden;
   }
-  .preview-col-title{
-    font-size:.9rem;font-weight:800;
-    text-transform:uppercase;letter-spacing:.1em;
-    color:var(--txt-lo);margin-bottom:14px;
-    padding-bottom:9px;border-bottom:1.5px solid var(--border);
+  .d-left{
+    background:white;border-right:1px solid var(--border);
+    overflow-y:auto;padding:18px 14px;
+    display:flex;flex-direction:column;gap:16px;
   }
-  .live-prev{
+  .d-mid{
+    overflow-y:auto;
+    display:flex;flex-direction:column;
+  }
+  .d-right{
+    background:white;border-left:1px solid var(--border);
+    overflow-y:auto;padding:20px;
+  }
+  .d-tabs{
+    display:flex;background:white;
+    border-bottom:1px solid var(--border);
+    position:sticky;top:0;z-index:10;
+    overflow-x:auto;scrollbar-width:none;
+  }
+  .d-tabs::-webkit-scrollbar{display:none;}
+  .d-tab{
+    font-family:var(--fd);font-size:.96rem;font-weight:700;
+    padding:14px 18px;border:none;background:transparent;
+    color:var(--txt-lo);cursor:pointer;white-space:nowrap;
+    border-bottom:3px solid transparent;transition:all .18s;flex-shrink:0;
+  }
+  .d-tab:hover{color:var(--txt);}
+  .d-tab.on{color:var(--sage);border-bottom-color:var(--sage);}
+  .d-content{padding:22px;flex:1;}
+
+  /* Left panel */
+  .d-sec-title{
+    font-size:.88rem;font-weight:800;text-transform:uppercase;
+    letter-spacing:.1em;color:var(--txt-lo);
+    margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);
+  }
+  .d-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .d-stat{
     background:var(--cw);border:1.5px solid var(--border);
-    border-radius:var(--r-lg);padding:18px;
+    border-radius:11px;padding:12px 10px;text-align:center;
   }
-  .prev-q-num{font-size:.88rem;font-weight:700;color:var(--sage);margin-bottom:5px;}
-  .prev-q-id{
-    font-family:var(--fm);font-size:.9rem;color:var(--gold);
-    background:var(--forest);padding:3px 9px;border-radius:6px;
-    display:inline-block;margin-bottom:12px;
+  .d-stat-n{
+    font-family:var(--fm);font-size:1.3rem;font-weight:900;
+    color:var(--forest);display:block;line-height:1;margin-bottom:3px;
   }
-  .prev-q-text{font-size:.98rem;color:var(--txt);line-height:1.75;margin-bottom:14px;font-weight:500;}
-  .prev-opts-list{display:flex;flex-direction:column;gap:7px;}
-  .prev-opt-item{
-    display:flex;gap:8px;padding:10px 13px;border-radius:10px;
-    border:1.5px solid var(--border);font-size:.95rem;
+  .d-stat-l{font-size:.86rem;font-weight:600;color:var(--txt-lo);}
+  .d-exam-btns{display:flex;flex-direction:column;gap:4px;}
+  .d-exam-btn{
+    display:flex;align-items:center;gap:9px;
+    padding:9px 11px;border-radius:9px;
+    border:none;background:transparent;
+    cursor:pointer;transition:all .15s;text-align:left;width:100%;
+  }
+  .d-exam-btn:hover{background:var(--cw);}
+  .d-exam-btn.on{background:var(--sage-l);border:1px solid var(--sage-g);}
+  .d-exam-dot{width:9px;height:9px;border-radius:50%;flex-shrink:0;}
+  .d-exam-name{font-size:.93rem;font-weight:700;color:var(--txt);flex:1;}
+  .d-exam-btn.on .d-exam-name{color:var(--sage);}
+  .d-exam-cnt{font-family:var(--fm);font-size:.86rem;font-weight:700;color:var(--txt-lo);}
+
+  /* Right preview */
+  .d-prev-title{
+    font-size:.88rem;font-weight:800;text-transform:uppercase;
+    letter-spacing:.1em;color:var(--txt-lo);
+    margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--border);
+  }
+  .d-live-prev{
+    background:var(--cw);border:1.5px solid var(--border);
+    border-radius:var(--r-lg);padding:16px;min-height:180px;
+  }
+  .d-prev-qnum{font-size:.88rem;font-weight:700;color:var(--sage);margin-bottom:4px;}
+  .d-prev-qid{
+    font-family:var(--fm);font-size:.88rem;color:var(--gold);
+    background:var(--forest);padding:2px 8px;border-radius:5px;
+    display:inline-block;margin-bottom:10px;
+  }
+  .d-prev-qtext{font-size:.97rem;color:var(--txt);line-height:1.72;font-weight:500;margin-bottom:12px;}
+  .d-prev-opts{display:flex;flex-direction:column;gap:6px;}
+  .d-prev-opt{
+    display:flex;gap:7px;padding:9px 12px;border-radius:9px;
+    border:1.5px solid var(--border);font-size:.94rem;
     color:var(--txt-m);cursor:pointer;background:var(--cw);transition:all .18s;
   }
-  .prev-opt-item:hover{border-color:var(--sage);background:var(--sage-l);}
-  .prev-opt-l{
+  .d-prev-opt:hover{border-color:var(--sage);background:var(--sage-l);}
+  .d-prev-opt-l{
     min-width:22px;height:22px;border-radius:6px;
     border:1.5px solid var(--border-m);
     display:flex;align-items:center;justify-content:center;
-    font-size:.9rem;font-weight:800;color:var(--txt-lo);flex-shrink:0;
+    font-size:.84rem;font-weight:800;color:var(--txt-lo);flex-shrink:0;
   }
 }
 @media(max-width:1099px){
-  .preview-col{display:none;}
-  .page-container{display:block;}
-  .main-col{border-right:none;}
+  .desktop-shell{display:none !important;}
 }
 </style>
 </head>
@@ -903,6 +969,58 @@ body{
   <button class="tab" id="pt-build" onclick="showPage('build')">🎯 Build Test</button>
 </div>
 
+<!-- DESKTOP SHELL (1100px+) -->
+<div class="desktop-shell">
+  <!-- LEFT -->
+  <div class="d-left">
+    <div>
+      <div class="d-sec-title">Overview</div>
+      <div class="d-stats">
+        <div class="d-stat"><span class="d-stat-n" id="ds-total">0</span><div class="d-stat-l">Total</div></div>
+        <div class="d-stat"><span class="d-stat-n" id="ds-today">0</span><div class="d-stat-l">Today</div></div>
+        <div class="d-stat"><span class="d-stat-n" id="ds-easy">0</span><div class="d-stat-l">Easy</div></div>
+        <div class="d-stat"><span class="d-stat-n" id="ds-hard">0</span><div class="d-stat-l">Hard</div></div>
+      </div>
+    </div>
+    <div>
+      <div class="d-sec-title">Filter by Exam</div>
+      <div class="d-exam-btns">
+        <button class="d-exam-btn on" onclick="dSetFilter(this,'')"><span class="d-exam-dot" style="background:#6b8f5e;"></span><span class="d-exam-name">All Exams</span><span class="d-exam-cnt" id="dec-all">0</span></button>
+        <button class="d-exam-btn" onclick="dSetFilter(this,'JM')"><span class="d-exam-dot" style="background:#2563eb;"></span><span class="d-exam-name">JEE Mains</span><span class="d-exam-cnt" id="dec-JM">0</span></button>
+        <button class="d-exam-btn" onclick="dSetFilter(this,'JA')"><span class="d-exam-dot" style="background:#7c3aed;"></span><span class="d-exam-name">JEE Advanced</span><span class="d-exam-cnt" id="dec-JA">0</span></button>
+        <button class="d-exam-btn" onclick="dSetFilter(this,'NT')"><span class="d-exam-dot" style="background:#c84b4b;"></span><span class="d-exam-name">NEET UG</span><span class="d-exam-cnt" id="dec-NT">0</span></button>
+        <button class="d-exam-btn" onclick="dSetFilter(this,'NF')"><span class="d-exam-dot" style="background:#c8962a;"></span><span class="d-exam-name">NEET Foundation</span><span class="d-exam-cnt" id="dec-NF">0</span></button>
+        <button class="d-exam-btn" onclick="dSetFilter(this,'JF')"><span class="d-exam-dot" style="background:#059669;"></span><span class="d-exam-name">JEE Foundation</span><span class="d-exam-cnt" id="dec-JF">0</span></button>
+        <button class="d-exam-btn" onclick="dSetFilter(this,'CB10')"><span class="d-exam-dot" style="background:#0891b2;"></span><span class="d-exam-name">Class 10 CBSE</span><span class="d-exam-cnt" id="dec-CB10">0</span></button>
+        <button class="d-exam-btn" onclick="dSetFilter(this,'CB12')"><span class="d-exam-dot" style="background:#0891b2;"></span><span class="d-exam-name">Class 12 CBSE</span><span class="d-exam-cnt" id="dec-CB12">0</span></button>
+      </div>
+    </div>
+  </div>
+  <!-- MID -->
+  <div class="d-mid">
+    <div class="d-tabs">
+      <button class="d-tab on" id="dt-add" onclick="dShowTab('add')">➕ Add Question</button>
+      <button class="d-tab" id="dt-bank" onclick="dShowTab('bank')">📋 Question Bank</button>
+      <button class="d-tab" id="dt-upload" onclick="dShowTab('upload')">📤 Upload</button>
+      <button class="d-tab" id="dt-build" onclick="dShowTab('build')">🎯 Build Test</button>
+    </div>
+    <div class="d-content" id="d-pane">
+      <!-- filled by JS -->
+    </div>
+  </div>
+  <!-- RIGHT -->
+  <div class="d-right">
+    <div class="d-prev-title">👁 Live Preview</div>
+    <div class="d-live-prev" id="d-live-prev">
+      <div style="text-align:center;padding:28px 12px;color:var(--txt-lo);">
+        <div style="font-size:2rem;margin-bottom:10px;">✏️</div>
+        <div style="font-size:.94rem;font-weight:600;">Start typing to preview</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE/TABLET CONTENT -->
 <!-- ═══════════════════════════ DASHBOARD ═══════════════════════════ -->
 <div class="pane on" id="page-dashboard">
   <div class="welcome">
@@ -1345,9 +1463,15 @@ function renderDashboard(){
 
 // ── TABS ──
 window.showPage=function(page){
-  showPage(page);
-  if(page==='bank')renderBank(allQs);
-  if(page==='dashboard')renderDashboard();
+  document.querySelectorAll('.pane').forEach(p=>p.classList.remove('on'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('on'));
+  const pane=document.getElementById('page-'+page);
+  const tab=document.getElementById('pt-'+page);
+  if(pane)pane.classList.add('on');
+  if(tab)tab.classList.add('on');
+  if(page==='bank'){renderBank(allQs);}
+  if(page==='dashboard'){renderDashboard();}
+  if(page==='build'){populateBuildChapters();}
 };
 
 // ── FORM ──
@@ -1430,7 +1554,7 @@ window.saveQ=async function(){
     loader(false);
     stat('add-status','✓ Saved! ID: '+qId,'ok');
     document.getElementById('q-id-preview').textContent=qId+' ✓ Saved';
-    refreshStats();renderDashboard();
+    refreshStats();renderDashboard();if(window.innerWidth>=1100)updateDesktopStats();
   }catch(err){loader(false);stat('add-status','Error: '+err.message,'err');}
 };
 window.clearForm=function(){
@@ -1456,7 +1580,7 @@ window.filterBank=function(){
 };
 window.delQ=async function(id){
   if(!confirm('Delete '+id+'? Cannot undo.'))return;
-  try{await deleteDoc(doc(db,'questions',id));allQs=allQs.filter(q=>q.id!==id);document.getElementById('qc-'+id)?.remove();refreshStats();renderDashboard();}
+  try{await deleteDoc(doc(db,'questions',id));allQs=allQs.filter(q=>q.id!==id);document.getElementById('qc-'+id)?.remove();refreshStats();renderDashboard();if(window.innerWidth>=1100)updateDesktopStats();}
   catch(err){alert('Error: '+err.message);}
 };
 
@@ -1601,7 +1725,7 @@ window.saveAll=async function(){
   }
   loader(false);parsedQs=[];document.getElementById('parsed-section').style.display='none';
   stat('up-status','✓ Saved '+saved+' questions to bank!'+(failed?' · '+failed+' failed':''),'ok');
-  refreshStats();renderDashboard();populateBuildChapters();
+  refreshStats();renderDashboard();if(window.innerWidth>=1100)updateDesktopStats();populateBuildChapters();
 };
 window.clearParsed=function(){parsedQs=[];document.getElementById('parsed-section').style.display='none';document.getElementById('up-status').className='status';};
 
@@ -1830,6 +1954,173 @@ window.exportTest=function(){
 <nav class="nav"><span class="nb">Mock<span>Arena</span></span><span class="nn">${name}</span><span class="nc">${genTest.length} Questions</span></nav><div class="hdr"><div class="ht">${name}</div><div class="hm">${genTest.length} Questions · ${examName} · Built by MockArena</div></div><div class="body">${genTest.map((q,i)=>`<div class="q"><div class="qh"><span class="qn">Q${i+1}</span><span class="qid">${q.id}</span></div><div class="qt">${q.question}</div>${q.options&&q.options.A?`<div class="opts">${['A','B','C','D'].map(o=>`<div class="opt" onclick="this.classList.toggle('sel')"><span class="ol">${o}</span><span>${q.options[o]||''}</span></div>`).join('')}</div>`:''}</div>`).join('')}</div>${sc}document.addEventListener('DOMContentLoaded',function(){try{renderMathInElement(document.body,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}catch(_){}});${ec}</body></html>`;
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([html],{type:'text/html'}));a.download=(name.replace(/\s+/g,'_')+'_'+Date.now()+'.html');a.click();
 };
+
+// ════════════════════════════════
+// DESKTOP TAB SYSTEM
+// ════════════════════════════════
+function getTabHTML(tab){
+  if(tab==='add'){
+    // Return the add question form content
+    const pane=document.getElementById('page-add');
+    return pane?pane.innerHTML:'';
+  }
+  if(tab==='bank'){
+    return `<div class="bank-toolbar">
+      <div class="search-box"><span>🔍</span><input type="text" placeholder="Search questions..." oninput="dSearchBank(this.value)"/></div>
+      <select class="flt" id="d-flt-exam" onchange="dFilterBank()"><option value="">All Exams</option><option value="JM">JEE Mains</option><option value="JA">JEE Advanced</option><option value="NT">NEET UG</option><option value="NF">NEET Foundation</option><option value="JF">JEE Foundation</option><option value="CB10">Class 10 CBSE</option><option value="CB12">Class 12 CBSE</option></select>
+      <select class="flt" id="d-flt-diff" onchange="dFilterBank()"><option value="">All Difficulty</option><option value="Easy">Easy</option><option value="Medium">Medium</option><option value="Hard">Hard</option></select>
+    </div>
+    <div id="d-bank-list"></div>`;
+  }
+  if(tab==='upload'){
+    const pane=document.getElementById('page-upload');
+    return pane?pane.innerHTML:'';
+  }
+  if(tab==='build'){
+    const pane=document.getElementById('page-build');
+    return pane?pane.innerHTML:'';
+  }
+  return '';
+}
+
+window.dShowTab=function(tab){
+  document.querySelectorAll('.d-tab').forEach(t=>t.classList.remove('on'));
+  const dt=document.getElementById('dt-'+tab);
+  if(dt)dt.classList.add('on');
+  const pane=document.getElementById('d-pane');
+  if(!pane)return;
+  if(tab==='add'){
+    // Clone add form from mobile pane
+    const src=document.getElementById('page-add');
+    pane.innerHTML=src?src.innerHTML:'';
+    // Reattach events by cloning scripts won't work — use direct render
+    pane.innerHTML=buildAddFormHTML();
+  } else if(tab==='bank'){
+    pane.innerHTML=`<div class="bank-toolbar" style="margin-bottom:14px;">
+      <div class="search-box"><span style="color:var(--txt-lo);">🔍</span><input type="text" placeholder="Search questions..." oninput="dSearchBank(this.value)"/></div>
+      <select class="flt" id="d-flt-exam" onchange="dFilterBank()"><option value="">All Exams</option><option value="JM">JEE Mains</option><option value="JA">JEE Advanced</option><option value="NT">NEET UG</option><option value="NF">NEET Foundation</option><option value="JF">JEE Foundation</option><option value="CB10">Class 10 CBSE</option><option value="CB12">Class 12 CBSE</option></select>
+      <select class="flt" id="d-flt-diff" onchange="dFilterBank()"><option value="">All Difficulty</option><option value="Easy">Easy</option><option value="Medium">Medium</option><option value="Hard">Hard</option></select>
+    </div><div id="d-bank-list"></div>`;
+    dRenderBank(allQs);
+  } else if(tab==='upload'){
+    const src=document.getElementById('page-upload');
+    pane.innerHTML=src?src.innerHTML:'No content';
+  } else if(tab==='build'){
+    const src=document.getElementById('page-build');
+    pane.innerHTML=src?src.innerHTML:'No content';
+    populateBuildChapters();
+  }
+};
+
+function buildAddFormHTML(){
+  return `<div class="card">
+    <div class="id-badge">
+      <div class="id-badge-left"><div class="id-lbl">Auto-generated Question ID</div><div class="id-val" id="q-id-preview">Select exam &amp; subject →</div></div>
+      <button class="id-copy" onclick="copyQId()">Copy ID</button>
+    </div>
+    <div class="step-lbl">Step 1 — Classify</div>
+    <div class="frow frow-3" style="margin-bottom:14px;">
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Exam <span class="req">*</span></label><select class="fs" id="q-exam" onchange="onExam()"><option value="">Select exam</option><option value="JM">JEE Mains</option><option value="JA">JEE Advanced</option><option value="NT">NEET UG</option><option value="NF">NEET Foundation</option><option value="JF">JEE Foundation</option><option value="CB10">Class 10 CBSE</option><option value="CB12">Class 12 CBSE</option><option value="IC10">Class 10 ICSE</option><option value="IS12">Class 12 ISC</option></select></div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Subject <span class="req">*</span></label><select class="fs" id="q-subj" onchange="onSubj()"><option value="">Select subject</option></select></div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Chapter <span class="req">*</span></label><select class="fs" id="q-chap"><option value="">Select chapter</option></select></div>
+    </div>
+    <div class="frow frow-3" style="margin-bottom:20px;">
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Difficulty</label><select class="fs" id="q-diff" onchange="refreshQId()"><option value="Easy">Easy</option><option value="Medium" selected>Medium</option><option value="Hard">Hard</option></select></div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Type</label><select class="fs" id="q-type" onchange="onType()"><option value="MCQ">MCQ</option><option value="MULTI">Multi-correct</option><option value="INTEGER">Integer</option><option value="AR">Assertion-Reason</option></select></div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Marks</label><input type="number" class="fi" id="q-marks" value="4" min="1" max="10"/></div>
+    </div>
+    <div class="step-lbl">Step 2 — Question Text</div>
+    <div class="fg"><label class="fl">Question <span class="req">*</span></label><textarea class="fta" id="q-text" style="min-height:110px;" placeholder="Type question here..." oninput="updatePreview()"></textarea></div>
+    <div id="opts-block">
+      <div class="step-lbl">Step 3 — Options <span style="font-weight:500;text-transform:none;letter-spacing:0;font-size:.9rem;color:var(--txt-lo);">Click ✓ to mark correct</span></div>
+      <div class="opt-row"><div class="opt-lbl" id="ol-A">A</div><input class="opt-fi" id="oi-A" placeholder="Option A" oninput="updatePreview()"/><button class="opt-tick" id="ot-A" onclick="markAns('A')">✓</button></div>
+      <div class="opt-row"><div class="opt-lbl" id="ol-B">B</div><input class="opt-fi" id="oi-B" placeholder="Option B" oninput="updatePreview()"/><button class="opt-tick" id="ot-B" onclick="markAns('B')">✓</button></div>
+      <div class="opt-row"><div class="opt-lbl" id="ol-C">C</div><input class="opt-fi" id="oi-C" placeholder="Option C" oninput="updatePreview()"/><button class="opt-tick" id="ot-C" onclick="markAns('C')">✓</button></div>
+      <div class="opt-row"><div class="opt-lbl" id="ol-D">D</div><input class="opt-fi" id="oi-D" placeholder="Option D" oninput="updatePreview()"/><button class="opt-tick" id="ot-D" onclick="markAns('D')">✓</button></div>
+    </div>
+    <div id="int-block" style="display:none;">
+      <div class="step-lbl">Step 3 — Correct Answer</div>
+      <div class="fg"><label class="fl">Integer Answer <span class="req">*</span></label><input type="number" class="fi" id="q-int" placeholder="Enter correct integer"/></div>
+    </div>
+    <div class="step-lbl" style="margin-top:16px;">Step 4 — Explanation &amp; Tags</div>
+    <div class="fg"><label class="fl">Explanation</label><textarea class="fta" id="q-expl" placeholder="Step-by-step solution..." oninput="updatePreview()"></textarea></div>
+    <div class="frow frow-2">
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Topic</label><input type="text" class="fi" id="q-topic" placeholder="e.g. Coulomb's Law"/></div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Year (PYQ)</label><input type="number" class="fi" id="q-year" placeholder="e.g. 2024"/></div>
+    </div>
+    <div class="status" id="add-status"></div>
+    <div class="btn-row">
+      <button class="btn btn-green" onclick="saveQ()">💾 Save to Bank</button>
+      <button class="btn btn-outline" onclick="clearForm()">✕ Clear</button>
+    </div>
+  </div>`;
+}
+
+function dRenderBank(qs){
+  const el=document.getElementById('d-bank-list');if(!el)return;
+  if(!qs.length){el.innerHTML='<div class="empty"><div class="empty-icon">📭</div><div class="empty-h">No questions yet</div><div class="empty-s">Add questions using the Add Question tab.</div></div>';return;}
+  el.innerHTML=qs.map(q=>`<div class="q-card" id="dqc-${q.id}"><div class="q-card-top"><span class="q-cid">${q.id}</span><div class="tags"><span class="tag exam">${q.examName||q.examCode}</span><span class="tag">${q.subject}</span><span class="tag">${q.chapter}</span><span class="tag ${(q.difficulty||'medium').toLowerCase()}">${q.difficulty}</span></div><button class="q-del-btn" onclick="delQ('${q.id}')">🗑</button></div><div class="q-text">${q.question.length>180?q.question.substring(0,180)+'…':q.question}</div>${q.options&&q.options.A?`<div class="q-opts">${['A','B','C','D'].map(o=>`<div class="q-opt${q.correct===o?' ans':''}"><span class="q-opt-l">${o}</span>${q.options[o]||''}</div>`).join('')}</div>`:''}</div>`).join('');
+}
+
+window.dSearchBank=function(v){
+  const lv=v.toLowerCase();
+  dRenderBank(allQs.filter(q=>!v||q.question?.toLowerCase().includes(lv)||q.id?.toLowerCase().includes(lv)||q.chapter?.toLowerCase().includes(lv)));
+};
+window.dFilterBank=function(){
+  const ex=document.getElementById('d-flt-exam')?.value||'';
+  const df=document.getElementById('d-flt-diff')?.value||'';
+  dRenderBank(allQs.filter(q=>{if(ex&&q.examCode!==ex)return false;if(df&&q.difficulty!==df)return false;return true;}));
+};
+window.dSetFilter=function(btn,exam){
+  document.querySelectorAll('.d-exam-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  dRenderBank(exam?allQs.filter(q=>q.examCode===exam):allQs);
+};
+
+// Update desktop stats when questions load
+function updateDesktopStats(){
+  const today=new Date().toISOString().substring(0,10);
+  document.getElementById('ds-total').textContent=allQs.length;
+  document.getElementById('ds-today').textContent=allQs.filter(q=>(q.createdAt||'').startsWith(today)).length;
+  document.getElementById('ds-easy').textContent=allQs.filter(q=>q.difficulty==='Easy').length;
+  document.getElementById('ds-hard').textContent=allQs.filter(q=>q.difficulty==='Hard').length;
+  ['JM','JA','NT','NF','JF','CB10','CB12'].forEach(ec=>{
+    const el=document.getElementById('dec-'+ec);
+    if(el)el.textContent=allQs.filter(q=>q.examCode===ec).length;
+  });
+  document.getElementById('dec-all').textContent=allQs.length;
+}
+
+// Update live preview in desktop right panel
+window.updatePreview=function(){
+  // Mobile preview
+  const mel=document.getElementById('live-prev');
+  // Desktop preview  
+  const del=document.getElementById('d-live-prev');
+  const target=del||mel;
+  if(!target)return;
+  const q=document.getElementById('q-text')?.value||'';
+  const expl=document.getElementById('q-expl')?.value||'';
+  const qid=document.getElementById('q-id-preview')?.textContent||'–';
+  if(!q.trim()){
+    const empty='<div style="text-align:center;padding:28px 12px;color:var(--txt-lo);"><div style="font-size:2rem;margin-bottom:10px;">✏️</div><div style="font-size:.94rem;font-weight:600;">Start typing to preview</div></div>';
+    if(mel)mel.innerHTML=empty;
+    if(del)del.innerHTML=empty;
+    return;
+  }
+  const opts=['A','B','C','D'].map(o=>({k:o,v:(document.getElementById('oi-'+o)?.value||'')}));
+  const html=`<div class="d-prev-qnum">Preview</div><div class="d-prev-qid">${qid}</div><div class="d-prev-qtext">${esc(q)}</div>${opts.some(o=>o.v)?'<div class="d-prev-opts">'+opts.filter(o=>o.v).map(o=>`<div class="d-prev-opt"><span class="d-prev-opt-l">${o.k}</span>${esc(o.v)}</div>`).join('')+'</div>':''}${expl?`<div class="q-expl" style="margin-top:12px;"><div class="q-expl-lbl">Explanation</div>${esc(expl)}</div>`:''}`;
+  if(mel)mel.innerHTML=html;
+  if(del)del.innerHTML=html;
+  try{
+    [mel,del].forEach(el=>{if(el)renderMathInElement(el,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});});
+  }catch(_){}
+};
+
+// Init desktop on load
+if(window.innerWidth>=1100){
+  dShowTab('add');
+}
 
 // ── HELPERS ──
 function stat(id,msg,type){const el=document.getElementById(id);if(el){el.textContent=msg;el.className='status '+type;}}
