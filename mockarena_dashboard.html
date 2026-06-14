@@ -1,1421 +1,581 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MockArena — Student Dashboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Dashboard — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
 <style>
+
 :root{
-  --cream:#faf9f5;--cream-warm:#f5f3ec;--cream-card:#ffffff;
-  --forest:#1a2618;--forest-soft:#243422;--forest-muted:#3d5239;
-  --sage:#6b8f5e;--sage-light:rgba(107,143,94,0.1);--sage-glow:rgba(107,143,94,0.2);
-  --gold:#c8962a;--gold-dim:rgba(200,150,42,0.08);
-  --rose:#c84b4b;--rose-light:rgba(200,75,75,0.09);
-  --sky:#3b82c4;--sky-light:rgba(59,130,196,0.09);
-  --amber:#b87333;--amber-light:rgba(184,115,51,0.09);
-  --purple:#7c5cbf;--purple-light:rgba(124,92,191,0.09);
-  --border:rgba(26,38,24,0.08);--border-med:rgba(26,38,24,0.13);
-  --font-d:"Outfit",sans-serif;--font-b:"Outfit",sans-serif;
-  --font-m:"IBM Plex Mono",monospace;
-  --sh:0 1px 3px rgba(26,38,24,0.06),0 4px 16px rgba(26,38,24,0.04);
-  --sh-hover:0 8px 32px rgba(107,143,94,0.15),0 2px 8px rgba(26,38,24,0.06);
-  --sh-deep:0 20px 60px rgba(26,38,24,0.12);
-  --sbw:256px;--tbh:62px;
+  --forest:#1a2618;--sage:#6b8f5e;--sage-d:#3a6830;
+  --sage-l:rgba(107,143,94,.11);--sage-g:rgba(107,143,94,.22);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);--gold-g:rgba(200,150,42,.22);
+  --rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
+  --sky:#2563eb;--sky-l:rgba(37,99,235,.09);
+  --violet:#7c3aed;--violet-l:rgba(124,58,237,.09);
+  --cream:#faf9f5;--cw:#f5f3ec;--white:#fff;
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.14);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.38);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --sh:0 2px 12px rgba(26,38,24,.07);
+  --sh-lg:0 6px 24px rgba(26,38,24,.11);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;}
-@media(max-width:860px){html{height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;}body{height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;}}
-@media(max-width:860px){html,body{height:auto!important;overflow:visible!important;}}
-@media(max-width:860px){html,body{overflow:auto;height:auto;}}
-body{font-family:var(--font-b);background:var(--cream);color:var(--forest);display:flex;-webkit-font-smoothing:antialiased;}
+body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;}
 
-/* SIDEBAR */
-.sb{width:var(--sbw);flex-shrink:0;background:var(--forest);height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;z-index:300;;transition:transform .3s ease;}
-.sb::-webkit-scrollbar{width:3px;}
-.sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px;}
-.sb-logo{padding:20px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06);text-decoration:none;}
-.sb-lm{width:36px;height:36px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.82rem;font-weight:800;color:white;flex-shrink:0;box-shadow:0 0 18px var(--sage-glow);}
-.sb-b1{font-family:var(--font-d);font-size:1rem;font-weight:700;color:white;letter-spacing:-.02em;}
-.sb-b2{font-size:.56rem;font-weight:500;color:rgba(255,255,255,.28);letter-spacing:.1em;text-transform:uppercase;}
-.sb-user{margin:12px 14px;background:rgba(107,143,94,.15);border:1px solid rgba(107,143,94,.25);border-radius:12px;padding:12px;}
-.sb-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.9rem;font-weight:800;color:white;margin-bottom:8px;box-shadow:0 0 14px rgba(200,150,42,.3);}
-.sb-uname{font-size:.8rem;font-weight:700;color:white;}
-.sb-urole{font-size:.64rem;color:rgba(255,255,255,.35);margin-top:1px;}
-.sb-ubadge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;background:rgba(200,150,42,.15);border:1px solid rgba(200,150,42,.25);border-radius:100px;padding:2px 9px;font-size:.6rem;font-weight:600;color:var(--gold);}
-.sb-grp{padding:14px 18px 4px;font-size:.56rem;font-weight:600;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.12em;}
-.sb-ul{list-style:none;padding:0 8px;}
-.sb-ul li{margin-bottom:1px;}
-.sb-nav{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;text-decoration:none;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.42);transition:all .18s;}
-.sb-nav:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);}
-.sb-nav.active{background:rgba(107,143,94,.2);color:white;border:1px solid rgba(107,143,94,.3);}
-.sb-nav.active .si{color:var(--sage);}
-.si{width:16px;text-align:center;font-size:.82rem;flex-shrink:0;color:rgba(255,255,255,.25);}
-.snb{margin-left:auto;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:100px;background:var(--rose);color:white;}
-.sb-foot{margin-top:auto;padding:10px 8px 18px;border-top:1px solid rgba(255,255,255,.06);}
-
-/* MAIN */
-.main{margin-left:var(--sbw);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;transition:margin .3s ease;}
-.tb{height:var(--tbh);background:rgba(250,249,245,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:12px;flex-shrink:0;}
-.tb-title{font-family:var(--font-d);font-size:.92rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;}
-.tb-crumb{font-size:.64rem;color:rgba(26,38,24,.4);}
-.tb-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
-.tb-search{display:flex;align-items:center;gap:7px;background:var(--cream-warm);border:1.5px solid var(--border-med);border-radius:9px;padding:7px 12px;width:210px;transition:all .2s;}
-.tb-search:focus-within{border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-light);}
-.tb-search input{border:none;outline:none;font-family:var(--font-b);font-size:.78rem;color:var(--forest);background:transparent;width:100%;}
-.tb-search input::placeholder{color:rgba(26,38,24,.3);}
-.tb-ib{width:36px;height:36px;border-radius:9px;background:var(--cream-warm);border:1.5px solid var(--border-med);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.88rem;transition:all .2s;position:relative;color:var(--forest-muted);}
-.tb-ib:hover{border-color:var(--sage);background:var(--sage-light);}
-.tb-ib .dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--rose);border:1.5px solid var(--cream);}
-.btn{font-family:var(--font-b);font-size:.76rem;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;border:none;}
-.btn-ghost{background:var(--cream-warm);border:1.5px solid var(--border-med);color:var(--forest-muted);}
-.btn-ghost:hover{border-color:var(--sage);color:var(--sage);}
-.btn-sage{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;box-shadow:0 2px 8px var(--sage-glow);}
-.btn-sage:hover{box-shadow:0 4px 16px var(--sage-glow);transform:translateY(-1px);}
-.btn-gold{background:linear-gradient(135deg,var(--gold),#e8a830);color:white;}
-.btn-gold:hover{box-shadow:0 4px 14px rgba(200,150,42,.35);transform:translateY(-1px);}
-.btn-primary{background:linear-gradient(135deg,var(--forest),var(--forest-soft));color:white;}
-.btn-primary:hover{box-shadow:var(--sh-hover);transform:translateY(-1px);}
-.btn-sm{font-family:var(--font-b);font-size:.72rem;font-weight:600;padding:5px 12px;border-radius:8px;cursor:pointer;border:1.5px solid var(--border-med);background:var(--cream-warm);color:var(--forest-muted);transition:all .2s;}
-.btn-sm:hover{border-color:var(--sage);color:var(--sage);}
-
-.content{flex:1;overflow-y:auto;padding:22px 24px 40px;}
-.content::-webkit-scrollbar{width:3px;}
-.content::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
-
-/* GRIDS */
-.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:20px;}
-.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;margin-bottom:20px;}
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin-bottom:20px;}
-.g21{display:grid;grid-template-columns:2fr 1fr;gap:13px;margin-bottom:20px;}
-.g31{display:grid;grid-template-columns:3fr 1fr;gap:13px;margin-bottom:20px;}
-
-/* KPI CARDS */
-.kpi{background:var(--cream-card);border:1px solid var(--border);border-radius:16px;padding:18px;transition:all .25s;position:relative;overflow:hidden;cursor:pointer;}
-.kpi:hover{box-shadow:var(--sh-hover);transform:translateY(-2px);}
-.kpi::after{content:"";position:absolute;top:0;left:0;right:0;height:2px;border-radius:16px 16px 0 0;}
-.kpi-sg::after{background:linear-gradient(90deg,var(--sage),#8fb87f);}
-.kpi-gd::after{background:linear-gradient(90deg,var(--gold),#e8a830);}
-.kpi-sk::after{background:linear-gradient(90deg,var(--sky),#60a5e8);}
-.kpi-am::after{background:linear-gradient(90deg,var(--amber),#d4844a);}
-.kpi-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px;}
-.kpi-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
-.kpi-delta{font-size:.62rem;font-weight:600;padding:2px 7px;border-radius:100px;}
-.delta-up{background:rgba(107,143,94,.12);color:var(--sage);}
-.delta-dn{background:var(--rose-light);color:var(--rose);}
-.kpi-n{font-family:var(--font-d);font-size:1.6rem;font-weight:700;color:var(--forest);letter-spacing:-.04em;line-height:1;margin-bottom:3px;}
-.kpi-l{font-size:.66rem;font-weight:600;color:rgba(26,38,24,.45);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px;}
-.kpi-s{font-size:.66rem;color:rgba(26,38,24,.35);}
-.sparks{display:flex;align-items:flex-end;gap:2px;height:22px;margin-top:10px;}
-.spark{flex:1;border-radius:1px;min-height:2px;transition:height .9s cubic-bezier(.4,0,.2,1);}
-
-/* MAIN CARD */
-.card{background:var(--cream-card);border:1px solid var(--border);border-radius:16px;padding:20px;box-shadow:var(--sh);transition:box-shadow .25s;}
-.card:hover{box-shadow:var(--sh-hover);}
-.ch{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
-.ct{font-family:var(--font-d);font-size:.84rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;}
-.cs{font-size:.65rem;color:rgba(26,38,24,.4);margin-top:2px;}
-.sh-l{font-family:var(--font-d);font-size:.78rem;font-weight:700;color:var(--forest);margin-bottom:11px;display:flex;align-items:center;gap:8px;}
-.sh-l::before{content:"";width:3px;height:13px;background:linear-gradient(180deg,var(--sage),#4a7a3d);border-radius:2px;box-shadow:0 0 6px var(--sage-glow);}
-
-/* BADGE */
-.badge{font-size:.62rem;font-weight:600;padding:2px 9px;border-radius:100px;white-space:nowrap;display:inline-flex;align-items:center;gap:3px;}
-.bg{background:var(--sage-light);color:var(--sage);border:1px solid rgba(107,143,94,.2);}
-.br{background:var(--rose-light);color:var(--rose);border:1px solid rgba(200,75,75,.2);}
-.ba{background:var(--amber-light);color:var(--amber);border:1px solid rgba(184,115,51,.2);}
-.bb{background:var(--sky-light);color:var(--sky);border:1px solid rgba(59,130,196,.2);}
-.bgd{background:var(--gold-dim);color:var(--gold);border:1px solid rgba(200,150,42,.2);}
-.bp{background:var(--purple-light);color:var(--purple);border:1px solid rgba(124,92,191,.2);}
-
-/* PROGRESS BAR */
-.pb-row{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
-.pb-l{font-size:.72rem;font-weight:600;color:var(--forest-muted);width:120px;flex-shrink:0;}
-.pb-t{flex:1;height:6px;background:var(--cream-warm);border-radius:5px;overflow:hidden;border:1px solid var(--border);}
-.pb-f{height:100%;border-radius:5px;transition:width 1.5s cubic-bezier(.4,0,.2,1);}
-.pb-v{font-family:var(--font-m);font-size:.67rem;color:var(--forest-muted);width:36px;text-align:right;}
-
-/* METRIC ROW */
-.mr{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);}
-.mr:last-child{border-bottom:none;}
-.mr-l{font-size:.73rem;font-weight:500;color:var(--forest-muted);}
-.mr-v{font-family:var(--font-m);font-size:.73rem;font-weight:500;color:var(--forest);}
-
-/* NOTICE */
-.notice{display:flex;gap:10px;padding:10px 13px;border-radius:10px;margin-bottom:7px;}
-.notice-ro{background:var(--rose-light);border:1px solid rgba(200,75,75,.15);}
-.notice-sg{background:var(--sage-light);border:1px solid rgba(107,143,94,.2);}
-.notice-gd{background:var(--gold-dim);border:1px solid rgba(200,150,42,.2);}
-.notice-sk{background:var(--sky-light);border:1px solid rgba(59,130,196,.2);}
-.n-icon{font-size:.88rem;flex-shrink:0;margin-top:1px;}
-.n-title{font-size:.73rem;font-weight:700;color:var(--forest);margin-bottom:2px;}
-.n-desc{font-size:.67rem;color:var(--forest-muted);line-height:1.5;}
-
-/* TEST ITEM */
-.test-item{display:flex;align-items:center;gap:11px;padding:11px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .18s;}
-.test-item:last-child{border-bottom:none;}
-.test-item:hover{padding-left:3px;}
-.ti-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:.96rem;flex-shrink:0;}
-.ti-name{font-size:.8rem;font-weight:600;color:var(--forest);margin-bottom:2px;}
-.ti-meta{font-size:.64rem;color:rgba(26,38,24,.4);}
-.ti-date{font-size:.68rem;font-weight:600;color:var(--forest-muted);margin-bottom:4px;text-align:right;}
-.test-pill{font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:100px;}
-.tp-live{background:var(--rose-light);color:var(--rose);border:1px solid rgba(200,75,75,.2);}
-.tp-soon{background:var(--amber-light);color:var(--amber);border:1px solid rgba(184,115,51,.2);}
-.tp-free{background:var(--sage-light);color:var(--sage);border:1px solid rgba(107,143,94,.2);}
-.tp-new{background:var(--sky-light);color:var(--sky);border:1px solid rgba(59,130,196,.2);}
-.tp-open{background:var(--purple-light);color:var(--purple);border:1px solid rgba(124,92,191,.2);}
-
-/* RESULT ITEM */
-.result-item{display:flex;align-items:center;gap:11px;padding:10px 0;border-bottom:1px solid var(--border);cursor:pointer;transition:all .18s;}
-.result-item:last-child{border-bottom:none;}
-.result-item:hover{padding-left:3px;}
-.ri-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.9rem;flex-shrink:0;}
-.ri-name{font-size:.78rem;font-weight:600;color:var(--forest);margin-bottom:2px;}
-.ri-meta{font-size:.63rem;color:rgba(26,38,24,.38);}
-.ri-score{font-family:var(--font-d);font-size:.92rem;font-weight:800;color:var(--forest);line-height:1;}
-.ri-rank{font-size:.62rem;color:rgba(26,38,24,.38);margin-top:2px;}
-.ri-trend{font-size:.68rem;font-weight:700;margin-top:2px;}
-
-/* STUDY PLANNER */
-.planner-days{display:flex;justify-content:space-between;margin-bottom:16px;padding:12px;background:var(--cream-warm);border-radius:12px;border:1px solid var(--border);}
-.pd-item{display:flex;flex-direction:column;align-items:center;gap:5px;}
-.pd-day{font-size:.62rem;font-weight:700;color:rgba(26,38,24,.4);text-transform:uppercase;letter-spacing:.05em;}
-.pd-circle{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.74rem;font-weight:700;}
-.pd-done{background:var(--sage);color:white;}
-.pd-today{background:var(--forest);color:white;box-shadow:0 0 0 3px rgba(26,38,24,.15);}
-.pd-future{background:var(--cream-warm);color:rgba(26,38,24,.35);border:1.5px solid var(--border-med);}
-.pd-dot{width:5px;height:5px;border-radius:50%;}
-
-/* TASK */
-.task-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
-.task-item:last-child{border-bottom:none;}
-.task-check{width:18px;height:18px;border-radius:5px;border:2px solid var(--border-med);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.66rem;font-weight:800;flex-shrink:0;margin-top:1px;transition:all .2s;color:transparent;}
-.task-check.done{background:var(--sage);border-color:var(--sage);color:white;}
-.task-check:hover{border-color:var(--sage);}
-.task-name{font-size:.76rem;font-weight:600;color:var(--forest);margin-bottom:2px;}
-.task-name.done{text-decoration:line-through;color:rgba(26,38,24,.35);}
-.task-meta{font-size:.63rem;color:rgba(26,38,24,.4);}
-.task-tag{font-size:.6rem;font-weight:700;padding:2px 8px;border-radius:100px;flex-shrink:0;margin-top:1px;}
-
-/* LEADERBOARD */
-.lb-item{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:10px;transition:all .18s;}
-.lb-item:hover{background:var(--cream-warm);}
-.lb-item.me{background:var(--sage-light);border:1px solid rgba(107,143,94,.2);}
-.lb-pos{font-family:var(--font-d);font-size:.84rem;font-weight:800;width:28px;text-align:center;flex-shrink:0;}
-.lb-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:white;flex-shrink:0;}
-.lb-name{font-size:.76rem;font-weight:600;color:var(--forest);flex:1;}
-.lb-score{font-family:var(--font-m);font-size:.72rem;font-weight:600;color:var(--forest-muted);}
-
-/* NOTIF */
-.notif-item{display:flex;align-items:flex-start;gap:10px;padding:9px 0;border-bottom:1px solid var(--border);}
-.notif-item:last-child{border-bottom:none;}
-.notif-dot{width:7px;height:7px;border-radius:50%;background:var(--sage);margin-top:4px;flex-shrink:0;}
-.notif-dot.read{background:rgba(26,38,24,.2);}
-.notif-title{font-size:.75rem;font-weight:700;color:var(--forest);margin-bottom:2px;}
-.notif-desc{font-size:.65rem;color:rgba(26,38,24,.45);line-height:1.4;}
-.notif-time{font-size:.6rem;color:rgba(26,38,24,.3);flex-shrink:0;margin-top:2px;}
-
-/* BADGE ITEM */
-.badges-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-bottom:14px;}
-.badge-item{display:flex;flex-direction:column;align-items:center;gap:4px;padding:11px 6px;border-radius:11px;border:1px solid var(--border);background:var(--cream-warm);text-align:center;cursor:pointer;transition:all .2s;}
-.badge-item:hover{box-shadow:var(--sh-hover);transform:translateY(-2px);background:var(--cream-card);}
-.badge-item.locked{opacity:.42;filter:grayscale(.5);}
-.badge-emoji{font-size:1.4rem;}
-.badge-name{font-size:.64rem;font-weight:700;color:var(--forest);line-height:1.2;}
-.badge-earned{font-size:.58rem;color:rgba(26,38,24,.38);}
-
-/* LINE CHART */
-.lc-wrap{height:110px;position:relative;margin-bottom:6px;}
-.lc-svg{width:100%;height:100%;overflow:visible;}
-.lc-lbls{display:flex;justify-content:space-between;}
-.lc-lbl{font-size:.58rem;color:rgba(26,38,24,.28);font-weight:500;text-align:center;}
-
-/* PLAN CARD */
-.plan-card{background:linear-gradient(135deg,var(--forest),var(--forest-soft),#1e3318);border-radius:16px;padding:20px;position:relative;overflow:hidden;box-shadow:var(--sh);}
-.plan-card::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;}
-.plan-inner{position:relative;z-index:1;}
-.plan-tag{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
-.plan-name{font-family:var(--font-d);font-size:1.15rem;font-weight:900;color:white;letter-spacing:-.03em;margin-bottom:3px;}
-.plan-exp{font-size:.66rem;color:rgba(255,255,255,.35);margin-bottom:14px;}
-.plan-bar{height:6px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden;margin:6px 0 10px;}
-.plan-bar-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--sage),#8fb87f);transition:width 1.5s ease;}
-.plan-bar-lbl{display:flex;justify-content:space-between;font-size:.62rem;color:rgba(255,255,255,.35);}
-.plan-features{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
-.pf-item{font-size:.72rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:6px;}
-.pf-item::before{content:"checkmark";display:none;}
-.btn-upgrade{width:100%;font-family:var(--font-d);font-size:.78rem;font-weight:700;padding:10px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--gold),#e8a830);color:var(--forest);cursor:pointer;transition:all .22s;box-shadow:0 4px 14px rgba(200,150,42,.3);}
-.btn-upgrade:hover{box-shadow:0 6px 20px rgba(200,150,42,.4);transform:translateY(-1px);}
-
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-.fu{animation:fadeUp .38s ease forwards;}
-.fu1{animation-delay:.04s;opacity:0}.fu2{animation-delay:.08s;opacity:0}
-.fu3{animation-delay:.12s;opacity:0}.fu4{animation-delay:.16s;opacity:0}
-.fu5{animation-delay:.20s;opacity:0}.fu6{animation-delay:.24s;opacity:0}
-@keyframes livepulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(200,75,75,.4)}50%{opacity:.7;box-shadow:0 0 0 5px rgba(200,75,75,0)}}
-::-webkit-scrollbar{width:3px;height:3px;}
-::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
-@media(max-width:1100px){.g4{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:860px){.sb{transform:translateX(-100%)}.main{margin-left:0}.g2,.g21,.g31,.g3{grid-template-columns:1fr}}
-
-
-
-</style>
-
-<style id="mobile-fix">
-@media(max-width:860px){
-  html,body{height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;}
-  .sb{transform:translateX(-100%)!important;transition:transform .3s ease!important;position:fixed!important;z-index:9999!important;height:100%!important;}
-  .sb.mob-open{transform:translateX(0)!important;}
-  .mob-overlay{position:fixed!important;inset:0!important;background:rgba(0,0,0,.55)!important;z-index:9998!important;display:none!important;}
-  .mob-overlay.mob-open{display:block!important;}
-  .mob-ham{display:flex!important;width:36px!important;height:36px!important;border-radius:8px!important;background:#f5f3ec!important;border:1.5px solid rgba(26,38,24,.13)!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;font-size:1.1rem!important;flex-shrink:0!important;color:#1a2618!important;margin-right:4px!important;}
-  .main{margin-left:0!important;width:100vw!important;height:auto!important;min-height:100vh!important;display:block!important;overflow-y:auto!important;}
-  .tb{position:sticky!important;top:0!important;z-index:200!important;padding:0 12px!important;height:52px!important;gap:8px!important;flex-shrink:0!important;}
-  .tb-search{display:none!important;}
-  .stabs{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;padding:0 12px!important;}
-  .stabs::-webkit-scrollbar{display:none!important;}
-  .stab{white-space:nowrap!important;font-size:.7rem!important;padding:0 10px!important;}
-  .content{padding:14px 12px 60px!important;overflow-y:visible!important;height:auto!important;flex:none!important;}
-  .g4,.g3,.g2,.g21,.g12,.g31{display:grid!important;grid-template-columns:1fr!important;gap:12px!important;}
-  .card,.kpi{padding:14px!important;}
-  .kpi-n{font-size:1.3rem!important;}
-  .lp,.col-left,.rp,.col-right{display:none!important;}
-  .layout{flex-direction:column!important;height:auto!important;}
-  .q-panel,.qp{min-height:350px!important;height:auto!important;overflow-y:auto!important;}
-  .palette-panel,.pp{width:100%!important;height:auto!important;border-left:none!important;border-top:1px solid #e8e5de!important;}
-  .palette-grid,.pp-grid{grid-template-columns:repeat(10,1fr)!important;}
-  .topbar{flex-wrap:wrap!important;height:auto!important;min-height:56px!important;padding:8px 12px!important;gap:6px!important;}
-  .tb-center{order:3!important;width:100%!important;padding-bottom:6px!important;}
-  .tb-test-name,.tb-div{display:none!important;}
-  .subj-tab{padding:4px 9px!important;font-size:.68rem!important;}
-  .scope-bar{flex-wrap:wrap!important;}
-  .hero-inner,.lbh-inner{grid-template-columns:1fr!important;}
-  .my-ranks{display:none!important;}
-  .fg2,.fg3{grid-template-columns:1fr!important;}
-  .mb{width:94vw!important;max-height:90vh!important;padding:18px!important;}
-  .af-time{display:none!important;}
-  .badges-grid{grid-template-columns:repeat(4,1fr)!important;}
-  .planner-days{gap:3px!important;padding:8px!important;}
-  .tw{overflow-x:auto!important;}
+/* ── NAV ── */
+.nav{height:56px;display:flex;align-items:center;padding:0 16px;gap:10px;background:var(--forest);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(107,143,94,.15);}
+.nav-logo{font-size:1.05rem;font-weight:900;text-decoration:none;color:white;letter-spacing:-.02em;}
+.nav-logo span{color:var(--sage);}
+.nav-pill{font-size:.9rem;font-weight:800;padding:4px 12px;border-radius:100px;background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.nav-profile{display:flex;align-items:center;gap:8px;}
+.nav-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--sage-d));display:flex;align-items:center;justify-content:center;color:white;font-size:.9rem;font-weight:800;flex-shrink:0;overflow:hidden;border:1.5px solid rgba(255,255,255,.25);}
+.nav-avatar-txt{animation:dotBlink 1.8s ease-in-out infinite;}
+@keyframes dotBlink{
+  0%,100%{opacity:1;}
+  50%{opacity:.3;}
 }
-@media(max-width:480px){
-  .g4{grid-template-columns:1fr 1fr!important;}
-  .badges-grid{grid-template-columns:repeat(3,1fr)!important;}
-  .palette-grid,.pp-grid{grid-template-columns:repeat(8,1fr)!important;}
-}
-</style>
+.nav-avatar img{width:100%;height:100%;object-fit:cover;}
+.nav-uname{font-size:.92rem;font-weight:700;color:rgba(255,255,255,.92);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+@media(max-width:420px){.nav-uname{display:none;}}
+.nav-switch{font-family:var(--fd);font-size:.9rem;font-weight:700;padding:6px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);text-decoration:none;transition:all .18s;}
+.nav-switch:hover{background:rgba(255,255,255,.16);}
 
-<style>
-.sb{display:flex!important;flex-direction:column!important;overflow-y:auto!important;}
-.sb-foot{position:sticky!important;bottom:0!important;background:var(--forest)!important;margin-top:auto!important;padding:10px 8px 18px!important;border-top:1px solid rgba(255,255,255,.06)!important;flex-shrink:0!important;z-index:10!important;}
-.sb-av img,.sb-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover;}
-</style>
-<style>
-/* ── Sidebar text visibility fix ── */
-.sb-nav{color:rgba(255,255,255,.78)!important;}
-.sb-nav:hover{color:white!important;background:rgba(255,255,255,.08)!important;}
-.sb-nav.active{color:white!important;}
-.si{color:rgba(255,255,255,.58)!important;}
-.sb-grp{color:rgba(255,255,255,.4)!important;font-size:.62rem!important;}
-.sb-uname{color:white!important;font-weight:700!important;}
-.sb-urole{color:rgba(255,255,255,.55)!important;}
-.sb-b1{color:white!important;}
-.sb-b2{color:rgba(255,255,255,.45)!important;}
+/* ── HERO ── */
+.hero{background:var(--cream);padding:32px 20px 0;border-bottom:1.5px solid var(--border);}
+.hero-inner{max-width:900px;margin:0 auto;}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.hero-badge{font-size:.88rem;font-weight:800;padding:5px 13px;border-radius:100px;background:var(--sky-l);color:var(--sky);border:1px solid rgba(37,99,235,.18);}
+.hero-updated{font-size:.88rem;font-weight:700;color:var(--txt-lo);}
+.hero-title{font-size:2.2rem;font-weight:900;color:var(--forest);letter-spacing:-.03em;line-height:1.08;margin-bottom:10px;}
+.hero-title span{color:var(--sage);}
+.hero-desc{font-size:1.02rem;color:var(--txt-m);line-height:1.75;max-width:600px;margin-bottom:20px;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;}
+.h-stat{display:flex;align-items:center;gap:7px;background:white;border:1.5px solid var(--border);border-radius:11px;padding:9px 14px;box-shadow:var(--sh);}
+.h-stat-icon{font-size:1.1rem;}
+.h-stat-val{font-family:var(--fm);font-size:.96rem;font-weight:800;color:var(--forest);}
+.h-stat-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;padding-bottom:28px;}
+.cta-btn{font-family:var(--fd);font-size:1rem;font-weight:800;padding:14px 26px;border-radius:13px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:9px;text-decoration:none;transition:all .22s;}
+.cta-btn.primary{background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;box-shadow:0 4px 18px var(--sage-g);}
+.cta-btn.primary:hover{transform:translateY(-2px);box-shadow:0 7px 24px var(--sage-g);}
+.cta-btn.secondary{background:white;color:var(--forest);border:1.5px solid var(--bm);box-shadow:var(--sh);}
+.cta-btn.secondary:hover{border-color:var(--sage-g);color:var(--sage);}
+.cta-btn.gold{background:linear-gradient(135deg,var(--gold),#9a6e18);color:white;box-shadow:0 4px 18px var(--gold-g);}
+.cta-btn.gold:hover{transform:translateY(-2px);}
+
+/* ── INFO STRIP ── */
+.info-strip{background:white;border-bottom:1.5px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.info-strip::-webkit-scrollbar{display:none;}
+.info-inner{max-width:900px;margin:0 auto;padding:0 20px;display:flex;}
+.info-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 20px;border-right:1px solid var(--border);flex-shrink:0;text-align:center;gap:3px;}
+.info-item:last-child{border-right:none;}
+.info-val{font-family:var(--fm);font-size:1rem;font-weight:800;color:var(--forest);}
+.info-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
+
+/* ── MAIN ── */
+.main{max-width:900px;margin:0 auto;padding:24px 16px 48px;}
+@media(min-width:700px){.main{padding:28px 24px 48px;}}
+@media(min-width:960px){.main{padding:32px 32px 56px;}}
+
+/* ── SECTION ── */
+.sec{margin-bottom:32px;}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.sec-title{font-size:1.15rem;font-weight:900;color:var(--forest);letter-spacing:-.01em;}
+.sec-sub{font-size:.92rem;color:var(--txt-lo);margin-top:2px;}
+
+/* ── QUICK TEST CARDS ── */
+.test-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.test-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .22s;box-shadow:var(--sh);text-decoration:none;display:block;position:relative;overflow:hidden;}
+.test-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;}
+.test-card.mock::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.test-card.phy::before{background:linear-gradient(90deg,var(--sky),#1d4ed8);}
+.test-card.che::before{background:linear-gradient(90deg,#059669,#065f46);}
+.test-card.mat::before{background:linear-gradient(90deg,var(--gold),#9a6e18);}
+.test-card.easy::before{background:linear-gradient(90deg,var(--sage),#2d7a45);}
+.test-card.hard::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
+.test-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--sage-g);}
+.tc-icon{font-size:1.9rem;margin-bottom:10px;display:block;}
+.tc-name{font-size:1rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
+.tc-meta{font-size:.92rem;color:var(--txt-lo);}
+.tc-badge{position:absolute;top:12px;right:10px;font-size:.9rem;font-weight:800;padding:2px 8px;border-radius:100px;background:var(--sage-l);color:var(--sage);}
+
+/* ── PATTERN CARDS ── */
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:14px;}
+.pc{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 14px;box-shadow:var(--sh);text-align:center;}
+.pc-icon{font-size:1.4rem;margin-bottom:8px;}
+.pc-val{font-family:var(--fm);font-size:1.6rem;font-weight:900;color:var(--forest);display:block;line-height:1;margin-bottom:5px;}
+.pc-lbl{font-size:.9rem;font-weight:600;color:var(--txt-lo);}
+.section-note{background:var(--sky-l);border:1px solid rgba(37,99,235,.14);border-radius:12px;padding:13px 16px;font-size:.94rem;color:var(--txt-m);line-height:1.65;}
+.section-note strong{color:var(--sky);}
+
+/* ── MARKING ── */
+.marking-wrap{background:white;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--sh);}
+.mk-row{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--border);}
+.mk-row:last-child{border-bottom:none;}
+.mk-left{display:flex;align-items:center;gap:10px;}
+.mk-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.mk-label{font-size:.96rem;font-weight:600;color:var(--txt-m);}
+.mk-val{font-family:var(--fm);font-size:1rem;font-weight:800;padding:4px 12px;border-radius:8px;}
+.mk-val.pos{color:var(--sage);background:var(--sage-l);}
+.mk-val.neg{color:var(--rose);background:var(--rose-l);}
+.mk-val.neu{color:var(--txt-lo);background:var(--cw);}
+
+/* ── SUBJECT TABS ── */
+.subj-tabs{display:flex;background:white;border:1.5px solid var(--border);border-radius:13px;padding:4px;gap:4px;margin-bottom:16px;box-shadow:var(--sh);}
+.subj-tab{flex:1;font-family:var(--fd);font-size:.94rem;font-weight:700;padding:9px 12px;border-radius:10px;border:none;background:transparent;color:var(--txt-lo);cursor:pointer;transition:all .18s;text-align:center;}
+.subj-tab.on{color:white;}
+.subj-tab.phy.on{background:var(--sky);}
+.subj-tab.che.on{background:#059669;}
+.subj-tab.mat.on{background:var(--gold);color:var(--forest);}
+
+/* ── CHAPTER LIST ── */
+.chap-section{display:none;}
+.chap-section.on{display:block;}
+.removed-notice{background:white;border:1.5px solid rgba(200,75,75,.2);border-left:4px solid var(--rose);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;}
+.rn-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+.rn-title{font-size:.92rem;font-weight:800;color:var(--rose);margin-bottom:3px;}
+.rn-txt{font-size:.9rem;color:var(--txt-m);line-height:1.6;}
+.sub-section-title{font-size:.9rem;font-weight:800;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.08em;margin:16px 0 10px;padding-bottom:8px;border-bottom:1.5px solid var(--border);}
+.chap-list{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
+.chap-row{background:white;border:1.5px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;align-items:flex-start;gap:10px;transition:all .18s;}
+.chap-row:hover{border-color:var(--sage-g);box-shadow:0 3px 14px var(--sage-l);}
+
+.chap-num{font-family:var(--fm);font-size:.92rem;font-weight:700;color:var(--txt-lo);width:26px;flex-shrink:0;}
+.chap-body{flex:1;min-width:0;}
+.chap-name{font-size:1rem;font-weight:700;color:var(--txt);margin-bottom:3px;}
+.chap-sub{font-size:.92rem;color:var(--txt-lo);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chap-tags{display:flex;gap:5px;flex-shrink:0;align-items:center;min-width:0;}
+.tag{font-size:.9rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.tag.hot{background:var(--rose-l);color:var(--rose);border:1px solid rgba(200,75,75,.18);}
+.tag.mod{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
+.chap-arrow{font-size:.9rem;color:var(--txt-lo);flex-shrink:0;transition:all .18s;}
+.chap-row:hover .chap-arrow{color:var(--sage);transform:translateX(3px);}
+.chap-meta-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.chap-practice{
+  font-family:var(--fd);font-size:.88rem;font-weight:800;
+  padding:6px 14px;border-radius:100px;border:none;
+  background:linear-gradient(135deg,var(--sage),var(--sage-d));
+  color:white;cursor:pointer;flex-shrink:0;
+  text-decoration:none;display:inline-flex;align-items:center;
+  transition:all .2s;white-space:nowrap;
+  box-shadow:0 2px 8px var(--sage-g);
+  min-width:fit-content;
+  font-size:.9rem;
+  padding:5px 12px;
+}
+
+.chap-practice:hover{transform:translateY(-1px);box-shadow:0 4px 12px var(--sage-g);}
+
+/* ── PYQ SECTION ── */
+.pyq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.pyq-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:16px 14px;text-align:center;box-shadow:var(--sh);transition:all .22s;position:relative;overflow:hidden;}
+.pyq-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;}
+.pyq-card.y2025::before{background:linear-gradient(90deg,#c84b4b,#9b1c1c);}
+.pyq-card.y2024::before{background:linear-gradient(90deg,#7c3aed,#5b21b6);}
+.pyq-card.y2023::before{background:linear-gradient(90deg,#2563eb,#1d4ed8);}
+.pyq-card.y2022::before{background:linear-gradient(90deg,#059669,#065f46);}
+.pyq-card.y2021::before{background:linear-gradient(90deg,#c8962a,#9a6e18);}
+.pyq-card.y2020::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
+.pyq-card.y2019::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.pyq-card.y2018::before{background:linear-gradient(90deg,#0891b2,#0e7490);}
+.pyq-card.y2017::before{background:linear-gradient(90deg,#7c3aed,#6d28d9);}
+.pyq-card.y2016::before{background:linear-gradient(90deg,#c84b4b,#991b1b);}
+.pyq-card.y2015::before{background:linear-gradient(90deg,#059669,#047857);}
+.pyq-card.y2014::before{background:linear-gradient(90deg,#c8962a,#b45309);}
+.pyq-card.y2013::before{background:linear-gradient(90deg,#1a2618,#243d20);}
+.pyq-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--sage-g);}
+.pyq-year{font-family:var(--fm);font-size:1.3rem;font-weight:900;color:var(--forest);margin-bottom:4px;display:block;}
+.pyq-session{font-size:.88rem;font-weight:600;color:var(--txt-lo);margin-bottom:12px;}
+.pyq-btns{display:flex;flex-direction:column;gap:6px;}
+.pyq-btn{font-family:var(--fd);font-size:.88rem;font-weight:800;padding:7px 10px;border-radius:9px;border:none;cursor:pointer;text-decoration:none;display:block;text-align:center;transition:all .18s;}
+.pyq-btn.jan{background:var(--sky-l);color:var(--sky);border:1px solid rgba(37,99,235,.2);}
+.pyq-btn.apr{background:var(--sage-l);color:var(--sage);border:1px solid var(--sage-g);}
+.pyq-btn.jan:hover{background:var(--sky);color:white;}
+.pyq-btn.apr:hover{background:var(--sage);color:white;}
+.pyq-btn.single{background:linear-gradient(135deg,var(--forest),#243d20);color:white;}
+.pyq-btn.single:hover{transform:translateY(-1px);}
+.pyq-note{background:var(--gold-l);border:1px solid var(--gold-g);border-radius:12px;padding:12px 16px;font-size:.94rem;color:var(--txt-m);line-height:1.65;margin-bottom:16px;}
+.pyq-note strong{color:var(--gold);}
+/* ── STRATEGY BOX ── */
+.strategy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.strategy-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 16px;box-shadow:var(--sh);}
+.sc-icon{font-size:1.5rem;margin-bottom:10px;}
+.sc-title{font-size:.97rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.sc-txt{font-size:.92rem;color:var(--txt-m);line-height:1.65;}
+
+/* ── DESKTOP ── */
+
+/* ── FOOTER ── */
+.footer{background:var(--forest);padding:28px 20px;text-align:center;}
+.footer-logo{font-size:1.1rem;font-weight:900;color:white;letter-spacing:-.02em;margin-bottom:6px;}
+.footer-logo span{color:var(--sage);}
+.footer-txt{font-size:.9rem;color:rgba(255,255,255,.4);}
+
+
+
+/* DASHBOARD specific */
+.dash-hero{background:var(--cream);padding:28px 20px 0;border-bottom:1.5px solid var(--border);}
+.dash-hero-inner{max-width:900px;margin:0 auto;}
+.dash-greet{font-size:1.5rem;font-weight:900;color:var(--forest);letter-spacing:-.02em;line-height:1.2;margin-bottom:4px;}
+.dash-uname{color:var(--sage);}
+.dash-sub{font-size:.96rem;font-weight:600;color:var(--txt-lo);margin-bottom:18px;}
+.dash-stats-row{display:flex;gap:10px;flex-wrap:wrap;padding-bottom:24px;}
+.dstat{background:white;border:1.5px solid var(--border);border-radius:12px;padding:12px 18px;box-shadow:var(--sh);flex:1;min-width:120px;}
+.dstat-val{font-family:var(--fm);font-size:1.5rem;font-weight:900;color:var(--forest);line-height:1;margin-bottom:4px;}
+.dstat-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
+
+.exam-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:18px;box-shadow:var(--sh);transition:all .22s;text-decoration:none;display:block;position:relative;overflow:hidden;}
+.exam-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;}
+.exam-card.jm::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.exam-card.ja::before{background:linear-gradient(90deg,var(--violet),#5b21b6);}
+.exam-card.nt::before{background:linear-gradient(90deg,#059669,#047857);}
+.exam-card.jf::before{background:linear-gradient(90deg,var(--sky),#1d4ed8);}
+.exam-card.nf::before{background:linear-gradient(90deg,#0891b2,#0e7490);}
+.exam-card.b10::before{background:linear-gradient(90deg,var(--gold),#9a6e18);}
+.exam-card.b12::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
+.exam-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--sage-g);}
+.exam-card-top{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.exam-card-icon{font-size:1.6rem;}
+.exam-card-name{font-size:1.02rem;font-weight:800;color:var(--forest);}
+.exam-card-meta{font-size:.92rem;color:var(--txt-lo);margin-bottom:12px;line-height:1.6;}
+.exam-card-stats{display:flex;gap:6px;flex-wrap:wrap;}
+.exam-card-chip{font-size:.9rem;font-weight:700;padding:3px 9px;border-radius:100px;background:var(--cw);color:var(--txt-m);}
+
+.tool-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.tool-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 14px;text-align:center;box-shadow:var(--sh);transition:all .2s;text-decoration:none;display:block;}
+.tool-card:hover{transform:translateY(-3px);box-shadow:var(--sh-lg);border-color:var(--sage-g);}
+.tool-icon{font-size:1.7rem;margin-bottom:8px;display:block;}
+.tool-name{font-size:.94rem;font-weight:800;color:var(--forest);}
+.tool-meta{font-size:.9rem;color:var(--txt-lo);margin-top:2px;}
+.tool-card.disabled{opacity:.5;cursor:default;pointer-events:none;}
+.tool-soon{font-size:.9rem;font-weight:800;padding:2px 8px;border-radius:100px;background:var(--gold-l);color:var(--gold);margin-top:6px;display:inline-block;}
+
+.recent-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:var(--sh);margin-bottom:8px;}
+.recent-icon{width:42px;height:42px;border-radius:10px;background:var(--sage-l);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0;}
+.recent-info{flex:1;min-width:0;}
+.recent-name{font-size:.96rem;font-weight:800;color:var(--forest);}
+.recent-meta{font-size:.88rem;color:var(--txt-lo);margin-top:2px;}
+.recent-score{font-family:var(--fm);font-size:1.1rem;font-weight:900;color:var(--sage);flex-shrink:0;}
+
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1.5px solid var(--border);display:flex;z-index:90;padding-bottom:env(safe-area-inset-bottom);}
+.bn-item{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:10px 0 8px;color:var(--txt-lo);text-decoration:none;font-size:.9rem;font-weight:700;}
+.bn-item.on{color:var(--sage);}
+.bn-icon{font-size:1.2rem;}
+@media(min-width:768px){.bottom-nav{display:none;}}
+.main{padding-bottom:80px;}
+@media(min-width:768px){.main{padding-bottom:48px;}}
+
+
+/* ── DASHBOARD DESKTOP ── */
+@media(min-width:900px){
+  .notif-card{min-width:280px;}
+  .dash-hero{padding:36px 32px 0;}
+  .dash-greet{font-size:1.9rem;}
+  .dash-sub{font-size:1.05rem;}
+  .dash-stats-row{gap:14px;}
+  .dstat{padding:16px 22px;}
+  .dstat-val{font-size:1.7rem;}
+  .tool-grid{grid-template-columns:repeat(5,1fr);}
+  .ov-grid{grid-template-columns:repeat(4,1fr);}
+}
+@media(min-width:1100px){
+  .dash-hero-inner,.main{max-width:1080px;}
+}
+
+/* NOTIFICATION STRIP */
+.notif-strip{display:flex;gap:10px;overflow-x:auto;padding-bottom:20px;scrollbar-width:none;-webkit-overflow-scrolling:touch;scroll-snap-type:x mandatory;}
+.notif-strip::-webkit-scrollbar{display:none;}
+.notif-card{flex:0 0 auto;min-width:240px;max-width:280px;background:white;border:1.5px solid var(--border);border-radius:14px;padding:12px 14px;box-shadow:var(--sh);text-decoration:none;display:flex;gap:10px;align-items:flex-start;scroll-snap-align:start;}
+.notif-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.notif-icon.continue{background:var(--sky-l);}
+.notif-icon.suggest{background:var(--rose-l);}
+.notif-icon.news{background:var(--gold-l);}
+.notif-body{flex:1;min-width:0;}
+.notif-label{font-size:.9rem;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-lo);margin-bottom:2px;}
+.notif-title{font-size:.92rem;font-weight:800;color:var(--forest);line-height:1.4;}
+.notif-meta{font-size:.9rem;color:var(--txt-lo);margin-top:2px;}
 </style>
 </head>
 <body>
 
-<!-- SIDEBAR -->
-<aside class="sb">
-  <a href="index.html" class="sb-logo">
-    <div class="sb-lm">MA</div>
-    <div>
-      <div class="sb-b1"><span style="color:#fff;font-weight:900;">Mock</span><span style="background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900;">Arena</span></div>
-      <div class="sb-b2">Student Portal</div>
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
+  <div class="nav-r">
+    <div class="nav-profile">
+      <div class="nav-avatar" id="nav-avatar"><span class="nav-avatar-txt">•</span></div>
+      <span class="nav-uname" id="nav-uname">Student</span>
     </div>
-  </a>
-  <div class="sb-user">
-    <div class="sb-av">RK</div>
-    <div class="sb-uname">Rahul Kumar</div>
-    <div class="sb-urole">Class 12 &middot; JEE Advanced</div>
-    <div class="sb-ubadge">&#11088; Scholar Plan</div>
+    <a href="mockarena_onboarding.html" class="nav-switch">Switch Exam</a>
   </div>
-  <div class="sb-grp">Main Menu</div>
-  <ul class="sb-ul">
-    <li><a href="mockarena_dashboard.html" class="sb-nav active"><span class="si">&#x2b21;</span>Dashboard</a></li>
-    <li><a href="mockarena_mocktest.html" class="sb-nav"><span class="si">&#x25f3;</span>Mock Tests</a></li>
-    <li><a href="mockarena_results.html" class="sb-nav"><span class="si">&#x25c8;</span>My Results</a></li>
-    <li><a href="mockarena_test_catalog.html" class="sb-nav"><span class="si">&#x25a4;</span>Practice<span class="snb">3</span></a></li>
-    <li><a href="mockarena_leaderboard.html" class="sb-nav"><span class="si">&#x25c7;</span>Leaderboard</a></li>
-    <li><a href="mockarena_study_planner.html" class="sb-nav"><span class="si">&#x1f4c5;</span>Study Planner</a></li>
-    <li><a href="mockarena_analytics.html" class="sb-nav"><span class="si">&#x25c8;</span>My Goals</a></li>
-  </ul>
-  <div class="sb-grp">Exams</div>
-  <ul class="sb-ul">
-    <li><a href="mockarena_mocktest.html" class="sb-nav"><span class="si">&#x26a1;</span>JEE Advanced</a></li>
-    <li><a href="mockarena_jee_main_mocktest.html" class="sb-nav"><span class="si">&#x1f4dd;</span>JEE Mains</a></li>
-    <li><a href="mockarena_neet_mocktest.html" class="sb-nav"><span class="si">&#x1f3e5;</span>NEET UG</a></li>
-    <li><a href="mockarena_pyq.html" class="sb-nav"><span class="si">&#x1f4da;</span>CBSE Boards</a></li>
-  </ul>
-  <div class="sb-grp">Resources</div>
-  <ul class="sb-ul">
-    <li><a href="mockarena_video_solutions.html" class="sb-nav"><span class="si">&#x25b7;</span>Video Solutions</a></li>
-    <li><a href="mockarena_pyq.html" class="sb-nav"><span class="si">&#x1f4c4;</span>Previous Papers</a></li>
-    <li><a href="mockarena_doubt_qa_v2.html" class="sb-nav"><span class="si">&#x2756;</span>Doubt Forum<span class="snb">2</span></a></li>
-  </ul>
-  <div class="sb-foot">
-    <a href="mockarena_profile.html" class="sb-nav"><span class="si">&#x25ce;</span>My Profile</a>
-    <a href="mockarena_settings.html" class="sb-nav"><span class="si">&#x2699;&#xfe0f;</span>Settings</a>
-    <a href="mockarena_notifications.html" class="sb-nav"><span class="si">&#x1f514;</span>Notifications<span class="snb">7</span></a>
-    <a href="login.html" class="sb-nav"><span class="si">&#x21a9;</span>Logout</a>
-  </div>
-</aside>
+</nav>
 
-<!-- MAIN -->
+<div class="dash-hero">
+  <div class="dash-hero-inner">
+    <div class="dash-greet">Hey <span class="dash-uname" id="dash-username">Student</span> 👋</div>
+    <div class="dash-sub">Ready to practice?</div>
+    <div class="notif-strip" id="notif-strip">
+      <a href="jee_main.html#pyq" class="notif-card">
+        <div class="notif-icon news">📜</div>
+        <div class="notif-body"><div class="notif-label">What's New</div><div class="notif-title">2025 PYQ papers added</div><div class="notif-meta">JEE Mains, Advanced &amp; NEET</div></div>
+      </a>
+    </div>
+    <div class="dash-stats-row">
+      <div class="dstat"><div class="dstat-val" id="d-tests">0</div><div class="dstat-lbl">Tests Taken</div></div>
+      <div class="dstat"><div class="dstat-val" id="d-score">0%</div><div class="dstat-lbl">Avg Score</div></div>
+      <div class="dstat"><div class="dstat-val" id="d-questions">0</div><div class="dstat-lbl">Questions Solved</div></div>
+      <div class="dstat"><div class="dstat-val" id="d-streak">0</div><div class="dstat-lbl">Day Streak</div></div>
+    </div>
+  </div>
+</div>
+
 <div class="main">
-  <!-- TOPBAR -->
-  <div class="tb">
-    <div>
-      <div class="tb-title">Good Morning, Rahul! &#x1f44b;</div>
-      <div class="tb-crumb">Monday, 2 June 2025 &middot; JEE Advanced in 47 days</div>
-    </div>
-    <div class="tb-r">
-      <div class="tb-search"><span style="color:rgba(26,38,24,.3);font-size:.82rem">&#x2315;</span><input type="text" placeholder="Search tests, topics&hellip;"></div>
-      <div class="tb-ib">&#x1f514;<div class="dot"></div></div>
-      <div class="tb-ib">&#x1f464;</div>
-      <button class="btn btn-sage" onclick="window.location='mockarena_mocktest.html'">&#x25b6; Start Today's Mock</button>
+
+  <!-- EXAMS -->
+  <div class="sec">
+    <div class="sec-hdr"><div><div class="sec-title">Your Exams</div><div class="sec-sub">Jump back into preparation</div></div></div>
+    <div class="test-grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));">
+      <a href="jee_main.html" class="exam-card jm">
+        <div class="exam-card-top"><span class="exam-card-icon">⚡</span><span class="exam-card-name">JEE Mains</span></div>
+        <div class="exam-card-meta">90 Qs · 3 hrs · 300 Marks · +4/−1</div>
+        <div class="exam-card-stats"><span class="exam-card-chip">70 Chapters</span><span class="exam-card-chip">13 yrs PYQ</span></div>
+      </a>
+      <a href="jee_advanced.html" class="exam-card ja">
+        <div class="exam-card-top"><span class="exam-card-icon">🚀</span><span class="exam-card-name">JEE Advanced</span></div>
+        <div class="exam-card-meta">2 Papers · 3+3 hrs · Partial Marking</div>
+        <div class="exam-card-stats"><span class="exam-card-chip">59 Chapters</span><span class="exam-card-chip">13 yrs PYQ</span></div>
+      </a>
+      <a href="neet_ug.html" class="exam-card nt">
+        <div class="exam-card-top"><span class="exam-card-icon">🔬</span><span class="exam-card-name">NEET UG</span></div>
+        <div class="exam-card-meta">180 Qs · 3h 20m · 720 Marks · +4/−1</div>
+        <div class="exam-card-stats"><span class="exam-card-chip">80 Chapters</span><span class="exam-card-chip">13 yrs PYQ</span></div>
+      </a>
+      <a href="jee_foundation.html" class="exam-card jf">
+        <div class="exam-card-top"><span class="exam-card-icon">🌱</span><span class="exam-card-name">JEE Foundation</span></div>
+        <div class="exam-card-meta">Class 9–10 · PCM · Early Start</div>
+        <div class="exam-card-stats"><span class="exam-card-chip">35 Chapters</span><span class="exam-card-chip">CBSE Aligned</span></div>
+      </a>
+      <a href="neet_foundation.html" class="exam-card nf">
+        <div class="exam-card-top"><span class="exam-card-icon">🌿</span><span class="exam-card-name">NEET Foundation</span></div>
+        <div class="exam-card-meta">Class 9–10 · PCB · Early Start</div>
+        <div class="exam-card-stats"><span class="exam-card-chip">Medical Track</span><span class="exam-card-chip">CBSE Aligned</span></div>
+      </a>
+      <a href="boards_10.html" class="exam-card b10">
+        <div class="exam-card-top"><span class="exam-card-icon">📘</span><span class="exam-card-name">Class 10 Boards</span></div>
+        <div class="exam-card-meta">CBSE · ICSE · State Boards</div>
+        <div class="exam-card-stats"><span class="exam-card-chip">Updated 2025–26</span></div>
+      </a>
+      <a href="boards_12.html" class="exam-card b12">
+        <div class="exam-card-top"><span class="exam-card-icon">📗</span><span class="exam-card-name">Class 12 Boards</span></div>
+        <div class="exam-card-meta">CBSE · ICSE · State Boards</div>
+        <div class="exam-card-stats"><span class="exam-card-chip">Updated 2025–26</span></div>
+      </a>
     </div>
   </div>
 
-  <div class="content">
-
-    <!-- WELCOME BANNER -->
-    <div style="background:linear-gradient(135deg,var(--forest) 0%,var(--forest-soft) 60%,#1e3318 100%);border-radius:20px;padding:26px 30px;margin-bottom:20px;position:relative;overflow:hidden;" class="fu fu1">
-      <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;"></div>
-      <div style="position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(200,150,42,.15);filter:blur(55px);top:-70px;right:50px;pointer-events:none;"></div>
-      <div style="display:grid;grid-template-columns:1fr auto;gap:28px;align-items:center;position:relative;z-index:1;">
-        <div>
-          <div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:4px 13px;font-size:.6rem;font-weight:600;color:rgba(255,255,255,.5);letter-spacing:.08em;text-transform:uppercase;margin-bottom:12px;">
-            <div style="width:5px;height:5px;border-radius:50%;background:var(--rose);animation:livepulse 1.5s infinite;"></div>
-            JEE Advanced 2025 &middot; 47 Days to Go
-          </div>
-          <div style="font-family:var(--font-d);font-size:1.5rem;font-weight:900;color:white;letter-spacing:-.04em;line-height:1.1;margin-bottom:8px;">
-            Keep pushing, <span style="background:linear-gradient(90deg,#a8d99c,#d4a84b);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Rahul!</span><br>
-            <span style="font-size:1.05rem;font-weight:600;color:rgba(255,255,255,.65);">You&apos;re in the top 6% nationally.</span>
-          </div>
-          <div style="font-size:.82rem;color:rgba(255,255,255,.45);margin-bottom:18px;line-height:1.6;">Your last mock score was <strong style="color:#a8d99c">247/300</strong> &mdash; up 23 points from Mock #3. Chemistry needs attention. You&apos;re on track for your dream IIT!</div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <button class="btn btn-gold" onclick="window.location='mockarena_mocktest.html'">&#x25b6; Start Today&apos;s Mock</button>
-            <button class="btn" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border:1px solid rgba(255,255,255,.15);" onclick="window.location='mockarena_results.html'">&#x1f4ca; View Last Result</button>
-          </div>
-        </div>
-        <!-- XP + Streak -->
-        <div style="min-width:200px;">
-          <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:13px;padding:14px;margin-bottom:10px;">
-            <div style="font-size:.6rem;font-weight:600;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.07em;margin-bottom:4px;">Current Level</div>
-            <div style="font-family:var(--font-d);font-size:1.05rem;font-weight:900;color:white;letter-spacing:-.03em;margin-bottom:8px;">Lv. 14 &mdash; Advanced Challenger</div>
-            <div style="height:7px;background:rgba(255,255,255,.1);border-radius:100px;overflow:hidden;margin-bottom:5px;">
-              <div id="xp-fill" style="height:100%;width:0%;border-radius:100px;background:linear-gradient(90deg,var(--sage),#a8d99c);transition:width 1.5s ease;"></div>
-            </div>
-            <div style="font-size:.62rem;color:rgba(255,255,255,.3);">3,420 / 4,000 XP to Level 15</div>
-          </div>
-          <div style="background:rgba(200,150,42,.12);border:1px solid rgba(200,150,42,.2);border-radius:13px;padding:13px 14px;display:flex;align-items:center;gap:10px;">
-            <div style="font-size:1.6rem;">&#x1f525;</div>
-            <div>
-              <div style="font-family:var(--font-d);font-size:1.15rem;font-weight:900;color:white;">12 Days</div>
-              <div style="font-size:.62rem;color:rgba(255,255,255,.35);">Current streak &middot; Best: 28 days</div>
-            </div>
-          </div>
-        </div>
+  <!-- QUICK ACTIONS -->
+  <div class="sec">
+    <div class="sec-hdr"><div class="sec-title">Quick Actions</div></div>
+    <div class="tool-grid">
+      <a href="#" onclick="quickMock();return false;" class="tool-card">
+        <span class="tool-icon">🎯</span><div class="tool-name">Quick Mock Test</div><div class="tool-meta">Start instantly</div>
+      </a>
+      <a href="mockarena_onboarding.html" class="tool-card">
+        <span class="tool-icon">🔄</span><div class="tool-name">Switch Exam</div><div class="tool-meta">Change track</div>
+      </a>
+      <a href="mockarena_analytics.html" class="tool-card">
+        <span class="tool-icon">📊</span><div class="tool-name">Analytics</div><div class="tool-meta">Strong &amp; weak topics</div>
+      </a>
+      <a href="mockarena_analytics.html#hist" class="tool-card">
+        <span class="tool-icon">📋</span><div class="tool-name">Test History</div><div class="tool-meta">Review past attempts</div>
+      </a>
+      <div class="tool-card disabled">
+        <span class="tool-icon">💬</span><div class="tool-name">Ask Doubt</div><div class="tool-soon">Coming Soon</div>
       </div>
     </div>
+  </div>
 
-    <!-- KPIs -->
-    <div class="g4 fu fu2">
-      <div class="kpi kpi-sk" onclick="window.location='mockarena_results.html'">
-        <div class="kpi-top"><div class="kpi-ic" style="background:var(--sky-light)">&#x1f4dd;</div><span class="kpi-delta delta-up">&#x2191; 3 this week</span></div>
-        <div class="kpi-l">Tests Attempted</div><div class="kpi-n">24</div>
-        <div class="kpi-s">Total since joining MockArena</div>
-        <div class="sparks"><div class="spark" style="background:rgba(59,130,196,.25);height:0%" data-h="40%"></div><div class="spark" style="background:rgba(59,130,196,.25);height:0%" data-h="50%"></div><div class="spark" style="background:rgba(59,130,196,.25);height:0%" data-h="55%"></div><div class="spark" style="background:rgba(59,130,196,.25);height:0%" data-h="62%"></div><div class="spark" style="background:rgba(59,130,196,.25);height:0%" data-h="65%"></div><div class="spark" style="background:rgba(59,130,196,.25);height:0%" data-h="68%"></div><div class="spark" style="background:rgba(59,130,196,.25);height:0%" data-h="74%"></div><div class="spark" style="background:rgba(59,130,196,.25);height:0%" data-h="80%"></div><div class="spark" style="background:rgba(59,130,196,.25);height:0%" data-h="90%"></div><div class="spark" style="background:var(--sky);height:0%" data-h="100%"></div></div>
-      </div>
-      <div class="kpi kpi-sg" onclick="window.location='mockarena_analytics.html'">
-        <div class="kpi-top"><div class="kpi-ic" style="background:var(--sage-light)">&#x1f3af;</div><span class="kpi-delta delta-up">&#x2191; +6.2%</span></div>
-        <div class="kpi-l">Overall Accuracy</div><div class="kpi-n">84%</div>
-        <div class="kpi-s">Improved this month</div>
-        <div class="sparks"><div class="spark" style="background:rgba(107,143,94,.25);height:0%" data-h="55%"></div><div class="spark" style="background:rgba(107,143,94,.25);height:0%" data-h="60%"></div><div class="spark" style="background:rgba(107,143,94,.25);height:0%" data-h="64%"></div><div class="spark" style="background:rgba(107,143,94,.25);height:0%" data-h="68%"></div><div class="spark" style="background:rgba(107,143,94,.25);height:0%" data-h="70%"></div><div class="spark" style="background:rgba(107,143,94,.25);height:0%" data-h="72%"></div><div class="spark" style="background:rgba(107,143,94,.25);height:0%" data-h="74%"></div><div class="spark" style="background:rgba(107,143,94,.25);height:0%" data-h="76%"></div><div class="spark" style="background:rgba(107,143,94,.25);height:0%" data-h="80%"></div><div class="spark" style="background:var(--sage);height:0%" data-h="100%"></div></div>
-      </div>
-      <div class="kpi kpi-gd" onclick="window.location='mockarena_leaderboard.html'">
-        <div class="kpi-top"><div class="kpi-ic" style="background:var(--gold-dim)">&#x1f3c6;</div><span class="kpi-delta delta-up">&#x2191; 890 places</span></div>
-        <div class="kpi-l">Best National Rank</div><div class="kpi-n">#312</div>
-        <div class="kpi-s">Top 6% &middot; JEE Advanced</div>
-        <div class="sparks"><div class="spark" style="background:rgba(200,150,42,.25);height:0%" data-h="25%"></div><div class="spark" style="background:rgba(200,150,42,.25);height:0%" data-h="32%"></div><div class="spark" style="background:rgba(200,150,42,.25);height:0%" data-h="40%"></div><div class="spark" style="background:rgba(200,150,42,.25);height:0%" data-h="48%"></div><div class="spark" style="background:rgba(200,150,42,.25);height:0%" data-h="55%"></div><div class="spark" style="background:rgba(200,150,42,.25);height:0%" data-h="64%"></div><div class="spark" style="background:rgba(200,150,42,.25);height:0%" data-h="74%"></div><div class="spark" style="background:rgba(200,150,42,.25);height:0%" data-h="82%"></div><div class="spark" style="background:rgba(200,150,42,.25);height:0%" data-h="90%"></div><div class="spark" style="background:var(--gold);height:0%" data-h="100%"></div></div>
-      </div>
-      <div class="kpi kpi-am" onclick="window.location='mockarena_analytics.html'">
-        <div class="kpi-top"><div class="kpi-ic" style="background:var(--amber-light)">&#x23f1;&#xfe0f;</div><span class="kpi-delta delta-up">&#x2191; 18h this week</span></div>
-        <div class="kpi-l">Study Hours</div><div class="kpi-n">147</div>
-        <div class="kpi-s">Total hours logged</div>
-        <div class="sparks"><div class="spark" style="background:rgba(184,115,51,.25);height:0%" data-h="30%"></div><div class="spark" style="background:rgba(184,115,51,.25);height:0%" data-h="40%"></div><div class="spark" style="background:rgba(184,115,51,.25);height:0%" data-h="48%"></div><div class="spark" style="background:rgba(184,115,51,.25);height:0%" data-h="56%"></div><div class="spark" style="background:rgba(184,115,51,.25);height:0%" data-h="60%"></div><div class="spark" style="background:rgba(184,115,51,.25);height:0%" data-h="65%"></div><div class="spark" style="background:rgba(184,115,51,.25);height:0%" data-h="72%"></div><div class="spark" style="background:rgba(184,115,51,.25);height:0%" data-h="80%"></div><div class="spark" style="background:rgba(184,115,51,.25);height:0%" data-h="88%"></div><div class="spark" style="background:var(--amber);height:0%" data-h="100%"></div></div>
-      </div>
+  <!-- RECENT TESTS -->
+  <div class="sec">
+    <div class="sec-hdr"><div class="sec-title">Recent Test Results</div></div>
+    <div id="recent-list">
+      <div class="empty-state"><div class="empty-icon">📝</div><div class="empty-h">No tests taken yet</div><div class="empty-s">Pick an exam above and start your first mock test.</div></div>
     </div>
+  </div>
 
-    <!-- SCORE TREND + SUBJECT ACCURACY -->
-    <div class="g21 fu fu3">
-      <div class="card">
-        <div class="ch">
-          <div><div class="ct">Score Trend &mdash; Last 8 Mocks</div><div class="cs">JEE Advanced pattern &middot; All mock tests</div></div>
-          <div style="display:flex;gap:8px;align-items:center;">
-            <div style="display:flex;align-items:center;gap:4px;font-size:.63rem;color:rgba(26,38,24,.4)"><div style="width:10px;height:2px;background:var(--sage);border-radius:2px;"></div>Your Score</div>
-            <button class="btn-sm">All Subjects &#x25be;</button>
-          </div>
-        </div>
-        <div class="lc-wrap">
-          <svg class="lc-svg" viewBox="0 0 480 100" preserveAspectRatio="none">
-            <defs>
-              <linearGradient id="lg-sg" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" style="stop-color:#6b8f5e;stop-opacity:.18"/>
-                <stop offset="100%" style="stop-color:#6b8f5e;stop-opacity:0"/>
-              </linearGradient>
-            </defs>
-            <line x1="0" y1="20" x2="480" y2="20" stroke="rgba(26,38,24,.04)" stroke-width="1"/>
-            <line x1="0" y1="45" x2="480" y2="45" stroke="rgba(26,38,24,.04)" stroke-width="1"/>
-            <line x1="0" y1="70" x2="480" y2="70" stroke="rgba(26,38,24,.04)" stroke-width="1"/>
-            <line x1="0" y1="95" x2="480" y2="95" stroke="rgba(26,38,24,.04)" stroke-width="1"/>
-            <text x="2" y="18" font-size="8" fill="rgba(26,38,24,.28)" font-family="IBM Plex Mono">300</text>
-            <text x="2" y="43" font-size="8" fill="rgba(26,38,24,.28)" font-family="IBM Plex Mono">225</text>
-            <text x="2" y="68" font-size="8" fill="rgba(26,38,24,.28)" font-family="IBM Plex Mono">150</text>
-            <text x="2" y="93" font-size="8" fill="rgba(26,38,24,.28)" font-family="IBM Plex Mono">75</text>
-            <path fill="url(#lg-sg)" d="M20,98 L80,92 L140,84 L200,78 L260,65 L320,54 L380,44 L440,36 L440,100 L20,100 Z"/>
-            <polyline fill="none" stroke="#6b8f5e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" points="20,98 80,92 140,84 200,78 260,65 320,54 380,44 440,36"/>
-            <circle cx="20" cy="98" r="3" fill="#6b8f5e"/>
-            <circle cx="80" cy="92" r="3" fill="#6b8f5e"/>
-            <circle cx="140" cy="84" r="3" fill="#6b8f5e"/>
-            <circle cx="200" cy="78" r="3" fill="#6b8f5e"/>
-            <circle cx="260" cy="65" r="3" fill="#6b8f5e"/>
-            <circle cx="320" cy="54" r="3" fill="#6b8f5e"/>
-            <circle cx="380" cy="44" r="3" fill="#6b8f5e"/>
-            <circle cx="440" cy="36" r="5" fill="#6b8f5e" stroke="white" stroke-width="2"/>
-          </svg>
-        </div>
-        <div class="lc-lbls"><span class="lc-lbl">Mock 1</span><span class="lc-lbl">Mock 2</span><span class="lc-lbl">Mock 3</span><span class="lc-lbl">Mock 4</span><span class="lc-lbl">Mock 5</span><span class="lc-lbl">Mock 6</span><span class="lc-lbl">Mock 7</span><span class="lc-lbl">Mock 8</span></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
-          <div style="font-size:.72rem;color:rgba(26,38,24,.4)">Range: <strong style="color:var(--forest-muted)">174 &rarr; 247</strong></div>
-          <div style="font-size:.72rem;color:var(--sage);font-weight:700">&#x2191; Improved 73 pts in 8 mocks &#x1f680;</div>
-          <button class="btn-sm" onclick="window.location='mockarena_results.html'">Full Analysis &rarr;</button>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ch"><div><div class="ct">Subject Accuracy</div><div class="cs">Last 8 mocks average</div></div></div>
-        <div class="pb-row">
-          <div class="pb-l">&#x26db;&#xfe0f; Physics</div>
-          <div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--sky),#60a5e8)" data-w="91%"></div></div>
-          <div class="pb-v">91%</div>
-        </div><div class="pb-row">
-          <div class="pb-l">&#x1f9ea; Chemistry</div>
-          <div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--sage),#4a7a3d)" data-w="87%"></div></div>
-          <div class="pb-v">87%</div>
-        </div><div class="pb-row">
-          <div class="pb-l">&#x1f4d0; Mathematics</div>
-          <div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--gold),#e8a830)" data-w="82%"></div></div>
-          <div class="pb-v">82%</div>
-        </div><div class="pb-row">
-          <div class="pb-l">&#x1f4d0; Algebra</div>
-          <div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--sage),#4a7a3d)" data-w="93%"></div></div>
-          <div class="pb-v">93%</div>
-        </div><div class="pb-row">
-          <div class="pb-l">&#x1f4d0; Coord. Geom.</div>
-          <div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--sky),#60a5e8)" data-w="85%"></div></div>
-          <div class="pb-v">85%</div>
-        </div><div class="pb-row">
-          <div class="pb-l">&#x1f9ea; Organic Chem</div>
-          <div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--amber),#d4844a)" data-w="78%"></div></div>
-          <div class="pb-v">78%</div>
-        </div><div class="pb-row">
-          <div class="pb-l">&#x26db;&#xfe0f; Magnetism</div>
-          <div class="pb-t"><div class="pb-f" style="width:0%;background:linear-gradient(90deg,var(--rose),#e06b6b)" data-w="54%"></div></div>
-          <div class="pb-v">54%</div>
-        </div>
-        <div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);">
-          <div class="notice notice-ro" style="margin-bottom:0"><div class="n-icon">&#x26a0;&#xfe0f;</div><div><div class="n-title">Weak: Magnetism (54%)</div><div class="n-desc">High JEE weightage. Revise today!</div></div></div>
-        </div>
-      </div>
-    </div>
+</div>
 
-    <!-- UPCOMING TESTS + RECENT RESULTS -->
-    <div class="g2 fu fu3">
-      <div class="card">
-        <div class="ch"><div><div class="ct">Upcoming Tests</div><div class="cs">Scheduled for you this week</div></div><button class="btn-sm" onclick="window.location='mockarena_test_catalog.html'">View All</button></div>
-        <div class="test-item" onclick="window.location='mockarena_mocktest.html'">
-          <div class="ti-icon" style="background:var(--rose-light)">&#x1f534;</div>
-          <div style="flex:1"><div class="ti-name">JEE Advanced Full Mock #5</div><div class="ti-meta">180 Qs &middot; 3 hrs &middot; Physics + Chemistry + Maths</div></div>
-          <div style="text-align:right"><div class="ti-date">Today, 6:00 PM</div><div><span class="test-pill tp-live">&#x25cf; LIVE</span></div></div>
-        </div>
-        <div class="test-item">
-          <div class="ti-icon" style="background:var(--amber-light)">&#x26db;&#xfe0f;</div>
-          <div style="flex:1"><div class="ti-name">Physics Chapter Test &mdash; Optics</div><div class="ti-meta">30 Qs &middot; 45 min &middot; Single Chapter</div></div>
-          <div style="text-align:right"><div class="ti-date">Tomorrow, 10 AM</div><div><span class="test-pill tp-soon">Coming Soon</span></div></div>
-        </div>
-        <div class="test-item">
-          <div class="ti-icon" style="background:var(--sky-light)">&#x1f9ea;</div>
-          <div style="flex:1"><div class="ti-name">Chemistry &mdash; Organic Part Test</div><div class="ti-meta">40 Qs &middot; 1 hr &middot; Organic Chemistry</div></div>
-          <div style="text-align:right"><div class="ti-date">26 May, 4:00 PM</div><div style="display:flex;gap:4px;justify-content:flex-end"><span class="test-pill tp-free">Free</span><span class="test-pill tp-new">New</span></div></div>
-        </div>
-        <div class="test-item">
-          <div class="ti-icon" style="background:var(--sage-light)">&#x1f4d0;</div>
-          <div style="flex:1"><div class="ti-name">Maths DPP &mdash; Integral Calculus</div><div class="ti-meta">20 Qs &middot; 30 min &middot; Daily Practice</div></div>
-          <div style="text-align:right"><div class="ti-date">27 May, Anytime</div><div><span class="test-pill tp-open">Open</span></div></div>
-        </div>
-      </div>
-      <div class="card">
-        <div class="ch"><div><div class="ct">Recent Results</div><div class="cs">Your last 5 test performances</div></div><button class="btn-sm" onclick="window.location='mockarena_results.html'">View All</button></div>
-        <div class="result-item" onclick="window.location='mockarena_results.html'">
-          <div class="ri-icon" style="background:var(--sage-light)">&#x1f4dd;</div>
-          <div style="flex:1"><div class="ri-name">JEE Advanced Mock #4</div><div class="ri-meta">25 May &middot; 60 Qs &middot; 3h used</div></div>
-          <div style="text-align:right"><div class="ri-score">247<span style='font-size:.64rem;color:rgba(26,38,24,.4)'>/300</span></div><div class="ri-rank">#312 &middot; Top 6%</div><div class="ri-trend" style="color:var(--sage)">&#x2191; +23</div></div>
-        </div><div class="result-item" onclick="window.location='mockarena_results.html'">
-          <div class="ri-icon" style="background:var(--sky-light)">&#x1f4dd;</div>
-          <div style="flex:1"><div class="ri-name">JEE Advanced Mock #3</div><div class="ri-meta">22 May &middot; 60 Qs &middot; 3h used</div></div>
-          <div style="text-align:right"><div class="ri-score">224<span style='font-size:.64rem;color:rgba(26,38,24,.4)'>/300</span></div><div class="ri-rank">#589 &middot; Top 12%</div><div class="ri-trend" style="color:var(--sage)">&#x2191; +18</div></div>
-        </div><div class="result-item" onclick="window.location='mockarena_results.html'">
-          <div class="ri-icon" style="background:var(--sage-light)">&#x26db;&#xfe0f;</div>
-          <div style="flex:1"><div class="ri-name">Physics Chapter &mdash; Waves</div><div class="ri-meta">20 May &middot; 30 Qs &middot; 45m used</div></div>
-          <div style="text-align:right"><div class="ri-score">118<span style='font-size:.64rem;color:rgba(26,38,24,.4)'>/120</span></div><div class="ri-rank">#44 &middot; Top 2%</div><div class="ri-trend" style="color:var(--sage)">&#x2191; +8</div></div>
-        </div><div class="result-item" onclick="window.location='mockarena_results.html'">
-          <div class="ri-icon" style="background:var(--amber-light)">&#x1f9ea;</div>
-          <div style="flex:1"><div class="ri-name">Chemistry Part Test #2</div><div class="ri-meta">18 May &middot; 40 Qs &middot; 1h used</div></div>
-          <div style="text-align:right"><div class="ri-score">88<span style='font-size:.64rem;color:rgba(26,38,24,.4)'>/160</span></div><div class="ri-rank">#1,204 &middot; Top 25%</div><div class="ri-trend" style="color:var(--rose)">&#x2193; &minus;12</div></div>
-        </div><div class="result-item" onclick="window.location='mockarena_results.html'">
-          <div class="ri-icon" style="background:var(--rose-light)">&#x1f4dd;</div>
-          <div style="flex:1"><div class="ri-name">JEE Advanced Mock #2</div><div class="ri-meta">15 May &middot; 60 Qs &middot; 3h used</div></div>
-          <div style="text-align:right"><div class="ri-score">206<span style='font-size:.64rem;color:rgba(26,38,24,.4)'>/300</span></div><div class="ri-rank">#812 &middot; Top 17%</div><div class="ri-trend" style="color:var(--sage)">&#x2191; +14</div></div>
-        </div>
-      </div>
-    </div>
+<!-- BOTTOM NAV (mobile) -->
+<nav class="bottom-nav">
+  <a href="mockarena_dashboard.html" class="bn-item on"><span class="bn-icon">🏠</span>Home</a>
+  <a href="mockarena_onboarding.html" class="bn-item"><span class="bn-icon">📚</span>Exams</a>
+  <a href="#" onclick="quickMock();return false;" class="bn-item"><span class="bn-icon">🎯</span>Mock Test</a>
+  <a href="mockarena_teacher.html" class="bn-item"><span class="bn-icon">👨‍🏫</span>Teacher</a>
+</nav>
 
-    <!-- STUDY PLANNER + LEADERBOARD + NOTIF -->
-    <div class="g2 fu fu4">
-      <div class="card">
-        <div class="ch"><div><div class="ct">&#x1f4c5; Study Planner &mdash; This Week</div><div class="cs">Stay consistent to maintain your 12-day streak &#x1f525;</div></div><button class="btn-sm">Edit Plan</button></div>
-        <div class="planner-days">
-          <div class="pd-item">
-            <div class="pd-day">Mon</div>
-            <div class="pd-circle pd-done">19</div>
-            <div class="pd-dot" style="background:var(--sage)"></div>
-          </div><div class="pd-item">
-            <div class="pd-day">Tue</div>
-            <div class="pd-circle pd-done">20</div>
-            <div class="pd-dot" style="background:var(--sage)"></div>
-          </div><div class="pd-item">
-            <div class="pd-day">Wed</div>
-            <div class="pd-circle pd-done">21</div>
-            <div class="pd-dot" style="background:var(--sage)"></div>
-          </div><div class="pd-item">
-            <div class="pd-day">Thu</div>
-            <div class="pd-circle pd-done">22</div>
-            <div class="pd-dot" style="background:var(--sage)"></div>
-          </div><div class="pd-item">
-            <div class="pd-day">Fri</div>
-            <div class="pd-circle pd-done">23</div>
-            <div class="pd-dot" style="background:var(--sage)"></div>
-          </div><div class="pd-item">
-            <div class="pd-day">Sat</div>
-            <div class="pd-circle pd-done">24</div>
-            <div class="pd-dot" style="background:var(--sage)"></div>
-          </div><div class="pd-item">
-            <div class="pd-day">Sun</div>
-            <div class="pd-circle pd-today">25</div>
-            <div class="pd-dot" style="background:var(--forest)"></div>
-          </div>
-        </div>
-        <div class="sh-l" style="margin-bottom:10px">Today&apos;s Tasks</div>
-        <div>
-          <div class="task-item">
-            <div class="task-check done" onclick="toggleTask(this)">&#x2713;</div>
-            <div style="flex:1"><div class="task-name done">Revise Organic Chemistry &mdash; Named Reactions</div><div class="task-meta">&#x23f1; 45 min &middot; &#x1f9ea; Chemistry</div></div>
-            <span class="task-tag" style="background:var(--sage-light);color:var(--sage);">Done</span>
-          </div>
-          <div class="task-item">
-            <div class="task-check done" onclick="toggleTask(this)">&#x2713;</div>
-            <div style="flex:1"><div class="task-name done">Solve 10 Integral Calculus DPP problems</div><div class="task-meta">&#x23f1; 30 min &middot; &#x1f4d0; Maths</div></div>
-            <span class="task-tag" style="background:var(--sage-light);color:var(--sage);">Done</span>
-          </div>
-          <div class="task-item">
-            <div class="task-check" onclick="toggleTask(this)"></div>
-            <div style="flex:1"><div class="task-name">Attempt JEE Advanced Mock #5 (Live)</div><div class="task-meta">&#x23f1; 3 hrs &middot; &#x1f4dd; Full Mock &middot; 6:00 PM</div></div>
-            <span class="task-tag" style="background:var(--rose-light);color:var(--rose);">Pending</span>
-          </div>
-          <div class="task-item">
-            <div class="task-check" onclick="toggleTask(this)"></div>
-            <div style="flex:1"><div class="task-name">Watch video solution &mdash; Electrostatics Q4</div><div class="task-meta">&#x23f1; 20 min &middot; &#x26db;&#xfe0f; Physics</div></div>
-            <span class="task-tag" style="background:var(--sky-light);color:var(--sky);">Tonight</span>
-          </div>
-        </div>
-      </div>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getFirestore,collection,query,where,getDocs,orderBy,limit,doc,getDoc}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        <div class="card">
-          <div class="ch"><div><div class="ct">&#x1f3c6; Weekly Leaderboard</div><div class="cs">Mock #4 &middot; 4,821 students</div></div><button class="btn-sm" onclick="window.location='mockarena_leaderboard.html'">Full Board</button></div>
-          <div class="lb-item"><div class="lb-pos" style="color:var(--gold)">&#x1f947;</div><div class="lb-av" style="background:linear-gradient(135deg,#b87333,#d4844a)">AS</div><div class="lb-name">Aryan Sharma</div><div class="lb-score">281 pts</div></div>
-          <div class="lb-item"><div class="lb-pos" style="color:var(--forest-muted)">&#x1f948;</div><div class="lb-av" style="background:linear-gradient(135deg,#8a9bb0,#a0b0c0)">PM</div><div class="lb-name">Priya Mehta</div><div class="lb-score">274 pts</div></div>
-          <div class="lb-item"><div class="lb-pos" style="color:var(--amber)">&#x1f949;</div><div class="lb-av" style="background:linear-gradient(135deg,#7c5cbf,#4f46e5)">RK2</div><div class="lb-name">Rohit Kumar</div><div class="lb-score">268 pts</div></div>
-          <div style="text-align:center;font-size:.68rem;color:rgba(26,38,24,.3);padding:4px 0;">&middot; &middot; &middot; 308 more students &middot; &middot; &middot;</div>
-          <div class="lb-item me"><div class="lb-pos" style="color:var(--sage)">&#x2b50;312</div><div class="lb-av" style="background:linear-gradient(135deg,var(--sage),#4a7a3d)">RK</div><div class="lb-name" style="color:var(--sage);font-weight:700;">You (Rahul K.)</div><div class="lb-score" style="color:var(--sage)">247 pts</div></div>
-        </div>
-        <div class="card">
-          <div class="ch"><div><div class="ct">&#x1f514; Notifications</div></div><a href="mockarena_notifications.html" style="font-size:.72rem;font-weight:600;color:var(--sage);text-decoration:none;">Mark all read</a></div>
-          <div class="notif-item"><div class="notif-dot"></div><div style="flex:1"><div class="notif-title">Mock #5 starts in 4 hours!</div><div class="notif-desc">JEE Advanced Full Syllabus Mock #5 goes live today at 6:00 PM. Don&apos;t miss it.</div></div><div class="notif-time">2h ago</div></div>
-          <div class="notif-item"><div class="notif-dot"></div><div style="flex:1"><div class="notif-title">You ranked #312 in Mock #4 &#x1f389;</div><div class="notif-desc">Your rank improved by 890 places. Check detailed analytics.</div></div><div class="notif-time">6h ago</div></div>
-          <div class="notif-item"><div class="notif-dot read"></div><div style="flex:1"><div class="notif-title">New video solution added</div><div class="notif-desc">Organic Chemistry &mdash; Aldol Condensation solution is now available.</div></div><div class="notif-time">Yesterday</div></div>
-        </div>
-      </div>
-    </div>
+const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",appId:"1:861067164791:web:28df5244e34361dd9d5a72"});
+const auth=getAuth(app);
+const db=getFirestore(app);
 
-    <!-- BADGES + PLAN -->
-    <div class="g31 fu fu5">
-      <div class="card">
-        <div class="ch"><div><div class="ct">&#x1f3c5; Achievements &amp; Badges</div><div class="cs">9 earned &middot; 6 locked &middot; Keep going!</div></div><button class="btn-sm">View All</button></div>
-        <div class="badges-grid">
-          <div class="badge-item">
-            <div class="badge-emoji">&#x1f525;</div>
-            <div class="badge-name">Streak Master</div>
-            <div class="badge-earned">12 day streak</div>
-          </div><div class="badge-item">
-            <div class="badge-emoji">&#x1f3af;</div>
-            <div class="badge-name">Sharpshooter</div>
-            <div class="badge-earned">90%+ accuracy</div>
-          </div><div class="badge-item">
-            <div class="badge-emoji">&#x26a1;</div>
-            <div class="badge-name">Speed Demon</div>
-            <div class="badge-earned">Under 1 min/Q</div>
-          </div><div class="badge-item">
-            <div class="badge-emoji">&#x1f3c6;</div>
-            <div class="badge-name">Top 10%</div>
-            <div class="badge-earned">National rank</div>
-          </div><div class="badge-item">
-            <div class="badge-emoji">&#x1f4c8;</div>
-            <div class="badge-name">Rising Star</div>
-            <div class="badge-earned">+50 pts growth</div>
-          </div><div class="badge-item">
-            <div class="badge-emoji">&#x1f9ea;</div>
-            <div class="badge-name">Chem Wizard</div>
-            <div class="badge-earned">Earned</div>
-          </div><div class="badge-item">
-            <div class="badge-emoji">&#x1f4d0;</div>
-            <div class="badge-name">Math Genius</div>
-            <div class="badge-earned">Earned</div>
-          </div><div class="badge-item locked">
-            <div class="badge-emoji">&#x1f48e;</div>
-            <div class="badge-name">Diamond Rank</div>
-            <div class="badge-earned">Top 1% needed</div>
-          </div><div class="badge-item locked">
-            <div class="badge-emoji">&#x1f680;</div>
-            <div class="badge-name">IIT Bound</div>
-            <div class="badge-earned">AIR &lt;1000</div>
-          </div><div class="badge-item locked">
-            <div class="badge-emoji">&#x1f451;</div>
-            <div class="badge-name">All India #1</div>
-            <div class="badge-earned">Rank 1 needed</div>
-          </div>
-        </div>
-        <div style="background:var(--gold-dim);border:1px solid rgba(200,150,42,.2);border-radius:11px;padding:11px 14px;display:flex;align-items:center;gap:10px;">
-          <div style="font-size:1.3rem;">&#x1f680;</div>
-          <div style="flex:1"><div style="font-size:.74rem;font-weight:700;color:var(--forest);margin-bottom:2px">Next: IIT Bound Badge</div><div style="font-size:.66rem;color:var(--forest-muted)">Reach AIR #1000 to unlock. You&apos;re at #312 &mdash; almost there!</div></div>
-          <div style="text-align:right"><div style="font-family:var(--font-d);font-size:.92rem;font-weight:800;color:var(--gold)">#312</div><div style="font-size:.6rem;color:rgba(26,38,24,.4)">/ 1000 target</div></div>
-        </div>
-      </div>
+const STREAM_TO_EXAM={
+  jee_main:{exam:'JM',count:30,name:'Quick+Mock+Test'},
+  jee_advanced:{exam:'JA',count:18,name:'Quick+Mock+Test'},
+  neet_ug:{exam:'NT',count:30,name:'Quick+Mock+Test'},
+  jee_foundation:{exam:'JF',count:20,name:'Quick+Mock+Test'},
+  neet_foundation:{exam:'NF',count:20,name:'Quick+Mock+Test'},
+  boards_10:{exam:'CB10',count:20,name:'Quick+Mock+Test'},
+  boards_12:{exam:'CB12',count:20,name:'Quick+Mock+Test'},
+};
+let userStream='jee_main';
 
-      <div class="plan-card">
-        <div class="plan-inner">
-          <div class="plan-tag">&#x1f4cb; Current Plan</div>
-          <div class="plan-name">Scholar Plan</div>
-          <div class="plan-exp">Expires 30 June 2025 &middot; 36 days left</div>
-          <div class="plan-bar-lbl"><span>Plan usage</span><span>36 / 90 days</span></div>
-          <div class="plan-bar"><div id="plan-fill" style="width:0%" class="plan-bar-fill"></div></div>
-          <div class="plan-features">
-            <div class="pf-item">&#x2713; Unlimited mock tests</div>
-            <div class="pf-item">&#x2713; Full analytics dashboard</div>
-            <div class="pf-item">&#x2713; Video solutions access</div>
-            <div class="pf-item">&#x2713; AI study planner</div>
-            <div class="pf-item">&#x2713; Priority email support</div>
-          </div>
-          <button class="btn-upgrade" onclick="alert('Upgrade coming soon!')">&#x2b06; Upgrade to Elite Plan</button>
-        </div>
-      </div>
-    </div>
+window.quickMock=function(){
+  const cfg=STREAM_TO_EXAM[userStream]||STREAM_TO_EXAM.jee_main;
+  window.location.href='mockarena_test.html?exam='+cfg.exam+'&type=mock&name='+cfg.name+'&count='+cfg.count;
+};
 
-  </div><!-- /content -->
-</div><!-- /main -->
+onAuthStateChanged(auth,async function(user){
+  if(!user){
+    document.getElementById('dash-username').textContent='Guest';
+    document.getElementById('nav-uname').textContent='Guest';
+    document.getElementById('nav-avatar').innerHTML='<span class="nav-avatar-txt">G</span>';
+    document.getElementById('notif-strip').innerHTML=
+      '<a href="login.html" class="notif-card">'
+      +'<div class="notif-icon suggest">🔐</div>'
+      +'<div class="notif-body"><div class="notif-label">Sign In</div>'
+      +'<div class="notif-title">Save your progress</div>'
+      +'<div class="notif-meta">Sign in to track tests &amp; analytics</div></div>'
+      +'</a>'
+      +'<a href="jee_main.html#pyq" class="notif-card">'
+      +'<div class="notif-icon news">📜</div>'
+      +'<div class="notif-body"><div class="notif-label">What\'s New</div>'
+      +'<div class="notif-title">2025 PYQ papers added</div>'
+      +'<div class="notif-meta">JEE Mains, Advanced &amp; NEET</div></div>'
+      +'</a>';
+    return;
+  }
 
-<script>
-setTimeout(function(){
-  document.getElementById("xp-fill").style.width="85%";
-  document.getElementById("plan-fill").style.width="60%";
-  document.querySelectorAll(".spark[data-h]").forEach(function(s){
-    setTimeout(function(){ s.style.height = s.getAttribute("data-h"); }, Math.random()*200+100);
-  });
-  document.querySelectorAll(".pb-f[data-w]").forEach(function(b){
-    setTimeout(function(){ b.style.width = b.getAttribute("data-w"); }, 200);
-  });
-},400);
+  // Populate name
+  const name=user.displayName||(user.email?user.email.split('@')[0]:'Student');
+  document.getElementById('dash-username').textContent=name;
+  document.getElementById('nav-uname').textContent=name;
 
-function toggleTask(el){
-  var item=el.closest(".task-item");
-  var nameEl=item.querySelector(".task-name");
-  var tagEl=item.querySelector(".task-tag");
-  var isDone=el.classList.contains("done");
-  if(isDone){
-    el.classList.remove("done"); el.textContent="";
-    nameEl.classList.remove("done");
-    tagEl.textContent="Pending";
-    tagEl.style.cssText="background:var(--rose-light);color:var(--rose);";
+  // Populate nav avatar
+  const navAvatar=document.getElementById('nav-avatar');
+  if(user.photoURL){
+    navAvatar.innerHTML='<img src="'+user.photoURL+'" alt="'+name+'"/>';
   } else {
-    el.classList.add("done"); el.textContent="\u2713";
-    nameEl.classList.add("done");
-    tagEl.textContent="Done";
-    tagEl.style.cssText="background:var(--sage-light);color:var(--sage);";
-  }
-}
-</script>
-<script>
-
-</script>
-<script>
-// ══ HAMBURGER MENU ══
-(function(){
-  if(document.querySelector('.mob-ham')) return; // already added
-
-  // Create overlay
-  var ov = document.createElement('div');
-  ov.className = 'sb-overlay';
-  ov.onclick = close;
-  document.body.appendChild(ov);
-
-  // Create hamburger button
-  var ham = document.createElement('div');
-  ham.className = 'mob-ham';
-  ham.innerHTML = '&#9776;';
-  ham.style.cssText = 'display:none;width:34px;height:34px;border-radius:8px;background:var(--cream-warm);border:1.5px solid var(--border-med);align-items:center;justify-content:center;cursor:pointer;font-size:1rem;flex-shrink:0;color:var(--forest);margin-right:4px;';
-  ham.onclick = toggle;
-
-  // Insert into topbar
-  var tb = document.querySelector('.tb');
-  if(tb) tb.insertBefore(ham, tb.firstChild);
-
-  // Show/hide based on width
-  function checkSize(){
-    ham.style.display = window.innerWidth <= 860 ? 'flex' : 'none';
-  }
-  checkSize();
-  window.addEventListener('resize', checkSize);
-
-  function toggle(){
-    var sb = document.querySelector('.sb');
-    sb.classList.contains('mob-open') ? close() : open();
+    const initials=name.trim().split(/\s+/).map(function(w){return w[0];}).slice(0,2).join('').toUpperCase();
+    navAvatar.innerHTML='<span class="nav-avatar-txt">'+(initials||'?')+'</span>';
   }
 
-  function open(){
-    document.querySelector('.sb').classList.add('mob-open');
-    ov.classList.add('mob-open');
-    document.body.style.overflow = 'hidden';
-  }
+  try{
+    const userDoc=await getDoc(doc(db,'users',user.uid));
+    if(userDoc.exists()&&userDoc.data().stream){
+      userStream=userDoc.data().stream;
+    }
+  }catch(e){}
 
-  function close(){
-    document.querySelector('.sb').classList.remove('mob-open');
-    ov.classList.remove('mob-open');
-    document.body.style.overflow = '';
-  }
+  try{
+    const q=query(collection(db,'results'),where('uid','==',user.uid),orderBy('createdAt','desc'),limit(20));
+    const snap=await getDocs(q);
+    let results=[];
+    snap.forEach(function(d){results.push(d.data());});
+    
+    document.getElementById('d-tests').textContent=results.length;
+    if(results.length){
+      const avgPct=Math.round(results.reduce(function(s,r){return s+(r.percentage||0);},0)/results.length);
+      document.getElementById('d-score').textContent=avgPct+'%';
+      const totalQ=results.reduce(function(s,r){return s+(r.maxScore?Math.round(r.maxScore/4):0);},0);
+      document.getElementById('d-questions').textContent=totalQ;
+      
+      // Render recent 5
+      const recent=results.slice(0,5);
+      const icons={JM:'⚡',JA:'🚀',NT:'🔬',JF:'🌱',NF:'🌿',CB10:'📘',CB12:'📗'};
+      let html='';
+      recent.forEach(function(r){
+        const icon=icons[r.exam]||'📝';
+        const date=r.createdAt&&r.createdAt.toDate?r.createdAt.toDate().toLocaleDateString('en-IN',{day:'numeric',month:'short'}):'';
+        html+='<div class="recent-card"><div class="recent-icon">'+icon+'</div>'
+          +'<div class="recent-info"><div class="recent-name">'+(r.testName||r.examName||'Test')+'</div>'
+          +'<div class="recent-meta">'+(r.examName||'')+' · '+date+'</div></div>'
+          +'<div class="recent-score">'+r.score+'/'+r.maxScore+'</div></div>';
+      });
+      document.getElementById('recent-list').innerHTML=html;
 
-  // Close on nav click
-  document.querySelectorAll('.sb-nav, .sb-nav a').forEach(function(el){
-    el.addEventListener('click', function(){
-      if(window.innerWidth <= 860) close();
-    });
-  });
-})();
-</script>
-
-
-<script id="mobile-script">
-document.addEventListener("DOMContentLoaded",function(){
-  // Remove any existing mob-ham buttons first
-  document.querySelectorAll(".mob-ham,.mob-menu-btn").forEach(function(e){e.remove();});
-
-  // Create overlay
-  var ov=document.createElement("div");
-  ov.className="mob-overlay";
-  ov.style.cssText="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9998;";
-  ov.addEventListener("click",closeNav);
-  document.body.appendChild(ov);
-
-  // Create ONE hamburger
-  var ham=document.createElement("button");
-  ham.className="mob-ham";
-  ham.innerHTML="&#9776;";
-  ham.style.cssText="display:none;width:36px;height:36px;border-radius:8px;background:#f5f3ec;border:1.5px solid rgba(26,38,24,.13);align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;flex-shrink:0;color:#1a2618;margin-right:6px;";
-  ham.addEventListener("click",toggleNav);
-
-  // Insert into topbar
-  var tb=document.querySelector(".tb");
-  if(tb) tb.insertBefore(ham,tb.firstChild);
-
-  // Show only on mobile
-  function check(){
-    ham.style.display=window.innerWidth<=860?"flex":"none";
-    if(window.innerWidth>860) closeNav();
-  }
-  check();
-  window.addEventListener("resize",check);
-
-  function toggleNav(){
-    var sb=document.querySelector(".sb");
-    if(!sb) return;
-    sb.classList.contains("mob-open")?closeNav():openNav();
-  }
-  function openNav(){
-    var sb=document.querySelector(".sb");
-    if(sb) sb.classList.add("mob-open");
-    ov.style.display="block";
-    document.body.style.overflow="hidden";
-  }
-  function closeNav(){
-    var sb=document.querySelector(".sb");
-    if(sb) sb.classList.remove("mob-open");
-    ov.style.display="none";
-    document.body.style.overflow="";
-  }
-  // Close on nav click
-  document.querySelectorAll(".sb-nav,.sb a").forEach(function(el){
-    el.addEventListener("click",function(){
-      if(window.innerWidth<=860) closeNav();
-    });
-  });
-});
-</script>
-<script>
-(function(){
-  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-  var FAKE=["Rahul Kumar","Arjun Sharma","Rahul","Arjun"];
-  function _rep(el,fn,nm,in2){
-    if(el.nodeType===3){
-      var t=el.textContent;
-      FAKE.forEach(function(n){
-        if(t.indexOf(n)!==-1){
-          t=t.replace(new RegExp(n+"!","g"),fn+"!")
-             .replace(new RegExp("\("+n.split(" ")[0]+" K\.\)","g"),"("+fn+" "+in2.charAt(1)+")")
-             .replace(new RegExp("^"+n+"$"),nm);
-          el.textContent=t;
+      // ── Build weak-topic suggestion from chapterBreakdown ──
+      const chapMap={};
+      results.forEach(function(r){
+        (r.chapterBreakdown||[]).forEach(function(ch){
+          const key=ch.subject+'::'+ch.chapter;
+          if(!chapMap[key]){chapMap[key]={subject:ch.subject,chapter:ch.chapter,correct:0,wrong:0,exam:r.exam};}
+          chapMap[key].correct+=ch.correct||0;
+          chapMap[key].wrong+=ch.wrong||0;
+        });
+      });
+      let weakest=null;
+      Object.values(chapMap).forEach(function(ch){
+        const attempted=ch.correct+ch.wrong;
+        if(attempted>=2){
+          const acc=Math.round(ch.correct/attempted*100);
+          if(!weakest||acc<weakest.acc){weakest={chapter:ch.chapter,subject:ch.subject,exam:ch.exam,acc:acc};}
         }
       });
-    } else if(el.nodeType===1&&el.tagName!=="SCRIPT"&&el.tagName!=="STYLE"){
-      Array.from(el.childNodes).forEach(function(c){_rep(c,fn,nm,in2);});
+
+      // ── Build notification cards ──
+      const last=results[0];
+      const lastIcon={JM:'⚡',JA:'🚀',NT:'🔬',JF:'🌱',NF:'🌿',CB10:'📘',CB12:'📗'}[last.exam]||'📝';
+      let notifHtml='';
+
+      notifHtml+='<a href="mockarena_analytics.html#hist" class="notif-card">'
+        +'<div class="notif-icon continue">'+lastIcon+'</div>'
+        +'<div class="notif-body"><div class="notif-label">Last Test</div>'
+        +'<div class="notif-title">'+(last.testName||last.examName||'Test')+'</div>'
+        +'<div class="notif-meta">Scored '+(last.percentage||0)+'% · '+last.score+'/'+last.maxScore+'</div></div>'
+        +'</a>';
+
+      if(weakest){
+        const url='mockarena_test.html?exam='+weakest.exam+'&subj='+encodeURIComponent(weakest.subject)+'&chap='+encodeURIComponent(weakest.chapter)+'&name='+encodeURIComponent(weakest.chapter)+'&count=15';
+        notifHtml+='<a href="'+url+'" class="notif-card">'
+          +'<div class="notif-icon suggest">🎯</div>'
+          +'<div class="notif-body"><div class="notif-label">Focus Area</div>'
+          +'<div class="notif-title">'+weakest.chapter+'</div>'
+          +'<div class="notif-meta">'+weakest.acc+'% accuracy · Practice now</div></div>'
+          +'</a>';
+      }
+
+      notifHtml+='<a href="jee_main.html#pyq" class="notif-card">'
+        +'<div class="notif-icon news">📜</div>'
+        +'<div class="notif-body"><div class="notif-label">What\'s New</div>'
+        +'<div class="notif-title">2025 PYQ papers added</div>'
+        +'<div class="notif-meta">JEE Mains, Advanced &amp; NEET</div></div>'
+        +'</a>';
+
+      document.getElementById('notif-strip').innerHTML=notifHtml;
+    } else {
+      // No tests yet — show a starter notification
+      document.getElementById('notif-strip').innerHTML=
+        '<a href="mockarena_onboarding.html" class="notif-card">'
+        +'<div class="notif-icon suggest">🚀</div>'
+        +'<div class="notif-body"><div class="notif-label">Get Started</div>'
+        +'<div class="notif-title">Take your first mock test</div>'
+        +'<div class="notif-meta">Pick a chapter and begin practicing</div></div>'
+        +'</a>'
+        +'<a href="jee_main.html#pyq" class="notif-card">'
+        +'<div class="notif-icon news">📜</div>'
+        +'<div class="notif-body"><div class="notif-label">What\'s New</div>'
+        +'<div class="notif-title">2025 PYQ papers added</div>'
+        +'<div class="notif-meta">JEE Mains, Advanced &amp; NEET</div></div>'
+        +'</a>';
     }
-  }
-  function _g(){
-    var s1=document.createElement("script");
-    s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-    s1.onload=function(){
-      var s2=document.createElement("script");
-      s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
-      s2.onload=function(){
-        if(!firebase.apps.length)firebase.initializeApp(_c);
-        var _done=false;
-        firebase.auth().onAuthStateChanged(function(u){
-          if(!_done&&!u){_done=true;try{if(sessionStorage.getItem("ma_logout")==="1"){sessionStorage.removeItem("ma_logout");return;}}catch(e){}window.location.replace("login.html");}
-          if(u){
-            var nm=u.displayName||u.email||"Student";
-            var parts=nm.split(" ");
-            var in2=(parts[0].charAt(0)+(parts[1]?parts[1].charAt(0):"")).toUpperCase();
-            var photo=u.photoURL;
-            var fn=parts[0];
-            document.querySelectorAll(".sb-av,.sb-avatar").forEach(function(el){
-              if(photo){var img=document.createElement("img");img.src=photo;img.style.cssText="width:100%;height:100%;border-radius:50%;object-fit:cover;";img.onerror=function(){el.textContent=in2;};el.innerHTML="";el.appendChild(img);}
-              else{el.textContent=in2;}
-            });
-            document.querySelectorAll(".sb-uname,.sb-name").forEach(function(el){el.textContent=nm;});
-            var tb=document.querySelector(".tb-title");
-            if(tb&&tb.textContent.indexOf("Good")!==-1){var h=new Date().getHours();var g=h<12?"Good Morning":h<17?"Good Afternoon":"Good Evening";tb.textContent=g+", "+fn+"!";}
-            _rep(document.body,fn,nm,in2);
-          }
-        });
-      };
-      document.head.appendChild(s2);
-    };
-    document.head.appendChild(s1);
-  }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_g);}else{_g();}
-})();
-</script>
-<script>
-(function(){
-  function _il(){
-    document.querySelectorAll("a").forEach(function(link){
-      var txt=link.textContent.trim().toLowerCase();
-      if((txt==="logout"||txt==="sign out")&&link.getAttribute("href")==="login.html"){
-        link.href="#";
-        link.addEventListener("click",function(e){
-          e.preventDefault();
-          var s1=document.createElement("script");
-          s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-          s1.onload=function(){
-            var s2=document.createElement("script");
-            s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
-            s2.onload=function(){
-              var c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-              if(!firebase.apps.length)firebase.initializeApp(c);
-              firebase.auth().signOut().then(function(){window.location.href="login.html";});
-            };
-            document.head.appendChild(s2);
-          };
-          document.head.appendChild(s1);
-        });
-      }
-    });
-  }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_il);}else{_il();}
-})();
-</script>
-<script>
-(function(){
-  function _initFirestore(){
-    // Load Firestore SDK
-    var s=document.createElement("script");
-    s.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
-    s.onload=function(){
-      var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-      if(!firebase.apps.length)firebase.initializeApp(_c);
-      var db=firebase.firestore();
-
-      firebase.auth().onAuthStateChanged(function(user){
-        if(!user)return;
-        var ref=db.collection("users").doc(user.uid);
-        ref.get().then(function(doc){
-          if(!doc.exists){
-            // First login - create profile
-            ref.set({
-              uid:user.uid,
-              name:user.displayName||"Student",
-              email:user.email,
-              photo:user.photoURL||"",
-              role:"student",
-              examTarget:"",
-              className:"",
-              joinDate:firebase.firestore.FieldValue.serverTimestamp(),
-              totalTests:0,
-              avgScore:0,
-              bestScore:0,
-              streak:0,
-              totalPoints:0
-            });
-          } else {
-            // Update last login
-            ref.update({
-              lastLogin:firebase.firestore.FieldValue.serverTimestamp(),
-              name:user.displayName||doc.data().name||"Student",
-              photo:user.photoURL||doc.data().photo||""
-            });
-          }
-        });
-      });
-
-      // Expose db globally for other scripts
-      window._maDB=db;
-    };
-    document.head.appendChild(s);
-  }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",_initFirestore);}
-  else{_initFirestore();}
-})();
-</script>
-<script>
-// ── LOGOUT FIX ──────────────────────────────────────────
-(function(){
-  function fixLogout(){
-    document.querySelectorAll("a, button").forEach(function(el){
-      var txt = el.textContent.trim().toLowerCase();
-      var href = el.getAttribute("href")||"";
-      if((txt==="logout"||txt==="sign out"||txt==="log out") && (href==="login.html"||href==="#"||href==="")){
-        el.setAttribute("href","#");
-        el.addEventListener("click",function(e){
-          e.preventDefault();
-          e.stopPropagation();
-          // Set logout flag so login page doesn't auto-redirect
-          try{sessionStorage.setItem("ma_logout","1");}catch(err){}
-          // Load Firebase and sign out
-          function doSignOut(){
-            try{
-              if(typeof firebase!=="undefined"&&firebase.auth){
-                firebase.auth().signOut().then(function(){
-                  window.location.replace("login.html");
-                }).catch(function(){
-                  window.location.replace("login.html");
-                });
-              } else {
-                window.location.replace("login.html");
-              }
-            } catch(err){
-              window.location.replace("login.html");
-            }
-          }
-          if(typeof firebase==="undefined"){
-            var s1=document.createElement("script");
-            s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-            s1.onload=function(){
-              var s2=document.createElement("script");
-              s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
-              s2.onload=function(){
-                var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-                if(!firebase.apps.length)firebase.initializeApp(_c);
-                doSignOut();
-              };
-              document.head.appendChild(s2);
-            };
-            document.head.appendChild(s1);
-          } else {
-            doSignOut();
-          }
-        });
-      }
-    });
-  }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",fixLogout);}
-  else{fixLogout();}
-})();
-</script>
-<script>
-// ═══════════════════════════════════════════════════
-// MOCKARENA DASHBOARD — FIRESTORE REAL DATA
-// ═══════════════════════════════════════════════════
-(function(){
-  var _c={
-    apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
-    authDomain:"mockarena-c18c4.firebaseapp.com",
-    projectId:"mockarena-c18c4",
-    storageBucket:"mockarena-c18c4.firebasestorage.app",
-    messagingSenderId:"861067164791",
-    appId:"1:861067164791:web:28df5244e34361dd9d5a72"
-  };
-
-  function loadFirebase(cb){
-    if(window._maDB && window._maAuth){cb(window._maDB, window._maAuth);return;}
-    var s1=document.createElement("script");
-    s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-    s1.onload=function(){
-      var s2=document.createElement("script");
-      s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
-      s2.onload=function(){
-        var s3=document.createElement("script");
-        s3.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
-        s3.onload=function(){
-          if(!firebase.apps.length)firebase.initializeApp(_c);
-          window._maDB=firebase.firestore();
-          window._maAuth=firebase.auth();
-          cb(window._maDB, window._maAuth);
-        };
-        document.head.appendChild(s3);
-      };
-      document.head.appendChild(s2);
-    };
-    document.head.appendChild(s1);
-  }
-
-  // Helper: safely set text content of element
-  function setText(sel, val){
-    var el = typeof sel==="string" ? document.querySelector(sel) : sel;
-    if(el && val!==undefined && val!==null) el.textContent = val;
-  }
-
-  // Helper: safely set innerHTML
-  function setHTML(sel, val){
-    var el = typeof sel==="string" ? document.querySelector(sel) : sel;
-    if(el && val!==undefined && val!==null) el.innerHTML = val;
-  }
-
-  // Update greeting
-  function updateGreeting(name){
-    var h = new Date().getHours();
-    var g = h<12?"Good Morning":h<17?"Good Afternoon":"Good Evening";
-    var fn = name.split(" ")[0];
-    var el = document.querySelector(".tb-title");
-    if(el) el.textContent = g+", "+fn+"! 👋";
-    // Banner greeting
-    document.querySelectorAll("span").forEach(function(s){
-      if(s.style && s.style.background && s.style.background.includes("a8d99c") && (s.textContent.includes("Rahul")||s.textContent.includes("Arjun"))){
-        s.textContent = fn+"!";
-      }
-    });
-  }
-
-  // Update KPI cards with real data
-  function updateKPIs(userData, tests){
-    var totalTests = userData.totalTests||0;
-    var bestScore = userData.bestScore||0;
-    var avgScore = userData.avgScore||0;
-    var accuracy = userData.lastTestAccuracy||0;
-
-    // Tests Attempted KPI
-    var kpiNums = document.querySelectorAll(".kpi-n");
-    if(kpiNums[0]) kpiNums[0].textContent = totalTests;
-    // Accuracy KPI
-    if(kpiNums[1]) kpiNums[1].textContent = accuracy+"%";
-    // Best Score KPI (was "Best National Rank")
-    if(kpiNums[2]) kpiNums[2].textContent = bestScore||"—";
-
-    // Update banner last score text
-    var bannerScore = document.querySelector("strong[style*='a8d99c']");
-    if(bannerScore && userData.lastTestScore) {
-      bannerScore.textContent = userData.lastTestScore+"/300";
-    }
-
-    // Update streak
-    var streakEls = document.querySelectorAll("[style*='font-weight:900'][style*='color:white']");
-    streakEls.forEach(function(el){
-      if(el.textContent.includes("Days")||el.textContent.includes("Day")){
-        el.textContent = (userData.streak||0)+" Days";
-      }
-    });
-  }
-
-  // Update Recent Results section with real test data
-  function updateRecentResults(tests){
-    if(!tests||!tests.length) return;
-
-    // Sort by timestamp desc
-    tests.sort(function(a,b){
-      var ta = a.date||"";
-      var tb = b.date||"";
-      return tb.localeCompare(ta);
-    });
-
-    // Find recent results container
-    var recentCard = null;
-    document.querySelectorAll(".ct").forEach(function(el){
-      if(el.textContent.includes("Recent Results")) {
-        recentCard = el.closest(".card");
-      }
-    });
-    if(!recentCard) return;
-
-    var examIcons = {
-      jee_advanced:"📝",jee_mains:"🎯",neet:"🩺",mock:"📝"
-    };
-    var examNames = {
-      jee_advanced:"JEE Advanced",jee_mains:"JEE Mains",neet:"NEET UG",mock:"Mock Test"
-    };
-
-    var resultsHTML = tests.slice(0,5).map(function(t,i){
-      var icon = examIcons[t.examType]||"📝";
-      var name = (examNames[t.examType]||"Mock Test")+" — Mock";
-      var date = t.date||"";
-      var score = t.score||0;
-      var total = t.total||60;
-      var maxScore = total*4; // approx max
-      var acc = t.accuracy||0;
-      var color = acc>=80?"var(--sage)":acc>=60?"var(--gold)":"var(--rose)";
-      var subj = t.subjectBreakdown||{};
-      var subjStr = Object.keys(subj).slice(0,2).join(" + ")||"All Subjects";
-      return `<div class="result-item" onclick="window.location='mockarena_results.html'" style="cursor:pointer;">
-        <div class="ri-icon" style="background:var(--sage-light)">${icon}</div>
-        <div style="flex:1">
-          <div class="ri-name">${name}</div>
-          <div class="ri-meta">${date} · ${total} Qs · ${subjStr}</div>
-        </div>
-        <div style="text-align:right">
-          <div class="ri-score">${score}<span style="font-size:.64rem;color:rgba(26,38,24,.4)"> pts</span></div>
-          <div class="ri-rank" style="color:${color}">${acc}% accuracy</div>
-        </div>
-      </div>`;
-    }).join("");
-
-    // Replace only the result items (keep header)
-    var header = recentCard.querySelector(".ch");
-    if(header){
-      // Remove old result items
-      var items = recentCard.querySelectorAll(".result-item");
-      items.forEach(function(item){item.remove();});
-      // Add new ones
-      recentCard.insertAdjacentHTML("beforeend", resultsHTML);
-    }
-  }
-
-  // Update score trend chart with real data
-  function updateScoreChart(tests){
-    if(!tests||tests.length<2) return;
-    tests.sort(function(a,b){return (a.date||"").localeCompare(b.date||"");});
-    var last8 = tests.slice(-8);
-    var maxScore = 300;
-    var svgH = 100;
-    var pad = 20;
-    var w = 480;
-
-    // Calculate points
-    var pts = last8.map(function(t,i){
-      var x = pad + (i/(last8.length-1))*(w-pad*2);
-      var y = svgH - pad - ((t.score||0)/maxScore)*(svgH-pad*2);
-      return {x:Math.round(x),y:Math.round(y),score:t.score||0};
-    });
-
-    var polyline = pts.map(function(p){return p.x+","+p.y;}).join(" ");
-    var areaPath = "M"+pts[0].x+","+pts[0].y+" "+pts.map(function(p){return "L"+p.x+","+p.y;}).join(" ")+" L"+pts[pts.length-1].x+","+svgH+" L"+pts[0].x+","+svgH+" Z";
-
-    var circles = pts.map(function(p,i){
-      var isLast = i===pts.length-1;
-      return '<circle cx="'+p.x+'" cy="'+p.y+'" r="'+(isLast?5:3)+'" fill="#6b8f5e"'+(isLast?' stroke="white" stroke-width="2"':'')+'/>';
-    }).join("");
-
-    // Update SVG
-    var svg = document.querySelector(".lc-svg");
-    if(svg){
-      var path = svg.querySelector("path");
-      var poly = svg.querySelector("polyline");
-      if(path) path.setAttribute("d", areaPath);
-      if(poly) poly.setAttribute("points", polyline);
-      // Update circles
-      svg.querySelectorAll("circle").forEach(function(c){c.remove();});
-      svg.insertAdjacentHTML("beforeend", circles);
-    }
-
-    // Update labels
-    var lbls = document.querySelector(".lc-lbls");
-    if(lbls){
-      lbls.innerHTML = last8.map(function(t,i){
-        return '<span class="lc-lbl">Mock '+(i+1)+'</span>';
-      }).join("");
-    }
-
-    // Update range
-    var scores = last8.map(function(t){return t.score||0;});
-    var minS = Math.min.apply(null,scores);
-    var maxS = Math.max.apply(null,scores);
-    var diff = maxS - scores[0];
-    document.querySelectorAll(".card").forEach(function(card){
-      if(card.querySelector(".lc-svg")){
-        var rangeEl = card.querySelector("strong");
-        if(rangeEl) rangeEl.textContent = minS+" → "+maxS;
-        // Update improvement text
-        var impEls = card.querySelectorAll("[style*='sage']");
-        impEls.forEach(function(el){
-          if(el.textContent.includes("Improved")||el.textContent.includes("pts")){
-            el.textContent = (diff>=0?"↑ ":"↓ ")+Math.abs(diff)+" pts in "+last8.length+" mocks 🚀";
-          }
-        });
-      }
-    });
-  }
-
-  // Update subject accuracy bars
-  function updateSubjectBars(tests){
-    if(!tests||!tests.length) return;
-    var subjAcc = {};
-    var subjCount = {};
-    tests.slice(-8).forEach(function(t){
-      var breakdown = t.subjectBreakdown||{};
-      Object.keys(breakdown).forEach(function(subj){
-        if(!subjAcc[subj]) {subjAcc[subj]=0; subjCount[subj]=0;}
-        subjAcc[subj] += breakdown[subj].accuracy||0;
-        subjCount[subj]++;
-      });
-    });
-    Object.keys(subjAcc).forEach(function(subj){
-      if(subjCount[subj]) subjAcc[subj] = Math.round(subjAcc[subj]/subjCount[subj]);
-    });
-
-    // Update progress bars
-    document.querySelectorAll(".pb-row").forEach(function(row){
-      var label = row.querySelector(".pb-l");
-      var fill = row.querySelector(".pb-f");
-      var val = row.querySelector(".pb-v");
-      if(!label||!fill||!val) return;
-      var txt = label.textContent.toLowerCase();
-      var acc = null;
-      Object.keys(subjAcc).forEach(function(s){
-        if(txt.includes(s.toLowerCase().substring(0,4))) acc = subjAcc[s];
-      });
-      if(acc!==null){
-        fill.setAttribute("data-w", acc+"%");
-        val.textContent = acc+"%";
-        setTimeout(function(){fill.style.width=acc+"%";},800);
-      }
-    });
-  }
-
-  // MAIN: load and connect everything
-  function init(){
-    loadFirebase(function(db, auth){
-      auth.onAuthStateChanged(function(user){
-        if(!user) return;
-        var uid = user.uid;
-
-        // 1. Update greeting immediately
-        updateGreeting(user.displayName||"Student");
-
-        // 2. Load user profile
-        db.collection("users").doc(uid).get().then(function(doc){
-          if(doc.exists){
-            var data = doc.data();
-            updateKPIs(data, []);
-          }
-        }).catch(function(e){console.log("User doc error:",e);});
-
-        // 3. Load recent tests
-        db.collection("results").doc(uid).collection("tests")
-          .orderBy("timestamp","desc")
-          .limit(20)
-          .get().then(function(snap){
-            var tests = [];
-            snap.forEach(function(d){tests.push(d.data());});
-
-            if(tests.length){
-              updateRecentResults(tests);
-              updateScoreChart(tests);
-              updateSubjectBars(tests);
-
-              // Update user stats from tests
-              var totalTests = tests.length;
-              var scores = tests.map(function(t){return t.score||0;});
-              var bestScore = Math.max.apply(null,scores);
-              var avgScore = Math.round(scores.reduce(function(a,b){return a+b;},0)/scores.length);
-              var lastTest = tests[0];
-
-              // Update KPIs with computed data
-              var kpiNums = document.querySelectorAll(".kpi-n");
-              if(kpiNums[0]) kpiNums[0].textContent = totalTests;
-              if(kpiNums[1]) kpiNums[1].textContent = (lastTest.accuracy||0)+"%";
-              if(kpiNums[2]) kpiNums[2].textContent = bestScore;
-              if(kpiNums[3]) kpiNums[3].textContent = avgScore;
-
-              // Banner last score
-              var bannerScore = document.querySelector("strong[style*='a8d99c']");
-              if(bannerScore) bannerScore.textContent = (lastTest.score||0)+" pts";
-            } else {
-              // No tests yet — show friendly empty state
-              updateRecentResultsEmpty();
-            }
-          }).catch(function(e){console.log("Tests error:",e);});
-      });
-    });
-  }
-
-  function updateRecentResultsEmpty(){
-    var recentCard = null;
-    document.querySelectorAll(".ct").forEach(function(el){
-      if(el.textContent.includes("Recent Results")) recentCard = el.closest(".card");
-    });
-    if(!recentCard) return;
-    var items = recentCard.querySelectorAll(".result-item");
-    items.forEach(function(item){item.remove();});
-    recentCard.insertAdjacentHTML("beforeend",
-      '<div style="text-align:center;padding:32px 20px;color:rgba(26,38,24,.4);">'+
-      '<div style="font-size:2rem;margin-bottom:10px;">📝</div>'+
-      '<div style="font-size:.84rem;font-weight:600;color:var(--forest);margin-bottom:6px;">No tests attempted yet</div>'+
-      '<div style="font-size:.74rem;">Complete a mock test to see your results here!</div>'+
-      '<button onclick="window.location=\'mockarena_mocktest.html\'" style="margin-top:14px;font-family:var(--font-d);font-size:.78rem;font-weight:700;padding:9px 20px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;">Start First Mock →</button>'+
-      '</div>'
-    );
-  }
-
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}
-  else{init();}
-})();
-
+  }catch(e){console.log('Dashboard load error:',e);}
+});
 </script>
 </body>
 </html>
