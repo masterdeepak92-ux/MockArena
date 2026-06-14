@@ -2,1575 +2,527 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>JEE Mains 2026 — Complete Preparation | MockArena</title>
-<meta name="description" content="Complete JEE Mains preparation platform. Chapter tests, full mock tests, PYQ, analytics. Physics, Chemistry, Maths for Class 11-12."/>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>JEE Mains 2025–26 — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --forest:#1a2618;--forest-d:#0e1a0c;--forest-m:#3d5239;--forest-l:#243420;
-  --sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-m:rgba(107,143,94,.2);
-  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);
-  --rose:#c84b4b;--sky:#3b82c4;
-  --cream:#faf9f5;--cream-w:#f5f3ec;
-  --border:rgba(26,38,24,.09);--bm:rgba(26,38,24,.14);
-  --txt:#1a2618;--txt-m:rgba(26,38,24,.68);--txt-lo:rgba(26,38,24,.48);
+  --forest:#1a2618;--sage:#6b8f5e;--sage-d:#3a6830;
+  --sage-l:rgba(107,143,94,.11);--sage-g:rgba(107,143,94,.22);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);--gold-g:rgba(200,150,42,.22);
+  --rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
+  --sky:#2563eb;--sky-l:rgba(37,99,235,.09);
+  --violet:#7c3aed;--violet-l:rgba(124,58,237,.09);
+  --cream:#faf9f5;--cw:#f5f3ec;--white:#fff;
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.14);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.38);
   --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --sh:0 2px 12px rgba(26,38,24,.07);
+  --sh-lg:0 6px 24px rgba(26,38,24,.11);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;scroll-padding-top:68px;}
-body{font-family:var(--fd);background:var(--cream-w);color:var(--txt);overflow-x:hidden;font-size:16px;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;}
-a,a:hover,a:visited{text-decoration:none;}
+body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;}
 
-/* ══ NAV ══ */
-.nav{
-  position:fixed;top:0;left:0;right:0;z-index:300;
-  height:60px;
-  background:rgba(6,11,6,.96);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(107,143,94,.15);
-  display:flex;align-items:center;
-  padding:0 24px;
-  gap:0;
-}
-.nav-logo{
-  display:flex;align-items:center;gap:9px;
-  text-decoration:none;flex-shrink:0;
-}
+/* ── NAV ── */
+.nav{height:56px;display:flex;align-items:center;padding:0 16px;gap:10px;background:var(--forest);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(107,143,94,.15);}
+.nav-logo{font-size:1.05rem;font-weight:900;text-decoration:none;color:white;letter-spacing:-.02em;}
+.nav-logo span{color:var(--sage);}
+.nav-pill{font-size:.9rem;font-weight:800;padding:4px 12px;border-radius:100px;background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-switch{font-family:var(--fd);font-size:.9rem;font-weight:700;padding:6px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);text-decoration:none;transition:all .18s;}
+.nav-switch:hover{background:rgba(255,255,255,.16);}
 
-.nav-n1{color:white;font-size:1.05rem;font-weight:900;letter-spacing:-.02em;}
-.nav-n2{font-size:1.05rem;font-weight:900;color:var(--sage);letter-spacing:-.02em;}
+/* ── HERO ── */
+.hero{background:var(--cream);padding:32px 20px 0;border-bottom:1.5px solid var(--border);}
+.hero-inner{max-width:900px;margin:0 auto;}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.hero-badge{font-size:.88rem;font-weight:800;padding:5px 13px;border-radius:100px;background:var(--sky-l);color:var(--sky);border:1px solid rgba(37,99,235,.18);}
+.hero-updated{font-size:.88rem;font-weight:700;color:var(--txt-lo);}
+.hero-title{font-size:2.2rem;font-weight:900;color:var(--forest);letter-spacing:-.03em;line-height:1.08;margin-bottom:10px;}
+.hero-title span{color:var(--sage);}
+.hero-desc{font-size:1.02rem;color:var(--txt-m);line-height:1.75;max-width:600px;margin-bottom:20px;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;}
+.h-stat{display:flex;align-items:center;gap:7px;background:white;border:1.5px solid var(--border);border-radius:11px;padding:9px 14px;box-shadow:var(--sh);}
+.h-stat-icon{font-size:1.1rem;}
+.h-stat-val{font-family:var(--fm);font-size:.96rem;font-weight:800;color:var(--forest);}
+.h-stat-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;padding-bottom:28px;}
+.cta-btn{font-family:var(--fd);font-size:1rem;font-weight:800;padding:14px 26px;border-radius:13px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:9px;text-decoration:none;transition:all .22s;}
+.cta-btn.primary{background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;box-shadow:0 4px 18px var(--sage-g);}
+.cta-btn.primary:hover{transform:translateY(-2px);box-shadow:0 7px 24px var(--sage-g);}
+.cta-btn.secondary{background:white;color:var(--forest);border:1.5px solid var(--bm);box-shadow:var(--sh);}
+.cta-btn.secondary:hover{border-color:var(--sage-g);color:var(--sage);}
+.cta-btn.gold{background:linear-gradient(135deg,var(--gold),#9a6e18);color:white;box-shadow:0 4px 18px var(--gold-g);}
+.cta-btn.gold:hover{transform:translateY(-2px);}
 
-/* Center pill — exam label */
-.nav-pill{
-  margin:0 auto;
-  background:rgba(107,143,94,.12);
-  border:1px solid rgba(107,143,94,.22);
-  border-radius:100px;
-  padding:5px 18px;
-  display:flex;align-items:center;gap:7px;
-}
-.nav-pill-dot{
-  width:6px;height:6px;border-radius:50%;
-  background:var(--sage);flex-shrink:0;
-  animation:ndot 2.5s ease-in-out infinite;
-}
-@keyframes ndot{0%,100%{opacity:1;}50%{opacity:.25;}}
-.nav-pill-txt{
-  font-size:.76rem;font-weight:800;
-  color:rgba(255,255,255,.88);
-  letter-spacing:.06em;text-transform:uppercase;
-  white-space:nowrap;
-}
-.nav-pill-sub{
-  font-size:.78rem;font-weight:600;
-  color:rgba(107,143,94,.78);
-  letter-spacing:.04em;
-  white-space:nowrap;
-}
-.nav-pill-sep{color:rgba(255,255,255,.45);font-size:.78rem;}
+/* ── INFO STRIP ── */
+.info-strip{background:white;border-bottom:1.5px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.info-strip::-webkit-scrollbar{display:none;}
+.info-inner{max-width:900px;margin:0 auto;padding:0 20px;display:flex;}
+.info-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 20px;border-right:1px solid var(--border);flex-shrink:0;text-align:center;gap:3px;}
+.info-item:last-child{border-right:none;}
+.info-val{font-family:var(--fm);font-size:1rem;font-weight:800;color:var(--forest);}
+.info-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
 
-.nav-right{
-  display:flex;align-items:center;gap:8px;flex-shrink:0;
-}
-.nav-links{display:flex;align-items:center;gap:2px;margin-right:10px;}
-.nav-link{
-  font-size:.76rem;font-weight:600;
-  color:rgba(255,255,255,.58);
-  padding:5px 9px;border-radius:6px;
-  transition:all .16s;white-space:nowrap;
-}
-.nav-link:hover{color:rgba(255,255,255,.88);background:rgba(255,255,255,.07);}
-.nav-dash{
-  font-size:.78rem;font-weight:700;
-  padding:7px 14px;border-radius:8px;
-  background:var(--sage);
-  color:white;border:none;cursor:pointer;
-  white-space:nowrap;transition:opacity .18s;display:block;
-}
-.nav-dash:hover{opacity:.82;}
-.nav-av{
-  width:32px;height:32px;border-radius:50%;
-  background:linear-gradient(135deg,var(--gold),#d4a035);
-  display:flex;align-items:center;justify-content:center;
-  font-size:.78rem;font-weight:700;color:white;
-  cursor:pointer;flex-shrink:0;overflow:hidden;
-}
-.nav-hamburger{
-  display:none;flex-direction:column;gap:4px;
-  background:none;border:none;cursor:pointer;
-  padding:6px;width:36px;height:36px;
-  align-items:center;justify-content:center;
-  border-radius:7px;transition:background .16s;
-}
-.nav-hamburger:hover{background:rgba(255,255,255,.07);}
-.nav-hamburger span{
-  display:block;width:18px;height:2px;
-  background:rgba(255,255,255,.75);border-radius:2px;
-  transition:all .22s;
-}
-.nav-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
-.nav-hamburger.open span:nth-child(2){opacity:0;transform:scaleX(0);}
-.nav-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+/* ── MAIN ── */
+.main{max-width:900px;margin:0 auto;padding:24px 16px 48px;}
+@media(min-width:700px){.main{padding:28px 24px 48px;}}
+@media(min-width:960px){.main{padding:32px 32px 56px;}}
 
-/* Mobile nav drawer */
-.mob-nav{
-  display:none;position:fixed;
-  top:60px;left:0;right:0;z-index:299;
-  background:rgba(6,11,6,.98);
-  backdrop-filter:blur(20px);
-  border-bottom:1.5px solid rgba(107,143,94,.15);
-  padding:10px 16px 18px;
-  flex-direction:column;gap:2px;
-}
-.mob-nav.open{display:flex;}
-.mob-nav-label{
-  font-size:.78rem;font-weight:700;letter-spacing:.08em;
-  text-transform:uppercase;color:rgba(107,143,94,.65);
-  padding:6px 10px 8px;
-}
-.mob-link{
-  font-size:.94rem;font-weight:600;
-  color:rgba(255,255,255,.68);
-  padding:11px 12px;border-radius:9px;
-  transition:all .16s;
-}
-.mob-link:hover{background:rgba(255,255,255,.06);color:white;}
-.mob-dash{
-  margin-top:10px;
-  background:var(--sage);
-  color:white!important;text-align:center;
-  border-radius:10px;font-weight:700;
-  padding:12px!important;
-}
+/* ── SECTION ── */
+.sec{margin-bottom:32px;}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.sec-title{font-size:1.15rem;font-weight:900;color:var(--forest);letter-spacing:-.01em;}
+.sec-sub{font-size:.92rem;color:var(--txt-lo);margin-top:2px;}
 
-@media(max-width:960px){
-  .nav-links{display:none;}
-  .nav-hamburger{display:flex;}
-}
-@media(max-width:600px){
-  .nav-hamburger{display:flex;}
-  .nav-pill-sub,.nav-pill-sep{display:none;}
-  .nav-pill{padding:5px 14px;}
-  .nav-pill-txt{font-size:.78rem;}
-  .nav-dash{display:none;}
-  .nav{padding:0 14px;}
+/* ── QUICK TEST CARDS ── */
+.test-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.test-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .22s;box-shadow:var(--sh);text-decoration:none;display:block;position:relative;overflow:hidden;}
+.test-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;}
+.test-card.mock::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.test-card.phy::before{background:linear-gradient(90deg,var(--sky),#1d4ed8);}
+.test-card.che::before{background:linear-gradient(90deg,#059669,#065f46);}
+.test-card.mat::before{background:linear-gradient(90deg,var(--gold),#9a6e18);}
+.test-card.easy::before{background:linear-gradient(90deg,var(--sage),#2d7a45);}
+.test-card.hard::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
+.test-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--sage-g);}
+.tc-icon{font-size:1.9rem;margin-bottom:10px;display:block;}
+.tc-name{font-size:1rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
+.tc-meta{font-size:.92rem;color:var(--txt-lo);}
+.tc-badge{position:absolute;top:12px;right:10px;font-size:.9rem;font-weight:800;padding:2px 8px;border-radius:100px;background:var(--sage-l);color:var(--sage);}
+
+/* ── PATTERN CARDS ── */
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:14px;}
+.pc{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 14px;box-shadow:var(--sh);text-align:center;}
+.pc-icon{font-size:1.4rem;margin-bottom:8px;}
+.pc-val{font-family:var(--fm);font-size:1.6rem;font-weight:900;color:var(--forest);display:block;line-height:1;margin-bottom:5px;}
+.pc-lbl{font-size:.9rem;font-weight:600;color:var(--txt-lo);}
+.section-note{background:var(--sky-l);border:1px solid rgba(37,99,235,.14);border-radius:12px;padding:13px 16px;font-size:.94rem;color:var(--txt-m);line-height:1.65;}
+.section-note strong{color:var(--sky);}
+
+/* ── MARKING ── */
+.marking-wrap{background:white;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--sh);}
+.mk-row{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--border);}
+.mk-row:last-child{border-bottom:none;}
+.mk-left{display:flex;align-items:center;gap:10px;}
+.mk-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.mk-label{font-size:.96rem;font-weight:600;color:var(--txt-m);}
+.mk-val{font-family:var(--fm);font-size:1rem;font-weight:800;padding:4px 12px;border-radius:8px;}
+.mk-val.pos{color:var(--sage);background:var(--sage-l);}
+.mk-val.neg{color:var(--rose);background:var(--rose-l);}
+.mk-val.neu{color:var(--txt-lo);background:var(--cw);}
+
+/* ── SUBJECT TABS ── */
+.subj-tabs{display:flex;background:white;border:1.5px solid var(--border);border-radius:13px;padding:4px;gap:4px;margin-bottom:16px;box-shadow:var(--sh);}
+.subj-tab{flex:1;font-family:var(--fd);font-size:.94rem;font-weight:700;padding:9px 12px;border-radius:10px;border:none;background:transparent;color:var(--txt-lo);cursor:pointer;transition:all .18s;text-align:center;}
+.subj-tab.on{color:white;}
+.subj-tab.phy.on{background:var(--sky);}
+.subj-tab.che.on{background:#059669;}
+.subj-tab.mat.on{background:var(--gold);color:var(--forest);}
+
+/* ── CHAPTER LIST ── */
+.chap-section{display:none;}
+.chap-section.on{display:block;}
+.removed-notice{background:white;border:1.5px solid rgba(200,75,75,.2);border-left:4px solid var(--rose);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;}
+.rn-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+.rn-title{font-size:.92rem;font-weight:800;color:var(--rose);margin-bottom:3px;}
+.rn-txt{font-size:.9rem;color:var(--txt-m);line-height:1.6;}
+.sub-section-title{font-size:.9rem;font-weight:800;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.08em;margin:16px 0 10px;padding-bottom:8px;border-bottom:1.5px solid var(--border);}
+.chap-list{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
+.chap-row{background:white;border:1.5px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;align-items:flex-start;gap:10px;transition:all .18s;}
+.chap-row:hover{border-color:var(--sage-g);box-shadow:0 3px 14px var(--sage-l);}
+
+.chap-num{font-family:var(--fm);font-size:.92rem;font-weight:700;color:var(--txt-lo);width:26px;flex-shrink:0;}
+.chap-body{flex:1;min-width:0;}
+.chap-name{font-size:1rem;font-weight:700;color:var(--txt);margin-bottom:3px;}
+.chap-sub{font-size:.92rem;color:var(--txt-lo);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chap-tags{display:flex;gap:5px;flex-shrink:0;align-items:center;min-width:0;}
+.tag{font-size:.9rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.tag.hot{background:var(--rose-l);color:var(--rose);border:1px solid rgba(200,75,75,.18);}
+.tag.mod{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
+.chap-arrow{font-size:.9rem;color:var(--txt-lo);flex-shrink:0;transition:all .18s;}
+.chap-row:hover .chap-arrow{color:var(--sage);transform:translateX(3px);}
+.chap-meta-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.chap-practice{
+  font-family:var(--fd);font-size:.88rem;font-weight:800;
+  padding:6px 14px;border-radius:100px;border:none;
+  background:linear-gradient(135deg,var(--sage),var(--sage-d));
+  color:white;cursor:pointer;flex-shrink:0;
+  text-decoration:none;display:inline-flex;align-items:center;
+  transition:all .2s;white-space:nowrap;
+  box-shadow:0 2px 8px var(--sage-g);
+  min-width:fit-content;
+  font-size:.9rem;
+  padding:5px 12px;
 }
 
+.chap-practice:hover{transform:translateY(-1px);box-shadow:0 4px 12px var(--sage-g);}
 
-/* ══ HERO ══ */
-.hero{
-  min-height:auto;
-  background:var(--cream);
-  border-bottom:1px solid var(--border);
-  position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
-  padding:clamp(72px,8vh,100px) 20px clamp(48px,5vh,64px);
-}
-.hero-glow{display:none;}
-.hero-grid{display:none;}
-.hero-inner{
-  position:relative;z-index:1;
-  max-width:700px;width:100%;
-  text-align:center;
-}
+/* ── PYQ SECTION ── */
+.pyq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.pyq-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:16px 14px;text-align:center;box-shadow:var(--sh);transition:all .22s;position:relative;overflow:hidden;}
+.pyq-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;}
+.pyq-card.y2025::before{background:linear-gradient(90deg,#c84b4b,#9b1c1c);}
+.pyq-card.y2024::before{background:linear-gradient(90deg,#7c3aed,#5b21b6);}
+.pyq-card.y2023::before{background:linear-gradient(90deg,#2563eb,#1d4ed8);}
+.pyq-card.y2022::before{background:linear-gradient(90deg,#059669,#065f46);}
+.pyq-card.y2021::before{background:linear-gradient(90deg,#c8962a,#9a6e18);}
+.pyq-card.y2020::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
+.pyq-card.y2019::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.pyq-card.y2018::before{background:linear-gradient(90deg,#0891b2,#0e7490);}
+.pyq-card.y2017::before{background:linear-gradient(90deg,#7c3aed,#6d28d9);}
+.pyq-card.y2016::before{background:linear-gradient(90deg,#c84b4b,#991b1b);}
+.pyq-card.y2015::before{background:linear-gradient(90deg,#059669,#047857);}
+.pyq-card.y2014::before{background:linear-gradient(90deg,#c8962a,#b45309);}
+.pyq-card.y2013::before{background:linear-gradient(90deg,#1a2618,#243d20);}
+.pyq-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--sage-g);}
+.pyq-year{font-family:var(--fm);font-size:1.3rem;font-weight:900;color:var(--forest);margin-bottom:4px;display:block;}
+.pyq-session{font-size:.88rem;font-weight:600;color:var(--txt-lo);margin-bottom:12px;}
+.pyq-btns{display:flex;flex-direction:column;gap:6px;}
+.pyq-btn{font-family:var(--fd);font-size:.88rem;font-weight:800;padding:7px 10px;border-radius:9px;border:none;cursor:pointer;text-decoration:none;display:block;text-align:center;transition:all .18s;}
+.pyq-btn.jan{background:var(--sky-l);color:var(--sky);border:1px solid rgba(37,99,235,.2);}
+.pyq-btn.apr{background:var(--sage-l);color:var(--sage);border:1px solid var(--sage-g);}
+.pyq-btn.jan:hover{background:var(--sky);color:white;}
+.pyq-btn.apr:hover{background:var(--sage);color:white;}
+.pyq-btn.single{background:linear-gradient(135deg,var(--forest),#243d20);color:white;}
+.pyq-btn.single:hover{transform:translateY(-1px);}
+.pyq-note{background:var(--gold-l);border:1px solid var(--gold-g);border-radius:12px;padding:12px 16px;font-size:.94rem;color:var(--txt-m);line-height:1.65;margin-bottom:16px;}
+.pyq-note strong{color:var(--gold);}
+/* ── STRATEGY BOX ── */
+.strategy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.strategy-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 16px;box-shadow:var(--sh);}
+.sc-icon{font-size:1.5rem;margin-bottom:10px;}
+.sc-title{font-size:.97rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.sc-txt{font-size:.92rem;color:var(--txt-m);line-height:1.65;}
 
-/* Tag chip */
+/* ── DESKTOP ── */
+@media(min-width:900px){
+  .hero{padding:48px 32px 0;}
+  .hero-title{font-size:2.6rem;}
+  .hero-desc{font-size:1.04rem;}
+  .chap-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .chap-name{font-size:1rem;}
+  .chap-sub{font-size:.92rem;}
+  .test-grid{grid-template-columns:repeat(6,1fr);}
+  .pattern-grid{grid-template-columns:repeat(6,1fr);}
+  .strategy-grid{grid-template-columns:repeat(3,1fr);}
+  .pyq-grid{grid-template-columns:repeat(4,1fr);}
+  .info-item{padding:16px 24px;}
+  .info-val{font-size:1.05rem;}
+}
+/* ── FOOTER ── */
+.footer{background:var(--forest);padding:28px 20px;text-align:center;}
+.footer-logo{font-size:1.1rem;font-weight:900;color:white;letter-spacing:-.02em;margin-bottom:6px;}
+.footer-logo span{color:var(--sage);}
+.footer-txt{font-size:.9rem;color:rgba(255,255,255,.4);}
 
-
-/* Main title */
-.hero-title{
-  font-size:clamp(2.2rem,4.5vw,3.4rem);
-  font-weight:900;color:var(--forest);
-  line-height:1.04;letter-spacing:-.04em;
-  margin-bottom:16px;
-  -webkit-font-smoothing:antialiased;
+@media(max-width:500px){
+  .hero-title{font-size:1.65rem;}
+  .subj-tabs{flex-direction:column;}
+  .test-grid{grid-template-columns:repeat(2,1fr);}
+  .info-item{padding:12px 14px;}
 }
-.ht1{color:var(--sage);}
-.ht2{color:var(--gold);}
-
-/* Subtitle */
-.hero-sub{
-  font-size:clamp(.96rem,1.4vw,1.05rem);
-  color:var(--txt-m);
-  line-height:1.78;
-  max-width:520px;
-  margin:0 auto 24px;
-  font-weight:500;
-}
-
-/* Exam quick stats row */
-.hero-stats-row{
-  display:flex;flex-wrap:wrap;gap:10px;
-  justify-content:center;
-  margin-bottom:24px;
-  max-width:640px;
-  margin-left:auto;margin-right:auto;
-}
-.hsr-item{
-  display:flex;align-items:center;gap:6px;
-  background:white;
-  border:1.5px solid var(--border);
-  border-radius:10px;
-  padding:8px 14px;
-  box-shadow:0 1px 4px rgba(26,38,24,.06);
-}
-.hsr-val{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:.96rem;font-weight:800;color:var(--forest);
-}
-.hsr-val.g{color:#4a8a3a;}
-.hsr-val.gold{color:var(--gold);}
-.hsr-val.r{color:#c84b4b;}
-.hsr-lbl{
-  font-size:.80rem;font-weight:700;
-  color:var(--txt-m);
-  text-transform:uppercase;letter-spacing:.04em;
-}
-
-/* CTA Buttons */
-.hero-btns{
-  display:flex;gap:10px;justify-content:center;
-  flex-wrap:wrap;margin-bottom:28px;
-}
-.btn-primary{
-  font-family:'Outfit',sans-serif;
-  font-size:.98rem;font-weight:800;
-  padding:14px 28px;border-radius:11px;border:none;
-  background:linear-gradient(135deg,var(--gold),#b8832a);
-  color:black;cursor:pointer;
-  display:inline-flex;align-items:center;gap:8px;
-  transition:all .2s;
-  box-shadow:0 4px 18px rgba(200,150,42,.28);
-}
-.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,150,42,.38);}
-.btn-secondary{
-  font-family:'Outfit',sans-serif;
-  font-size:.95rem;font-weight:700;
-  padding:13px 26px;border-radius:11px;border:none;
-  background:var(--sage);
-  color:white;cursor:pointer;
-  display:inline-flex;align-items:center;gap:8px;
-  transition:all .2s;
-}
-.btn-secondary:hover{background:#5a7a50;transform:translateY(-2px);}
-.btn-outline{
-  font-family:'Outfit',sans-serif;
-  font-size:.95rem;font-weight:600;
-  padding:13px 26px;border-radius:11px;
-  border:1.5px solid var(--border);
-  background:var(--cream-w);color:var(--txt-m);
-  cursor:pointer;
-  display:inline-flex;align-items:center;gap:8px;
-  transition:all .2s;
-}
-.btn-outline:hover{border-color:var(--border-m);color:var(--forest);}
-
-/* Bottom stat bar */
-.hero-stat-bar{
-  display:grid;grid-template-columns:repeat(4,1fr);
-  background:white;
-  border:1.5px solid var(--border);
-  border-radius:14px;overflow:hidden;
-  max-width:520px;margin:0 auto;
-  box-shadow:0 2px 10px rgba(26,38,24,.07);
-}
-.hsb-item{
-  padding:14px 8px;text-align:center;
-  border-right:1px solid var(--border);
-}
-.hsb-item:last-child{border-right:none;}
-.hsb-n{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:1.05rem;font-weight:800;
-  color:var(--forest);display:block;margin-bottom:3px;
-}
-.hsb-l{
-  font-size:.80rem;color:var(--txt-m);
-  font-weight:600;text-transform:uppercase;letter-spacing:.05em;
-}
-
-@media(max-width:480px){
-  .hero{padding:78px 16px 48px;}
-  .hero-btns{flex-direction:column;align-items:stretch;gap:8px;}
-  .btn-primary,.btn-secondary,.btn-outline{justify-content:center;}
-  .hero-stat-bar{grid-template-columns:repeat(2,1fr);}
-  .hsb-item:nth-child(2){border-right:none;}
-  .hsb-item:nth-child(3),.hsb-item:nth-child(4){border-top:1px solid var(--border);}
-  .hero-stats-row{gap:6px;}
-  .hsr-item{padding:7px 11px;}
-  .hsr-val{font-size:.84rem;}
-  .hsr-lbl{font-size:.78rem;}
-}
-
-/* ══ SHARED ══ */
-section{padding:72px 24px;}
-.container{max-width:1100px;margin:0 auto;}
-.slabel{font-size:.84rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sage);margin-bottom:10px;}
-.stitle{font-size:clamp(1.6rem,2.8vw,2.1rem);font-weight:800;color:var(--forest);line-height:1.18;margin-bottom:12px;}
-.ssub{font-size:1rem;color:var(--txt-m);line-height:1.78;max-width:560px;}
-.sec-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:32px;gap:16px;flex-wrap:wrap;}
-.sec-hdr-right a{font-size:.82rem;font-weight:700;color:var(--sage);}
-
-/* ══ EXAM OVERVIEW CARDS ══ */
-.ov-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;margin-top:36px;}
-.ov-card{
-  background:white;border:1px solid var(--border);border-radius:16px;
-  padding:24px;position:relative;overflow:hidden;transition:all .22s;
-}
-.ov-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
-.ov-card.c1::after{background:linear-gradient(90deg,var(--sage),#4a7a3d);}
-.ov-card.c2::after{background:linear-gradient(90deg,var(--gold),#b8832a);}
-.ov-card.c3::after{background:linear-gradient(90deg,var(--sky),#2563eb);}
-.ov-card.c4::after{background:linear-gradient(90deg,var(--rose),#a83535);}
-.ov-card.c5::after{background:linear-gradient(90deg,#7c3aed,#6d28d9);}
-.ov-card.c6::after{background:linear-gradient(90deg,#0891b2,#0e7490);}
-.ov-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(26,38,24,.09);}
-.ov-icon{font-size:1.8rem;margin-bottom:14px;display:block;}
-.ov-label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt-lo);margin-bottom:4px;}
-.ov-value{font-size:1.12rem;font-weight:800;color:var(--forest);margin-bottom:7px;}
-.ov-desc{font-size:.86rem;color:var(--txt-m);line-height:1.68;}
-
-/* ══ MARKING SCHEME ══ */
-.mark-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:32px;}
-.mark-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;}
-.mark-icon{font-size:1.5rem;display:block;margin-bottom:10px;}
-.mark-val{font-family:var(--fm);font-size:1.6rem;font-weight:800;display:block;margin-bottom:5px;}
-.mark-lbl{font-size:.84rem;font-weight:700;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.06em;}
-.mark-desc{font-size:.8rem;color:var(--txt-m);margin-top:7px;line-height:1.58;}
-
-/* ══ CHAPTERS / TABS ══ */
-.subj-tabs{display:flex;gap:10px;margin-bottom:22px;flex-wrap:wrap;}
-.stab{
-  font-family:var(--fd);font-size:.84rem;font-weight:700;
-  padding:8px 20px;border-radius:9px;
-  border:1.5px solid var(--bm);background:white;
-  color:var(--forest-m);cursor:pointer;transition:all .18s;
-}
-.stab:hover{border-color:var(--sage);color:var(--forest);}
-.stab.on{background:var(--forest);color:white;border-color:var(--forest);}
-.subj-panel{display:none;}
-.subj-panel.on{display:block;}
-
-.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;}
-.ch-card{
-  background:white;border:1px solid var(--border);border-radius:12px;
-  padding:14px 18px;display:flex;align-items:center;justify-content:space-between;
-  transition:all .2s;gap:8px;
-}
-.ch-card:hover{border-color:var(--sage);background:var(--sage-l);transform:translateX(3px);}
-.ch-card.coming{opacity:.45;pointer-events:none;}
-.ch-left{display:flex;align-items:center;gap:10px;}
-.ch-num{
-  width:30px;height:30px;border-radius:8px;
-  background:var(--sage-l);display:flex;align-items:center;justify-content:center;
-  font-family:var(--fm);font-size:.82rem;font-weight:700;color:var(--sage);flex-shrink:0;
-}
-.ch-name{font-size:.92rem;font-weight:600;color:var(--forest);}
-.ch-right{display:flex;align-items:center;gap:7px;flex-shrink:0;}
-.ch-avail{font-size:.82rem;font-weight:800;padding:4px 10px;border-radius:100px;background:var(--sage-m);color:var(--sage);}
-.ch-soon{font-size:.82rem;font-weight:700;padding:4px 10px;border-radius:100px;background:rgba(26,38,24,.06);color:var(--txt-lo);}
-.ch-arr{font-size:.8rem;color:var(--txt-lo);}
-.subj-footer{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-top:18px;padding-top:16px;border-top:1px solid var(--border);
-}
-.subj-stat{font-size:.88rem;color:var(--txt-m);}
-.subj-stat span{font-weight:700;color:var(--sage);}
-
-/* ══ MOCK TESTS ══ */
-.mock-wrap{background:var(--forest);border-radius:22px;padding:40px 32px;margin-top:32px;}
-.mock-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:32px;}
-.mock-hdr-l .slabel{color:rgba(107,143,94,.8);}
-.mock-hdr-l .stitle{color:white;font-size:1.6rem;}
-.mock-hdr-l .ssub{color:rgba(255,255,255,.65);font-size:.92rem;}
-.mock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;}
-.mock-card{
-  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);
-  border-radius:14px;padding:22px;transition:all .22s;display:block;
-}
-.mock-card:hover{background:rgba(255,255,255,.08);border-color:rgba(107,143,94,.28);transform:translateY(-3px);}
-.mock-card.locked{opacity:.45;pointer-events:none;}
-.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.mc-badge{font-size:.82rem;font-weight:700;padding:4px 10px;border-radius:100px;text-transform:uppercase;letter-spacing:.05em;}
-.mcb-full{background:rgba(107,143,94,.22);color:#9bc48a;}
-.mcb-chapter{background:rgba(200,150,42,.2);color:#e8a830;}
-.mcb-lock{background:rgba(255,255,255,.1);color:rgba(255,255,255,.48);}
-.mc-title{font-size:1rem;font-weight:700;color:white;margin-bottom:6px;}
-.mc-desc{font-size:.86rem;color:rgba(255,255,255,.62);line-height:1.58;margin-bottom:16px;}
-.mc-meta{display:flex;gap:14px;margin-bottom:16px;}
-.mc-m{font-size:.84rem;color:rgba(255,255,255,.55);display:flex;align-items:center;gap:4px;}
-.mc-btn{
-  width:100%;font-family:var(--fd);font-size:.84rem;font-weight:700;
-  padding:11px;border-radius:10px;border:none;
-  background:linear-gradient(135deg,var(--sage),#4a7a3d);
-  color:white;cursor:pointer;transition:all .2s;
-}
-.mc-btn:hover{box-shadow:0 4px 16px rgba(107,143,94,.3);}
-.mc-btn-lock{background:rgba(255,255,255,.08);color:rgba(255,255,255,.38);cursor:not-allowed;box-shadow:none!important;}
-
-/* ══ HIGH WEIGHTAGE ══ */
-.hw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px;margin-top:32px;}
-.hw-card{background:white;border:1px solid var(--border);border-radius:16px;padding:22px;}
-.hw-hdr{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
-.hw-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;}
-.hw-name{font-size:.98rem;font-weight:800;color:var(--forest);}
-.hw-topics{display:flex;flex-direction:column;gap:8px;}
-.hw-topic{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:9px 12px;border-radius:9px;background:var(--cream-w);
-}
-.hw-tname{font-size:.82rem;font-weight:600;color:var(--forest-m);}
-.hw-twt{font-size:.82rem;font-weight:700;padding:4px 10px;border-radius:100px;}
-.wt-high{background:rgba(200,75,75,.1);color:var(--rose);}
-.wt-med{background:rgba(200,150,42,.1);color:var(--gold);}
-
-/* ══ PROGRESS ══ */
-.prog-wrap{background:white;border:1px solid var(--border);border-radius:20px;padding:32px;margin-top:32px;}
-.prog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-top:24px;}
-.pg-card{text-align:center;padding:18px 14px;border-radius:12px;background:var(--cream-w);}
-.pg-n{font-family:var(--fm);font-size:1.7rem;font-weight:800;display:block;margin-bottom:4px;}
-.pg-l{font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;color:var(--txt-lo);}
-.pg-bar{height:3px;border-radius:3px;background:var(--border);margin-top:10px;overflow:hidden;}
-.pg-bar-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sage),#4a7a3d);}
-
-/* ══ STRATEGY TIPS ══ */
-.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:32px;}
-.tip-card{
-  background:white;border:1px solid var(--border);border-radius:14px;
-  padding:22px;display:flex;gap:14px;transition:all .22s;
-}
-.tip-card:hover{transform:translateY(-2px);box-shadow:0 10px 26px rgba(26,38,24,.07);}
-.tip-num{
-  width:36px;height:36px;border-radius:9px;background:var(--forest);
-  color:white;display:flex;align-items:center;justify-content:center;
-  font-family:var(--fm);font-size:.82rem;font-weight:700;flex-shrink:0;
-}
-.tip-title{font-size:.95rem;font-weight:800;color:var(--forest);margin-bottom:6px;}
-.tip-desc{font-size:.86rem;color:var(--txt-m);line-height:1.72;}
-
-/* ══ CTA ══ */
-.cta-block{
-  background:linear-gradient(135deg,var(--forest),var(--forest-l));
-  border-radius:22px;padding:64px 80px;text-align:center;
-  position:relative;overflow:hidden;margin-top:32px;
-}
-.cta-block::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(107,143,94,.08),transparent);}
-.cta-title{font-size:clamp(1.6rem,3vw,2.1rem);font-weight:900;color:white;margin-bottom:12px;line-height:1.18;position:relative;z-index:1;}
-.cta-sub{font-size:1rem;color:rgba(255,255,255,.75);margin-bottom:28px;max-width:460px;margin-left:auto;margin-right:auto;position:relative;z-index:1;line-height:1.7;}
-.cta-btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
-
-/* ══ FOOTER ══ */
-.footer{background:var(--forest-d);padding:64px 32px 28px;}
-.ft{display:flex;flex-wrap:wrap;gap:36px;max-width:1100px;margin:0 auto 36px;}
-.ft-brand{flex:1.5;min-width:200px;}
-.ft-logo{display:flex;align-items:center;gap:9px;margin-bottom:13px;}
-.ft-desc{font-size:.84rem;color:rgba(255,255,255,.52);line-height:1.72;max-width:260px;}
-.ft-col{flex:1;min-width:130px;}
-.ft-ct{font-size:.82rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.5);margin-bottom:14px;}
-.ft-link{display:block;font-size:.82rem;color:rgba(255,255,255,.58);margin-bottom:8px;transition:color .18s;}
-.ft-link:hover{color:var(--sage);}
-.ft-bottom{
-  max-width:1100px;margin:0 auto;padding-top:20px;
-  border-top:1px solid rgba(255,255,255,.06);
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;
-}
-.ft-copy{font-size:.84rem;color:rgba(255,255,255,.45);}
-
-/* ══ RESPONSIVE ══ */
-@media(max-width:640px){
-  section{padding:56px 16px;}
-  .mock-wrap{padding:24px 16px;}
-  .cta-block{padding:36px 20px;}
-  .ov-grid,.mark-grid{grid-template-columns:repeat(2,1fr);}
-  .hero-stats{grid-template-columns:repeat(2,1fr);}
-  .btn-gold,.btn-sage,.btn-ghost{font-size:.86rem;padding:12px 20px;}
-}
-
-@media(max-width:480px){
-  .nav{padding:0 16px;}
-  .nav-n1,.nav-n2{font-size:.95rem;}
-  .nav-dash{font-size:.82rem;padding:8px 14px;}
-  section{padding:44px 14px;}
-  .hero{padding:80px 14px 52px;}
-  .stitle{font-size:1.6rem;}
-  .ssub{font-size:.95rem;}
-  .slabel{font-size:.82rem;}
-  .ov-grid,.mark-grid{grid-template-columns:1fr;}
-  .ov-desc,.mark-desc{font-size:.88rem;}
-  .ch-name{font-size:.95rem;}
-  .ch-card{padding:13px 14px;}
-  .es-label{font-size:.8rem;}
-  .es-value{font-size:.92rem;}
-  .es-item{padding:8px 12px;}
-  .hero-eyebrow-txt{font-size:.82rem;}
-  .hs-l{font-size:.8rem;}
-  .hw-tname{font-size:.88rem;}
-  .hw-twt{font-size:.8rem;}
-  .pg-l{font-size:.8rem;}
-  .pg-n{font-size:1.5rem;}
-  .tip-title{font-size:.95rem;}
-  .tip-desc{font-size:.88rem;}
-  .ft-link{font-size:.88rem;}
-  .ft-ct{font-size:.8rem;}
-  .ft-desc{font-size:.86rem;}
-  .mock-wrap{border-radius:14px;}
-  .mc-title{font-size:1rem;}
-  .mc-desc{font-size:.88rem;}
-  .cta-block{padding:28px 16px;border-radius:14px;}
-  .cta-title{font-size:1.5rem;}
-  .prog-wrap{padding:20px 14px;}
-  .btn-gold,.btn-sage,.btn-ghost{font-size:.9rem;padding:12px 18px;width:100%;justify-content:center;}
-  .hero-btns{flex-direction:column;gap:10px;padding:0 8px;}
-  .subj-tabs{gap:7px;}
-  .stab{font-size:.82rem;padding:10px 16px;}
-}
-
-/* ══ HAMBURGER + MOBILE NAV ══ */
-.nav-hamburger{
-  display:none;flex-direction:column;gap:5px;
-  background:none;border:none;cursor:pointer;padding:6px;
-  width:38px;height:38px;align-items:center;justify-content:center;
-  border-radius:8px;transition:background .18s;
-}
-.nav-hamburger:hover{background:rgba(255,255,255,.08);}
-.nav-hamburger span{
-  display:block;width:20px;height:2px;
-  background:rgba(255,255,255,.8);border-radius:2px;
-  transition:all .25s;
-}
-.nav-hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
-.nav-hamburger.open span:nth-child(2){opacity:0;}
-.nav-hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
-
-.mob-nav{
-  display:none;
-  position:fixed;top:60px;left:0;right:0;z-index:199;
-  background:rgba(14,26,12,.98);
-  backdrop-filter:blur(24px);
-  border-bottom:1px solid rgba(255,255,255,.06);
-  padding:12px 20px 20px;
-  flex-direction:column;gap:4px;
-}
-.mob-nav.open{display:flex;}
-.mob-link{
-  font-size:1rem;font-weight:600;color:rgba(255,255,255,.7);
-  padding:12px 14px;border-radius:8px;transition:all .18s;
-  border-bottom:1px solid rgba(255,255,255,.05);
-}
-.mob-link:last-child{border-bottom:none;}
-.mob-link:hover{background:rgba(255,255,255,.06);color:white;}
-.mob-dash{
-  margin-top:8px;
-  background:linear-gradient(135deg,var(--sage),#4a7a3d);
-  color:white!important;text-align:center;border-radius:10px;
-  border-bottom:none!important;font-weight:700;
-}
-
-
-
-
-/* ══ PYQ ══ */
-.pyq-stats-banner{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 28px;background:var(--forest);border-radius:16px;padding:20px 24px;}
-.pyq-banner-item{text-align:center;}
-.pyq-banner-n{font-family:var(--fm);font-size:1.35rem;font-weight:700;color:white;display:block;margin-bottom:3px;}
-.pyq-banner-l{font-size:.78rem;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.05em;}
-.pyq-year-tabs,.pyqm-year-tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px;}
-.pyq-ytab{font-family:var(--fm);font-size:.84rem;font-weight:700;padding:8px 16px;border-radius:9px;border:1.5px solid var(--bm);background:white;color:var(--forest-m);cursor:pointer;transition:all .18s;}
-.pyq-ytab:hover,.pyq-ytab.on{background:var(--forest);color:white;border-color:var(--forest);}
-.pyqm-ytab{font-family:var(--fm);font-size:.82rem;font-weight:700;padding:7px 14px;border-radius:8px;border:1.5px solid rgba(255,255,255,.14);background:rgba(255,255,255,.05);color:rgba(255,255,255,.6);cursor:pointer;transition:all .18s;}
-.pyqm-ytab:hover,.pyqm-ytab.on{background:var(--sage);color:white;border-color:var(--sage);}
-.pyq-session-label{font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--sage);margin:20px 0 12px;display:flex;align-items:center;gap:8px;}
-.pyq-session-label::after{content:'';flex:1;height:1px;background:rgba(26,38,24,.1);}
-.pyq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:6px;}
-.pyq-card{background:white;border:1px solid var(--border);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:12px;transition:all .2s;}
-.pyq-card:hover{border-color:var(--sage);box-shadow:0 6px 20px rgba(26,38,24,.07);transform:translateY(-2px);}
-.pyq-card-top{display:flex;align-items:center;justify-content:space-between;}
-.pyq-date{font-family:var(--fm);font-size:.82rem;font-weight:700;color:var(--forest);}
-.pyq-shift-badge{font-size:.76rem;font-weight:700;padding:3px 10px;border-radius:100px;background:rgba(107,143,94,.12);color:var(--sage);}
-.pyq-shift-badge.upcoming{background:rgba(26,38,24,.06);color:var(--txt-lo);}
-.pyq-stats{display:flex;gap:14px;}
-.pyq-stat{font-size:.82rem;color:var(--txt-m);}
-.pyq-stat strong{font-weight:700;color:var(--forest);}
-.pyq-actions{display:flex;gap:8px;}
-.btn-pyq-view{flex:1;font-family:var(--fd);font-size:.84rem;font-weight:700;padding:9px;border-radius:9px;border:1.5px solid var(--bm);background:white;color:var(--forest);cursor:pointer;transition:all .18s;text-align:center;}
-.btn-pyq-view:hover{border-color:var(--sage);background:var(--sage-l);}
-.btn-pyq-view:disabled{opacity:.4;cursor:not-allowed;}
-.btn-pyq-solve{flex:1;font-family:var(--fd);font-size:.84rem;font-weight:700;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;transition:all .18s;text-align:center;}
-.btn-pyq-solve:hover{box-shadow:0 4px 14px rgba(107,143,94,.3);}
-/* PYQ MOCK */
-.pyqm-wrap{background:linear-gradient(135deg,#0a1409,#1a2618);border-radius:22px;padding:32px;margin-top:28px;border:1px solid rgba(107,143,94,.15);position:relative;overflow:hidden;}
-.pyqm-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:24px;}
-.pyqm-hdr-l .stitle{color:white;}
-.pyqm-hdr-l .ssub{color:rgba(255,255,255,.55);}
-.pyqm-info-strip{display:flex;flex-wrap:wrap;gap:10px;padding:14px 18px;background:rgba(255,255,255,.04);border-radius:12px;margin-bottom:22px;border:1px solid rgba(255,255,255,.06);}
-.pyqm-info-item{display:flex;align-items:center;gap:6px;font-size:.84rem;color:rgba(255,255,255,.55);}
-.pyqm-info-item strong{color:white;font-weight:700;}
-.pyqm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:14px;}
-.pyqm-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.09);border-radius:14px;padding:20px;display:flex;flex-direction:column;gap:12px;transition:all .22s;}
-.pyqm-card:hover{background:rgba(255,255,255,.08);border-color:rgba(107,143,94,.3);transform:translateY(-2px);}
-.pyqm-card-top{display:flex;align-items:center;justify-content:space-between;}
-.pyqm-year-badge{font-family:var(--fm);font-size:.84rem;font-weight:700;color:var(--gold);background:rgba(200,150,42,.12);border:1px solid rgba(200,150,42,.25);padding:4px 12px;border-radius:8px;}
-.pyqm-diff{font-size:.76rem;font-weight:700;padding:3px 9px;border-radius:100px;}
-.diff-moderate{background:rgba(107,143,94,.15);color:#9bc48a;}
-.diff-hard{background:rgba(224,82,82,.15);color:#ff8080;}
-.diff-mh{background:rgba(200,150,42,.15);color:#e8a830;}
-.pyqm-title{font-size:1rem;font-weight:700;color:white;}
-.pyqm-sub{font-size:.84rem;color:rgba(255,255,255,.52);line-height:1.58;}
-.pyqm-meta{display:flex;flex-wrap:wrap;gap:12px;}
-.pyqm-m{font-size:.82rem;color:rgba(255,255,255,.5);}
-.pyqm-m strong{color:rgba(255,255,255,.88);font-weight:700;}
-.pyqm-attempt{font-size:.78rem;color:rgba(255,255,255,.55);display:flex;justify-content:space-between;}
-.pyqm-pbar{height:3px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;}
-.pyqm-pfill{height:100%;background:linear-gradient(90deg,var(--gold),#e8a830);border-radius:3px;transition:width .3s;}
-.pyqm-actions{display:flex;gap:10px;}
-.btn-pyqm-start{flex:2;font-family:var(--fd);font-size:.88rem;font-weight:700;padding:11px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--gold),#b8832a);color:white;cursor:pointer;transition:all .2s;text-align:center;}
-.btn-pyqm-start:hover{box-shadow:0 4px 16px rgba(200,150,42,.3);}
-.btn-pyqm-sol{flex:1;font-family:var(--fd);font-size:.88rem;font-weight:700;padding:11px;border-radius:10px;border:1.5px solid rgba(255,255,255,.35);background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);cursor:pointer;transition:all .18s;text-align:center;}
-.btn-pyqm-sol:hover{border-color:var(--sage);color:white;}
-@media(max-width:640px){
-  .pyq-stats-banner{grid-template-columns:repeat(2,1fr);}
-  .pyqm-wrap{padding:20px 16px;border-radius:16px;}
-  .pyqm-grid,.pyq-grid{grid-template-columns:1fr;}
-  .pyqm-actions,.pyq-actions{flex-direction:column;}
-}
-@media(max-width:480px){
-  .pyq-stats-banner{padding:16px;}
-  .pyq-banner-n{font-size:1.2rem;}
-}
-
-
-/* ══ MISSING BUTTON ALIASES ══ */
-.btn-gold{
-  font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;
-  padding:13px 26px;border-radius:11px;border:none;
-  background:linear-gradient(135deg,var(--gold),#b8832a);
-  color:white;cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  transition:all .2s;box-shadow:0 4px 18px rgba(200,150,42,.28);
-}
-.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(200,150,42,.38);}
-.btn-sage{
-  font-family:'Outfit',sans-serif;font-size:.95rem;font-weight:700;
-  padding:13px 26px;border-radius:11px;border:none;
-  background:var(--sage);
-  color:white;cursor:pointer;
-  display:inline-flex;align-items:center;justify-content:center;gap:8px;
-  transition:all .2s;
-}
-.btn-sage:hover{background:#5a7a50;transform:translateY(-2px);}
-
-/* ══ DESKTOP (1024px–1400px) ══ */
-@media(min-width:1024px){
-  .nav-link{font-size:.80rem;padding:5px 11px;}
-  .nav-dash{font-size:.82rem;padding:7px 16px;}
-  section{padding:72px 40px;}
-  .ssub{font-size:.98rem;}
-  .ov-desc,.mark-desc,.tip-desc,.mc-desc{font-size:.88rem;}
-  .ch-name{font-size:.92rem;}
-  .mock-wrap,.pyqm-wrap{padding:36px;}
-  .cta-block{padding:52px 64px;}
-}
-/* ══ LARGE DESKTOP (1400px+) ══ */
-@media(min-width:1400px){
-  section{padding:80px 48px;}
-  .cta-block{padding:60px 80px;}
-  .container{max-width:1200px;}
-  .hero-inner{max-width:820px;}
-  .hero-title{font-size:3.6rem;}
-}
-
-/* ══ DESKTOP MAX COLUMN CAPS ══ */
-@media(min-width:1100px){
-  .ov-grid{grid-template-columns:repeat(3,1fr);}
-  .mark-grid{grid-template-columns:repeat(5,1fr);}
-  .tips-grid{grid-template-columns:repeat(3,1fr);}
-  .ch-grid{grid-template-columns:repeat(3,1fr);}
-  .mock-grid{grid-template-columns:repeat(3,1fr);}
-  .hw-grid{grid-template-columns:repeat(3,1fr);}
-  .pyq-cards{grid-template-columns:repeat(3,1fr);}
-  .pyqm-cards-grid{grid-template-columns:repeat(3,1fr);}
-}
-
-/* ══ DESKTOP HERO ══ */
-@media(min-width:768px){
-  .hero{min-height:auto;}
-  .hero-inner{max-width:680px;}
-}
-@media(min-width:1100px){
-  .hero{padding:80px 40px 72px;justify-content:flex-start;}
-  .hero-inner{
-    max-width:1100px;width:100%;
-    text-align:left;
-    display:grid;
-    grid-template-columns:1fr 380px;
-    gap:48px;
-    align-items:center;
-  }
-  .hero-left{display:flex;flex-direction:column;}
-  .hero-title{font-size:3.2rem;}
-  .hero-sub{margin:0 0 22px;max-width:480px;}
-  .hero-stats-row{justify-content:flex-start;margin-bottom:22px;}
-  .hero-btns{justify-content:flex-start;}
-  .hero-stat-bar{max-width:100%;margin:0;}
-  .hero-right{display:flex;flex-direction:column;gap:16px;}
-}
-@media(min-width:768px) and (max-width:1099px){
-  .hero-inner{max-width:680px;text-align:center;}
-  .hero-right{display:none;}
-}
-
-/* Switch exam button */
-.nav-switch{
-  font-family:var(--fd);font-size:.78rem;font-weight:700;
-  padding:6px 14px;border-radius:100px;
-  border:1.5px solid rgba(255,255,255,.2);
-  background:rgba(255,255,255,.08);
-  color:rgba(255,255,255,.82);
-  cursor:pointer;transition:all .18s;
-  text-decoration:none;display:inline-flex;
-  align-items:center;gap:5px;white-space:nowrap;
-}
-.nav-switch:hover{background:rgba(255,255,255,.15);border-color:rgba(255,255,255,.35);color:white;}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="nav">
-  <a href="index.html" class="nav-logo">
-    <span class="nav-n1">Mock</span><span class="nav-n2">Arena</span>
-  </a>
-
-  <!-- CENTER PILL -->
-  <div class="nav-pill">
-    <div class="nav-pill-dot"></div>
-    <span class="nav-pill-txt">JEE Mains</span>
-    <span class="nav-pill-sep">|</span>
-    <span class="nav-pill-sub">NTA 2026</span>
-  </div>
-
-  <div class="nav-right">
-    <div class="nav-links">
-      <a href="#overview" class="nav-link">Overview</a>
-      <a href="#chapters" class="nav-link">Chapters</a>
-      <a href="#mocks" class="nav-link">Mocks</a>
-      <a href="#pyq" class="nav-link">PYQ</a>
-      <a href="#weightage" class="nav-link">Topics</a>
-      <a href="#strategy" class="nav-link">Strategy</a>
-    </div>
-        <a href="mockarena_onboarding.html" class="nav-switch">⇄ Switch Exam</a>
-    <a href="mockarena_dashboard.html" class="nav-dash">Dashboard →</a>
-    <div class="nav-av" id="nav-av">S</div>
-    <button class="nav-hamburger" id="navHamburger" onclick="toggleMobNav()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
+  <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
+  <span class="nav-pill">⚛️ JEE Mains</span>
+  <div class="nav-r">
+    <a href="mockarena_onboarding.html" class="nav-switch">Switch Exam</a>
   </div>
 </nav>
 
-<div class="mob-nav" id="mobNav">
-  <div class="mob-nav-label">JEE Mains 2026</div>
-  <a href="#overview" class="mob-link" onclick="toggleMobNav()">📋 Overview</a>
-  <a href="#chapters" class="mob-link" onclick="toggleMobNav()">📚 Chapter Tests</a>
-  <a href="#mocks" class="mob-link" onclick="toggleMobNav()">🎯 Mock Tests</a>
-  <a href="#pyq" class="mob-link" onclick="toggleMobNav()">📄 PYQ Papers</a>
-  <a href="#pyq-mock" class="mob-link" onclick="toggleMobNav()">🚀 PYQ Mocks</a>
-  <a href="#weightage" class="mob-link" onclick="toggleMobNav()">⭐ Key Topics</a>
-  <a href="#strategy" class="mob-link" onclick="toggleMobNav()">💡 Strategy</a>
-  <a href="mockarena_dashboard.html" class="mob-link mob-dash">Dashboard →</a>
-</div>
 <!-- HERO -->
-<section class="hero">
-  
-  
+<div class="hero">
   <div class="hero-inner">
-    <!-- LEFT: title + subtitle + stats + buttons -->
-    <div class="hero-left">
-      <h1 class="hero-title">
-        Crack <span class="ht1">JEE Mains</span><br/>
-        Secure Your <span class="ht2">IIT Seat</span>
-      </h1>
-      <p class="hero-sub">The most complete JEE Mains prep platform — chapter tests, full mocks, PYQ papers and real-time analytics, all in one place.</p>
-      <div class="hero-stats-row">
-        <div class="hsr-item"><span class="hsr-val g">90 Qs</span><span class="hsr-lbl">Questions</span></div>
-        <div class="hsr-item"><span class="hsr-val">3 Hrs</span><span class="hsr-lbl">Duration</span></div>
-        <div class="hsr-item"><span class="hsr-val gold">300</span><span class="hsr-lbl">Max Marks</span></div>
-        <div class="hsr-item"><span class="hsr-val g">+4</span><span class="hsr-lbl">Correct</span></div>
-        <div class="hsr-item"><span class="hsr-val r">−1</span><span class="hsr-lbl">Wrong MCQ</span></div>
-      </div>
-      <div class="hero-btns">
-        <a href="#mocks" class="btn-primary">🚀 Take Full Mock Test</a>
-        <a href="#chapters" class="btn-secondary">📚 Chapter Tests</a>
-        <a href="#overview" class="btn-outline">📋 Exam Details</a>
-      </div>
+    <div class="hero-eyebrow">
+      <span class="hero-badge">🎓 NTA — JEE Main 2025–26</span>
+      <span class="hero-updated">Updated Syllabus · Reduced Topics</span>
     </div>
-    <!-- RIGHT: stat bar (desktop only) -->
-    <div class="hero-right">
-      <div class="hero-stat-bar" style="grid-template-columns:repeat(2,1fr);">
-        <div class="hsb-item"><span class="hsb-n">26+</span><span class="hsb-l">Chapters Live</span></div>
-        <div class="hsb-item"><span class="hsb-n">780+</span><span class="hsb-l">Practice Qs</span></div>
-        <div class="hsb-item"><span class="hsb-n">11 Yrs</span><span class="hsb-l">PYQ Papers</span></div>
-        <div class="hsb-item"><span class="hsb-n">Free</span><span class="hsb-l">Full Access</span></div>
-      </div>
+    <div class="hero-title">Joint Entrance<br/>Examination — <span>Mains</span></div>
+    <div class="hero-desc">India's gateway to NITs, IIITs and GFTIs. Practice chapter-wise, take full mocks and track your progress. Syllabus updated as per NTA 2025–26 with removed chapters highlighted.</div>
+    <div class="hero-stats">
+      <div class="h-stat"><span class="h-stat-icon">📝</span><div><div class="h-stat-val">90</div><div class="h-stat-lbl">Questions</div></div></div>
+      <div class="h-stat"><span class="h-stat-icon">⏱</span><div><div class="h-stat-val">3 hrs</div><div class="h-stat-lbl">Duration</div></div></div>
+      <div class="h-stat"><span class="h-stat-icon">🎯</span><div><div class="h-stat-val">300</div><div class="h-stat-lbl">Max Marks</div></div></div>
+      <div class="h-stat"><span class="h-stat-icon">📊</span><div><div class="h-stat-val">+4 / −1</div><div class="h-stat-lbl">Marking</div></div></div>
+      <div class="h-stat"><span class="h-stat-icon">🏛</span><div><div class="h-stat-val">NITs+IIITs</div><div class="h-stat-lbl">Colleges</div></div></div>
+    </div>
+    <div class="hero-cta">
+      <a href="mockarena_test.html?exam=JM&type=mock&name=JEE+Mains+Full+Mock&count=90" class="cta-btn primary">🎯 Start Full Mock Test</a>
+      <a href="#pyq" class="cta-btn gold">📜 Previous Year Questions</a>
+      <a href="#syllabus" class="cta-btn secondary">📚 View Syllabus</a>
     </div>
   </div>
-</section>
-<!-- EXAM OVERVIEW -->
-<section id="overview" style="background:white;">
-  <div class="container">
-    <div class="slabel">Exam Overview</div>
-    <h2 class="stitle">JEE Mains — Everything You Need to Know</h2>
-    <p class="ssub">Conducted by NTA twice a year. Your gateway to NITs, IIITs and qualification for JEE Advanced.</p>
-    <div class="ov-grid">
-      <div class="ov-card c1">
-        <span class="ov-icon">🎓</span>
-        <div class="ov-label">Conducted By</div>
-        <div class="ov-value">NTA</div>
-        <div class="ov-desc">National Testing Agency conducts JEE Mains twice a year — January and April sessions</div>
-      </div>
-      <div class="ov-card c2">
-        <span class="ov-icon">📝</span>
-        <div class="ov-label">Paper Pattern</div>
-        <div class="ov-value">90 Questions</div>
-        <div class="ov-desc">30 each from Physics, Chemistry, Maths. Section A: 20 MCQ + Section B: 10 Integer type</div>
-      </div>
-      <div class="ov-card c3">
-        <span class="ov-icon">⏱️</span>
-        <div class="ov-label">Duration</div>
-        <div class="ov-value">3 Hours</div>
-        <div class="ov-desc">180 minutes total. Time management is critical — average 2 min per question</div>
-      </div>
-      <div class="ov-card c4">
-        <span class="ov-icon">🎯</span>
-        <div class="ov-label">Qualifying Marks</div>
-        <div class="ov-value">~90 / 300</div>
-        <div class="ov-desc">General category cutoff varies. Top 2.5 lakh qualify for JEE Advanced (IIT entrance)</div>
-      </div>
-      <div class="ov-card c5">
-        <span class="ov-icon">🏛️</span>
-        <div class="ov-label">Colleges</div>
-        <div class="ov-value">NITs + IIITs</div>
-        <div class="ov-desc">31 NITs, 25 IIITs, and 28 GFTIs accept JEE Mains scores through JoSAA counselling</div>
-      </div>
-      <div class="ov-card c6">
-        <span class="ov-icon">📊</span>
-        <div class="ov-label">Eligibility</div>
-        <div class="ov-value">Class 12 Pass</div>
-        <div class="ov-desc">75% in Class 12 (65% for SC/ST). PCM in Class 12. Up to 3 attempts allowed</div>
-      </div>
-    </div>
-  </div>
-</section>
+</div>
 
-<!-- MARKING SCHEME -->
-<section style="background:var(--cream-w);">
-  <div class="container">
-    <div class="slabel">Marking Scheme</div>
-    <h2 class="stitle">Understand the Scoring System</h2>
-    <p class="ssub">JEE Mains has two types of questions with different marking rules. Know them well.</p>
-    <div class="mark-grid">
-      <div class="mark-card">
-        <span class="mark-icon">✅</span>
-        <span class="mark-val" style="color:var(--sage);">+4</span>
-        <span class="mark-lbl">Correct MCQ</span>
-        <div class="mark-desc">Full 4 marks for every correct answer in both Section A and B</div>
-      </div>
-      <div class="mark-card">
-        <span class="mark-icon">❌</span>
-        <span class="mark-val" style="color:var(--rose);">−1</span>
-        <span class="mark-lbl">Wrong MCQ</span>
-        <div class="mark-desc">1 mark deducted for wrong MCQ in Section A only. Think before marking!</div>
-      </div>
-      <div class="mark-card">
-        <span class="mark-icon">🔢</span>
-        <span class="mark-val" style="color:var(--sky);">+4</span>
-        <span class="mark-lbl">Correct Integer</span>
-        <div class="mark-desc">Section B integer type questions — +4 for correct numerical answer</div>
-      </div>
-      <div class="mark-card">
-        <span class="mark-icon">⭕</span>
-        <span class="mark-val" style="color:var(--txt-lo);">0</span>
-        <span class="mark-lbl">Wrong Integer</span>
-        <div class="mark-desc">No negative marking for integer type! Always attempt all integer questions</div>
-      </div>
-      <div class="mark-card">
-        <span class="mark-icon">⏭️</span>
-        <span class="mark-val" style="color:var(--txt-lo);">0</span>
-        <span class="mark-lbl">Unattempted</span>
-        <div class="mark-desc">No marks deducted for skipped questions. Skip if unsure about MCQ</div>
-      </div>
-      <div class="mark-card">
-        <span class="mark-icon">🏆</span>
-        <span class="mark-val" style="color:var(--gold);">300</span>
-        <span class="mark-lbl">Maximum Marks</span>
-        <div class="mark-desc">90 questions × 4 marks = 300 total. Target 200+ for a good NIT seat</div>
-      </div>
+<!-- INFO STRIP -->
+<div class="info-strip">
+  <div class="info-inner">
+    <div class="info-item"><div class="info-val">CBT</div><div class="info-lbl">Exam Mode</div></div>
+    <div class="info-item"><div class="info-val">Jan & Apr</div><div class="info-lbl">Sessions</div></div>
+    <div class="info-item"><div class="info-val">13</div><div class="info-lbl">Languages</div></div>
+    <div class="info-item"><div class="info-val">Sec A+B</div><div class="info-lbl">Structure</div></div>
+    <div class="info-item"><div class="info-val">PCM</div><div class="info-lbl">Subjects</div></div>
+    <div class="info-item"><div class="info-val">30+30+30</div><div class="info-lbl">Qs per Subject</div></div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- QUICK TESTS -->
+  <div class="sec">
+    <div class="sec-hdr">
+      <div><div class="sec-title">Start Practicing Now</div><div class="sec-sub">Tests built from your question bank</div></div>
+    </div>
+    <div class="test-grid">
+      <a href="mockarena_test.html?exam=JM&type=mock&name=JEE+Mains+Full+Mock&count=90" class="test-card mock">
+        <span class="tc-icon">🎯</span>
+        <div class="tc-name">Full Mock Test</div>
+        <div class="tc-meta">90 Qs · 3 hrs · All Subjects</div>
+        <span class="tc-badge">Recommended</span>
+      </a>
+      <a href="mockarena_test.html?exam=JM&subj=Physics&name=Physics+Test&count=30" class="test-card phy">
+        <span class="tc-icon">⚡</span>
+        <div class="tc-name">Physics</div>
+        <div class="tc-meta">30 Qs · 1 hr</div>
+      </a>
+      <a href="mockarena_test.html?exam=JM&subj=Chemistry&name=Chemistry+Test&count=30" class="test-card che">
+        <span class="tc-icon">🧪</span>
+        <div class="tc-name">Chemistry</div>
+        <div class="tc-meta">30 Qs · 1 hr</div>
+      </a>
+      <a href="mockarena_test.html?exam=JM&subj=Mathematics&name=Maths+Test&count=30" class="test-card mat">
+        <span class="tc-icon">📐</span>
+        <div class="tc-name">Mathematics</div>
+        <div class="tc-meta">30 Qs · 1 hr</div>
+      </a>
+      <a href="mockarena_test.html?exam=JM&diff=Easy&name=Easy+Level&count=30" class="test-card easy">
+        <span class="tc-icon">🌱</span>
+        <div class="tc-name">Easy Level</div>
+        <div class="tc-meta">30 Qs · Beginner</div>
+      </a>
+      <a href="mockarena_test.html?exam=JM&diff=Hard&name=Hard+Level&count=30" class="test-card hard">
+        <span class="tc-icon">🔥</span>
+        <div class="tc-name">Hard Level</div>
+        <div class="tc-meta">30 Qs · Challenge</div>
+      </a>
     </div>
   </div>
-</section>
 
-<!-- CHAPTER TESTS -->
-<section id="chapters" style="background:white;">
-  <div class="container">
+  <!-- EXAM PATTERN -->
+  <div class="sec">
+    <div class="sec-hdr">
+      <div><div class="sec-title">Exam Pattern 2025–26</div></div>
+    </div>
+    <div class="pattern-grid">
+      <div class="pc"><div class="pc-icon">📝</div><span class="pc-val">90</span><div class="pc-lbl">Total Questions</div></div>
+      <div class="pc"><div class="pc-icon">🎯</div><span class="pc-val">300</span><div class="pc-lbl">Maximum Marks</div></div>
+      <div class="pc"><div class="pc-icon">⏱</div><span class="pc-val">180</span><div class="pc-lbl">Minutes</div></div>
+      <div class="pc"><div class="pc-icon">⚡</div><span class="pc-val">30</span><div class="pc-lbl">Physics Questions</div></div>
+      <div class="pc"><div class="pc-icon">🧪</div><span class="pc-val">30</span><div class="pc-lbl">Chemistry Questions</div></div>
+      <div class="pc"><div class="pc-icon">📐</div><span class="pc-val">30</span><div class="pc-lbl">Maths Questions</div></div>
+    </div>
+    <div class="section-note">
+      <strong>Section A:</strong> 20 MCQs per subject (+4/−1 marking) &nbsp;|&nbsp; <strong>Section B:</strong> 10 Integer type per subject, attempt any 5 (+4/0, no negative marking)
+    </div>
+  </div>
+
+  <!-- MARKING SCHEME -->
+  <div class="sec">
+    <div class="sec-hdr"><div class="sec-title">Marking Scheme</div></div>
+    <div class="marking-wrap">
+      <div class="mk-row"><div class="mk-left"><div class="mk-dot" style="background:var(--sage);"></div><span class="mk-label">Correct Answer (MCQ — Section A)</span></div><span class="mk-val pos">+4</span></div>
+      <div class="mk-row"><div class="mk-left"><div class="mk-dot" style="background:var(--rose);"></div><span class="mk-label">Wrong Answer (MCQ — Section A)</span></div><span class="mk-val neg">−1</span></div>
+      <div class="mk-row"><div class="mk-left"><div class="mk-dot" style="background:var(--gold);"></div><span class="mk-label">Correct Answer (Integer — Section B)</span></div><span class="mk-val pos">+4</span></div>
+      <div class="mk-row"><div class="mk-left"><div class="mk-dot" style="background:var(--border);"></div><span class="mk-label">Wrong Answer (Integer — Section B)</span></div><span class="mk-val neu">0</span></div>
+      <div class="mk-row"><div class="mk-left"><div class="mk-dot" style="background:var(--border);"></div><span class="mk-label">Unattempted Question</span></div><span class="mk-val neu">0</span></div>
+    </div>
+  </div>
+
+  <!-- PREPARATION STRATEGY -->
+    <div class="sec" id="pyq">
     <div class="sec-hdr">
       <div>
-        <div class="slabel">Chapter-wise Practice</div>
-        <h2 class="stitle">Master Every Chapter</h2>
-        <p class="ssub">30 questions per chapter. +4/−1 marking. 60 minute timer. Real JEE Mains pattern.</p>
+        <div class="sec-title">📜 Previous Year Papers — 13 Years</div>
+        <div class="sec-sub">JEE Mains 2013 to 2025 · 13 Years · Real exam experience · +4/−1 marking</div>
       </div>
     </div>
+    <div class="pyq-note"><strong>💡 Pro Tip:</strong> Solving PYQs is the most effective JEE preparation strategy. Questions repeat concepts every year. Aim to solve all 13 years before your exam.</div>
+    <div class="pyq-grid">
+      <div class="pyq-card y2025"><span class="pyq-year">2025</span><div class="pyq-session">2 Sessions</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2025&session=jan&name=JEE+Mains+Jan+2025&count=90" class="pyq-btn jan">Jan Session</a><a href="mockarena_test.html?exam=JM&type=pyq&year=2025&session=apr&name=JEE+Mains+Apr+2025&count=90" class="pyq-btn apr">Apr Session</a></div></div>
+      <div class="pyq-card y2024"><span class="pyq-year">2024</span><div class="pyq-session">2 Sessions</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2024&session=jan&name=JEE+Mains+Jan+2024&count=90" class="pyq-btn jan">Jan Session</a><a href="mockarena_test.html?exam=JM&type=pyq&year=2024&session=apr&name=JEE+Mains+Apr+2024&count=90" class="pyq-btn apr">Apr Session</a></div></div>
+      <div class="pyq-card y2023"><span class="pyq-year">2023</span><div class="pyq-session">2 Sessions</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2023&session=jan&name=JEE+Mains+Jan+2023&count=90" class="pyq-btn jan">Jan Session</a><a href="mockarena_test.html?exam=JM&type=pyq&year=2023&session=apr&name=JEE+Mains+Apr+2023&count=90" class="pyq-btn apr">Apr Session</a></div></div>
+      <div class="pyq-card y2022"><span class="pyq-year">2022</span><div class="pyq-session">2 Sessions</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2022&session=jun&name=JEE+Mains+Jun+2022&count=90" class="pyq-btn jan">Jun Session</a><a href="mockarena_test.html?exam=JM&type=pyq&year=2022&session=jul&name=JEE+Mains+Jul+2022&count=90" class="pyq-btn apr">Jul Session</a></div></div>
+      <div class="pyq-card y2021"><span class="pyq-year">2021</span><div class="pyq-session">4 Sessions</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2021&session=feb&name=JEE+Mains+Feb+2021&count=90" class="pyq-btn jan">Feb Session</a><a href="mockarena_test.html?exam=JM&type=pyq&year=2021&session=mar&name=JEE+Mains+Mar+2021&count=90" class="pyq-btn apr">Mar Session</a></div></div>
+      <div class="pyq-card y2020"><span class="pyq-year">2020</span><div class="pyq-session">2 Sessions</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2020&session=jan&name=JEE+Mains+Jan+2020&count=90" class="pyq-btn jan">Jan Session</a><a href="mockarena_test.html?exam=JM&type=pyq&year=2020&session=sep&name=JEE+Mains+Sep+2020&count=90" class="pyq-btn apr">Sep Session</a></div></div>
+      <div class="pyq-card y2019"><span class="pyq-year">2019</span><div class="pyq-session">2 Sessions</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2019&session=jan&name=JEE+Mains+Jan+2019&count=90" class="pyq-btn jan">Jan Session</a><a href="mockarena_test.html?exam=JM&type=pyq&year=2019&session=apr&name=JEE+Mains+Apr+2019&count=90" class="pyq-btn apr">Apr Session</a></div></div>
+      <div class="pyq-card y2018"><span class="pyq-year">2018</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2018&name=JEE+Mains+2018&count=90" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2017"><span class="pyq-year">2017</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2017&name=JEE+Mains+2017&count=90" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2016"><span class="pyq-year">2016</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2016&name=JEE+Mains+2016&count=90" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2015"><span class="pyq-year">2015</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2015&name=JEE+Mains+2015&count=90" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2014"><span class="pyq-year">2014</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2014&name=JEE+Mains+2014&count=90" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2013"><span class="pyq-year">2013</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=JM&type=pyq&year=2013&name=JEE+Mains+2013&count=90" class="pyq-btn single">Start Test</a></div></div>
+    </div>
+  </div>
+
+<div class="sec">
+    <div class="sec-hdr"><div class="sec-title">Preparation Strategy</div></div>
+    <div class="strategy-grid">
+      <div class="strategy-card"><div class="sc-icon">📅</div><div class="sc-title">Month 1–2: Foundation</div><div class="sc-txt">Cover NCERT thoroughly. Focus on Class 11 topics — Mechanics, Thermodynamics and Organic Chemistry basics.</div></div>
+      <div class="strategy-card"><div class="sc-icon">🔢</div><div class="sc-title">Month 3–4: Class 12</div><div class="sc-txt">Electrostatics, EMI, Electrochemistry, Coordination Compounds, Calculus, 3D Geometry.</div></div>
+      <div class="strategy-card"><div class="sc-icon">📝</div><div class="sc-title">Month 5–6: Practice</div><div class="sc-txt">Solve 50+ questions daily. Take chapter tests weekly. Identify weak areas and revise.</div></div>
+      <div class="strategy-card"><div class="sc-icon">🎯</div><div class="sc-title">Final Month: Mocks</div><div class="sc-txt">Take full 3-hour mock tests every 2 days. Analyse mistakes. Focus on time management.</div></div>
+      <div class="strategy-card"><div class="sc-icon">⚡</div><div class="sc-title">High Weightage Topics</div><div class="sc-txt">Calculus, Electrostatics, Organic Chemistry, Coordinate Geometry, Thermodynamics — these appear every year.</div></div>
+      <div class="strategy-card"><div class="sc-icon">🚫</div><div class="sc-title">Removed Topics</div><div class="sc-txt">Don't waste time on Capacitors, Communication Systems, Environmental Chemistry, States of Matter, Mathematical Reasoning.</div></div>
+    </div>
+  </div>
+
+  <!-- SYLLABUS -->
+  <div class="sec" id="syllabus">
+    <div class="sec-hdr">
+      <div><div class="sec-title">Complete Syllabus 2025–26</div><div class="sec-sub">Click any chapter to start a test</div></div>
+    </div>
     <div class="subj-tabs">
-      <button class="stab on" onclick="showSubj('phy',this)">⚛️ Physics</button>
-      <button class="stab" onclick="showSubj('chem',this)">🧪 Chemistry</button>
-      <button class="stab" onclick="showSubj('math',this)">📐 Mathematics</button>
+      <button class="subj-tab phy on" onclick="showSubj('phy',this)">⚡ Physics</button>
+      <button class="subj-tab che" onclick="showSubj('che',this)">🧪 Chemistry</button>
+      <button class="subj-tab mat" onclick="showSubj('mat',this)">📐 Mathematics</button>
     </div>
 
     <!-- PHYSICS -->
-    <div class="subj-panel on" id="subj-phy">
-      <div class="ch-grid">
-        <a href="mockarena_chapter_physics_units.html" class="ch-card"><div class="ch-left"><div class="ch-num">01</div><span class="ch-name">Units &amp; Measurement</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_motion.html" class="ch-card"><div class="ch-left"><div class="ch-num">02</div><span class="ch-name">Motion in 1D &amp; 2D</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_laws.html" class="ch-card"><div class="ch-left"><div class="ch-num">03</div><span class="ch-name">Laws of Motion</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_wep.html" class="ch-card"><div class="ch-left"><div class="ch-num">04</div><span class="ch-name">Work, Energy &amp; Power</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_rotation.html" class="ch-card"><div class="ch-left"><div class="ch-num">05</div><span class="ch-name">Rotational Motion</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_gravitation.html" class="ch-card"><div class="ch-left"><div class="ch-num">06</div><span class="ch-name">Gravitation</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_thermodynamics.html" class="ch-card"><div class="ch-left"><div class="ch-num">07</div><span class="ch-name">Thermodynamics</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_waves.html" class="ch-card"><div class="ch-left"><div class="ch-num">08</div><span class="ch-name">Oscillations &amp; Waves</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_electrostatics.html" class="ch-card"><div class="ch-left"><div class="ch-num">09</div><span class="ch-name">Electrostatics</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_current.html" class="ch-card"><div class="ch-left"><div class="ch-num">10</div><span class="ch-name">Current Electricity</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_magnetic.html" class="ch-card"><div class="ch-left"><div class="ch-num">11</div><span class="ch-name">Magnetic Effects</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_optics.html" class="ch-card"><div class="ch-left"><div class="ch-num">12</div><span class="ch-name">Optics</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_physics_modern.html" class="ch-card"><div class="ch-left"><div class="ch-num">13</div><span class="ch-name">Modern Physics</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
+    <div class="chap-section on" id="sec-phy">
+      <div class="removed-notice"><span class="rn-icon">🚫</span><div><div class="rn-title">Removed from Physics 2024–25</div><div class="rn-txt">Capacitors &amp; Capacitance · Communication Systems · Vector Analysis · Some Experimental Skills topics</div></div></div>
+      <div class="sub-section-title">Class 11 — Mechanics &amp; Thermodynamics</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">01</span><div class="chap-body"><div class="chap-name">Units &amp; Measurement</div><div class="chap-meta-row"><span class="chap-sub">Dimensions · Error Analysis · SI Units</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Units+and+Measurement&name=Units+%26+Measurement&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">02</span><div class="chap-body"><div class="chap-name">Kinematics</div><div class="chap-meta-row"><span class="chap-sub">Motion · Projectile · Relative Motion</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Kinematics&name=Kinematics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">03</span><div class="chap-body"><div class="chap-name">Laws of Motion</div><div class="chap-meta-row"><span class="chap-sub">Newton's Laws · Friction · Circular Motion</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Laws+of+Motion&name=Laws+of+Motion&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">04</span><div class="chap-body"><div class="chap-name">Work, Energy &amp; Power</div><div class="chap-meta-row"><span class="chap-sub">Conservation of Energy · Collisions · Power</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Work+Energy+Power&name=Work+Energy+Power&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">05</span><div class="chap-body"><div class="chap-name">Rotational Motion</div><div class="chap-meta-row"><span class="chap-sub">Moment of Inertia · Torque · Angular Momentum</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Rotational+Motion&name=Rotational+Motion&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">06</span><div class="chap-body"><div class="chap-name">Gravitation</div><div class="chap-meta-row"><span class="chap-sub">Kepler's Laws · Satellites · Escape Velocity</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Gravitation&name=Gravitation&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">07</span><div class="chap-body"><div class="chap-name">Properties of Matter</div><div class="chap-meta-row"><span class="chap-sub">Elasticity · Viscosity · Surface Tension · Pressure</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Properties+of+Matter&name=Properties+of+Matter&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">08</span><div class="chap-body"><div class="chap-name">Thermodynamics</div><div class="chap-meta-row"><span class="chap-sub">Laws of Thermodynamics · Carnot Engine · Entropy</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Thermodynamics&name=Chemical+Thermodynamics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">09</span><div class="chap-body"><div class="chap-name">Kinetic Theory of Gases</div><div class="chap-meta-row"><span class="chap-sub">KTG · Degrees of Freedom · RMS Speed</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Kinetic+Theory+of+Gases&name=Kinetic+Theory&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">10</span><div class="chap-body"><div class="chap-name">Oscillations (SHM)</div><div class="chap-meta-row"><span class="chap-sub">Simple Harmonic Motion · Spring · Pendulum</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Oscillations&name=Oscillations+SHM&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">11</span><div class="chap-body"><div class="chap-name">Waves</div><div class="chap-meta-row"><span class="chap-sub">Sound Waves · Doppler Effect · Standing Waves · Beats</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Waves&name=Waves&count=20" class="chap-practice">Practice →</a></div></div></div>
       </div>
-      <div class="subj-footer">
-        <span class="subj-stat"><span>13/13</span> chapters available</span>
-        <a href="mockarena_chapter_physics_units.html" class="btn-sage" style="font-size:.88rem;padding:11px 20px;">Start Physics →</a>
-      </div>
-    </div>
-
-    <!-- CHEMISTRY — now LIVE -->
-    <div class="subj-panel" id="subj-chem">
-      <div class="ch-grid">
-        <a href="mockarena_chapter_chem_mole_concept.html" class="ch-card"><div class="ch-left"><div class="ch-num">01</div><span class="ch-name">Mole Concept</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_atomic_structure.html" class="ch-card"><div class="ch-left"><div class="ch-num">02</div><span class="ch-name">Atomic Structure</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_chemical_bonding.html" class="ch-card"><div class="ch-left"><div class="ch-num">03</div><span class="ch-name">Chemical Bonding</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_states_of_matter.html" class="ch-card"><div class="ch-left"><div class="ch-num">04</div><span class="ch-name">States of Matter</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_thermodynamics.html" class="ch-card"><div class="ch-left"><div class="ch-num">05</div><span class="ch-name">Thermodynamics</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_equilibrium.html" class="ch-card"><div class="ch-left"><div class="ch-num">06</div><span class="ch-name">Equilibrium</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_goc.html" class="ch-card"><div class="ch-left"><div class="ch-num">07</div><span class="ch-name">GOC</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_hydrocarbons.html" class="ch-card"><div class="ch-left"><div class="ch-num">08</div><span class="ch-name">Hydrocarbons</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_coordination.html" class="ch-card"><div class="ch-left"><div class="ch-num">09</div><span class="ch-name">Coordination Compounds</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_p_block.html" class="ch-card"><div class="ch-left"><div class="ch-num">10</div><span class="ch-name">p-Block Elements</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_electrochemistry.html" class="ch-card"><div class="ch-left"><div class="ch-num">11</div><span class="ch-name">Electrochemistry</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_solutions.html" class="ch-card"><div class="ch-left"><div class="ch-num">12</div><span class="ch-name">Solutions</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-        <a href="mockarena_chapter_chem_chemical_kinetics.html" class="ch-card"><div class="ch-left"><div class="ch-num">13</div><span class="ch-name">Chemical Kinetics</span></div><div class="ch-right"><span class="ch-avail">Live</span><span class="ch-arr">→</span></div></a>
-      </div>
-      <div class="subj-footer">
-        <span class="subj-stat"><span>13/13</span> chapters available</span>
-        <a href="mockarena_chapter_chem_mole_concept.html" class="btn-sage" style="font-size:.88rem;padding:11px 20px;">Start Chemistry →</a>
+      <div class="sub-section-title">Class 12 — Electromagnetism &amp; Modern Physics</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">12</span><div class="chap-body"><div class="chap-name">Electrostatics</div><div class="chap-meta-row"><span class="chap-sub">Coulomb's Law · Electric Field · Potential · Gauss Law</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Electrostatics&name=Electrostatics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">13</span><div class="chap-body"><div class="chap-name">Current Electricity</div><div class="chap-meta-row"><span class="chap-sub">Ohm's Law · Kirchhoff's Laws · Wheatstone Bridge</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Current+Electricity&name=Current+Electricity&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">14</span><div class="chap-body"><div class="chap-name">Magnetic Effects of Current</div><div class="chap-meta-row"><span class="chap-sub">Biot-Savart · Ampere's Law · Force on Conductor</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Magnetic+Effects+of+Current&name=Magnetic+Effects&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">15</span><div class="chap-body"><div class="chap-name">Magnetism &amp; Matter</div><div class="chap-meta-row"><span class="chap-sub">Magnetic Materials · Earth's Magnetism · Hysteresis</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Magnetism+and+Matter&name=Magnetism&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">16</span><div class="chap-body"><div class="chap-name">Electromagnetic Induction</div><div class="chap-meta-row"><span class="chap-sub">Faraday's Law · Lenz's Law · Self & Mutual Inductance</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Electromagnetic+Induction&name=EMI&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">17</span><div class="chap-body"><div class="chap-name">Alternating Current</div><div class="chap-meta-row"><span class="chap-sub">RLC Circuits · Resonance · Power Factor · Transformer</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Alternating+Current&name=AC+Circuits&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">18</span><div class="chap-body"><div class="chap-name">Electromagnetic Waves</div><div class="chap-meta-row"><span class="chap-sub">EM Spectrum · Properties · Applications</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Electromagnetic+Waves&name=EM+Waves&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">19</span><div class="chap-body"><div class="chap-name">Ray Optics</div><div class="chap-meta-row"><span class="chap-sub">Reflection · Refraction · Lenses · Prism · Mirror Formula</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Ray+Optics&name=Ray+Optics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">20</span><div class="chap-body"><div class="chap-name">Wave Optics</div><div class="chap-meta-row"><span class="chap-sub">Interference · Diffraction · Polarisation · YDSE</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Wave+Optics&name=Wave+Optics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">21</span><div class="chap-body"><div class="chap-name">Dual Nature of Matter &amp; Radiation</div><div class="chap-meta-row"><span class="chap-sub">Photoelectric Effect · de-Broglie · Matter Waves</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Dual+Nature+of+Matter&name=Dual+Nature&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">22</span><div class="chap-body"><div class="chap-name">Atoms &amp; Nuclei</div><div class="chap-meta-row"><span class="chap-sub">Bohr's Model · Radioactivity · Nuclear Binding Energy</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Atoms+and+Nuclei&name=Atoms+%26+Nuclei&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">23</span><div class="chap-body"><div class="chap-name">Semiconductor Devices</div><div class="chap-meta-row"><span class="chap-sub">Diodes · Transistors · Logic Gates · Op-Amp</span><a href="mockarena_test.html?exam=JM&subj=Physics&chap=Semiconductors&name=Semiconductor+Devices&count=20" class="chap-practice">Practice →</a></div></div></div>
       </div>
     </div>
 
-    <!-- MATHS -->
-    <div class="subj-panel" id="subj-math">
-      <div class="ch-grid">
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">01</div><span class="ch-name">Sets, Relations &amp; Functions</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">02</div><span class="ch-name">Complex Numbers</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">03</div><span class="ch-name">Quadratic Equations</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">04</div><span class="ch-name">Sequences &amp; Series</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">05</div><span class="ch-name">Permutations &amp; Combinations</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">06</div><span class="ch-name">Binomial Theorem</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">07</div><span class="ch-name">Trigonometry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">08</div><span class="ch-name">Coordinate Geometry</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">09</div><span class="ch-name">3D Geometry &amp; Vectors</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">10</div><span class="ch-name">Limits &amp; Continuity</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">11</div><span class="ch-name">Differentiation</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">12</div><span class="ch-name">Integration</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
-        <div class="ch-card coming"><div class="ch-left"><div class="ch-num" style="background:rgba(26,38,24,.08);color:rgba(26,38,24,.45);">13</div><span class="ch-name">Probability &amp; Statistics</span></div><div class="ch-right"><span class="ch-soon">Soon</span></div></div>
+    <!-- CHEMISTRY -->
+    <div class="chap-section" id="sec-che">
+      <div class="removed-notice"><span class="rn-icon">🚫</span><div><div class="rn-title">Removed from Chemistry 2024–25</div><div class="rn-txt">States of Matter (Gaseous &amp; Liquid) · Surface Chemistry · Environmental Chemistry · Chemistry in Everyday Life · Polymers</div></div></div>
+      <div class="sub-section-title">Physical Chemistry</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">01</span><div class="chap-body"><div class="chap-name">Some Basic Concepts of Chemistry</div><div class="chap-meta-row"><span class="chap-sub">Mole Concept · Stoichiometry · Empirical Formula</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Some+Basic+Concepts&name=Basic+Concepts+of+Chemistry&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">02</span><div class="chap-body"><div class="chap-name">Atomic Structure</div><div class="chap-meta-row"><span class="chap-sub">Quantum Numbers · Orbitals · Electronic Configuration</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Atomic+Structure&name=Atomic+Structure&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">03</span><div class="chap-body"><div class="chap-name">Chemical Bonding &amp; Molecular Structure</div><div class="chap-meta-row"><span class="chap-sub">VSEPR · Hybridisation · MOT · Hydrogen Bonding</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Chemical+Bonding&name=Chemical+Bonding&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">04</span><div class="chap-body"><div class="chap-name">Thermodynamics</div><div class="chap-meta-row"><span class="chap-sub">Enthalpy · Entropy · Gibbs Free Energy · Hess's Law</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Thermodynamics&name=Chemical+Thermodynamics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">05</span><div class="chap-body"><div class="chap-name">Equilibrium</div><div class="chap-meta-row"><span class="chap-sub">Kp · Kc · Le Chatelier · pH · Buffer · Solubility</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Equilibrium&name=Equilibrium&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">06</span><div class="chap-body"><div class="chap-name">Redox Reactions</div><div class="chap-meta-row"><span class="chap-sub">Oxidation State · Ion-Electron Method · Balancing</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Redox+Reactions&name=Redox+Reactions&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">07</span><div class="chap-body"><div class="chap-name">Solutions</div><div class="chap-meta-row"><span class="chap-sub">Colligative Properties · Osmosis · van't Hoff Factor</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Solutions&name=Solutions&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">08</span><div class="chap-body"><div class="chap-name">Electrochemistry</div><div class="chap-meta-row"><span class="chap-sub">Nernst Equation · Electrolysis · Batteries · Conductance</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Electrochemistry&name=Electrochemistry&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">09</span><div class="chap-body"><div class="chap-name">Chemical Kinetics</div><div class="chap-meta-row"><span class="chap-sub">Rate Laws · Order · Half Life · Activation Energy</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Chemical+Kinetics&name=Chemical+Kinetics&count=20" class="chap-practice">Practice →</a></div></div></div>
       </div>
-      <div class="subj-footer">
-        <span class="subj-stat"><span>0/13</span> chapters · Maths launching soon!</span>
+      <div class="sub-section-title">Inorganic Chemistry</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">10</span><div class="chap-body"><div class="chap-name">Classification of Elements</div><div class="chap-meta-row"><span class="chap-sub">Periodic Trends · Ionization Energy · Electron Affinity</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Periodic+Table&name=Periodic+Table+%26+Properties&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">11</span><div class="chap-body"><div class="chap-name">Hydrogen</div><div class="chap-meta-row"><span class="chap-sub">Isotopes · Hydrides · Water · Hydrogen Peroxide</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Hydrogen&name=Hydrogen&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">12</span><div class="chap-body"><div class="chap-name">s-Block Elements</div><div class="chap-meta-row"><span class="chap-sub">Alkali Metals · Alkaline Earth Metals · Anomalous Behaviour</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=s-Block+Elements&name=s-Block+Elements&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">13</span><div class="chap-body"><div class="chap-name">p-Block Elements</div><div class="chap-meta-row"><span class="chap-sub">Groups 13–18 · Oxoacids · Interhalogen Compounds</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=p-Block+Elements&name=p-Block+Elements&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">14</span><div class="chap-body"><div class="chap-name">d and f-Block Elements</div><div class="chap-meta-row"><span class="chap-sub">Transition Metals · Lanthanides · Actinides</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=d+and+f+Block+Elements&name=d+%26+f+Block+Elements&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">15</span><div class="chap-body"><div class="chap-name">Coordination Compounds</div><div class="chap-meta-row"><span class="chap-sub">Werner's Theory · IUPAC Naming · Isomerism · VBT · CFT</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Coordination+Compounds&name=Coordination+Compounds&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+      <div class="sub-section-title">Organic Chemistry</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">16</span><div class="chap-body"><div class="chap-name">General Organic Chemistry</div><div class="chap-meta-row"><span class="chap-sub">IUPAC · Isomerism · Inductive · Mesomeric Effects</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Organic+Chemistry+Basics&name=Organic+Chemistry+Basics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">17</span><div class="chap-body"><div class="chap-name">Hydrocarbons</div><div class="chap-meta-row"><span class="chap-sub">Alkanes · Alkenes · Alkynes · Benzene · Aromaticity</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Hydrocarbons&name=Hydrocarbons&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">18</span><div class="chap-body"><div class="chap-name">Haloalkanes &amp; Haloarenes</div><div class="chap-meta-row"><span class="chap-sub">SN1 · SN2 · E1 · E2 · Nucleophilic Substitution</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Haloalkanes+and+Haloarenes&name=Haloalkanes+%26+Haloarenes&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">19</span><div class="chap-body"><div class="chap-name">Alcohols, Phenols &amp; Ethers</div><div class="chap-meta-row"><span class="chap-sub">Acidic Character · Lucas Test · Kolbe's Reaction</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Alcohols+Phenols+and+Ethers&name=Alcohols+Phenols+Ethers&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">20</span><div class="chap-body"><div class="chap-name">Aldehydes, Ketones &amp; Carboxylic Acids</div><div class="chap-meta-row"><span class="chap-sub">Nucleophilic Addition · Aldol · Cannizzaro · Fischer</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Aldehydes+Ketones+and+Carboxylic+Acids&name=Carbonyl+Compounds&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">21</span><div class="chap-body"><div class="chap-name">Amines</div><div class="chap-meta-row"><span class="chap-sub">Basicity Order · Reactions · Diazonium Salts</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Amines&name=Amines&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">22</span><div class="chap-body"><div class="chap-name">Biomolecules</div><div class="chap-meta-row"><span class="chap-sub">Carbohydrates · Proteins · Enzymes · Nucleic Acids</span><a href="mockarena_test.html?exam=JM&subj=Chemistry&chap=Biomolecules&name=Biomolecules&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+    </div>
+
+    <!-- MATHEMATICS -->
+    <div class="chap-section" id="sec-mat">
+      <div class="removed-notice"><span class="rn-icon">🚫</span><div><div class="rn-title">Removed from Mathematics 2024–25</div><div class="rn-txt">Mathematical Reasoning · Triangle Inequality &amp; Square Root of Complex Numbers · Some topics from 3D Geometry · Linear Programming (merged with Vectors)</div></div></div>
+      <div class="sub-section-title">Algebra</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">01</span><div class="chap-body"><div class="chap-name">Sets &amp; Relations</div><div class="chap-meta-row"><span class="chap-sub">Types of Sets · Relations · Equivalence Relations</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Sets+and+Relations&name=Sets+%26+Relations&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">02</span><div class="chap-body"><div class="chap-name">Functions</div><div class="chap-meta-row"><span class="chap-sub">Types · Composition · Inverse · Domain &amp; Range</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Functions&name=Functions&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">03</span><div class="chap-body"><div class="chap-name">Complex Numbers</div><div class="chap-meta-row"><span class="chap-sub">Argand Plane · Polar Form · Roots of Unity · De Moivre</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Complex+Numbers&name=Complex+Numbers&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">04</span><div class="chap-body"><div class="chap-name">Quadratic Equations &amp; Inequalities</div><div class="chap-meta-row"><span class="chap-sub">Nature of Roots · Sum/Product · Quadratic Inequalities</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Quadratic+Equations&name=Quadratic+Equations&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">05</span><div class="chap-body"><div class="chap-name">Sequences &amp; Series</div><div class="chap-meta-row"><span class="chap-sub">AP · GP · HP · AGP · Special Series</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Sequences+and+Series&name=Sequences+%26+Series&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">06</span><div class="chap-body"><div class="chap-name">Permutation &amp; Combination</div><div class="chap-meta-row"><span class="chap-sub">nPr · nCr · Circular · Multinomial Theorem</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Permutation+and+Combination&name=P+%26+C&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">07</span><div class="chap-body"><div class="chap-name">Binomial Theorem</div><div class="chap-meta-row"><span class="chap-sub">General Term · Middle Term · Greatest Term</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Binomial+Theorem&name=Binomial+Theorem&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">08</span><div class="chap-body"><div class="chap-name">Matrices &amp; Determinants</div><div class="chap-meta-row"><span class="chap-sub">Operations · Rank · Inverse · Cramer's Rule · Eigenvalues</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Matrices+and+Determinants&name=Matrices+%26+Determinants&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">09</span><div class="chap-body"><div class="chap-name">Probability</div><div class="chap-meta-row"><span class="chap-sub">Conditional · Bayes' Theorem · Binomial Distribution</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Probability&name=Probability&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+      <div class="sub-section-title">Trigonometry</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">10</span><div class="chap-body"><div class="chap-name">Trigonometric Functions</div><div class="chap-meta-row"><span class="chap-sub">Identities · Formulae · Signs in Quadrants</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Trigonometry&name=Trigonometric+Functions&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">11</span><div class="chap-body"><div class="chap-name">Inverse Trigonometry</div><div class="chap-meta-row"><span class="chap-sub">Principal Values · Domain · Properties · Equations</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Inverse+Trigonometry&name=Inverse+Trigonometry&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+      <div class="sub-section-title">Coordinate Geometry</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">12</span><div class="chap-body"><div class="chap-name">Straight Lines &amp; Pair of Lines</div><div class="chap-meta-row"><span class="chap-sub">Slope · Equations · Distance · Angle Bisectors</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Straight+Lines&name=Straight+Lines&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">13</span><div class="chap-body"><div class="chap-name">Circles</div><div class="chap-meta-row"><span class="chap-sub">Standard Forms · Tangent · Chord · Family of Circles</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Circles&name=Circles&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">14</span><div class="chap-body"><div class="chap-name">Parabola</div><div class="chap-meta-row"><span class="chap-sub">Focus · Directrix · Tangent · Normal · Chord of Contact</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Parabola&name=Parabola&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">15</span><div class="chap-body"><div class="chap-name">Ellipse</div><div class="chap-meta-row"><span class="chap-sub">Foci · Eccentricity · Tangent · Auxiliary Circle</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Ellipse&name=Ellipse&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">16</span><div class="chap-body"><div class="chap-name">Hyperbola</div><div class="chap-meta-row"><span class="chap-sub">Asymptotes · Conjugate · Rectangular Hyperbola</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Hyperbola&name=Hyperbola&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+      <div class="sub-section-title">Calculus</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">17</span><div class="chap-body"><div class="chap-name">Limits &amp; Continuity</div><div class="chap-meta-row"><span class="chap-sub">Standard Limits · Sandwich Theorem · Continuity</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Limits+and+Continuity&name=Limits+%26+Continuity&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">18</span><div class="chap-body"><div class="chap-name">Differentiation</div><div class="chap-meta-row"><span class="chap-sub">Chain Rule · Implicit · Parametric · Logarithmic</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Differentiation&name=Differentiation&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">19</span><div class="chap-body"><div class="chap-name">Applications of Derivatives</div><div class="chap-meta-row"><span class="chap-sub">Maxima · Minima · Tangent · Rate of Change · Rolle's</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Applications+of+Derivatives&name=Applications+of+Derivatives&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">20</span><div class="chap-body"><div class="chap-name">Indefinite Integration</div><div class="chap-meta-row"><span class="chap-sub">Standard Forms · By Parts · Substitution · Partial Fractions</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Indefinite+Integration&name=Indefinite+Integration&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">21</span><div class="chap-body"><div class="chap-name">Definite Integration &amp; Area</div><div class="chap-meta-row"><span class="chap-sub">Properties · Area Under Curves · Newton-Leibniz</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Definite+Integration&name=Definite+Integration&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">22</span><div class="chap-body"><div class="chap-name">Differential Equations</div><div class="chap-meta-row"><span class="chap-sub">Order · Degree · Variable Separable · Linear DE</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Differential+Equations&name=Differential+Equations&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+      <div class="sub-section-title">Vectors &amp; 3D Geometry</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">23</span><div class="chap-body"><div class="chap-name">Vectors</div><div class="chap-meta-row"><span class="chap-sub">Dot Product · Cross Product · Scalar Triple Product</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Vectors&name=Vectors&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">24</span><div class="chap-body"><div class="chap-name">3D Geometry</div><div class="chap-meta-row"><span class="chap-sub">Lines · Planes · Distance · Angle Between Planes</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=3D+Geometry&name=3D+Geometry&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">25</span><div class="chap-body"><div class="chap-name">Statistics</div><div class="chap-meta-row"><span class="chap-sub">Mean · Median · Mode · Variance · Standard Deviation</span><a href="mockarena_test.html?exam=JM&subj=Mathematics&chap=Statistics&name=Statistics&count=20" class="chap-practice">Practice →</a></div></div></div>
       </div>
     </div>
   </div>
-</section>
 
-<!-- MOCK TESTS -->
-<section id="mocks" style="background:var(--cream-w);">
-  <div class="container">
-    <div class="slabel">Full Mock Tests</div>
-    <h2 class="stitle">Simulate the Real JEE Mains Exam</h2>
-    <p class="ssub">3-hour full mocks with all 3 subjects, real exam interface, timer, question palette and detailed result.</p>
-    <div class="mock-wrap">
-      <div class="mock-hdr">
-        <div class="mock-hdr-l">
-          <div class="slabel">Available Now</div>
-          <div class="stitle" style="font-size:1.55rem;color:white;">Full Mock Tests</div>
-          <p class="ssub" style="color:rgba(255,255,255,.68);font-size:.92rem;">JEE Mains pattern — 90 questions, 3 hours, +4/−1 marking</p>
-        </div>
-      </div>
-      <div class="mock-grid">
-        <a href="mockarena_jee_main_mocktest.html" class="mock-card">
-          <div class="mc-top"><span class="mc-badge mcb-full">Full Mock</span></div>
-          <div class="mc-title">JEE Mains Full Mock #1</div>
-          <div class="mc-desc">Complete 90-question mock in JEE Mains pattern. Physics + Chemistry + Maths. Real NTA interface experience.</div>
-          <div class="mc-meta"><div class="mc-m">⏱️ 3 Hours</div><div class="mc-m">📝 90 Qs</div><div class="mc-m">🎯 300 Marks</div></div>
-          <button class="mc-btn">Start Mock Test →</button>
-        </a>
-        <a href="mockarena_mocktest.html" class="mock-card">
-          <div class="mc-top"><span class="mc-badge mcb-full">Full Mock</span></div>
-          <div class="mc-title">JEE Advanced Full Mock #1</div>
-          <div class="mc-desc">JEE Advanced pattern mock — harder questions, multiple correct type. Great for JEE Mains advanced practice.</div>
-          <div class="mc-meta"><div class="mc-m">⏱️ 3 Hours</div><div class="mc-m">📝 60 Qs</div><div class="mc-m">🎯 Advanced Level</div></div>
-          <button class="mc-btn">Start Mock Test →</button>
-        </a>
-        <div class="mock-card locked">
-          <div class="mc-top"><span class="mc-badge mcb-lock">Coming Soon</span></div>
-          <div class="mc-title">JEE Mains Mock #2</div>
-          <div class="mc-desc">Second full mock with a fresh question set — new chapters, new difficulty calibration.</div>
-          <div class="mc-meta"><div class="mc-m">⏱️ 3 Hours</div><div class="mc-m">📝 90 Qs</div></div>
-          <button class="mc-btn mc-btn-lock" disabled>Coming Soon</button>
-        </div>
-        <div class="mock-card locked">
-          <div class="mc-top"><span class="mc-badge mcb-chapter">Subject Mock</span></div>
-          <div class="mc-title">Physics Only Mock</div>
-          <div class="mc-desc">30-question Physics-only mock test — all 13 chapters combined. 1-hour format.</div>
-          <div class="mc-meta"><div class="mc-m">⏱️ 1 Hour</div><div class="mc-m">📝 30 Qs</div></div>
-          <button class="mc-btn mc-btn-lock" disabled>Coming Soon</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- HIGH WEIGHTAGE TOPICS -->
-<section id="weightage" style="background:white;">
-  <div class="container">
-    <div class="slabel">High-Weightage Topics</div>
-    <h2 class="stitle">Focus on These First</h2>
-    <p class="ssub">Based on PYQ analysis — these topics appear most frequently in JEE Mains. Master them for maximum marks.</p>
-    <div class="hw-grid">
-      <div class="hw-card">
-        <div class="hw-hdr">
-          <div class="hw-icon" style="background:rgba(59,130,196,.1);">⚛️</div>
-          <div class="hw-name">Physics</div>
-        </div>
-        <div class="hw-topics">
-          <div class="hw-topic"><span class="hw-tname">Electrostatics &amp; Current</span><span class="hw-twt wt-high">Very High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Modern Physics</span><span class="hw-twt wt-high">Very High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Optics</span><span class="hw-twt wt-high">Very High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Rotational Motion</span><span class="hw-twt wt-med">High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Thermodynamics</span><span class="hw-twt wt-med">High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Magnetic Effects</span><span class="hw-twt wt-med">High</span></div>
-        </div>
-      </div>
-      <div class="hw-card">
-        <div class="hw-hdr">
-          <div class="hw-icon" style="background:rgba(107,143,94,.1);">🧪</div>
-          <div class="hw-name">Chemistry</div>
-        </div>
-        <div class="hw-topics">
-          <div class="hw-topic"><span class="hw-tname">Organic Chemistry</span><span class="hw-twt wt-high">Very High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Chemical Bonding</span><span class="hw-twt wt-high">Very High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Electrochemistry</span><span class="hw-twt wt-high">Very High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Equilibrium</span><span class="hw-twt wt-med">High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Thermochemistry</span><span class="hw-twt wt-med">High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Coordination Compounds</span><span class="hw-twt wt-med">High</span></div>
-        </div>
-      </div>
-      <div class="hw-card">
-        <div class="hw-hdr">
-          <div class="hw-icon" style="background:rgba(200,150,42,.1);">📐</div>
-          <div class="hw-name">Mathematics</div>
-        </div>
-        <div class="hw-topics">
-          <div class="hw-topic"><span class="hw-tname">Coordinate Geometry</span><span class="hw-twt wt-high">Very High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Calculus (Integral)</span><span class="hw-twt wt-high">Very High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Matrices &amp; Determinants</span><span class="hw-twt wt-high">Very High</span></div>
-          <div class="hw-topic"><span class="hw-tname">3D Geometry &amp; Vectors</span><span class="hw-twt wt-med">High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Probability</span><span class="hw-twt wt-med">High</span></div>
-          <div class="hw-topic"><span class="hw-tname">Complex Numbers</span><span class="hw-twt wt-med">High</span></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- PROGRESS TRACKER -->
-<section style="background:var(--cream-w);">
-  <div class="container">
-    <div class="slabel">Your Progress</div>
-    <h2 class="stitle">Track Your JEE Journey</h2>
-    <p class="ssub">Your real-time performance data fetched live from your test history.</p>
-    <div class="prog-wrap">
-      <div class="prog-grid">
-        <div class="pg-card"><span class="pg-n" style="color:var(--sage)" id="pg-tests">0</span><span class="pg-l">Tests Taken</span><div class="pg-bar"><div class="pg-bar-f" id="pg-tests-bar" style="width:0%"></div></div></div>
-        <div class="pg-card"><span class="pg-n" style="color:var(--sky)" id="pg-acc">0%</span><span class="pg-l">Accuracy</span><div class="pg-bar"><div class="pg-bar-f" id="pg-acc-bar" style="width:0%"></div></div></div>
-        <div class="pg-card"><span class="pg-n" style="color:var(--gold)" id="pg-best">0</span><span class="pg-l">Best Score</span><div class="pg-bar"><div class="pg-bar-f" id="pg-best-bar" style="width:0%"></div></div></div>
-        <div class="pg-card"><span class="pg-n" style="color:var(--forest)" id="pg-correct">0</span><span class="pg-l">Total Correct</span><div class="pg-bar"><div class="pg-bar-f" id="pg-correct-bar" style="width:0%"></div></div></div>
-        <div class="pg-card"><span class="pg-n" style="color:var(--rose)" id="pg-wrong">0</span><span class="pg-l">Total Wrong</span><div class="pg-bar"><div class="pg-bar-f" id="pg-wrong-bar" style="width:0%;background:var(--rose)"></div></div></div>
-        <div class="pg-card"><span class="pg-n" style="color:var(--sage)">26</span><span class="pg-l">Chapters Live</span><div class="pg-bar"><div class="pg-bar-f" style="width:100%"></div></div></div>
-      </div>
-      <div style="text-align:center;margin-top:24px;">
-        <a href="mockarena_analytics.html" class="btn-sage" style="display:inline-flex;font-size:.86rem;">📊 Full Analytics →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-<!-- PYQ SECTION -->
-<section id="pyq" style="background:var(--cream-w);">
-  <div class="container">
-    <div class="slabel">Previous Year Questions</div>
-    <h2 class="stitle">JEE Mains PYQ — 2016 to 2026</h2>
-    <p class="ssub">Browse and study previous year questions with solutions. 11 years of papers, all sessions covered.</p>
-    <div class="pyq-stats-banner">
-      <div class="pyq-banner-item"><span class="pyq-banner-n">11</span><span class="pyq-banner-l">Years Covered</span></div>
-      <div class="pyq-banner-item"><span class="pyq-banner-n">22+</span><span class="pyq-banner-l">Paper Sessions</span></div>
-      <div class="pyq-banner-item"><span class="pyq-banner-n">1980+</span><span class="pyq-banner-l">Questions</span></div>
-      <div class="pyq-banner-item"><span class="pyq-banner-n">100%</span><span class="pyq-banner-l">With Solutions</span></div>
-    </div>
-    <div class="pyq-year-tabs" id="pyqYearTabs"></div>
-    <div id="pyqPaperGrid"></div>
-  </div>
-</section>
-
-<!-- PYQ MOCK TESTS -->
-<section id="pyq-mock" style="background:white;">
-  <div class="container">
-    <div class="slabel">PYQ Practice Mocks</div>
-    <h2 class="stitle">Attempt Real JEE Mains Papers</h2>
-    <p class="ssub">Sit for actual previous year papers in exam conditions — 3-hour timer, real marking, auto-evaluated with solutions.</p>
-    <div class="pyqm-wrap">
-      <div class="pyqm-hdr">
-        <div class="pyqm-hdr-l">
-          <div class="slabel">Exam Simulation Mode</div>
-          <div class="stitle" style="font-size:1.45rem;color:white;">PYQ Full Paper Mocks — 2016 to 2026</div>
-          <p class="ssub" style="color:rgba(255,255,255,.55);font-size:.9rem;">Real 3-hour exam · Real marking scheme · Solutions revealed after submit</p>
-        </div>
-      </div>
-      <div class="pyqm-info-strip">
-        <div class="pyqm-info-item">⏱️ <strong>3 Hours</strong> strict timer</div>
-        <div class="pyqm-info-item">📝 <strong>90 Questions</strong> (post-2020)</div>
-        <div class="pyqm-info-item">🎯 <strong>+4 / −1</strong> marking</div>
-        <div class="pyqm-info-item">📊 <strong>Instant</strong> result + rank</div>
-        <div class="pyqm-info-item">💡 <strong>Solutions</strong> after submit</div>
-        <div class="pyqm-info-item">🔒 <strong>No pause</strong> — real conditions</div>
-      </div>
-      <div class="pyqm-year-tabs" id="pyqmYearTabs"></div>
-      <div id="pyqmMockGrid"></div>
-    </div>
-  </div>
-</section>
-
-<!-- PYQ MODAL -->
-<div id="pyqModal" style="display:none;position:fixed;inset:0;background:rgba(10,16,10,.93);z-index:600;align-items:center;justify-content:center;padding:16px;">
-  <div style="background:#1a2618;border:1.5px solid rgba(107,143,94,.28);border-radius:16px;max-width:520px;width:100%;padding:28px 24px;position:relative;max-height:90vh;overflow-y:auto;">
-    <button onclick="closePyqModal()" style="position:absolute;top:14px;right:14px;background:rgba(255,255,255,.12);border:none;color:rgba(255,255,255,.88);width:30px;height:30px;border-radius:50%;font-size:.9rem;cursor:pointer;font-weight:700;">✕</button>
-    <div style="font-size:.76rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sage);margin-bottom:8px;">JEE Mains PYQ</div>
-    <div id="pyqModalTitle" style="font-size:1.15rem;font-weight:800;color:white;margin-bottom:6px;padding-right:32px;"></div>
-    <div id="pyqModalSub" style="font-size:.86rem;color:rgba(255,255,255,.55);margin-bottom:20px;line-height:1.6;"></div>
-    <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:16px;margin-bottom:18px;border:1px solid rgba(255,255,255,.12);font-size:.86rem;color:rgba(255,255,255,.72);line-height:1.7;">
-      📌 Full questions and solutions are available on the dedicated PYQ page. You can also attempt this as a timed mock below.
-    </div>
-    <div style="display:flex;gap:10px;">
-      <a href="mockarena_pyq.html" style="flex:2;text-align:center;padding:11px;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;border-radius:10px;font-weight:700;font-size:.88rem;display:block;">📚 Go to PYQ Page</a>
-      <button onclick="closePyqModal()" style="flex:1;padding:11px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);border:1.5px solid rgba(255,255,255,.28);border-radius:10px;font-size:.88rem;cursor:pointer;font-weight:700;">Close</button>
-    </div>
-  </div>
 </div>
 
-<!-- STRATEGY -->
-<section id="strategy" style="background:white;">
-  <div class="container">
-    <div class="slabel">Preparation Strategy</div>
-    <h2 class="stitle">How to Crack JEE Mains</h2>
-    <p class="ssub">Proven strategies from students who cracked JEE Mains with 200+ marks.</p>
-    <div class="tips-grid">
-      <div class="tip-card"><div class="tip-num">1</div><div><div class="tip-title">Start with High-Weightage</div><div class="tip-desc">Don't study all chapters equally. Physics: Electrostatics, Modern Physics, Optics first. These 3 alone contribute 30–40% of marks.</div></div></div>
-      <div class="tip-card"><div class="tip-num">2</div><div><div class="tip-title">Never Skip Integer Type</div><div class="tip-desc">Integer type has NO negative marking. Always attempt all 10 integer questions in each subject. Even a guess gives you +4 with zero risk.</div></div></div>
-      <div class="tip-card"><div class="tip-num">3</div><div><div class="tip-title">NCERT Chemistry = 40 Marks</div><div class="tip-desc">JEE Mains Chemistry is 70% NCERT. Read every line — reactions, properties, exceptions. 40 marks are almost free if you do this.</div></div></div>
-      <div class="tip-card"><div class="tip-num">4</div><div><div class="tip-title">Chapter Test Before Mock</div><div class="tip-desc">Don't jump to full mocks directly. Complete all chapter tests first — build subject by subject. Mock performance will be consistent.</div></div></div>
-      <div class="tip-card"><div class="tip-num">5</div><div><div class="tip-title">Solve PYQ Last 10 Years</div><div class="tip-desc">JEE Mains repeats concepts in similar format. Solving 10 years of PYQs trains your brain for the exact type of questions NTA asks.</div></div></div>
-      <div class="tip-card"><div class="tip-num">6</div><div><div class="tip-title">Time Management in Exam</div><div class="tip-desc">Start with your strongest subject. Spend max 2 min per question. Skip and come back. Never spend 10 min on one question.</div></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section style="background:var(--cream-w);padding:60px 24px;">
-  <div class="container">
-    <div class="cta-block">
-      <h2 class="cta-title">Your IIT Seat is One<br/>Consistent Effort Away</h2>
-      <p class="cta-sub">Every chapter test you complete, every mock you give — it all adds up. Start with Physics or Chemistry today.</p>
-      <div class="cta-btns">
-        <a href="mockarena_chapter_physics_units.html" class="btn-secondary" style="font-size:1rem;padding:14px 28px;">⚡ Start Chapter Test</a>
-        <a href="mockarena_jee_main_mocktest.html" class="btn-primary" style="font-size:1rem;padding:14px 28px;">🎯 Take Full Mock</a>
-      </div>
-    </div>
-  </div>
-</section>
-
 <!-- FOOTER -->
-<footer class="footer">
-  <div class="ft">
-    <div class="ft-brand">
-      <div class="ft-logo">
-        <span class="nav-n1">Mock</span><span class="nav-n2">Arena</span>
-      </div>
-      <p class="ft-desc">India's smartest test prep platform for IIT-JEE &amp; NEET. Chapter tests, full mocks, analytics.</p>
-    </div>
-    <div class="ft-col">
-      <div class="ft-ct">Exam Pages</div>
-      <a href="jee_foundation.html" class="ft-link">JEE Foundation</a>
-      <a href="jee_main.html" class="ft-link">JEE Mains</a>
-      <a href="jee_advanced.html" class="ft-link">JEE Advanced</a>
-      <a href="neet_ug.html" class="ft-link">NEET UG</a>
-      <a href="neet_foundation.html" class="ft-link">NEET Foundation</a>
-    </div>
-    <div class="ft-col">
-      <div class="ft-ct">Physics Tests</div>
-      <a href="mockarena_chapter_physics_units.html" class="ft-link">Units &amp; Measurement</a>
-      <a href="mockarena_chapter_physics_electrostatics.html" class="ft-link">Electrostatics</a>
-      <a href="mockarena_chapter_physics_optics.html" class="ft-link">Optics</a>
-      <a href="mockarena_chapter_physics_modern.html" class="ft-link">Modern Physics</a>
-    </div>
-    <div class="ft-col">
-      <div class="ft-ct">Chemistry Tests</div>
-      <a href="mockarena_chapter_chem_mole_concept.html" class="ft-link">Mole Concept</a>
-      <a href="mockarena_chapter_chem_atomic_structure.html" class="ft-link">Atomic Structure</a>
-      <a href="mockarena_chapter_chem_electrochemistry.html" class="ft-link">Electrochemistry</a>
-      <a href="mockarena_chapter_chem_chemical_kinetics.html" class="ft-link">Chemical Kinetics</a>
-    </div>
-    <div class="ft-col">
-      <div class="ft-ct">Account</div>
-      <a href="mockarena_dashboard.html" class="ft-link">Dashboard</a>
-      <a href="mockarena_analytics.html" class="ft-link">Analytics</a>
-      <a href="mockarena_results.html" class="ft-link">My Results</a>
-      <a href="mockarena_leaderboard.html" class="ft-link">Leaderboard</a>
-      <a href="login.html" class="ft-link">Login</a>
-    </div>
-  </div>
-  <div class="ft-bottom">
-    <span class="ft-copy">© 2026 MockArena. All rights reserved.</span>
-    <span class="ft-copy">Built for JEE warriors 🏆</span>
-  </div>
-</footer>
+<div class="footer">
+  <div class="footer-logo">Mock<span>Arena</span></div>
+  <div class="footer-txt">India's most complete JEE preparation platform · Updated 2025–26</div>
+</div>
 
 <script>
-function showSubj(id,el){
-  document.querySelectorAll('.subj-panel').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.stab').forEach(function(t){t.classList.remove('on');});
-  document.getElementById('subj-'+id).classList.add('on');
-  el.classList.add('on');
-}
-document.querySelectorAll('a[href^="#"]').forEach(function(a){
-  a.addEventListener('click',function(e){
-    var el=document.getElementById(this.getAttribute('href').slice(1));
-    if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}
-  });
-});
-(function(){
-  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-  function load(cb){
-    var s1=document.createElement('script');s1.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
-    s1.onload=function(){var s2=document.createElement('script');s2.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js';
-      s2.onload=function(){var s3=document.createElement('script');s3.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js';
-        s3.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);cb(firebase.firestore(),firebase.auth());};
-        document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);
-  }
-  function set(id,val){var el=document.getElementById(id);if(el)el.textContent=val;}
-  function bar(id,pct){var el=document.getElementById(id);if(el)el.style.width=Math.min(pct,100)+'%';}
-  load(function(db,auth){
-    auth.onAuthStateChanged(function(u){
-      if(!u) return;
-      var nm=u.displayName||'S';
-      var av=document.getElementById('nav-av');
-      if(av){if(u.photoURL){av.innerHTML='<img src="'+u.photoURL+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';}
-      else{av.textContent=nm.split(' ').map(function(w){return w[0];}).join('').toUpperCase().substring(0,2);}}
-      db.collection('results').doc(u.uid).collection('tests').orderBy('timestamp','desc').limit(100)
-        .get().then(function(snap){
-          var tests=[];snap.forEach(function(d){tests.push(d.data());});
-          if(!tests.length) return;
-          var totalC=tests.reduce(function(a,t){return a+(t.correct||0);},0);
-          var totalW=tests.reduce(function(a,t){return a+(t.wrong||0);},0);
-          var totalQ=tests.reduce(function(a,t){return a+(t.total||0);},0);
-          var best=Math.max.apply(null,tests.map(function(t){return t.score||0;}));
-          var acc=totalQ?Math.round(totalC/totalQ*100):0;
-          set('pg-tests',tests.length);set('pg-acc',acc+'%');
-          set('pg-best',best);set('pg-correct',totalC);set('pg-wrong',totalW);
-          bar('pg-tests-bar',Math.min(tests.length*5,100));bar('pg-acc-bar',acc);
-          bar('pg-best-bar',Math.min(best/3,100));bar('pg-correct-bar',Math.min(totalC,100));
-          bar('pg-wrong-bar',Math.min(totalW,100));
-        });
-    });
-  });
-})();
-
-function toggleMobNav(){
-  var nav = document.getElementById('mobNav');
-  var btn = document.getElementById('navHamburger');
-  nav.classList.toggle('open');
-  btn.classList.toggle('open');
-}
-// Close mob nav on outside click
-document.addEventListener('click', function(e){
-  var nav = document.getElementById('mobNav');
-  var btn = document.getElementById('navHamburger');
-  if(nav && nav.classList.contains('open') && !nav.contains(e.target) && !btn.contains(e.target)){
-    nav.classList.remove('open');
-    btn.classList.remove('open');
-  }
-});
-
-
-
-// ══ PYQ DATA ══
-var PYQ_PAPERS = {
-  '2026': [
-    {session:'Session 1 · January 2026', papers:[
-      {date:'22 Jan 2026',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2026-jan-sh1'},
-      {date:'22 Jan 2026',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2026-jan-sh2'},
-      {date:'23 Jan 2026',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2026-jan-sh3'}
-    ]},
-    {session:'Session 2 · April 2026', papers:[
-      {date:'April 2026',shift:'Upcoming',tag:'upcoming',qs:90,marks:300,id:'',upcoming:true}
-    ]}
-  ],
-  '2025': [
-    {session:'Session 1 · January 2025', papers:[
-      {date:'22 Jan 2025',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2025-jan-sh1'},
-      {date:'22 Jan 2025',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2025-jan-sh2'},
-      {date:'23 Jan 2025',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2025-jan-sh3'},
-      {date:'29 Jan 2025',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2025-jan-sh4'}
-    ]},
-    {session:'Session 2 · April 2025', papers:[
-      {date:'2 Apr 2025',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2025-apr-sh1'},
-      {date:'3 Apr 2025',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2025-apr-sh2'}
-    ]}
-  ],
-  '2024': [
-    {session:'Session 1 · January 2024', papers:[
-      {date:'27 Jan 2024',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2024-jan-sh1'},
-      {date:'27 Jan 2024',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2024-jan-sh2'},
-      {date:'29 Jan 2024',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2024-jan-sh3'},
-      {date:'31 Jan 2024',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2024-jan-sh4'}
-    ]},
-    {session:'Session 2 · April 2024', papers:[
-      {date:'4 Apr 2024',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2024-apr-sh1'},
-      {date:'6 Apr 2024',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2024-apr-sh2'}
-    ]}
-  ],
-  '2023': [
-    {session:'January 2023', papers:[
-      {date:'24 Jan 2023',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2023-jan-sh1'},
-      {date:'25 Jan 2023',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2023-jan-sh2'},
-      {date:'31 Jan 2023',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2023-jan-sh3'}
-    ]},
-    {session:'April 2023', papers:[
-      {date:'6 Apr 2023',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2023-apr-sh1'},
-      {date:'8 Apr 2023',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2023-apr-sh2'}
-    ]}
-  ],
-  '2022': [
-    {session:'June & July 2022', papers:[
-      {date:'24 Jun 2022',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2022-jun-sh1'},
-      {date:'25 Jul 2022',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2022-jul-sh2'},
-      {date:'26 Jul 2022',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2022-jul-sh3'}
-    ]}
-  ],
-  '2021': [
-    {session:'Feb, Mar, Jul, Aug 2021', papers:[
-      {date:'Feb 2021',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2021-feb-sh1'},
-      {date:'Mar 2021',shift:'Shift 2',tag:'Evening',qs:90,marks:300,id:'2021-mar-sh2'},
-      {date:'Aug 2021',shift:'Shift 1',tag:'Morning',qs:90,marks:300,id:'2021-aug-sh1'}
-    ]}
-  ],
-  '2020': [
-    {session:'January & September 2020', papers:[
-      {date:'7 Jan 2020',shift:'Shift 1',tag:'Morning',qs:75,marks:300,id:'2020-jan-sh1'},
-      {date:'8 Jan 2020',shift:'Shift 2',tag:'Evening',qs:75,marks:300,id:'2020-jan-sh2'},
-      {date:'3 Sep 2020',shift:'Shift 1',tag:'Morning',qs:75,marks:300,id:'2020-sep-sh1'}
-    ]}
-  ],
-  '2019': [
-    {session:'January & April 2019', papers:[
-      {date:'9 Jan 2019',shift:'Shift 1',tag:'Morning',qs:90,marks:360,id:'2019-jan-sh1'},
-      {date:'10 Jan 2019',shift:'Shift 2',tag:'Evening',qs:90,marks:360,id:'2019-jan-sh2'},
-      {date:'12 Apr 2019',shift:'Shift 1',tag:'Morning',qs:90,marks:360,id:'2019-apr-sh1'},
-      {date:'12 Apr 2019',shift:'Shift 2',tag:'Evening',qs:90,marks:360,id:'2019-apr-sh2'}
-    ]}
-  ],
-  '2018': [
-    {session:'2018 — Offline + Online', papers:[
-      {date:'8 Apr 2018',shift:'Offline',tag:'Offline',qs:90,marks:360,id:'2018-apr-p1'},
-      {date:'15 Apr 2018',shift:'Online',tag:'Online',qs:90,marks:360,id:'2018-apr-ol'}
-    ]}
-  ],
-  '2017': [
-    {session:'2017 — Offline + Online', papers:[
-      {date:'2 Apr 2017',shift:'Offline',tag:'Offline',qs:90,marks:360,id:'2017-apr-p1'},
-      {date:'8 Apr 2017',shift:'Online',tag:'Online',qs:90,marks:360,id:'2017-apr-ol'}
-    ]}
-  ],
-  '2016': [
-    {session:'2016 — Offline + Online', papers:[
-      {date:'3 Apr 2016',shift:'Offline',tag:'Offline',qs:90,marks:360,id:'2016-apr-p1'},
-      {date:'9 Apr 2016',shift:'Online',tag:'Online',qs:90,marks:360,id:'2016-apr-ol'}
-    ]}
-  ]
-};
-
-var PYQ_MOCKS = [
-  {group:'recent', label:'Recent (2023-26)',
-   mocks:[
-    {year:'2026 · Jan',title:'JEE Mains Jan 2026 — Shift 1',sub:'Latest paper. Strong on Calculus, Organic Chem, Modern Physics.',diff:'Hard',diffcls:'diff-hard',qs:90,marks:300,time:'3 Hrs',id:'2026-jan-sh1'},
-    {year:'2025 · Jan',title:'JEE Mains Jan 2025 — Shift 1',sub:'Matrices, Electrostatics and Mole Concept heavy. Great benchmark.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:90,marks:300,time:'3 Hrs',id:'2025-jan-sh1'},
-    {year:'2025 · Apr',title:'JEE Mains Apr 2025 — Shift 2',sub:'April papers are harder. Organic, 3D Geometry, Thermodynamics focused.',diff:'Hard',diffcls:'diff-hard',qs:90,marks:300,time:'3 Hrs',id:'2025-apr-sh2'},
-    {year:'2024 · Jan',title:'JEE Mains Jan 2024 — Shift 1',sub:'New NTA question formats. Must-attempt for pattern awareness.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:90,marks:300,time:'3 Hrs',id:'2024-jan-sh1'},
-    {year:'2023 · Apr',title:'JEE Mains Apr 2023 — Shift 2',sub:'One of the toughest recent papers. Heavily calculus-based Maths.',diff:'Hard',diffcls:'diff-hard',qs:90,marks:300,time:'3 Hrs',id:'2023-apr-sh2'}
-  ]},
-  {group:'mid', label:'2019–2022',
-   mocks:[
-    {year:'2022 · Jul',title:'JEE Mains Jul 2022',sub:'Post-COVID offline paper. Balanced difficulty. Good for confidence.',diff:'Moderate-Hard',diffcls:'diff-mh',qs:90,marks:300,time:'3 Hrs',id:'2022-jul'},
-    {year:'2021 · Mar',title:'JEE Mains Mar 2021',sub:'New 90-question format introduced. Moderate. Great first attempt.',diff:'Moderate',diffcls:'diff-moderate',qs:90,marks:300,time:'3 Hrs',id:'2021-mar'},
-    {year:'2020 · Sep',title:'JEE Mains Sep 2020',sub:'75-question format. Online paper. Excellent topic spread.',diff:'Moderate',diffcls:'diff-moderate',qs:75,marks:300,time:'3 Hrs',id:'2020-sep'},
-    {year:'2019 · Jan',title:'JEE Mains Jan 2019',sub:'First 2-session year. Classic paper with strong Maths questions.',diff:'Moderate',diffcls:'diff-moderate',qs:90,marks:360,time:'3 Hrs',id:'2019-jan'}
-  ]},
-  {group:'old', label:'2016–2018',
-   mocks:[
-    {year:'2018',title:'JEE Mains Apr 2018 — Offline',sub:'Straightforward Chem, tricky Physics. Traditional pen-paper format.',diff:'Moderate',diffcls:'diff-moderate',qs:90,marks:360,time:'3 Hrs',id:'2018-apr'},
-    {year:'2017',title:'JEE Mains Apr 2017 — Offline',sub:'Balanced paper. Good starting point for PYQ practice.',diff:'Moderate',diffcls:'diff-moderate',qs:90,marks:360,time:'3 Hrs',id:'2017-apr'},
-    {year:'2016',title:'JEE Mains Apr 2016 — Offline',sub:'Strong NCERT Chemistry. Good for early-stage warm-up.',diff:'Moderate',diffcls:'diff-moderate',qs:90,marks:360,time:'3 Hrs',id:'2016-apr'}
-  ]}
-];
-
-var currentPyqYear = '2026';
-var currentPyqmGroup = 'recent';
-
-function initPyq(){
-  // Build year tabs
-  var years = Object.keys(PYQ_PAPERS);
-  var tabsEl = document.getElementById('pyqYearTabs');
-  if(!tabsEl) return;
-  tabsEl.innerHTML = years.map(function(y){
-    return '<button class="pyq-ytab'+(y===currentPyqYear?' on':'')+'" onclick="showPyqYear(this.dataset.yr,this)" data-yr="'+y+'">'+y+'</button>';
-  }).join('');
-  renderPyqGrid(currentPyqYear);
-
-  // Build mock tabs
-  var mTabsEl = document.getElementById('pyqmYearTabs');
-  if(mTabsEl){
-    mTabsEl.innerHTML = PYQ_MOCKS.map(function(g,i){
-      return '<button class="pyqm-ytab'+(i===0?' on':'')+'" onclick="showPyqmGroup(this.dataset.grp,this)" data-grp="'+g.group+'">'+g.label+'</button>';
-    }).join('');
-  }
-  renderPyqmGrid(currentPyqmGroup);
-}
-
-function renderPyqGrid(year){
-  var el = document.getElementById('pyqPaperGrid');
-  if(!el) return;
-  var sessions = PYQ_PAPERS[year] || [];
-  var html = '';
-  sessions.forEach(function(s){
-    html += '<div class="pyq-session-label">'+s.session+'</div>';
-    html += '<div class="pyq-grid">';
-    s.papers.forEach(function(p){
-      var upcoming = p.upcoming;
-      html += '<div class="pyq-card"'+(upcoming?' style="opacity:.5;"':'')+'>'+
-        '<div class="pyq-card-top"><span class="pyq-date">'+p.date+' · '+p.shift+'</span>'+
-        '<span class="pyq-shift-badge'+(upcoming?' upcoming':'')+'">'+p.tag+'</span></div>'+
-        '<div class="pyq-stats">'+
-          '<span class="pyq-stat"><strong>'+p.qs+'</strong> Qs</span>'+
-          '<span class="pyq-stat"><strong>3</strong> Hours</span>'+
-          '<span class="pyq-stat"><strong>'+p.marks+'</strong> Marks</span>'+
-        '</div>'+
-        '<div class="pyq-actions">'+
-          (upcoming
-            ? '<button class="btn-pyq-view" disabled style="opacity:.4;cursor:not-allowed;flex:2;">Not yet released</button>'
-            : '<button class="btn-pyq-view" data-pid="'+p.id+'" onclick="openPyqModal(this.dataset.pid)">📖 View Paper</button>'+
-              '<button class="btn-pyq-solve" data-pid="'+p.id+'-sol" onclick="openPyqModal(this.dataset.pid)">💡 Solutions</button>'
-          )+
-        '</div>'+
-      '</div>';
-    });
-    html += '</div>';
-  });
-  el.innerHTML = html;
-}
-
-function renderPyqmGrid(group){
-  var el = document.getElementById('pyqmMockGrid');
-  if(!el) return;
-  var groupData = null;
-  PYQ_MOCKS.forEach(function(g){ if(g.group===group) groupData=g; });
-  if(!groupData){ el.innerHTML=''; return; }
-  var html = '<div class="pyqm-grid">';
-  groupData.mocks.forEach(function(m){
-    html += '<div class="pyqm-card">'+
-      '<div class="pyqm-card-top"><span class="pyqm-year-badge">'+m.year+'</span><span class="pyqm-diff '+m.diffcls+'">'+m.diff+'</span></div>'+
-      '<div class="pyqm-title">'+m.title+'</div>'+
-      '<div class="pyqm-sub">'+m.sub+'</div>'+
-      '<div class="pyqm-meta">'+
-        '<div class="pyqm-m">⏱️ <strong>'+m.time+'</strong></div>'+
-        '<div class="pyqm-m">📝 <strong>'+m.qs+' Qs</strong></div>'+
-        '<div class="pyqm-m">🎯 <strong>'+m.marks+' Marks</strong></div>'+
-      '</div>'+
-      '<div class="pyqm-attempt">Not attempted<span>0 / '+m.qs+'</span></div>'+
-      '<div class="pyqm-pbar"><div class="pyqm-pfill" style="width:0%"></div></div>'+
-      '<div class="pyqm-actions">'+
-        '<button class="btn-pyqm-start" data-mid="'+m.id+'" onclick="startPyqMock(this.dataset.mid)">🚀 Start Mock</button>'+
-        '<button class="btn-pyqm-sol" data-mid="'+m.id+'-sol" onclick="openPyqModal(this.dataset.mid)">💡 Solutions</button>'+
-      '</div>'+
-    '</div>';
-  });
-  html += '</div>';
-  el.innerHTML = html;
-}
-
-function showPyqYear(yr, el){
-  document.querySelectorAll('.pyq-ytab').forEach(function(t){t.classList.remove('on');});
-  el.classList.add('on');
-  currentPyqYear = yr;
-  renderPyqGrid(yr);
-}
-function showPyqmGroup(group, el){
-  document.querySelectorAll('.pyqm-ytab').forEach(function(t){t.classList.remove('on');});
-  el.classList.add('on');
-  currentPyqmGroup = group;
-  renderPyqmGrid(group);
-}
-function openPyqModal(paperId){
-  var isSol = paperId.indexOf('-sol') > -1;
-  var base = paperId.replace('-sol','');
-  var parts = base.split('-');
-  var title = 'JEE Mains ' + parts.map(function(p){ return p.charAt(0).toUpperCase()+p.slice(1); }).join(' ');
-  document.getElementById('pyqModalTitle').textContent = title;
-  document.getElementById('pyqModalSub').textContent = isSol
-    ? 'Step-by-step solutions for every question in this paper.'
-    : 'Browse all questions from this paper with subject-wise breakdown.';
-  var modal = document.getElementById('pyqModal');
-  modal.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-function closePyqModal(){
-  document.getElementById('pyqModal').style.display = 'none';
-  document.body.style.overflow = '';
-}
-function startPyqMock(paperId){
-  window.location.href = 'mockarena_jee_main_mocktest.html?pyq=' + paperId;
-}
-document.addEventListener('click', function(e){
-  var modal = document.getElementById('pyqModal');
-  if(modal && modal.style.display==='flex' && e.target===modal) closePyqModal();
-});
-// Init on load
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded', initPyq);
-} else {
-  initPyq();
+function showSubj(s,btn){
+  document.querySelectorAll('.chap-section').forEach(function(c){c.classList.remove('on');});
+  document.querySelectorAll('.subj-tab').forEach(function(t){t.classList.remove('on');});
+  document.getElementById('sec-'+s).classList.add('on');
+  btn.classList.add('on');
 }
 </script>
 </body>
