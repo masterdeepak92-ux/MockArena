@@ -488,18 +488,18 @@ const DIFF_FILTER=params.get('diff')||'';
 
 // ── EXAM CONFIG ──
 const EXAM_CONFIG={
-  JM:{name:'JEE Mains',correct:4,wrong:-1,time:180,subjects:['Physics','Chemistry','Mathematics']},
-  JA:{name:'JEE Advanced',correct:3,wrong:-1,time:180,subjects:['Physics','Chemistry','Mathematics']},
-  NT:{name:'NEET UG',correct:4,wrong:-1,time:200,subjects:['Physics','Chemistry','Biology']},
-  NF:{name:'NEET Foundation',correct:4,wrong:-1,time:180,subjects:['Physics','Chemistry','Biology']},
-  JF:{name:'JEE Foundation',correct:4,wrong:0,time:120,subjects:['Physics','Chemistry','Mathematics']},
-  CB10:{name:'Class 10 CBSE',correct:1,wrong:0,time:180,subjects:['Mathematics','Science']},
-  CB12:{name:'Class 12 CBSE',correct:1,wrong:0,time:180,subjects:['Physics','Chemistry','Mathematics']},
+  JM:{name:'JEE Mains',correct:4,wrong:-1,time:180,perQ:1.25,subjects:['Physics','Chemistry','Mathematics']},
+  JA:{name:'JEE Advanced',correct:3,wrong:-1,time:180,perQ:2,subjects:['Physics','Chemistry','Mathematics']},
+  NT:{name:'NEET UG',correct:4,wrong:-1,time:200,perQ:1,subjects:['Physics','Chemistry','Biology']},
+  NF:{name:'NEET Foundation',correct:4,wrong:-1,time:180,perQ:1.25,subjects:['Physics','Chemistry','Biology']},
+  JF:{name:'JEE Foundation',correct:4,wrong:0,time:120,perQ:1.25,subjects:['Physics','Chemistry','Mathematics']},
+  CB10:{name:'Class 10 CBSE',correct:1,wrong:0,time:180,perQ:2,subjects:['Mathematics','Science']},
+  CB12:{name:'Class 12 CBSE',correct:1,wrong:0,time:180,perQ:2,subjects:['Physics','Chemistry','Mathematics']},
 };
 const cfg=EXAM_CONFIG[EXAM]||EXAM_CONFIG.JM;
 
 // ── STATE ──
-let questions=[],currentQ=0,answers={},marked={},startTime=Date.now(),timerSec=cfg.time*60,timerInterval=null,currentUser=null,visitedQ={};
+let questions=[],currentQ=0,answers={},marked={},startTime=Date.now(),timerSec=Math.round((Q_COUNT>=60?cfg.time:Math.min(Q_COUNT*(cfg.perQ||1.5),cfg.time))*60),timerInterval=null,currentUser=null,visitedQ={};
 
 // ── LOADING ──
 function setLoad(pct,txt){
@@ -749,14 +749,20 @@ window.submitTest=async function(){
   // Calculate score
   let score=0,correct=0,wrong=0,skipped=0;
   const subjScores={};
+  const chapStats={}; // chapter-wise: {chapterKey:{subject,chapter,total,correct,wrong,skipped}}
   questions.forEach((q,i)=>{
     const subj=q.subject;
+    const chap=q.chapter||'General';
+    const chapKey=subj+'::'+chap;
     if(!subjScores[subj])subjScores[subj]={score:0,correct:0,wrong:0,total:0};
+    if(!chapStats[chapKey])chapStats[chapKey]={subject:subj,chapter:chap,total:0,correct:0,wrong:0,skipped:0};
     subjScores[subj].total++;
+    chapStats[chapKey].total++;
     const ans=answers[i];
     const correctAns=q.correct;
     if(ans===undefined||ans===''||ans===null||(Array.isArray(ans)&&!ans.length)){
       skipped++;
+      chapStats[chapKey].skipped++;
     } else {
       let isCorrect=false;
       if(q.type==='MULTI'&&Array.isArray(correctAns)){
@@ -764,13 +770,31 @@ window.submitTest=async function(){
       } else {
         isCorrect=String(ans)===String(correctAns);
       }
-      if(isCorrect){score+=cfg.correct;correct++;subjScores[subj].score+=cfg.correct;subjScores[subj].correct++;}
-      else{score+=cfg.wrong;wrong++;subjScores[subj].score+=cfg.wrong;subjScores[subj].wrong++;}
+      if(isCorrect){
+        score+=cfg.correct;correct++;
+        subjScores[subj].score+=cfg.correct;subjScores[subj].correct++;
+        chapStats[chapKey].correct++;
+      } else {
+        score+=cfg.wrong;wrong++;
+        subjScores[subj].score+=cfg.wrong;subjScores[subj].wrong++;
+        chapStats[chapKey].wrong++;
+      }
     }
   });
 
   const maxScore=questions.length*cfg.correct;
   const pct=maxScore>0?Math.round(score/maxScore*100):0;
+
+  // Convert chapStats to array with accuracy
+  const chapterBreakdown=Object.values(chapStats).map(function(c){
+    const attempted=c.correct+c.wrong;
+    return {
+      subject:c.subject,chapter:c.chapter,total:c.total,
+      correct:c.correct,wrong:c.wrong,skipped:c.skipped,
+      accuracy:attempted>0?Math.round(c.correct/attempted*100):0,
+      attemptRate:Math.round(attempted/c.total*100)
+    };
+  });
 
   // Save to Firebase
   if(currentUser){
@@ -780,6 +804,9 @@ window.submitTest=async function(){
         testName:TEST_NAME,type:TYPE,
         score,maxScore,correct,wrong,skipped,
         percentage:pct,timeTaken,
+        totalQuestions:questions.length,
+        subjectBreakdown:subjScores,
+        chapterBreakdown:chapterBreakdown,
         answers:JSON.stringify(answers),
         createdAt:serverTimestamp(),
       });
