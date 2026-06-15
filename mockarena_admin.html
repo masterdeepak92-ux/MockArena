@@ -1665,7 +1665,7 @@ function procFile(file,type){
     try{
       if(type==='json'){preview(JSON.parse(ev.target.result));}
       else{
-        const rows=ev.target.result.split('\\n').filter(r=>r.trim());
+        let __t=ev.target.result;if(__t.charCodeAt(0)===0xFEFF)__t=__t.slice(1);const rows=__t.split(/\r\n|\r|\n/).filter(r=>r.trim());
         const hs=rows[0].split(',').map(h=>h.replace(/"/g,'').trim().toLowerCase());
         preview(rows.slice(1).map(row=>{const vs=parseCSV(row),o={};hs.forEach((h,i)=>o[h]=(vs[i]||'').replace(/"/g,'').trim());return o;}).filter(r=>r.question));
       }
@@ -1679,7 +1679,7 @@ window.parsePaste=function(){
   const blocks=text.split(/\n\s*\n/);
   const data=blocks.map(block=>{
     const o={};
-    block.trim().split('\\n').forEach(line=>{
+    block.trim().split('\n').forEach(line=>{
       const l=line.trim();
       if(l.startsWith('EXAM:'))o.exam=l.slice(5).trim();
       else if(l.startsWith('SUBJECT:'))o.subject=l.slice(8).trim();
