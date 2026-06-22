@@ -32,23 +32,52 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font
 .nav-switch{font-family:var(--fd);font-size:.9rem;font-weight:700;padding:6px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);text-decoration:none;transition:all .18s;cursor:pointer;}
 .nav-switch:hover{background:rgba(255,255,255,.16);}
 
+/* ── LOADING BAR ── */
+#loading-bar{display:none;height:3px;background:linear-gradient(90deg,var(--sage),var(--gold));position:sticky;top:56px;z-index:99;animation:loadslide 1.4s ease-in-out infinite;}
+@keyframes loadslide{0%{clip-path:inset(0 100% 0 0)}50%{clip-path:inset(0 0% 0 0)}100%{clip-path:inset(0 0 0 100%)}}
+
 /* ── LOGIN ── */
-.login-wrap{min-height:calc(100vh - 56px);display:flex;align-items:center;justify-content:center;padding:24px 16px;}
+#login-wrap{min-height:calc(100vh - 56px);display:flex;align-items:center;justify-content:center;padding:24px 16px;background:var(--cream);}
 .login-box{background:var(--white);border:1.5px solid var(--border);border-radius:18px;padding:36px 28px;width:100%;max-width:380px;box-shadow:var(--sh-lg);}
-.login-title{font-size:1.3rem;font-weight:900;color:var(--forest);margin-bottom:4px;letter-spacing:-.02em;}
-.login-sub{font-size:.93rem;color:var(--txt-lo);margin-bottom:24px;}
+.login-logo{font-size:1.4rem;font-weight:900;color:var(--forest);letter-spacing:-.02em;margin-bottom:2px;}
+.login-logo span{color:var(--sage);}
+.login-sub{font-size:.92rem;color:var(--txt-lo);margin-bottom:26px;}
 .login-label{font-size:.9rem;font-weight:700;color:var(--txt-m);margin-bottom:6px;display:block;}
 .login-input{width:100%;padding:10px 14px;background:var(--cw);border:1.5px solid var(--border);border-radius:10px;color:var(--txt);font-family:var(--fd);font-size:.96rem;outline:none;transition:border .18s;margin-bottom:14px;}
 .login-input:focus{border-color:var(--sage-g);}
-.login-btn{width:100%;padding:12px;background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;font-family:var(--fd);font-weight:800;font-size:1rem;border:none;border-radius:12px;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px var(--sage-g);}
+.login-btn{width:100%;padding:13px;background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;font-family:var(--fd);font-weight:800;font-size:1rem;border:none;border-radius:12px;cursor:pointer;transition:all .2s;box-shadow:0 4px 14px var(--sage-g);}
 .login-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--sage-g);}
-.login-err{font-size:.9rem;color:var(--rose);margin-top:10px;font-weight:600;}
+.login-err{font-size:.9rem;color:var(--rose);margin-top:10px;font-weight:600;min-height:20px;}
+.login-hint{font-size:.88rem;color:var(--txt-lo);margin-top:14px;text-align:center;background:var(--cw);border-radius:8px;padding:9px 12px;border:1px solid var(--border);}
+.login-hint strong{color:var(--gold);}
 
 /* ── DASHBOARD ── */
 #dashboard{display:none;}
 
-/* ── LOADING BAR ── */
-#loading-bar{display:none;height:3px;background:linear-gradient(90deg,var(--sage),var(--gold));position:sticky;top:56px;z-index:99;}
+/* ── HERO ── */
+.hero{background:var(--cream);padding:32px 20px 0;border-bottom:1.5px solid var(--border);}
+.hero-inner{max-width:900px;margin:0 auto;}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.hero-badge{font-size:.88rem;font-weight:800;padding:5px 13px;border-radius:100px;background:var(--sky-l);color:var(--sky);border:1px solid rgba(37,99,235,.18);}
+.hero-updated{font-size:.88rem;font-weight:700;color:var(--txt-lo);}
+.hero-title{font-size:2.2rem;font-weight:900;color:var(--forest);letter-spacing:-.03em;line-height:1.08;margin-bottom:10px;}
+.hero-title span{color:var(--sage);}
+.hero-desc{font-size:1.02rem;color:var(--txt-m);line-height:1.75;max-width:600px;margin-bottom:20px;}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;padding-bottom:28px;}
+.cta-btn{font-family:var(--fd);font-size:1rem;font-weight:800;padding:14px 26px;border-radius:13px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:9px;text-decoration:none;transition:all .22s;}
+.cta-btn.primary{background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;box-shadow:0 4px 18px var(--sage-g);}
+.cta-btn.primary:hover{transform:translateY(-2px);box-shadow:0 7px 24px var(--sage-g);}
+.cta-btn.secondary{background:white;color:var(--forest);border:1.5px solid var(--bm);box-shadow:var(--sh);}
+.cta-btn.secondary:hover{border-color:var(--sage-g);color:var(--sage);}
+
+/* ── INFO STRIP ── */
+.info-strip{background:white;border-bottom:1.5px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.info-strip::-webkit-scrollbar{display:none;}
+.info-inner{max-width:900px;margin:0 auto;padding:0 20px;display:flex;}
+.info-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 20px;border-right:1px solid var(--border);flex-shrink:0;text-align:center;gap:3px;}
+.info-item:last-child{border-right:none;}
+.info-val{font-family:var(--fm);font-size:1rem;font-weight:800;color:var(--forest);}
+.info-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
 
 /* ── MAIN ── */
 .main{max-width:900px;margin:0 auto;padding:24px 16px 48px;}
@@ -57,69 +86,82 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font
 
 /* ── SECTION ── */
 .sec{margin-bottom:32px;}
-.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:8px;}
-.sec-title{font-size:1.1rem;font-weight:900;color:var(--forest);letter-spacing:-.01em;}
-.sec-sub{font-size:.9rem;color:var(--txt-lo);margin-top:2px;}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.sec-title{font-size:1.15rem;font-weight:900;color:var(--forest);letter-spacing:-.01em;}
+.sec-sub{font-size:.92rem;color:var(--txt-lo);margin-top:2px;}
 
-/* ── STAT CARDS (pattern card style) ── */
-.stat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:0;}
-.stat-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 14px;box-shadow:var(--sh);text-align:center;position:relative;overflow:hidden;}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0;}
-.stat-card.s1::before{background:linear-gradient(90deg,var(--sky),#1d4ed8);}
-.stat-card.s2::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
-.stat-card.s3::before{background:linear-gradient(90deg,var(--gold),#9a6e18);}
-.stat-card.s4::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
-.stat-icon{font-size:1.4rem;margin-bottom:8px;}
-.stat-val{font-family:var(--fm);font-size:1.6rem;font-weight:900;color:var(--forest);display:block;line-height:1;margin-bottom:5px;}
-.stat-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
+/* ── PATTERN CARDS ── */
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px;margin-bottom:14px;}
+.pc{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 14px;box-shadow:var(--sh);text-align:center;}
+.pc-icon{font-size:1.4rem;margin-bottom:8px;}
+.pc-val{font-family:var(--fm);font-size:1.6rem;font-weight:900;color:var(--forest);display:block;line-height:1;margin-bottom:5px;}
+.pc-lbl{font-size:.9rem;font-weight:600;color:var(--txt-lo);}
 
-/* ── TABLE CARD ── */
-.table-card{background:white;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--sh);}
-table{width:100%;border-collapse:collapse;}
-thead th{background:var(--cw);padding:10px 14px;text-align:left;font-size:.85rem;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--txt-lo);border-bottom:1.5px solid var(--border);}
-tbody td{padding:12px 14px;border-bottom:1px solid var(--border);font-size:.94rem;vertical-align:middle;}
-tbody tr:last-child td{border-bottom:none;}
-tbody tr:hover{background:var(--sage-l);}
-.empty-row{text-align:center;color:var(--txt-lo);padding:24px !important;font-style:italic;font-size:.92rem;}
+/* ── ROWS — base center-aligned ── */
+.chap-list{display:flex;flex-direction:column;gap:6px;}
+.chap-row{background:white;border:1.5px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:12px;transition:all .18s;}
+.chap-row:hover{border-color:var(--sage-g);box-shadow:0 3px 14px var(--sage-l);}
+/* Student/attempt rows — top-aligned for multi-line content */
+.chap-row.student-row{align-items:flex-start;}
+.chap-row.student-row .chap-tags{padding-top:2px;}
+/* Inactive — not tested yet */
+.chap-row.inactive{opacity:.55;}
+.chap-row.inactive:hover{opacity:.8;}
+.chap-num{font-family:var(--fm);font-size:.92rem;font-weight:700;color:var(--txt-lo);flex-shrink:0;}
+.chap-body{flex:1;min-width:0;}
+.chap-name{font-size:1rem;font-weight:700;color:var(--txt);margin-bottom:3px;}
+.chap-sub{font-size:.88rem;color:var(--txt-lo);}
+.chap-tags{display:flex;gap:5px;flex-shrink:0;align-items:center;}
+.chap-meta-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px;}
 
-/* ── SEARCH ── */
-.search-input{font-family:var(--fd);font-size:.93rem;font-weight:600;padding:7px 13px;background:var(--cw);border:1.5px solid var(--border);border-radius:9px;color:var(--txt);outline:none;transition:border .18s;width:190px;}
-.search-input:focus{border-color:var(--sage-g);}
+/* ── PRACTICE BUTTON ── */
+.chap-practice{font-family:var(--fd);font-size:.9rem;font-weight:800;padding:5px 12px;border-radius:100px;border:none;background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;cursor:pointer;flex-shrink:0;text-decoration:none;display:inline-flex;align-items:center;transition:all .2s;white-space:nowrap;box-shadow:0 2px 8px var(--sage-g);}
+.chap-practice:hover{transform:translateY(-1px);box-shadow:0 4px 12px var(--sage-g);}
 
-/* ── CHAPTER BAR ── */
-.bar-wrap{background:var(--cw);border-radius:4px;height:7px;width:100px;display:inline-block;vertical-align:middle;}
-.bar-fill{height:7px;border-radius:4px;background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+/* ── TAGS ── */
+.tag{font-size:.85rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.tag.hot{background:var(--rose-l);color:var(--rose);border:1px solid rgba(200,75,75,.18);}
+.tag.mod{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
+.tag.good{background:var(--sage-l);color:var(--sage);border:1px solid var(--sage-g);}
+.tag.sky{background:var(--sky-l);color:var(--sky);border:1px solid rgba(37,99,235,.18);}
+.tag.muted{background:var(--cw);color:var(--txt-lo);border:1px solid var(--border);}
+.tag.violet{background:var(--violet-l);color:var(--violet);border:1px solid rgba(124,58,237,.18);}
 
 /* ── AVATAR ── */
-.av{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--sage-d));font-size:.8rem;font-weight:800;color:white;margin-right:7px;vertical-align:middle;flex-shrink:0;}
+.av{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--sage-d));font-size:.82rem;font-weight:800;color:white;flex-shrink:0;}
 
-/* ── BADGES / PILLS ── */
-.pill{display:inline-block;padding:2px 9px;border-radius:100px;font-size:.85rem;font-weight:800;}
-.pill-sky{background:var(--sky-l);color:var(--sky);border:1px solid rgba(37,99,235,.18);}
-.pill-sage{background:var(--sage-l);color:var(--sage);border:1px solid var(--sage-g);}
-.pill-gold{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
-.pill-rose{background:var(--rose-l);color:var(--rose);border:1px solid rgba(200,75,75,.18);}
-.pill-muted{background:var(--cw);color:var(--txt-lo);border:1px solid var(--border);}
+/* ── TOP SCORER BANNER ── */
+.top-scorer-banner{background:linear-gradient(135deg,var(--gold-l),rgba(200,150,42,.05));border:1.5px solid var(--gold-g);border-radius:13px;padding:13px 16px;display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.tsb-crown{font-size:1.4rem;flex-shrink:0;}
+.tsb-body{flex:1;}
+.tsb-label{font-size:.82rem;font-weight:800;color:var(--gold);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
+.tsb-name{font-size:1rem;font-weight:900;color:var(--forest);}
+.tsb-score{font-family:var(--fm);font-size:1.1rem;font-weight:900;color:var(--gold);flex-shrink:0;}
 
-/* ── VIEW BUTTON ── */
-.btn-view{font-family:var(--fd);font-size:.85rem;font-weight:800;padding:5px 12px;border-radius:100px;border:none;background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;cursor:pointer;transition:all .18s;white-space:nowrap;box-shadow:0 2px 7px var(--sage-g);}
-.btn-view:hover{transform:translateY(-1px);box-shadow:0 4px 10px var(--sage-g);}
+/* ── NOTES ── */
+.section-note{background:var(--sky-l);border:1px solid rgba(37,99,235,.14);border-radius:12px;padding:13px 16px;font-size:.94rem;color:var(--txt-m);line-height:1.65;}
+.section-note strong{color:var(--sky);}
+
+/* ── BAR ── */
+.bar-wrap{background:var(--cw);border-radius:4px;height:7px;width:90px;display:inline-block;vertical-align:middle;}
+.bar-fill{height:7px;border-radius:4px;background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+
+/* ── SEARCH ── */
+.search-input{font-family:var(--fd);font-size:.9rem;font-weight:600;padding:7px 13px;background:white;border:1.5px solid var(--bm);border-radius:9px;color:var(--txt);outline:none;transition:border .18s;width:180px;}
+.search-input:focus{border-color:var(--sage-g);}
 
 /* ── MODAL ── */
-#modal{display:none;position:fixed;inset:0;background:rgba(26,38,24,.45);backdrop-filter:blur(4px);z-index:200;align-items:center;justify-content:center;padding:16px;}
-.modal-box{background:var(--cream);border:1.5px solid var(--border);border-radius:18px;width:100%;max-width:720px;max-height:88vh;overflow-y:auto;box-shadow:var(--sh-lg);}
-.modal-head{background:var(--forest);border-radius:16px 16px 0 0;padding:20px 22px;display:flex;align-items:center;gap:14px;position:relative;}
-.modal-av{width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:1.1rem;font-weight:700;color:white;flex-shrink:0;}
-.modal-name{font-size:1.1rem;font-weight:900;color:white;letter-spacing:-.01em;}
-.modal-email{font-size:.9rem;color:rgba(255,255,255,.5);margin-top:2px;}
-.modal-close{position:absolute;right:16px;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white;width:30px;height:30px;border-radius:8px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-.modal-close:hover{background:rgba(255,255,255,.2);}
-.modal-body{padding:20px 22px;}
-.modal-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
-.mstat{background:white;border:1.5px solid var(--border);border-radius:12px;padding:13px;text-align:center;box-shadow:var(--sh);}
-.mstat-val{font-family:var(--fm);font-size:1.4rem;font-weight:900;color:var(--forest);display:block;line-height:1;margin-bottom:4px;}
-.mstat-lbl{font-size:.85rem;font-weight:600;color:var(--txt-lo);}
-.modal-section-title{font-size:.85rem;font-weight:800;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;}
+#modal{display:none;position:fixed;inset:0;background:rgba(26,38,24,.5);backdrop-filter:blur(3px);z-index:200;align-items:center;justify-content:center;padding:16px;}
+.modal-box{background:var(--cream);border:1.5px solid var(--border);border-radius:18px;width:100%;max-width:700px;max-height:90vh;overflow-y:auto;box-shadow:var(--sh-lg);}
+.modal-hero{background:var(--forest);border-radius:16px 16px 0 0;padding:22px 22px 20px;position:relative;display:flex;align-items:center;gap:14px;}
+.modal-av{width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:1.1rem;font-weight:700;color:white;flex-shrink:0;}
+.modal-name-txt{font-size:1.1rem;font-weight:900;color:white;letter-spacing:-.01em;}
+.modal-email-txt{font-size:.88rem;color:rgba(255,255,255,.5);margin-top:3px;}
+.modal-joined-txt{font-size:.82rem;color:var(--sage);font-weight:700;margin-top:3px;}
+.modal-close-btn{position:absolute;right:16px;top:16px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.8);width:30px;height:30px;border-radius:8px;font-size:1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .18s;}
+.modal-close-btn:hover{background:rgba(255,255,255,.2);}
+.modal-body{padding:20px 20px 24px;}
+.modal-sec-title{font-size:.88rem;font-weight:800;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.08em;margin:0 0 10px;padding-bottom:8px;border-bottom:1.5px solid var(--border);}
 .loading-txt{color:var(--txt-lo);text-align:center;padding:32px;font-size:.95rem;}
 
 /* ── FOOTER ── */
@@ -128,185 +170,147 @@ tbody tr:hover{background:var(--sage-l);}
 .footer-logo span{color:var(--sage);}
 .footer-txt{font-size:.9rem;color:rgba(255,255,255,.4);}
 
-/* ── RESPONSIVE ── */
+/* ── DESKTOP ── */
 @media(min-width:900px){
-  .stat-grid{grid-template-columns:repeat(4,1fr);}
+  .hero{padding:48px 32px 0;}
+  .hero-title{font-size:2.6rem;}
+  .pattern-grid{grid-template-columns:repeat(4,1fr);}
+  .modal-body .pattern-grid{grid-template-columns:repeat(5,1fr);}
+  .info-item{padding:16px 24px;}
+  #chapter-list,#attempts-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  #students-list,#modal-attempts{display:flex;flex-direction:column;gap:6px;}
+  .modal-box{margin:auto;}
 }
-@media(max-width:600px){
-  .search-input{width:140px;}
+@media(max-width:500px){
+  .hero-title{font-size:1.65rem;}
+  .sec-hdr{flex-direction:column;align-items:flex-start;}
+  .search-input{width:100%;}
   .bar-wrap{display:none;}
-  thead th:nth-child(4),tbody td:nth-child(4){display:none;}
-}
-@media(max-width:420px){
-  .stat-grid{grid-template-columns:1fr 1fr;}
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
+<!-- ── NAV ── -->
 <nav class="nav">
-  <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
+  <a href="jee_main.html" class="nav-logo">Mock<span>Arena</span></a>
   <span class="nav-pill">🛡️ Admin</span>
   <div class="nav-r">
-    <a href="jee_main.html" class="nav-switch">← Back to Platform</a>
+    <a href="jee_main.html" class="nav-switch">← Platform</a>
     <button class="nav-switch" id="logout-btn" style="display:none;">Sign Out</button>
   </div>
 </nav>
 
-<!-- LOADING BAR -->
 <div id="loading-bar"></div>
 
-<!-- LOGIN -->
+<!-- ══════════════════════════════════════
+     LOGIN
+══════════════════════════════════════ -->
 <div id="login-wrap">
-  <div class="login-wrap">
-    <div class="login-box">
-      <div class="login-title">Admin Analytics</div>
-      <div class="login-sub">Sign in to view platform insights</div>
-      <label class="login-label">Email</label>
-      <input class="login-input" type="email" id="login-email" placeholder="admin@mockarena.co.in"/>
-      <label class="login-label">Password</label>
-      <input class="login-input" type="password" id="login-pass" placeholder="••••••••"/>
-      <button class="login-btn" id="login-btn">Sign In →</button>
-      <div class="login-err" id="login-err"></div>
-    </div>
+  <div class="login-box">
+    <div class="login-logo">Mock<span>Arena</span></div>
+    <div class="login-sub">Admin Analytics — Sign in to continue</div>
+    <label class="login-label">Email</label>
+    <input class="login-input" type="email" id="login-email" placeholder="admin@mockarena.co.in" autocomplete="email"/>
+    <label class="login-label">Password</label>
+    <input class="login-input" type="password" id="login-pass" placeholder="••••••••" autocomplete="current-password"/>
+    <button class="login-btn" id="login-btn">Sign In →</button>
+    <div class="login-err" id="login-err"></div>
+    <div class="login-hint">🛡️ <strong>Admin access only</strong> — Firebase authenticated</div>
   </div>
 </div>
 
-<!-- DASHBOARD -->
+<!-- ══════════════════════════════════════
+     DASHBOARD
+══════════════════════════════════════ -->
 <div id="dashboard">
-  <div class="main">
 
-    <!-- OVERVIEW STATS -->
-    <div class="sec">
-      <div class="sec-hdr">
-        <div>
-          <div class="sec-title">Platform Overview</div>
-          <div class="sec-sub">Live data from Firebase</div>
-        </div>
-        <button class="btn-view" id="refresh-btn">⟳ Refresh</button>
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">
+        <span class="hero-badge">📊 Admin Dashboard</span>
+        <span class="hero-updated" id="hero-label">Live Firebase Data</span>
       </div>
-      <div class="stat-grid">
-        <div class="stat-card s1">
-          <div class="stat-icon">👥</div>
-          <span class="stat-val" id="stat-students">—</span>
-          <div class="stat-lbl">Registered Students</div>
-        </div>
-        <div class="stat-card s2">
-          <div class="stat-icon">📝</div>
-          <span class="stat-val" id="stat-attempts">—</span>
-          <div class="stat-lbl">Total Attempts</div>
-        </div>
-        <div class="stat-card s3">
-          <div class="stat-icon">🎯</div>
-          <span class="stat-val" id="stat-testers">—</span>
-          <div class="stat-lbl">Students Tested</div>
-        </div>
-        <div class="stat-card s4">
-          <div class="stat-icon">📊</div>
-          <span class="stat-val" id="stat-avg">—</span>
-          <div class="stat-lbl">Avg Score</div>
-        </div>
+      <div class="hero-title">Platform<br/><span>Analytics</span></div>
+      <div class="hero-desc">Track registered students, test attempts, chapter-wise performance and individual student progress — all in one place.</div>
+      <div class="hero-cta">
+        <a href="jee_main.html" class="cta-btn primary">← Back to Platform</a>
+        <button class="cta-btn secondary" id="refresh-btn">⟳ Refresh Data</button>
       </div>
     </div>
+  </div>
 
-    <!-- CHAPTER ACTIVITY -->
+  <!-- INFO STRIP — computed live -->
+  <div class="info-strip">
+    <div class="info-inner">
+      <div class="info-item"><div class="info-val" id="is-students">—</div><div class="info-lbl">Students</div></div>
+      <div class="info-item"><div class="info-val" id="is-attempts">—</div><div class="info-lbl">Attempts</div></div>
+      <div class="info-item"><div class="info-val" id="is-tested">—</div><div class="info-lbl">Tested</div></div>
+      <div class="info-item"><div class="info-val" id="is-avg">—</div><div class="info-lbl">Avg Score</div></div>
+      <div class="info-item"><div class="info-val" id="is-chapters">—</div><div class="info-lbl">Chapters</div></div>
+      <div class="info-item"><div class="info-val" id="is-nottested">—</div><div class="info-lbl">Not Tested</div></div>
+    </div>
+  </div>
+
+  <!-- MAIN -->
+  <div class="main">
+
+    <!-- SECTION 1: CHAPTER ACTIVITY -->
     <div class="sec">
       <div class="sec-hdr">
         <div>
           <div class="sec-title">Chapter-wise Activity</div>
-          <div class="sec-sub">Most attempted chapters</div>
+          <div class="sec-sub">Sorted by most attempted</div>
         </div>
       </div>
-      <div class="table-card">
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Chapter</th>
-              <th>Attempts</th>
-              <th>Popularity</th>
-              <th>Avg Score</th>
-            </tr>
-          </thead>
-          <tbody id="chapter-tbody">
-            <tr><td colspan="5" class="empty-row">Loading…</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="chap-list" id="chapter-list"></div>
     </div>
 
-    <!-- REGISTERED STUDENTS -->
+    <!-- SECTION 2: REGISTERED STUDENTS -->
     <div class="sec">
       <div class="sec-hdr">
         <div>
           <div class="sec-title">Registered Students</div>
-          <div class="sec-sub">All students on MockArena</div>
+          <div class="sec-sub" id="students-sub">All students on MockArena</div>
         </div>
-        <input class="search-input" id="search-students" placeholder="Search students…"/>
+        <input class="search-input" id="search-students" placeholder="🔍 Search students…"/>
       </div>
-      <div class="table-card">
-        <table>
-          <thead>
-            <tr>
-              <th>Student</th>
-              <th>Email</th>
-              <th>Joined</th>
-              <th>Tests</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody id="students-tbody">
-            <tr><td colspan="5" class="empty-row">Loading…</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div id="top-scorer-wrap"></div>
+      <div class="chap-list" id="students-list"></div>
     </div>
 
-    <!-- ALL ATTEMPTS -->
+    <!-- SECTION 3: ALL ATTEMPTS -->
     <div class="sec">
       <div class="sec-hdr">
         <div>
           <div class="sec-title">All Test Attempts</div>
-          <div class="sec-sub">Every test attempt across all students</div>
+          <div class="sec-sub">Every attempt across all students</div>
         </div>
-        <input class="search-input" id="search-attempts" placeholder="Search attempts…"/>
+        <input class="search-input" id="search-attempts" placeholder="🔍 Search attempts…"/>
       </div>
-      <div class="table-card">
-        <table>
-          <thead>
-            <tr>
-              <th>Student</th>
-              <th>Chapter</th>
-              <th>Date</th>
-              <th>Score</th>
-              <th>Marks</th>
-              <th>Time</th>
-            </tr>
-          </thead>
-          <tbody id="attempts-tbody">
-            <tr><td colspan="6" class="empty-row">Loading…</td></tr>
-          </tbody>
-        </table>
-      </div>
+      <div class="chap-list" id="attempts-list"></div>
     </div>
 
-  </div><!-- /main -->
-</div><!-- /dashboard -->
+  </div>
+</div>
 
-<!-- STUDENT DETAIL MODAL -->
+<!-- STUDENT MODAL -->
 <div id="modal">
   <div class="modal-box">
-    <div class="modal-head">
-      <div class="modal-av" id="modal-av">—</div>
-      <div>
-        <div class="modal-name" id="modal-name">—</div>
-        <div class="modal-email" id="modal-email">—</div>
+    <div class="modal-hero">
+      <div class="modal-av" id="modal-av"></div>
+      <div style="flex:1;min-width:0;">
+        <div class="modal-name-txt" id="modal-name"></div>
+        <div class="modal-email-txt" id="modal-email"></div>
+        <div class="modal-joined-txt" id="modal-joined"></div>
       </div>
-      <button class="modal-close" id="modal-close">✕</button>
+      <button class="modal-close-btn" id="modal-close">✕</button>
     </div>
-    <div class="modal-body" id="modal-body">
-      <p class="loading-txt">Loading…</p>
+    <div class="modal-body">
+      <div class="pattern-grid" id="modal-stats" style="margin-bottom:20px;"></div>
+      <div class="modal-sec-title">Attempt History</div>
+      <div class="chap-list" id="modal-attempts"></div>
     </div>
   </div>
 </div>
@@ -317,306 +321,344 @@ tbody tr:hover{background:var(--sage-l);}
   <div class="footer-txt">Admin Analytics · MockArena Platform</div>
 </div>
 
-<!-- FIREBASE -->
+<!-- ══════════════════════════════════════
+     FIREBASE
+══════════════════════════════════════ -->
 <script type="module">
 import { initializeApp }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signInWithEmailAndPassword, signOut }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, getDocs, query, orderBy, doc, getDoc }
+import { getFirestore, collection, getDocs, query, orderBy }
   from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-// ── PASTE YOUR FIREBASE CONFIG HERE ─────────────────────────────────────────
+/* ════════════════════════════════════════
+   ▼▼ PASTE YOUR FIREBASE CONFIG HERE ▼▼
+════════════════════════════════════════ */
 const firebaseConfig = {
-  apiKey:            "YOUR_API_KEY",
-  authDomain:        "YOUR_PROJECT.firebaseapp.com",
-  projectId:         "YOUR_PROJECT_ID",
-  storageBucket:     "YOUR_PROJECT.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId:             "YOUR_APP_ID"
+  apiKey:            "AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
+  authDomain:        "mockarena-c18c4.firebaseapp.com",
+  projectId:         "mockarena-c18c4",
+  storageBucket:     "mockarena-c18c4.firebasestorage.app",
+  messagingSenderId: "861067164791",
+  appId:             "1:861067164791:web:28df5244e34361dd9d5a72",
+  measurementId:     "G-TES4FGZMJF"
 };
-// ─────────────────────────────────────────────────────────────────────────────
-
-// ── ADJUST THESE TO MATCH YOUR FIRESTORE COLLECTION NAMES ────────────────────
-const USERS_COL    = "users";        // registered users collection
-const ATTEMPTS_COL = "testAttempts"; // test attempts collection
-// ─────────────────────────────────────────────────────────────────────────────
+/* ════════════════════════════════════════
+   ▼▼ CONFIRM YOUR COLLECTION NAMES ▼▼
+════════════════════════════════════════ */
+const USERS_COL    = "users";        // your registered users collection
+const ATTEMPTS_COL = "testAttempts"; // your test attempts collection
+/* ══════════════════════════════════════ */
 
 const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
+/* ── HELPERS ── */
+function initials(n){ return (n||"?").split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase(); }
+
+function scoreTag(s){
+  if(s==null) return `<span class="tag muted">—</span>`;
+  if(s>=70)   return `<span class="tag good">${s}%</span>`;
+  if(s>=40)   return `<span class="tag mod">${s}%</span>`;
+  return       `<span class="tag hot">${s}%</span>`;
+}
+
+function loading(on){
+  document.getElementById("loading-bar").style.display = on ? "block" : "none";
+}
+
 /* ── AUTH ── */
 onAuthStateChanged(auth, async (user) => {
-  if (!user) {
-    document.getElementById("login-wrap").style.display = "block";
-    document.getElementById("dashboard").style.display  = "none";
-    document.getElementById("logout-btn").style.display = "none";
+  if(!user){
+    document.getElementById("login-wrap").style.display  = "flex";
+    document.getElementById("dashboard").style.display   = "none";
+    document.getElementById("logout-btn").style.display  = "none";
     return;
   }
-  document.getElementById("login-wrap").style.display = "none";
-  document.getElementById("dashboard").style.display  = "block";
-  document.getElementById("logout-btn").style.display = "inline-block";
+  document.getElementById("login-wrap").style.display  = "none";
+  document.getElementById("dashboard").style.display   = "block";
+  document.getElementById("logout-btn").style.display  = "inline-block";
+  document.getElementById("hero-label").textContent    = "👤 " + user.email;
   await loadAll();
 });
 
-document.getElementById("login-btn").addEventListener("click", async () => {
+document.getElementById("login-btn").addEventListener("click", doLogin);
+document.getElementById("login-pass").addEventListener("keydown", e => { if(e.key==="Enter") doLogin(); });
+
+async function doLogin(){
   const email = document.getElementById("login-email").value.trim();
   const pass  = document.getElementById("login-pass").value;
   const err   = document.getElementById("login-err");
   err.textContent = "";
+  if(!email){ err.textContent = "Please enter your email."; return; }
+  if(!pass) { err.textContent = "Please enter your password."; return; }
   try {
     await signInWithEmailAndPassword(auth, email, pass);
   } catch(e) {
     err.textContent = "Login failed — " + e.message;
   }
-});
+}
 
 document.getElementById("logout-btn").addEventListener("click", () => signOut(auth));
 document.getElementById("refresh-btn").addEventListener("click", loadAll);
 
 /* ── FETCH ── */
-async function fetchUsers() {
+async function fetchUsers(){
   const snap = await getDocs(collection(db, USERS_COL));
-  return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  return snap.docs.map(d => ({id:d.id, ...d.data()}));
 }
 
-async function fetchAttempts() {
+async function fetchAttempts(){
   try {
-    const snap = await getDocs(
-      query(collection(db, ATTEMPTS_COL), orderBy("timestamp", "desc"))
-    );
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    const snap = await getDocs(query(collection(db, ATTEMPTS_COL), orderBy("timestamp","desc")));
+    return snap.docs.map(d => ({id:d.id, ...d.data()}));
   } catch {
-    // fallback without ordering if index not set
     const snap = await getDocs(collection(db, ATTEMPTS_COL));
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    return snap.docs.map(d => ({id:d.id, ...d.data()}));
   }
 }
 
-/* ── LOAD ── */
-async function loadAll() {
+/* ── LOAD ALL ── */
+async function loadAll(){
   loading(true);
   try {
     const [users, attempts] = await Promise.all([fetchUsers(), fetchAttempts()]);
-    renderStats(users, attempts);
-    renderChapters(attempts);
-    renderStudents(users, attempts);
-    renderAttempts(attempts, users);
     window._users    = users;
     window._attempts = attempts;
-  } catch(e) {
-    alert("Error: " + e.message);
+    buildInfoStrip(users, attempts);
+    buildChapters(attempts);
+    buildStudents(users, attempts);
+    buildAttempts(attempts, users);
+  } catch(e){
+    alert("Error loading data: " + e.message);
   }
   loading(false);
 }
 
-function loading(on) {
-  document.getElementById("loading-bar").style.display = on ? "block" : "none";
-}
-
-/* ── STATS ── */
-function renderStats(users, attempts) {
-  const unique = new Set(attempts.map(a => a.userId || a.uid)).size;
-  const avg    = attempts.length
-    ? Math.round(attempts.reduce((s,a) => s+(a.score||0),0) / attempts.length)
-    : 0;
-  document.getElementById("stat-students").textContent = users.length;
-  document.getElementById("stat-attempts").textContent = attempts.length;
-  document.getElementById("stat-testers").textContent  = unique;
-  document.getElementById("stat-avg").textContent      = avg + "%";
+/* ── INFO STRIP ── */
+function buildInfoStrip(users, attempts){
+  const tested    = new Set(attempts.map(a => a.userId||a.uid)).size;
+  const notTested = users.length - tested;
+  const avg       = attempts.length ? Math.round(attempts.reduce((s,a)=>s+(a.score||0),0)/attempts.length) : 0;
+  const chapters  = new Set(attempts.map(a => a.chapter)).size;
+  document.getElementById("is-students").textContent  = users.length;
+  document.getElementById("is-attempts").textContent  = attempts.length;
+  document.getElementById("is-tested").textContent    = tested;
+  document.getElementById("is-avg").textContent       = avg + "%";
+  document.getElementById("is-chapters").textContent  = chapters;
+  document.getElementById("is-nottested").textContent = notTested;
+  document.getElementById("students-sub").textContent = `${users.length} registered · ${notTested} not tested yet`;
 }
 
 /* ── CHAPTERS ── */
-function renderChapters(attempts) {
+function buildChapters(attempts){
   const map = {};
   attempts.forEach(a => {
-    const ch = a.chapter || "Unknown";
-    if (!map[ch]) map[ch] = { count:0, total:0 };
+    const ch = a.chapter||"Unknown";
+    if(!map[ch]) map[ch]={count:0,total:0};
     map[ch].count++;
     map[ch].total += (a.score||0);
   });
-
-  const sorted = Object.entries(map).sort((a,b) => b[1].count - a[1].count);
+  const sorted = Object.entries(map).sort((a,b)=>b[1].count-a[1].count);
   const max    = sorted[0]?.[1].count || 1;
 
-  const rows = sorted.map(([ch, v], i) => {
-    const avg = Math.round(v.total / v.count);
-    const pct = Math.round((v.count / max) * 100);
-    const pill = avg >= 70 ? "pill-sage" : avg >= 40 ? "pill-gold" : "pill-rose";
-    return `<tr>
-      <td><span style="font-family:var(--fm);font-size:.88rem;font-weight:700;color:var(--txt-lo);">${String(i+1).padStart(2,"0")}</span></td>
-      <td style="font-weight:700;">${ch}</td>
-      <td><span class="pill pill-sky">${v.count}</span></td>
-      <td><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div></td>
-      <td><span class="pill ${pill}">${avg}%</span></td>
-    </tr>`;
-  }).join("");
-
-  document.getElementById("chapter-tbody").innerHTML =
-    rows || `<tr><td colspan="5" class="empty-row">No attempts yet</td></tr>`;
+  document.getElementById("chapter-list").innerHTML = sorted.map(([ch,v],i) => {
+    const avg = Math.round(v.total/v.count);
+    const pct = Math.round(v.count/max*100);
+    return `<div class="chap-row">
+      <div class="chap-num">${String(i+1).padStart(2,"0")}</div>
+      <div class="chap-body">
+        <div class="chap-name">${ch}</div>
+        <div class="chap-meta-row">
+          <span class="tag sky">${v.count} attempts</span>
+          <div class="bar-wrap"><div class="bar-fill" style="width:${pct}%"></div></div>
+        </div>
+      </div>
+      <div class="chap-tags">${scoreTag(avg)}</div>
+    </div>`;
+  }).join("") || `<div class="section-note">No attempts recorded yet.</div>`;
 }
 
 /* ── STUDENTS ── */
-function renderStudents(users, attempts) {
-  const countMap = {};
+function buildStudents(users, attempts){
+  const cmap   = {};
+  const scores = {};
   attempts.forEach(a => {
-    const uid = a.userId || a.uid;
-    if (uid) countMap[uid] = (countMap[uid]||0) + 1;
+    const uid = a.userId||a.uid;
+    if(!uid) return;
+    cmap[uid]   = (cmap[uid]||0) + 1;
+    if(!scores[uid]) scores[uid] = [];
+    scores[uid].push(a.score||0);
   });
 
-  const rows = users.map(u => {
-    const name    = u.displayName || u.name || "—";
-    const email   = u.email || "—";
-    const joined  = u.createdAt
+  // avg per student
+  const avgMap = {};
+  users.forEach(u => {
+    avgMap[u.id] = scores[u.id]?.length
+      ? Math.round(scores[u.id].reduce((a,b)=>a+b,0)/scores[u.id].length)
+      : null;
+  });
+
+  // top scorer
+  let topUid=null, topAvg=-1;
+  users.forEach(u => {
+    if(avgMap[u.id]!=null && avgMap[u.id]>topAvg){ topAvg=avgMap[u.id]; topUid=u.id; }
+  });
+  const topUser = users.find(u=>u.id===topUid);
+  if(topUser){
+    document.getElementById("top-scorer-wrap").innerHTML = `
+      <div class="top-scorer-banner">
+        <div class="tsb-crown">🏆</div>
+        <div class="tsb-body">
+          <div class="tsb-label">Top Scorer</div>
+          <div class="tsb-name">${topUser.displayName||topUser.name||topUser.email}</div>
+        </div>
+        <div class="tsb-score">${topAvg}% avg</div>
+      </div>`;
+  }
+
+  document.getElementById("students-list").innerHTML = users.map(u => {
+    const name     = u.displayName||u.name||"—";
+    const email    = u.email||"—";
+    const cnt      = cmap[u.id]||0;
+    const inactive = cnt===0 ? " inactive" : "";
+    const isTop    = u.id===topUid ? `<span class="tag violet">🏆 Top</span>` : "";
+    const ctag     = cnt
+      ? `<span class="tag good">${cnt} test${cnt>1?"s":""}</span>`
+      : `<span class="tag muted">Not tested yet</span>`;
+    const avgTag   = avgMap[u.id]!=null ? scoreTag(avgMap[u.id]) : "";
+    const joined   = u.createdAt
       ? new Date(u.createdAt.seconds ? u.createdAt.seconds*1000 : u.createdAt)
           .toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})
       : "—";
-    const cnt     = countMap[u.id] || 0;
-    const initials = (u.displayName||u.name||u.email||"?").split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
-    const tpill   = cnt ? `<span class="pill pill-sage">${cnt}</span>` : `<span class="pill pill-muted">0</span>`;
 
-    return `<tr>
-      <td><span class="av">${initials}</span>${name}</td>
-      <td style="color:var(--txt-m);">${email}</td>
-      <td style="color:var(--txt-lo);font-size:.9rem;">${joined}</td>
-      <td>${tpill}</td>
-      <td><button class="btn-view" onclick="openModal('${u.id}')">View →</button></td>
-    </tr>`;
-  }).join("");
-
-  document.getElementById("students-tbody").innerHTML =
-    rows || `<tr><td colspan="5" class="empty-row">No students registered</td></tr>`;
+    return `<div class="chap-row student-row${inactive}" id="sr-${u.id}">
+      <div class="av">${initials(name)}</div>
+      <div class="chap-body">
+        <div class="chap-name">${name} ${isTop}</div>
+        <div class="chap-sub">${email}</div>
+        <div class="chap-meta-row">
+          <span class="tag muted">📅 ${joined}</span>
+          ${ctag}
+          ${avgTag}
+        </div>
+      </div>
+      <div class="chap-tags">
+        <button class="chap-practice" onclick="openModal('${u.id}')">View →</button>
+      </div>
+    </div>`;
+  }).join("") || `<div class="section-note">No students registered yet.</div>`;
 }
 
-/* ── ATTEMPTS ── */
-function renderAttempts(attempts, users) {
+/* ── ALL ATTEMPTS ── */
+function buildAttempts(attempts, users){
   const umap = {};
-  users.forEach(u => umap[u.id] = u.displayName || u.name || u.email || u.id);
+  users.forEach(u => umap[u.id] = u.displayName||u.name||u.email||u.id);
 
-  const rows = attempts.map(a => {
-    const uid   = a.userId || a.uid || "—";
-    const name  = umap[uid] || uid;
-    const date  = a.timestamp
+  document.getElementById("attempts-list").innerHTML = attempts.map((a,i) => {
+    const uid  = a.userId||a.uid||"—";
+    const name = umap[uid]||uid;
+    const date = a.timestamp
       ? new Date(a.timestamp.seconds ? a.timestamp.seconds*1000 : a.timestamp)
           .toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})
       : "—";
-    const score = a.score != null ? a.score : null;
-    const spill = score == null ? "pill-muted"
-                : score >= 70   ? "pill-sage"
-                : score >= 40   ? "pill-gold"
-                : "pill-rose";
-    const stxt  = score != null ? score+"%" : "—";
-    const marks = a.marksObtained != null ? `${a.marksObtained}/${a.totalMarks||"?"}` : "—";
-    const time  = a.timeTaken ? fmtTime(a.timeTaken) : "—";
+    const time  = a.timeTaken ? `${Math.floor(a.timeTaken/60)}m ${a.timeTaken%60}s` : "—";
+    const marks = a.marksObtained!=null ? `${a.marksObtained}/${a.totalMarks||"?"}` : "—";
 
-    return `<tr>
-      <td style="font-weight:700;">${name}</td>
-      <td>${a.chapter||"—"}</td>
-      <td style="color:var(--txt-lo);font-size:.9rem;">${date}</td>
-      <td><span class="pill ${spill}">${stxt}</span></td>
-      <td style="font-family:var(--fm);font-size:.88rem;color:var(--txt-m);">${marks}</td>
-      <td style="font-family:var(--fm);font-size:.88rem;color:var(--txt-lo);">${time}</td>
-    </tr>`;
-  }).join("");
-
-  document.getElementById("attempts-tbody").innerHTML =
-    rows || `<tr><td colspan="6" class="empty-row">No test attempts recorded</td></tr>`;
-}
-
-function fmtTime(s) {
-  const m = Math.floor(s/60), sec = s%60;
-  return `${m}m ${sec}s`;
+    return `<div class="chap-row student-row" id="ar-${i}">
+      <div class="av">${initials(name)}</div>
+      <div class="chap-body">
+        <div class="chap-name">${name}</div>
+        <div class="chap-meta-row">
+          <span class="tag sky">${a.chapter||"—"}</span>
+        </div>
+        <div class="chap-meta-row">
+          <span class="tag muted">📅 ${date}</span>
+          <span class="tag muted">⏱ ${time}</span>
+          <span class="tag muted">📋 ${marks}</span>
+        </div>
+      </div>
+      <div class="chap-tags">${scoreTag(a.score!=null?a.score:null)}</div>
+    </div>`;
+  }).join("") || `<div class="section-note">No test attempts recorded yet.</div>`;
 }
 
 /* ── MODAL ── */
-window.openModal = async function(uid) {
+window.openModal = function(uid){
+  const users    = window._users    || [];
+  const attempts = window._attempts || [];
+  const u        = users.find(x=>x.id===uid)||{};
+  const mine     = attempts.filter(a=>(a.userId||a.uid)===uid);
+  const name     = u.displayName||u.name||"—";
+  const email    = u.email||"—";
+  const joined   = u.createdAt
+    ? new Date(u.createdAt.seconds ? u.createdAt.seconds*1000 : u.createdAt)
+        .toLocaleDateString("en-IN",{day:"2-digit",month:"long",year:"numeric"})
+    : "—";
+
+  const avg   = mine.length ? Math.round(mine.reduce((t,a)=>t+(a.score||0),0)/mine.length) : 0;
+  const best  = mine.length ? Math.max(...mine.map(a=>a.score||0)) : null;
+  const worst = mine.length ? Math.min(...mine.map(a=>a.score||0)) : null;
+  const chaps = new Set(mine.map(a=>a.chapter)).size;
+
+  document.getElementById("modal-av").textContent    = initials(name);
+  document.getElementById("modal-name").textContent  = name;
+  document.getElementById("modal-email").textContent = email;
+  document.getElementById("modal-joined").textContent= "📅 Joined " + joined;
+
+  document.getElementById("modal-stats").innerHTML = `
+    <div class="pc"><div class="pc-icon">📝</div><span class="pc-val">${mine.length}</span><div class="pc-lbl">Tests Taken</div></div>
+    <div class="pc"><div class="pc-icon">📊</div><span class="pc-val">${avg}%</span><div class="pc-lbl">Avg Score</div></div>
+    <div class="pc"><div class="pc-icon">🏆</div><span class="pc-val">${best!=null?best+"%":"—"}</span><div class="pc-lbl">Best Score</div></div>
+    <div class="pc"><div class="pc-icon">📉</div><span class="pc-val">${worst!=null?worst+"%":"—"}</span><div class="pc-lbl">Lowest Score</div></div>
+    <div class="pc"><div class="pc-icon">📖</div><span class="pc-val">${chaps}</span><div class="pc-lbl">Chapters</div></div>`;
+
+  document.getElementById("modal-attempts").innerHTML = mine.length
+    ? mine.map(a => {
+        const date  = a.timestamp
+          ? new Date(a.timestamp.seconds ? a.timestamp.seconds*1000 : a.timestamp)
+              .toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})
+          : "—";
+        const time  = a.timeTaken ? `${Math.floor(a.timeTaken/60)}m ${a.timeTaken%60}s` : "—";
+        const marks = a.marksObtained!=null ? `${a.marksObtained}/${a.totalMarks||"?"}` : "—";
+        return `<div class="chap-row">
+          <div class="chap-body">
+            <div class="chap-name">${a.chapter||"—"}</div>
+            <div class="chap-meta-row">
+              <span class="tag muted">📅 ${date}</span>
+              <span class="tag muted">⏱ ${time}</span>
+              <span class="tag muted">📋 ${marks}</span>
+            </div>
+          </div>
+          <div class="chap-tags">${scoreTag(a.score!=null?a.score:null)}</div>
+        </div>`;
+      }).join("")
+    : `<div class="section-note">No tests attempted yet.</div>`;
+
   document.getElementById("modal").style.display = "flex";
-  document.getElementById("modal-body").innerHTML = `<p class="loading-txt">Loading student data…</p>`;
-  document.getElementById("modal-av").textContent   = "—";
-  document.getElementById("modal-name").textContent  = "—";
-  document.getElementById("modal-email").textContent = "—";
-
-  try {
-    const users    = window._users    || [];
-    const attempts = window._attempts || [];
-    const user     = users.find(u => u.id === uid) || {};
-    const mine     = attempts.filter(a => (a.userId||a.uid) === uid);
-
-    const name    = user.displayName || user.name || "—";
-    const email   = user.email || "—";
-    const joined  = user.createdAt
-      ? new Date(user.createdAt.seconds ? user.createdAt.seconds*1000 : user.createdAt)
-          .toLocaleDateString("en-IN",{day:"2-digit",month:"long",year:"numeric"})
-      : "—";
-    const initials = (user.displayName||user.name||user.email||"?").split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase();
-
-    document.getElementById("modal-av").textContent    = initials;
-    document.getElementById("modal-name").textContent  = name;
-    document.getElementById("modal-email").textContent = email + " · Joined " + joined;
-
-    const avgScore = mine.length
-      ? Math.round(mine.reduce((s,a)=>s+(a.score||0),0)/mine.length)
-      : 0;
-    const chapters = new Set(mine.map(a=>a.chapter)).size;
-
-    const rows = mine.length
-      ? mine.map(a => {
-          const date  = a.timestamp
-            ? new Date(a.timestamp.seconds ? a.timestamp.seconds*1000 : a.timestamp)
-                .toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})
-            : "—";
-          const score = a.score != null ? a.score : null;
-          const spill = score==null?"pill-muted":score>=70?"pill-sage":score>=40?"pill-gold":"pill-rose";
-          const marks = a.marksObtained != null ? `${a.marksObtained}/${a.totalMarks||"?"}` : "—";
-          const time  = a.timeTaken ? fmtTime(a.timeTaken) : "—";
-          return `<tr>
-            <td style="font-weight:700;">${a.chapter||"—"}</td>
-            <td style="color:var(--txt-lo);font-size:.9rem;">${date}</td>
-            <td><span class="pill ${spill}">${score!=null?score+"%":"—"}</span></td>
-            <td style="font-family:var(--fm);font-size:.88rem;color:var(--txt-m);">${marks}</td>
-            <td style="font-family:var(--fm);font-size:.88rem;color:var(--txt-lo);">${time}</td>
-          </tr>`;
-        }).join("")
-      : `<tr><td colspan="5" class="empty-row">No tests attempted yet</td></tr>`;
-
-    document.getElementById("modal-body").innerHTML = `
-      <div class="modal-stats">
-        <div class="mstat"><span class="mstat-val">${mine.length}</span><div class="mstat-lbl">Tests Taken</div></div>
-        <div class="mstat"><span class="mstat-val">${avgScore}%</span><div class="mstat-lbl">Avg Score</div></div>
-        <div class="mstat"><span class="mstat-val">${chapters}</span><div class="mstat-lbl">Chapters</div></div>
-      </div>
-      <div class="modal-section-title">Attempt History</div>
-      <div class="table-card">
-        <table>
-          <thead><tr><th>Chapter</th><th>Date</th><th>Score</th><th>Marks</th><th>Time</th></tr></thead>
-          <tbody>${rows}</tbody>
-        </table>
-      </div>`;
-  } catch(e) {
-    document.getElementById("modal-body").innerHTML = `<p class="empty-row">Error: ${e.message}</p>`;
-  }
 };
 
-document.getElementById("modal-close").addEventListener("click", () => {
-  document.getElementById("modal").style.display = "none";
+document.getElementById("modal-close").addEventListener("click",()=>{
+  document.getElementById("modal").style.display="none";
 });
-document.getElementById("modal").addEventListener("click", e => {
-  if (e.target === document.getElementById("modal"))
-    document.getElementById("modal").style.display = "none";
+document.getElementById("modal").addEventListener("click",e=>{
+  if(e.target===document.getElementById("modal"))
+    document.getElementById("modal").style.display="none";
 });
 
 /* ── SEARCH ── */
-document.getElementById("search-students").addEventListener("input", function() {
-  const q = this.value.toLowerCase();
-  document.querySelectorAll("#students-tbody tr").forEach(r => {
-    r.style.display = r.textContent.toLowerCase().includes(q) ? "" : "none";
+document.getElementById("search-students").addEventListener("input",function(){
+  const q=this.value.toLowerCase();
+  document.querySelectorAll("#students-list .chap-row").forEach(r=>{
+    r.style.display=r.textContent.toLowerCase().includes(q)?"":"none";
   });
 });
-document.getElementById("search-attempts").addEventListener("input", function() {
-  const q = this.value.toLowerCase();
-  document.querySelectorAll("#attempts-tbody tr").forEach(r => {
-    r.style.display = r.textContent.toLowerCase().includes(q) ? "" : "none";
+document.getElementById("search-attempts").addEventListener("input",function(){
+  const q=this.value.toLowerCase();
+  document.querySelectorAll("#attempts-list .chap-row").forEach(r=>{
+    r.style.display=r.textContent.toLowerCase().includes(q)?"":"none";
   });
 });
 </script>
