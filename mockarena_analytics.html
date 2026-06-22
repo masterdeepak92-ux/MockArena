@@ -543,15 +543,15 @@ function buildStudents(users, attempts){
   document.getElementById("students-list").innerHTML = users.map(u => {
     const name     = u.displayName||u.name||"—";
     const email    = u.email||"—";
-    const cnt      = cmap[u.id]||0;
+    const cnt      = u.totalTests || cmap[u.id]||0;
     const inactive = cnt===0 ? " inactive" : "";
     const isTop    = u.id===topUid ? `<span class="tag violet">🏆 Top</span>` : "";
     const ctag     = cnt
       ? `<span class="tag good">${cnt} test${cnt>1?"s":""}</span>`
       : `<span class="tag muted">Not tested yet</span>`;
     const avgTag   = avgMap[u.id]!=null ? scoreTag(avgMap[u.id]) : "";
-    const joined   = u.createdAt
-      ? new Date(u.createdAt.seconds ? u.createdAt.seconds*1000 : u.createdAt)
+    const joined   = u.joinDate
+      ? new Date(u.joinDate.seconds ? u.joinDate.seconds*1000 : u.joinDate)
           .toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})
       : "—";
 
@@ -614,8 +614,8 @@ window.openModal = function(uid){
   const mine     = attempts.filter(a=>(a.userId||a.uid)===uid);
   const name     = u.displayName||u.name||"—";
   const email    = u.email||"—";
-  const joined   = u.createdAt
-    ? new Date(u.createdAt.seconds ? u.createdAt.seconds*1000 : u.createdAt)
+  const joined   = u.joinDate
+    ? new Date(u.joinDate.seconds ? u.joinDate.seconds*1000 : u.joinDate)
         .toLocaleDateString("en-IN",{day:"2-digit",month:"long",year:"numeric"})
     : "—";
 
