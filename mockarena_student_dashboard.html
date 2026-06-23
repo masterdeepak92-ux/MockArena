@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>My Dashboard — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --forest:#1a2618;--sage:#6b8f5e;--sage-d:#3a6830;
+  --sage-l:rgba(107,143,94,.11);--sage-g:rgba(107,143,94,.22);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);--gold-g:rgba(200,150,42,.22);
+  --rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
+  --sky:#2563eb;--sky-l:rgba(37,99,235,.09);
+  --violet:#7c3aed;--violet-l:rgba(124,58,237,.09);
+  --cream:#faf9f5;--cw:#f5f3ec;--white:#fff;
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.14);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.38);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --sh:0 2px 12px rgba(26,38,24,.07);
+  --sh-lg:0 6px 24px rgba(26,38,24,.11);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;}
+
+/* ── NAV ── */
+.nav{height:56px;display:flex;align-items:center;padding:0 16px;gap:10px;background:var(--forest);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(107,143,94,.15);}
+.nav-logo{font-size:1.05rem;font-weight:900;text-decoration:none;color:white;letter-spacing:-.02em;}
+.nav-logo span{color:var(--sage);}
+.nav-pill{font-size:.9rem;font-weight:800;padding:4px 12px;border-radius:100px;background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-switch{font-family:var(--fd);font-size:.9rem;font-weight:700;padding:6px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);text-decoration:none;transition:all .18s;cursor:pointer;}
+.nav-switch:hover{background:rgba(255,255,255,.16);}
+.nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--gold));display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;color:white;flex-shrink:0;}
+
+/* ── LOADING ── */
+#loading-bar{display:none;height:3px;background:linear-gradient(90deg,var(--sage),var(--gold));position:sticky;top:56px;z-index:99;}
+
+/* ── NOT LOGGED IN SCREEN ── */
+#not-logged{min-height:calc(100vh - 56px);display:none;align-items:center;justify-content:center;padding:24px 16px;}
+.nl-box{background:white;border:1.5px solid var(--border);border-radius:18px;padding:40px 28px;max-width:360px;width:100%;text-align:center;box-shadow:var(--sh-lg);}
+.nl-icon{font-size:2.8rem;margin-bottom:16px;}
+.nl-title{font-size:1.3rem;font-weight:900;color:var(--forest);margin-bottom:8px;letter-spacing:-.02em;}
+.nl-sub{font-size:.96rem;color:var(--txt-m);line-height:1.65;margin-bottom:24px;}
+.nl-btn{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:13px;background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;font-family:var(--fd);font-weight:800;font-size:1rem;border:none;border-radius:12px;cursor:pointer;text-decoration:none;transition:all .2s;box-shadow:0 4px 14px var(--sage-g);}
+.nl-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px var(--sage-g);}
+
+/* ── DASHBOARD ── */
+#dashboard{display:none;}
+
+/* ── HERO ── */
+.hero{background:var(--cream);padding:32px 20px 0;border-bottom:1.5px solid var(--border);}
+.hero-inner{max-width:900px;margin:0 auto;}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.hero-badge{font-size:.88rem;font-weight:800;padding:5px 13px;border-radius:100px;background:var(--sky-l);color:var(--sky);border:1px solid rgba(37,99,235,.18);}
+.hero-updated{font-size:.88rem;font-weight:700;color:var(--txt-lo);}
+.hero-title{font-size:2.2rem;font-weight:900;color:var(--forest);letter-spacing:-.03em;line-height:1.08;margin-bottom:10px;}
+.hero-title span{color:var(--sage);}
+.hero-desc{font-size:1.02rem;color:var(--txt-m);line-height:1.75;max-width:600px;margin-bottom:20px;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;}
+.h-stat{display:flex;align-items:center;gap:7px;background:white;border:1.5px solid var(--border);border-radius:11px;padding:9px 14px;box-shadow:var(--sh);}
+.h-stat-icon{font-size:1.1rem;}
+.h-stat-val{font-family:var(--fm);font-size:.96rem;font-weight:800;color:var(--forest);}
+.h-stat-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;padding-bottom:28px;}
+.cta-btn{font-family:var(--fd);font-size:1rem;font-weight:800;padding:14px 26px;border-radius:13px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:9px;text-decoration:none;transition:all .22s;}
+.cta-btn.primary{background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;box-shadow:0 4px 18px var(--sage-g);}
+.cta-btn.primary:hover{transform:translateY(-2px);box-shadow:0 7px 24px var(--sage-g);}
+.cta-btn.secondary{background:white;color:var(--forest);border:1.5px solid var(--bm);box-shadow:var(--sh);}
+.cta-btn.secondary:hover{border-color:var(--sage-g);color:var(--sage);}
+.cta-btn.gold{background:linear-gradient(135deg,var(--gold),#9a6e18);color:white;box-shadow:0 4px 18px var(--gold-g);}
+.cta-btn.gold:hover{transform:translateY(-2px);}
+
+/* ── INFO STRIP ── */
+.info-strip{background:white;border-bottom:1.5px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.info-strip::-webkit-scrollbar{display:none;}
+.info-inner{max-width:900px;margin:0 auto;padding:0 20px;display:flex;}
+.info-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 20px;border-right:1px solid var(--border);flex-shrink:0;text-align:center;gap:3px;}
+.info-item:last-child{border-right:none;}
+.info-val{font-family:var(--fm);font-size:1rem;font-weight:800;color:var(--forest);}
+.info-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
+
+/* ── MAIN ── */
+.main{max-width:900px;margin:0 auto;padding:24px 16px 48px;}
+@media(min-width:700px){.main{padding:28px 24px 48px;}}
+@media(min-width:960px){.main{padding:32px 32px 56px;}}
+
+/* ── SECTION ── */
+.sec{margin-bottom:32px;}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.sec-title{font-size:1.15rem;font-weight:900;color:var(--forest);letter-spacing:-.01em;}
+.sec-sub{font-size:.92rem;color:var(--txt-lo);margin-top:2px;}
+
+/* ── PATTERN CARDS ── */
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:10px;}
+.pc{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 14px;box-shadow:var(--sh);text-align:center;position:relative;overflow:hidden;}
+.pc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0;}
+.pc.c1::before{background:linear-gradient(90deg,var(--sky),#1d4ed8);}
+.pc.c2::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.pc.c3::before{background:linear-gradient(90deg,var(--gold),#9a6e18);}
+.pc.c4::before{background:linear-gradient(90deg,var(--violet),#5b21b6);}
+.pc.c5::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
+.pc-icon{font-size:1.4rem;margin-bottom:8px;}
+.pc-val{font-family:var(--fm);font-size:1.6rem;font-weight:900;color:var(--forest);display:block;line-height:1;margin-bottom:5px;}
+.pc-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
+
+/* ── TEST CARDS ── */
+.test-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.test-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .22s;box-shadow:var(--sh);text-decoration:none;display:block;position:relative;overflow:hidden;}
+.test-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;}
+.test-card.mock::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.test-card.phy::before{background:linear-gradient(90deg,var(--sky),#1d4ed8);}
+.test-card.gold::before{background:linear-gradient(90deg,var(--gold),#9a6e18);}
+.test-card.vio::before{background:linear-gradient(90deg,var(--violet),#5b21b6);}
+.test-card.rose::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
+.test-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--sage-g);}
+.tc-icon{font-size:1.9rem;margin-bottom:10px;display:block;}
+.tc-name{font-size:.97rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
+.tc-meta{font-size:.88rem;color:var(--txt-lo);}
+.tc-badge{position:absolute;top:12px;right:10px;font-size:.82rem;font-weight:800;padding:2px 8px;border-radius:100px;background:var(--sage-l);color:var(--sage);}
+
+/* ── CHAPTER ROWS ── */
+.chap-list{display:flex;flex-direction:column;gap:6px;}
+.chap-row{background:white;border:1.5px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;align-items:center;gap:10px;transition:all .18s;}
+.chap-row:hover{border-color:var(--sage-g);box-shadow:0 3px 14px var(--sage-l);}
+.chap-row.top{align-items:flex-start;}
+.chap-num{font-family:var(--fm);font-size:.92rem;font-weight:700;color:var(--txt-lo);width:26px;flex-shrink:0;}
+.chap-body{flex:1;min-width:0;}
+.chap-name{font-size:1rem;font-weight:700;color:var(--txt);margin-bottom:3px;}
+.chap-sub{font-size:.88rem;color:var(--txt-lo);}
+.chap-meta-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:5px;}
+.chap-tags{display:flex;gap:5px;flex-shrink:0;align-items:center;}
+.chap-practice{font-family:var(--fd);font-size:.9rem;font-weight:800;padding:5px 12px;border-radius:100px;border:none;background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;cursor:pointer;flex-shrink:0;text-decoration:none;display:inline-flex;align-items:center;transition:all .2s;white-space:nowrap;box-shadow:0 2px 8px var(--sage-g);}
+.chap-practice:hover{transform:translateY(-1px);box-shadow:0 4px 12px var(--sage-g);}
+.chap-arrow{font-size:.9rem;color:var(--txt-lo);}
+
+/* ── TAGS ── */
+.tag{font-size:.85rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.tag.hot{background:var(--rose-l);color:var(--rose);border:1px solid rgba(200,75,75,.18);}
+.tag.mod{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
+.tag.good{background:var(--sage-l);color:var(--sage);border:1px solid var(--sage-g);}
+.tag.sky{background:var(--sky-l);color:var(--sky);border:1px solid rgba(37,99,235,.18);}
+.tag.muted{background:var(--cw);color:var(--txt-lo);border:1px solid var(--border);}
+.tag.violet{background:var(--violet-l);color:var(--violet);border:1px solid rgba(124,58,237,.18);}
+
+/* ── PROGRESS BAR ── */
+.prog-wrap{background:var(--cw);border-radius:6px;height:8px;min-width:60px;flex:1;max-width:120px;}
+.prog-fill{height:8px;border-radius:6px;background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+
+/* ── STREAK BANNER ── */
+.streak-banner{background:linear-gradient(135deg,var(--forest),#243d20);border-radius:14px;padding:18px 20px;display:flex;align-items:center;gap:16px;box-shadow:var(--sh-lg);}
+.streak-fire{font-size:2.4rem;flex-shrink:0;}
+.streak-body{flex:1;}
+.streak-val{font-family:var(--fm);font-size:1.8rem;font-weight:900;color:white;line-height:1;}
+.streak-lbl{font-size:.88rem;color:rgba(255,255,255,.45);margin-top:3px;}
+.streak-msg{font-size:.9rem;color:var(--sage);font-weight:700;margin-top:6px;}
+
+/* ── MARKING SCHEME ── */
+.marking-wrap{background:white;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--sh);}
+.mk-row{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--border);}
+.mk-row:last-child{border-bottom:none;}
+.mk-left{display:flex;align-items:center;gap:10px;}
+.mk-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.mk-label{font-size:.96rem;font-weight:600;color:var(--txt-m);}
+.mk-val{font-family:var(--fm);font-size:1rem;font-weight:800;padding:4px 12px;border-radius:8px;}
+.mk-val.pos{color:var(--sage);background:var(--sage-l);}
+.mk-val.neg{color:var(--rose);background:var(--rose-l);}
+.mk-val.neu{color:var(--txt-lo);background:var(--cw);}
+
+/* ── NOTES ── */
+.section-note{background:var(--sky-l);border:1px solid rgba(37,99,235,.14);border-radius:12px;padding:13px 16px;font-size:.94rem;color:var(--txt-m);line-height:1.65;}
+.section-note strong{color:var(--sky);}
+.pyq-note{background:var(--gold-l);border:1px solid var(--gold-g);border-radius:12px;padding:12px 16px;font-size:.94rem;color:var(--txt-m);line-height:1.65;}
+.pyq-note strong{color:var(--gold);}
+
+/* ── FOOTER ── */
+.footer{background:var(--forest);padding:28px 20px;text-align:center;}
+.footer-logo{font-size:1.1rem;font-weight:900;color:white;letter-spacing:-.02em;margin-bottom:6px;}
+.footer-logo span{color:var(--sage);}
+.footer-txt{font-size:.9rem;color:rgba(255,255,255,.4);}
+
+/* ── DESKTOP ── */
+@media(min-width:900px){
+  .hero{padding:48px 32px 0;}
+  .hero-title{font-size:2.6rem;}
+  .hero-desc{font-size:1.04rem;}
+  /* 5 col grids */
+  .pattern-grid{grid-template-columns:repeat(5,1fr);}
+  .test-grid{grid-template-columns:repeat(5,1fr);}
+  /* chapter progress — 2 col */
+  #chapter-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  /* recent attempts — single col always for readability */
+  #recent-list{display:flex;flex-direction:column;gap:6px;}
+  /* info strip */
+  .info-item{padding:16px 24px;}
+  .info-val{font-size:1.05rem;}
+  /* streak banner wider */
+  .streak-banner{padding:22px 28px;}
+  .streak-val{font-size:2.2rem;}
+  /* marking scheme max width */
+  .marking-wrap{max-width:520px;}
+  /* not-logged box centered */
+  .nl-box{max-width:420px;}
+}
+@media(max-width:500px){
+  .hero-title{font-size:1.65rem;}
+  .test-grid{grid-template-columns:repeat(2,1fr);}
+  .info-item{padding:12px 14px;}
+  .pattern-grid{grid-template-columns:repeat(2,1fr);}
+  .sec-hdr{flex-direction:column;align-items:flex-start;}
+  .hero-cta{flex-direction:column;}
+  .cta-btn{width:100%;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
+  <span class="nav-pill" id="nav-stream">📊 My Dashboard</span>
+  <div class="nav-r">
+    <a href="jee_main.html" class="nav-switch">Practice →</a>
+    <div class="nav-av" id="nav-av" style="display:none;"></div>
+    <button class="nav-switch" id="logout-btn" style="display:none;">Sign Out</button>
+  </div>
+</nav>
+
+<div id="loading-bar"></div>
+
+<!-- NOT LOGGED IN -->
+<div id="not-logged" style="display:flex;">
+  <div class="nl-box">
+    <div class="nl-icon">🔒</div>
+    <div class="nl-title">Sign in to continue</div>
+    <div class="nl-sub">View your progress, scores and chapter performance on MockArena.</div>
+    <a href="mockarena_onboarding.html" class="nl-btn">Sign In to MockArena →</a>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="hero-eyebrow">
+        <span class="hero-badge" id="hero-badge">📊 My Dashboard</span>
+        <span class="hero-updated" id="hero-joined"></span>
+      </div>
+      <div class="hero-title">Welcome back,<br/><span id="hero-name">Student</span> 👋</div>
+      <div class="hero-desc" id="hero-desc">Track your progress, review your scores and keep pushing toward your goal.</div>
+      <div class="hero-stats">
+        <div class="h-stat"><span class="h-stat-icon">📝</span><div><div class="h-stat-val" id="hs-tests">0</div><div class="h-stat-lbl">Tests</div></div></div>
+        <div class="h-stat"><span class="h-stat-icon">📊</span><div><div class="h-stat-val" id="hs-avg">0%</div><div class="h-stat-lbl">Avg Score</div></div></div>
+        <div class="h-stat"><span class="h-stat-icon">🏆</span><div><div class="h-stat-val" id="hs-best">0%</div><div class="h-stat-lbl">Best</div></div></div>
+        <div class="h-stat"><span class="h-stat-icon">🔥</span><div><div class="h-stat-val" id="hs-streak">0</div><div class="h-stat-lbl">Streak</div></div></div>
+        <div class="h-stat"><span class="h-stat-icon">⭐</span><div><div class="h-stat-val" id="hs-points">0</div><div class="h-stat-lbl">Points</div></div></div>
+      </div>
+      <div class="hero-cta">
+        <a href="jee_main.html" class="cta-btn primary" id="cta-practice">📖 Continue Practicing</a>
+        <a href="mockarena_test.html?exam=JM&type=mock&name=JEE+Mains+Full+Mock&count=90" class="cta-btn gold">🎯 Full Mock Test</a>
+        <a href="mockarena_onboarding.html" class="cta-btn secondary">🔄 Switch Exam</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- INFO STRIP -->
+  <div class="info-strip">
+    <div class="info-inner">
+      <div class="info-item"><div class="info-val" id="is-tests">0</div><div class="info-lbl">Tests Taken</div></div>
+      <div class="info-item"><div class="info-val" id="is-avg">0%</div><div class="info-lbl">Avg Score</div></div>
+      <div class="info-item"><div class="info-val" id="is-best">0%</div><div class="info-lbl">Best Score</div></div>
+      <div class="info-item"><div class="info-val" id="is-worst">—</div><div class="info-lbl">Lowest Score</div></div>
+      <div class="info-item"><div class="info-val" id="is-chapters">0</div><div class="info-lbl">Chapters Done</div></div>
+      <div class="info-item"><div class="info-val" id="is-points">0</div><div class="info-lbl">Total Points</div></div>
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- ── SECTION 1: PERFORMANCE CARDS ── -->
+    <div class="sec">
+      <div class="sec-hdr">
+        <div>
+          <div class="sec-title">Your Performance</div>
+          <div class="sec-sub">Lifetime stats on MockArena</div>
+        </div>
+      </div>
+      <div class="pattern-grid">
+        <div class="pc c1"><div class="pc-icon">📝</div><span class="pc-val" id="pc-tests">0</span><div class="pc-lbl">Tests Taken</div></div>
+        <div class="pc c2"><div class="pc-icon">📊</div><span class="pc-val" id="pc-avg">0%</span><div class="pc-lbl">Avg Score</div></div>
+        <div class="pc c3"><div class="pc-icon">🏆</div><span class="pc-val" id="pc-best">0%</span><div class="pc-lbl">Best Score</div></div>
+        <div class="pc c4"><div class="pc-icon">📉</div><span class="pc-val" id="pc-worst">—</span><div class="pc-lbl">Lowest Score</div></div>
+        <div class="pc c5"><div class="pc-icon">📖</div><span class="pc-val" id="pc-chapters">0</span><div class="pc-lbl">Chapters Done</div></div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 2: STREAK ── -->
+    <div class="sec" id="streak-sec" style="display:none;">
+      <div class="sec-hdr">
+        <div>
+          <div class="sec-title">Study Streak</div>
+          <div class="sec-sub">Daily practice builds champions</div>
+        </div>
+      </div>
+      <div class="streak-banner">
+        <div class="streak-fire">🔥</div>
+        <div class="streak-body">
+          <div class="streak-val" id="streak-val">0</div>
+          <div class="streak-lbl">Day streak</div>
+          <div class="streak-msg" id="streak-msg">Keep it up!</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 3: CHAPTER PROGRESS ── -->
+    <div class="sec">
+      <div class="sec-hdr">
+        <div>
+          <div class="sec-title">Chapter Progress</div>
+          <div class="sec-sub">Your performance chapter by chapter</div>
+        </div>
+      </div>
+      <div class="chap-list" id="chapter-list">
+        <div class="section-note">No attempts yet — <strong>pick a chapter below and start practicing!</strong></div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 4: QUICK START ── -->
+    <div class="sec">
+      <div class="sec-hdr">
+        <div>
+          <div class="sec-title">Start Practicing Now</div>
+          <div class="sec-sub">Jump straight into a test</div>
+        </div>
+      </div>
+      <div class="test-grid">
+        <a href="mockarena_test.html?exam=JM&type=mock&name=JEE+Mains+Full+Mock&count=90" class="test-card mock">
+          <span class="tc-icon">🎯</span>
+          <div class="tc-name">Full Mock Test</div>
+          <div class="tc-meta">90 Qs · 3 hrs</div>
+          <span class="tc-badge">Best prep</span>
+        </a>
+        <a href="mockarena_test.html?exam=JM&subj=Physics&name=Physics+Test&count=30" class="test-card phy">
+          <span class="tc-icon">⚡</span>
+          <div class="tc-name">Physics</div>
+          <div class="tc-meta">30 Qs · 1 hr</div>
+        </a>
+        <a href="mockarena_test.html?exam=JM&subj=Chemistry&name=Chemistry+Test&count=30" class="test-card gold">
+          <span class="tc-icon">🧪</span>
+          <div class="tc-name">Chemistry</div>
+          <div class="tc-meta">30 Qs · 1 hr</div>
+        </a>
+        <a href="mockarena_test.html?exam=JM&subj=Mathematics&name=Maths+Test&count=30" class="test-card vio">
+          <span class="tc-icon">📐</span>
+          <div class="tc-name">Mathematics</div>
+          <div class="tc-meta">30 Qs · 1 hr</div>
+        </a>
+        <a href="jee_main.html" class="test-card rose">
+          <span class="tc-icon">📚</span>
+          <div class="tc-name">Chapter-wise</div>
+          <div class="tc-meta">Pick any chapter</div>
+        </a>
+      </div>
+    </div>
+
+    <!-- ── SECTION 5: RECENT ATTEMPTS ── -->
+    <div class="sec">
+      <div class="sec-hdr">
+        <div>
+          <div class="sec-title">Recent Attempts</div>
+          <div class="sec-sub">Your last 10 tests</div>
+        </div>
+      </div>
+      <div class="chap-list" id="recent-list">
+        <div class="section-note">No attempts yet — <strong>take your first test!</strong></div>
+      </div>
+    </div>
+
+    <!-- ── SECTION 6: MARKING SCHEME ── -->
+    <div class="sec">
+      <div class="sec-hdr">
+        <div>
+          <div class="sec-title">Marking Scheme</div>
+          <div class="sec-sub">JEE Mains — remember this always</div>
+        </div>
+      </div>
+      <div class="marking-wrap">
+        <div class="mk-row">
+          <div class="mk-left"><div class="mk-dot" style="background:var(--sage)"></div><div class="mk-label">Correct Answer</div></div>
+          <div class="mk-val pos">+4 marks</div>
+        </div>
+        <div class="mk-row">
+          <div class="mk-left"><div class="mk-dot" style="background:var(--rose)"></div><div class="mk-label">Wrong Answer</div></div>
+          <div class="mk-val neg">−1 mark</div>
+        </div>
+        <div class="mk-row">
+          <div class="mk-left"><div class="mk-dot" style="background:var(--txt-lo)"></div><div class="mk-label">Not Attempted</div></div>
+          <div class="mk-val neu">0 marks</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div><!-- /dashboard -->
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-logo">Mock<span>Arena</span></div>
+  <div class="footer-txt">India's most complete JEE preparation platform · Updated 2025–26</div>
+</div>
+
+<script type="module">
+import { initializeApp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, signOut }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, getDocs, query, where, orderBy, doc, getDoc }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+/* ══ FIREBASE CONFIG ══ */
+const firebaseConfig = {
+  apiKey:            "AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
+  authDomain:        "mockarena-c18c4.firebaseapp.com",
+  projectId:         "mockarena-c18c4",
+  storageBucket:     "mockarena-c18c4.firebasestorage.app",
+  messagingSenderId: "861067164791",
+  appId:             "1:861067164791:web:28df5244e34361dd9d5a72",
+  measurementId:     "G-TES4FGZMJF"
+};
+const USERS_COL    = "users";
+const ATTEMPTS_COL = "results"; // change to "testAttempts" if needed
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+/* ── HELPERS ── */
+function initials(n){ return (n||"?").split(" ").map(w=>w[0]).join("").slice(0,2).toUpperCase(); }
+function $(id){ return document.getElementById(id); }
+function set(id,v){ const el=$(id); if(el) el.textContent=v; }
+function loading(on){ $("loading-bar").style.display=on?"block":"none"; }
+
+function scoreTag(s){
+  if(s==null) return `<span class="tag muted">—</span>`;
+  if(s>=70)   return `<span class="tag good">${s}%</span>`;
+  if(s>=40)   return `<span class="tag mod">${s}%</span>`;
+  return       `<span class="tag hot">${s}%</span>`;
+}
+
+/* ── AUTH ── */
+onAuthStateChanged(auth, async (user) => {
+  if(!user){
+    $("not-logged").style.display  = "flex";
+    $("dashboard").style.display   = "none";
+    $("logout-btn").style.display  = "none";
+    $("nav-av").style.display      = "none";
+    return;
+  }
+  $("not-logged").style.display  = "none";
+  $("dashboard").style.display   = "block";
+  $("logout-btn").style.display  = "inline-block";
+  $("nav-av").style.display      = "flex";
+  $("nav-av").textContent        = initials(user.displayName||user.email||"?");
+  await loadDashboard(user);
+});
+
+$("logout-btn").addEventListener("click", () => signOut(auth));
+
+/* ── LOAD ── */
+async function loadDashboard(user){
+  loading(true);
+  try {
+    // user doc
+    let udata = {};
+    try {
+      const snap = await getDoc(doc(db, USERS_COL, user.uid));
+      if(snap.exists()) udata = snap.data();
+    } catch(_){}
+
+    // attempts
+    let attempts = [];
+    try {
+      const snap = await getDocs(
+        query(collection(db, ATTEMPTS_COL),
+          where("userId","==",user.uid),
+          orderBy("timestamp","desc"))
+      );
+      attempts = snap.docs.map(d=>({id:d.id,...d.data()}));
+    } catch {
+      try {
+        const snap = await getDocs(
+          query(collection(db, ATTEMPTS_COL), where("uid","==",user.uid))
+        );
+        attempts = snap.docs.map(d=>({id:d.id,...d.data()}));
+      } catch(_){}
+    }
+
+    renderHero(user, udata, attempts);
+    renderInfoStrip(udata, attempts);
+    renderCards(udata, attempts);
+    renderStreak(udata);
+    renderChapterProgress(attempts);
+    renderRecent(attempts);
+
+  } catch(e){ console.error(e); }
+  loading(false);
+}
+
+/* ── HERO ── */
+function renderHero(user, d, attempts){
+  const name   = d.displayName||user.displayName||user.email||"Student";
+  const first  = name.split(" ")[0];
+  const stream = d.streamLabel||d.stream||d.examTarget||"JEE Main";
+  const joined = d.joinDate
+    ? new Date(d.joinDate.seconds ? d.joinDate.seconds*1000 : d.joinDate)
+        .toLocaleDateString("en-IN",{day:"2-digit",month:"long",year:"numeric"})
+    : "";
+
+  set("hero-name",   first);
+  set("hero-badge",  "📊 " + stream + " Dashboard");
+  set("nav-stream",  "📊 " + stream);
+  if(joined) set("hero-joined", "📅 Joined " + joined);
+
+  const tests  = attempts.length;
+  const scores = attempts.map(a=>a.score||0);
+  const avg    = tests ? Math.round(scores.reduce((a,b)=>a+b,0)/tests) : 0;
+  const best   = tests ? Math.max(...scores) : 0;
+
+  set("hs-tests",   tests);
+  set("hs-avg",     avg + "%");
+  set("hs-best",    best + "%");
+  set("hs-streak",  d.streak||0);
+  set("hs-points",  d.totalPoints||0);
+}
+
+/* ── INFO STRIP ── */
+function renderInfoStrip(d, attempts){
+  const tests   = attempts.length;
+  const scores  = attempts.map(a=>a.score||0);
+  const avg     = tests ? Math.round(scores.reduce((a,b)=>a+b,0)/tests) : 0;
+  const best    = tests ? Math.max(...scores) : 0;
+  const worst   = tests ? Math.min(...scores) : 0;
+  const chapters= new Set(attempts.map(a=>a.chapter)).size;
+
+  set("is-tests",    tests);
+  set("is-avg",      avg + "%");
+  set("is-best",     best + "%");
+  set("is-worst",    tests ? worst + "%" : "—");
+  set("is-chapters", chapters);
+  set("is-points",   d.totalPoints||0);
+}
+
+/* ── STAT CARDS ── */
+function renderCards(d, attempts){
+  const tests   = attempts.length;
+  const scores  = attempts.map(a=>a.score||0);
+  const avg     = tests ? Math.round(scores.reduce((a,b)=>a+b,0)/tests) : 0;
+  const best    = tests ? Math.max(...scores) : 0;
+  const worst   = tests ? Math.min(...scores) : 0;
+  const chapters= new Set(attempts.map(a=>a.chapter)).size;
+
+  set("pc-tests",    tests);
+  set("pc-avg",      avg + "%");
+  set("pc-best",     best + "%");
+  set("pc-worst",    tests ? worst + "%" : "—");
+  set("pc-chapters", chapters);
+}
+
+/* ── STREAK ── */
+function renderStreak(d){
+  const s = d.streak||0;
+  if(s > 0){
+    $("streak-sec").style.display = "block";
+    set("streak-val", s + (s===1 ? " day" : " days"));
+    set("streak-msg",
+      s>=14 ? "🏆 Absolutely unstoppable!" :
+      s>=7  ? "⚡ On fire! Keep going!" :
+      s>=3  ? "💪 Great consistency!" :
+               "✅ Good start, keep it up!");
+  }
+}
+
+/* ── CHAPTER PROGRESS ── */
+function renderChapterProgress(attempts){
+  if(!attempts.length) return;
+
+  const map = {};
+  attempts.forEach(a=>{
+    const ch = a.chapter||"Unknown";
+    if(!map[ch]) map[ch]={count:0,total:0,best:0,scores:[]};
+    map[ch].count++;
+    map[ch].total += (a.score||0);
+    map[ch].scores.push(a.score||0);
+    if((a.score||0) > map[ch].best) map[ch].best = a.score||0;
+  });
+
+  const sorted = Object.entries(map).sort((a,b)=>b[1].best-a[1].best);
+
+  $("chapter-list").innerHTML = sorted.map(([ch,v],i)=>{
+    const avg = Math.round(v.total/v.count);
+    const pct = Math.min(100,avg);
+    const trend = v.scores.length>=2
+      ? v.scores[0] > v.scores[v.scores.length-1]
+        ? `<span class="tag good">↑ Improving</span>`
+        : `<span class="tag mod">↓ Review needed</span>`
+      : "";
+
+    return `<div class="chap-row top">
+      <div class="chap-num">${String(i+1).padStart(2,"0")}</div>
+      <div class="chap-body">
+        <div class="chap-name">${ch}</div>
+        <div class="chap-meta-row">
+          <div class="prog-wrap"><div class="prog-fill" style="width:${pct}%"></div></div>
+          <span class="tag sky">${v.count} attempt${v.count>1?"s":""}</span>
+          ${trend}
+        </div>
+      </div>
+      <div class="chap-tags">
+        ${scoreTag(avg)}
+        <span class="tag violet">Best ${v.best}%</span>
+      </div>
+    </div>`;
+  }).join("");
+}
+
+/* ── RECENT ATTEMPTS ── */
+function renderRecent(attempts){
+  if(!attempts.length) return;
+
+  $("recent-list").innerHTML = attempts.slice(0,10).map((a,i)=>{
+    const date  = a.timestamp
+      ? new Date(a.timestamp.seconds ? a.timestamp.seconds*1000 : a.timestamp)
+          .toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})
+      : "—";
+    const time  = a.timeTaken ? `${Math.floor(a.timeTaken/60)}m ${a.timeTaken%60}s` : "—";
+    const marks = a.marksObtained!=null ? `${a.marksObtained}/${a.totalMarks||"?"}` : "—";
+
+    return `<div class="chap-row top">
+      <div class="chap-num">${String(i+1).padStart(2,"0")}</div>
+      <div class="chap-body">
+        <div class="chap-name">${a.chapter||a.testName||"—"}</div>
+        <div class="chap-meta-row">
+          <span class="tag muted">📅 ${date}</span>
+          <span class="tag muted">⏱ ${time}</span>
+          <span class="tag muted">📋 ${marks}</span>
+        </div>
+      </div>
+      <div class="chap-tags">${scoreTag(a.score!=null?a.score:null)}</div>
+    </div>`;
+  }).join("");
+}
+</script>
+</body>
+</html>
