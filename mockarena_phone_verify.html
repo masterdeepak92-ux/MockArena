@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Verify Phone — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --forest:#1a2618;--sage:#6b8f5e;--sage-d:#3a6830;
+  --sage-l:rgba(107,143,94,.1);--sage-g:rgba(107,143,94,.22);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);--gold-g:rgba(200,150,42,.22);
+  --rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
+  --cream:#faf9f5;--cw:#f5f3ec;
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.14);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.38);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --sh:0 2px 12px rgba(26,38,24,.07);--sh-lg:0 6px 24px rgba(26,38,24,.11);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fd);background:var(--cw);color:var(--txt);
+  min-height:100vh;display:flex;flex-direction:column;
+  -webkit-font-smoothing:antialiased;}
+
+/* NAV */
+.nav{height:56px;display:flex;align-items:center;padding:0 20px;
+  background:var(--forest);border-bottom:1px solid rgba(107,143,94,.15);}
+.nav-logo{font-size:1.05rem;font-weight:900;color:white;letter-spacing:-.02em;text-decoration:none;}
+.nav-logo span{color:var(--sage);}
+
+/* MAIN */
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:24px 16px;}
+.card{background:white;border:1.5px solid var(--border);border-radius:20px;
+  padding:36px 28px;width:100%;max-width:420px;box-shadow:var(--sh-lg);}
+
+/* STEPS */
+.steps-row{display:flex;align-items:center;gap:0;margin-bottom:28px;}
+.step-dot{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:.75rem;font-weight:800;flex-shrink:0;}
+.step-dot.done{background:var(--sage);color:white;}
+.step-dot.active{background:var(--forest);color:white;}
+.step-dot.pending{background:var(--border);color:var(--txt-lo);}
+.step-line{flex:1;height:2px;background:var(--border);}
+.step-line.done{background:var(--sage);}
+
+/* SCREEN */
+.screen{display:none;}
+.screen.on{display:block;}
+
+.screen-icon{font-size:2.4rem;margin-bottom:14px;}
+.screen-title{font-size:1.3rem;font-weight:900;color:var(--forest);
+  letter-spacing:-.02em;margin-bottom:6px;}
+.screen-sub{font-size:.94rem;color:var(--txt-m);line-height:1.65;margin-bottom:24px;}
+
+/* INPUTS */
+.input-wrap{margin-bottom:14px;}
+.input-label{font-size:.88rem;font-weight:700;color:var(--txt-m);
+  margin-bottom:6px;display:block;}
+.phone-row{display:flex;gap:8px;}
+.phone-prefix{font-size:.96rem;font-weight:700;padding:11px 14px;
+  background:var(--cw);border:1.5px solid var(--border);border-radius:10px;
+  color:var(--txt-m);flex-shrink:0;}
+.input{width:100%;padding:11px 14px;background:var(--cw);
+  border:1.5px solid var(--border);border-radius:10px;
+  color:var(--txt);font-family:var(--fd);font-size:1rem;
+  outline:none;transition:border .18s;}
+.input:focus{border-color:var(--sage-g);}
+.input.otp{font-family:var(--fm);font-size:1.4rem;font-weight:700;
+  letter-spacing:.2em;text-align:center;}
+
+/* BUTTONS */
+.btn-primary{width:100%;padding:13px;background:linear-gradient(135deg,var(--sage),var(--sage-d));
+  color:white;font-family:var(--fd);font-weight:800;font-size:1rem;
+  border:none;border-radius:12px;cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 14px var(--sage-g);margin-top:4px;}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px var(--sage-g);}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-ghost{width:100%;padding:11px;background:transparent;
+  border:1.5px solid var(--bm);color:var(--txt-m);font-family:var(--fd);
+  font-weight:600;font-size:.96rem;border-radius:12px;cursor:pointer;
+  transition:all .2s;margin-top:8px;}
+.btn-ghost:hover{border-color:var(--sage);color:var(--sage);}
+
+/* ERROR / SUCCESS */
+.msg{font-size:.88rem;font-weight:600;padding:10px 14px;border-radius:9px;
+  margin-top:12px;display:none;}
+.msg.err{background:var(--rose-l);color:var(--rose);
+  border:1px solid rgba(200,75,75,.2);}
+.msg.ok{background:var(--sage-l);color:var(--sage);
+  border:1px solid var(--sage-g);}
+.msg.show{display:block;}
+
+/* RESEND */
+.resend-row{text-align:center;margin-top:14px;font-size:.88rem;color:var(--txt-lo);}
+.resend-btn{color:var(--sage);font-weight:700;cursor:pointer;background:none;
+  border:none;font-family:var(--fd);font-size:.88rem;}
+.resend-btn:disabled{color:var(--txt-lo);cursor:default;}
+.timer{font-family:var(--fm);font-size:.88rem;color:var(--txt-lo);}
+
+/* TRIAL USED SCREEN */
+.trial-box{background:var(--gold-l);border:1.5px solid var(--gold-g);
+  border-radius:14px;padding:20px;margin-bottom:20px;text-align:center;}
+.trial-box-icon{font-size:2rem;margin-bottom:8px;}
+.trial-box-title{font-size:1.1rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
+.trial-box-sub{font-size:.9rem;color:var(--txt-m);line-height:1.6;}
+.price-highlight{font-family:var(--fm);font-size:2rem;font-weight:900;
+  color:var(--forest);margin:16px 0 4px;}
+.price-sub{font-size:.86rem;color:var(--txt-lo);margin-bottom:20px;}
+
+/* RECAPTCHA */
+#recaptcha-container{margin-top:12px;}
+
+/* LOADER */
+.loader{display:none;text-align:center;padding:20px;}
+.loader.show{display:block;}
+.spin{width:32px;height:32px;border:3px solid var(--border);
+  border-top-color:var(--sage);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.spin-txt{font-size:.9rem;color:var(--txt-lo);}
+
+/* FREE TRIAL BADGE */
+.trial-badge{background:var(--sage-l);border:1px solid var(--sage-g);
+  border-radius:10px;padding:10px 14px;margin-bottom:20px;
+  display:flex;align-items:center;gap:10px;}
+.trial-badge-icon{font-size:1.2rem;flex-shrink:0;}
+.trial-badge-txt{font-size:.9rem;font-weight:700;color:var(--sage);}
+.trial-badge-sub{font-size:.8rem;color:var(--txt-m);margin-top:1px;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
+</nav>
+
+<div class="main">
+  <div class="card">
+
+    <!-- PROGRESS STEPS -->
+    <div class="steps-row">
+      <div class="step-dot done" id="s1">✓</div>
+      <div class="step-line done"></div>
+      <div class="step-dot active" id="s2">2</div>
+      <div class="step-line" id="sl2"></div>
+      <div class="step-dot pending" id="s3">3</div>
+    </div>
+
+    <!-- ── SCREEN 1: ENTER PHONE ── -->
+    <div class="screen on" id="sc-phone">
+      <div class="screen-icon">📱</div>
+      <div class="screen-title">Verify your phone</div>
+      <div class="screen-sub">Enter your mobile number to verify your identity and activate your free trial. One number = one free trial.</div>
+
+      <div class="trial-badge">
+        <div class="trial-badge-icon">🎁</div>
+        <div>
+          <div class="trial-badge-txt">30 days completely free</div>
+          <div class="trial-badge-sub">No payment needed for your first month</div>
+        </div>
+      </div>
+
+      <div class="input-wrap">
+        <label class="input-label">Mobile Number</label>
+        <div class="phone-row">
+          <div class="phone-prefix">🇮🇳 +91</div>
+          <input class="input" type="tel" id="phone-input"
+            placeholder="98765 43210" maxlength="10"
+            oninput="this.value=this.value.replace(/\D/g,'')"/>
+        </div>
+      </div>
+
+      <div id="recaptcha-container"></div>
+      <div class="msg err" id="phone-err"></div>
+
+      <button class="btn-primary" id="send-otp-btn" onclick="sendOTP()">
+        Send OTP →
+      </button>
+
+      <div class="loader" id="phone-loader">
+        <div class="spin"></div>
+        <div class="spin-txt">Sending OTP…</div>
+      </div>
+    </div>
+
+    <!-- ── SCREEN 2: ENTER OTP ── -->
+    <div class="screen" id="sc-otp">
+      <div class="screen-icon">🔐</div>
+      <div class="screen-title">Enter OTP</div>
+      <div class="screen-sub" id="otp-sub">We sent a 6-digit OTP to your number.</div>
+
+      <div class="input-wrap">
+        <label class="input-label">6-Digit OTP</label>
+        <input class="input otp" type="tel" id="otp-input"
+          placeholder="• • • • • •" maxlength="6"
+          oninput="this.value=this.value.replace(/\D/g,'')"/>
+      </div>
+
+      <div class="msg err" id="otp-err"></div>
+      <div class="msg ok" id="otp-ok"></div>
+
+      <button class="btn-primary" id="verify-otp-btn" onclick="verifyOTP()">
+        Verify OTP →
+      </button>
+      <button class="btn-ghost" onclick="showScreen('sc-phone')">← Change Number</button>
+
+      <div class="resend-row">
+        Didn't receive? &nbsp;
+        <button class="resend-btn" id="resend-btn" onclick="resendOTP()" disabled>
+          Resend OTP
+        </button>
+        <span class="timer" id="timer-txt"></span>
+      </div>
+
+      <div class="loader" id="otp-loader">
+        <div class="spin"></div>
+        <div class="spin-txt">Verifying…</div>
+      </div>
+    </div>
+
+    <!-- ── SCREEN 3: TRIAL ALREADY USED ── -->
+    <div class="screen" id="sc-trial-used">
+      <div class="trial-box">
+        <div class="trial-box-icon">⏰</div>
+        <div class="trial-box-title">Free trial already used</div>
+        <div class="trial-box-sub">This phone number has already used the 30-day free trial on MockArena.</div>
+      </div>
+      <div style="text-align:center;">
+        <div class="price-highlight">₹149<span style="font-size:1rem;font-weight:600;color:var(--txt-lo)">/month</span></div>
+        <div class="price-sub">Less than ₹5 a day · Cancel anytime</div>
+        <button class="btn-primary" onclick="goToPayment()">
+          Subscribe — ₹149/mo →
+        </button>
+        <button class="btn-ghost" onclick="window.location.href='index.html'">← Back to Home</button>
+      </div>
+    </div>
+
+    <!-- ── SCREEN 4: SUCCESS ── -->
+    <div class="screen" id="sc-success">
+      <div style="text-align:center;">
+        <div style="font-size:3rem;margin-bottom:16px;">🎉</div>
+        <div class="screen-title">Phone verified!</div>
+        <div class="screen-sub">Your 30-day free trial is now active. Taking you to choose your exam…</div>
+        <div class="loader show" style="display:block;">
+          <div class="spin"></div>
+          <div class="spin-txt">Setting up your account…</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged, RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, linkWithCredential }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
+  authDomain:        "mockarena-c18c4.firebaseapp.com",
+  projectId:         "mockarena-c18c4",
+  storageBucket:     "mockarena-c18c4.firebasestorage.app",
+  messagingSenderId: "861067164791",
+  appId:             "1:861067164791:web:28df5244e34361dd9d5a72"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+let currentUser = null;
+let confirmResult = null;
+let timerInterval = null;
+
+// ── AUTH CHECK ──
+onAuthStateChanged(auth, async (user) => {
+  if(!user){
+    window.location.href = 'login.html';
+    return;
+  }
+  currentUser = user;
+
+  // If phone already verified and trial active → skip to onboarding
+  try {
+    const snap = await getDoc(doc(db, 'users', user.uid));
+    if(snap.exists()){
+      const data = snap.data();
+      // Phone verified and trial not expired
+      if(data.phoneVerified && data.trialStarted){
+        const trialStart = data.trialStarted.seconds * 1000;
+        const daysSince  = (Date.now() - trialStart) / (1000*60*60*24);
+        if(daysSince <= 30){
+          // Still in trial - go to onboarding
+          window.location.href = 'mockarena_onboarding.html';
+          return;
+        } else if(data.isPro){
+          // Paid subscriber - go to onboarding
+          window.location.href = 'mockarena_onboarding.html';
+          return;
+        }
+        // Trial expired - show payment
+        showScreen('sc-trial-used');
+        return;
+      }
+    }
+  } catch(_){}
+});
+
+// ── HELPERS ──
+window.showScreen = function(id){
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+};
+
+function showErr(id, msg){ const el=document.getElementById(id); el.textContent=msg; el.classList.add('show'); }
+function hideErr(id){ document.getElementById(id).classList.remove('show'); }
+function showLoader(id){ document.getElementById(id).classList.add('show'); }
+function hideLoader(id){ document.getElementById(id).classList.remove('show'); }
+
+// ── RECAPTCHA ──
+function setupRecaptcha(){
+  if(window.recaptchaVerifier) return;
+  window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+    size: 'invisible',
+    callback: () => {}
+  });
+}
+
+// ── SEND OTP ──
+window.sendOTP = async function(){
+  const phone = document.getElementById('phone-input').value.trim();
+  hideErr('phone-err');
+
+  if(phone.length !== 10){ showErr('phone-err','Please enter a valid 10-digit mobile number.'); return; }
+
+  // Check if this phone already used trial
+  try {
+    const phoneSnap = await getDoc(doc(db, 'phoneTrials', phone));
+    if(phoneSnap.exists()){
+      const data = phoneSnap.data();
+      if(data.trialUsed){
+        showScreen('sc-trial-used');
+        return;
+      }
+    }
+  } catch(_){}
+
+  document.getElementById('send-otp-btn').disabled = true;
+  showLoader('phone-loader');
+
+  try {
+    setupRecaptcha();
+    confirmResult = await signInWithPhoneNumber(auth, '+91' + phone, window.recaptchaVerifier);
+    document.getElementById('otp-sub').textContent = `OTP sent to +91 ${phone.slice(0,5)}XXXXX`;
+    showScreen('sc-otp');
+    startTimer(30);
+  } catch(e) {
+    hideLoader('phone-loader');
+    document.getElementById('send-otp-btn').disabled = false;
+    showErr('phone-err', 'Failed to send OTP. Please try again.');
+    console.error(e);
+    if(window.recaptchaVerifier){ window.recaptchaVerifier.clear(); window.recaptchaVerifier=null; }
+  }
+  hideLoader('phone-loader');
+};
+
+// ── VERIFY OTP ──
+window.verifyOTP = async function(){
+  const otp = document.getElementById('otp-input').value.trim();
+  hideErr('otp-err');
+
+  if(otp.length !== 6){ showErr('otp-err','Please enter the 6-digit OTP.'); return; }
+
+  document.getElementById('verify-otp-btn').disabled = true;
+  showLoader('otp-loader');
+
+  try {
+    await confirmResult.confirm(otp);
+    const phone = document.getElementById('phone-input').value.trim();
+
+    // Save phone trial to Firestore
+    await setDoc(doc(db,'phoneTrials', phone),{
+      trialUsed:  true,
+      uid:        currentUser.uid,
+      usedAt:     serverTimestamp()
+    });
+
+    // Update user doc
+    await setDoc(doc(db,'users', currentUser.uid),{
+      phoneVerified: true,
+      phone:         '+91' + phone,
+      trialStarted:  serverTimestamp(),
+      trialEndDate:  new Date(Date.now() + 30*24*60*60*1000),
+      isPro:         false,
+    },{merge:true});
+
+    // Show success then redirect
+    showScreen('sc-success');
+    setTimeout(() => { window.location.href = 'mockarena_onboarding.html'; }, 2500);
+
+  } catch(e) {
+    hideLoader('otp-loader');
+    document.getElementById('verify-otp-btn').disabled = false;
+    showErr('otp-err', 'Invalid OTP. Please check and try again.');
+  }
+  hideLoader('otp-loader');
+};
+
+// ── RESEND OTP ──
+window.resendOTP = async function(){
+  document.getElementById('resend-btn').disabled = true;
+  hideErr('otp-err');
+  if(window.recaptchaVerifier){ window.recaptchaVerifier.clear(); window.recaptchaVerifier=null; }
+  const phone = document.getElementById('phone-input').value.trim();
+  try {
+    setupRecaptcha();
+    confirmResult = await signInWithPhoneNumber(auth, '+91'+phone, window.recaptchaVerifier);
+    document.getElementById('otp-ok').textContent = 'OTP resent successfully!';
+    document.getElementById('otp-ok').classList.add('show');
+    setTimeout(()=>document.getElementById('otp-ok').classList.remove('show'), 3000);
+    startTimer(30);
+  } catch(e){
+    showErr('otp-err','Failed to resend OTP. Please try again.');
+  }
+};
+
+// ── TIMER ──
+function startTimer(seconds){
+  clearInterval(timerInterval);
+  const btn = document.getElementById('resend-btn');
+  const txt = document.getElementById('timer-txt');
+  btn.disabled = true;
+  let t = seconds;
+  txt.textContent = `(${t}s)`;
+  timerInterval = setInterval(()=>{
+    t--;
+    if(t <= 0){
+      clearInterval(timerInterval);
+      btn.disabled = false;
+      txt.textContent = '';
+    } else {
+      txt.textContent = `(${t}s)`;
+    }
+  }, 1000);
+}
+
+// ── GO TO PAYMENT ──
+window.goToPayment = function(){
+  window.location.href = 'mockarena_payment.html';
+};
+</script>
+</body>
+</html>

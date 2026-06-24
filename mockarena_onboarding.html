@@ -459,6 +459,30 @@ let cu=null;
 
 onAuthStateChanged(auth, async(user)=>{
   if(!user){window.location.href='login.html';return;}
+  // Check phone verification
+  try{
+    const snap=await getDoc(doc(db,'users',user.uid));
+    if(snap.exists()){
+      const d=snap.data();
+      // Not phone verified yet - send to verify
+      if(!d.phoneVerified){
+        window.location.href='mockarena_phone_verify.html';
+        return;
+      }
+      // Trial expired and not pro - send to payment
+      if(d.trialStarted){
+        const daysSince=(Date.now()-d.trialStarted.seconds*1000)/(1000*60*60*24);
+        if(daysSince>30 && !d.isPro){
+          window.location.href='mockarena_payment.html';
+          return;
+        }
+      }
+    } else {
+      // New user - send to phone verify
+      window.location.href='mockarena_phone_verify.html';
+      return;
+    }
+  }catch(e){}
   cu=user;
   const av=document.getElementById('navAv');
   if(av){

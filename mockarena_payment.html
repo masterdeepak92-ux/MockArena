@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Subscribe — MockArena Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --forest:#1a2618;--sage:#6b8f5e;--sage-d:#3a6830;
+  --sage-l:rgba(107,143,94,.1);--sage-g:rgba(107,143,94,.22);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);--gold-g:rgba(200,150,42,.22);
+  --rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
+  --cream:#faf9f5;--cw:#f5f3ec;
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.14);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.38);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --sh:0 2px 12px rgba(26,38,24,.07);--sh-lg:0 6px 24px rgba(26,38,24,.11);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fd);background:var(--cw);color:var(--txt);
+  min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+.nav{height:56px;display:flex;align-items:center;padding:0 20px;
+  background:var(--forest);border-bottom:1px solid rgba(107,143,94,.15);}
+.nav-logo{font-size:1.05rem;font-weight:900;color:white;letter-spacing:-.02em;text-decoration:none;}
+.nav-logo span{color:var(--sage);}
+
+/* MAIN */
+.main{max-width:900px;margin:0 auto;padding:32px 16px 48px;}
+@media(min-width:700px){.main{padding:40px 24px 56px;}}
+
+/* HEADER */
+.page-hdr{text-align:center;margin-bottom:32px;}
+.page-badge{display:inline-flex;align-items:center;gap:7px;
+  background:var(--gold-l);border:1px solid var(--gold-g);
+  border-radius:100px;padding:5px 14px;margin-bottom:14px;
+  font-size:.84rem;font-weight:700;color:var(--gold);}
+.page-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:900;
+  color:var(--forest);letter-spacing:-.03em;margin-bottom:8px;}
+.page-title span{color:var(--sage);}
+.page-sub{font-size:1rem;color:var(--txt-m);line-height:1.7;}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;}
+@media(max-width:700px){.layout{grid-template-columns:1fr;}}
+
+/* PLAN CARD */
+.plan-card{background:var(--forest);border-radius:20px;padding:28px;
+  color:white;position:relative;overflow:hidden;}
+.plan-card::before{content:'';position:absolute;top:-60px;right:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(107,143,94,.2),transparent 70%);}
+.plan-badge{display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,var(--gold),#9a6e18);
+  border-radius:100px;padding:4px 12px;font-size:.8rem;font-weight:800;
+  color:white;margin-bottom:16px;}
+.plan-name{font-size:.82rem;font-weight:700;color:rgba(107,143,94,.8);
+  text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px;}
+.plan-price{font-family:var(--fm);font-size:3rem;font-weight:900;color:white;
+  letter-spacing:-.04em;line-height:1;margin-bottom:4px;}
+.plan-per{font-size:.88rem;color:rgba(255,255,255,.4);margin-bottom:20px;}
+.plan-note{background:rgba(107,143,94,.2);border:1px solid rgba(107,143,94,.3);
+  border-radius:9px;padding:8px 14px;font-size:.88rem;font-weight:700;
+  color:rgba(107,143,94,.9);margin-bottom:20px;display:inline-block;}
+.plan-list{list-style:none;margin-bottom:0;}
+.plan-list li{display:flex;align-items:center;gap:10px;
+  font-size:.92rem;color:rgba(255,255,255,.75);
+  padding:8px 0;border-bottom:1px solid rgba(255,255,255,.07);}
+.plan-list li:last-child{border-bottom:none;}
+.pl-chk{color:var(--sage);font-weight:800;flex-shrink:0;}
+
+/* PAYMENT CARD */
+.pay-card{background:white;border:1.5px solid var(--border);
+  border-radius:20px;padding:28px;box-shadow:var(--sh-lg);}
+.pay-title{font-size:1.1rem;font-weight:900;color:var(--forest);
+  margin-bottom:4px;letter-spacing:-.01em;}
+.pay-sub{font-size:.88rem;color:var(--txt-lo);margin-bottom:24px;}
+
+/* SUMMARY */
+.summary{background:var(--cw);border:1px solid var(--border);
+  border-radius:12px;padding:16px;margin-bottom:20px;}
+.summary-row{display:flex;justify-content:space-between;
+  align-items:center;padding:6px 0;}
+.summary-row:not(:last-child){border-bottom:1px solid var(--border);}
+.summary-label{font-size:.9rem;color:var(--txt-m);}
+.summary-val{font-size:.9rem;font-weight:700;color:var(--forest);}
+.summary-total .summary-label{font-weight:800;color:var(--forest);}
+.summary-total .summary-val{font-family:var(--fm);font-size:1.1rem;
+  font-weight:900;color:var(--sage);}
+
+/* USER INFO */
+.user-info{background:var(--sage-l);border:1px solid var(--sage-g);
+  border-radius:10px;padding:12px 14px;margin-bottom:20px;
+  display:flex;align-items:center;gap:10px;}
+.user-av{width:36px;height:36px;border-radius:50%;
+  background:linear-gradient(135deg,var(--sage),var(--sage-d));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:800;color:white;flex-shrink:0;}
+.user-name{font-size:.92rem;font-weight:700;color:var(--forest);}
+.user-email{font-size:.82rem;color:var(--txt-m);}
+
+/* PAY BUTTON */
+.pay-btn{width:100%;padding:15px;
+  background:linear-gradient(135deg,var(--sage),var(--sage-d));
+  color:white;font-family:var(--fd);font-weight:800;font-size:1.05rem;
+  border:none;border-radius:12px;cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 16px var(--sage-g);display:flex;align-items:center;
+  justify-content:center;gap:8px;}
+.pay-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--sage-g);}
+.pay-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* SECURE BADGE */
+.secure-row{display:flex;align-items:center;justify-content:center;
+  gap:8px;margin-top:14px;}
+.secure-txt{font-size:.8rem;color:var(--txt-lo);}
+.secure-logo{font-size:.78rem;font-weight:800;color:var(--txt-lo);}
+
+/* SUCCESS SCREEN */
+#success-screen{display:none;text-align:center;padding:40px 20px;}
+#success-screen.show{display:block;}
+.success-icon{font-size:4rem;margin-bottom:16px;}
+.success-title{font-size:1.6rem;font-weight:900;color:var(--forest);
+  margin-bottom:8px;letter-spacing:-.02em;}
+.success-sub{font-size:.96rem;color:var(--txt-m);line-height:1.7;margin-bottom:28px;}
+.success-btn{display:inline-flex;align-items:center;gap:8px;
+  padding:14px 28px;background:linear-gradient(135deg,var(--sage),var(--sage-d));
+  color:white;font-family:var(--fd);font-weight:800;font-size:1rem;
+  border-radius:12px;text-decoration:none;box-shadow:0 4px 16px var(--sage-g);}
+
+/* MSG */
+.err-msg{background:var(--rose-l);border:1px solid rgba(200,75,75,.2);
+  border-radius:9px;padding:10px 14px;font-size:.88rem;font-weight:600;
+  color:var(--rose);margin-top:12px;display:none;}
+.err-msg.show{display:block;}
+
+/* FOOTER NOTE */
+.footer-note{font-size:.8rem;color:var(--txt-lo);text-align:center;
+  margin-top:14px;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
+</nav>
+
+<div class="main">
+
+  <!-- SUCCESS SCREEN -->
+  <div id="success-screen">
+    <div class="success-icon">🎉</div>
+    <div class="success-title">You're now a Pro member!</div>
+    <div class="success-sub">Payment successful. Your MockArena Pro subscription is now active.<br/>Unlimited access to all features.</div>
+    <a href="mockarena_onboarding.html" class="success-btn">Start Practicing →</a>
+  </div>
+
+  <!-- PAYMENT SCREEN -->
+  <div id="payment-screen">
+
+    <div class="page-hdr">
+      <div class="page-badge">🔒 Secure Payment</div>
+      <div class="page-title">Unlock <span>MockArena Pro</span></div>
+      <div class="page-sub">Join thousands of students cracking JEE &amp; NEET with MockArena</div>
+    </div>
+
+    <div class="layout">
+
+      <!-- LEFT: Plan Details -->
+      <div class="plan-card">
+        <div class="plan-badge">🔥 Most Popular</div>
+        <div class="plan-name">Pro Plan</div>
+        <div class="plan-price">₹149</div>
+        <div class="plan-per">per month · cancel anytime</div>
+        <div class="plan-note">✓ Less than ₹5 per day</div>
+        <ul class="plan-list">
+          <li><span class="pl-chk">✓</span>All chapter-wise tests</li>
+          <li><span class="pl-chk">✓</span>Unlimited full mock tests</li>
+          <li><span class="pl-chk">✓</span>Previous Year Questions</li>
+          <li><span class="pl-chk">✓</span>Deep performance analytics</li>
+          <li><span class="pl-chk">✓</span>Live leaderboard &amp; rankings</li>
+          <li><span class="pl-chk">✓</span>Personal student dashboard</li>
+          <li><span class="pl-chk">✓</span>Priority support</li>
+          <li><span class="pl-chk">✓</span>New content first</li>
+        </ul>
+      </div>
+
+      <!-- RIGHT: Payment -->
+      <div class="pay-card">
+        <div class="pay-title">Complete Payment</div>
+        <div class="pay-sub">Powered by Razorpay · UPI, Cards, NetBanking</div>
+
+        <!-- User Info -->
+        <div class="user-info" id="user-info" style="display:none;">
+          <div class="user-av" id="user-av">?</div>
+          <div>
+            <div class="user-name" id="user-name">—</div>
+            <div class="user-email" id="user-email">—</div>
+          </div>
+        </div>
+
+        <!-- Summary -->
+        <div class="summary">
+          <div class="summary-row">
+            <span class="summary-label">MockArena Pro</span>
+            <span class="summary-val">₹149</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Duration</span>
+            <span class="summary-val">1 Month</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">GST (18%)</span>
+            <span class="summary-val">Included</span>
+          </div>
+          <div class="summary-row summary-total">
+            <span class="summary-label">Total</span>
+            <span class="summary-val">₹149</span>
+          </div>
+        </div>
+
+        <button class="pay-btn" id="pay-btn" onclick="startPayment()">
+          🔒 Pay ₹149 via Razorpay
+        </button>
+
+        <div class="err-msg" id="pay-err"></div>
+
+        <div class="secure-row">
+          <span class="secure-txt">🔒 256-bit SSL · Secured by</span>
+          <span class="secure-logo">Razorpay</span>
+        </div>
+
+        <div class="footer-note">
+          By paying you agree to MockArena's Terms of Use.<br/>
+          Subscription renews monthly. Cancel anytime.
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Razorpay SDK -->
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, setDoc, serverTimestamp }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+/* ══ PASTE YOUR RAZORPAY KEY HERE WHEN YOU GET IT ══ */
+const RAZORPAY_KEY = 'rzp_test_YOUR_KEY_HERE';
+/* ══════════════════════════════════════════════════ */
+
+const firebaseConfig = {
+  apiKey:            "AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
+  authDomain:        "mockarena-c18c4.firebaseapp.com",
+  projectId:         "mockarena-c18c4",
+  storageBucket:     "mockarena-c18c4.firebasestorage.app",
+  messagingSenderId: "861067164791",
+  appId:             "1:861067164791:web:28df5244e34361dd9d5a72"
+};
+
+const app  = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+let currentUser = null;
+
+function initials(n){ return (n||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
+
+onAuthStateChanged(auth, (user) => {
+  if(!user){ window.location.href = 'login.html'; return; }
+  currentUser = user;
+  const name  = user.displayName || user.email?.split('@')[0] || 'Student';
+  const email = user.email || '';
+  document.getElementById('user-av').textContent    = initials(name);
+  document.getElementById('user-name').textContent  = name;
+  document.getElementById('user-email').textContent = email;
+  document.getElementById('user-info').style.display = 'flex';
+});
+
+window.startPayment = function(){
+  if(!currentUser){ alert('Please log in first.'); return; }
+  if(RAZORPAY_KEY === 'rzp_test_YOUR_KEY_HERE'){
+    document.getElementById('pay-err').textContent =
+      'Payment not yet configured. Please contact support.';
+    document.getElementById('pay-err').classList.add('show');
+    return;
+  }
+
+  document.getElementById('pay-btn').disabled = true;
+  document.getElementById('pay-btn').textContent = 'Opening payment…';
+
+  const options = {
+    key:         RAZORPAY_KEY,
+    amount:      14900, // ₹149 in paise
+    currency:    'INR',
+    name:        'MockArena',
+    description: 'Pro Plan — 1 Month',
+    image:       'https://mockarena.co.in/favicon.ico',
+    prefill: {
+      name:  currentUser.displayName || '',
+      email: currentUser.email || '',
+    },
+    theme:{ color: '#3a6830' },
+    modal:{
+      ondismiss: function(){
+        document.getElementById('pay-btn').disabled = false;
+        document.getElementById('pay-btn').innerHTML = '🔒 Pay ₹149 via Razorpay';
+      }
+    },
+    handler: async function(response){
+      // Payment successful
+      try {
+        await setDoc(doc(db,'users', currentUser.uid),{
+          isPro:            true,
+          proStarted:       serverTimestamp(),
+          proExpiry:        new Date(Date.now() + 30*24*60*60*1000),
+          lastPaymentId:    response.razorpay_payment_id,
+          plan:             'pro_monthly',
+        },{merge:true});
+
+        // Log payment
+        await setDoc(doc(db,'payments', response.razorpay_payment_id),{
+          uid:        currentUser.uid,
+          email:      currentUser.email,
+          amount:     149,
+          currency:   'INR',
+          paymentId:  response.razorpay_payment_id,
+          plan:       'pro_monthly',
+          paidAt:     serverTimestamp(),
+        });
+
+        document.getElementById('payment-screen').style.display = 'none';
+        document.getElementById('success-screen').classList.add('show');
+
+      } catch(e){
+        console.error(e);
+        alert('Payment received but account update failed. Please contact support with payment ID: ' + response.razorpay_payment_id);
+      }
+    }
+  };
+
+  const rzp = new Razorpay(options);
+  rzp.on('payment.failed', function(response){
+    document.getElementById('pay-btn').disabled = false;
+    document.getElementById('pay-btn').innerHTML = '🔒 Pay ₹149 via Razorpay';
+    document.getElementById('pay-err').textContent =
+      'Payment failed: ' + (response.error?.description || 'Please try again.');
+    document.getElementById('pay-err').classList.add('show');
+  });
+  rzp.open();
+};
+</script>
+</body>
+</html>
