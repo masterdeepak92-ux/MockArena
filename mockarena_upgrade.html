@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Upgrade to Pro — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --forest:#1a2618;--sage:#6b8f5e;--sage-d:#3a6830;
+  --sage-l:rgba(107,143,94,.1);--sage-g:rgba(107,143,94,.22);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);--gold-g:rgba(200,150,42,.22);
+  --rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
+  --cream:#faf9f5;--cw:#f5f3ec;
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.14);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.38);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --sh:0 2px 12px rgba(26,38,24,.07);--sh-lg:0 6px 24px rgba(26,38,24,.11);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fd);background:var(--cw);color:var(--txt);
+  min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* NAV */
+.nav{height:56px;display:flex;align-items:center;padding:0 20px;gap:10px;
+  background:var(--forest);border-bottom:1px solid rgba(107,143,94,.15);
+  position:sticky;top:0;z-index:100;}
+.nav-logo{font-size:1.05rem;font-weight:900;color:white;letter-spacing:-.02em;text-decoration:none;}
+.nav-logo span{color:var(--sage);}
+.nav-r{margin-left:auto;}
+.nav-back{font-family:var(--fd);font-size:.94rem;font-weight:600;padding:6px 14px;
+  border-radius:9px;border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);
+  text-decoration:none;transition:.18s;}
+.nav-back:hover{background:rgba(255,255,255,.16);color:white;}
+
+/* HERO */
+.hero{background:var(--cream);padding:32px 20px 28px;border-bottom:1.5px solid var(--border);}
+.hero-inner{max-width:680px;margin:0 auto;}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.hero-badge{font-size:.92rem;font-weight:800;padding:5px 13px;border-radius:100px;
+  background:var(--rose-l);color:var(--rose);border:1px solid rgba(200,75,75,.18);}
+.hero-title{font-size:clamp(1.8rem,5vw,2.6rem);font-weight:900;color:var(--forest);
+  letter-spacing:-.03em;line-height:1.1;margin-bottom:10px;}
+.hero-title span{color:var(--sage);}
+.hero-sub{font-size:1.04rem;color:var(--txt-m);line-height:1.75;margin-bottom:20px;}
+
+/* INFO STRIP */
+.info-strip{background:white;border-bottom:1.5px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.info-strip::-webkit-scrollbar{display:none;}
+.info-inner{max-width:680px;margin:0 auto;padding:0 20px;display:flex;}
+.info-item{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:14px 20px;border-right:1px solid var(--border);flex-shrink:0;text-align:center;gap:3px;}
+.info-item:last-child{border-right:none;}
+.info-val{font-family:var(--fm);font-size:1.05rem;font-weight:800;color:var(--forest);}
+.info-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
+
+/* MAIN */
+.main{max-width:680px;margin:0 auto;padding:24px 20px 56px;}
+
+/* USER ROW */
+.user-row{display:flex;align-items:center;gap:10px;
+  background:white;border:1.5px solid var(--border);
+  border-radius:12px;padding:12px 16px;margin-bottom:20px;box-shadow:var(--sh);}
+.user-av{width:36px;height:36px;border-radius:50%;flex-shrink:0;
+  background:linear-gradient(135deg,var(--sage),var(--sage-d));
+  display:flex;align-items:center;justify-content:center;
+  font-size:.8rem;font-weight:800;color:white;}
+.user-name{font-size:1rem;font-weight:700;color:var(--forest);}
+.user-plan{font-size:.88rem;color:var(--txt-lo);}
+
+/* METER */
+.meter-card{background:white;border:1.5px solid var(--border);
+  border-radius:14px;padding:20px;margin-bottom:20px;box-shadow:var(--sh);}
+.meter-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.meter-title{font-size:1.02rem;font-weight:800;color:var(--forest);}
+.meter-count{font-family:var(--fm);font-size:.96rem;font-weight:700;color:var(--rose);}
+.meter-bar{background:var(--cw);border-radius:100px;height:10px;
+  margin-bottom:8px;overflow:hidden;border:1px solid var(--border);}
+.meter-fill{height:10px;border-radius:100px;
+  background:linear-gradient(90deg,var(--rose),#e06b6b);transition:width .6s ease;}
+.meter-sub{font-size:.9rem;color:var(--txt-lo);}
+
+/* PLANS */
+.plans{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;}
+.plan-card{background:white;border:1.5px solid var(--border);
+  border-radius:16px;padding:22px;box-shadow:var(--sh);}
+.plan-card.pro{background:var(--forest);border-color:transparent;
+  box-shadow:0 8px 28px rgba(26,38,24,.2);}
+.pro-badge{display:inline-flex;align-items:center;gap:5px;
+  background:linear-gradient(135deg,var(--gold),#9a6e18);
+  border-radius:100px;padding:3px 10px;font-size:.8rem;font-weight:800;
+  color:white;margin-bottom:8px;}
+.plan-name{font-size:.84rem;font-weight:800;text-transform:uppercase;
+  letter-spacing:.1em;color:var(--sage);margin-bottom:8px;}
+.plan-name.free{color:var(--txt-lo);}
+.plan-price{font-family:var(--fm);font-size:2rem;font-weight:900;
+  color:var(--forest);letter-spacing:-.03em;line-height:1;margin-bottom:3px;}
+.plan-price.pro{color:white;}
+.plan-per{font-size:.88rem;color:var(--txt-lo);margin-bottom:14px;}
+.plan-per.pro{color:rgba(255,255,255,.35);}
+.plan-list{list-style:none;}
+.plan-list li{display:flex;align-items:center;gap:8px;font-size:.94rem;
+  color:var(--txt-m);padding:6px 0;border-bottom:1px solid var(--border);}
+.plan-list li:last-child{border-bottom:none;}
+.plan-list.pro li{color:rgba(255,255,255,.6);border-bottom-color:rgba(255,255,255,.08);}
+.pl-chk{color:var(--sage);font-weight:800;flex-shrink:0;}
+.pl-chk.pro{color:rgba(107,143,94,.8);}
+.pl-x{color:var(--rose);font-weight:800;flex-shrink:0;opacity:.5;}
+
+/* FEATURES */
+.feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px;}
+.feat{background:white;border:1.5px solid var(--border);
+  border-radius:12px;padding:16px;box-shadow:var(--sh);}
+.feat-icon{font-size:1.2rem;margin-bottom:8px;}
+.feat-title{font-size:.96rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
+.feat-desc{font-size:.86rem;color:var(--txt-m);line-height:1.55;}
+
+/* BUTTONS */
+.btn-upgrade{display:block;width:100%;padding:15px;
+  background:linear-gradient(135deg,var(--sage),var(--sage-d));
+  color:white;font-family:var(--fd);font-weight:900;font-size:1.05rem;
+  border:none;border-radius:12px;cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 16px var(--sage-g);text-align:center;
+  text-decoration:none;margin-bottom:10px;}
+.btn-upgrade:hover{transform:translateY(-2px);box-shadow:0 8px 24px var(--sage-g);}
+.btn-continue{display:block;width:100%;padding:13px;background:transparent;
+  border:1.5px solid var(--bm);color:var(--txt-m);font-family:var(--fd);
+  font-weight:600;font-size:.96rem;border-radius:12px;cursor:pointer;
+  transition:all .2s;text-align:center;text-decoration:none;}
+.btn-continue:hover{border-color:var(--sage);color:var(--sage);}
+.fine{text-align:center;font-size:.86rem;color:var(--txt-lo);
+  line-height:1.6;margin-top:12px;}
+
+@media(max-width:480px){
+  .plans{grid-template-columns:1fr;}
+  .feat-grid{grid-template-columns:1fr 1fr;}
+  .hero-title{font-size:1.8rem;}
+  .info-item{padding:11px 13px;}
+}
+
+/* ── DESKTOP ── */
+@media(min-width:900px){
+  .hero{padding:48px 32px 28px;}
+  .hero-title{font-size:2.8rem;}
+  .hero-inner{max-width:780px;}
+  .info-inner{max-width:780px;}
+  .main{max-width:780px;padding:32px 32px 64px;}
+  .plans{grid-template-columns:1fr 1fr;max-width:680px;}
+  .feat-grid{grid-template-columns:repeat(4,1fr);}
+  .meter-card{max-width:780px;}
+  .user-row{max-width:780px;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
+  <div class="nav-r">
+    <a href="jee_main.html" class="nav-back">← Back</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <span class="hero-badge">⏰ Free Limit Reached</span>
+    </div>
+    <div class="hero-title">You've used all<br/><span>5 free tests</span> this month.</div>
+    <div class="hero-sub">Upgrade to Pro for unlimited chapter tests, full mock tests, PYQ access and deep analytics — all for less than ₹5 a day.</div>
+  </div>
+</div>
+
+<div class="info-strip">
+  <div class="info-inner">
+    <div class="info-item"><div class="info-val" id="i-used">5</div><div class="info-lbl">Tests Used</div></div>
+    <div class="info-item"><div class="info-val">5</div><div class="info-lbl">Monthly Limit</div></div>
+    <div class="info-item"><div class="info-val">∞</div><div class="info-lbl">With Pro</div></div>
+    <div class="info-item"><div class="info-val">₹149</div><div class="info-lbl">Per Month</div></div>
+    <div class="info-item"><div class="info-val" id="i-days">—</div><div class="info-lbl">Days to Reset</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="user-row" id="user-row" style="display:none;">
+    <div class="user-av" id="user-av">?</div>
+    <div>
+      <div class="user-name" id="user-name">—</div>
+      <div class="user-plan" id="user-plan">Free Plan · 5 tests/month</div>
+    </div>
+  </div>
+
+  <div class="meter-card">
+    <div class="meter-head">
+      <div class="meter-title">Monthly Test Usage</div>
+      <div class="meter-count" id="meter-count">5 / 5 used</div>
+    </div>
+    <div class="meter-bar"><div class="meter-fill" id="meter-fill" style="width:0%"></div></div>
+    <div class="meter-sub" id="meter-sub">Resets on 1st of next month · Upgrade for unlimited</div>
+  </div>
+
+  <div class="plans">
+    <div class="plan-card">
+      <div class="plan-name free">Free Plan</div>
+      <div class="plan-price">₹0</div>
+      <div class="plan-per">forever</div>
+      <ul class="plan-list">
+        <li><span class="pl-chk">✓</span>5 tests/month</li>
+        <li><span class="pl-chk">✓</span>All 6 exams</li>
+        <li><span class="pl-chk">✓</span>Dashboard</li>
+        <li><span class="pl-x">✗</span>Unlimited tests</li>
+        <li><span class="pl-x">✗</span>PYQ access</li>
+        <li><span class="pl-x">✗</span>Full analytics</li>
+      </ul>
+    </div>
+    <div class="plan-card pro">
+      <div class="pro-badge">🔥 Most Popular</div>
+      <div class="plan-name">Pro Plan</div>
+      <div class="plan-price pro">₹149</div>
+      <div class="plan-per pro">per month</div>
+      <ul class="plan-list pro">
+        <li><span class="pl-chk pro">✓</span>Unlimited tests</li>
+        <li><span class="pl-chk pro">✓</span>All 6 exams</li>
+        <li><span class="pl-chk pro">✓</span>PYQ 20 years</li>
+        <li><span class="pl-chk pro">✓</span>Deep analytics</li>
+        <li><span class="pl-chk pro">✓</span>Leaderboard</li>
+        <li><span class="pl-chk pro">✓</span>Priority support</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="feat-grid">
+    <div class="feat"><div class="feat-icon">📊</div><div class="feat-title">Deep Analytics</div><div class="feat-desc">Chapter-wise accuracy, score trends and weak area detection.</div></div>
+    <div class="feat"><div class="feat-icon">📝</div><div class="feat-title">Unlimited Tests</div><div class="feat-desc">Full mock tests with timer, negative marking and instant results.</div></div>
+    <div class="feat"><div class="feat-icon">📚</div><div class="feat-title">PYQ Access</div><div class="feat-desc">20 years of previous year questions with detailed solutions.</div></div>
+    <div class="feat"><div class="feat-icon">🏆</div><div class="feat-title">Leaderboard</div><div class="feat-desc">District, State and National rankings updated after every test.</div></div>
+  </div>
+
+  <a href="mockarena_payment.html" class="btn-upgrade">🚀 Upgrade to Pro — ₹149/month</a>
+  <a href="jee_main.html" class="btn-continue">Continue on Free Plan →</a>
+  <div class="fine">Less than ₹5 a day · Cancel anytime · Free tests reset monthly</div>
+
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app  = initializeApp({
+  apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
+  authDomain:"mockarena-c18c4.firebaseapp.com",
+  projectId:"mockarena-c18c4",
+  storageBucket:"mockarena-c18c4.firebasestorage.app",
+  messagingSenderId:"861067164791",
+  appId:"1:861067164791:web:28df5244e34361dd9d5a72"
+});
+const auth=getAuth(app), db=getFirestore(app);
+function initials(n){return (n||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
+
+onAuthStateChanged(auth, async(user)=>{
+  if(!user){window.location.href='login.html';return;}
+  const name=user.displayName||user.email?.split('@')[0]||'Student';
+  document.getElementById('user-av').textContent=initials(name);
+  document.getElementById('user-name').textContent=name;
+  document.getElementById('user-row').style.display='flex';
+
+  try{
+    const snap=await getDoc(doc(db,'users',user.uid));
+    if(snap.exists()){
+      const data=snap.data();
+      const now=new Date();
+      const monthKey=`${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+      const used=data.monthlyTests?.[monthKey]||0;
+      const pct=Math.min(100,(used/5)*100);
+      const next=new Date(now.getFullYear(),now.getMonth()+1,1);
+      const days=Math.ceil((next-now)/(1000*60*60*24));
+
+      document.getElementById('meter-count').textContent=`${used} / 5 used`;
+      document.getElementById('i-used').textContent=used;
+      document.getElementById('i-days').textContent=days;
+      document.getElementById('user-plan').textContent=data.isPro?'🔥 Pro Plan':`Free Plan · ${used}/5 tests used`;
+      document.getElementById('meter-sub').textContent=`Resets in ${days} day${days===1?'':'s'} · Upgrade for unlimited`;
+      setTimeout(()=>{document.getElementById('meter-fill').style.width=pct+'%';},300);
+    }
+  }catch(_){}
+});
+</script>
+</body>
+</html>
