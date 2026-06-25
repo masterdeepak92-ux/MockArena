@@ -561,16 +561,11 @@ window.showSubj = function(s,btn){
   btn.classList.add('on');
 };
 
-// Intercept all Practice links
-document.addEventListener('click', async function(e){
-  const link = e.target.closest('.chap-practice');
-  if(!link) return;
-  e.preventDefault();
-
-  const url = link.getAttribute('href');
+// Global function for practice links
+window.startPractice = async function(url){
   const user = auth.currentUser;
 
-  // Not logged in - go to login
+  // Not logged in
   if(!user){
     window.location.href = 'mockarena_onboarding.html';
     return;
@@ -608,9 +603,18 @@ document.addEventListener('click', async function(e){
     window.location.href = url;
 
   } catch(e){
-    // On error - allow test (fail open)
+    // On error - allow test
     window.location.href = url;
   }
+};
+
+// Intercept all Practice links
+document.addEventListener('click', function(e){
+  const link = e.target.closest('.chap-practice');
+  if(!link) return;
+  e.preventDefault();
+  e.stopPropagation();
+  window.startPractice(link.getAttribute('href'));
 });
 </script>
 </body>
