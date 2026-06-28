@@ -1732,8 +1732,8 @@ window.aiExtract=async function(src){
   try{
     const base64=capturedImg.split(',')[1];
     const mt=capturedImg.includes('png')?'image/png':'image/jpeg';
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:4000,messages:[{role:'user',content:[
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:4000,messages:[{role:'user',content:[
         {type:'image',source:{type:'base64',media_type:mt,data:base64}},
         {type:'text',text:`Extract ALL questions from this image. These are ${ENAMES[exam]||exam} ${subj} questions.\n\nReturn ONLY a JSON array:\n[{"exam":"${exam}","subject":"${subj}","chapter":"guess","difficulty":"Easy/Medium/Hard","type":"MCQ","question":"text","option_a":"A","option_b":"B","option_c":"C","option_d":"D","correct":"A/B/C/D","explanation":"if visible","marks":4,"topic":"concept"}]\n\nExtract every clear question. Skip partial ones.`}
       ]}]})
@@ -2228,7 +2228,7 @@ window.createTeacher = async function(){
 
   const exams = [...document.querySelectorAll('#t-exams-wrap input:checked')].map(cb=>cb.value);
 
-  showLoader('Creating teacher account...','Saving to Firebase...');
+  loader(true,'Creating teacher account...','Saving to Firebase...');
   try{
     await setDoc(doc(db,'teachers',tid),{
       id:tid,name,
@@ -2239,11 +2239,11 @@ window.createTeacher = async function(){
       createdAt:new Date().toISOString(),
       active:true,
     });
-    hideLoader();
+    loader(false);
     stat('teacher-status','✓ Teacher created! ID: '+tid+' · Password: '+pass,'ok');
     clearTeacherForm();
     loadTeachers();
-  }catch(e){hideLoader();stat('teacher-status','Error: '+e.message,'err');}
+  }catch(e){loader(false);stat('teacher-status','Error: '+e.message,'err');}
 };
 
 window.clearTeacherForm = function(){
@@ -2313,7 +2313,15 @@ loadTeachers();
 
 // ── HELPERS ──
 function stat(id,msg,type){const el=document.getElementById(id);if(el){el.textContent=msg;el.className='status '+type;}}
-function loader(show,t,s){document.getElementById('loader').className='loader'+(show?' on':'');if(t)document.getElementById('loader-t').textContent=t;if(s)document.getElementById('loader-s').textContent=s;}
+function loader(show,t,s){
+  const el=document.getElementById('loader');
+  if(!el)return;
+  el.className='loader'+(show?' on':'');
+  if(t){const et=document.getElementById('loader-t');if(et)et.textContent=t;}
+  if(s){const es=document.getElementById('loader-s');if(es)es.textContent=s;}
+}
+function showLoader(t,s){loader(true,t,s);}
+function hideLoader(){loader(false);}
 
 // ══════════════════════════════════════
 // ADMIN LOGIN
