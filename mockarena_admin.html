@@ -1894,86 +1894,19 @@ window.setMethod=function(m){
   setMethod(m);
   if(m!=='camera' && typeof stopCam !== 'undefined')stopCam();
 };
-window.dlTemplate=function(){
-  const h=['exam','subject','chapter','difficulty','type','question','option_a','option_b','option_c','option_d','correct','explanation','topic','marks','year'];
-  const s=['JM','Physics','Electrostatics','Medium','MCQ','Two charges 1m apart repel with F. Halve distance?','F/4','F/2','2F','4F','D','By Coulombs law F∝1/r².','Coulombs Law','4','2024'];
-  const csv=h.join(',')+'\\n'+s.map(v=>'"'+v+'"').join(',');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='mockarena_questions_template.csv';a.click();
-};
-window.onDrop=function(e,type){e.preventDefault();e.currentTarget.classList.remove('drag');if(e.dataTransfer.files[0])window.procFile(e.dataTransfer.files[0],type);};
-window.onFile=function(inp,type){
-  if(!inp.files[0])return;
-  const file=inp.files[0];
-  if(!type){
-    const ext=file.name.split('.').pop().toLowerCase();
-    type = ext==='json' ? 'json' : 'csv';
-  }
-  window.procFile(file,type);
-};
-window.procFile=function procFile(file,type){
-  const r=new FileReader();
-  r.onload=ev=>{
-    try{
-      if(type==='json'){preview(JSON.parse(ev.target.result));}
-      else{
-        let __t=ev.target.result;if(__t.charCodeAt(0)===0xFEFF)__t=__t.slice(1);const rows=__t.split(/\r\n|\r|\n/).filter(r=>r.trim());
-        const hs=rows[0].split(',').map(h=>h.replace(/"/g,'').trim().toLowerCase());
-        preview(rows.slice(1).map(row=>{const vs=parseCSV(row),o={};hs.forEach((h,i)=>o[h]=(vs[i]||'').replace(/"/g,'').trim());return o;}).filter(r=>r.question));
-      }
-    }catch(err){stat('up-status','Parse error: '+err.message,'err');}
-  };r.readAsText(file);
-}
-window.parseCSV=function parseCSV(row){const r=[];let c='',q=false;for(const ch of row){if(ch==='"')q=!q;else if(ch===','&&!q){r.push(c);c='';}else c+=ch;}r.push(c);return r;}
-window.parsePaste=function(){
-  const text=document.getElementById('paste-inp').value.trim();
-  if(!text){stat('up-status','Paste some questions first.','err');alert('Please paste questions first.');return;}
-  const blocks=text.split(/\n\s*\n/);
-  const data=blocks.map(block=>{
-    const o={};
-    block.trim().split('\n').forEach(line=>{
-      const l=line.trim();
-      if(l.startsWith('EXAM:'))o.exam=l.slice(5).trim();
-      else if(l.startsWith('SUBJECT:'))o.subject=l.slice(8).trim();
-      else if(l.startsWith('CHAPTER:'))o.chapter=l.slice(8).trim();
-      else if(l.startsWith('DIFFICULTY:'))o.difficulty=l.slice(11).trim();
-      else if(l.startsWith('Q:'))o.question=l.slice(2).trim();
-      else if(l.startsWith('A:'))o.option_a=l.slice(2).trim();
-      else if(l.startsWith('B:'))o.option_b=l.slice(2).trim();
-      else if(l.startsWith('C:'))o.option_c=l.slice(2).trim();
-      else if(l.startsWith('D:'))o.option_d=l.slice(2).trim();
-      else if(l.startsWith('ANS:'))o.correct=l.slice(4).trim();
-      else if(l.startsWith('EXP:'))o.explanation=l.slice(4).trim();
-      else if(l.startsWith('TOPIC:'))o.topic=l.slice(6).trim();
-    });
-    return o;
-  }).filter(o=>o.question);
-  window.preview(data);
-};
+
+
+
+
+
+
 
 // IMAGE & CAMERA
-window.onImgFile=function(inp,src){
-  if(!inp.files[0])return;
-  const r=new FileReader();
-  r.onload=ev=>{
-    capturedImg=ev.target.result;
-    if(src==='img'){document.getElementById('img-box').style.display='block';document.getElementById('img-prev').src=capturedImg;}
-    else{document.getElementById('cam-snap').src=capturedImg;document.getElementById('cam-snap').style.display='block';document.getElementById('cam-extract').style.display='flex';stat('cam-status','✓ Image ready — select exam & subject, then extract.','ok');}
-  };r.readAsDataURL(inp.files[0]);
-};
-window.openCam=async function(){
-  try{camStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});const v=document.getElementById('cam-vid');v.srcObject=camStream;v.style.display='block';document.getElementById('cam-ph').style.display='none';document.getElementById('cam-open').style.display='none';document.getElementById('cam-snap-btn').style.display='flex';}
-  catch(_){document.getElementById('fi-cam').click();}
-};
-window.snapCam=function(){
-  const v=document.getElementById('cam-vid'),ca=document.getElementById('cam-canvas');
-  ca.width=v.videoWidth;ca.height=v.videoHeight;ca.getContext('2d').drawImage(v,0,0);
-  capturedImg=ca.toDataURL('image/jpeg',0.92);
-  stopCam();v.style.display='none';
-  document.getElementById('cam-snap').src=capturedImg;document.getElementById('cam-snap').style.display='block';
-  document.getElementById('cam-snap-btn').style.display='none';document.getElementById('cam-retake').style.display='flex';document.getElementById('cam-extract').style.display='flex';
-};
-window.retakeCam=function(){capturedImg=null;document.getElementById('cam-snap').style.display='none';document.getElementById('cam-retake').style.display='none';document.getElementById('cam-extract').style.display='none';document.getElementById('cam-ph').style.display='block';document.getElementById('cam-open').style.display='flex';};
-window.stopCam=function stopCam(){if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}}
+
+
+
+
+
 window.aiExtract=async function(src){
   const exam=document.getElementById(src+'-exam').value;
   const subj=document.getElementById(src+'-subj').value;
@@ -2003,25 +1936,7 @@ window.aiExtract=async function(src){
   }catch(err){loader(false);stat(src+'-status','Error: '+err.message,'err');}
 };
 
-window.preview=function preview(data){
-  parsedQs=[];const errors=[];
-  data.forEach((row,i)=>{
-    const q={exam:(row.exam||'').toUpperCase().trim(),subject:row.subject||'',chapter:row.chapter||'General',difficulty:row.difficulty||'Medium',type:(row.type||'MCQ').toUpperCase(),question:row.question||'',option_a:row.option_a||'',option_b:row.option_b||'',option_c:row.option_c||'',option_d:row.option_d||'',correct:(row.correct||'A').toUpperCase().trim(),explanation:row.explanation||'',topic:row.topic||'',marks:parseInt(row.marks||4)||4,year:row.year||null};
-    if(!q.exam||!q.subject||!q.question)errors.push('Row '+(i+1));
-    else parsedQs.push(q);
-  });
-  const ps=document.getElementById('parsed-section');
-  if(ps){ps.style.display='block';document.getElementById('parsed-sub').textContent=parsedQs.length+' questions ready'+(errors.length?' · '+errors.length+' skipped':'');}
-  document.getElementById('parsed-list').innerHTML=parsedQs.map((q,i)=>{
-    const sc2=SC[q.subject]||q.subject.substring(0,3).toUpperCase();
-    const diffCode=DIFF_CODE[q.difficulty]||'MED';
-    const n=allQs.filter(x=>x.examCode===q.exam&&x.subjCode===sc2&&x.difficulty===q.difficulty).length;
-    const qId=sc2+'-'+diffCode+'-'+String(n+i+1).padStart(6,'0');
-    return`<div class="prev-card"><div class="prev-n">${i+1}</div><div class="prev-body"><div class="prev-id">${qId}</div><div class="prev-tags"><span class="tag exam">${q.exam}</span><span class="tag">${q.subject}</span><span class="tag">${q.chapter}</span><span class="tag ${q.difficulty.toLowerCase()}">${q.difficulty}</span></div><div class="prev-q">${q.question.substring(0,100)}${q.question.length>100?'…':''}</div>${q.correct&&q.correct!=='null'?`<span class="prev-ans">✓ ${q.correct}: ${q['option_'+q.correct.toLowerCase()]||'integer'}</span>`:''}</div></div>`;
-  }).join('')+(errors.length?`<div style="margin-top:10px;padding:11px 14px;background:var(--rl);border:1px solid rgba(200,75,75,.22);border-radius:9px;font-size:.92rem;color:var(--rose);">⚠ ${errors.length} rows skipped (missing required fields)</div>`:'');
-  if(parsedQs.length)stat('up-status',parsedQs.length+' questions parsed. Review above then click Save All.','ok');
-  else stat('up-status','All rows had errors. Check the format.','err');
-}
+
 window.saveAll=async function(){
   if(!window.parsedQs||!window.parsedQs.length){stat('up-status','Nothing to save.','err');return;}
   loader(true,'Uploading '+parsedQs.length+' questions...','Saving to Firebase...');
@@ -2040,7 +1955,7 @@ window.saveAll=async function(){
   stat('up-status','✓ Saved '+saved+' questions to bank!'+(failed?' · '+failed+' failed':''),'ok');
   refreshStats();renderDashboard();if(window.innerWidth>=1100)updateDesktopStats();populateBuildChapters();
 };
-window.clearParsed=function(){parsedQs=[];document.getElementById('parsed-section').style.display='none';document.getElementById('up-status').className='status';};
+
 
 // ── BUILD TEST ──
 function populateBuildChapters(){
