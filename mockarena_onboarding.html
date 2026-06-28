@@ -273,6 +273,39 @@ a,a:visited{text-decoration:none;color:inherit;}
 @media(max-width:360px){
   .g3{grid-template-columns:repeat(2,1fr);}
 }
+
+/* ── LOCATION MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);
+  z-index:999;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.on{display:flex;}
+.modal{background:white;border-radius:20px;padding:28px 24px;
+  width:100%;max-width:440px;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.modal-icon{font-size:2.2rem;margin-bottom:12px;}
+.modal-title{font-size:1.2rem;font-weight:900;color:var(--forest);
+  letter-spacing:-.02em;margin-bottom:6px;}
+.modal-sub{font-size:.92rem;color:var(--txt-m);line-height:1.65;margin-bottom:20px;}
+.modal-field{margin-bottom:14px;}
+.modal-label{font-size:.88rem;font-weight:700;color:var(--txt-m);
+  display:block;margin-bottom:6px;}
+.modal-select,.modal-input{width:100%;padding:11px 14px;
+  background:var(--cream-w);border:1.5px solid var(--border-m);
+  border-radius:10px;font-family:var(--fd);font-size:.96rem;
+  color:var(--txt);outline:none;transition:border .18s;}
+.modal-select:focus,.modal-input:focus{border-color:var(--sage);}
+.modal-btn{width:100%;padding:14px;margin-top:6px;
+  background:linear-gradient(135deg,var(--sage),#3a6830);
+  color:white;font-family:var(--fd);font-weight:800;font-size:1rem;
+  border:none;border-radius:12px;cursor:pointer;transition:all .2s;
+  box-shadow:0 4px 14px rgba(107,143,94,.25);}
+.modal-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(107,143,94,.3);}
+.modal-btn:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.modal-skip{width:100%;padding:11px;margin-top:8px;
+  background:transparent;border:1.5px solid var(--border-m);
+  color:var(--txt-m);font-family:var(--fd);font-weight:600;
+  font-size:.92rem;border-radius:12px;cursor:pointer;transition:.18s;}
+.modal-skip:hover{border-color:var(--sage);color:var(--sage);}
+.modal-note{font-size:.8rem;color:var(--txt-lo);text-align:center;
+  margin-top:12px;line-height:1.5;}
 </style>
 </head>
 <body>
@@ -487,9 +520,11 @@ onAuthStateChanged(auth, async(user)=>{
   }catch(e){}
 });
 
+let pendingPage='', pendingLabel='';
+
 window.go=async function(page,label){
-  document.getElementById('ldrN').textContent='Opening '+label+'…';
-  document.getElementById('ldr').classList.add('on');
+  pendingPage=page; pendingLabel=label;
+  // Save stream first
   const stream=PS[page]||page.replace('.html','');
   if(cu){
     try{
@@ -498,11 +533,102 @@ window.go=async function(page,label){
         email:cu.email||'',displayName:cu.displayName||'',
       },{merge:true});
     }catch(e){}
+    // Check if location already saved
+    try{
+      const snap=await getDoc(doc(db,'users',cu.uid));
+      if(snap.exists()&&snap.data().state){
+        // Already has location - go directly
+        goToPage();
+        return;
+      }
+    }catch(e){}
   }
-  window.location.href=page;
+  // Show location modal
+  document.getElementById('locationModal').classList.add('on');
+};
+
+function goToPage(){
+  document.getElementById('ldrN').textContent='Opening '+pendingLabel+'…';
+  document.getElementById('ldr').classList.add('on');
+  window.location.href=pendingPage;
+}
+
+window.onStateChange=function(val){
+  document.getElementById('saveLocationBtn').disabled=!val;
+};
+
+window.saveLocation=async function(){
+  const state=document.getElementById('stateSelect').value;
+  const district=document.getElementById('districtInput').value.trim();
+  if(!state){alert('Please select your state.');return;}
+  document.getElementById('saveLocationBtn').disabled=true;
+  document.getElementById('saveLocationBtn').textContent='Saving…';
+  if(cu){
+    try{
+      await setDoc(doc(db,'users',cu.uid),{
+        state,
+        district:district||state,
+      },{merge:true});
+    }catch(e){console.error(e);}
+  }
+  document.getElementById('locationModal').classList.remove('on');
+  goToPage();
+};
+
+window.skipLocation=function(){
+  document.getElementById('locationModal').classList.remove('on');
+  goToPage();
 };
 
 window.skipNow=function(){window.location.href='mockarena_dashboard.html';};
 </script>
+
+<!-- LOCATION MODAL -->
+<div class="modal-overlay" id="locationModal">
+  <div class="modal">
+    <div class="modal-icon">📍</div>
+    <div class="modal-title">Where are you from?</div>
+    <div class="modal-sub">Help us show your District, State and National rank on the leaderboard!</div>
+
+    <div class="modal-field">
+      <label class="modal-label">State</label>
+      <select class="modal-select" id="stateSelect" onchange="onStateChange(this.value)">
+        <option value="">Select your state</option>
+        <option>Andhra Pradesh</option><option>Arunachal Pradesh</option>
+        <option>Assam</option><option>Bihar</option><option>Chhattisgarh</option>
+        <option>Goa</option><option>Gujarat</option><option>Haryana</option>
+        <option>Himachal Pradesh</option><option>Jharkhand</option>
+        <option>Karnataka</option><option>Kerala</option>
+        <option>Madhya Pradesh</option><option>Maharashtra</option>
+        <option>Manipur</option><option>Meghalaya</option><option>Mizoram</option>
+        <option>Nagaland</option><option>Odisha</option><option>Punjab</option>
+        <option>Rajasthan</option><option>Sikkim</option><option>Tamil Nadu</option>
+        <option>Telangana</option><option>Tripura</option>
+        <option>Uttar Pradesh</option><option>Uttarakhand</option>
+        <option>West Bengal</option>
+        <option>Delhi</option><option>Jammu & Kashmir</option>
+        <option>Ladakh</option><option>Chandigarh</option>
+        <option>Puducherry</option>
+      </select>
+    </div>
+
+    <div class="modal-field">
+      <label class="modal-label">District</label>
+      <input class="modal-input" type="text" id="districtInput"
+        placeholder="e.g. Patna, Jaipur, Kota…" maxlength="60"/>
+    </div>
+
+    <button class="modal-btn" id="saveLocationBtn" onclick="saveLocation()">
+      Save &amp; Continue →
+    </button>
+    <button class="modal-skip" onclick="skipLocation()">
+      Skip for now
+    </button>
+    <div class="modal-note">
+      🔒 Used only for leaderboard rankings. Never shared publicly.
+    </div>
+  </div>
+</div>
+
 </body>
 </html>

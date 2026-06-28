@@ -1,1134 +1,658 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MockArena — Leaderboard</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Leaderboard — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
 <style>
 :root{
-  --cream:#faf9f5;--cream-warm:#f5f3ec;--cream-card:#ffffff;
-  --forest:#1a2618;--forest-soft:#243422;--forest-muted:#3d5239;
-  --sage:#6b8f5e;--sage-light:rgba(107,143,94,0.1);--sage-glow:rgba(107,143,94,0.2);
-  --gold:#c8962a;--gold-dim:rgba(200,150,42,0.08);
-  --rose:#c84b4b;--rose-light:rgba(200,75,75,0.09);
-  --sky:#3b82c4;--sky-light:rgba(59,130,196,0.09);
-  --amber:#b87333;--amber-light:rgba(184,115,51,0.09);
-  --purple:#7c5cbf;--purple-light:rgba(124,92,191,0.09);
-  --medal-gold:#c8962a;--medal-silver:#8a9bb0;--medal-bronze:#b87333;
-  --border:rgba(26,38,24,0.08);--border-med:rgba(26,38,24,0.13);
-  --font-d:'Outfit',sans-serif;--font-b:'Outfit',sans-serif;
-  --font-serif:'Lora',serif;--font-m:'IBM Plex Mono',monospace;
-  --sh:0 1px 3px rgba(26,38,24,0.06),0 4px 16px rgba(26,38,24,0.04);
-  --sh-hover:0 8px 32px rgba(107,143,94,0.15),0 2px 8px rgba(26,38,24,0.06);
-  --sh-deep:0 20px 60px rgba(26,38,24,0.12);
-  --sbw:256px;--tbh:62px;
+  --forest:#1a2618;--sage:#6b8f5e;--sage-d:#3a6830;
+  --sage-l:rgba(107,143,94,.11);--sage-g:rgba(107,143,94,.22);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);--gold-g:rgba(200,150,42,.22);
+  --rose:#c84b4b;--silver:#8a9bb0;--bronze:#b87333;
+  --cream:#faf9f5;--cw:#f5f3ec;
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.14);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.38);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --sh:0 2px 12px rgba(26,38,24,.07);--sh-lg:0 6px 24px rgba(26,38,24,.11);
+  --max:960px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{height:100%;overflow:hidden;}
-@media(max-width:860px){html{height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;}body{height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;}}
-@media(max-width:860px){html,body{height:auto!important;overflow:visible!important;}}
-body{font-family:var(--font-b);background:var(--cream);color:var(--forest);display:flex;-webkit-font-smoothing:antialiased;}
+body{font-family:var(--fd);background:var(--cream);color:var(--txt);
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:16px;}
 
-/* ═══ SIDEBAR ═══ */
-.sb{width:var(--sbw);flex-shrink:0;background:var(--forest);height:100vh;position:fixed;top:0;left:0;display:flex;flex-direction:column;overflow-y:auto;z-index:300;border-right:1px solid rgba(255,255,255,.04);;transition:transform .3s ease;}
-.sb::-webkit-scrollbar{width:3px;}
-.sb::-webkit-scrollbar-thumb{background:rgba(255,255,255,.08);border-radius:3px;}
-.sb-logo{padding:20px 18px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,.06);text-decoration:none;}
-.sb-lm{width:36px;height:36px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:10px;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.82rem;font-weight:800;color:white;flex-shrink:0;box-shadow:0 0 18px var(--sage-glow);}
-.sb-b1{font-family:var(--font-d);font-size:1rem;font-weight:700;letter-spacing:-.02em;}
-.sb-b2{font-size:.56rem;font-weight:500;color:rgba(255,255,255,.28);letter-spacing:.1em;text-transform:uppercase;}
-.sb-user{margin:12px 14px;background:rgba(107,143,94,.15);border:1px solid rgba(107,143,94,.25);border-radius:12px;padding:12px;}
-.sb-av{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.9rem;font-weight:800;color:white;margin-bottom:8px;box-shadow:0 0 14px rgba(200,150,42,.3);}
-.sb-uname{font-size:.8rem;font-weight:700;color:white;}
-.sb-urole{font-size:.64rem;color:rgba(255,255,255,.35);margin-top:1px;}
-.sb-ubadge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;background:rgba(200,150,42,.15);border:1px solid rgba(200,150,42,.25);border-radius:100px;padding:2px 9px;font-size:.6rem;font-weight:600;color:var(--gold);}
-.sb-grp{padding:14px 18px 4px;font-size:.56rem;font-weight:600;color:rgba(255,255,255,.2);text-transform:uppercase;letter-spacing:.12em;}
-.sb-ul{list-style:none;padding:0 8px;}
-.sb-ul li{margin-bottom:1px;}
-.sb-nav{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;text-decoration:none;font-size:.78rem;font-weight:500;color:rgba(255,255,255,.42);transition:all .18s;}
-.sb-nav:hover{background:rgba(255,255,255,.06);color:rgba(255,255,255,.82);}
-.sb-nav.active{background:rgba(107,143,94,.2);color:white;border:1px solid rgba(107,143,94,.3);}
-.sb-nav.active .si{color:var(--sage);}
-.si{width:16px;text-align:center;font-size:.82rem;flex-shrink:0;color:rgba(255,255,255,.25);}
-.snb{margin-left:auto;font-size:.6rem;font-weight:700;padding:1px 6px;border-radius:100px;background:var(--rose);color:white;}
-.sb-foot{margin-top:auto;padding:10px 8px 18px;border-top:1px solid rgba(255,255,255,.06);}
+/* ── NAV ── */
+.nav{height:56px;display:flex;align-items:center;padding:0 20px;gap:10px;
+  background:var(--forest);position:sticky;top:0;z-index:100;
+  border-bottom:1px solid rgba(107,143,94,.15);}
+.nav-logo{font-size:1.08rem;font-weight:900;text-decoration:none;color:white;letter-spacing:-.02em;flex-shrink:0;}
+.nav-logo span{color:var(--sage);}
+.nav-pill{font-size:.86rem;font-weight:800;padding:5px 13px;border-radius:100px;
+  background:rgba(200,150,42,.18);color:var(--gold);border:1px solid var(--gold-g);
+  white-space:nowrap;flex-shrink:0;}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-btn{font-family:var(--fd);font-size:.9rem;font-weight:700;padding:7px 16px;
+  border-radius:9px;border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);
+  text-decoration:none;transition:.18s;cursor:pointer;white-space:nowrap;}
+.nav-btn.primary{background:linear-gradient(135deg,var(--sage),var(--sage-d));
+  border-color:transparent;box-shadow:0 2px 8px var(--sage-g);}
 
-/* ═══ MAIN ═══ */
-.main{margin-left:var(--sbw);flex:1;display:flex;flex-direction:column;height:100vh;overflow:hidden;transition:margin .3s ease;}
-.tb{height:var(--tbh);background:rgba(250,249,245,.96);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:12px;flex-shrink:0;}
-.tb-title{font-family:var(--font-d);font-size:.9rem;font-weight:700;color:var(--forest);letter-spacing:-.02em;}
-.tb-crumb{font-size:.64rem;color:rgba(26,38,24,.4);}
-.tb-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
-.tb-ib{width:36px;height:36px;border-radius:9px;background:var(--cream-warm);border:1.5px solid var(--border-med);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.88rem;transition:all .2s;position:relative;color:var(--forest-muted);}
-.tb-ib:hover{border-color:var(--sage);background:var(--sage-light);}
-.tb-ib .dot{position:absolute;top:6px;right:6px;width:6px;height:6px;border-radius:50%;background:var(--rose);border:1.5px solid var(--cream);}
-.btn{font-family:var(--font-b);font-size:.76rem;font-weight:600;padding:7px 14px;border-radius:9px;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;border:none;}
-.btn-ghost{background:var(--cream-warm);border:1.5px solid var(--border-med);color:var(--forest-muted);}
-.btn-ghost:hover{border-color:var(--sage);color:var(--sage);}
-.btn-sage{background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;box-shadow:0 2px 8px var(--sage-glow);}
-.btn-sage:hover{box-shadow:0 4px 16px var(--sage-glow);transform:translateY(-1px);}
-.btn-gold{background:linear-gradient(135deg,var(--gold),#e8a830);color:white;}
-.btn-gold:hover{box-shadow:0 4px 14px rgba(200,150,42,.35);transform:translateY(-1px);}
+/* ── HERO ── */
+.hero{background:linear-gradient(135deg,var(--forest),#1e3318);
+  padding:32px 20px 28px;position:relative;overflow:hidden;}
+.hero-grid{position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:36px 36px;pointer-events:none;}
+.hero-orb{position:absolute;width:320px;height:320px;border-radius:50%;
+  background:radial-gradient(circle,rgba(200,150,42,.14),transparent 70%);
+  top:-80px;right:-60px;pointer-events:none;}
+.hero-inner{max-width:var(--max);margin:0 auto;position:relative;z-index:1;}
+.hero-live{display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  border-radius:100px;padding:5px 14px;font-size:.84rem;font-weight:700;
+  color:rgba(255,255,255,.6);letter-spacing:.04em;margin-bottom:16px;}
+.live-dot{width:6px;height:6px;border-radius:50%;background:var(--rose);flex-shrink:0;
+  animation:pulse 1.5s infinite;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+.hero-title{font-size:clamp(1.7rem,4.5vw,2.6rem);font-weight:900;color:white;
+  letter-spacing:-.03em;line-height:1.1;margin-bottom:10px;}
+.hero-title em{font-style:normal;color:var(--gold);}
+.hero-sub{font-size:1rem;color:rgba(255,255,255,.52);line-height:1.72;
+  max-width:540px;margin-bottom:22px;}
+.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;
+  border-top:1px solid rgba(255,255,255,.08);padding-top:18px;}
+.h-stat{padding-right:20px;}
+.h-stat:last-child{padding-right:0;}
+.h-stat-n{font-family:var(--fm);font-size:1.2rem;font-weight:800;color:white;line-height:1;}
+.h-stat-l{font-size:.84rem;color:rgba(255,255,255,.38);margin-top:3px;}
 
-.content{flex:1;overflow-y:auto;padding:22px 24px 40px;}
-.content::-webkit-scrollbar{width:3px;}
-.content::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
+/* ── FILTERS STRIP ── */
+.filters{background:white;border-bottom:1.5px solid var(--border);
+  position:sticky;top:56px;z-index:90;box-shadow:0 2px 8px rgba(26,38,24,.04);}
+.filters-inner{max-width:var(--max);margin:0 auto;padding:0 20px;
+  display:flex;align-items:center;gap:0;overflow-x:auto;scrollbar-width:none;}
+.filters-inner::-webkit-scrollbar{display:none;}
 
-/* ═══ HERO ═══ */
-.hero{background:linear-gradient(135deg,var(--forest),var(--forest-soft),#1e3318);border-radius:20px;padding:28px 32px;margin-bottom:20px;position:relative;overflow:hidden;}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:40px 40px;pointer-events:none;}
-.hero-orb1{position:absolute;width:300px;height:300px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.18),transparent 70%);top:-80px;right:-40px;pointer-events:none;}
-.hero-orb2{position:absolute;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(107,143,94,.12),transparent 70%);bottom:-40px;left:35%;pointer-events:none;}
-.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;}
-.hero-tag{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:100px;padding:4px 13px;font-size:.64rem;font-weight:600;color:rgba(255,255,255,.45);letter-spacing:.08em;text-transform:uppercase;margin-bottom:10px;}
-.live-dot{width:6px;height:6px;border-radius:50%;background:var(--rose);animation:livepulse 1.5s infinite;}
-@keyframes livepulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(200,75,75,.4)}50%{opacity:.7;box-shadow:0 0 0 5px rgba(200,75,75,0)}}
-.hero-title{font-family:var(--font-d);font-size:1.7rem;font-weight:900;color:white;letter-spacing:-.04em;line-height:1.15;margin-bottom:8px;}
-.hero-title em{font-style:normal;background:linear-gradient(90deg,#d4a84b,#f0c86a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
-.hero-sub{font-size:.82rem;color:rgba(255,255,255,.42);margin-bottom:20px;line-height:1.6;}
-.hero-stats{display:flex;gap:18px;flex-wrap:wrap;}
-.hs{display:flex;align-items:center;gap:6px;font-size:.74rem;color:rgba(255,255,255,.35);}
-.hs .v{color:rgba(255,255,255,.82);font-weight:700;}
-.hs-sep{width:1px;height:14px;background:rgba(255,255,255,.1);}
+/* Level tabs */
+.f-tab{font-family:var(--fd);font-size:.98rem;font-weight:700;
+  padding:14px 18px;border:none;background:transparent;color:var(--txt-lo);
+  cursor:pointer;border-bottom:3px solid transparent;transition:.18s;
+  white-space:nowrap;flex-shrink:0;}
+.f-tab:hover{color:var(--txt);}
+.f-tab.on{color:var(--sage);border-bottom-color:var(--sage);}
 
-/* My rank cards */
-.my-ranks{display:flex;flex-direction:column;gap:8px;min-width:210px;}
-.mrc{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:11px;cursor:pointer;transition:all .2s;}
-.mrc:hover{background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.18);}
-.mrc.hl{border-color:rgba(107,143,94,.4);background:rgba(107,143,94,.15);}
-.mrc-ic{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.96rem;flex-shrink:0;}
-.mrc-info{flex:1;}
-.mrc-lbl{font-size:.6rem;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px;}
-.mrc-rank{font-family:var(--font-d);font-size:1.1rem;font-weight:800;color:white;letter-spacing:-.04em;line-height:1;}
-.mrc-sub{font-size:.6rem;color:rgba(255,255,255,.3);margin-top:2px;}
-.mrc-delta{font-size:.68rem;font-weight:700;}
-.du{color:#a8d99c;} .dd{color:#fca5a5;} .ds{color:rgba(255,255,255,.3);}
+/* Time + exam on right */
+.f-right{margin-left:auto;display:flex;align-items:center;gap:6px;
+  padding:8px 0;flex-shrink:0;}
+.f-time{font-size:.88rem;font-weight:700;padding:5px 12px;border-radius:100px;
+  border:1.5px solid var(--border);background:transparent;color:var(--txt-lo);
+  cursor:pointer;transition:.18s;white-space:nowrap;}
+.f-time:hover{border-color:var(--sage);color:var(--sage);}
+.f-time.on{background:var(--sage-l);color:var(--sage);border-color:var(--sage-g);}
+.f-exam{font-family:var(--fd);font-size:.88rem;font-weight:600;
+  padding:6px 10px;border-radius:8px;border:1.5px solid var(--border);
+  background:var(--cw);color:var(--txt-m);cursor:pointer;outline:none;}
 
-/* ═══ SCOPE TABS ═══ */
-.scope-bar{display:flex;background:var(--cream-card);border:1px solid var(--border);border-radius:16px;padding:4px;box-shadow:var(--sh);gap:3px;margin-bottom:18px;}
-.scope-tab{flex:1;padding:10px 14px;border-radius:12px;font-family:var(--font-d);font-size:.8rem;font-weight:700;color:var(--forest-muted);cursor:pointer;text-align:center;transition:all .22s;border:none;background:none;display:flex;align-items:center;justify-content:center;gap:6px;}
-.scope-tab:hover{color:var(--forest);background:var(--cream-warm);}
-.scope-tab.active{background:linear-gradient(135deg,var(--forest),var(--forest-soft));color:white;box-shadow:0 4px 14px rgba(26,38,24,.2);}
-.scope-tab .sc{font-size:.62rem;font-weight:800;background:rgba(26,38,24,.12);padding:2px 7px;border-radius:100px;color:var(--forest-muted);}
-.scope-tab.active .sc{background:rgba(255,255,255,.15);color:rgba(255,255,255,.7);}
+/* ── MAIN ── */
+.main{max-width:var(--max);margin:0 auto;padding:22px 20px 56px;}
 
-/* ═══ CONTROLS ═══ */
-.ctrl-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:16px;}
-.fi{font-family:var(--font-b);font-size:.76rem;font-weight:600;color:var(--forest-muted);border:1.5px solid var(--border-med);background:var(--cream-card);border-radius:9px;padding:8px 12px;cursor:pointer;outline:none;transition:border-color .2s;box-shadow:var(--sh);}
-.fi:focus,.fi:hover{border-color:var(--sage);}
-.search-box{display:flex;align-items:center;gap:7px;background:var(--cream-card);border:1.5px solid var(--border-med);border-radius:9px;padding:8px 13px;flex:1;max-width:260px;transition:all .2s;box-shadow:var(--sh);}
-.search-box:focus-within{border-color:var(--sage);box-shadow:0 0 0 3px var(--sage-light);}
-.search-box input{border:none;outline:none;font-family:var(--font-b);font-size:.76rem;color:var(--forest);background:transparent;width:100%;}
-.search-box input::placeholder{color:rgba(26,38,24,.3);}
-.tc{font-size:.72rem;font-weight:700;padding:7px 13px;border-radius:100px;border:1.5px solid var(--border-med);background:var(--cream-card);color:var(--forest-muted);cursor:pointer;transition:all .18s;white-space:nowrap;}
-.tc:hover{border-color:var(--sage);color:var(--sage);}
-.tc.active{background:var(--sage-light);color:var(--sage);border-color:rgba(107,143,94,.3);}
-.refresh-btn{width:34px;height:34px;border-radius:9px;border:1.5px solid var(--border-med);background:var(--cream-card);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.88rem;transition:all .2s;color:var(--forest-muted);box-shadow:var(--sh);}
-.refresh-btn:hover{border-color:var(--sage);color:var(--sage);}
+/* ── DESKTOP LAYOUT ── */
+.page-layout{display:flex;flex-direction:column;gap:16px;}
+@media(min-width:860px){
+  .page-layout{flex-direction:row;align-items:flex-start;gap:20px;}
+  .page-left{flex:1;min-width:0;}
+  .page-right{width:280px;flex-shrink:0;position:sticky;top:112px;}
+}
 
-/* ═══ LAYOUT ═══ */
-.lb-layout{display:grid;grid-template-columns:1fr 288px;gap:18px;align-items:start;}
+/* ── YOUR RANK CARD ── */
+.your-rank{background:white;border:1.5px solid var(--border);
+  border-left:4px solid var(--sage);border-radius:14px;
+  padding:18px 20px;margin-bottom:16px;display:none;
+  align-items:center;gap:16px;box-shadow:var(--sh);}
+.your-rank.show{display:flex;}
+.yr-n{font-family:var(--fm);font-size:2.2rem;font-weight:900;
+  color:var(--sage);flex-shrink:0;letter-spacing:-.04em;}
+.yr-info{flex:1;min-width:0;}
+.yr-name{font-size:1.02rem;font-weight:800;color:var(--forest);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.yr-sub{font-size:.88rem;color:var(--txt-lo);margin-top:3px;}
+.yr-stats{display:flex;gap:20px;flex-shrink:0;}
+.yr-stat-n{font-family:var(--fm);font-size:1.02rem;font-weight:800;
+  color:var(--forest);display:block;}
+.yr-stat-l{font-size:.78rem;color:var(--txt-lo);margin-top:2px;}
+@media(max-width:560px){.yr-stats{display:none;}.yr-n{font-size:1.8rem;}}
 
-/* ═══ PODIUM ═══ */
-.podium-section{background:var(--cream-card);border:1px solid var(--border);border-radius:18px;overflow:hidden;margin-bottom:16px;box-shadow:var(--sh);}
-.podium-hd{background:linear-gradient(135deg,var(--forest),var(--forest-soft));padding:18px 22px;display:flex;align-items:center;justify-content:space-between;}
-.ph-title{font-family:var(--font-d);font-size:.88rem;font-weight:800;color:white;letter-spacing:-.02em;}
-.ph-scope-badge{font-size:.68rem;font-weight:700;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.12);padding:3px 11px;border-radius:100px;}
-.podium{display:flex;align-items:flex-end;justify-content:center;gap:0;padding:24px 20px 0;background:linear-gradient(180deg,var(--forest),var(--forest-soft));position:relative;overflow:hidden;}
-.podium::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;}
-.ps{display:flex;flex-direction:column;align-items:center;position:relative;z-index:1;}
-.ps.p1{order:2;margin:0 4px;}
-.ps.p2{order:1;margin:0 4px;}
-.ps.p3{order:3;margin:0 4px;}
-.pod-av-wrap{position:relative;margin-bottom:8px;}
-.pod-av{border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-weight:800;color:white;}
-.p1 .pod-av{width:72px;height:72px;font-size:1.2rem;border:3px solid rgba(200,150,42,.5);box-shadow:0 0 0 6px rgba(200,150,42,.12);}
-.p2 .pod-av{width:60px;height:60px;font-size:.98rem;border:3px solid rgba(138,155,176,.4);}
-.p3 .pod-av{width:56px;height:56px;font-size:.9rem;border:3px solid rgba(184,115,51,.4);}
-.pod-crown{position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:1.2rem;animation:floatcrown 3s ease-in-out infinite;}
-@keyframes floatcrown{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-4px)}}
-.pod-medal{position:absolute;bottom:-4px;right:-4px;width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.72rem;border:2px solid rgba(0,0,0,.2);}
-.pod-name{font-family:var(--font-d);font-size:.76rem;font-weight:800;color:white;text-align:center;margin-bottom:2px;white-space:nowrap;}
-.pod-school{font-size:.6rem;color:rgba(255,255,255,.38);text-align:center;margin-bottom:5px;max-width:96px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.pod-score{font-family:var(--font-m);font-size:.7rem;font-weight:600;color:rgba(255,255,255,.55);text-align:center;margin-bottom:6px;}
-.pod-block{border-radius:10px 10px 0 0;width:92px;display:flex;align-items:center;justify-content:center;}
-.p1 .pod-block{height:72px;background:linear-gradient(180deg,rgba(200,150,42,.22),rgba(200,150,42,.08));}
-.p2 .pod-block{height:50px;background:linear-gradient(180deg,rgba(138,155,176,.18),rgba(138,155,176,.06));}
-.p3 .pod-block{height:38px;background:linear-gradient(180deg,rgba(184,115,51,.18),rgba(184,115,51,.06));}
-.pod-block-num{font-family:var(--font-d);font-size:1.1rem;font-weight:900;color:rgba(255,255,255,.25);}
-.p1 .pod-block-num{color:rgba(200,150,42,.6);}
+/* ── SEARCH ROW ── */
+.search-row{display:flex;align-items:center;gap:8px;margin-bottom:16px;}
+.search-box{flex:1;display:flex;align-items:center;gap:8px;background:white;
+  border:1.5px solid var(--border);border-radius:11px;padding:10px 14px;
+  box-shadow:var(--sh);transition:.18s;}
+.search-box:focus-within{border-color:var(--sage-g);}
+.search-box input{background:none;border:none;outline:none;color:var(--txt);
+  font-family:var(--fd);font-size:.98rem;width:100%;}
+.search-box input::placeholder{color:var(--txt-lo);}
+.icon-btn{width:40px;height:40px;border-radius:10px;border:1.5px solid var(--border);
+  background:white;cursor:pointer;font-size:1rem;box-shadow:var(--sh);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--txt-m);transition:.18s;flex-shrink:0;}
+.icon-btn:hover{border-color:var(--sage);color:var(--sage);}
+.share-btn{height:40px;padding:0 14px;border-radius:10px;border:1.5px solid var(--border);
+  background:white;cursor:pointer;font-size:.9rem;font-weight:700;
+  color:var(--txt-m);box-shadow:var(--sh);white-space:nowrap;
+  display:flex;align-items:center;gap:5px;transition:.18s;flex-shrink:0;}
+.share-btn:hover{border-color:var(--sage);color:var(--sage);}
 
-/* ═══ TABLE ═══ */
-.lb-table-wrap{background:var(--cream-card);border:1px solid var(--border);border-radius:18px;overflow:hidden;box-shadow:var(--sh);}
-.lbt-head{display:grid;grid-template-columns:54px 1fr 100px 100px 80px 70px 54px;align-items:center;padding:11px 18px;background:var(--cream-warm);border-bottom:1px solid var(--border);gap:8px;}
-.lbt-th{font-size:.62rem;font-weight:800;color:rgba(26,38,24,.38);text-transform:uppercase;letter-spacing:.08em;cursor:pointer;display:flex;align-items:center;gap:4px;user-select:none;transition:color .2s;}
-.lbt-th:hover{color:var(--sage);}
-.lbt-th.sorted{color:var(--sage);}
-.lbt-rows{display:flex;flex-direction:column;}
-.lb-row{display:grid;grid-template-columns:54px 1fr 100px 100px 80px 70px 54px;align-items:center;padding:12px 18px;border-bottom:1px solid var(--border);gap:8px;cursor:pointer;transition:all .18s;animation:rowIn .35s ease forwards;opacity:0;}
-@keyframes rowIn{from{opacity:0;transform:translateX(-10px)}to{opacity:1;transform:translateX(0)}}
+/* ── PODIUM ── */
+.podium-card{background:linear-gradient(135deg,var(--forest),#1e3318);
+  border-radius:18px;overflow:hidden;box-shadow:var(--sh-lg);margin-bottom:16px;}
+.podium-head{padding:16px 20px;display:flex;align-items:center;
+  justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);}
+.podium-head-title{font-size:1.02rem;font-weight:800;color:white;}
+.podium-head-badge{font-size:.82rem;font-weight:700;padding:3px 11px;
+  border-radius:100px;background:rgba(255,255,255,.08);
+  color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.1);}
+.podium{display:flex;align-items:flex-end;justify-content:center;
+  gap:8px;padding:28px 20px 0;position:relative;}
+.podium::before{content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
+  background-size:32px 32px;pointer-events:none;}
+.ps{display:flex;flex-direction:column;align-items:center;
+  position:relative;z-index:1;flex:1;max-width:150px;}
+.ps.p1{order:2;}.ps.p2{order:1;}.ps.p3{order:3;}
+.pod-av-wrap{position:relative;margin-bottom:10px;}
+.pod-av{border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-family:var(--fd);font-weight:900;color:white;margin:0 auto;}
+.p1 .pod-av{width:72px;height:72px;font-size:1.3rem;
+  border:3px solid rgba(200,150,42,.5);box-shadow:0 0 0 6px rgba(200,150,42,.1);}
+.p2 .pod-av{width:58px;height:58px;font-size:1.05rem;border:2.5px solid rgba(138,155,176,.4);}
+.p3 .pod-av{width:52px;height:52px;font-size:.95rem;border:2px solid rgba(184,115,51,.35);}
+.pod-crown{position:absolute;top:-16px;left:50%;transform:translateX(-50%);
+  font-size:1.2rem;animation:float 3s ease-in-out infinite;}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-5px)}}
+.pod-medal{position:absolute;bottom:-3px;right:-3px;width:20px;height:20px;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:.7rem;border:2px solid rgba(0,0,0,.2);}
+.pod-name{font-size:.9rem;font-weight:800;color:white;text-align:center;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;width:100%;margin-bottom:3px;}
+.pod-pts{font-family:var(--fm);font-size:.82rem;color:rgba(255,255,255,.5);
+  text-align:center;margin-bottom:8px;}
+.pod-block{border-radius:10px 10px 0 0;width:100%;display:flex;
+  align-items:center;justify-content:center;}
+.p1 .pod-block{height:68px;background:linear-gradient(180deg,rgba(200,150,42,.22),rgba(200,150,42,.06));}
+.p2 .pod-block{height:48px;background:linear-gradient(180deg,rgba(138,155,176,.16),rgba(138,155,176,.04));}
+.p3 .pod-block{height:36px;background:linear-gradient(180deg,rgba(184,115,51,.16),rgba(184,115,51,.04));}
+.pod-block-n{font-family:var(--fd);font-size:1.1rem;font-weight:900;color:rgba(255,255,255,.2);}
+.p1 .pod-block-n{color:rgba(200,150,42,.55);}
+
+/* ── TABLE ── */
+.lb-card{background:white;border:1.5px solid var(--border);border-radius:16px;
+  overflow:hidden;box-shadow:var(--sh);}
+.lb-head{display:grid;grid-template-columns:52px 1fr 95px 100px 58px;
+  gap:8px;padding:11px 18px;background:var(--cw);
+  border-bottom:1.5px solid var(--border);}
+.lb-th{font-size:.8rem;font-weight:800;color:var(--txt-lo);
+  text-transform:uppercase;letter-spacing:.06em;}
+.lb-row{display:grid;grid-template-columns:52px 1fr 95px 100px 58px;
+  gap:8px;padding:14px 18px;border-bottom:1px solid var(--border);
+  align-items:center;transition:.15s;cursor:pointer;
+  animation:rowIn .3s ease forwards;opacity:0;}
+@keyframes rowIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
 .lb-row:last-child{border-bottom:none;}
-.lb-row:hover{background:var(--cream-warm);}
-.lb-row.me{background:linear-gradient(135deg,var(--sage-light),rgba(107,143,94,.04));border-left:3px solid var(--sage);}
-.lb-row.me:hover{background:linear-gradient(135deg,rgba(107,143,94,.14),rgba(107,143,94,.06));}
-.lb-row.g-row{background:linear-gradient(135deg,rgba(200,150,42,.06),rgba(200,150,42,.02));}
-.lb-row.s-row{background:linear-gradient(135deg,rgba(138,155,176,.06),rgba(138,155,176,.02));}
-.lb-row.b-row{background:linear-gradient(135deg,rgba(184,115,51,.06),rgba(184,115,51,.02));}
-.rank-cell{display:flex;align-items:center;justify-content:center;gap:4px;}
-.rn{font-family:var(--font-m);font-size:.78rem;font-weight:700;color:var(--forest-muted);width:26px;text-align:center;}
-.rn.r1{color:var(--medal-gold);font-size:.88rem;}
-.rn.r2{color:var(--medal-silver);}
-.rn.r3{color:var(--medal-bronze);}
-.rm{display:flex;flex-direction:column;align-items:center;}
-.rm-a{font-size:.54rem;font-weight:900;line-height:1;}
-.rm-n{font-size:.52rem;font-weight:700;line-height:1;}
-.rm-up{color:var(--sage);} .rm-dn{color:var(--rose);} .rm-sm{color:rgba(26,38,24,.25);}
-.uc{display:flex;align-items:center;gap:9px;}
-.uc-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:var(--font-d);font-size:.73rem;font-weight:800;color:white;flex-shrink:0;}
-.uc-name{font-size:.8rem;font-weight:700;color:var(--forest);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.lb-row.me .uc-name{color:var(--sage);}
-.you-badge{font-size:.54rem;font-weight:800;background:var(--sage);color:white;padding:1px 6px;border-radius:100px;margin-left:4px;text-transform:uppercase;}
-.uc-meta{font-size:.62rem;color:rgba(26,38,24,.38);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.score-cell{font-family:var(--font-m);font-size:.8rem;font-weight:600;color:var(--forest);}
-.acc-cell{display:flex;align-items:center;gap:6px;}
-.acc-bar{flex:1;height:4px;background:var(--cream-warm);border-radius:3px;overflow:hidden;border:1px solid var(--border);}
-.acc-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sage),#4a7a3d);}
-.acc-val{font-size:.7rem;font-weight:700;color:var(--forest-muted);white-space:nowrap;}
-.streak-cell{display:flex;align-items:center;gap:4px;font-size:.74rem;font-weight:700;color:var(--gold);}
-.loc-cell{font-size:.7rem;color:var(--forest-muted);display:flex;align-items:center;gap:3px;}
+.lb-row:hover{background:var(--cw);}
+.lb-row.gold{background:linear-gradient(135deg,rgba(200,150,42,.06),rgba(200,150,42,.01));}
+.lb-row.silver{background:linear-gradient(135deg,rgba(138,155,176,.06),rgba(138,155,176,.01));}
+.lb-row.bronze{background:linear-gradient(135deg,rgba(184,115,51,.06),rgba(184,115,51,.01));}
+.lb-row.you{background:linear-gradient(135deg,var(--sage-l),rgba(107,143,94,.03));
+  border-left:3px solid var(--sage);}
+.lb-rank-cell{display:flex;align-items:center;gap:4px;}
+.lb-rank{font-family:var(--fm);font-size:.94rem;font-weight:800;color:var(--txt-lo);}
+.lb-rank.r1{color:var(--gold);font-size:1.1rem;}
+.lb-rank.r2{color:var(--silver);}
+.lb-rank.r3{color:var(--bronze);}
+.lb-student{display:flex;align-items:center;gap:10px;min-width:0;}
+.lb-av{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:.8rem;font-weight:800;color:white;flex-shrink:0;}
+.lb-name{font-size:.98rem;font-weight:700;color:var(--forest);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-name.you{color:var(--sage);}
+.you-badge{font-size:.68rem;font-weight:800;background:var(--sage);color:white;
+  padding:1px 7px;border-radius:100px;margin-left:5px;vertical-align:middle;}
+.lb-meta{font-size:.8rem;color:var(--txt-lo);margin-top:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.lb-pts{font-family:var(--fm);font-size:.94rem;font-weight:800;color:var(--forest);}
+.lb-acc-wrap{display:flex;align-items:center;gap:6px;}
+.lb-acc-bar{flex:1;height:4px;background:var(--cw);border-radius:4px;overflow:hidden;border:1px solid var(--border);}
+.lb-acc-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.lb-acc-val{font-size:.84rem;font-weight:700;color:var(--txt-m);white-space:nowrap;}
+.lb-tests{font-family:var(--fm);font-size:.88rem;font-weight:700;color:var(--txt-m);}
+.you-here{background:var(--sage-l);border-top:1px solid var(--sage-g);
+  border-bottom:1px solid var(--sage-g);padding:8px 18px;
+  font-size:.88rem;font-weight:700;color:var(--sage);}
+.lb-footer{padding:13px 18px;border-top:1.5px solid var(--border);
+  font-size:.88rem;color:var(--txt-lo);display:flex;
+  align-items:center;justify-content:space-between;}
+.lb-empty{padding:56px 20px;text-align:center;}
+.lb-empty-icon{font-size:2.6rem;margin-bottom:14px;}
+.lb-empty-h{font-size:1.06rem;font-weight:800;color:var(--forest);margin-bottom:6px;}
+.lb-empty-s{font-size:.94rem;color:var(--txt-lo);line-height:1.7;}
 
-/* "You are here" row */
-.you-here{background:var(--sage-light);border-left:3px solid var(--sage);padding:7px 18px;font-size:.7rem;font-weight:700;color:var(--sage);display:flex;align-items:center;gap:8px;}
+/* ── RIGHT PANEL ── */
+.right-card{background:white;border:1.5px solid var(--border);
+  border-radius:14px;padding:18px;box-shadow:var(--sh);margin-bottom:14px;}
+.right-card-title{font-size:.96rem;font-weight:800;color:var(--forest);
+  margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.right-card-title::before{content:'';width:3px;height:14px;
+  background:linear-gradient(180deg,var(--sage),var(--sage-d));
+  border-radius:2px;flex-shrink:0;}
+.stat-row{display:flex;justify-content:space-between;align-items:center;
+  padding:8px 0;border-bottom:1px solid var(--border);font-size:.92rem;}
+.stat-row:last-child{border-bottom:none;}
+.stat-label{color:var(--txt-m);}
+.stat-val{font-family:var(--fm);font-weight:800;color:var(--forest);}
+.top-item{display:flex;align-items:center;gap:9px;padding:7px 0;
+  border-bottom:1px solid var(--border);}
+.top-item:last-child{border-bottom:none;}
+.top-rank{font-family:var(--fm);font-size:.82rem;font-weight:700;
+  color:var(--txt-lo);width:28px;flex-shrink:0;}
+.top-av{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:.72rem;font-weight:800;color:white;flex-shrink:0;}
+.top-name{font-size:.9rem;font-weight:700;color:var(--forest);flex:1;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.top-pts{font-family:var(--fm);font-size:.84rem;font-weight:700;color:var(--txt-m);}
 
-/* Pagination */
-.pg{padding:12px 18px;display:flex;align-items:center;gap:6px;border-top:1px solid var(--border);}
-.pg-btn{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--border-med);background:var(--cream-warm);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.76rem;font-weight:700;color:var(--forest-muted);transition:all .18s;}
-.pg-btn:hover{border-color:var(--sage);color:var(--sage);}
-.pg-btn.active{background:var(--forest);color:white;border-color:var(--forest);}
-.pg-btn.disabled{opacity:.3;cursor:not-allowed;}
+/* ── LOADING ── */
+.loading{padding:48px 20px;text-align:center;color:var(--txt-lo);font-size:.96rem;}
+.spin{width:30px;height:30px;border:3px solid var(--border);
+  border-top-color:var(--sage);border-radius:50%;
+  animation:spin .7s linear infinite;margin:0 auto 14px;}
+@keyframes spin{to{transform:rotate(360deg);}}
 
-/* ═══ SIDE PANELS ═══ */
-.sp{background:var(--cream-card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:14px;box-shadow:var(--sh);}
-.sp-head{padding:14px 16px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px;}
-.sp-title{font-family:var(--font-d);font-size:.8rem;font-weight:700;color:var(--forest);flex:1;display:flex;align-items:center;gap:8px;}
-.sp-title::before{content:'';width:3px;height:13px;background:linear-gradient(180deg,var(--sage),#4a7a3d);border-radius:2px;box-shadow:0 0 6px var(--sage-glow);}
-.sp-body{padding:12px 14px;}
-
-/* My rank summary */
-.mrs{background:linear-gradient(135deg,var(--forest),var(--forest-soft));border-radius:16px;margin-bottom:14px;overflow:hidden;position:relative;}
-.mrs-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:36px 36px;pointer-events:none;}
-.mrs-inner{position:relative;z-index:1;padding:16px;}
-.mrs-lbl{font-size:.62rem;font-weight:700;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
-.mrs-name{font-family:var(--font-d);font-size:.88rem;font-weight:700;color:white;margin-bottom:12px;}
-.mrs-row{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:9px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);margin-bottom:6px;cursor:pointer;transition:all .18s;}
-.mrs-row:hover,.mrs-row.act{background:rgba(255,255,255,.1);border-color:rgba(107,143,94,.3);}
-.mrs-ic{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.82rem;flex-shrink:0;}
-.mrs-scope{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.4);flex:1;}
-.mrs-rank{font-family:var(--font-d);font-size:.96rem;font-weight:800;color:white;letter-spacing:-.03em;}
-.mrs-delta{font-size:.66rem;font-weight:700;}
-
-/* Sparkline */
-.spark-wrap{background:var(--cream-warm);border:1px solid var(--border);border-radius:10px;padding:10px;margin-bottom:8px;}
-.spark-svg{width:100%;height:52px;}
-
-/* Rival */
-.ri{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border);}
-.ri:last-child{border-bottom:none;}
-.ri-pos{font-family:var(--font-m);font-size:.74rem;font-weight:700;color:var(--forest-muted);width:28px;text-align:center;flex-shrink:0;}
-.ri-av{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:white;flex-shrink:0;}
-.ri-name{font-size:.75rem;font-weight:600;color:var(--forest);}
-.ri-meta{font-size:.62rem;color:rgba(26,38,24,.38);}
-.ri-gap{font-size:.64rem;font-weight:700;padding:2px 9px;border-radius:100px;white-space:nowrap;}
-.ri-gap.you{background:var(--sage-light);color:var(--sage);border:1px solid rgba(107,143,94,.2);}
-.ri-gap.above{background:var(--rose-light);color:var(--rose);border:1px solid rgba(200,75,75,.15);}
-.ri-gap.below{background:var(--amber-light);color:var(--amber);border:1px solid rgba(184,115,51,.18);}
-
-/* Subject ranks */
-.sli{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--border);}
-.sli:last-child{border-bottom:none;}
-.sli-ic{width:28px;height:28px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:.82rem;flex-shrink:0;}
-.sli-bar-wrap{height:4px;background:var(--cream-warm);border-radius:3px;overflow:hidden;border:1px solid var(--border);margin-top:4px;}
-.sli-bar-fill{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sage),#4a7a3d);}
-.sli-rank{font-family:var(--font-m);font-size:.76rem;font-weight:700;color:var(--sage);}
-
-/* Toast */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--forest);color:white;font-family:var(--font-d);font-size:.8rem;font-weight:600;padding:12px 20px;border-radius:12px;box-shadow:var(--sh-deep);transform:translateY(80px);transition:transform .3s cubic-bezier(.34,1.56,.64,1);z-index:999;}
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--forest);color:white;
+  font-family:var(--fd);font-size:.92rem;font-weight:600;
+  padding:12px 20px;border-radius:12px;box-shadow:var(--sh-lg);
+  transform:translateY(80px);transition:transform .3s;z-index:999;}
 .toast.show{transform:translateY(0);}
 
-@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-.fu{animation:fadeUp .38s ease forwards;}
-.fu1{animation-delay:.04s;opacity:0}.fu2{animation-delay:.08s;opacity:0}
-.fu3{animation-delay:.12s;opacity:0}.fu4{animation-delay:.16s;opacity:0}
-::-webkit-scrollbar{width:3px;}
-::-webkit-scrollbar-thumb{background:var(--border-med);border-radius:3px;}
-@media(max-width:1200px){.lb-layout{grid-template-columns:1fr}}
-@media(max-width:1000px){.lbt-head,.lb-row{grid-template-columns:48px 1fr 90px 80px 60px;}.lbt-th:nth-child(5),.lb-row .streak-cell,.lbt-th:nth-child(7),.lb-row .loc-cell{display:none;}}
-@media(max-width:860px){.sb{transform:translateX(-100%)}.main{margin-left:0}.hero-inner{grid-template-columns:1fr}.my-ranks{display:none}}
-
-
-
-</style>
-
-<style id="mobile-fix">
-@media(max-width:860px){
-  html,body{height:auto!important;overflow-x:hidden!important;overflow-y:auto!important;}
-  .sb{transform:translateX(-100%)!important;transition:transform .3s ease!important;position:fixed!important;z-index:9999!important;height:100%!important;}
-  .sb.mob-open{transform:translateX(0)!important;}
-  .mob-overlay{position:fixed!important;inset:0!important;background:rgba(0,0,0,.55)!important;z-index:9998!important;display:none!important;}
-  .mob-overlay.mob-open{display:block!important;}
-  .mob-ham{display:flex!important;width:36px!important;height:36px!important;border-radius:8px!important;background:#f5f3ec!important;border:1.5px solid rgba(26,38,24,.13)!important;align-items:center!important;justify-content:center!important;cursor:pointer!important;font-size:1.1rem!important;flex-shrink:0!important;color:#1a2618!important;margin-right:4px!important;}
-  .main{margin-left:0!important;width:100vw!important;height:auto!important;min-height:100vh!important;display:block!important;overflow-y:auto!important;}
-  .tb{position:sticky!important;top:0!important;z-index:200!important;padding:0 12px!important;height:52px!important;gap:8px!important;flex-shrink:0!important;}
-  .tb-search{display:none!important;}
-  .stabs{overflow-x:auto!important;-webkit-overflow-scrolling:touch!important;padding:0 12px!important;}
-  .stabs::-webkit-scrollbar{display:none!important;}
-  .stab{white-space:nowrap!important;font-size:.7rem!important;padding:0 10px!important;}
-  .content{padding:14px 12px 60px!important;overflow-y:visible!important;height:auto!important;flex:none!important;}
-  .g4,.g3,.g2,.g21,.g12,.g31{display:grid!important;grid-template-columns:1fr!important;gap:12px!important;}
-  .card,.kpi{padding:14px!important;}
-  .kpi-n{font-size:1.3rem!important;}
-  .lp,.col-left,.rp,.col-right{display:none!important;}
-  .layout{flex-direction:column!important;height:auto!important;}
-  .q-panel,.qp{min-height:350px!important;height:auto!important;overflow-y:auto!important;}
-  .palette-panel,.pp{width:100%!important;height:auto!important;border-left:none!important;border-top:1px solid #e8e5de!important;}
-  .palette-grid,.pp-grid{grid-template-columns:repeat(10,1fr)!important;}
-  .topbar{flex-wrap:wrap!important;height:auto!important;min-height:56px!important;padding:8px 12px!important;gap:6px!important;}
-  .tb-center{order:3!important;width:100%!important;padding-bottom:6px!important;}
-  .tb-test-name,.tb-div{display:none!important;}
-  .subj-tab{padding:4px 9px!important;font-size:.68rem!important;}
-  .scope-bar{flex-wrap:wrap!important;}
-  .hero-inner,.lbh-inner{grid-template-columns:1fr!important;}
-  .my-ranks{display:none!important;}
-  .fg2,.fg3{grid-template-columns:1fr!important;}
-  .mb{width:94vw!important;max-height:90vh!important;padding:18px!important;}
-  .af-time{display:none!important;}
-  .badges-grid{grid-template-columns:repeat(4,1fr)!important;}
-  .planner-days{gap:3px!important;padding:8px!important;}
-  .tw{overflow-x:auto!important;}
+/* ── RESPONSIVE ── */
+@media(min-width:860px){
+  .hero{padding:44px 32px 32px;}
+  .filters-inner{padding:0 32px;}
+  .main{padding:28px 32px 64px;}
+  .lb-head{grid-template-columns:56px 1fr 100px 110px 64px;}
+  .lb-row{grid-template-columns:56px 1fr 100px 110px 64px;}
+  .h-stat-n{font-size:1.4rem;}
+  .h-stat-l{font-size:.9rem;}
+  .hero-title{font-size:2.8rem;}
+  .hero-sub{font-size:1.04rem;}
+  .f-tab{font-size:1rem;padding:15px 20px;}
 }
-@media(max-width:480px){
-  .g4{grid-template-columns:1fr 1fr!important;}
-  .badges-grid{grid-template-columns:repeat(3,1fr)!important;}
-  .palette-grid,.pp-grid{grid-template-columns:repeat(8,1fr)!important;}
+@media(max-width:560px){
+  .lb-head{grid-template-columns:44px 1fr 80px 0 0;}
+  .lb-row{grid-template-columns:44px 1fr 80px 0 0;}
+  .lb-th:nth-child(4),.lb-th:nth-child(5),
+  .lb-row .lb-acc-wrap,.lb-row .lb-tests{display:none;}
+  .hero-stats{grid-template-columns:1fr 1fr;gap:14px;}
+  .f-tab{font-size:.9rem;padding:12px 12px;}
 }
-</style>
-
-<style>
-/* ── Sidebar text visibility fix ── */
-.sb-nav{color:rgba(255,255,255,.78)!important;}
-.sb-nav:hover{color:white!important;background:rgba(255,255,255,.08)!important;}
-.sb-nav.active{color:white!important;}
-.si{color:rgba(255,255,255,.58)!important;}
-.sb-grp{color:rgba(255,255,255,.4)!important;font-size:.62rem!important;}
-.sb-uname{color:white!important;font-weight:700!important;}
-.sb-urole{color:rgba(255,255,255,.55)!important;}
-.sb-b1{color:white!important;}
-.sb-b2{color:rgba(255,255,255,.45)!important;}
 </style>
 </head>
 <body>
 
-<!-- ════ SIDEBAR ════ -->
-<aside class="sb">
-  <a href="index.html" class="sb-logo">
-    <div class="sb-lm">MA</div>
-    <div><div class="sb-b1"><span style="color:#fff;font-weight:900;">Mock</span><span style="background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:900;">Arena</span></div><div class="sb-b2">Leaderboard</div></div>
-  </a>
-  <div class="sb-user">
-    <div class="sb-av">AR</div>
-    <div class="sb-uname">Arjun Sharma</div>
-    <div class="sb-urole">JEE Advanced 2025 · Class 12</div>
-    <div class="sb-ubadge">🔥 42 Day Streak · AIR #312</div>
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
+  <span class="nav-pill">🏆 Leaderboard</span>
+  <div class="nav-r">
+    <a href="jee_main.html" class="nav-btn primary">Practice →</a>
   </div>
-  <div class="sb-grp">Main Menu</div>
-  <ul class="sb-ul">
-    <li><a href="mockarena_dashboard.html" class="sb-nav"><span class="si">⬡</span>Dashboard</a></li>
-    <li><a href="mockarena_mocktest.html" class="sb-nav"><span class="si">◳</span>Mock Tests</a></li>
-    <li><a href="mockarena_results.html" class="sb-nav"><span class="si">◈</span>My Results</a></li>
-    <li><a href="mockarena_test_catalog.html" class="sb-nav"><span class="si">▤</span>Test Series</a></li>
-    <li><a href="mockarena_leaderboard.html" class="sb-nav active"><span class="si">◇</span>Leaderboard</a></li>
-    <li><a href="mockarena_pyq.html" class="sb-nav"><span class="si">📄</span>PYQ & Solutions</a></li>
-    <li><a href="mockarena_video_solutions.html" class="sb-nav"><span class="si">▷</span>Video Solutions</a></li>
-    <li><a href="mockarena_doubt_qa_v2.html" class="sb-nav"><span class="si">❖</span>Doubt Q&A<span class="snb">2</span></a></li>
-  </ul>
-  <div class="sb-grp">Study Tools</div>
-  <ul class="sb-ul">
-    <li><a href="mockarena_study_planner.html" class="sb-nav"><span class="si">◳</span>Study Planner</a></li>
-    <li><a href="mockarena_notes_formulas.html" class="sb-nav"><span class="si">▤</span>Notes & Formulas</a></li>
-    <li><a href="mockarena_analytics.html" class="sb-nav"><span class="si">◈</span>Analytics</a></li>
-  </ul>
-  <div class="sb-grp">My College</div>
-  <ul class="sb-ul">
-    <li><a href="mockarena_my_college.html" class="sb-nav"><span class="si">⬡</span>My College</a></li>
-  </ul>
-  <div class="sb-foot">
-    <a href="mockarena_profile.html" class="sb-nav"><span class="si">◎</span>My Profile</a>
-    <a href="mockarena_settings.html" class="sb-nav"><span class="si">⚙️</span>Settings</a>
-    <a href="mockarena_notifications.html" class="sb-nav"><span class="si">🔔</span>Notifications<span class="snb">7</span></a>
-    <a href="login.html" class="sb-nav"><span class="si">↩</span>Logout</a>
-  </div>
-</aside>
+</nav>
 
-<!-- ════ MAIN ════ -->
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-inner">
+    <div class="hero-live"><span class="live-dot"></span>Live Rankings · Updates after every test</div>
+    <div class="hero-title">India's Most Competitive<br/><em>JEE &amp; NEET Rankings</em></div>
+    <div class="hero-sub">From your district to all of India — see exactly where you stand. Rankings update after every mock test.</div>
+    <div class="hero-stats">
+      <div class="h-stat"><div class="h-stat-n" id="hs-students"><span class="spin" style="width:18px;height:18px;border-width:2px;display:inline-block;vertical-align:middle;margin:0;"></span></div><div class="h-stat-l">Students</div></div>
+      <div class="h-stat"><div class="h-stat-n" id="hs-states">—</div><div class="h-stat-l">States</div></div>
+      <div class="h-stat"><div class="h-stat-n" id="hs-tests">—</div><div class="h-stat-l">Tests Taken</div></div>
+      <div class="h-stat"><div class="h-stat-n" id="hs-updated">—</div><div class="h-stat-l">Updated</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters">
+  <div class="filters-inner">
+    <button class="f-tab on" onclick="setLevel('district',this)">🏘️ District</button>
+    <button class="f-tab" onclick="setLevel('state',this)">🗺️ State</button>
+    <button class="f-tab" onclick="setLevel('national',this)">🇮🇳 National</button>
+    <button class="f-tab" onclick="setLevel('air',this)">🎯 AIR</button>
+    <div class="f-right">
+      <button class="f-time on" onclick="setTime('week',this)">Week</button>
+      <button class="f-time" onclick="setTime('month',this)">Month</button>
+      <button class="f-time" onclick="setTime('all',this)">All Time</button>
+      <select class="f-exam" onchange="setExam(this.value)">
+        <option value="">All Exams</option>
+        <option value="jee_main">JEE Mains</option>
+        <option value="jee_advanced">JEE Advanced</option>
+        <option value="neet">NEET UG</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN -->
 <div class="main">
-  <div class="tb">
-    <div><div class="tb-title">Leaderboard</div><div class="tb-crumb">MockArena / Leaderboard · Live Rankings</div></div>
-    <div class="tb-r">
-      <div class="tb-ib">🔔<div class="dot"></div></div>
-      <button class="btn btn-ghost" onclick="shareRank()">↗ Share My Rank</button>
-      <button class="btn btn-sage" onclick="window.location='mockarena_mocktest.html'">📝 Attempt Mock → Climb</button>
-    </div>
-  </div>
+  <div class="page-layout">
 
-  <div class="content">
+    <!-- LEFT -->
+    <div class="page-left">
 
-    <!-- HERO -->
-    <div class="hero fu fu1">
-      <div class="hero-grid"></div>
-      <div class="hero-orb1"></div><div class="hero-orb2"></div>
-      <div class="hero-inner">
-        <div>
-          <div class="hero-tag"><div class="live-dot"></div>Live Rankings · Updates every 15 mins</div>
-          <div class="hero-title">India's Most Competitive<br><em>JEE & NEET Rankings</em></div>
-          <div class="hero-sub">From your school block to all of India — see exactly where you stand at every level. District, State and National rankings updated after every mock test.</div>
-          <div class="hero-stats">
-            <span class="hs"><span class="v">2,84,194</span> Students</span>
-            <div class="hs-sep"></div>
-            <span class="hs"><span class="v">29</span> States</span>
-            <div class="hs-sep"></div>
-            <span class="hs"><span class="v">612</span> Districts</span>
-            <div class="hs-sep"></div>
-            <span class="hs">Updated <span class="v">4 min ago</span></span>
-          </div>
+      <!-- YOUR RANK -->
+      <div class="your-rank" id="your-rank">
+        <div class="yr-n" id="yr-rank">#—</div>
+        <div class="yr-info">
+          <div class="yr-name" id="yr-name">You</div>
+          <div class="yr-sub" id="yr-sub">Your current ranking</div>
         </div>
-        <div class="my-ranks">
-          <div class="mrc" onclick="switchScope('district')">
-            <div class="mrc-ic" style="background:rgba(107,143,94,.15)">🏘️</div>
-            <div class="mrc-info"><div class="mrc-lbl">District · Patna</div><div class="mrc-rank">#14</div><div class="mrc-sub">Out of 2,841 students</div></div>
-            <div class="mrc-delta du">↑8</div>
-          </div>
-          <div class="mrc" onclick="switchScope('state')">
-            <div class="mrc-ic" style="background:rgba(59,130,196,.12)">🗺️</div>
-            <div class="mrc-info"><div class="mrc-lbl">State · Bihar</div><div class="mrc-rank">#187</div><div class="mrc-sub">Top 0.4% of Bihar</div></div>
-            <div class="mrc-delta du">↑23</div>
-          </div>
-          <div class="mrc hl" onclick="switchScope('national')">
-            <div class="mrc-ic" style="background:rgba(200,150,42,.12)">🇮🇳</div>
-            <div class="mrc-info"><div class="mrc-lbl">National · AIR</div><div class="mrc-rank">#312</div><div class="mrc-sub">Top 0.1% nationally</div></div>
-            <div class="mrc-delta du">↑890</div>
-          </div>
-          <div class="mrc" onclick="switchScope('test')">
-            <div class="mrc-ic" style="background:rgba(124,92,191,.12)">📝</div>
-            <div class="mrc-info"><div class="mrc-lbl">This Mock · #14</div><div class="mrc-rank">#41</div><div class="mrc-sub">Out of 247 students</div></div>
-            <div class="mrc-delta du">↑12</div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SCOPE TABS -->
-    <div class="scope-bar fu fu2" id="scope-bar">
-      <button class="scope-tab" onclick="switchScope('district',this)">🏘️ District <span class="sc">2.8K</span></button>
-      <button class="scope-tab" onclick="switchScope('state',this)">🗺️ State <span class="sc">48K</span></button>
-      <button class="scope-tab active" onclick="switchScope('national',this)">🇮🇳 National <span class="sc">2.8L</span></button>
-      <button class="scope-tab" onclick="switchScope('test',this)">📝 This Mock <span class="sc">247</span></button>
-      <button class="scope-tab" onclick="switchScope('college',this)">🏫 College <span class="sc">312</span></button>
-    </div>
-
-    <!-- CONTROLS -->
-    <div class="ctrl-row fu fu2">
-      <div class="search-box"><span style="color:rgba(26,38,24,.3);font-size:.82rem">⌕</span><input type="text" placeholder="Search student, school…" oninput="filterRows(this.value)"></div>
-      <select class="fi" onchange="filterExam(this.value)">
-        <option value="all">All Exams</option>
-        <option>JEE Advanced</option>
-        <option>JEE Mains</option>
-        <option>NEET UG</option>
-        <option>JEE Foundation</option>
-        <option>Boards</option>
-      </select>
-      <select class="fi">
-        <option>All Subjects</option>
-        <option>Physics</option>
-        <option>Chemistry</option>
-        <option>Mathematics</option>
-        <option>Biology</option>
-      </select>
-      <div style="display:flex;gap:5px;">
-        <div class="tc active" onclick="setTime('week',this)">This Week</div>
-        <div class="tc" onclick="setTime('month',this)">Month</div>
-        <div class="tc" onclick="setTime('all',this)">All Time</div>
-      </div>
-      <div class="refresh-btn" onclick="refreshData()" title="Refresh">↻</div>
-      <div style="margin-left:auto;font-family:var(--font-m);font-size:.68rem;color:rgba(26,38,24,.35)" id="scope-label">🇮🇳 National · 2,84,194 students</div>
-    </div>
-
-    <!-- LAYOUT -->
-    <div class="lb-layout fu fu3">
-
-      <!-- LEFT -->
-      <div>
-        <!-- PODIUM -->
-        <div class="podium-section" id="podium-section">
-          <div class="podium-hd">
-            <div class="ph-title">🏆 Top 3 — This Week</div>
-            <div class="ph-scope-badge" id="ph-scope">🇮🇳 National</div>
-          </div>
-          <div class="podium" id="podium"></div>
-        </div>
-
-        <!-- TABLE -->
-        <div class="lb-table-wrap">
-          <div class="lbt-head">
-            <div class="lbt-th" onclick="sortBy('rank')"># Rank</div>
-            <div class="lbt-th">Student</div>
-            <div class="lbt-th sorted" onclick="sortBy('score')">Score ↓</div>
-            <div class="lbt-th" onclick="sortBy('accuracy')">Accuracy</div>
-            <div class="lbt-th" onclick="sortBy('streak')">Streak 🔥</div>
-            <div class="lbt-th" onclick="sortBy('tests')">Tests</div>
-            <div class="lbt-th">Move</div>
-          </div>
-          <div class="lbt-rows" id="lbt-rows"></div>
-          <div class="pg" id="pagination"></div>
+        <div class="yr-stats">
+          <div><span class="yr-stat-n" id="yr-pts">—</span><div class="yr-stat-l">Points</div></div>
+          <div><span class="yr-stat-n" id="yr-tests">—</span><div class="yr-stat-l">Tests</div></div>
+          <div><span class="yr-stat-n" id="yr-acc">—</span><div class="yr-stat-l">Accuracy</div></div>
         </div>
       </div>
 
-      <!-- RIGHT -->
-      <div>
-
-        <!-- My Rank Summary -->
-        <div class="mrs">
-          <div class="mrs-grid"></div>
-          <div class="mrs-inner">
-            <div class="mrs-lbl">Your Rankings</div>
-            <div class="mrs-name">Arjun Sharma · JEE Advanced</div>
-            <div class="mrs-row act" onclick="switchScope('district')">
-              <div class="mrs-ic" style="background:rgba(107,143,94,.15)">🏘️</div>
-              <div class="mrs-scope" style="flex:1">District · Patna</div>
-              <div class="mrs-rank">#14</div>
-              <div class="mrs-delta du" style="margin-left:6px">↑8</div>
-            </div>
-            <div class="mrs-row" onclick="switchScope('state')">
-              <div class="mrs-ic" style="background:rgba(59,130,196,.12)">🗺️</div>
-              <div class="mrs-scope" style="flex:1">State · Bihar</div>
-              <div class="mrs-rank">#187</div>
-              <div class="mrs-delta du" style="margin-left:6px">↑23</div>
-            </div>
-            <div class="mrs-row" onclick="switchScope('national')">
-              <div class="mrs-ic" style="background:rgba(200,150,42,.12)">🇮🇳</div>
-              <div class="mrs-scope" style="flex:1">National AIR</div>
-              <div class="mrs-rank">#312</div>
-              <div class="mrs-delta du" style="margin-left:6px">↑890</div>
-            </div>
-            <div class="mrs-row" onclick="switchScope('test')">
-              <div class="mrs-ic" style="background:rgba(124,92,191,.12)">📝</div>
-              <div class="mrs-scope" style="flex:1">This Mock</div>
-              <div class="mrs-rank">#41</div>
-              <div class="mrs-delta du" style="margin-left:6px">↑12</div>
-            </div>
-          </div>
+      <!-- SEARCH -->
+      <div class="search-row">
+        <div class="search-box">
+          <span style="color:var(--txt-lo);font-size:1rem;">🔍</span>
+          <input type="text" placeholder="Search student by name…" oninput="filterSearch(this.value)"/>
         </div>
-
-        <!-- Rank Trend -->
-        <div class="sp">
-          <div class="sp-head"><div class="sp-title">📈 National Rank Trend</div></div>
-          <div class="sp-body">
-            <div style="font-size:.7rem;color:var(--forest-muted);margin-bottom:8px;">Last 8 mock tests:</div>
-            <div class="spark-wrap">
-              <svg class="spark-svg" viewBox="0 0 260 52" preserveAspectRatio="none">
-                <defs>
-                  <linearGradient id="sg" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stop-color="#6b8f5e" stop-opacity=".3"/>
-                    <stop offset="100%" stop-color="#6b8f5e" stop-opacity="0"/>
-                  </linearGradient>
-                </defs>
-                <path d="M0,48 L32,44 L65,38 L97,36 L130,30 L162,24 L195,18 L227,12 L260,6" fill="url(#sg)"/>
-                <path d="M0,48 L32,44 L65,38 L97,36 L130,30 L162,24 L195,18 L227,12 L260,6" fill="none" stroke="#6b8f5e" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="260" cy="6" r="4" fill="#6b8f5e" stroke="white" stroke-width="1.5"/>
-              </svg>
-            </div>
-            <div style="display:flex;justify-content:space-between;font-size:.6rem;color:rgba(26,38,24,.35);font-family:var(--font-m);">
-              <span>#1202</span><span>#947</span><span>#680</span><span>#422</span><span>#312</span>
-            </div>
-            <div style="margin-top:10px;padding:9px 12px;background:var(--sage-light);border:1px solid rgba(107,143,94,.2);border-radius:9px;font-size:.72rem;font-weight:700;color:var(--sage);">
-              ↑ Improved 890 places in 8 mocks 🚀
-            </div>
-          </div>
-        </div>
-
-        <!-- Rivals -->
-        <div class="sp">
-          <div class="sp-head"><div class="sp-title">⚔️ Your Rivals</div><span style="font-size:.68rem;font-weight:600;color:var(--sage);margin-left:auto;cursor:pointer">National</span></div>
-          <div class="sp-body">
-            <div class="ri">
-              <div class="ri-pos">#309</div>
-              <div class="ri-av" style="background:linear-gradient(135deg,#c8962a,#e8a830)">VK</div>
-              <div style="flex:1"><div class="ri-name">Vikram Khanna</div><div class="ri-meta">Delhi · 278 pts</div></div>
-              <div class="ri-gap above">3 pts ahead</div>
-            </div>
-            <div class="ri">
-              <div class="ri-pos" style="color:var(--sage);font-weight:800">#312</div>
-              <div class="ri-av" style="background:linear-gradient(135deg,#6b8f5e,#4a7a3d)">AR</div>
-              <div style="flex:1"><div class="ri-name" style="color:var(--sage)">Arjun Sharma</div><div class="ri-meta">Bihar · 247 pts</div></div>
-              <div class="ri-gap you">YOU</div>
-            </div>
-            <div class="ri">
-              <div class="ri-pos">#313</div>
-              <div class="ri-av" style="background:linear-gradient(135deg,#7c5cbf,#4f46e5)">AJ</div>
-              <div style="flex:1"><div class="ri-name">Arjun Joshi</div><div class="ri-meta">Karnataka · 246 pts</div></div>
-              <div class="ri-gap below">1 pt behind</div>
-            </div>
-            <div class="ri">
-              <div class="ri-pos">#314</div>
-              <div class="ri-av" style="background:linear-gradient(135deg,#c84b4b,#e06b6b)">RS</div>
-              <div style="flex:1"><div class="ri-name">Riya Singh</div><div class="ri-meta">UP · 245 pts</div></div>
-              <div class="ri-gap below">2 pts behind</div>
-            </div>
-            <div style="margin-top:10px;padding:9px 12px;background:var(--gold-dim);border:1px solid rgba(200,150,42,.2);border-radius:9px;font-size:.7rem;font-weight:700;color:var(--gold);">
-              💡 Score 31+ on your next mock to break into Top 300!
-            </div>
-          </div>
-        </div>
-
-        <!-- Subject Rankings -->
-        <div class="sp">
-          <div class="sp-head"><div class="sp-title">📚 Subject Rankings</div></div>
-          <div class="sp-body">
-            <div class="sli">
-              <div class="sli-ic" style="background:var(--sky-light)">⚛️</div>
-              <div style="flex:1"><div style="font-size:.76rem;font-weight:600;color:var(--forest);margin-bottom:3px;">Physics</div><div class="sli-bar-wrap"><div class="sli-bar-fill" style="width:82%;background:linear-gradient(90deg,var(--sky),#60a5e8)"></div></div></div>
-              <div class="sli-rank" style="color:var(--sky)">#208</div>
-            </div>
-            <div class="sli">
-              <div class="sli-ic" style="background:var(--sage-light)">🧪</div>
-              <div style="flex:1"><div style="font-size:.76rem;font-weight:600;color:var(--forest);margin-bottom:3px;">Chemistry</div><div class="sli-bar-wrap"><div class="sli-bar-fill" style="width:44%;background:linear-gradient(90deg,var(--amber),#d4844a)"></div></div></div>
-              <div class="sli-rank" style="color:var(--amber)">#891</div>
-            </div>
-            <div class="sli">
-              <div class="sli-ic" style="background:var(--gold-dim)">📐</div>
-              <div style="flex:1"><div style="font-size:.76rem;font-weight:600;color:var(--forest);margin-bottom:3px;">Mathematics</div><div class="sli-bar-wrap"><div class="sli-bar-fill" style="width:76%"></div></div></div>
-              <div class="sli-rank">#312</div>
-            </div>
-            <div style="margin-top:10px;padding:9px 12px;background:var(--rose-light);border:1px solid rgba(200,75,75,.15);border-radius:9px;font-size:.7rem;font-weight:700;color:var(--rose);">
-              ⚠ Chemistry is your weakest subject. <a href="mockarena_video_solutions.html" style="color:var(--rose);text-decoration:underline;">Watch solutions →</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Top Districts -->
-        <div class="sp">
-          <div class="sp-head"><div class="sp-title">🏘️ Top Districts This Week</div></div>
-          <div class="sp-body">
-            <div class="ri">
-              <div class="ri-pos" style="color:#b45309">🥇</div>
-              <div class="ri-av" style="background:var(--cream-warm);color:var(--forest-muted);font-size:.8rem">🏙️</div>
-              <div style="flex:1"><div class="ri-name">Kota, Rajasthan</div><div class="ri-meta">Avg 261 · 4,821 students</div></div>
-            </div>
-            <div class="ri">
-              <div class="ri-pos" style="color:#8a9bb0">🥈</div>
-              <div class="ri-av" style="background:var(--cream-warm);color:var(--forest-muted);font-size:.8rem">🏙️</div>
-              <div style="flex:1"><div class="ri-name">Mumbai Suburban</div><div class="ri-meta">Avg 248 · 6,102 students</div></div>
-            </div>
-            <div class="ri">
-              <div class="ri-pos" style="color:#b87333">🥉</div>
-              <div class="ri-av" style="background:var(--cream-warm);color:var(--forest-muted);font-size:.8rem">🏙️</div>
-              <div style="flex:1"><div class="ri-name">Chennai, Tamil Nadu</div><div class="ri-meta">Avg 244 · 3,890 students</div></div>
-            </div>
-            <div class="ri" style="background:var(--sage-light);border-radius:9px;padding:7px 0 7px 8px;margin-top:4px;">
-              <div class="ri-pos" style="color:var(--sage)">#18</div>
-              <div class="ri-av" style="background:var(--sage);color:white;font-size:.8rem">📍</div>
-              <div style="flex:1"><div class="ri-name" style="color:var(--sage)">Patna, Bihar (You)</div><div class="ri-meta">Avg 218 · 2,841 students</div></div>
-            </div>
-          </div>
-        </div>
-
+        <div class="icon-btn" onclick="refreshData()" title="Refresh">↻</div>
+        <button class="share-btn" onclick="shareRank()">↗ Share</button>
       </div>
+
+      <!-- PODIUM -->
+      <div class="podium-card">
+        <div class="podium-head">
+          <div class="podium-head-title">🏆 Top 3 This Week</div>
+          <div class="podium-head-badge" id="podium-badge">National</div>
+        </div>
+        <div class="podium" id="podium">
+          <div class="loading"><div class="spin"></div>Loading…</div>
+        </div>
+      </div>
+
+      <!-- TABLE -->
+      <div class="lb-card">
+        <div class="lb-head">
+          <div class="lb-th">Rank</div>
+          <div class="lb-th">Student</div>
+          <div class="lb-th">Points</div>
+          <div class="lb-th">Accuracy</div>
+          <div class="lb-th">Tests</div>
+        </div>
+        <div id="lb-body"><div class="loading"><div class="spin"></div>Loading leaderboard…</div></div>
+        <div class="lb-footer" id="lb-footer"></div>
+      </div>
+
     </div>
+
+    <!-- RIGHT (desktop only) -->
+    <div class="page-right">
+
+      <!-- Stats -->
+      <div class="right-card">
+        <div class="right-card-title">📊 Stats</div>
+        <div id="right-stats"><div style="font-size:.9rem;color:var(--txt-lo)">Loading…</div></div>
+      </div>
+
+      <!-- Top 5 -->
+      <div class="right-card">
+        <div class="right-card-title">⭐ Top Performers</div>
+        <div id="right-top"><div style="font-size:.9rem;color:var(--txt-lo)">Loading…</div></div>
+      </div>
+
+    </div>
+
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<!-- Bridge -->
 <script>
-// ════ DATA ════
-const scopeData = {
-  national:{
-    label:'🇮🇳 National · 2,84,194 students', ph:'🇮🇳 National',
-    podium:[
-      {i:'AS',n:'Aryan Sharma',s:'Resonance, Kota',score:281,acc:96.8,loc:'Rajasthan',g:'135deg,#b87333,#d4844a'},
-      {i:'PM',n:'Priya Mehta',s:'DPS, Rajkot',score:274,acc:94.2,loc:'Gujarat',g:'135deg,#8a9bb0,#a0b0c0'},
-      {i:'RK2',n:'Rohan Kumar',s:'Allen, Kota',score:268,acc:92.1,loc:'Rajasthan',g:'135deg,#7c5538,#a07050'}
-    ],
-    myRank:312,
-    rows:[
-      {r:1,i:'AS',n:'Aryan Sharma',m:'Resonance, Kota · Rajasthan',score:281,acc:96.8,streak:28,tests:18,move:2,loc:'Rajasthan',g:'135deg,#b87333,#d4844a'},
-      {r:2,i:'PM',n:'Priya Mehta',m:'DPS, Rajkot · Gujarat',score:274,acc:94.2,streak:21,tests:16,move:-1,loc:'Gujarat',g:'135deg,#8a9bb0,#a0b0c0'},
-      {r:3,i:'RK2',n:'Rohan Kumar',m:'Allen, Kota · Rajasthan',score:268,acc:92.1,streak:15,tests:14,move:5,loc:'Rajasthan',g:'135deg,#7c5538,#a07050'},
-      {r:4,i:'NK',n:'Nidhi Khanna',m:'FIITJEE, Delhi · Delhi',score:265,acc:91.4,streak:19,tests:17,move:3,loc:'Delhi',g:'135deg,#3b82c4,#60a5e8'},
-      {r:5,i:'SK2',n:'Siddharth Kulkarni',m:'Vidyalankar, Mumbai · Maharashtra',score:262,acc:90.8,streak:14,tests:15,move:-2,loc:'Maharashtra',g:'135deg,#7c5cbf,#4f46e5'},
-      {r:6,i:'AT',n:'Aditya Tiwari',m:'Motion, Kota · Rajasthan',score:259,acc:89.9,streak:22,tests:19,move:8,loc:'Rajasthan',g:'135deg,#6b8f5e,#4a7a3d'},
-      {r:7,i:'RS2',n:'Ritu Sharma',m:'Narayana, Hyderabad · Telangana',score:257,acc:89.3,streak:11,tests:13,move:-3,loc:'Telangana',g:'135deg,#c84b4b,#e06b6b'},
-      {r:8,i:'VK',n:'Vikram Khanna',m:'Brilliant, Delhi · Delhi',score:255,acc:88.7,streak:17,tests:16,move:4,loc:'Delhi',g:'135deg,#c8962a,#e8a830'},
-      {r:9,i:'SP',n:'Sneha Patel',m:'Ahmedabad · Gujarat',score:253,acc:87.9,streak:9,tests:12,move:0,loc:'Gujarat',g:'135deg,#3b82c4,#0ea5e9'},
-      {r:10,i:'GR',n:'Gaurav Rathore',m:'Bansal, Kota · Rajasthan',score:251,acc:87.2,streak:13,tests:14,move:-5,loc:'Rajasthan',g:'135deg,#7c5cbf,#9b7fd4'},
-      {r:312,i:'AR',n:'Arjun Sharma',m:'Patna · Bihar',score:247,acc:84.1,streak:42,tests:24,move:890,loc:'Bihar',me:true,g:'135deg,#6b8f5e,#4a7a3d'},
-    ]
-  },
-  state:{
-    label:'🗺️ State · Bihar · 48,210 students', ph:'🗺️ Bihar',
-    podium:[
-      {i:'AK2',n:'Amit Kumar',s:'Patna Science College',score:278,acc:95.1,loc:'Patna',g:'135deg,#b87333,#d4844a'},
-      {i:'PK',n:'Pooja Kumari',s:'Notre Dame, Patna',score:271,acc:93.4,loc:'Patna',g:'135deg,#8a9bb0,#a0b0c0'},
-      {i:'SS',n:'Shubham Singh',s:'FIITJEE Patna',score:264,acc:91.2,loc:'Patna',g:'135deg,#7c5538,#a07050'}
-    ],
-    myRank:187,
-    rows:[
-      {r:1,i:'AK2',n:'Amit Kumar',m:'Patna Science College · Patna',score:278,acc:95.1,streak:24,tests:20,move:0,loc:'Patna',g:'135deg,#b87333,#d4844a'},
-      {r:2,i:'PK',n:'Pooja Kumari',m:'Notre Dame Academy · Patna',score:271,acc:93.4,streak:18,tests:17,move:3,loc:'Patna',g:'135deg,#8a9bb0,#a0b0c0'},
-      {r:3,i:'SS',n:'Shubham Singh',m:'FIITJEE · Patna',score:264,acc:91.2,streak:16,tests:15,move:-1,loc:'Patna',g:'135deg,#7c5538,#a07050'},
-      {r:4,i:'MK',n:'Manish Kumar',m:'Gaya · Bihar',score:261,acc:90.4,streak:20,tests:18,move:5,loc:'Gaya',g:'135deg,#3b82c4,#60a5e8'},
-      {r:5,i:'NS',n:'Neha Singh',m:'Muzaffarpur · Bihar',score:258,acc:89.7,streak:14,tests:14,move:2,loc:'Muzaffarpur',g:'135deg,#7c5cbf,#4f46e5'},
-      {r:6,i:'RV',n:'Rahul Verma',m:'Bhagalpur · Bihar',score:255,acc:88.9,streak:11,tests:13,move:4,loc:'Bhagalpur',g:'135deg,#6b8f5e,#4a7a3d'},
-      {r:7,i:'PS2',n:'Priya Sharma',m:'Patna · Bihar',score:252,acc:87.8,streak:9,tests:12,move:-2,loc:'Patna',g:'135deg,#c84b4b,#e06b6b'},
-      {r:8,i:'DK',n:'Deepak Kumar',m:'Nalanda · Bihar',score:250,acc:87.1,streak:13,tests:14,move:0,loc:'Nalanda',g:'135deg,#c8962a,#e8a830'},
-      {r:187,i:'AR',n:'Arjun Sharma',m:'Patna · Bihar',score:247,acc:84.1,streak:42,tests:24,move:23,loc:'Patna',me:true,g:'135deg,#6b8f5e,#4a7a3d'},
-    ]
-  },
-  district:{
-    label:'🏘️ District · Patna · 2,841 students', ph:'🏘️ Patna',
-    podium:[
-      {i:'AK2',n:'Amit Kumar',s:'Patna Science College',score:278,acc:95.1,loc:'Patna',g:'135deg,#b87333,#d4844a'},
-      {i:'PK',n:'Pooja Kumari',s:'Notre Dame Academy',score:271,acc:93.4,loc:'Patna',g:'135deg,#8a9bb0,#a0b0c0'},
-      {i:'SS',n:'Shubham Singh',s:'FIITJEE Patna',score:264,acc:91.2,loc:'Patna',g:'135deg,#7c5538,#a07050'}
-    ],
-    myRank:14,
-    rows:[
-      {r:1,i:'AK2',n:'Amit Kumar',m:'Patna Science College',score:278,acc:95.1,streak:24,tests:20,move:0,loc:'Patna',g:'135deg,#b87333,#d4844a'},
-      {r:2,i:'PK',n:'Pooja Kumari',m:'Notre Dame Academy',score:271,acc:93.4,streak:18,tests:17,move:3,loc:'Patna',g:'135deg,#8a9bb0,#a0b0c0'},
-      {r:3,i:'SS',n:'Shubham Singh',m:'FIITJEE Patna',score:264,acc:91.2,streak:16,tests:15,move:-1,loc:'Patna',g:'135deg,#7c5538,#a07050'},
-      {r:4,i:'MK2',n:'Mohit Kumar',m:'DPS Patna',score:262,acc:90.8,streak:20,tests:18,move:5,loc:'Patna',g:'135deg,#3b82c4,#60a5e8'},
-      {r:5,i:'SG',n:'Sneha Gupta',m:'St. Michael High School',score:259,acc:89.7,streak:14,tests:14,move:2,loc:'Patna',g:'135deg,#c8962a,#e8a830'},
-      {r:6,i:'RT',n:'Rahul Tiwari',m:'Patna Collegiate School',score:255,acc:88.9,streak:11,tests:13,move:4,loc:'Patna',g:'135deg,#6b8f5e,#4a7a3d'},
-      {r:7,i:'NS2',n:'Neha Sinha',m:'Gyan Niketan',score:252,acc:87.8,streak:9,tests:12,move:-2,loc:'Patna',g:'135deg,#c84b4b,#e06b6b'},
-      {r:8,i:'AP',n:'Adarsh Prasad',m:'LD College',score:250,acc:87.1,streak:13,tests:14,move:0,loc:'Patna',g:'135deg,#7c5cbf,#9b7fd4'},
-      {r:14,i:'AR',n:'Arjun Sharma',m:'DPS Patna · Class 12',score:247,acc:84.1,streak:42,tests:24,move:8,loc:'Patna',me:true,g:'135deg,#6b8f5e,#4a7a3d'},
-    ]
-  },
-  test:{
-    label:'📝 Monthly Test #14 · 247 students', ph:'📝 Mock #14',
-    podium:[
-      {i:'AK2',n:'Amit Kumar',s:'Patna Science College',score:284,acc:97.2,loc:'Patna',g:'135deg,#b87333,#d4844a'},
-      {i:'SS',n:'Shubham Singh',s:'FIITJEE Patna',score:276,acc:94.8,loc:'Patna',g:'135deg,#8a9bb0,#a0b0c0'},
-      {i:'NK',n:'Nidhi Khanna',s:'FIITJEE, Delhi',score:268,acc:92.4,loc:'Delhi',g:'135deg,#7c5538,#a07050'}
-    ],
-    myRank:41,
-    rows:[
-      {r:1,i:'AK2',n:'Amit Kumar',m:'Patna Science College',score:284,acc:97.2,streak:24,tests:20,move:2,loc:'Patna',g:'135deg,#b87333,#d4844a'},
-      {r:2,i:'SS',n:'Shubham Singh',m:'FIITJEE Patna',score:276,acc:94.8,streak:16,tests:15,move:1,loc:'Patna',g:'135deg,#8a9bb0,#a0b0c0'},
-      {r:3,i:'NK',n:'Nidhi Khanna',m:'FIITJEE, Delhi',score:268,acc:92.4,streak:19,tests:17,move:-1,loc:'Delhi',g:'135deg,#7c5538,#a07050'},
-      {r:4,i:'VK',n:'Vikram Khanna',m:'Delhi',score:261,acc:90.1,streak:17,tests:16,move:0,loc:'Delhi',g:'135deg,#c8962a,#e8a830'},
-      {r:5,i:'PM',n:'Priya Mehta',m:'DPS Rajkot',score:258,acc:89.6,streak:21,tests:16,move:3,loc:'Gujarat',g:'135deg,#3b82c4,#60a5e8'},
-      {r:41,i:'AR',n:'Arjun Sharma',m:'DPS Patna · Bihar',score:247,acc:84.1,streak:42,tests:24,move:12,loc:'Bihar',me:true,g:'135deg,#6b8f5e,#4a7a3d'},
-    ]
-  },
-  college:{
-    label:'🏫 DPS Patna · 312 students', ph:'🏫 DPS Patna',
-    podium:[
-      {i:'AK2',n:'Amit Kumar',s:'Class 12 · JEE Adv',score:278,acc:95.1,loc:'JEE Advanced',g:'135deg,#b87333,#d4844a'},
-      {i:'SS',n:'Shubham Singh',s:'Class 12 · JEE Adv',score:265,acc:91.2,loc:'JEE Advanced',g:'135deg,#8a9bb0,#a0b0c0'},
-      {i:'SG',n:'Sneha Gupta',s:'Class 12 · NEET',score:258,acc:89.7,loc:'NEET UG',g:'135deg,#7c5538,#a07050'}
-    ],
-    myRank:4,
-    rows:[
-      {r:1,i:'AK2',n:'Amit Kumar',m:'Class 12 · JEE Advanced',score:278,acc:95.1,streak:24,tests:20,move:0,loc:'JEE Advanced',g:'135deg,#b87333,#d4844a'},
-      {r:2,i:'SS',n:'Shubham Singh',m:'Class 12 · JEE Advanced',score:265,acc:91.2,streak:16,tests:15,move:1,loc:'JEE Advanced',g:'135deg,#8a9bb0,#a0b0c0'},
-      {r:3,i:'SG',n:'Sneha Gupta',m:'Class 12 · NEET UG',score:258,acc:89.7,streak:14,tests:14,move:2,loc:'NEET UG',g:'135deg,#7c5538,#a07050'},
-      {r:4,i:'AR',n:'Arjun Sharma',m:'Class 12 · JEE Advanced',score:247,acc:84.1,streak:42,tests:24,move:1,loc:'JEE Advanced',me:true,g:'135deg,#6b8f5e,#4a7a3d'},
-      {r:5,i:'RT',n:'Rahul Tiwari',m:'Class 12 · JEE Mains',score:244,acc:83.5,streak:11,tests:13,move:-1,loc:'JEE Mains',g:'135deg,#c8962a,#e8a830'},
-      {r:6,i:'NS2',n:'Neha Sinha',m:'Class 11 · JEE Mains',score:239,acc:82.1,streak:9,tests:12,move:2,loc:'JEE Mains',g:'135deg,#c84b4b,#e06b6b'},
-    ]
-  }
-};
-
-let currentScope = 'national';
-
-function buildPodium(data){
-  const p = data.podium;
-  const order = [p[1], p[0], p[2]]; // p2, p1, p3
-  const classes = ['p2','p1','p3'];
-  const medals = ['🥈','🥇','🥉'];
-  const crowns = ['','👑',''];
-  document.getElementById('podium').innerHTML = order.map((s,i)=>`
-  <div class="ps ${classes[i]}">
-    <div class="pod-av-wrap">
-      ${crowns[i]?`<div class="pod-crown">${crowns[i]}</div>`:''}
-      <div class="pod-av" style="background:linear-gradient(${s.g})">${s.i}</div>
-      <div class="pod-medal" style="background:${i===1?'var(--medal-gold)':i===0?'var(--medal-silver)':'var(--medal-bronze)'}">${medals[i]}</div>
-    </div>
-    <div class="pod-name">${s.n}</div>
-    <div class="pod-school">${s.s}</div>
-    <div class="pod-score">${s.score} pts · ${s.acc}%</div>
-    <div class="pod-block"><div class="pod-block-num">#${i===1?1:i===0?2:3}</div></div>
-  </div>`).join('');
-  document.getElementById('ph-scope').textContent = data.ph;
-}
-
-function buildRows(rows){
-  const container = document.getElementById('lbt-rows');
-  const myIdx = rows.findIndex(r=>r.me);
-  let html = '';
-  const visible = rows.filter(r=>!r.me && r.r <= 10);
-
-  visible.forEach((s,i)=>{
-    const rowCls = s.r===1?'g-row':s.r===2?'s-row':s.r===3?'b-row':'';
-    const rnCls = s.r===1?'r1':s.r===2?'r2':s.r===3?'r3':'';
-    const mvHtml = s.move===0?`<div class="rm"><div class="rm-a rm-sm">—</div></div>`:
-      s.move>0?`<div class="rm"><div class="rm-a rm-up">▲</div><div class="rm-n rm-up">${s.move}</div></div>`:
-      `<div class="rm"><div class="rm-a rm-dn">▼</div><div class="rm-n rm-dn">${Math.abs(s.move)}</div></div>`;
-    html += `
-    <div class="lb-row ${rowCls}" style="animation-delay:${i*.04}s">
-      <div class="rank-cell"><div class="rn ${rnCls}">${s.r===1?'🥇':s.r===2?'🥈':s.r===3?'🥉':s.r}</div>${mvHtml}</div>
-      <div class="uc">
-        <div class="uc-av" style="background:linear-gradient(${s.g})">${s.i}</div>
-        <div><div class="uc-name">${s.n}</div><div class="uc-meta">${s.m}</div></div>
-      </div>
-      <div class="score-cell">${s.score}/300</div>
-      <div class="acc-cell"><div class="acc-bar"><div class="acc-fill" style="width:${s.acc}%"></div></div><div class="acc-val">${s.acc}%</div></div>
-      <div class="streak-cell">🔥 ${s.streak}d</div>
-      <div class="score-cell">${s.tests}</div>
-      <div class="loc-cell">📍 ${s.loc.length>8?s.loc.substring(0,8)+'…':s.loc}</div>
-    </div>`;
-  });
-
-  // "You are here" divider
-  html += `<div class="you-here">⬇ Scrolled ${scopeData[currentScope].myRank - 10} places · Your position below</div>`;
-
-  // My row
-  const me = rows.find(r=>r.me);
-  if(me){
-    html += `
-    <div class="lb-row me" style="animation-delay:.42s">
-      <div class="rank-cell"><div class="rn">#${me.r}</div>
-        ${me.move>0?`<div class="rm"><div class="rm-a rm-up">▲</div><div class="rm-n rm-up">${me.move}</div></div>`:''}
-      </div>
-      <div class="uc">
-        <div class="uc-av" style="background:linear-gradient(${me.g})">${me.i}</div>
-        <div><div class="uc-name">${me.n}<span class="you-badge">YOU</span></div><div class="uc-meta">${me.m}</div></div>
-      </div>
-      <div class="score-cell">${me.score}/300</div>
-      <div class="acc-cell"><div class="acc-bar"><div class="acc-fill" style="width:${me.acc}%"></div></div><div class="acc-val">${me.acc}%</div></div>
-      <div class="streak-cell">🔥 ${me.streak}d</div>
-      <div class="score-cell">${me.tests}</div>
-      <div class="loc-cell">📍 ${me.loc.length>8?me.loc.substring(0,8)+'…':me.loc}</div>
-    </div>`;
-  }
-
-  container.innerHTML = html;
-
-  // Pagination
-  document.getElementById('pagination').innerHTML = `
-  <div class="pg-btn disabled">‹</div>
-  <div class="pg-btn active">1</div>
-  <div class="pg-btn">2</div>
-  <div class="pg-btn">3</div>
-  <div style="font-size:.76rem;color:rgba(26,38,24,.35);padding:0 4px">…</div>
-  <div class="pg-btn">48</div>
-  <div class="pg-btn">›</div>
-  <div style="margin-left:auto;font-size:.72rem;color:rgba(26,38,24,.38)">Showing 1–10 of ${scopeData[currentScope].rows.length} students</div>`;
-}
-
-function switchScope(scope, btn){
-  currentScope = scope;
-  const data = scopeData[scope];
-  if(!data) return;
-  document.querySelectorAll('.scope-tab').forEach(t=>t.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-  document.getElementById('scope-label').textContent = data.label;
-  buildPodium(data);
-  buildRows(data.rows);
-}
-
-function filterRows(val){
-  val = val.toLowerCase();
-  document.querySelectorAll('.lb-row:not(.me)').forEach(r=>{
-    r.style.display = r.textContent.toLowerCase().includes(val) ? '' : 'none';
-  });
-}
-
-function filterExam(val){ console.log('Exam filter:', val); }
-function setTime(t, el){ document.querySelectorAll('.tc').forEach(c=>c.classList.remove('active')); el.classList.add('active'); }
-function sortBy(col){ showToast('Sorting by '+col+'…'); }
-
-function refreshData(){
-  showToast('⟳ Rankings refreshed!');
-  buildRows(scopeData[currentScope].rows);
-}
-
-function shareRank(){
-  const rank = scopeData[currentScope].myRank;
-  const scope = currentScope;
-  showToast(`Copied! AIR #${rank} · MockArena 🏆`);
-}
-
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'), 2800);
-}
-
-// INIT
-switchScope('national', document.querySelector('.scope-tab.active'));
-</script>
-<script>
-
-</script>
-<script>
-// ══ HAMBURGER MENU ══
-(function(){
-  if(document.querySelector('.mob-ham')) return; // already added
-
-  // Create overlay
-  var ov = document.createElement('div');
-  ov.className = 'sb-overlay';
-  ov.onclick = close;
-  document.body.appendChild(ov);
-
-  // Create hamburger button
-  var ham = document.createElement('div');
-  ham.className = 'mob-ham';
-  ham.innerHTML = '&#9776;';
-  ham.style.cssText = 'display:none;width:34px;height:34px;border-radius:8px;background:var(--cream-warm);border:1.5px solid var(--border-med);align-items:center;justify-content:center;cursor:pointer;font-size:1rem;flex-shrink:0;color:var(--forest);margin-right:4px;';
-  ham.onclick = toggle;
-
-  // Insert into topbar
-  var tb = document.querySelector('.tb');
-  if(tb) tb.insertBefore(ham, tb.firstChild);
-
-  // Show/hide based on width
-  function checkSize(){
-    ham.style.display = window.innerWidth <= 860 ? 'flex' : 'none';
-  }
-  checkSize();
-  window.addEventListener('resize', checkSize);
-
-  function toggle(){
-    var sb = document.querySelector('.sb');
-    sb.classList.contains('mob-open') ? close() : open();
-  }
-
-  function open(){
-    document.querySelector('.sb').classList.add('mob-open');
-    ov.classList.add('mob-open');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function close(){
-    document.querySelector('.sb').classList.remove('mob-open');
-    ov.classList.remove('mob-open');
-    document.body.style.overflow = '';
-  }
-
-  // Close on nav click
-  document.querySelectorAll('.sb-nav, .sb-nav a').forEach(function(el){
-    el.addEventListener('click', function(){
-      if(window.innerWidth <= 860) close();
-    });
-  });
-})();
+window.setLevel    = function(l,b){ if(window._sl) window._sl(l,b); };
+window.setTime     = function(t,b){ if(window._st) window._st(t,b); };
+window.setExam     = function(v){   if(window._se) window._se(v);   };
+window.filterSearch= function(v){   if(window._fs) window._fs(v);   };
+window.refreshData = function(){    if(window._rd) window._rd();     };
+window.shareRank   = function(){    if(window._sr) window._sr();     };
 </script>
 
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
-<script id="mobile-script">
-document.addEventListener("DOMContentLoaded",function(){
-  // Remove any existing mob-ham buttons first
-  document.querySelectorAll(".mob-ham,.mob-menu-btn").forEach(function(e){e.remove();});
-
-  // Create overlay
-  var ov=document.createElement("div");
-  ov.className="mob-overlay";
-  ov.style.cssText="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9998;";
-  ov.addEventListener("click",closeNav);
-  document.body.appendChild(ov);
-
-  // Create ONE hamburger
-  var ham=document.createElement("button");
-  ham.className="mob-ham";
-  ham.innerHTML="&#9776;";
-  ham.style.cssText="display:none;width:36px;height:36px;border-radius:8px;background:#f5f3ec;border:1.5px solid rgba(26,38,24,.13);align-items:center;justify-content:center;cursor:pointer;font-size:1.1rem;flex-shrink:0;color:#1a2618;margin-right:6px;";
-  ham.addEventListener("click",toggleNav);
-
-  // Insert into topbar
-  var tb=document.querySelector(".tb");
-  if(tb) tb.insertBefore(ham,tb.firstChild);
-
-  // Show only on mobile
-  function check(){
-    ham.style.display=window.innerWidth<=860?"flex":"none";
-    if(window.innerWidth>860) closeNav();
-  }
-  check();
-  window.addEventListener("resize",check);
-
-  function toggleNav(){
-    var sb=document.querySelector(".sb");
-    if(!sb) return;
-    sb.classList.contains("mob-open")?closeNav():openNav();
-  }
-  function openNav(){
-    var sb=document.querySelector(".sb");
-    if(sb) sb.classList.add("mob-open");
-    ov.style.display="block";
-    document.body.style.overflow="hidden";
-  }
-  function closeNav(){
-    var sb=document.querySelector(".sb");
-    if(sb) sb.classList.remove("mob-open");
-    ov.style.display="none";
-    document.body.style.overflow="";
-  }
-  // Close on nav click
-  document.querySelectorAll(".sb-nav,.sb a").forEach(function(el){
-    el.addEventListener("click",function(){
-      if(window.innerWidth<=860) closeNav();
-    });
-  });
+const app = initializeApp({
+  apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
+  authDomain:"mockarena-c18c4.firebaseapp.com",
+  projectId:"mockarena-c18c4",
+  storageBucket:"mockarena-c18c4.firebasestorage.app",
+  messagingSenderId:"861067164791",
+  appId:"1:861067164791:web:28df5244e34361dd9d5a72"
 });
-</script>
-<script>
-(function(){
-  try{if(sessionStorage.getItem("ma_logout")==="1"){sessionStorage.removeItem("ma_logout");return;}}catch(e){}
-  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-  function _g(){
-    var s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-    s1.onload=function(){var s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
-      s2.onload=function(){
-        if(!firebase.apps.length)firebase.initializeApp(_c);
-        var done=false;
-        firebase.auth().onAuthStateChanged(function(u){
-          if(!done&&!u){done=true;try{if(sessionStorage.getItem("ma_logout")==="1"){sessionStorage.removeItem("ma_logout");return;}}catch(ex){}window.location.replace("login.html");}
-        });
-      };document.head.appendChild(s2);};document.head.appendChild(s1);
-  }
-  function fixLogout(){
-    document.querySelectorAll("a").forEach(function(el){
-      var txt=el.textContent.trim().toLowerCase();
-      if(txt==="logout"||txt==="sign out"){
-        el.setAttribute("href","#");
-        el.onclick=function(e){
-          e.preventDefault();
-          try{sessionStorage.setItem("ma_logout","1");}catch(ex){}
-          if(typeof firebase!=="undefined"&&firebase.auth){firebase.auth().signOut().then(function(){window.location.replace("login.html");});}
-          else{window.location.replace("login.html");}
-        };
-      }
-    });
-  }
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",function(){_g();fixLogout();});}else{_g();fixLogout();}
-})();
-</script>
-<script>
-(function(){
-  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-  var grads=["135deg,#4f46e5,#7c3aed","135deg,#6b8f5e,#4a7a3d","135deg,#c8962a,#e8a830","135deg,#3b82c4,#60a5e8","135deg,#c84b4b,#e06b6b","135deg,#b87333,#d4844a","135deg,#7c5cbf,#a78bfa"];
-  function getGrad(uid){var h=0;for(var i=0;i<(uid||"").length;i++)h+=uid.charCodeAt(i);return grads[h%grads.length];}
-  function inits(name){return (name||"?").split(" ").map(function(w){return w[0]||"";}).join("").toUpperCase().substring(0,2);}
+const auth=getAuth(app), db=getFirestore(app);
+let allStudents=[], currentUser=null;
+let cLevel='national', cTime='week', cExam='';
 
-  function loadFS(cb){
-    var s1=document.createElement("script");s1.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js";
-    s1.onload=function(){var s2=document.createElement("script");s2.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js";
-      s2.onload=function(){var s3=document.createElement("script");s3.src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js";
-        s3.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);cb(firebase.firestore(),firebase.auth());};
-        document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);
-  }
+const AV=[
+  '135deg,#b87333,#d4844a','135deg,#8a9bb0,#a0b0c0','135deg,#6b8f5e,#4a7a3d',
+  '135deg,#2563eb,#1d4ed8','135deg,#7c3aed,#5b21b6','135deg,#c8962a,#9a6e18',
+  '135deg,#c84b4b,#e06b6b','135deg,#0891b2,#0e7490','135deg,#7c5538,#a07050',
+];
+const av=n=>{let h=0;for(const c of(n||'?'))h=(h*31+c.charCodeAt(0))%AV.length;return AV[h];};
+const ini=n=>(n||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const score=s=>{
+  if(cTime==='week'){const d=new Date(),day=d.getDay()||7;d.setDate(d.getDate()-day+1);const wk=d.toISOString().slice(0,10);return s.weeklyPoints?.[wk]||s.totalPoints||0;}
+  if(cTime==='month'){const mk=new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');return s.monthlyPoints?.[mk]||s.totalPoints||0;}
+  return s.totalPoints||0;
+};
+const acc=s=>s.totalTests>0?Math.round(((s.correctAnswers||0)/(s.totalTests*10||1))*100):0;
+const fmt=n=>n.toLocaleString('en-IN');
 
-  function toRows(scores,myUid){
-    return scores.map(function(s,i){
-      return {r:i+1,i:inits(s.name),n:s.name||"Student",m:(s.examType||"").replace(/_/g," "),score:s.score||0,acc:s.accuracy||0,streak:0,tests:1,move:0,loc:"India",g:getGrad(s.uid),photo:s.photo||"",uid:s.uid,me:s.uid===myUid};
-    });
-  }
+onAuthStateChanged(auth, user=>{currentUser=user;loadAll();});
 
-  function toPodium(scores){
-    return scores.slice(0,3).map(function(s){
-      return {i:inits(s.name),n:s.name||"Student",s:(s.examType||"").replace(/_/g," "),score:s.score||0,acc:s.accuracy||0,loc:"India",g:getGrad(s.uid),photo:s.photo||""};
-    });
+async function loadAll(){
+  try{
+    const snap=await getDocs(collection(db,'users'));
+    allStudents=snap.docs.map(d=>({uid:d.id,...d.data()}));
+    // Hero stats
+    const tot=allStudents.reduce((s,u)=>s+(u.totalTests||0),0);
+    const states=new Set(allStudents.map(s=>s.state).filter(Boolean));
+    document.getElementById('hs-students').textContent=fmt(allStudents.length);
+    document.getElementById('hs-states').textContent=states.size||'—';
+    document.getElementById('hs-tests').textContent=fmt(tot);
+    document.getElementById('hs-updated').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
+    renderAll();
+  }catch(e){
+    document.getElementById('lb-body').innerHTML='<div class="lb-empty"><div class="lb-empty-icon">⚠️</div><div class="lb-empty-h">Could not load</div><div class="lb-empty-s">Check your connection and try again.</div></div>';
   }
+}
 
-  function loadExam(db,examType,myUid){
-    var container=document.getElementById("lbt-rows");
-    if(container) container.innerHTML='<div style="text-align:center;padding:40px;color:rgba(26,38,24,.4);font-size:.82rem;">Loading live rankings...</div>';
-    db.collection("leaderboard").doc(examType).collection("scores")
-      .orderBy("score","desc").limit(100).get()
-      .then(function(snap){
-        var scores=[];
-        snap.forEach(function(d){scores.push(d.data());});
-        if(!scores.length){
-          if(typeof switchScope==="function") switchScope("national",document.querySelector(".scope-tab.active"));
-          if(typeof showToast==="function") showToast("No live data yet — showing sample");
-          return;
-        }
-        var rows=toRows(scores,myUid);
-        var podium=toPodium(scores);
-        var myRow=rows.find(function(r){return r.me;});
-        var myRank=myRow?myRow.r:"—";
-        if(typeof scopeData!=="undefined"){
-          scopeData.national.rows=rows;scopeData.national.podium=podium;
-          scopeData.national.myRank=myRank;
-          scopeData.national.label="🇮🇳 National · "+scores.length+" students";
-        }
-        if(typeof buildPodium==="function") buildPodium({podium:podium,ph:"🇮🇳 National"});
-        if(typeof buildRows==="function") buildRows(rows);
-        var sl=document.getElementById("scope-label");
-        if(sl) sl.textContent="🇮🇳 National · "+scores.length+" students";
-        var mrsName=document.querySelector(".mrs-name");
-        if(mrsName&&myRow) mrsName.textContent=(myRow.n||"You")+" · "+examType.replace(/_/g," ");
-        document.querySelectorAll(".mrs-rank").forEach(function(el,i){if(i===2)el.textContent="#"+myRank;});
-        // Update avatar photos in table
-        setTimeout(function(){
-          document.querySelectorAll("#lbt-rows .uc-av").forEach(function(av,i){
-            if(rows[i]&&rows[i].photo){av.innerHTML='<img src="'+rows[i].photo+'" style="width:100%;height:100%;object-fit:cover;border-radius:50%;"/>';av.style.background="#f0ede6";}
-          });
-        },100);
-        if(typeof showToast==="function") showToast("✅ Live rankings loaded!");
-      }).catch(function(e){console.error(e);if(typeof showToast==="function")showToast("Using sample data");});
+function getStudents(){
+  let s=[...allStudents];
+  if(cExam) s=s.filter(u=>u.stream===cExam);
+  if(currentUser){
+    const me=s.find(u=>u.uid===currentUser.uid);
+    if(cLevel==='district'&&me?.district) s=s.filter(u=>u.district===me.district);
+    else if(cLevel==='state'&&me?.state) s=s.filter(u=>u.state===me.state);
   }
+  return s.map(u=>({...u,_score:score(u)})).sort((a,b)=>(b._score||0)-(a._score||0));
+}
 
-  function wireExamFilter(db,myUid){
-    var sel=document.querySelector("select.fi");
-    if(!sel) return;
-    sel.addEventListener("change",function(){
-      var map={"JEE Advanced":"jee_advanced","JEE Mains":"jee_mains","NEET UG":"neet","all":"jee_advanced"};
-      loadExam(db,map[this.value]||"jee_advanced",myUid);
-    });
+function renderAll(){
+  const students=getStudents();
+  const lbl={district:'District',state:'State',national:'National',air:'All India'}[cLevel];
+  const tlbl={week:'This Week',month:'This Month',all:'All Time'}[cTime];
+  document.getElementById('podium-badge').textContent=lbl+' · '+tlbl;
+  buildPodium(students.slice(0,3));
+  buildTable(students);
+  buildRight(students);
+  yourRank(students);
+}
+
+function buildPodium(top){
+  if(!top.length){document.getElementById('podium').innerHTML='<div style="padding:32px;text-align:center;color:rgba(255,255,255,.3);font-size:.96rem;">No students yet — take a test to appear here!</div>';return;}
+  const m=['🥈','🥇','🥉'],cls=['p2','p1','p3'],cr=['','👑',''];
+  const ord=[1,0,2].filter(i=>top[i]);
+  document.getElementById('podium').innerHTML=ord.map((idx,i)=>{
+    const s=top[idx];if(!s)return'';
+    const nm=s.displayName||s.name||'Student';
+    const iy=currentUser&&s.uid===currentUser.uid;
+    return`<div class="ps ${cls[i]}">
+      <div class="pod-av-wrap">
+        ${cr[i]?`<div class="pod-crown">${cr[i]}</div>`:''}
+        <div class="pod-av" style="background:linear-gradient(${av(nm)})">${ini(nm)}</div>
+        <div class="pod-medal" style="background:${i===1?'#c8962a':i===0?'#8a9bb0':'#b87333'}">${m[i]}</div>
+      </div>
+      <div class="pod-name">${iy?'You':nm}</div>
+      <div class="pod-pts">${fmt(s._score||0)} pts</div>
+      <div class="pod-block"><div class="pod-block-n">#${idx+1}</div></div>
+    </div>`;
+  }).join('');
+}
+
+function buildTable(students){
+  if(!students.length){
+    document.getElementById('lb-body').innerHTML=`<div class="lb-empty">
+      <div class="lb-empty-icon">🏆</div>
+      <div class="lb-empty-h">No students yet in this ranking</div>
+      <div class="lb-empty-s">
+        ${cLevel==='district'||cLevel==='state'?'Add your location in onboarding to see local rankings.<br/>':''}
+        Take a test to appear on the leaderboard!
+      </div>
+    </div>`;
+    document.getElementById('lb-footer').textContent='';
+    return;
   }
-
-  function init(){
-    loadFS(function(db,auth){
-      auth.onAuthStateChanged(function(user){
-        if(!user) return;
-        // Update sidebar user info
-        var nm=user.displayName||"Student";
-        var init2=nm.split(" ").map(function(w){return w[0];}).join("").toUpperCase().substring(0,2);
-        document.querySelectorAll(".sb-av,.sb-avatar").forEach(function(el){
-          if(user.photoURL){var img=document.createElement("img");img.src=user.photoURL;img.style.cssText="width:100%;height:100%;border-radius:50%;object-fit:cover;";el.innerHTML="";el.appendChild(img);}
-          else{el.textContent=init2;}
-        });
-        document.querySelectorAll(".sb-uname,.sb-name").forEach(function(el){el.textContent=nm;});
-        // Load leaderboard
-        loadExam(db,"jee_advanced",user.uid);
-        wireExamFilter(db,user.uid);
-        // Override refresh
-        window.refreshData=function(){
-          if(typeof showToast==="function") showToast("⟳ Refreshing live rankings...");
-          loadExam(db,"jee_advanced",user.uid);
-        };
-      });
-    });
+  const myIdx=currentUser?students.findIndex(s=>s.uid===currentUser.uid):-1;
+  let html='';
+  students.slice(0,10).forEach((s,i)=>{
+    const nm=s.displayName||s.name||'Student';
+    const iy=currentUser&&s.uid===currentUser.uid;
+    const r=i+1,a=acc(s);
+    const rc=iy?'you':r===1?'gold':r===2?'silver':r===3?'bronze':'';
+    const rk=r===1?'r1':r===2?'r2':r===3?'r3':'';
+    html+=`<div class="lb-row ${rc}" style="animation-delay:${i*.04}s">
+      <div class="lb-rank-cell"><div class="lb-rank ${rk}">${r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r}</div></div>
+      <div class="lb-student">
+        <div class="lb-av" style="background:linear-gradient(${av(nm)})">${ini(nm)}</div>
+        <div style="min-width:0">
+          <div class="lb-name ${iy?'you':''}">${iy?'You':nm}${iy?'<span class="you-badge">YOU</span>':''}</div>
+          <div class="lb-meta">${s.streamLabel||s.stream||'MockArena'}${s.state?' · '+s.state:''}</div>
+        </div>
+      </div>
+      <div class="lb-pts">${fmt(s._score||0)}</div>
+      <div class="lb-acc-wrap"><div class="lb-acc-bar"><div class="lb-acc-fill" style="width:${a}%"></div></div><div class="lb-acc-val">${a}%</div></div>
+      <div class="lb-tests">${s.totalTests||0}</div>
+    </div>`;
+  });
+  if(currentUser&&myIdx>=10){
+    const me=students[myIdx];const nm=me.displayName||me.name||'You';const a=acc(me);
+    html+=`<div class="you-here">⬇ You are at rank #${myIdx+1}</div>
+    <div class="lb-row you" style="animation-delay:.42s">
+      <div class="lb-rank-cell"><div class="lb-rank">#${myIdx+1}</div></div>
+      <div class="lb-student">
+        <div class="lb-av" style="background:linear-gradient(${av(nm)})">${ini(nm)}</div>
+        <div style="min-width:0">
+          <div class="lb-name you">You<span class="you-badge">YOU</span></div>
+          <div class="lb-meta">${me.streamLabel||me.stream||'MockArena'}${me.state?' · '+me.state:''}</div>
+        </div>
+      </div>
+      <div class="lb-pts">${fmt(me._score||0)}</div>
+      <div class="lb-acc-wrap"><div class="lb-acc-bar"><div class="lb-acc-fill" style="width:${a}%"></div></div><div class="lb-acc-val">${a}%</div></div>
+      <div class="lb-tests">${me.totalTests||0}</div>
+    </div>`;
   }
+  document.getElementById('lb-body').innerHTML=html;
+  document.getElementById('lb-footer').innerHTML=`<span>${Math.min(10,students.length)} of ${fmt(students.length)} students</span><span style="color:var(--sage);font-weight:700;">${{district:'District',state:'State',national:'National',air:'All India'}[cLevel]}</span>`;
+}
 
-  if(document.readyState==="loading"){document.addEventListener("DOMContentLoaded",init);}
-  else{setTimeout(init,200);}
-})();
+function buildRight(students){
+  // Stats
+  const tot=students.reduce((s,u)=>s+(u._score||0),0);
+  const avg=students.length>0?Math.round(tot/students.length):0;
+  const topA=students.length>0?acc(students[0]):0;
+  document.getElementById('right-stats').innerHTML=`
+    <div class="stat-row"><span class="stat-label">Students</span><span class="stat-val">${fmt(students.length)}</span></div>
+    <div class="stat-row"><span class="stat-label">Avg Score</span><span class="stat-val">${fmt(avg)} pts</span></div>
+    <div class="stat-row"><span class="stat-label">Top Accuracy</span><span class="stat-val" style="color:var(--sage)">${topA}%</span></div>
+    <div class="stat-row"><span class="stat-label">Total Tests</span><span class="stat-val">${fmt(students.reduce((s,u)=>s+(u.totalTests||0),0))}</span></div>`;
+
+  // Top 5
+  document.getElementById('right-top').innerHTML=students.slice(0,5).map((s,i)=>{
+    const nm=s.displayName||s.name||'Student';
+    const iy=currentUser&&s.uid===currentUser.uid;
+    const medals=['🥇','🥈','🥉'];
+    return`<div class="top-item">
+      <div class="top-rank" style="color:${i<3?['var(--gold)','var(--silver)','var(--bronze)'][i]:'var(--txt-lo)'}">${i<3?medals[i]:'#'+(i+1)}</div>
+      <div class="top-av" style="background:linear-gradient(${av(nm)})">${ini(nm)}</div>
+      <div class="top-name" style="${iy?'color:var(--sage)':''}">${iy?'You':nm}</div>
+      <div class="top-pts">${fmt(s._score||0)}</div>
+    </div>`;
+  }).join('');
+}
+
+function yourRank(students){
+  if(!currentUser)return;
+  const idx=students.findIndex(s=>s.uid===currentUser.uid);
+  if(idx<0)return;
+  const me=students[idx];
+  const nm=me.displayName||me.name||'You';
+  const lbl={district:'District',state:'State',national:'National',air:'All India'}[cLevel];
+  const tlbl={week:'This Week',month:'This Month',all:'All Time'}[cTime];
+  document.getElementById('your-rank').classList.add('show');
+  document.getElementById('yr-rank').textContent='#'+(idx+1);
+  document.getElementById('yr-name').textContent=nm;
+  document.getElementById('yr-sub').textContent=lbl+' Rank · '+tlbl;
+  document.getElementById('yr-pts').textContent=fmt(me._score||0);
+  document.getElementById('yr-tests').textContent=me.totalTests||0;
+  document.getElementById('yr-acc').textContent=acc(me)+'%';
+}
+
+// Controls
+window._sl=function(l,btn){cLevel=l;document.querySelectorAll('.f-tab').forEach(t=>t.classList.remove('on'));if(btn)btn.classList.add('on');renderAll();};
+window._st=function(t,btn){cTime=t;document.querySelectorAll('.f-time').forEach(b=>b.classList.remove('on'));if(btn)btn.classList.add('on');renderAll();};
+window._se=function(v){cExam=v;renderAll();};
+window._fs=function(v){
+  const lv=v.toLowerCase();
+  document.querySelectorAll('.lb-row').forEach(r=>{
+    if(r.classList.contains('you-here'))return;
+    r.style.display=r.textContent.toLowerCase().includes(lv)?'':'none';
+  });
+};
+window._rd=function(){showToast('↻ Refreshing…');loadAll();};
+window._sr=function(){
+  const s=getStudents();
+  const idx=currentUser?s.findIndex(u=>u.uid===currentUser.uid):-1;
+  const rank=idx>=0?'#'+(idx+1):'—';
+  const txt=`I'm ranked ${rank} on MockArena! 🏆 mockarena.co.in`;
+  if(navigator.share)navigator.share({title:'My MockArena Rank',text:txt});
+  else{navigator.clipboard?.writeText(txt);showToast('Rank copied! 🏆');}
+};
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+setInterval(loadAll,5*60*1000);
 </script>
 </body>
 </html>
