@@ -1677,19 +1677,17 @@ window.dlTemplate=function(){
   const csv=h.join(',')+'\\n'+s.map(v=>'"'+v+'"').join(',');
   const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download='mockarena_questions_template.csv';a.click();
 };
-window.onDrop=function(e,type){e.preventDefault();e.currentTarget.classList.remove('drag');if(e.dataTransfer.files[0])procFile(e.dataTransfer.files[0],type);};
+window.onDrop=function(e,type){e.preventDefault();e.currentTarget.classList.remove('drag');if(e.dataTransfer.files[0])window.procFile(e.dataTransfer.files[0],type);};
 window.onFile=function(inp,type){
   if(!inp.files[0])return;
   const file=inp.files[0];
-  // Auto-detect type from extension if not specified
   if(!type){
     const ext=file.name.split('.').pop().toLowerCase();
-    if(ext==='json')type='json';
-    else type='csv';
+    type = ext==='json' ? 'json' : 'csv';
   }
-  procFile(file,type);
+  window.procFile(file,type);
 };
-function procFile(file,type){
+window.procFile=function procFile(file,type){
   const r=new FileReader();
   r.onload=ev=>{
     try{
@@ -1702,7 +1700,7 @@ function procFile(file,type){
     }catch(err){stat('up-status','Parse error: '+err.message,'err');}
   };r.readAsText(file);
 }
-function parseCSV(row){const r=[];let c='',q=false;for(const ch of row){if(ch==='"')q=!q;else if(ch===','&&!q){r.push(c);c='';}else c+=ch;}r.push(c);return r;}
+window.parseCSV=function parseCSV(row){const r=[];let c='',q=false;for(const ch of row){if(ch==='"')q=!q;else if(ch===','&&!q){r.push(c);c='';}else c+=ch;}r.push(c);return r;}
 window.parsePaste=function(){
   const text=document.getElementById('paste-inp').value.trim();
   if(!text){stat('up-status','Paste some questions first.','err');alert('Please paste questions first.');return;}
@@ -1726,7 +1724,7 @@ window.parsePaste=function(){
     });
     return o;
   }).filter(o=>o.question);
-  preview(data);
+  window.preview(data);
 };
 
 // IMAGE & CAMERA
@@ -1752,7 +1750,7 @@ window.snapCam=function(){
   document.getElementById('cam-snap-btn').style.display='none';document.getElementById('cam-retake').style.display='flex';document.getElementById('cam-extract').style.display='flex';
 };
 window.retakeCam=function(){capturedImg=null;document.getElementById('cam-snap').style.display='none';document.getElementById('cam-retake').style.display='none';document.getElementById('cam-extract').style.display='none';document.getElementById('cam-ph').style.display='block';document.getElementById('cam-open').style.display='flex';};
-function stopCam(){if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}}
+window.stopCam=function stopCam(){if(camStream){camStream.getTracks().forEach(t=>t.stop());camStream=null;}}
 window.aiExtract=async function(src){
   const exam=document.getElementById(src+'-exam').value;
   const subj=document.getElementById(src+'-subj').value;
@@ -1782,7 +1780,7 @@ window.aiExtract=async function(src){
   }catch(err){loader(false);stat(src+'-status','Error: '+err.message,'err');}
 };
 
-function preview(data){
+window.preview=function preview(data){
   parsedQs=[];const errors=[];
   data.forEach((row,i)=>{
     const q={exam:(row.exam||'').toUpperCase().trim(),subject:row.subject||'',chapter:row.chapter||'General',difficulty:row.difficulty||'Medium',type:(row.type||'MCQ').toUpperCase(),question:row.question||'',option_a:row.option_a||'',option_b:row.option_b||'',option_c:row.option_c||'',option_d:row.option_d||'',correct:(row.correct||'A').toUpperCase().trim(),explanation:row.explanation||'',topic:row.topic||'',marks:parseInt(row.marks||4)||4,year:row.year||null};
