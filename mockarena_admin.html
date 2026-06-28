@@ -1204,11 +1204,11 @@ body{
   <div class="card">
     <div class="stitle" style="margin-bottom:16px;">Choose Upload Method <div class="stitle-line"></div></div>
     <div class="method-grid">
-      <div class="method-card on" id="mc-csv" onclick="setMethod('csv')"><div class="mc-icon">📊</div><div class="mc-name">Excel/CSV</div><div class="mc-hint">Fill template</div></div>
-      <div class="method-card" id="mc-json" onclick="setMethod('json')"><div class="mc-icon">📋</div><div class="mc-name">JSON File</div><div class="mc-hint">Upload .json</div></div>
-      <div class="method-card" id="mc-paste" onclick="setMethod('paste')"><div class="mc-icon">✏️</div><div class="mc-name">Paste Text</div><div class="mc-hint">Simple format</div></div>
-      <div class="method-card" id="mc-image" onclick="setMethod('image')"><div class="mc-icon">🖼️</div><div class="mc-name">Upload Image</div><div class="mc-hint">JPG / PNG / PDF</div></div>
-      <div class="method-card" id="mc-camera" onclick="setMethod('camera')"><div class="mc-icon">📷</div><div class="mc-name">Camera</div><div class="mc-hint">Take photo</div></div>
+      <div class="method-card on" id="mc-csv" onclick="['csv','json','paste','image','camera'].forEach(function(k){document.getElementById('up-'+k).className='upane'+(k==='csv'?' on':'');document.getElementById('mc-'+k).className='method-card'+(k==='csv'?' on':'');})"><div class="mc-icon">📊</div><div class="mc-name">Excel/CSV</div><div class="mc-hint">Fill template</div></div>
+      <div class="method-card" id="mc-json" onclick="['csv','json','paste','image','camera'].forEach(function(k){document.getElementById('up-'+k).className='upane'+(k==='json'?' on':'');document.getElementById('mc-'+k).className='method-card'+(k==='json'?' on':'');})"><div class="mc-icon">📋</div><div class="mc-name">JSON File</div><div class="mc-hint">Upload .json</div></div>
+      <div class="method-card" id="mc-paste" onclick="['csv','json','paste','image','camera'].forEach(function(k){document.getElementById('up-'+k).className='upane'+(k==='paste'?' on':'');document.getElementById('mc-'+k).className='method-card'+(k==='paste'?' on':'');})"><div class="mc-icon">✏️</div><div class="mc-name">Paste Text</div><div class="mc-hint">Simple format</div></div>
+      <div class="method-card" id="mc-image" onclick="['csv','json','paste','image','camera'].forEach(function(k){document.getElementById('up-'+k).className='upane'+(k==='image'?' on':'');document.getElementById('mc-'+k).className='method-card'+(k==='image'?' on':'');})"><div class="mc-icon">🖼️</div><div class="mc-name">Upload Image</div><div class="mc-hint">JPG / PNG / PDF</div></div>
+      <div class="method-card" id="mc-camera" onclick="['csv','json','paste','image','camera'].forEach(function(k){document.getElementById('up-'+k).className='upane'+(k==='camera'?' on':'');document.getElementById('mc-'+k).className='method-card'+(k==='camera'?' on':'');})"><div class="mc-icon">📷</div><div class="mc-name">Camera</div><div class="mc-hint">Take photo</div></div>
     </div>
 
     <!-- CSV -->
@@ -1463,7 +1463,13 @@ function setMethod(m){
     if(p)p.className='upane'+(k===m?' on':'');
     if(b)b.className='method-card'+(k===m?' on':'');
   });
+  // Stop camera if switching away
+  if(m!=='camera' && window.camStream){
+    window.camStream.getTracks().forEach(function(t){t.stop();});
+    window.camStream=null;
+  }
 }
+window.setMethod=setMethod;
 // Initialize UI immediately
 document.addEventListener('DOMContentLoaded',function(){
   showPage('dashboard');
@@ -1890,10 +1896,7 @@ window.delQ=async function(id){
 };
 
 // ── UPLOAD ──
-window.setMethod=function(m){
-  setMethod(m);
-  if(m!=='camera' && typeof stopCam !== 'undefined')stopCam();
-};
+
 
 
 
