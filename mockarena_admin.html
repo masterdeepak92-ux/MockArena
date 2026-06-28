@@ -2205,9 +2205,38 @@ function getTabHTML(tab){
   }
   if(tab==='upload'){
     const pane=document.getElementById('page-upload');
-    return pane?pane.innerHTML:'';
+    if(!pane) return '';
+    let html = pane.innerHTML;
+    html = html.replace(/id="up-/g, 'id="d-up-');
+    html = html.replace(/id="mc-/g, 'id="d-mc-');
+    html = html.replace(/id="fi-csv"/g, 'id="d-fi-csv"');
+    html = html.replace(/id="fi-json"/g, 'id="d-fi-json"');
+    html = html.replace(/id="fi-img"/g, 'id="d-fi-img"');
+    html = html.replace(/id="fi-cam"/g, 'id="d-fi-cam"');
+    html = html.replace(/id="paste-inp"/g, 'id="d-paste-inp"');
+    html = html.replace(/id="img-box"/g, 'id="d-img-box"');
+    html = html.replace(/id="img-prev"/g, 'id="d-img-prev"');
+    html = html.replace(/id="img-exam"/g, 'id="d-img-exam"');
+    html = html.replace(/id="img-subj"/g, 'id="d-img-subj"');
+    html = html.replace(/id="img-status"/g, 'id="d-img-status"');
+    html = html.replace(/id="cam-vid"/g, 'id="d-cam-vid"');
+    html = html.replace(/id="cam-canvas"/g, 'id="d-cam-canvas"');
+    html = html.replace(/id="cam-snap"/g, 'id="d-cam-snap"');
+    html = html.replace(/id="cam-ph"/g, 'id="d-cam-ph"');
+    html = html.replace(/id="cam-open"/g, 'id="d-cam-open"');
+    html = html.replace(/id="cam-snap-btn"/g, 'id="d-cam-snap-btn"');
+    html = html.replace(/id="cam-retake"/g, 'id="d-cam-retake"');
+    html = html.replace(/id="cam-extract"/g, 'id="d-cam-extract"');
+    html = html.replace(/id="cam-status"/g, 'id="d-cam-status"');
+    html = html.replace(/id="cam-exam"/g, 'id="d-cam-exam"');
+    html = html.replace(/id="cam-subj"/g, 'id="d-cam-subj"');
+    html = html.replace(/id="up-status"/g, 'id="d-up-status"');
+    html = html.replace(/id="parsed-section"/g, 'id="d-parsed-section"');
+    html = html.replace(/id="parsed-sub"/g, 'id="d-parsed-sub"');
+    html = html.replace(/id="parsed-list"/g, 'id="d-parsed-list"');
+    return html;
   }
-  if(tab==='build'){
+    if(tab==='build'){
     const pane=document.getElementById('page-build');
     return pane?pane.innerHTML:'';
   }
@@ -2234,8 +2263,12 @@ window.dShowTab=function(tab){
     </div><div id="d-bank-list"></div>`;
     dRenderBank(allQs);
   } else if(tab==='upload'){
-    const src=document.getElementById('page-upload');
-    pane.innerHTML=src?src.innerHTML:'No content';
+    pane.innerHTML=getTabHTML('upload');
+    // Initialize desktop upload - show CSV by default
+    setTimeout(function(){
+      var csvPane = document.getElementById('d-up-csv');
+      if(csvPane) csvPane.className='upane on';
+    }, 50);
   } else if(tab==='build'){
     const src=document.getElementById('page-build');
     pane.innerHTML=src?src.innerHTML:'No content';
