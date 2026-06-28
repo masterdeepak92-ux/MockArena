@@ -40,34 +40,33 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);
   border-color:transparent;box-shadow:0 2px 8px var(--sage-g);}
 
 /* ── HERO ── */
-.hero{background:linear-gradient(135deg,var(--forest),#1e3318);
-  padding:32px 20px 28px;position:relative;overflow:hidden;}
-.hero-grid{position:absolute;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
-  linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
-  background-size:36px 36px;pointer-events:none;}
-.hero-orb{position:absolute;width:320px;height:320px;border-radius:50%;
-  background:radial-gradient(circle,rgba(200,150,42,.14),transparent 70%);
-  top:-80px;right:-60px;pointer-events:none;}
+.hero{background:var(--cream);padding:32px 20px 0;
+  border-bottom:1.5px solid var(--border);position:relative;}
+.hero-grid{display:none;}
+.hero-orb{display:none;}
 .hero-inner{max-width:var(--max);margin:0 auto;position:relative;z-index:1;}
 .hero-live{display:inline-flex;align-items:center;gap:7px;
-  background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);
+  background:var(--sage-l);border:1px solid var(--sage-g);
   border-radius:100px;padding:5px 14px;font-size:.84rem;font-weight:700;
-  color:rgba(255,255,255,.6);letter-spacing:.04em;margin-bottom:16px;}
+  color:var(--sage);margin-bottom:14px;}
 .live-dot{width:6px;height:6px;border-radius:50%;background:var(--rose);flex-shrink:0;
   animation:pulse 1.5s infinite;}
 @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
-.hero-title{font-size:clamp(1.7rem,4.5vw,2.6rem);font-weight:900;color:white;
+.hero-title{font-size:clamp(1.7rem,4.5vw,2.6rem);font-weight:900;color:var(--forest);
   letter-spacing:-.03em;line-height:1.1;margin-bottom:10px;}
-.hero-title em{font-style:normal;color:var(--gold);}
-.hero-sub{font-size:1rem;color:rgba(255,255,255,.52);line-height:1.72;
-  max-width:540px;margin-bottom:22px;}
-.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:0;
-  border-top:1px solid rgba(255,255,255,.08);padding-top:18px;}
-.h-stat{padding-right:20px;}
-.h-stat:last-child{padding-right:0;}
-.h-stat-n{font-family:var(--fm);font-size:1.2rem;font-weight:800;color:white;line-height:1;}
-.h-stat-l{font-size:.84rem;color:rgba(255,255,255,.38);margin-top:3px;}
+.hero-title em{font-style:normal;color:var(--sage);}
+.hero-sub{font-size:1rem;color:var(--txt-m);line-height:1.72;
+  max-width:540px;margin-bottom:0;}
+.hero-stats{display:flex;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;
+  background:white;border-top:1.5px solid var(--border);
+  margin:0 -20px;padding:0 20px;}
+.hero-stats::-webkit-scrollbar{display:none;}
+.h-stat{padding:14px 24px 14px 0;margin-right:24px;
+  border-right:1px solid var(--border);flex-shrink:0;}
+.h-stat:last-child{border-right:none;margin-right:0;}
+.h-stat-n{font-family:var(--fm);font-size:1.2rem;font-weight:800;
+  color:var(--forest);line-height:1;}
+.h-stat-l{font-size:.84rem;color:var(--txt-lo);margin-top:3px;}
 
 /* ── FILTERS STRIP ── */
 .filters{background:white;border-bottom:1.5px solid var(--border);
@@ -146,16 +145,18 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);
 .share-btn:hover{border-color:var(--sage);color:var(--sage);}
 
 /* ── PODIUM ── */
-.podium-card{background:linear-gradient(135deg,var(--forest),#1e3318);
-  border-radius:18px;overflow:hidden;box-shadow:var(--sh-lg);margin-bottom:16px;}
+.podium-card{background:white;border:1.5px solid var(--border);
+  border-radius:18px;overflow:hidden;box-shadow:var(--sh);margin-bottom:16px;}
 .podium-head{padding:16px 20px;display:flex;align-items:center;
-  justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06);}
-.podium-head-title{font-size:1.02rem;font-weight:800;color:white;}
+  justify-content:space-between;border-bottom:1.5px solid var(--border);
+  background:var(--cw);}
+.podium-head-title{font-size:1.02rem;font-weight:800;color:var(--forest);}
 .podium-head-badge{font-size:.82rem;font-weight:700;padding:3px 11px;
-  border-radius:100px;background:rgba(255,255,255,.08);
-  color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.1);}
+  border-radius:100px;background:var(--sage-l);
+  color:var(--sage);border:1px solid var(--sage-g);}
 .podium{display:flex;align-items:flex-end;justify-content:center;
-  gap:8px;padding:28px 20px 0;position:relative;}
+  gap:8px;padding:28px 20px 0;position:relative;
+  background:linear-gradient(180deg,#1a2618,#1e3318);}
 .podium::before{content:'';position:absolute;inset:0;
   background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),
   linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);
@@ -241,6 +242,8 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);
 .lb-empty-s{font-size:.94rem;color:var(--txt-lo);line-height:1.7;}
 
 /* ── RIGHT PANEL ── */
+.page-right{display:none;}
+@media(min-width:860px){.page-right{display:block;}}
 .right-card{background:white;border:1.5px solid var(--border);
   border-radius:14px;padding:18px;box-shadow:var(--sh);margin-bottom:14px;}
 .right-card-title{font-size:.96rem;font-weight:800;color:var(--forest);
@@ -280,23 +283,89 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);
 
 /* ── RESPONSIVE ── */
 @media(min-width:860px){
-  .hero{padding:44px 32px 32px;}
-  .filters-inner{padding:0 32px;}
-  .main{padding:28px 32px 64px;}
-  .lb-head{grid-template-columns:56px 1fr 100px 110px 64px;}
-  .lb-row{grid-template-columns:56px 1fr 100px 110px 64px;}
-  .h-stat-n{font-size:1.4rem;}
-  .h-stat-l{font-size:.9rem;}
-  .hero-title{font-size:2.8rem;}
-  .hero-sub{font-size:1.04rem;}
-  .f-tab{font-size:1rem;padding:15px 20px;}
+  /* Layout */
+  .hero{padding:44px 40px 0;}
+  .hero-stats{margin:0 -40px;padding:0 40px;}
+  .filters-inner{padding:0 40px;}
+  .main{padding:32px 40px 72px;}
+
+  /* Hero */
+  .hero-title{font-size:3rem;margin-bottom:14px;}
+  .hero-sub{font-size:1.06rem;margin-bottom:4px;}
+  .hero-live{font-size:.88rem;padding:6px 16px;margin-bottom:16px;}
+  .h-stat-n{font-size:1.5rem;}
+  .h-stat-l{font-size:.92rem;}
+  .h-stat{padding:18px 32px 18px 0;margin-right:32px;}
+
+  /* Filters */
+  .f-tab{font-size:1.02rem;font-weight:700;padding:16px 22px;}
+  .f-time{font-size:.92rem;padding:6px 14px;}
+  .f-exam{font-size:.92rem;padding:7px 12px;}
+
+  /* Nav */
+  .nav-logo{font-size:1.15rem;}
+  .nav-pill{font-size:.92rem;padding:6px 15px;}
+  .nav-btn{font-size:.94rem;padding:8px 18px;}
+
+  /* Your rank */
+  .yr-n{font-size:2.6rem;}
+  .yr-name{font-size:1.08rem;}
+  .yr-sub{font-size:.92rem;}
+  .yr-stat-n{font-size:1.1rem;}
+  .yr-stat-l{font-size:.82rem;}
+
+  /* Search */
+  .search-box input{font-size:1.02rem;}
+  .share-btn{font-size:.94rem;padding:0 18px;}
+  .icon-btn{width:42px;height:42px;font-size:1.1rem;}
+
+  /* Podium */
+  .podium-head-title{font-size:1.08rem;}
+  .podium-head-badge{font-size:.86rem;}
+  .p1 .pod-av{width:84px;height:84px;font-size:1.5rem;}
+  .p2 .pod-av{width:68px;height:68px;font-size:1.2rem;}
+  .p3 .pod-av{width:60px;height:60px;font-size:1.08rem;}
+  .pod-name{font-size:.98rem;}
+  .pod-pts{font-size:.88rem;}
+  .p1 .pod-block{height:80px;}
+  .p2 .pod-block{height:56px;}
+  .p3 .pod-block{height:42px;}
+  .pod-block-n{font-size:1.2rem;}
+
+  /* Table */
+  .lb-head{grid-template-columns:60px 1fr 110px 120px 72px;}
+  .lb-row{grid-template-columns:60px 1fr 110px 120px 72px;padding:16px 20px;}
+  .lb-th{font-size:.84rem;}
+  .lb-rank{font-size:1rem;}
+  .lb-name{font-size:1.02rem;}
+  .lb-meta{font-size:.84rem;}
+  .lb-pts{font-size:1rem;}
+  .lb-acc-val{font-size:.88rem;}
+  .lb-tests{font-size:.92rem;}
+  .lb-av{width:40px;height:40px;font-size:.86rem;}
+  .you-badge{font-size:.72rem;padding:2px 8px;}
+  .lb-footer{font-size:.92rem;padding:14px 20px;}
+  .lb-empty-h{font-size:1.12rem;}
+  .lb-empty-s{font-size:.98rem;}
+
+  /* Right panel */
+  .right-card-title{font-size:1rem;}
+  .stat-row{font-size:.96rem;}
+  .stat-val{font-size:1rem;}
+  .top-name{font-size:.94rem;}
+  .top-pts{font-size:.88rem;}
+  .top-av{width:34px;height:34px;font-size:.78rem;}
+
+  /* 2-col layout */
+  .page-layout{gap:24px;}
+  .page-right{width:300px;}
 }
 @media(max-width:560px){
   .lb-head{grid-template-columns:44px 1fr 80px 0 0;}
   .lb-row{grid-template-columns:44px 1fr 80px 0 0;}
   .lb-th:nth-child(4),.lb-th:nth-child(5),
   .lb-row .lb-acc-wrap,.lb-row .lb-tests{display:none;}
-  .hero-stats{grid-template-columns:1fr 1fr;gap:14px;}
+  .hero-stats{flex-wrap:wrap;}
   .f-tab{font-size:.9rem;padding:12px 12px;}
 }
 </style>
@@ -314,27 +383,25 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-orb"></div>
   <div class="hero-inner">
     <div class="hero-live"><span class="live-dot"></span>Live Rankings · Updates after every test</div>
     <div class="hero-title">India's Most Competitive<br/><em>JEE &amp; NEET Rankings</em></div>
     <div class="hero-sub">From your district to all of India — see exactly where you stand. Rankings update after every mock test.</div>
-    <div class="hero-stats">
+  </div>
+  <div class="hero-stats">
       <div class="h-stat"><div class="h-stat-n" id="hs-students"><span class="spin" style="width:18px;height:18px;border-width:2px;display:inline-block;vertical-align:middle;margin:0;"></span></div><div class="h-stat-l">Students</div></div>
       <div class="h-stat"><div class="h-stat-n" id="hs-states">—</div><div class="h-stat-l">States</div></div>
       <div class="h-stat"><div class="h-stat-n" id="hs-tests">—</div><div class="h-stat-l">Tests Taken</div></div>
       <div class="h-stat"><div class="h-stat-n" id="hs-updated">—</div><div class="h-stat-l">Updated</div></div>
-    </div>
   </div>
 </div>
 
 <!-- FILTERS -->
 <div class="filters">
   <div class="filters-inner">
-    <button class="f-tab on" onclick="setLevel('district',this)">🏘️ District</button>
+    <button class="f-tab" onclick="setLevel('district',this)">🏘️ District</button>
     <button class="f-tab" onclick="setLevel('state',this)">🗺️ State</button>
-    <button class="f-tab" onclick="setLevel('national',this)">🇮🇳 National</button>
+    <button class="f-tab on" onclick="setLevel('national',this)">🇮🇳 National</button>
     <button class="f-tab" onclick="setLevel('air',this)">🎯 AIR</button>
     <div class="f-right">
       <button class="f-time on" onclick="setTime('week',this)">Week</button>
@@ -387,8 +454,9 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);
           <div class="podium-head-title">🏆 Top 3 This Week</div>
           <div class="podium-head-badge" id="podium-badge">National</div>
         </div>
-        <div class="podium" id="podium">
-          <div class="loading"><div class="spin"></div>Loading…</div>
+        <div id="podium" style="padding:32px;text-align:center;background:var(--cw);">
+          <div class="spin"></div>
+          <div style="font-size:.92rem;color:var(--txt-lo);margin-top:8px;">Loading rankings…</div>
         </div>
       </div>
 
@@ -471,7 +539,13 @@ const score=s=>{
 const acc=s=>s.totalTests>0?Math.round(((s.correctAnswers||0)/(s.totalTests*10||1))*100):0;
 const fmt=n=>n.toLocaleString('en-IN');
 
-onAuthStateChanged(auth, user=>{currentUser=user;loadAll();});
+// Load data + auth together
+onAuthStateChanged(auth, user=>{
+  currentUser=user;
+  if(allStudents.length>0) renderAll();
+});
+// Load data immediately (no auth needed for public data)
+loadAll();
 
 async function loadAll(){
   try{
@@ -486,7 +560,14 @@ async function loadAll(){
     document.getElementById('hs-updated').textContent=new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit'});
     renderAll();
   }catch(e){
-    document.getElementById('lb-body').innerHTML='<div class="lb-empty"><div class="lb-empty-icon">⚠️</div><div class="lb-empty-h">Could not load</div><div class="lb-empty-s">Check your connection and try again.</div></div>';
+    console.error('Firebase error:',e);
+    document.getElementById('podium').style.background='var(--cw)';
+    document.getElementById('podium').innerHTML='<div style="padding:24px;text-align:center;color:var(--txt-lo)">Could not load podium</div>';
+    document.getElementById('lb-body').innerHTML=`<div class="lb-empty">
+      <div class="lb-empty-icon">⚠️</div>
+      <div class="lb-empty-h">Could not load leaderboard</div>
+      <div class="lb-empty-s">Error: ${e.message}<br/>Please check your connection and try again.</div>
+    </div>`;
   }
 }
 
@@ -513,10 +594,19 @@ function renderAll(){
 }
 
 function buildPodium(top){
-  if(!top.length){document.getElementById('podium').innerHTML='<div style="padding:32px;text-align:center;color:rgba(255,255,255,.3);font-size:.96rem;">No students yet — take a test to appear here!</div>';return;}
+  const podEl2=document.getElementById('podium');
+  if(!top.length){
+    podEl2.style.background='var(--cw)';
+    podEl2.style.padding='32px 20px';
+    podEl2.innerHTML='<div style="text-align:center;color:var(--txt-lo);font-size:.96rem;">No students yet — take a test to appear here!</div>';
+    return;
+  }
   const m=['🥈','🥇','🥉'],cls=['p2','p1','p3'],cr=['','👑',''];
   const ord=[1,0,2].filter(i=>top[i]);
-  document.getElementById('podium').innerHTML=ord.map((idx,i)=>{
+  const podEl=document.getElementById('podium');
+  podEl.style.background='';
+  podEl.className='podium';
+  podEl.innerHTML=ord.map((idx,i)=>{
     const s=top[idx];if(!s)return'';
     const nm=s.displayName||s.name||'Student';
     const iy=currentUser&&s.uid===currentUser.uid;
