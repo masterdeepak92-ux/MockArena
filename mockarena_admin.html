@@ -2707,8 +2707,8 @@ let allComplaints=[];
 window.loadComplaints=async function(){
   document.getElementById('complaints-list').innerHTML='<div class="loading"><div class="spin"></div>Loading tickets…</div>';
   try{
-    const snap=await getDocs(query(collection(db,'support'),orderBy('createdAt','desc')));
-    allComplaints=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const snap=await getDocs(collection(db,'support'));
+    allComplaints=snap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(b.createdAt?.seconds||0)-(a.createdAt?.seconds||0));
     const pending=allComplaints.filter(c=>c.status==='Pending').length;
     const badge=document.getElementById('complaints-badge');
     if(badge){badge.style.display=pending>0?'inline':'none';badge.textContent=pending;}
