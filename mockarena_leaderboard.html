@@ -192,13 +192,13 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);
 /* ── TABLE ── */
 .lb-card{background:white;border:1.5px solid var(--border);border-radius:16px;
   overflow:hidden;box-shadow:var(--sh);}
-.lb-head{display:grid;grid-template-columns:48px 1fr 80px 80px 52px;
-  gap:0;padding:10px 16px;background:var(--cw);
+.lb-head{display:grid;grid-template-columns:44px 1fr 70px 90px 52px;
+  gap:6px;padding:10px 14px;background:var(--cw);
   border-bottom:1.5px solid var(--border);}
-.lb-th{font-size:.78rem;font-weight:800;color:var(--txt-lo);
-  text-transform:uppercase;letter-spacing:.05em;padding:0 4px;}
-.lb-row{display:grid;grid-template-columns:48px 1fr 80px 80px 52px;
-  gap:0;padding:12px 16px;border-bottom:1px solid var(--border);
+.lb-th{font-size:.76rem;font-weight:800;color:var(--txt-lo);
+  text-transform:uppercase;letter-spacing:.05em;}
+.lb-row{display:grid;grid-template-columns:44px 1fr 70px 90px 52px;
+  gap:6px;padding:12px 14px;border-bottom:1px solid var(--border);
   align-items:center;transition:.15s;cursor:pointer;
   animation:rowIn .3s ease forwards;opacity:0;}
 @keyframes rowIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
@@ -333,17 +333,9 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);
   .pod-block-n{font-size:1.2rem;}
 
   /* Table */
-  .lb-head{grid-template-columns:60px 1fr 110px 120px 72px;}
-  .lb-row{grid-template-columns:60px 1fr 110px 120px 72px;padding:16px 20px;}
+  .lb-head{grid-template-columns:56px 1fr 100px 120px 68px !important;}
+  .lb-row{grid-template-columns:56px 1fr 100px 120px 68px !important;padding:15px 20px !important;}
   .lb-th{font-size:.84rem;}
-  .lb-rank{font-size:1rem;}
-  .lb-name{font-size:1.02rem;}
-  .lb-meta{font-size:.84rem;}
-  .lb-pts{font-size:1rem;}
-  .lb-acc-val{font-size:.88rem;}
-  .lb-tests{font-size:.92rem;}
-  .lb-av{width:40px;height:40px;font-size:.86rem;}
-  .you-badge{font-size:.72rem;padding:2px 8px;}
   .lb-footer{font-size:.92rem;padding:14px 20px;}
   .lb-empty-h{font-size:1.12rem;}
   .lb-empty-s{font-size:.98rem;}
@@ -360,13 +352,13 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);
   .page-layout{gap:24px;}
   .page-right{width:300px;}
 }
-@media(max-width:560px){
-  .lb-head{grid-template-columns:44px 1fr 80px 0 0;}
-  .lb-row{grid-template-columns:44px 1fr 80px 0 0;}
-  .lb-th:nth-child(4),.lb-th:nth-child(5),
-  .lb-row .lb-acc-wrap,.lb-row .lb-tests{display:none;}
+@media(max-width:600px){
+  .lb-head{grid-template-columns:38px 1fr 62px 0 0 !important;}
+  .lb-row{grid-template-columns:38px 1fr 62px 0 0 !important;padding:11px 12px !important;}
+  .lb-th:nth-child(4),.lb-th:nth-child(5){display:none;}
+  .lb-col-acc,.lb-col-tests{display:none !important;}
   .hero-stats{flex-wrap:wrap;}
-  .f-tab{font-size:.9rem;padding:12px 12px;}
+  .f-tab{font-size:.88rem;padding:11px 10px;}
 }
 </style>
 </head>
@@ -645,31 +637,29 @@ function buildRow(s,rank,isYou,delay){
   const nm=s.displayName||s.name||'Student';
   const a=acc(s);
   const medal=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':'#'+rank;
-  const rankColor=rank===1?'var(--gold)':rank===2?'var(--silver)':rank===3?'var(--bronze)':'var(--txt-lo)';
+  const rankClr=rank===1?'var(--gold)':rank===2?'var(--silver)':rank===3?'var(--bronze)':'var(--txt-lo)';
   const rc=isYou?'you':rank===1?'gold':rank===2?'silver':rank===3?'bronze':'';
+  const accClr=a>=80?'var(--sage)':a>=50?'var(--gold)':'var(--rose)';
   return `<div class="lb-row ${rc}" style="animation-delay:${delay}s">
-    <div style="font-family:var(--fm);font-size:.9rem;font-weight:800;color:${rankColor};">${medal}</div>
-    <div style="display:flex;align-items:center;gap:9px;min-width:0;">
+    <div style="font-family:var(--fm);font-size:.88rem;font-weight:800;color:${rankClr};text-align:center;">${medal}</div>
+    <div style="display:flex;align-items:center;gap:8px;min-width:0;overflow:hidden;">
       ${makeAv(s)}
-      <div style="min-width:0;flex:1;">
-        <div style="font-size:.94rem;font-weight:700;color:${isYou?'var(--sage)':'var(--forest)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-          ${isYou?'You':nm}${isYou?'<span class="you-badge">YOU</span>':''}
-        </div>
-        <div style="font-size:.78rem;color:var(--txt-lo);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
-          ${s.streamLabel||s.stream||'MockArena'}${s.state?' · '+s.state:''}
-        </div>
+      <div style="min-width:0;flex:1;overflow:hidden;">
+        <div style="font-size:.92rem;font-weight:700;color:${isYou?'var(--sage)':'var(--forest)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${isYou?'You':nm}${isYou?'<span class="you-badge">YOU</span>':''}</div>
+        <div style="font-size:.76rem;color:var(--txt-lo);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${s.streamLabel||s.stream||'MockArena'}${s.state?' · '+s.state:''}</div>
       </div>
     </div>
-    <div style="font-family:var(--fm);font-size:.88rem;font-weight:800;color:var(--forest);">${fmt(s._score||0)}</div>
-    <div style="display:flex;align-items:center;gap:5px;">
-      <div style="flex:1;height:4px;background:var(--cw);border-radius:4px;overflow:hidden;min-width:20px;border:1px solid var(--border);">
-        <div style="height:100%;width:${a}%;background:linear-gradient(90deg,var(--sage),var(--sage-d));border-radius:4px;"></div>
+    <div style="font-family:var(--fm);font-size:.86rem;font-weight:800;color:var(--forest);padding-right:2px;">${fmt(s._score||0)}</div>
+    <div class="lb-col-acc" style="display:flex;align-items:center;gap:4px;">
+      <div style="flex:1;height:4px;background:var(--cw);border-radius:4px;overflow:hidden;border:1px solid var(--border);">
+        <div style="height:100%;width:${a}%;background:${accClr};border-radius:4px;"></div>
       </div>
-      <span style="font-size:.8rem;font-weight:700;color:var(--txt-m);white-space:nowrap;">${a}%</span>
+      <span style="font-size:.78rem;font-weight:700;color:${accClr};white-space:nowrap;min-width:28px;text-align:right;">${a}%</span>
     </div>
-    <div style="font-family:var(--fm);font-size:.84rem;font-weight:700;color:var(--txt-m);">${s.totalTests||0}</div>
+    <div class="lb-col-tests" style="font-family:var(--fm);font-size:.82rem;font-weight:700;color:var(--txt-m);text-align:center;">${s.totalTests||0}</div>
   </div>`;
 }
+
 
 function buildTable(students){
   if(!students.length){
