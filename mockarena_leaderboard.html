@@ -192,13 +192,13 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);
 /* ── TABLE ── */
 .lb-card{background:white;border:1.5px solid var(--border);border-radius:16px;
   overflow:hidden;box-shadow:var(--sh);}
-.lb-head{display:grid;grid-template-columns:52px 1fr 95px 100px 58px;
-  gap:8px;padding:11px 18px;background:var(--cw);
+.lb-head{display:grid;grid-template-columns:48px 1fr 80px 80px 52px;
+  gap:0;padding:10px 16px;background:var(--cw);
   border-bottom:1.5px solid var(--border);}
-.lb-th{font-size:.8rem;font-weight:800;color:var(--txt-lo);
-  text-transform:uppercase;letter-spacing:.06em;}
-.lb-row{display:grid;grid-template-columns:52px 1fr 95px 100px 58px;
-  gap:8px;padding:14px 18px;border-bottom:1px solid var(--border);
+.lb-th{font-size:.78rem;font-weight:800;color:var(--txt-lo);
+  text-transform:uppercase;letter-spacing:.05em;padding:0 4px;}
+.lb-row{display:grid;grid-template-columns:48px 1fr 80px 80px 52px;
+  gap:0;padding:12px 16px;border-bottom:1px solid var(--border);
   align-items:center;transition:.15s;cursor:pointer;
   animation:rowIn .3s ease forwards;opacity:0;}
 @keyframes rowIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:none}}
@@ -632,6 +632,45 @@ function buildPodium(top){
   }).join('');
 }
 
+function makeAv(s){
+  const nm=s.displayName||s.name||'Student';
+  const ph=s.photo||s.photoURL||null;
+  const bg=`linear-gradient(${av(nm)})`;
+  const style=`width:36px;height:36px;border-radius:50%;flex-shrink:0;overflow:hidden;background:${bg};display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;color:white;`;
+  if(ph) return `<div style="${style}"><img src="${ph}" style="width:36px;height:36px;object-fit:cover;display:block;" onerror="this.style.display='none'"/></div>`;
+  return `<div style="${style}">${ini(nm)}</div>`;
+}
+
+function buildRow(s,rank,isYou,delay){
+  const nm=s.displayName||s.name||'Student';
+  const a=acc(s);
+  const medal=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':'#'+rank;
+  const rankColor=rank===1?'var(--gold)':rank===2?'var(--silver)':rank===3?'var(--bronze)':'var(--txt-lo)';
+  const rc=isYou?'you':rank===1?'gold':rank===2?'silver':rank===3?'bronze':'';
+  return `<div class="lb-row ${rc}" style="animation-delay:${delay}s">
+    <div style="font-family:var(--fm);font-size:.9rem;font-weight:800;color:${rankColor};">${medal}</div>
+    <div style="display:flex;align-items:center;gap:9px;min-width:0;">
+      ${makeAv(s)}
+      <div style="min-width:0;flex:1;">
+        <div style="font-size:.94rem;font-weight:700;color:${isYou?'var(--sage)':'var(--forest)'};white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+          ${isYou?'You':nm}${isYou?'<span class="you-badge">YOU</span>':''}
+        </div>
+        <div style="font-size:.78rem;color:var(--txt-lo);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+          ${s.streamLabel||s.stream||'MockArena'}${s.state?' · '+s.state:''}
+        </div>
+      </div>
+    </div>
+    <div style="font-family:var(--fm);font-size:.88rem;font-weight:800;color:var(--forest);">${fmt(s._score||0)}</div>
+    <div style="display:flex;align-items:center;gap:5px;">
+      <div style="flex:1;height:4px;background:var(--cw);border-radius:4px;overflow:hidden;min-width:20px;border:1px solid var(--border);">
+        <div style="height:100%;width:${a}%;background:linear-gradient(90deg,var(--sage),var(--sage-d));border-radius:4px;"></div>
+      </div>
+      <span style="font-size:.8rem;font-weight:700;color:var(--txt-m);white-space:nowrap;">${a}%</span>
+    </div>
+    <div style="font-family:var(--fm);font-size:.84rem;font-weight:700;color:var(--txt-m);">${s.totalTests||0}</div>
+  </div>`;
+}
+
 function buildTable(students){
   if(!students.length){
     document.getElementById('lb-body').innerHTML=`<div class="lb-empty">
@@ -646,43 +685,12 @@ function buildTable(students){
     return;
   }
   const myIdx=currentUser?students.findIndex(s=>s.uid===currentUser.uid):-1;
-  let html='';
-  students.slice(0,10).forEach((s,i)=>{
-    const nm=s.displayName||s.name||'Student';
-    const iy=currentUser&&s.uid===currentUser.uid;
-    const r=i+1,a=acc(s);
-    const rc=iy?'you':r===1?'gold':r===2?'silver':r===3?'bronze':'';
-    const rk=r===1?'r1':r===2?'r2':r===3?'r3':'';
-    html+=`<div class="lb-row ${rc}" style="animation-delay:${i*.04}s">
-      <div class="lb-rank-cell"><div class="lb-rank ${rk}">${r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r}</div></div>
-      <div class="lb-student">
-        ${avHtml(s,'36px','.8rem')}
-        <div style="min-width:0">
-          <div class="lb-name ${iy?'you':''}">${iy?'You':nm}${iy?'<span class="you-badge">YOU</span>':''}</div>
-          <div class="lb-meta">${s.streamLabel||s.stream||'MockArena'}${s.state?' · '+s.state:''}</div>
-        </div>
-      </div>
-      <div class="lb-pts">${fmt(s._score||0)}</div>
-      <div class="lb-acc-wrap"><div class="lb-acc-bar"><div class="lb-acc-fill" style="width:${a}%"></div></div><div class="lb-acc-val">${a}%</div></div>
-      <div class="lb-tests">${s.totalTests||0}</div>
-    </div>`;
-  });
+  let html=students.slice(0,10).map((s,i)=>
+    buildRow(s,i+1,currentUser&&s.uid===currentUser.uid,i*.04)
+  ).join('');
   if(currentUser&&myIdx>=10){
-    const me=students[myIdx];const nm=me.displayName||me.name||'You';const a=acc(me);
-    html+=`<div class="you-here">⬇ You are at rank #${myIdx+1}</div>
-    <div class="lb-row you" style="animation-delay:.42s">
-      <div class="lb-rank-cell"><div class="lb-rank">#${myIdx+1}</div></div>
-      <div class="lb-student">
-        ${avHtml(s,'36px','.8rem')}
-        <div style="min-width:0">
-          <div class="lb-name you">You<span class="you-badge">YOU</span></div>
-          <div class="lb-meta">${me.streamLabel||me.stream||'MockArena'}${me.state?' · '+me.state:''}</div>
-        </div>
-      </div>
-      <div class="lb-pts">${fmt(me._score||0)}</div>
-      <div class="lb-acc-wrap"><div class="lb-acc-bar"><div class="lb-acc-fill" style="width:${a}%"></div></div><div class="lb-acc-val">${a}%</div></div>
-      <div class="lb-tests">${me.totalTests||0}</div>
-    </div>`;
+    const me=students[myIdx];
+    html+=`<div class="you-here">⬇ You are at rank #${myIdx+1}</div>`+buildRow(me,myIdx+1,true,.42);
   }
   document.getElementById('lb-body').innerHTML=html;
   document.getElementById('lb-footer').innerHTML=`<span>${Math.min(10,students.length)} of ${fmt(students.length)} students</span><span style="color:var(--sage);font-weight:700;">${{district:'District',state:'State',national:'National',air:'All India'}[cLevel]}</span>`;
