@@ -531,6 +531,15 @@ const AV=[
 ];
 const av=n=>{let h=0;for(const c of(n||'?'))h=(h*31+c.charCodeAt(0))%AV.length;return AV[h];};
 const ini=n=>(n||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+const avHtml=(s,size='36px',fs='.8rem')=>{
+  const nm=s.displayName||s.name||'Student';
+  const ph=s.photo||s.photoURL||null;
+  const fallback=`<div style="width:${size};height:${size};border-radius:50%;background:linear-gradient(${av(nm)});display:flex;align-items:center;justify-content:center;font-size:${fs};font-weight:800;color:white;flex-shrink:0;">${ini(nm)}</div>`;
+  if(!ph) return fallback;
+  return `<div style="width:${size};height:${size};border-radius:50%;overflow:hidden;flex-shrink:0;background:linear-gradient(${av(nm)});">
+    <img src="${ph}" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.outerHTML=\`${fallback}\`"/>
+  </div>`;
+};
 const score=s=>{
   if(cTime==='week'){const d=new Date(),day=d.getDay()||7;d.setDate(d.getDate()-day+1);const wk=d.toISOString().slice(0,10);return s.weeklyPoints?.[wk]||s.totalPoints||0;}
   if(cTime==='month'){const mk=new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');return s.monthlyPoints?.[mk]||s.totalPoints||0;}
@@ -613,7 +622,7 @@ function buildPodium(top){
     return`<div class="ps ${cls[i]}">
       <div class="pod-av-wrap">
         ${cr[i]?`<div class="pod-crown">${cr[i]}</div>`:''}
-        <div class="pod-av" style="background:linear-gradient(${av(nm)})">${ini(nm)}</div>
+        <div class="pod-av" style="background:linear-gradient(${av(nm)});overflow:hidden;">${top[idx]?.photo||top[idx]?.photoURL?`<img src="${top[idx].photo||top[idx].photoURL}" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'" />`:''}${ini(nm)}</div>
         <div class="pod-medal" style="background:${i===1?'#c8962a':i===0?'#8a9bb0':'#b87333'}">${m[i]}</div>
       </div>
       <div class="pod-name">${iy?'You':nm}</div>
@@ -647,7 +656,7 @@ function buildTable(students){
     html+=`<div class="lb-row ${rc}" style="animation-delay:${i*.04}s">
       <div class="lb-rank-cell"><div class="lb-rank ${rk}">${r===1?'🥇':r===2?'🥈':r===3?'🥉':'#'+r}</div></div>
       <div class="lb-student">
-        <div class="lb-av" style="background:linear-gradient(${av(nm)})">${ini(nm)}</div>
+        ${avHtml(s,'36px','.8rem')}
         <div style="min-width:0">
           <div class="lb-name ${iy?'you':''}">${iy?'You':nm}${iy?'<span class="you-badge">YOU</span>':''}</div>
           <div class="lb-meta">${s.streamLabel||s.stream||'MockArena'}${s.state?' · '+s.state:''}</div>
@@ -664,7 +673,7 @@ function buildTable(students){
     <div class="lb-row you" style="animation-delay:.42s">
       <div class="lb-rank-cell"><div class="lb-rank">#${myIdx+1}</div></div>
       <div class="lb-student">
-        <div class="lb-av" style="background:linear-gradient(${av(nm)})">${ini(nm)}</div>
+        ${avHtml(s,'36px','.8rem')}
         <div style="min-width:0">
           <div class="lb-name you">You<span class="you-badge">YOU</span></div>
           <div class="lb-meta">${me.streamLabel||me.stream||'MockArena'}${me.state?' · '+me.state:''}</div>

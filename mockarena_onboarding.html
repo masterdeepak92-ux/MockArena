@@ -531,6 +531,8 @@ window.go=async function(page,label){
       await setDoc(doc(db,'users',cu.uid),{
         stream,streamLabel:label,onboardedAt:serverTimestamp(),
         email:cu.email||'',displayName:cu.displayName||'',
+        photo:cu.photoURL||null,
+        name:cu.displayName||'',
       },{merge:true});
     }catch(e){}
     // Check if location already saved
