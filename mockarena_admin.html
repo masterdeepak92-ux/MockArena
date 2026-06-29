@@ -2701,6 +2701,89 @@ window.togglePassVis = function(){
 // Check session on load — if already logged in this session, skip login
 checkSession();
 
+// ══════ COMPLAINTS ══════
+let allComplaints=[];
+
+window.loadComplaints=async function(){
+  document.getElementById('complaints-list').innerHTML='<div class="loading"><div class="spin"></div>Loading tickets…</div>';
+  try{
+    const snap=await getDocs(query(collection(db,'support'),orderBy('createdAt','desc')));
+    allComplaints=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const pending=allComplaints.filter(c=>c.status==='Pending').length;
+    const badge=document.getElementById('complaints-badge');
+    if(badge){badge.style.display=pending>0?'inline':'none';badge.textContent=pending;}
+    document.getElementById('complaints-count').textContent=
+      allComplaints.length+' total · '+pending+' pending';
+    filterComplaints();
+  }catch(e){
+    document.getElementById('complaints-list').innerHTML=
+      '<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-h">Error loading</div><div class="empty-s">'+e.message+'</div></div>';
+  }
+};
+
+window.filterComplaints=function(){
+  const status=document.getElementById('c-filter-status')?.value||'';
+  const priority=document.getElementById('c-filter-priority')?.value||'';
+  let list=[...allComplaints];
+  if(status) list=list.filter(c=>c.status===status);
+  if(priority) list=list.filter(c=>c.priority===priority);
+  renderComplaints(list);
+};
+
+function renderComplaints(list){
+  if(!list.length){
+    document.getElementById('complaints-list').innerHTML=
+      '<div class="empty"><div class="empty-icon">✅</div><div class="empty-h">No tickets found</div><div class="empty-s">All clear!</div></div>';
+    return;
+  }
+  const statusOpts=['Pending','In Progress','Resolved'];
+  document.getElementById('complaints-list').innerHTML=list.map(c=>{
+    const isDoubt=c.type==='doubt';
+    const date=c.createdAt?.toDate?.()?.toLocaleString('en-IN',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'})||'—';
+    return`<div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:18px;margin-bottom:12px;box-shadow:0 1px 4px rgba(26,38,24,.05);">
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;">
+        <span style="font-size:.78rem;font-weight:800;padding:3px 10px;border-radius:100px;background:${isDoubt?'rgba(124,58,237,.09)':'var(--rose-l)'};color:${isDoubt?'#7c3aed':'var(--rose)'};border:1px solid ${isDoubt?'rgba(124,58,237,.2)':'rgba(200,75,75,.2)'};">${isDoubt?'❓ Doubt':'📝 Complaint'}</span>
+        <span style="font-family:var(--fm);font-size:.78rem;font-weight:800;color:var(--gold);background:var(--forest);padding:2px 10px;border-radius:5px;">${c.ticketId||c.id.slice(0,8)}</span>
+        <span style="font-family:var(--fm);font-size:.72rem;color:var(--txt-lo);margin-left:auto;">${date}</span>
+      </div>
+      <div style="font-size:.96rem;font-weight:700;color:var(--forest);margin-bottom:4px;">${c.description||'No description'}</div>
+      <div style="font-size:.82rem;color:var(--txt-lo);margin-bottom:12px;">👤 ${c.name||'Anonymous'} · ${c.contact||'No contact'}${isDoubt&&c.chapter?' · '+c.chapter:''}</div>
+      ${c.imageBase64?`<div style="margin-bottom:12px;"><img src="${c.imageBase64}" style="max-width:100%;max-height:200px;border-radius:10px;border:1.5px solid var(--border);object-fit:contain;background:var(--cw);"/><div style="font-size:.78rem;color:var(--sage);font-weight:600;margin-top:4px;">📷 Photo attached</div></div>`:''}
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+        <select onchange="updateStatus('${c.id}',this.value)" style="font-family:var(--fd);font-size:.9rem;font-weight:700;padding:7px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--cw);cursor:pointer;">
+          ${statusOpts.map(s=>`<option value="${s}" ${c.status===s?'selected':''}>${s==='Pending'?'⏳':s==='In Progress'?'🔄':'✅'} ${s}</option>`).join('')}
+        </select>
+        <input id="reply-${c.id}" type="text" value="${c.reply||''}" placeholder="Type reply to student…"
+          style="flex:1;min-width:160px;padding:7px 12px;border:1.5px solid var(--border);border-radius:8px;font-family:var(--fd);font-size:.9rem;background:var(--cw);outline:none;"/>
+        <button onclick="sendReply('${c.id}')" style="font-family:var(--fd);font-size:.9rem;font-weight:700;padding:7px 16px;border-radius:8px;border:none;background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;cursor:pointer;">✅ Send Reply</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+window.updateStatus=async function(id,status){
+  try{
+    await setDoc(doc(db,'support',id),{status,updatedAt:serverTimestamp()},{merge:true});
+    const idx=allComplaints.findIndex(c=>c.id===id);
+    if(idx>=0) allComplaints[idx].status=status;
+    const pending=allComplaints.filter(c=>c.status==='Pending').length;
+    const badge=document.getElementById('complaints-badge');
+    if(badge){badge.style.display=pending>0?'inline':'none';badge.textContent=pending;}
+  }catch(e){alert('Error: '+e.message);}
+};
+
+window.sendReply=async function(id){
+  const reply=document.getElementById('reply-'+id)?.value.trim();
+  if(!reply){alert('Please type a reply.');return;}
+  try{
+    await setDoc(doc(db,'support',id),{reply,status:'Resolved',resolvedAt:serverTimestamp(),updatedAt:serverTimestamp()},{merge:true});
+    const idx=allComplaints.findIndex(c=>c.id===id);
+    if(idx>=0){allComplaints[idx].reply=reply;allComplaints[idx].status='Resolved';}
+    filterComplaints();
+    alert('✅ Reply sent!');
+  }catch(e){alert('Error: '+e.message);}
+};
+
 </script>
 </body>
 </html>
