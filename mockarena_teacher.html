@@ -209,13 +209,13 @@ textarea.fi2{resize:vertical;min-height:100px;line-height:1.6;}
 .drop-hint{font-size:.86rem;color:var(--txt-lo);}
 
 /* ── LEADERBOARD ── */
-.lb-head{display:grid;grid-template-columns:44px 1fr 80px 70px 56px;
-  gap:8px;padding:11px 16px;background:var(--cw);
+.lb-head{display:grid;grid-template-columns:44px 1fr 72px 60px 48px;
+  gap:6px;padding:11px 16px;background:var(--cw);
   border-bottom:1.5px solid var(--border);border-radius:12px 12px 0 0;}
-.lb-th{font-size:.8rem;font-weight:800;color:var(--txt-lo);
-  text-transform:uppercase;letter-spacing:.06em;}
-.lb-row{display:grid;grid-template-columns:44px 1fr 80px 70px 56px;
-  gap:8px;padding:13px 16px;border-bottom:1px solid var(--border);
+.lb-th{font-size:.78rem;font-weight:800;color:var(--txt-lo);
+  text-transform:uppercase;letter-spacing:.05em;}
+.lb-row{display:grid;grid-template-columns:44px 1fr 72px 60px 48px;
+  gap:6px;padding:13px 16px;border-bottom:1px solid var(--border);
   align-items:center;transition:.15s;}
 .lb-row:last-child{border-bottom:none;}
 .lb-row:hover{background:var(--cw);}
@@ -291,8 +291,12 @@ textarea.fi2{resize:vertical;min-height:100px;line-height:1.6;}
   .ph-name{font-size:1.6rem;}
   .ph-sub{font-size:1rem;}
   .q-text{font-size:1.02rem;}
-  .lb-head{grid-template-columns:48px 1fr 100px 90px 66px;}
-  .lb-row{grid-template-columns:48px 1fr 100px 90px 66px;padding:15px 18px;}
+  .lb-head{grid-template-columns:52px 1fr 110px 90px 64px;}
+  .lb-row{grid-template-columns:52px 1fr 110px 90px 64px;padding:15px 20px;}
+  .lb-row .lb-av{width:40px;height:40px;font-size:.86rem;}
+  .lb-row div[style*="font-size:.94rem"]{font-size:1rem!important;}
+  .lb-pts{font-size:.96rem!important;}
+  .lb-th{font-size:.84rem;}
   .tbl td{font-size:1rem;}
   .card-title{font-size:1.1rem;}
   .btn{font-size:1rem;padding:12px 24px;}
@@ -316,10 +320,11 @@ textarea.fi2{resize:vertical;min-height:100px;line-height:1.6;}
   .tab{font-size:1.04rem;padding:17px 26px;}
 }
 @media(max-width:480px){
-  .lb-head{grid-template-columns:40px 1fr 80px 0 0;}
-  .lb-row{grid-template-columns:40px 1fr 80px 0 0;}
-  .lb-th:nth-child(4),.lb-th:nth-child(5),
-  .lb-row .lb-acc,.lb-row .lb-tests{display:none;}
+  .lb-head{grid-template-columns:36px 1fr 70px 0 0;}
+  .lb-row{grid-template-columns:36px 1fr 70px 0 0;}
+  .lb-head .lb-th:nth-child(4),.lb-head .lb-th:nth-child(5),
+  .lb-row > *:nth-child(4),.lb-row > *:nth-child(5){display:none;}
+  .lb-av{width:30px!important;height:30px!important;font-size:.7rem!important;}
 }
 </style>
 </head>
@@ -1151,19 +1156,20 @@ window.loadLB=async function(){
       const acc=Math.round(s.avgScore||0);
       const rc=i===0?'top1':i===1?'top2':i===2?'top3':'';
       return`<div class="lb-row ${rc}">
-        <div class="lb-rank" style="font-size:.9rem;">${i<3?medals[i]:'#'+(i+1)}</div>
-        <div style="display:flex;align-items:center;gap:10px;flex:1;overflow:hidden;">
+        <div class="lb-rank" style="font-size:.9rem;font-family:var(--fm);font-weight:800;">${i<3?medals[i]:'#'+(i+1)}</div>
+        <div style="display:flex;align-items:center;gap:9px;min-width:0;">
           <div class="lb-av" style="background:linear-gradient(${avColor(nm)});flex-shrink:0;">${ini(nm)}</div>
-          <div style="flex:1;overflow:hidden;">
-            <div style="font-size:.96rem;font-weight:700;color:var(--forest);
-              word-break:break-word;white-space:normal;line-height:1.3;">${nm}</div>
-            <div style="font-size:.8rem;color:var(--txt-lo);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+          <div style="min-width:0;">
+            <div style="font-size:.94rem;font-weight:700;color:var(--forest);
+              white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${nm}</div>
+            <div style="font-size:.78rem;color:var(--txt-lo);margin-top:1px;
+              white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
               ${s.streamLabel||s.stream||'MockArena'}${s.state?' · '+s.state:''}</div>
           </div>
         </div>
-        <div class="lb-pts" style="font-size:.9rem;">${(s._score||0).toLocaleString('en-IN')}</div>
-        <div class="lb-acc" style="color:${acc>=80?'var(--sage)':acc>=50?'var(--gold)':'var(--rose)'};font-weight:700;font-size:.9rem;">${acc}%</div>
-        <div class="lb-tests" style="font-size:.88rem;">${s.totalTests||0}</div>
+        <div class="lb-pts" style="font-size:.88rem;font-family:var(--fm);font-weight:800;">${(s._score||0).toLocaleString('en-IN')}</div>
+        <div class="lb-acc" style="color:${acc>=80?'var(--sage)':acc>=50?'var(--gold)':'var(--rose)'};font-weight:700;font-size:.88rem;">${acc}%</div>
+        <div class="lb-tests" style="font-size:.84rem;font-family:var(--fm);color:var(--txt-m);">${s.totalTests||0}</div>
       </div>`;
     }).join('')||'<div class="empty"><div class="empty-icon">🏆</div><div class="empty-h">No students yet</div></div>';
   }catch(e){document.getElementById('lb-rows').innerHTML='<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-h">Error loading</div></div>';}
