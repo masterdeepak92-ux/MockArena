@@ -209,12 +209,12 @@ textarea.fi2{resize:vertical;min-height:100px;line-height:1.6;}
 .drop-hint{font-size:.86rem;color:var(--txt-lo);}
 
 /* ── LEADERBOARD ── */
-.lb-head{display:grid;grid-template-columns:48px 1fr 90px 90px 70px;
-  gap:8px;padding:10px 16px;background:var(--cw);
+.lb-head{display:grid;grid-template-columns:44px 1fr 80px 70px 56px;
+  gap:8px;padding:11px 16px;background:var(--cw);
   border-bottom:1.5px solid var(--border);border-radius:12px 12px 0 0;}
 .lb-th{font-size:.8rem;font-weight:800;color:var(--txt-lo);
   text-transform:uppercase;letter-spacing:.06em;}
-.lb-row{display:grid;grid-template-columns:48px 1fr 90px 90px 70px;
+.lb-row{display:grid;grid-template-columns:44px 1fr 80px 70px 56px;
   gap:8px;padding:13px 16px;border-bottom:1px solid var(--border);
   align-items:center;transition:.15s;}
 .lb-row:last-child{border-bottom:none;}
@@ -291,8 +291,8 @@ textarea.fi2{resize:vertical;min-height:100px;line-height:1.6;}
   .ph-name{font-size:1.6rem;}
   .ph-sub{font-size:1rem;}
   .q-text{font-size:1.02rem;}
-  .lb-head{grid-template-columns:52px 1fr 100px 100px 80px;}
-  .lb-row{grid-template-columns:52px 1fr 100px 100px 80px;padding:15px 18px;}
+  .lb-head{grid-template-columns:48px 1fr 100px 90px 66px;}
+  .lb-row{grid-template-columns:48px 1fr 100px 90px 66px;padding:15px 18px;}
   .tbl td{font-size:1rem;}
   .card-title{font-size:1.1rem;}
   .btn{font-size:1rem;padding:12px 24px;}
@@ -1151,15 +1151,19 @@ window.loadLB=async function(){
       const acc=Math.round(s.avgScore||0);
       const rc=i===0?'top1':i===1?'top2':i===2?'top3':'';
       return`<div class="lb-row ${rc}">
-        <div class="lb-rank">${i<3?medals[i]:'#'+(i+1)}</div>
-        <div style="display:flex;align-items:center;gap:10px;min-width:0;">
-          <div class="lb-av" style="background:linear-gradient(${avColor(nm)})">${ini(nm)}</div>
-          <div style="min-width:0;"><div class="lb-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${nm}</div>
-          <div class="lb-meta">${s.streamLabel||s.stream||'MockArena'}${s.state?' · '+s.state:''}</div></div>
+        <div class="lb-rank" style="font-size:.9rem;">${i<3?medals[i]:'#'+(i+1)}</div>
+        <div style="display:flex;align-items:center;gap:10px;flex:1;overflow:hidden;">
+          <div class="lb-av" style="background:linear-gradient(${avColor(nm)});flex-shrink:0;">${ini(nm)}</div>
+          <div style="flex:1;overflow:hidden;">
+            <div style="font-size:.96rem;font-weight:700;color:var(--forest);
+              word-break:break-word;white-space:normal;line-height:1.3;">${nm}</div>
+            <div style="font-size:.8rem;color:var(--txt-lo);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">
+              ${s.streamLabel||s.stream||'MockArena'}${s.state?' · '+s.state:''}</div>
+          </div>
         </div>
-        <div class="lb-pts">${(s._score||0).toLocaleString('en-IN')}</div>
-        <div class="lb-acc" style="color:${acc>=80?'var(--sage)':acc>=50?'var(--gold)':'var(--rose)'}">${acc}%</div>
-        <div class="lb-tests">${s.totalTests||0}</div>
+        <div class="lb-pts" style="font-size:.9rem;">${(s._score||0).toLocaleString('en-IN')}</div>
+        <div class="lb-acc" style="color:${acc>=80?'var(--sage)':acc>=50?'var(--gold)':'var(--rose)'};font-weight:700;font-size:.9rem;">${acc}%</div>
+        <div class="lb-tests" style="font-size:.88rem;">${s.totalTests||0}</div>
       </div>`;
     }).join('')||'<div class="empty"><div class="empty-icon">🏆</div><div class="empty-h">No students yet</div></div>';
   }catch(e){document.getElementById('lb-rows').innerHTML='<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-h">Error loading</div></div>';}
