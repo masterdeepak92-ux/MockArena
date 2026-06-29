@@ -2392,6 +2392,7 @@ if(window.innerWidth>=1100){
 // ══════════════════════════════════════
 let allTeachers = [];
 const SUBJ_NAMES = {PHY:'Physics',CHE:'Chemistry',MAT:'Mathematics',BIO:'Biology',ENG:'English',GEN:'General'};
+const SUBJ_PREFIX = {PHY:'TP',CHE:'TC',MAT:'TM',BIO:'TB',ENG:'TE',GEN:'TG'};
 
 window.genTeacherId = async function(){
   const subj = document.getElementById('t-subject')?.value;
@@ -2400,11 +2401,13 @@ window.genTeacherId = async function(){
   if(!subj){el.textContent='Select subject to generate ID';return;}
   try{
     const snap = await getDocs(collection(db,'teachers'));
-    const count = [...snap.docs].filter(d=>d.id.startsWith('TCH-'+subj+'-')).length;
-    const serial = String(count+1).padStart(3,'0');
-    el.textContent = 'TCH-'+subj+'-'+serial;
+    const prefix = SUBJ_PREFIX[subj]||('T'+subj[0]);
+    const count = [...snap.docs].filter(d=>d.id.startsWith(prefix+'-')).length;
+    const serial = String(count+1).padStart(2,'0');
+    el.textContent = prefix+'-'+serial;
   }catch(e){
-    el.textContent = 'TCH-'+subj+'-001';
+    const prefix = SUBJ_PREFIX[subj]||('T'+subj[0]);
+    el.textContent = prefix+'-01';
   }
 };
 
