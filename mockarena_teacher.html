@@ -392,7 +392,7 @@ textarea.fi2{resize:vertical;min-height:100px;line-height:1.6;}
         <div class="stat-box"><div class="stat-icon">📝</div><span class="stat-n" id="st-q">—</span><div class="stat-l">My Questions</div></div>
         <div class="stat-box"><div class="stat-icon">👥</div><span class="stat-n" id="st-s">—</span><div class="stat-l">Students</div></div>
         <div class="stat-box"><div class="stat-icon">📊</div><span class="stat-n" id="st-t">—</span><div class="stat-l">Test Attempts</div></div>
-        <div class="stat-box"><div class="stat-icon">🎯</div><span class="stat-n" id="st-a">—</span><div class="stat-l">Avg Accuracy</div></div>
+        <div class="stat-box"><div class="stat-icon">🎯</div><span class="stat-n" id="st-a">—</span><div class="stat-l">Students Avg Score</div></div>
       </div>
       <div class="d-two-col">
         <!-- LEFT -->
@@ -919,10 +919,13 @@ async function loadDash(){
     const results=rSnap.docs.map(d=>d.data());
     document.getElementById('st-t').textContent=results.length;
 
-    // Avg accuracy
-    const accs=allStudents.filter(u=>u.totalTests>0).map(u=>Math.round(((u.correctAnswers||0)/(u.totalTests*10||1))*100));
-    const avg=accs.length>0?Math.round(accs.reduce((a,b)=>a+b,0)/accs.length):0;
+    // Students average score across all tests
+    const resultPercs=results.filter(r=>r.percentage!=null).map(r=>r.percentage||0);
+    const avg=resultPercs.length>0?Math.round(resultPercs.reduce((a,b)=>a+b,0)/resultPercs.length):0;
     document.getElementById('st-a').textContent=avg+'%';
+    // Update label to show context
+    const stAEl=document.querySelector('#st-a + .stat-l');
+    if(stAEl) stAEl.textContent='Students Avg Score ('+resultPercs.length+' tests)';
 
     // Recent questions
     const recent=myQs.slice(0,4);
@@ -936,7 +939,7 @@ async function loadDash(){
       document.getElementById('perf-summary').innerHTML='<div style="overflow-x:auto;"><table class="tbl"><thead><tr><th>Student</th><th>Tests</th><th>Points</th><th>Accuracy</th></tr></thead><tbody>'
         +top3.map(s=>{
           const nm=s.displayName||s.name||'Student';
-          const acc=s.totalTests>0?Math.round(((s.correctAnswers||0)/(s.totalTests*10||1))*100):0;
+          const acc=Math.round(s.avgScore||0);
           return`<tr><td><div style="display:flex;align-items:center;"><div class="av-sm" style="background:linear-gradient(${avColor(nm)})">${ini(nm)}</div>${nm}</div></td>
           <td style="font-family:var(--fm);font-weight:700;">${s.totalTests||0}</td>
           <td style="font-family:var(--fm);font-weight:800;color:var(--forest);">${s.totalPoints||0}</td>
@@ -970,11 +973,11 @@ async function loadDash(){
     }
 
     // Top 3 students for right panel
-    const top3=allStudents.slice().sort((a,b)=>(b.totalPoints||0)-(a.totalPoints||0)).slice(0,3);
+    const top3Students=allStudents.slice().sort((a,b)=>(b.totalPoints||0)-(a.totalPoints||0)).slice(0,3);
     const t3El=document.getElementById('top3-panel');
     if(t3El){
       t3El.innerHTML=top3.length
-        ?top3.map((s,i)=>{
+        ?top3Students.map((s,i)=>{
           const nm=s.displayName||s.name||'Student';
           const medals=['🥇','🥈','🥉'];
           return`<div style="display:flex;align-items:center;gap:10px;padding:9px 0;
@@ -1112,7 +1115,7 @@ window.loadStudents=async function(){
     document.getElementById('students-wrap').innerHTML='<div style="overflow-x:auto;"><table class="tbl"><thead><tr><th>#</th><th>Student</th><th>Exam</th><th>Tests</th><th>Points</th><th>Accuracy</th><th>State</th></tr></thead><tbody>'
       +sorted.map((s,i)=>{
         const nm=s.displayName||s.name||'Student';
-        const acc=s.totalTests>0?Math.round(((s.correctAnswers||0)/(s.totalTests*10||1))*100):0;
+        const acc=Math.round(s.avgScore||0);
         return`<tr>
           <td style="font-family:var(--fm);font-weight:700;color:var(--txt-lo);">${i+1}</td>
           <td><div style="display:flex;align-items:center;"><div class="av-sm" style="background:linear-gradient(${avColor(nm)})">${ini(nm)}</div><div><div style="font-weight:700;">${nm}</div><div style="font-size:.8rem;color:var(--txt-lo);">${s.email||''}</div></div></div></td>
@@ -1145,7 +1148,7 @@ window.loadLB=async function(){
     const medals=['🥇','🥈','🥉'];
     document.getElementById('lb-rows').innerHTML=students.slice(0,20).map((s,i)=>{
       const nm=s.displayName||s.name||'Student';
-      const acc=s.totalTests>0?Math.round(((s.correctAnswers||0)/(s.totalTests*10||1))*100):0;
+      const acc=Math.round(s.avgScore||0);
       const rc=i===0?'top1':i===1?'top2':i===2?'top3':'';
       return`<div class="lb-row ${rc}">
         <div class="lb-rank">${i<3?medals[i]:'#'+(i+1)}</div>
