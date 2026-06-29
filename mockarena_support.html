@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Support — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --forest:#1a2618;--sage:#6b8f5e;--sage-d:#3a6830;
+  --sage-l:rgba(107,143,94,.11);--sage-g:rgba(107,143,94,.22);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);--gold-g:rgba(200,150,42,.22);
+  --rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
+  --purple:#7c3aed;--purple-l:rgba(124,58,237,.09);
+  --cream:#faf9f5;--cw:#f5f3ec;
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.14);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.38);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --sh:0 2px 12px rgba(26,38,24,.07);--sh-lg:0 8px 28px rgba(26,38,24,.12);
+  --r:14px;--max:600px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;max-width:100vw;}
+body{font-family:var(--fd);background:var(--cream);color:var(--txt);
+  -webkit-font-smoothing:antialiased;font-size:16px;min-height:100vh;}
+
+/* NAV */
+.nav{height:56px;display:flex;align-items:center;padding:0 18px;gap:10px;
+  background:var(--forest);position:sticky;top:0;z-index:100;}
+.nav-logo{font-size:1.05rem;font-weight:900;text-decoration:none;color:white;letter-spacing:-.02em;}
+.nav-logo span{color:var(--sage);}
+.nav-r{margin-left:auto;}
+.nav-btn{font-family:var(--fd);font-size:.9rem;font-weight:700;padding:6px 14px;
+  border-radius:9px;border:1px solid rgba(255,255,255,.2);
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.8);text-decoration:none;}
+
+/* HERO */
+.hero{background:var(--cream);padding:28px 18px 24px;border-bottom:1.5px solid var(--border);}
+.hero-inner{max-width:var(--max);margin:0 auto;}
+.hero-title{font-size:1.6rem;font-weight:900;color:var(--forest);letter-spacing:-.03em;margin-bottom:6px;}
+.hero-title span{color:var(--sage);}
+.hero-sub{font-size:.94rem;color:var(--txt-m);line-height:1.65;}
+
+/* MAIN */
+.main{max-width:var(--max);margin:0 auto;padding:20px 18px 64px;}
+
+/* TABS */
+.tabs{display:flex;background:white;border:1.5px solid var(--border);
+  border-radius:12px;padding:4px;gap:4px;margin-bottom:20px;box-shadow:var(--sh);}
+.tab-btn{flex:1;font-family:var(--fd);font-size:.94rem;font-weight:700;
+  padding:10px 6px;border:none;border-radius:9px;cursor:pointer;
+  background:transparent;color:var(--txt-m);transition:.18s;white-space:nowrap;}
+.tab-btn.on{background:var(--forest);color:white;}
+.pane{display:none;}.pane.on{display:block;}
+
+/* CARD */
+.card{background:white;border:1.5px solid var(--border);border-radius:var(--r);
+  padding:22px 20px;box-shadow:var(--sh);margin-bottom:14px;}
+
+/* TICKET STRIP */
+.ticket-strip{background:var(--cw);border:1.5px solid var(--border);
+  border-radius:11px;padding:12px 16px;margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;}
+.ticket-strip-id{font-family:var(--fm);font-size:1.3rem;font-weight:900;
+  color:var(--forest);letter-spacing:.04em;flex:1;}
+.ticket-strip-lbl{font-size:.78rem;color:var(--txt-lo);font-weight:600;margin-bottom:2px;}
+.ticket-copy{font-size:.82rem;font-weight:700;padding:5px 12px;border-radius:8px;
+  border:1.5px solid var(--border);background:white;cursor:pointer;
+  color:var(--txt-m);white-space:nowrap;}
+
+/* FORM */
+.fl{display:block;font-size:.92rem;font-weight:700;color:var(--txt-m);margin-bottom:6px;}
+.fi{width:100%;padding:12px 14px;border:1.5px solid var(--border);border-radius:11px;
+  font-family:var(--fd);font-size:.98rem;color:var(--txt);
+  background:var(--cw);outline:none;transition:.18s;margin-bottom:14px;}
+.fi:focus{border-color:var(--sage);background:white;box-shadow:0 0 0 3px var(--sage-l);}
+select.fi{cursor:pointer;}
+textarea.fi{resize:none;line-height:1.65;}
+.fi-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:440px){.fi-row{grid-template-columns:1fr;}}
+
+/* BTN */
+.btn{font-family:var(--fd);font-size:1rem;font-weight:800;padding:13px;
+  border-radius:11px;border:none;cursor:pointer;transition:all .2s;width:100%;}
+.btn-sage{background:linear-gradient(135deg,var(--sage),var(--sage-d));
+  color:white;box-shadow:0 3px 12px var(--sage-g);}
+.btn-sage:hover{transform:translateY(-1px);}
+.btn-sage:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+.btn-purple{background:linear-gradient(135deg,var(--purple),#5b21b6);
+  color:white;box-shadow:0 3px 12px rgba(124,58,237,.2);}
+.btn-purple:hover{transform:translateY(-1px);}
+.btn-purple:disabled{opacity:.5;cursor:not-allowed;transform:none;}
+
+/* STATUS */
+.st{font-size:.94rem;font-weight:600;padding:13px 16px;
+  border-radius:11px;margin-top:12px;display:none;line-height:1.6;}
+.st.ok{display:block;background:var(--sage-l);color:var(--sage);border:1px solid var(--sage-g);}
+.st.err{display:block;background:var(--rose-l);color:var(--rose);border:1px solid rgba(200,75,75,.2);}
+
+/* AI BOX */
+.ai-box{background:var(--purple-l);border:1.5px solid rgba(124,58,237,.18);
+  border-radius:12px;padding:18px;margin-top:14px;display:none;}
+.ai-box.show{display:block;}
+.ai-lbl{font-size:.78rem;font-weight:800;color:var(--purple);
+  letter-spacing:.06em;text-transform:uppercase;margin-bottom:10px;}
+.ai-txt{font-size:.96rem;color:var(--txt);line-height:1.78;white-space:pre-wrap;}
+.ai-spin{display:inline-block;width:18px;height:18px;border:2px solid rgba(124,58,237,.2);
+  border-top-color:var(--purple);border-radius:50%;
+  animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* TRACK ITEMS */
+.t-item{background:white;border:1.5px solid var(--border);
+  border-radius:12px;padding:18px;margin-bottom:12px;box-shadow:var(--sh);}
+.t-item-head{display:flex;align-items:center;gap:8px;margin-bottom:10px;flex-wrap:wrap;}
+.t-badge{font-size:.74rem;font-weight:800;padding:3px 9px;border-radius:100px;}
+.t-complaint{background:var(--rose-l);color:var(--rose);border:1px solid rgba(200,75,75,.2);}
+.t-doubt{background:var(--purple-l);color:var(--purple);border:1px solid rgba(124,58,237,.2);}
+.t-pending{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
+.t-resolved{background:var(--sage-l);color:var(--sage);border:1px solid var(--sage-g);}
+.t-progress{background:rgba(37,99,235,.08);color:#2563eb;border:1px solid rgba(37,99,235,.18);}
+.t-id{font-family:var(--fm);font-size:.8rem;font-weight:800;color:var(--forest);
+  margin-left:auto;cursor:pointer;padding:2px 8px;background:var(--cw);
+  border-radius:5px;border:1px solid var(--border);}
+.t-text{font-size:.96rem;color:var(--txt);line-height:1.7;margin-bottom:8px;}
+.t-meta{font-size:.8rem;color:var(--txt-lo);}
+.t-reply{margin-top:12px;padding:12px;background:var(--sage-l);
+  border-radius:9px;border-left:3px solid var(--sage);}
+.t-reply-lbl{font-size:.76rem;font-weight:800;color:var(--sage);margin-bottom:4px;}
+.t-reply-txt{font-size:.92rem;color:var(--forest);line-height:1.65;}
+.t-ai{margin-top:12px;padding:12px;background:var(--purple-l);
+  border-radius:9px;border-left:3px solid var(--purple);}
+.t-ai-lbl{font-size:.76rem;font-weight:800;color:var(--purple);margin-bottom:4px;}
+
+/* LOADING/EMPTY */
+.loading{padding:40px;text-align:center;color:var(--txt-lo);}
+.spin{width:28px;height:28px;border:3px solid var(--border);
+  border-top-color:var(--sage);border-radius:50%;
+  animation:spin .7s linear infinite;margin:0 auto 12px;}
+.empty{padding:48px 20px;text-align:center;}
+.empty-icon{font-size:2.2rem;margin-bottom:10px;}
+.empty-h{font-size:.98rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.empty-s{font-size:.88rem;color:var(--txt-lo);line-height:1.7;}
+
+/* TOAST */
+.toast{position:fixed;bottom:20px;right:20px;background:var(--forest);color:white;
+  font-size:.9rem;font-weight:600;padding:11px 18px;border-radius:11px;
+  box-shadow:var(--sh-lg);transform:translateY(80px);transition:.3s;z-index:999;}
+.toast.show{transform:translateY(0);}
+
+/* DESKTOP */
+@media(min-width:700px){
+  :root{--max:680px;}
+  .nav{padding:0 32px;}
+  .nav-logo{font-size:1.12rem;}
+  .nav-btn{font-size:.94rem;padding:7px 18px;}
+  .hero{padding:44px 40px 32px;}
+  .hero-title{font-size:2.2rem;}
+  .hero-sub{font-size:1rem;}
+  .main{padding:28px 40px 80px;}
+  .card{padding:30px 28px;}
+  .tabs{border-radius:14px;}
+  .tab-btn{font-size:1rem;padding:12px 8px;}
+  .fl{font-size:.96rem;}
+  .fi{font-size:1rem;padding:13px 16px;}
+  textarea.fi{min-height:130px;}
+  .btn{font-size:1.02rem;padding:14px;}
+  .ticket-strip{padding:16px 20px;}
+  .ticket-strip-id{font-size:1.5rem;}
+  .ticket-strip-lbl{font-size:.82rem;}
+  .ticket-copy{font-size:.88rem;padding:7px 16px;}
+  .t-item{padding:22px;}
+  .t-text{font-size:1rem;}
+  .t-meta{font-size:.84rem;}
+  .t-reply-txt{font-size:.96rem;}
+}
+
+@media(min-width:960px){
+  :root{--max:720px;}
+  .hero{padding:52px 64px 36px;}
+  .main{padding:32px 64px 96px;}
+  .hero-title{font-size:2.6rem;}
+  .card{padding:34px 32px;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
+  <div class="nav-r">
+    <a href="jee_main.html" class="nav-btn">Practice →</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-title">Help & <span>Support</span></div>
+    <div class="hero-sub">Submit a complaint or ask a doubt — get a unique ticket ID instantly. We respond within 2 hours.</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn on" onclick="showTab('complaint',this)">📝 Complaint</button>
+    <button class="tab-btn" onclick="showTab('doubt',this)">❓ Ask Doubt</button>
+    <button class="tab-btn" onclick="showTab('track',this)">📋 Track</button>
+  </div>
+
+  <!-- ═══ COMPLAINT TAB ═══ -->
+  <div class="pane on" id="pane-complaint">
+
+    <!-- Ticket ID -->
+    <div class="ticket-strip">
+      <div style="flex:1;">
+        <div class="ticket-strip-lbl">Your Complaint Ticket ID</div>
+        <div class="ticket-strip-id" id="c-tid">—</div>
+      </div>
+      <button class="ticket-copy" onclick="copyId('c-tid')">📋 Copy</button>
+    </div>
+
+    <div class="card">
+      <!-- Name + Contact -->
+      <div class="fi-row">
+        <div>
+          <label class="fl">Your Name</label>
+          <input class="fi" id="c-name" type="text" placeholder="Full name"
+            oninput="genId('complaint')" style="margin-bottom:0"/>
+        </div>
+        <div>
+          <label class="fl">Email or Phone</label>
+          <input class="fi" id="c-contact" type="text" placeholder="We'll reply here"
+            style="margin-bottom:0"/>
+        </div>
+      </div>
+
+      <!-- What's wrong -->
+      <div style="margin-top:14px;">
+        <label class="fl">What's the problem? <span style="color:var(--txt-lo);font-weight:500;">(describe clearly)</span></label>
+        <textarea class="fi" id="c-desc" rows="5"
+          placeholder="Tell us what happened. For example:&#10;- Payment deducted but Pro not activated&#10;- Question no. 5 in Chapter test has wrong answer&#10;- Page not loading on my phone"></textarea>
+      </div>
+
+      <button class="btn btn-sage" id="c-btn" onclick="submitComplaint()">
+        🚀 Submit Complaint
+      </button>
+      <div class="st" id="c-st"></div>
+    </div>
+
+  </div>
+
+  <!-- ═══ DOUBT TAB ═══ -->
+  <div class="pane" id="pane-doubt">
+
+    <!-- Ticket ID -->
+    <div class="ticket-strip">
+      <div style="flex:1;">
+        <div class="ticket-strip-lbl">Your Doubt Ticket ID</div>
+        <div class="ticket-strip-id" id="d-tid">—</div>
+      </div>
+      <button class="ticket-copy" onclick="copyId('d-tid')">📋 Copy</button>
+    </div>
+
+    <div class="card">
+      <!-- Name + Contact -->
+      <div class="fi-row">
+        <div>
+          <label class="fl">Your Name</label>
+          <input class="fi" id="d-name" type="text" placeholder="Full name"
+            oninput="genId('doubt')" style="margin-bottom:0"/>
+        </div>
+        <div>
+          <label class="fl">Email or Phone</label>
+          <input class="fi" id="d-contact" type="text" placeholder="Teacher will reply here"
+            style="margin-bottom:0"/>
+        </div>
+      </div>
+
+      <!-- Subject + Chapter -->
+      <div class="fi-row" style="margin-top:14px;">
+        <div>
+          <label class="fl">Subject</label>
+          <select class="fi" id="d-subject" style="margin-bottom:0;">
+            <option>Physics</option>
+            <option>Chemistry</option>
+            <option>Mathematics</option>
+            <option>Biology</option>
+            <option>General</option>
+          </select>
+        </div>
+        <div>
+          <label class="fl">Chapter / Topic</label>
+          <input class="fi" id="d-chapter" type="text"
+            placeholder="e.g. Electrostatics" style="margin-bottom:0"/>
+        </div>
+      </div>
+
+      <!-- Type your doubt -->
+      <div style="margin-top:14px;">
+        <label class="fl">Type Your Doubt <span style="color:var(--txt-lo);font-weight:500;">(optional if uploading photo)</span></label>
+        <textarea class="fi" id="d-doubt" rows="4"
+          placeholder="Describe your doubt clearly..."></textarea>
+      </div>
+
+      <!-- Upload question photo -->
+      <label class="fl">Upload Question Photo <span style="color:var(--txt-lo);font-weight:500;">(optional)</span></label>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;">
+        <!-- Camera -->
+        <button onclick="openDCamera()"
+          style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+          gap:6px;padding:14px;border:1.5px solid var(--border);border-radius:11px;
+          background:var(--cw);cursor:pointer;font-family:var(--fd);transition:.18s;"
+          onmouseover="this.style.borderColor='var(--sage-g)'"
+          onmouseout="this.style.borderColor='var(--border)'">
+          <span style="font-size:1.6rem;">📷</span>
+          <span style="font-size:.88rem;font-weight:700;color:var(--forest);">Take Photo</span>
+          <span style="font-size:.76rem;color:var(--txt-lo);">Open camera</span>
+        </button>
+        <!-- Gallery -->
+        <button onclick="document.getElementById('d-img-file').click()"
+          style="display:flex;flex-direction:column;align-items:center;justify-content:center;
+          gap:6px;padding:14px;border:1.5px solid var(--border);border-radius:11px;
+          background:var(--cw);cursor:pointer;font-family:var(--fd);transition:.18s;"
+          onmouseover="this.style.borderColor='var(--sage-g)'"
+          onmouseout="this.style.borderColor='var(--border)'">
+          <span style="font-size:1.6rem;">🖼️</span>
+          <span style="font-size:.88rem;font-weight:700;color:var(--forest);">From Gallery</span>
+          <span style="font-size:.76rem;color:var(--txt-lo);">JPG / PNG / PDF</span>
+        </button>
+      </div>
+      <input type="file" id="d-img-file" accept="image/*,application/pdf"
+        style="display:none" onchange="onDImgFile(this)"/>
+      <input type="file" id="d-cam-file" accept="image/*"
+        capture="environment" style="display:none" onchange="onDImgFile(this)"/>
+
+      <!-- Image preview -->
+      <div id="d-img-preview" style="display:none;margin-bottom:14px;position:relative;">
+        <img id="d-img" style="width:100%;border-radius:10px;border:1.5px solid var(--border);max-height:280px;object-fit:contain;background:var(--cw);"/>
+        <button onclick="clearDImg()"
+          style="position:absolute;top:8px;right:8px;width:28px;height:28px;
+          border-radius:50%;border:none;background:rgba(0,0,0,.5);
+          color:white;font-size:.9rem;cursor:pointer;display:flex;
+          align-items:center;justify-content:center;">✕</button>
+        <div style="font-size:.8rem;color:var(--sage);font-weight:600;margin-top:6px;">✅ Photo attached</div>
+      </div>
+
+      <!-- Teacher reply note -->
+      <div style="background:var(--gold-l);border:1px solid var(--gold-g);border-radius:10px;
+        padding:12px 14px;margin-bottom:14px;display:flex;gap:10px;align-items:flex-start;">
+        <span style="font-size:1.1rem;flex-shrink:0;">👨‍🏫</span>
+        <div>
+          <div style="font-size:.88rem;font-weight:800;color:var(--forest);margin-bottom:2px;">Expert Teacher Will Answer</div>
+          <div style="font-size:.82rem;color:var(--txt-m);line-height:1.6;">Your doubt will be reviewed and answered personally by our subject expert. Reply sent within 2-4 hours.</div>
+        </div>
+      </div>
+
+      <button class="btn btn-purple" id="d-btn" onclick="submitDoubt()">
+        📤 Submit Doubt to Teacher
+      </button>
+      <div class="st" id="d-st"></div>
+    </div>
+
+  </div>
+
+  <!-- ═══ TRACK TAB ═══ -->
+  <div class="pane" id="pane-track">
+    <div class="card">
+      <label class="fl">Enter your Ticket ID or Email / Phone</label>
+      <div style="display:flex;gap:8px;">
+        <input class="fi" id="track-inp" type="text"
+          placeholder="e.g. MADAC01 or email"
+          style="margin-bottom:0;flex:1;"
+          onkeydown="if(event.key==='Enter')trackTicket()"/>
+        <button onclick="trackTicket()"
+          style="padding:12px 18px;background:var(--forest);color:white;
+          border:none;border-radius:11px;font-family:var(--fd);font-weight:700;
+          font-size:.96rem;cursor:pointer;white-space:nowrap;flex-shrink:0;">
+          🔍 Search
+        </button>
+      </div>
+      <div id="track-results" style="margin-top:16px;">
+        <div class="empty">
+          <div class="empty-icon">🎫</div>
+          <div class="empty-h">Enter ticket ID or email</div>
+          <div class="empty-s">We'll show you the status of all your complaints and doubts.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+var cCount=0, dCount=0;
+var currentUser=null;
+
+function showTab(tab,btn){
+  document.querySelectorAll('.pane').forEach(function(p){p.classList.remove('on');});
+  document.querySelectorAll('.tab-btn').forEach(function(t){t.classList.remove('on');});
+  document.getElementById('pane-'+tab).classList.add('on');
+  btn.classList.add('on');
+}
+
+function getIni(name){
+  return ((name||'AN').replace(/[^a-zA-Z]/g,'').slice(0,2)||'AN').toUpperCase();
+}
+
+function genId(type){
+  var name=document.getElementById(type==='complaint'?'c-name':'d-name').value.trim();
+  var ini=getIni(name);
+  var code=type==='complaint'?'C':'D';
+  var num=String((type==='complaint'?cCount:dCount)+1).padStart(2,'0');
+  var id='MA'+ini+code+num;
+  document.getElementById(type==='complaint'?'c-tid':'d-tid').textContent=id;
+  return id;
+}
+
+function copyId(elId){
+  var txt=document.getElementById(elId).textContent;
+  if(txt==='—')return;
+  navigator.clipboard?.writeText(txt);
+  showToast('Copied: '+txt+' 📋');
+}
+
+function showToast(msg){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(function(){t.classList.remove('show');},2800);
+}
+
+function showSt(id,msg,type){
+  var el=document.getElementById(id);
+  el.textContent=msg;el.className='st '+type;
+}
+
+// Doubt image handling
+var dImgBase64=null;
+function openDCamera(){
+  document.getElementById('d-cam-file').click();
+}
+function onDImgFile(inp){
+  if(!inp.files[0])return;
+  if(inp.files[0].size>5*1024*1024){showToast('Image too large. Max 5MB.');return;}
+  var r=new FileReader();
+  r.onload=function(e){
+    dImgBase64=e.target.result;
+    document.getElementById('d-img').src=dImgBase64;
+    document.getElementById('d-img-preview').style.display='block';
+  };
+  r.readAsDataURL(inp.files[0]);
+}
+function clearDImg(){
+  dImgBase64=null;
+  document.getElementById('d-img-preview').style.display='none';
+  document.getElementById('d-img-file').value='';
+  document.getElementById('d-cam-file').value='';
+}
+</script>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getFirestore,collection,addDoc,getDocs,query,orderBy,serverTimestamp}
+  from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const app=initializeApp({
+  apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
+  authDomain:"mockarena-c18c4.firebaseapp.com",
+  projectId:"mockarena-c18c4",
+  storageBucket:"mockarena-c18c4.firebasestorage.app",
+  messagingSenderId:"861067164791",
+  appId:"1:861067164791:web:28df5244e34361dd9d5a72"
+});
+const auth=getAuth(app),db=getFirestore(app);
+
+// Load counts for proper ticket numbering
+async function loadCounts(){
+  try{
+    const snap=await getDocs(collection(db,'support'));
+    const all=snap.docs.map(d=>d.data());
+    cCount=all.filter(d=>d.type==='complaint').length;
+    dCount=all.filter(d=>d.type==='doubt').length;
+    genId('complaint');genId('doubt');
+  }catch(e){}
+}
+
+onAuthStateChanged(auth,user=>{
+  currentUser=user;
+  if(user){
+    ['c-name','d-name'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el&&!el.value){el.value=user.displayName||'';genId(id==='c-name'?'complaint':'doubt');}
+    });
+    ['c-contact','d-contact'].forEach(function(id){
+      var el=document.getElementById(id);
+      if(el&&!el.value) el.value=user.email||'';
+    });
+  }
+  loadCounts();
+});
+
+// ── SUBMIT COMPLAINT ──
+window.submitComplaint=async function(){
+  const name=document.getElementById('c-name').value.trim();
+  const contact=document.getElementById('c-contact').value.trim();
+  const desc=document.getElementById('c-desc').value.trim();
+  if(!name){showSt('c-st','Please enter your name.','err');return;}
+  if(!contact){showSt('c-st','Please enter your email or phone.','err');return;}
+  if(!desc||desc.length<5){showSt('c-st','Please describe your problem.','err');return;}
+  const btn=document.getElementById('c-btn');
+  btn.disabled=true;btn.textContent='Submitting…';
+  try{
+    const ini=getIni(name);
+    const num=String(cCount+1).padStart(2,'0');
+    const ticketId='MA'+ini+'C'+num;
+    cCount++;
+    document.getElementById('c-tid').textContent=ticketId;
+    await addDoc(collection(db,'support'),{
+      ticketId,type:'complaint',name,contact,
+      description:desc,status:'Pending',
+      uid:currentUser?.uid||null,
+      reply:'',createdAt:serverTimestamp(),
+    });
+    showSt('c-st','✅ Complaint submitted!\n\nYour Ticket ID: '+ticketId+'\n\nSave this ID. We will reply to '+contact+' within 2 hours.','ok');
+    btn.textContent='✅ Submitted!';
+    showToast('Ticket ID: '+ticketId);
+    document.getElementById('c-desc').value='';
+    setTimeout(function(){btn.disabled=false;btn.textContent='🚀 Submit Complaint';},4000);
+  }catch(e){
+    showSt('c-st','Error: '+e.message,'err');
+    btn.disabled=false;btn.textContent='🚀 Submit Complaint';
+  }
+};
+
+// ── SUBMIT DOUBT ──
+window.submitDoubt=async function(){
+  const name=document.getElementById('d-name').value.trim();
+  const contact=document.getElementById('d-contact').value.trim();
+  const subject=document.getElementById('d-subject').value;
+  const chapter=document.getElementById('d-chapter').value.trim();
+  const doubt=document.getElementById('d-doubt').value.trim();
+  if(!name){showSt('d-st','Please enter your name.','err');return;}
+  if(!contact){showSt('d-st','Please enter your email or phone.','err');return;}
+  if(!doubt&&!dImgBase64){showSt('d-st','Please type your doubt or upload a photo.','err');return;}
+  const btn=document.getElementById('d-btn');
+  btn.disabled=true;btn.textContent='Submitting…';
+  try{
+    const ini=getIni(name);
+    const num=String(dCount+1).padStart(2,'0');
+    const ticketId='MA'+ini+'D'+num;
+    dCount++;
+    document.getElementById('d-tid').textContent=ticketId;
+    await addDoc(collection(db,'support'),{
+      ticketId,type:'doubt',name,contact,subject,
+      chapter:chapter||'General',
+      description:doubt||'(See attached photo)',
+      imageBase64:dImgBase64||null,
+      status:'Pending',
+      uid:currentUser?.uid||null,
+      reply:'',createdAt:serverTimestamp(),
+    });
+    showSt('d-st','✅ Doubt submitted! Your Ticket ID: '+ticketId+'. Our teacher will reply to '+contact+' within 2-4 hours.','ok');
+    btn.textContent='✅ Submitted!';
+    showToast('Doubt submitted! ID: '+ticketId);
+    document.getElementById('d-doubt').value='';
+    clearDImg();
+    setTimeout(function(){btn.disabled=false;btn.textContent='📤 Submit Doubt to Teacher';},4000);
+  }catch(e){
+    showSt('d-st','Error: '+e.message,'err');
+    btn.disabled=false;btn.textContent='📤 Submit Doubt to Teacher';
+  }
+};
+
+// ── TRACK ──
+window.trackTicket=async function(){
+  const inp=document.getElementById('track-inp').value.trim();
+  if(!inp){showToast('Please enter ticket ID or email.');return;}
+  const el=document.getElementById('track-results');
+  el.innerHTML='<div class="loading"><div class="spin"></div>Searching…</div>';
+  try{
+    const snap=await getDocs(query(collection(db,'support'),orderBy('createdAt','desc')));
+    const all=snap.docs.map(d=>({id:d.id,...d.data()}));
+    const inpL=inp.toLowerCase();
+    const found=all.filter(c=>
+      (c.ticketId||'').toUpperCase()===inp.toUpperCase()||
+      (c.contact||'').toLowerCase().includes(inpL)||
+      (currentUser&&c.uid===currentUser.uid)
+    );
+    if(!found.length){
+      el.innerHTML='<div class="empty"><div class="empty-icon">🔍</div><div class="empty-h">No tickets found</div><div class="empty-s">Check your ticket ID or email and try again.</div></div>';
+      return;
+    }
+    const stMap={
+      'Pending':'<span class="t-badge t-pending">⏳ Pending</span>',
+      'In Progress':'<span class="t-badge t-progress">🔄 In Progress</span>',
+      'Resolved':'<span class="t-badge t-resolved">✅ Resolved</span>',
+    };
+    el.innerHTML=`<div style="font-size:.88rem;color:var(--txt-lo);margin-bottom:12px;font-weight:600;">${found.length} ticket${found.length!==1?'s':''} found</div>`
+      +found.map(c=>{
+        const date=c.createdAt?.toDate?.()?.toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})||'—';
+        const isD=c.type==='doubt';
+        return`<div class="t-item">
+          <div class="t-item-head">
+            <span class="t-badge ${isD?'t-doubt':'t-complaint'}">${isD?'❓ Doubt':'📝 Complaint'}</span>
+            ${stMap[c.status]||stMap['Pending']}
+            <span class="t-id" onclick="copyId2('${c.ticketId}')" title="Click to copy">${c.ticketId||'—'}</span>
+          </div>
+          ${isD?`<div style="font-size:.84rem;font-weight:700;color:var(--txt-lo);margin-bottom:6px;">${c.subject||''}</div>`:''}
+          <div class="t-text">${c.description||''}</div>
+          <div class="t-meta">📅 ${date} · 👤 ${c.name||'—'}</div>
+          ${isD&&c.aiAnswer?`<div class="t-ai"><div class="t-ai-lbl">✨ AI Answer</div><div style="font-size:.9rem;color:var(--txt);line-height:1.72;">${c.aiAnswer}</div></div>`:''}
+          ${c.reply?`<div class="t-reply"><div class="t-reply-lbl">💬 MockArena Reply</div><div class="t-reply-txt">${c.reply}</div></div>`:''}
+        </div>`;
+      }).join('');
+  }catch(e){
+    el.innerHTML='<div class="empty"><div class="empty-icon">⚠️</div><div class="empty-h">Error</div><div class="empty-s">'+e.message+'</div></div>';
+  }
+};
+
+window.copyId2=function(id){
+  navigator.clipboard?.writeText(id);showToast('Copied: '+id+' 📋');
+};
+</script>
+</body>
+</html>

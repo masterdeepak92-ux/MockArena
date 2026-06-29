@@ -988,6 +988,7 @@ body{
   <button class="tab" id="pt-bank" onclick="showPage('bank')">📋 Question Bank <span class="tab-badge" id="pc-bank">0</span></button>
   <button class="tab" id="pt-build" onclick="showPage('build')">🎯 Build Test</button>
   <button class="tab" id="pt-teachers" onclick="showPage('teachers')">👨‍🏫 Teachers</button>
+  <button class="tab" id="pt-complaints" onclick="showPage('complaints');loadComplaints()">🆘 Complaints <span id="complaints-badge" style="display:none;background:var(--rose);color:white;font-size:.7rem;padding:1px 6px;border-radius:100px;margin-left:4px;">0</span></button>
 </div>
 
 <!-- DESKTOP SHELL (1100px+) -->
@@ -1396,7 +1397,7 @@ EXP: By Coulomb's law F ∝ 1/r².</div>
     </div>
 
     <div class="frow frow-3">
-      <div class="fg" style="margin-bottom:0;"><label class="fl">Full Name <span style="color:var(--rose);">*</span></label><input type="text" class="fi" id="t-name" placeholder="e.g. Rahul Sharma"/></div>
+      <div class="fg" style="margin-bottom:0;"><label class="fl">Full Name <span style="color:var(--rose);">*</span></label><input type="text" class="fi" id="t-name" placeholder="e.g. Rahul Sharma" oninput="updatePhotoInitial()"/></div>
       <div class="fg" style="margin-bottom:0;"><label class="fl">Subject <span style="color:var(--rose);">*</span></label>
         <select class="fs" id="t-subject" onchange="genTeacherId()">
           <option value="">Select subject</option>
@@ -1413,6 +1414,39 @@ EXP: By Coulomb's law F ∝ 1/r².</div>
     <div class="frow frow-2" style="margin-top:14px;">
       <div class="fg" style="margin-bottom:0;"><label class="fl">Email</label><input type="email" class="fi" id="t-email" placeholder="teacher@email.com"/></div>
       <div class="fg" style="margin-bottom:0;"><label class="fl">Phone</label><input type="tel" class="fi" id="t-phone" placeholder="9876543210"/></div>
+    </div>
+    <!-- Photo Upload -->
+    <div class="fg" style="margin-top:14px;">
+      <label class="fl">Profile Photo <span style="font-size:.84rem;color:var(--txt-lo);font-weight:500;">(optional)</span></label>
+      <div style="display:flex;align-items:center;gap:14px;margin-top:6px;">
+        <div id="t-photo-prev" style="width:64px;height:64px;border-radius:50%;
+          background:linear-gradient(135deg,var(--sage),var(--sage-d));
+          display:flex;align-items:center;justify-content:center;
+          font-size:1.4rem;font-weight:900;color:white;
+          border:2px solid var(--border);flex-shrink:0;overflow:hidden;">
+          <span id="t-photo-ini">?</span>
+          <img id="t-photo-img" style="display:none;width:100%;height:100%;object-fit:cover;"/>
+        </div>
+        <div style="flex:1;">
+          <input type="file" id="t-photo-file" accept="image/*" style="display:none"
+            onchange="previewTeacherPhoto(this)"/>
+          <button onclick="document.getElementById('t-photo-file').click()"
+            style="font-family:var(--fd);font-size:.92rem;font-weight:700;
+            padding:8px 16px;border-radius:9px;border:1.5px solid var(--border);
+            background:var(--cw);color:var(--txt-m);cursor:pointer;">
+            📷 Upload Photo
+          </button>
+          <button id="t-photo-clear" onclick="clearTeacherPhoto()" style="display:none;
+            font-family:var(--fd);font-size:.88rem;font-weight:600;
+            padding:8px 12px;border-radius:9px;border:1.5px solid rgba(200,75,75,.2);
+            background:rgba(200,75,75,.08);color:var(--rose);cursor:pointer;margin-left:8px;">
+            ✕ Remove
+          </button>
+          <div style="font-size:.82rem;color:var(--txt-lo);margin-top:6px;">
+            JPG, PNG accepted · Max 2MB · Square photo recommended
+          </div>
+        </div>
+      </div>
     </div>
     <div class="fg" style="margin-top:14px;"><label class="fl">Assigned Exams</label>
       <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;" id="t-exams-wrap">
@@ -1437,6 +1471,32 @@ EXP: By Coulomb's law F ∝ 1/r².</div>
   </div>
   <div id="teachers-list">
     <div class="empty"><div class="empty-icon">👨‍🏫</div><div class="empty-h">No teachers yet</div><div class="empty-s">Create your first teacher account above.</div></div>
+  </div>
+</div>
+
+<!-- COMPLAINTS -->
+<div class="pane" id="page-complaints">
+  <div class="card">
+    <div class="card-title" style="font-size:1.05rem;font-weight:900;color:var(--forest);margin-bottom:18px;display:flex;align-items:center;justify-content:space-between;">
+      🆘 Student Complaints
+      <div style="display:flex;gap:8px;">
+        <select class="fs" id="c-filter-status" onchange="filterComplaints()" style="font-size:.9rem;padding:6px 10px;">
+          <option value="">All Status</option>
+          <option value="Pending">⏳ Pending</option>
+          <option value="In Progress">🔄 In Progress</option>
+          <option value="Resolved">✅ Resolved</option>
+        </select>
+        <select class="fs" id="c-filter-priority" onchange="filterComplaints()" style="font-size:.9rem;padding:6px 10px;">
+          <option value="">All Priority</option>
+          <option value="High">🔴 High</option>
+          <option value="Medium">🟡 Medium</option>
+          <option value="Low">🟢 Low</option>
+        </select>
+        <button onclick="loadComplaints()" style="font-family:var(--fd);font-size:.9rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1.5px solid var(--border);background:var(--cw);cursor:pointer;">↻ Refresh</button>
+      </div>
+    </div>
+    <div id="complaints-count" style="font-size:.9rem;color:var(--txt-lo);margin-bottom:14px;font-weight:600;"></div>
+    <div id="complaints-list"><div class="empty"><div class="empty-icon">🆘</div><div class="empty-h">Loading complaints…</div></div></div>
   </div>
 </div>
 
@@ -2440,6 +2500,7 @@ window.createTeacher = async function(){
       subject:SUBJ_NAMES[subj]||subj,
       subjCode:subj,password:pass,
       email,phone,exams,
+      photoUrl:window.teacherPhotoBase64||null,
       testsGenerated:0,
       createdAt:new Date().toISOString(),
       active:true,
@@ -2527,6 +2588,34 @@ function loader(show,t,s){
 }
 function showLoader(t,s){loader(true,t,s);}
 function hideLoader(){loader(false);}
+
+// Teacher photo functions
+var teacherPhotoBase64 = null;
+function previewTeacherPhoto(inp){
+  if(!inp.files[0])return;
+  if(inp.files[0].size > 2*1024*1024){alert('Photo must be under 2MB');return;}
+  var r=new FileReader();
+  r.onload=function(e){
+    teacherPhotoBase64=e.target.result;
+    document.getElementById('t-photo-ini').style.display='none';
+    var img=document.getElementById('t-photo-img');
+    img.src=teacherPhotoBase64;img.style.display='block';
+    document.getElementById('t-photo-clear').style.display='inline-block';
+  };
+  r.readAsDataURL(inp.files[0]);
+}
+function clearTeacherPhoto(){
+  teacherPhotoBase64=null;
+  document.getElementById('t-photo-ini').style.display='block';
+  document.getElementById('t-photo-img').style.display='none';
+  document.getElementById('t-photo-clear').style.display='none';
+  document.getElementById('t-photo-file').value='';
+}
+function updatePhotoInitial(){
+  var name=document.getElementById('t-name')?.value||'?';
+  var ini=name.split(' ').map(function(w){return w[0];}).join('').slice(0,2).toUpperCase()||'?';
+  document.getElementById('t-photo-ini').textContent=ini;
+}
 
 // ══════════════════════════════════════
 // ADMIN LOGIN
