@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<meta name="theme-color" content="#1a2618"/>
+<title>Payment Dashboard — MockArena Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --forest:#1a2618;--sage:#6b8f5e;--sage-d:#3a6830;
+  --sage-l:rgba(107,143,94,.11);--sage-g:rgba(107,143,94,.22);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.10);--gold-g:rgba(200,150,42,.22);
+  --rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
+  --sky:#2563eb;--sky-l:rgba(37,99,235,.09);
+  --violet:#7c3aed;--violet-l:rgba(124,58,237,.09);
+  --green:#059669;--green-l:rgba(5,150,105,.09);
+  --cream:#faf9f5;--cw:#f5f3ec;--white:#fff;
+  --border:rgba(26,38,24,.08);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.38);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --sh:0 2px 12px rgba(26,38,24,.07);
+  --sh-lg:0 6px 24px rgba(26,38,24,.11);
+  --r:16px;--sbw:258px;--tbh:56px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{overflow-x:hidden;}
+body{font-family:var(--fd);background:var(--cream);color:var(--txt);
+  -webkit-font-smoothing:antialiased;line-height:1.6;font-size:15px;}
+a{color:inherit;text-decoration:none;}
+button{font-family:var(--fd);cursor:pointer;}
+
+/* ── SIDEBAR ── */
+.sidebar{
+  width:var(--sbw);background:var(--white);
+  border-right:1.5px solid var(--border);
+  display:flex;flex-direction:column;
+  position:fixed;inset:0 auto 0 0;z-index:200;
+  overflow-y:auto;box-shadow:3px 0 20px rgba(26,38,24,.06);
+  transition:transform .26s cubic-bezier(.4,0,.2,1);
+}
+.sidebar::-webkit-scrollbar{display:none;}
+.sb-brand{height:var(--tbh);display:flex;align-items:center;gap:10px;padding:0 20px;border-bottom:1.5px solid var(--border);}
+.sb-logo{font-size:1.1rem;font-weight:900;color:var(--forest);letter-spacing:-.02em;}
+.sb-logo span{color:var(--sage);}
+.sb-close{margin-left:auto;background:none;border:none;color:var(--txt-lo);width:28px;height:28px;border-radius:7px;font-size:1rem;display:flex;align-items:center;justify-content:center;}
+@media(min-width:980px){.sb-close{display:none;}}
+.sb-nav{flex:1;padding:14px 10px;}
+.sb-grp{font-size:.64rem;font-weight:800;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.12em;padding:14px 10px 6px;}
+.sb-link{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;cursor:pointer;border:none;background:transparent;width:100%;text-align:left;transition:background .14s;position:relative;margin-bottom:2px;text-decoration:none;}
+.sb-link:hover{background:var(--cw);}
+.sb-link.on{background:var(--sage-l);border:1px solid var(--sage-g);}
+.sb-link.on::before{content:'';position:absolute;left:0;top:8px;bottom:8px;width:3px;border-radius:0 3px 3px 0;background:linear-gradient(180deg,var(--sage),var(--sage-d));}
+.sb-ic{width:32px;height:32px;border-radius:9px;flex-shrink:0;background:var(--cw);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.92rem;}
+.sb-link.on .sb-ic{background:var(--sage-l);border-color:var(--sage-g);}
+.sb-lbl{font-size:.92rem;font-weight:600;color:var(--txt-m);}
+.sb-link.on .sb-lbl{color:var(--forest);font-weight:700;}
+.sb-divider{height:1px;background:var(--border);margin:8px 8px;}
+.sb-foot{padding:12px 10px;border-top:1.5px solid var(--border);}
+.sb-back{display:flex;align-items:center;gap:11px;background:none;border:none;color:var(--txt-lo);font-size:.9rem;font-weight:700;padding:10px 12px;border-radius:11px;width:100%;transition:.14s;text-decoration:none;}
+.sb-back:hover{background:var(--cw);}
+.sb-overlay{display:none;position:fixed;inset:0;background:rgba(26,38,24,.45);z-index:190;}
+
+/* ── TOPBAR ── */
+.topbar{height:var(--tbh);display:flex;align-items:center;gap:12px;padding:0 20px;background:var(--forest);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(107,143,94,.18);}
+@media(min-width:980px){.topbar{padding:0 28px;}}
+.tb-burger{width:34px;height:34px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.85);font-size:.9rem;}
+@media(min-width:980px){.tb-burger{display:none;}}
+.tb-title{font-size:1rem;font-weight:800;color:white;letter-spacing:-.01em;}
+.tb-badge{font-size:.78rem;font-weight:800;padding:4px 11px;border-radius:100px;background:rgba(200,150,42,.15);color:var(--gold);border:1px solid var(--gold-g);margin-left:4px;}
+.tb-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
+.tb-export{font-size:.86rem;font-weight:700;padding:6px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);transition:.15s;}
+.tb-export:hover{background:rgba(255,255,255,.18);}
+
+/* ── LAYOUT ── */
+.app-main{min-width:0;}
+@media(min-width:980px){.app-main{margin-left:var(--sbw);}}
+
+/* ── PAGE HERO ── */
+.page-hero{
+  background:linear-gradient(128deg,var(--forest),#1e3a1a);
+  padding:36px 22px 32px;border-bottom:1.5px solid rgba(107,143,94,.18);
+  position:relative;overflow:hidden;
+}
+@media(min-width:980px){.page-hero{padding:48px 44px 42px;}}
+.page-hero::before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(107,143,94,.15) 0%,transparent 65%);top:-100px;right:-80px;pointer-events:none;}
+.hero-inner{max-width:1080px;margin:0 auto;position:relative;z-index:1;}
+.hero-ey{font-size:.82rem;font-weight:800;padding:5px 13px;border-radius:100px;display:inline-block;margin-bottom:14px;background:rgba(200,150,42,.15);color:var(--gold);border:1px solid var(--gold-g);}
+.hero-t{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;color:white;letter-spacing:-.03em;line-height:1.08;margin-bottom:6px;}
+.hero-t span{color:var(--sage);}
+.hero-s{font-size:.98rem;color:rgba(255,255,255,.6);margin-bottom:28px;font-weight:500;}
+.hero-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+@media(min-width:600px){.hero-kpis{grid-template-columns:repeat(4,1fr);}}
+.kpi{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px 16px;backdrop-filter:blur(8px);}
+.kpi-n{font-family:var(--fm);font-size:1.6rem;font-weight:900;line-height:1;margin-bottom:6px;}
+.kpi-l{font-size:.74rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;}
+.kpi-trend{font-size:.74rem;font-weight:700;margin-top:6px;}
+.kpi.k1 .kpi-n{color:#4ade80;}
+.kpi.k2 .kpi-n{color:var(--gold);}
+.kpi.k3 .kpi-n{color:#60a5fa;}
+.kpi.k4 .kpi-n{color:#f87171;}
+
+/* ── CONTENT ── */
+.content{padding-bottom:60px;}
+.pw{max-width:1080px;margin:0 auto;padding:28px 18px 0;}
+@media(min-width:700px){.pw{padding:32px 28px 0;}}
+@media(min-width:980px){.pw{padding:38px 44px 0;}}
+
+/* ── CARD ── */
+.card{background:white;border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:22px;overflow:hidden;}
+.card-hd{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1.5px solid var(--border);flex-wrap:wrap;gap:8px;}
+@media(min-width:980px){.card-hd{padding:20px 28px;}}
+.card-title{font-size:1.08rem;font-weight:900;color:var(--forest);display:flex;align-items:center;gap:9px;}
+.card-title::before{content:'';width:4px;height:16px;flex-shrink:0;background:linear-gradient(180deg,var(--sage),var(--sage-d));border-radius:3px;}
+.card-body{padding:22px;}
+@media(min-width:980px){.card-body{padding:28px;}}
+.card-action{font-size:.86rem;font-weight:700;color:var(--sage);background:none;border:none;cursor:pointer;}
+
+/* ── REVENUE CHART ── */
+.rev-chart{display:flex;align-items:flex-end;gap:8px;height:120px;padding:0 4px;}
+@media(min-width:980px){.rev-chart{height:160px;gap:12px;}}
+.rev-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
+.rev-bar{width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--sage),var(--sage-d));min-height:4px;transition:height .6s ease;cursor:pointer;position:relative;}
+.rev-bar:hover{filter:brightness(1.15);}
+.rev-bar-tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--forest);color:white;font-size:.7rem;font-weight:800;padding:4px 9px;border-radius:7px;white-space:nowrap;opacity:0;transition:.18s;pointer-events:none;}
+.rev-bar:hover .rev-bar-tip{opacity:1;}
+.rev-bar-lbl{font-size:.66rem;font-weight:700;color:var(--txt-lo);text-align:center;}
+.rev-bar-amt{font-family:var(--fm);font-size:.64rem;font-weight:700;color:var(--sage);}
+
+/* ── STATS GRID ── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
+@media(min-width:700px){.stats-grid{grid-template-columns:repeat(4,1fr);}}
+.stat-card{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:20px 18px;box-shadow:var(--sh);position:relative;overflow:hidden;}
+.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+.stat-card.s1::before{background:linear-gradient(90deg,var(--green),#065f46);}
+.stat-card.s2::before{background:linear-gradient(90deg,var(--gold),#92400e);}
+.stat-card.s3::before{background:linear-gradient(90deg,var(--sky),#1d4ed8);}
+.stat-card.s4::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
+.stat-n{font-family:var(--fm);font-size:1.5rem;font-weight:900;color:var(--forest);line-height:1;margin-bottom:6px;}
+@media(min-width:980px){.stat-n{font-size:1.75rem;}}
+.stat-l{font-size:.76rem;font-weight:700;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.07em;}
+.stat-sub{font-size:.78rem;color:var(--txt-m);margin-top:5px;font-weight:500;}
+
+/* ── TABLE ── */
+.tbl{width:100%;border-collapse:collapse;}
+.tbl th{font-size:.72rem;font-weight:800;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.08em;padding:10px 14px;border-bottom:1.5px solid var(--border);text-align:left;background:var(--cw);}
+.tbl td{padding:14px 14px;border-bottom:1.5px solid var(--border);font-size:.9rem;vertical-align:middle;}
+.tbl tr:last-child td{border-bottom:none;}
+.tbl tr:hover td{background:var(--cw);}
+.tbl-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--sage-d));display:flex;align-items:center;justify-content:center;font-size:.74rem;font-weight:800;color:white;flex-shrink:0;overflow:hidden;}
+.tbl-av img{width:100%;height:100%;object-fit:cover;}
+.badge{font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:100px;}
+.badge-pro{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
+.badge-free{background:var(--cw);color:var(--txt-lo);border:1px solid var(--border);}
+.badge-exp{background:var(--rose-l);color:var(--rose);}
+.badge-active{background:var(--green-l);color:var(--green);}
+
+/* ── FILTER BAR ── */
+.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.filter-btn{font-size:.84rem;font-weight:700;padding:7px 16px;border-radius:100px;border:1.5px solid var(--border);background:white;color:var(--txt-m);cursor:pointer;transition:.14s;}
+.filter-btn:hover{border-color:var(--sage);color:var(--sage);}
+.filter-btn.on{background:var(--sage-l);border-color:var(--sage-g);color:var(--sage-d);}
+.search-box{flex:1;min-width:160px;padding:8px 14px;border:1.5px solid var(--border);border-radius:100px;font-family:var(--fd);font-size:.88rem;background:var(--cw);outline:none;color:var(--txt);transition:.16s;}
+.search-box:focus{border-color:var(--sage);background:white;box-shadow:0 0 0 3px var(--sage-l);}
+
+/* ── EXPIRY ALERT ── */
+.expiry-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1.5px solid var(--border);}
+.expiry-item:last-child{border-bottom:none;}
+.expiry-days{font-family:var(--fm);font-size:1.1rem;font-weight:900;width:44px;text-align:center;flex-shrink:0;}
+.expiry-days.urgent{color:var(--rose);}
+.expiry-days.warn{color:var(--gold);}
+.expiry-days.ok{color:var(--green);}
+.expiry-name{font-size:.92rem;font-weight:700;color:var(--forest);flex:1;}
+.expiry-date{font-family:var(--fm);font-size:.74rem;color:var(--txt-lo);}
+
+/* ── LOADING ── */
+.loading{padding:48px;text-align:center;color:var(--txt-lo);}
+.spin{width:28px;height:28px;border:2.5px solid var(--border);border-top-color:var(--sage);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.empty{padding:40px;text-align:center;}
+.empty-ic{font-size:2.2rem;margin-bottom:10px;}
+.empty-h{font-size:.96rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.empty-s{font-size:.86rem;color:var(--txt-lo);}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--forest);color:white;font-size:.88rem;font-weight:700;padding:12px 20px;border-radius:13px;box-shadow:var(--sh-lg);transform:translateY(80px);transition:.3s;z-index:999;}
+.toast.show{transform:translateY(0);}
+</style>
+</head>
+<body>
+
+<div id="auth-loader" style="position:fixed;inset:0;background:var(--cream);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
+  <div style="font-size:2.2rem;font-weight:900;color:var(--forest);letter-spacing:-.03em;">Mock<span style="color:var(--sage);">Arena</span></div>
+  <div style="width:32px;height:32px;border:3px solid var(--border);border-top-color:var(--sage);border-radius:50%;animation:spin .7s linear infinite;"></div>
+  <div style="font-size:.9rem;color:var(--txt-lo);font-weight:600;">Loading payment dashboard…</div>
+</div>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sb-brand">
+    <a href="mockarena_student_dashboard.html" class="sb-logo">Mock<span>Arena</span></a>
+    <button class="sb-close" onclick="closeSB()">✕</button>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-grp">Admin</div>
+    <a href="mockarena_admin.html" class="sb-link"><span class="sb-ic">🛠️</span><span class="sb-lbl">Admin Panel</span></a>
+    <a href="mockarena_payment_admin.html" class="sb-link on"><span class="sb-ic">💰</span><span class="sb-lbl">Payments</span></a>
+    <a href="mockarena_support.html" class="sb-link"><span class="sb-ic">🎫</span><span class="sb-lbl">Support Panel</span></a>
+    <a href="mockarena_teacher.html" class="sb-link"><span class="sb-ic">👨‍🏫</span><span class="sb-lbl">Teacher Portal</span></a>
+    <div class="sb-divider"></div>
+    <div class="sb-grp">Platform</div>
+    <a href="mockarena_leaderboard.html" class="sb-link"><span class="sb-ic">🏆</span><span class="sb-lbl">Leaderboard</span></a>
+    <a href="jee_main.html" class="sb-link"><span class="sb-ic">📝</span><span class="sb-lbl">JEE Main</span></a>
+  </nav>
+  <div class="sb-foot">
+    <a href="mockarena_student_dashboard.html" class="sb-back">← Back to Dashboard</a>
+  </div>
+</aside>
+<div class="sb-overlay" id="sb-overlay" onclick="closeSB()"></div>
+
+<!-- MAIN -->
+<div class="app-main">
+<nav class="topbar">
+  <button class="tb-burger" onclick="openSB()">☰</button>
+  <div class="tb-title">💰 Payment Dashboard</div>
+  <span class="tb-badge">Admin Only</span>
+  <div class="tb-right">
+    <button class="tb-export" onclick="exportCSV()">⬇ Export CSV</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <div class="hero-inner">
+    <div class="hero-ey">💰 Revenue & Subscriptions</div>
+    <div class="hero-t">MockArena <span>Payments</span></div>
+    <div class="hero-s">Real-time revenue, Pro subscriptions and student payment analytics</div>
+    <div class="hero-kpis">
+      <div class="kpi k1"><div class="kpi-n" id="kpi-rev">₹0</div><div class="kpi-l">Total Revenue</div><div class="kpi-trend" style="color:#4ade80;" id="kpi-rev-s">Loading…</div></div>
+      <div class="kpi k2"><div class="kpi-n" id="kpi-pro">0</div><div class="kpi-l">Active Pro Members</div><div class="kpi-trend" style="color:var(--gold);" id="kpi-pro-s">Loading…</div></div>
+      <div class="kpi k3"><div class="kpi-n" id="kpi-free">0</div><div class="kpi-l">Free Users</div><div class="kpi-trend" style="color:#60a5fa;" id="kpi-free-s">Loading…</div></div>
+      <div class="kpi k4"><div class="kpi-n" id="kpi-exp">0</div><div class="kpi-l">Expiring Soon</div><div class="kpi-trend" style="color:#f87171;">Within 7 days</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="content"><div class="pw">
+
+  <!-- STATS ROW -->
+  <div class="stats-grid">
+    <div class="stat-card s1">
+      <div class="stat-n" id="st-month">₹0</div>
+      <div class="stat-l">This Month</div>
+      <div class="stat-sub" id="st-month-s">0 new subscribers</div>
+    </div>
+    <div class="stat-card s2">
+      <div class="stat-n" id="st-avg">₹149</div>
+      <div class="stat-l">Avg Revenue/User</div>
+      <div class="stat-sub">Per subscription cycle</div>
+    </div>
+    <div class="stat-card s3">
+      <div class="stat-n" id="st-conv">0%</div>
+      <div class="stat-l">Conversion Rate</div>
+      <div class="stat-sub" id="st-conv-s">Free → Pro</div>
+    </div>
+    <div class="stat-card s4">
+      <div class="stat-n" id="st-churn">0</div>
+      <div class="stat-l">Expired This Month</div>
+      <div class="stat-sub">Need renewal</div>
+    </div>
+  </div>
+
+  <!-- REVENUE CHART -->
+  <div class="card">
+    <div class="card-hd">
+      <div class="card-title">Monthly Revenue</div>
+      <span style="font-family:var(--fm);font-size:.76rem;color:var(--txt-lo);">Last 6 months · ₹149/subscription</span>
+    </div>
+    <div class="card-body">
+      <div class="rev-chart" id="rev-chart"></div>
+      <div style="display:flex;gap:8px;margin-top:8px;" id="rev-labels"></div>
+    </div>
+  </div>
+
+  <!-- EXPIRING SOON -->
+  <div class="card">
+    <div class="card-hd">
+      <div class="card-title">⚠️ Expiring Soon</div>
+      <span style="font-size:.84rem;color:var(--txt-lo);font-weight:600;">Next 30 days</span>
+    </div>
+    <div class="card-body" style="padding:10px 22px;">
+      <div id="expiry-list"><div class="loading"><div class="spin"></div>Loading…</div></div>
+    </div>
+  </div>
+
+  <!-- ALL PRO MEMBERS TABLE -->
+  <div class="card">
+    <div class="card-hd">
+      <div class="card-title">All Students</div>
+      <div class="filter-bar">
+        <input class="search-box" id="search-box" placeholder="Search name or email…" oninput="filterTable()"/>
+        <button class="filter-btn on" onclick="setFilter('all',this)">All</button>
+        <button class="filter-btn" onclick="setFilter('pro',this)">Pro</button>
+        <button class="filter-btn" onclick="setFilter('free',this)">Free</button>
+        <button class="filter-btn" onclick="setFilter('expired',this)">Expired</button>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="tbl" id="students-table">
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Email</th>
+            <th>Plan</th>
+            <th>Joined</th>
+            <th>Pro Expiry</th>
+            <th>Tests</th>
+            <th>Points</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="students-tbody">
+          <tr><td colspan="8"><div class="loading"><div class="spin"></div>Loading students…</div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+function openSB(){document.getElementById('sidebar').style.transform='translateX(0)';document.getElementById('sb-overlay').style.display='block';}
+function closeSB(){if(window.innerWidth<980)document.getElementById('sidebar').style.transform='translateX(-100%)';document.getElementById('sb-overlay').style.display='none';}
+if(window.innerWidth<980)document.getElementById('sidebar').style.transform='translateX(-100%)';
+window.addEventListener('resize',()=>{if(window.innerWidth>=980){document.getElementById('sidebar').style.transform='';document.getElementById('sb-overlay').style.display='none';}else if(!document.getElementById('sidebar').classList.contains('open'))document.getElementById('sidebar').style.transform='translateX(-100%)';});
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
+function ini(n){return(n||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
+
+var allStudents=[];
+var currentFilter='all';
+
+function setFilter(f,btn){
+  currentFilter=f;
+  document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  filterTable();
+}
+
+function filterTable(){
+  var q=document.getElementById('search-box').value.toLowerCase();
+  var rows=document.querySelectorAll('#students-tbody tr.data-row');
+  rows.forEach(row=>{
+    var name=(row.dataset.name||'').toLowerCase();
+    var email=(row.dataset.email||'').toLowerCase();
+    var plan=row.dataset.plan||'';
+    var matchSearch=!q||name.includes(q)||email.includes(q);
+    var matchFilter=currentFilter==='all'||(currentFilter==='pro'&&plan==='pro')||(currentFilter==='free'&&plan==='free')||(currentFilter==='expired'&&plan==='expired');
+    row.style.display=(matchSearch&&matchFilter)?'':'none';
+  });
+}
+
+function buildRevenueChart(students){
+  var months=[];
+  var now=new Date();
+  for(var i=5;i>=0;i--){
+    var d=new Date(now.getFullYear(),now.getMonth()-i,1);
+    months.push({
+      key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),
+      label:d.toLocaleDateString('en-IN',{month:'short'}),
+      count:0,rev:0
+    });
+  }
+  students.forEach(s=>{
+    if(!s.isPro||!s.proExpiry)return;
+    // estimate when they subscribed (expiry - 30 days)
+    var expTs=s.proExpiry.seconds*1000;
+    var subDate=new Date(expTs-30*24*60*60*1000);
+    var mk=subDate.getFullYear()+'-'+String(subDate.getMonth()+1).padStart(2,'0');
+    var m=months.find(m=>m.key===mk);
+    if(m){m.count++;m.rev+=149;}
+  });
+  var maxRev=Math.max(...months.map(m=>m.rev),1);
+  var chartEl=document.getElementById('rev-chart');
+  var labelsEl=document.getElementById('rev-labels');
+  chartEl.innerHTML=months.map(m=>{
+    var h=Math.max(4,Math.round((m.rev/maxRev)*(window.innerWidth>=980?148:108)));
+    return`<div class="rev-bar-wrap">
+      <div class="rev-bar" style="height:${h}px;">
+        <div class="rev-bar-tip">₹${m.rev.toLocaleString('en-IN')}<br>${m.count} subs</div>
+      </div>
+    </div>`;
+  }).join('');
+  labelsEl.innerHTML=months.map(m=>`<div style="flex:1;text-align:center;"><div class="rev-bar-lbl">${m.label}</div><div class="rev-bar-amt">${m.rev>0?'₹'+m.rev.toLocaleString('en-IN'):'-'}</div></div>`).join('');
+}
+
+function buildExpiryList(students){
+  var now=Date.now();
+  var soon=students.filter(s=>{
+    if(!s.isPro||!s.proExpiry)return false;
+    var exp=s.proExpiry.seconds*1000;
+    var days=(exp-now)/(1000*60*60*24);
+    return days>0&&days<=30;
+  }).sort((a,b)=>a.proExpiry.seconds-b.proExpiry.seconds);
+  var el=document.getElementById('expiry-list');
+  if(!soon.length){el.innerHTML='<div class="empty"><div class="empty-ic">✅</div><div class="empty-h">No expiries soon</div><div class="empty-s">No Pro subscriptions expiring in the next 30 days.</div></div>';return;}
+  document.getElementById('kpi-exp').textContent=soon.filter(s=>(s.proExpiry.seconds*1000-now)/(1000*60*60*24)<=7).length;
+  el.innerHTML=soon.map(s=>{
+    var days=Math.ceil((s.proExpiry.seconds*1000-now)/(1000*60*60*24));
+    var cls=days<=3?'urgent':days<=7?'warn':'ok';
+    var expDate=new Date(s.proExpiry.seconds*1000).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
+    return`<div class="expiry-item">
+      <div class="expiry-days ${cls}">${days}d</div>
+      <div style="flex:1;min-width:0;">
+        <div class="expiry-name">${s.displayName||s.name||'Student'}</div>
+        <div class="expiry-date">Expires ${expDate}</div>
+      </div>
+      <span class="badge badge-exp">Expiring</span>
+    </div>`;
+  }).join('');
+}
+
+function buildTable(students){
+  allStudents=students;
+  var now=Date.now();
+  var nowMk=new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');
+  var tbody=document.getElementById('students-tbody');
+  if(!students.length){tbody.innerHTML='<tr><td colspan="8"><div class="empty"><div class="empty-ic">👥</div><div class="empty-h">No students yet</div></div></td></tr>';return;}
+  tbody.innerHTML=students.map(s=>{
+    var nm=s.displayName||s.name||'Student';
+    var isPro=s.isPro&&s.proExpiry&&(s.proExpiry.seconds*1000>now);
+    var isExp=s.isPro&&s.proExpiry&&(s.proExpiry.seconds*1000<=now);
+    var plan=isPro?'pro':isExp?'expired':'free';
+    var planBadge=isPro?'<span class="badge badge-pro">⚡ Pro</span>':isExp?'<span class="badge badge-exp">Expired</span>':'<span class="badge badge-free">Free</span>';
+    var statusBadge=isPro?'<span class="badge badge-active">Active</span>':isExp?'<span class="badge badge-exp">Expired</span>':'<span class="badge badge-free">Free</span>';
+    var expDate=s.proExpiry?new Date(s.proExpiry.seconds*1000).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}):'—';
+    var ph=s.photo||s.photoURL||null;
+    var av=ph?`<div class="tbl-av"><img src="${ph}"/></div>`:`<div class="tbl-av">${ini(nm)}</div>`;
+    // estimate join date from UID (Firebase UID timestamps are not available, show — )
+    return`<tr class="data-row" data-name="${nm.toLowerCase()}" data-email="${(s.email||'').toLowerCase()}" data-plan="${plan}">
+      <td><div style="display:flex;align-items:center;gap:10px;">${av}<div><div style="font-weight:700;font-size:.92rem;">${nm}</div><div style="font-size:.74rem;color:var(--txt-lo);font-family:var(--fm);">${s.state||''}${s.district?' · '+s.district:''}</div></div></div></td>
+      <td style="font-size:.84rem;color:var(--txt-m);">${s.email||'—'}</td>
+      <td>${planBadge}</td>
+      <td style="font-family:var(--fm);font-size:.78rem;color:var(--txt-lo);">—</td>
+      <td style="font-family:var(--fm);font-size:.8rem;color:${isPro?'var(--sage)':isExp?'var(--rose)':'var(--txt-lo)'};">${expDate}</td>
+      <td style="font-family:var(--fm);font-size:.88rem;font-weight:700;">${s.totalTests||0}</td>
+      <td style="font-family:var(--fm);font-size:.88rem;font-weight:700;">${(s.totalPoints||0).toLocaleString('en-IN')}</td>
+      <td>${statusBadge}</td>
+    </tr>`;
+  }).join('');
+}
+
+function buildKPIs(students){
+  var now=Date.now();
+  var nowMk=new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');
+  var proList=students.filter(s=>s.isPro&&s.proExpiry&&s.proExpiry.seconds*1000>now);
+  var freeList=students.filter(s=>!s.isPro||(s.proExpiry&&s.proExpiry.seconds*1000<=now));
+  var expList=students.filter(s=>s.isPro&&s.proExpiry&&s.proExpiry.seconds*1000<=now);
+  var totalRev=proList.length*149;
+
+  // month subs
+  var monthSubs=proList.filter(s=>{
+    if(!s.proExpiry)return false;
+    var sub=new Date(s.proExpiry.seconds*1000-30*24*60*60*1000);
+    return sub.getFullYear()+'-'+String(sub.getMonth()+1).padStart(2,'0')===nowMk;
+  });
+
+  document.getElementById('kpi-rev').textContent='₹'+totalRev.toLocaleString('en-IN');
+  document.getElementById('kpi-rev-s').textContent='₹'+(monthSubs.length*149).toLocaleString('en-IN')+' this month';
+  document.getElementById('kpi-pro').textContent=proList.length;
+  document.getElementById('kpi-pro-s').textContent=monthSubs.length+' new this month';
+  document.getElementById('kpi-free').textContent=freeList.length;
+  document.getElementById('kpi-free-s').textContent=students.length+' total students';
+  document.getElementById('kpi-exp').textContent=students.filter(s=>{if(!s.isPro||!s.proExpiry)return false;var d=(s.proExpiry.seconds*1000-now)/(1000*60*60*24);return d>0&&d<=7;}).length;
+
+  document.getElementById('st-month').textContent='₹'+(monthSubs.length*149).toLocaleString('en-IN');
+  document.getElementById('st-month-s').textContent=monthSubs.length+' new subscribers';
+  document.getElementById('st-conv').textContent=students.length>0?Math.round((proList.length/students.length)*100)+'%':'0%';
+  document.getElementById('st-conv-s').textContent=proList.length+' of '+students.length+' users paid';
+  document.getElementById('st-churn').textContent=expList.length;
+}
+
+window.exportCSV=function(){
+  var rows=[['Name','Email','Plan','Pro Expiry','State','District','Tests','Points']];
+  var now=Date.now();
+  allStudents.forEach(s=>{
+    var isPro=s.isPro&&s.proExpiry&&s.proExpiry.seconds*1000>now;
+    var expDate=s.proExpiry?new Date(s.proExpiry.seconds*1000).toLocaleDateString('en-IN'):'';
+    rows.push([s.displayName||s.name||'',s.email||'',isPro?'Pro':'Free',expDate,s.state||'',s.district||'',s.totalTests||0,s.totalPoints||0]);
+  });
+  var csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
+  var a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='mockarena_students_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.click();
+  toast('CSV exported successfully!');
+};
+</script>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getFirestore,collection,getDocs,doc,getDoc}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"});
+const auth=getAuth(app),db=getFirestore(app);
+
+onAuthStateChanged(auth,async user=>{
+  if(!user){window.location.href='index.html';return;}
+  try{
+    const ud=await getDoc(doc(db,'users',user.uid));
+    const data=ud.exists()?ud.data():{};
+    if(data.role!=='admin'){window.location.href='mockarena_student_dashboard.html';return;}
+    document.getElementById('auth-loader').style.display='none';
+    loadData();
+  }catch(e){
+    console.error(e);
+    document.getElementById('auth-loader').style.display='none';
+    toast('Error: '+e.message);
+  }
+});
+
+async function loadData(){
+  try{
+    const snap=await getDocs(collection(db,'users'));
+    const students=snap.docs.map(d=>({uid:d.id,...d.data()}));
+    buildKPIs(students);
+    buildRevenueChart(students);
+    buildExpiryList(students);
+    buildTable(students);
+  }catch(e){
+    console.error(e);
+    toast('Failed to load data: '+e.message);
+  }
+}
+</script>
+</body>
+</html>
