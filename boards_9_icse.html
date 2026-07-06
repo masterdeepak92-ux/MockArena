@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Class 9 ICSE 2026-27 — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--forest:#1a2618;--sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-g:rgba(107,143,94,.2);--gold:#c8962a;--gold-l:rgba(200,150,42,.08);--sky:#3b82c4;--sky-l:rgba(59,130,196,.1);--sky-d:#1e3a5f;--cream:#faf9f5;--cream-w:#f5f3ec;--border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.13);--txt:#1a2618;--txt-m:rgba(26,38,24,.64);--txt-lo:rgba(26,38,24,.44);--fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--txt);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.7;}
+a,a:hover,a:visited{text-decoration:none;color:inherit;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;background:rgba(26,38,24,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(107,143,94,.12);display:flex;align-items:center;padding:0 20px;gap:10px;}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.nav-n1{color:white;font-size:1.05rem;font-weight:900;letter-spacing:-.02em;}
+.nav-n2{font-size:1rem;font-weight:900;color:var(--sage);}
+.nav-pill{display:flex;align-items:center;gap:6px;background:rgba(107,143,94,.12);border:1px solid rgba(107,143,94,.2);border-radius:100px;padding:4px 12px;margin-left:6px;}
+.nav-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);animation:np 2.5s ease-in-out infinite;}
+@keyframes np{0%,100%{opacity:1;}50%{opacity:.2;}}
+.nav-pill-txt{font-size:.95rem;font-weight:700;color:rgba(255,255,255,.9);}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:16px;}
+.nav-link{font-size:.95rem;font-weight:600;color:rgba(255,255,255,.65);padding:5px 10px;border-radius:7px;transition:all .18s;white-space:nowrap;}
+.nav-link:hover{color:white;background:rgba(255,255,255,.07);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-switch{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.78);text-decoration:none;white-space:nowrap;}
+.nav-dash{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;text-decoration:none;white-space:nowrap;}
+.nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4a035);display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:700;color:black;overflow:hidden;flex-shrink:0;}
+.nav-ham{display:none;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);align-items:center;justify-content:center;font-size:1rem;color:white;cursor:pointer;flex-shrink:0;}
+@media(max-width:960px){.nav-links{display:none;}.nav-ham{display:flex;}}
+.jump-bar{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;padding:12px 16px;background:white;border-bottom:1px solid var(--border);-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-top:60px;}
+.jump-bar::-webkit-scrollbar{display:none;}
+.jump-btn{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:var(--cream-w);color:var(--txt);white-space:nowrap;cursor:pointer;transition:all .18s;flex-shrink:0;text-decoration:none;display:inline-block;}
+.jump-btn:hover{border-color:var(--sage);color:var(--sage);}
+.jump-btn.active{background:var(--forest);color:white;border-color:var(--forest);}
+.hero{background:var(--cream);border-bottom:1px solid var(--border);padding:clamp(88px,9vh,110px) 20px clamp(48px,5vh,68px);}
+.hero-inner{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center;}
+.hero-left{max-width:600px;}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--sage-l);border:1px solid rgba(107,143,94,.22);border-radius:100px;padding:5px 14px;margin-bottom:16px;}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:np 2.5s ease-in-out infinite;}
+.hero-tag-txt{font-size:.94rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.06em;}
+.hero-title{font-size:clamp(2rem,4vw,3.1rem);font-weight:900;color:var(--forest);line-height:1.06;letter-spacing:-.03em;margin-bottom:14px;}
+.h1{color:var(--sage);}
+.h2{color:var(--gold);}
+.hero-sub{font-size:1.08rem;color:var(--txt-m);line-height:1.78;margin-bottom:22px;font-weight:500;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.btn-primary{font-family:var(--fd);font-size:.92rem;font-weight:800;padding:11px 22px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-g);text-decoration:none;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--sage-g);}
+.btn-secondary{font-family:var(--fd);font-size:.92rem;font-weight:700;padding:11px 20px;border-radius:11px;border:1.5px solid var(--bm);background:white;color:var(--txt);cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;text-decoration:none;}
+.hero-trust{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.trust-item{font-size:.96rem;font-weight:600;color:var(--txt-m);display:flex;align-items:center;gap:5px;}
+.trust-item span{color:var(--sage);font-weight:700;}
+.hero-right{flex-shrink:0;}
+.hero-stat-card{background:white;border:1.5px solid var(--border);border-radius:18px;padding:20px;min-width:210px;box-shadow:0 4px 20px rgba(26,38,24,.07);}
+.hsc-title{font-size:.94rem;font-weight:700;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}
+.hsc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-radius:12px;overflow:hidden;}
+.hsc-item{background:var(--cream-w);padding:13px 10px;text-align:center;}
+.hsc-n{font-family:var(--fm);font-size:1.15rem;font-weight:800;color:var(--forest);display:block;margin-bottom:2px;}
+.hsc-l{font-size:.9rem;font-weight:600;color:var(--txt-lo);}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr;gap:20px;}.hero-right{display:none;}}
+section{padding:52px 20px;}
+.container{max-width:1060px;margin:0 auto;}
+.sec-label{font-size:.96rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sage);margin-bottom:8px;}
+.sec-title{font-size:clamp(1.6rem,2.6vw,2.1rem);font-weight:800;color:var(--forest);line-height:1.18;margin-bottom:8px;letter-spacing:-.02em;}
+.sec-sub{font-size:1.06rem;color:var(--txt-m);line-height:1.78;margin-bottom:24px;}
+.subj-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:22px;}
+.subj-tab{font-family:var(--fd);font-size:1rem;font-weight:700;padding:9px 18px;border-radius:10px;border:1.5px solid var(--border);background:white;color:var(--txt-m);cursor:pointer;transition:all .18s;}
+.subj-tab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.subj-tab:hover:not(.on){border-color:var(--sage);color:var(--sage);}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:14px;}
+.ch-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(26,38,24,.05);transition:all .2s;}
+.ch-card:hover{border-color:var(--sage);transform:translateY(-3px);box-shadow:0 6px 20px var(--sage-l);}
+.ch-num{font-family:var(--fm);font-size:.84rem;font-weight:700;color:var(--sage);background:var(--sage-l);border:1px solid rgba(107,143,94,.2);padding:3px 10px;border-radius:100px;display:inline-block;margin-bottom:10px;}
+.ch-title{font-size:1.08rem;font-weight:800;color:var(--forest);margin-bottom:6px;line-height:1.3;}
+.ch-meta{font-size:.96rem;color:var(--txt-m);line-height:1.6;margin-bottom:14px;}
+.ch-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.ch-tags{display:flex;gap:5px;flex-wrap:wrap;}
+.ch-tag{font-size:.84rem;font-weight:600;padding:3px 9px;border-radius:100px;background:var(--cream-w);color:var(--txt-lo);border:1px solid var(--border);}
+.ch-tag.imp{background:rgba(200,150,42,.08);color:var(--gold);border-color:rgba(200,150,42,.2);}
+.ch-tag.new{background:rgba(107,143,94,.08);color:#3a6830;border-color:rgba(107,143,94,.2);}
+.ch-btn{font-family:var(--fd);font-size:.94rem;font-weight:700;padding:7px 14px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;white-space:nowrap;transition:all .18s;flex-shrink:0;}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(255px,1fr));gap:14px;}
+.tip-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;}
+.tip-icon{font-size:1.5rem;margin-bottom:10px;}
+.tip-title{font-size:1.06rem;font-weight:800;color:var(--forest);margin-bottom:7px;}
+.tip-body{font-size:1rem;color:var(--txt-m);line-height:1.72;}
+.footer{background:var(--forest);color:white;padding:40px 20px 28px;}
+.ft-inner{max-width:1060px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.ft-brand{font-size:1.2rem;font-weight:900;}
+.ft-brand span{color:var(--sage);}
+.ft-desc{font-size:.96rem;color:rgba(255,255,255,.55);margin-top:5px;max-width:300px;line-height:1.65;}
+.ft-links{display:flex;flex-direction:column;gap:8px;}
+.ft-link{font-size:.96rem;color:rgba(255,255,255,.58);transition:color .18s;}
+.ft-link:hover{color:white;}
+.ft-copy{font-size:.92rem;color:rgba(255,255,255,.35);margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.07);width:100%;}
+@media(min-width:1100px){section{padding:64px 40px;}.hero{padding:96px 40px 68px;}.hero-title{font-size:3.1rem;}.sec-title{font-size:2.1rem;}}
+@media(min-width:1400px){.container{max-width:1200px;}section{padding:72px 48px;}.hero-title{font-size:3.4rem;}.sec-title{font-size:2.1rem;}}
+@media(max-width:540px){section{padding:36px 16px;}.hero{padding:76px 16px 40px;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><span class="nav-n1">Mock</span><span class="nav-n2">Arena</span></a>
+  <div class="nav-pill"><div class="nav-pill-dot"></div><span class="nav-pill-txt">Class 9 · ICSE 2026-27</span></div>
+  <div class="nav-links">
+    <a href="#chapters" class="nav-link">Chapters</a>
+    <a href="#tips" class="nav-link">Tips</a>
+  </div>
+  <div class="nav-right">
+    <a href="mockarena_onboarding.html" class="nav-switch">⇄ Switch Exam</a>
+    <a href="mockarena_student_dashboard.html" class="nav-dash">Dashboard →</a>
+    <div class="nav-av" id="nav-av">S</div>
+    <button class="nav-ham" onclick="document.querySelector('.nav-links').style.cssText='display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(26,38,24,.97);padding:16px;z-index:300;'">☰</button>
+  </div>
+</nav>
+
+<div class="jump-bar">
+  <a href="#chapters" class="jump-btn active">📚 Chapters</a>
+  <a href="#tips" class="jump-btn">💡 Tips</a>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag"><div class="hero-tag-dot"></div><span class="hero-tag-txt">ICSE 2026-27 · Official CISCE Syllabus</span></div>
+      <h1 class="hero-title">Class 9 <span class="h1">ICSE</span><br/><span class="h2">2026-27</span> Syllabus.</h1>
+      <p class="hero-sub">Based on the official CISCE syllabus for ICSE 2026-27, published at cisce.org. Now includes Electricity & Magnetism (Physics) and updated Heat & Energy with Green House Effect. 7 core subjects fully updated.</p>
+      <div class="hero-btns">
+        <a href="#chapters" class="btn-primary">📚 Start Chapter Tests</a>
+        <a href="boards_9.html" class="btn-secondary">← Change Board</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><span>✓</span> Official CISCE 2026-27</div>
+        <div class="trust-item"><span>✓</span> 7 Subjects</div>
+        <div class="trust-item"><span>✓</span> Electricity Added</div>
+        <div class="trust-item"><span>✓</span> 80:20 Pattern</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-card">
+        <div class="hsc-title">ICSE Class 9 · 2026-27</div>
+        <div class="hsc-grid">
+          <div class="hsc-item"><span class="hsc-n">80</span><span class="hsc-l">Theory Marks</span></div>
+          <div class="hsc-item"><span class="hsc-n">20</span><span class="hsc-l">Internal/Practical</span></div>
+          <div class="hsc-item"><span class="hsc-n">7</span><span class="hsc-l">Core Subjects</span></div>
+          <div class="hsc-item"><span class="hsc-n">2 hrs</span><span class="hsc-l">Physics Paper</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="chapters" style="background:var(--cream-w);">
+<div class="container">
+  <div class="sec-label">📚 Chapter-wise Practice</div>
+  <h2 class="sec-title">ICSE Class 9 — Official 2026-27 Syllabus</h2>
+  <p class="sec-sub">Based on official CISCE 2026-27 PDFs from cisce.org. All 7 core subjects fully updated including the newly added Electricity & Magnetism in Physics.</p>
+
+  <div class="subj-tabs">
+    <button class="subj-tab on" onclick="setSubj(this,'math')">📐 Mathematics</button>
+    <button class="subj-tab" onclick="setSubj(this,'physics')">⚡ Physics</button>
+    <button class="subj-tab" onclick="setSubj(this,'chemistry')">🧪 Chemistry</button>
+    <button class="subj-tab" onclick="setSubj(this,'biology')">🌱 Biology</button>
+    <button class="subj-tab" onclick="setSubj(this,'english')">📖 English</button>
+    <button class="subj-tab" onclick="setSubj(this,'history')">🏛️ History & Civics</button>
+    <button class="subj-tab" onclick="setSubj(this,'geography')">🗺️ Geography</button>
+  </div>
+
+  <!-- MATHEMATICS 2026-27 (from CISCE official) -->
+  <div id="ch-math" class="ch-grid">
+    <div class="ch-card"><div class="ch-num">Ch.1 · Pure Arithmetic</div><div class="ch-title">Rational and Irrational Numbers</div><div class="ch-meta">Real numbers, surds, rationalisation of surds, simplifying by rationalising denominator, representation on number line, proofs of irrationality of √2, √3, √5</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Rational Irrational Numbers')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.2 · Commercial Maths</div><div class="ch-title">Compound Interest</div><div class="ch-meta">CI as repeated SI with growing principal, amount formula A=P(1+r/100)^n, half-yearly compounding, finding A/P/r/n given combinations, CI–SI difference, rate of growth and depreciation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Compound Interest')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.3 · Algebra</div><div class="ch-title">Expansions and Factorisation</div><div class="ch-meta">Algebraic identities: (a±b)², (a±b)³, (x±a)(x±b), (a±b±c)²; Factorisation: a²-b², a³±b³, ax²+bx+c by splitting middle term</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Expansions Factorisation')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.4 · Algebra</div><div class="ch-title">Simultaneous Linear Equations</div><div class="ch-meta">Solving by elimination, substitution and cross-multiplication; framing and solving word problems</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Simultaneous Equations')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.5 · Algebra</div><div class="ch-title">Indices / Exponents</div><div class="ch-meta">Positive, fractional, negative and zero indices; laws of indices: aᵐ×aⁿ=aᵐ⁺ⁿ, aᵐ÷aⁿ=aᵐ⁻ⁿ, (aᵐ)ⁿ=aᵐⁿ; simplification of expressions</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Maths','Indices Exponents')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.6 · Algebra</div><div class="ch-title">Logarithms</div><div class="ch-meta">Logarithmic vs exponential form, laws of logarithms, expansion of expressions using log laws (e.g. log y = 4log a + 2log b - 3log c)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Logarithms')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.7 · Geometry</div><div class="ch-title">Triangles</div><div class="ch-meta">Congruency (SSS, SAS, AAS, RHS); angles opposite equal sides; triangle inequalities; Mid-Point Theorem with proof; Equal Intercept Theorem; Pythagoras Theorem (area-based proof) and converse</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Triangles')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.8 · Geometry</div><div class="ch-title">Rectilinear Figures</div><div class="ch-meta">Parallelogram theorems (all 6 properties with proofs), constructions of quadrilaterals and regular hexagon, area theorems on parallelograms (same base and between same parallels)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Rectilinear Figures')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.9 · Geometry</div><div class="ch-title">Circle — Chord Properties</div><div class="ch-meta">Perpendicular from centre bisects chord, equal chords equidistant from centre, one circle through 3 points; arc and chord properties: equal arcs ↔ equal angles and equal chords</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Circle Chord Properties')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.10 · Statistics</div><div class="ch-title">Statistics</div><div class="ch-meta">Raw, arrayed and grouped data, tally marks, mean and median of ungrouped data, class intervals, frequency tables, grouped frequency distributions (continuous intervals), frequency polygon</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Maths','Statistics')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.11 · Mensuration</div><div class="ch-title">Area, Perimeter and Volumes</div><div class="ch-meta">Area and perimeter of triangles (Heron's), all quadrilaterals; circle area and circumference; sectors; surface area and volume of cube and cuboid (including inner/outer dimensions, cost, open/closed)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Mensuration')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.12 · Trigonometry</div><div class="ch-title">Trigonometry</div><div class="ch-meta">sin, cos, tan and reciprocals; standard angles 0°,30°,45°,60°,90°; simple 2D problems with right-angled triangle; complementary angle relations</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Trigonometry')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.13 · Coordinate Geometry</div><div class="ch-title">Coordinate Geometry</div><div class="ch-meta">Cartesian plane, ordered pairs, plotting points, solving simultaneous equations graphically, distance formula</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Maths','Coordinate Geometry')">Practice →</button></div></div>
+  </div>
+
+  <!-- PHYSICS 2026-27 (8 units — Electricity NEW added) -->
+  <div id="ch-physics" class="ch-grid" style="display:none;">
+    <div class="ch-card"><div class="ch-num">Unit 1</div><div class="ch-title">Measurements and Experimentation</div><div class="ch-meta">SI units, Vernier callipers (LC, zero error), micrometer screw gauge for length, simple pendulum for time — T=2π√(l/g), graph of l vs T²</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Physics','Measurements')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 2</div><div class="ch-title">Motion in One Dimension</div><div class="ch-meta">Scalars and vectors, distance vs displacement, speed vs velocity, acceleration, distance-time and velocity-time graphs. Derived equations: v=u+at, s=ut+½at², v²=u²+2as, s=½(u+v)t</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Physics','Motion 1D')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 3</div><div class="ch-title">Laws of Motion</div><div class="ch-meta">Contact and non-contact forces, Newton's 3 laws, inertia, mass, momentum p=mv, F=ma, Gravitation: Universal Law, g, mass vs weight, free fall, gravitational units</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Physics','Laws of Motion')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 4</div><div class="ch-title">Fluids — Pressure and Buoyancy</div><div class="ch-meta">Thrust and pressure, p=hρg, Pascal's law, atmospheric pressure, buoyancy, Archimedes' Principle, Relative Density, floatation principle (ρ₁/ρ₂ = V₂/V₁)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Physics','Fluids Pressure')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 5</div><div class="ch-title">Heat and Energy</div><div class="ch-meta">Heat vs temperature, anomalous expansion of water (0-10°C), Hope's experiment, energy flow and laws of thermodynamics, renewable vs non-renewable energy sources, <strong>Global Warming and Greenhouse Effect</strong> — meaning, causes, impact</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag new">GH Effect Updated</span></div><button class="ch-btn" onclick="startTest('Physics','Heat Energy')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 6</div><div class="ch-title">Light — Reflection and Mirrors</div><div class="ch-meta">Laws of reflection, plane mirrors (parallel and perpendicular), spherical mirrors (concave/convex), focal length f=R/2, ray diagrams for all positions, mirror formula (no derivation), uses of mirrors</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Physics','Light Reflection')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 7</div><div class="ch-title">Sound</div><div class="ch-meta">Nature and propagation of sound, V=fλ, effect of temperature and medium on speed, infrasonic/sonic/ultrasonic, applications of ultrasound, difference between ultrasonic and supersonic</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Physics','Sound')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 8 · NEW ✨</div><div class="ch-title">Electricity and Magnetism</div><div class="ch-meta">Electric cell, current as rate of charge flow, potential difference V=W/q, open and closed circuits, insulators and conductors. Induced magnetism, magnetic field of earth, neutral points, magnetic field lines, electromagnets. <strong>New unit added in 2026-27</strong></div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag new">New 2026-27</span><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Physics','Electricity Magnetism')">Practice →</button></div></div>
+  </div>
+
+  <!-- CHEMISTRY -->
+  <div id="ch-chemistry" class="ch-grid" style="display:none;">
+    <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">The Language of Chemistry</div><div class="ch-meta">Chemical symbols (IUPAC), formulae of common compounds, valency, balancing chemical equations, word equations and formula equations</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Chemistry','Language of Chemistry')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">Chemical Changes and Reactions</div><div class="ch-meta">Physical vs chemical changes, types of reactions (combination, decomposition, displacement, double displacement), exothermic and endothermic</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Chemistry','Chemical Changes')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">Water</div><div class="ch-meta">Hard and soft water, temporary and permanent hardness, methods of softening, water as a solvent, heavy water (D₂O)</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Chemistry','Water')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.4</div><div class="ch-title">Atomic Structure and Chemical Bonding</div><div class="ch-meta">Bohr's model, electronic configuration, ionic bonding (electron transfer), covalent bonding (electron sharing), properties of ionic vs covalent compounds, Lewis dot structures</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Chemistry','Atomic Structure')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.5</div><div class="ch-title">The Periodic Table</div><div class="ch-meta">Historical development (Dobereiner, Newlands, Mendeleev), Modern Periodic Table, periodicity: atomic radius, ionisation energy, electronegativity, metallic character</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Chemistry','Periodic Table')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.6</div><div class="ch-title">Study of the First Element — Hydrogen</div><div class="ch-meta">Position in periodic table, preparation (Bosch process, electrolysis), physical and chemical properties, reducing nature, uses, isotopes of hydrogen</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Chemistry','Hydrogen')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.7</div><div class="ch-title">Atmospheric Pollution</div><div class="ch-meta">Air pollution — causes (burning fuels, industries), pollutants (CO, SO₂, NO₂, particulates), effects on health and environment, greenhouse gases, ozone layer depletion, acid rain, control measures</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Chemistry','Atmospheric Pollution')">Practice →</button></div></div>
+  </div>
+
+  <!-- BIOLOGY -->
+  <div id="ch-biology" class="ch-grid" style="display:none;">
+    <div class="ch-card"><div class="ch-num">Unit 1</div><div class="ch-title">Cell — The Basic Unit of Life</div><div class="ch-meta">Cell as structural and functional unit, prokaryotic vs eukaryotic, plant vs animal cell, organelles (nucleus, mitochondria, chloroplast, ER, Golgi, vacuoles, plasma membrane, cell wall), osmosis, permeability</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Biology','Cell Unit Life')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 2</div><div class="ch-title">Tissues — Plant and Animal</div><div class="ch-meta">Meristematic tissues (apical, lateral, intercalary), permanent tissues (parenchyma, collenchyma, sclerenchyma, xylem, phloem), animal tissues (epithelial, connective, muscular — striated/smooth/cardiac, nervous)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Biology','Tissues')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 3</div><div class="ch-title">The Flower</div><div class="ch-meta">Parts of a flower and their functions, types of flowers (complete/incomplete, bisexual/unisexual), inflorescence, floral formula basics</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Biology','The Flower')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 4</div><div class="ch-title">Pollination and Fertilisation</div><div class="ch-meta">Self vs cross pollination, agents (wind, water, insects, animals), adaptations, fertilisation in flowering plants, double fertilisation, development of seed and fruit</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Biology','Pollination Fertilisation')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 5</div><div class="ch-title">Seeds — Structure and Germination</div><div class="ch-meta">Structure of monocot and dicot seeds, conditions for germination (water, air, temperature), types (epigeal, hypogeal), role of cotyledons, seed dispersal mechanisms</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Biology','Seeds Germination')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 6</div><div class="ch-title">Respiration in Plants</div><div class="ch-meta">Aerobic and anaerobic respiration, gaseous exchange in plants (stomata, lenticels), comparison of respiration and photosynthesis, Kreb's cycle (overview), fermentation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Biology','Plant Respiration')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Unit 7</div><div class="ch-title">Economic Importance of Bacteria and Fungi</div><div class="ch-meta">Useful bacteria (nitrogen fixation, decomposition, dairy, medicines), harmful bacteria (diseases). Useful fungi (yeast in baking/brewing, antibiotics), harmful fungi (diseases, food spoilage)</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Biology','Bacteria Fungi')">Practice →</button></div></div>
+  </div>
+
+  <!-- ENGLISH -->
+  <div id="ch-english" class="ch-grid" style="display:none;">
+    <div class="ch-card"><div class="ch-num">English Language</div><div class="ch-title">Comprehension (Unseen Passage)</div><div class="ch-meta">Reading comprehension of ~500-word passage: word meanings, antonyms from passage, 5 questions for inference, 1 language question (e.g. voice transformation)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('English','Comprehension')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">English Language</div><div class="ch-title">Letter Writing</div><div class="ch-meta">Choice between formal and informal letter. Formal: complaint, request, official. Informal: to friend/relative. Total 10 marks.</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('English','Letter Writing')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">English Language</div><div class="ch-title">Grammar</div><div class="ch-meta">Transformation of sentences, synthesis (combining sentences), agreement of verb with subject, question tags, word formation/derivatives, tenses and sequence of tenses</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('English','Grammar')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Literature — Prose</div><div class="ch-title">Treasure Chest — Short Stories</div><div class="ch-meta">Prescribed short stories: comprehension, character analysis, themes, vocabulary — detailed study of all prescribed stories</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Literature</span></div><button class="ch-btn" onclick="startTest('English','Prose Stories')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Literature — Poetry</div><div class="ch-title">Treasure Chest — Poems</div><div class="ch-meta">Prescribed poems: theme, rhyme scheme, figures of speech (simile, metaphor, personification, alliteration), appreciation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Literature</span></div><button class="ch-btn" onclick="startTest('English','Poetry')">Practice →</button></div></div>
+  </div>
+
+  <!-- HISTORY & CIVICS -->
+  <div id="ch-history" class="ch-grid" style="display:none;">
+    <div class="ch-card"><div class="ch-num">History · Ch.1</div><div class="ch-title">The Harappan Civilisation</div><div class="ch-meta">Town planning (grid pattern, drainage, granary), trade, crafts, religion, scripts, decline theories — Aryan invasion vs climate change vs internal decay</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('History','Harappan Civilisation')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">History · Ch.2</div><div class="ch-title">The Vedic Period</div><div class="ch-meta">Early Vedic (Rigvedic) society, later Vedic changes (varna system, economy, women's position), Vedic literature (Vedas, Upanishads, epics)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('History','Vedic Period')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">History · Ch.3</div><div class="ch-title">Jainism and Buddhism</div><div class="ch-meta">Causes for rise, Mahavira and his teachings, Gautama Buddha and Buddhism, spread, councils, Angas and Tripitikas, Jatakas — 6th century BC context</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('History','Jainism Buddhism')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">History · Ch.4</div><div class="ch-title">The Mauryan Empire</div><div class="ch-meta">Chandragupta Maurya (rise), Bindusara, Ashoka's Dhamma, edicts, Nalanda University, Aryabhatta, Kalidasa, Deogarh temple — contribution to education, science and culture</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('History','Mauryan Empire')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Civics · Ch.1</div><div class="ch-title">Our Constitution</div><div class="ch-meta">Preamble, Fundamental Rights (Articles 12-35), Directive Principles, Fundamental Duties, Constitutional Amendments</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Civics','Our Constitution')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Civics · Ch.2</div><div class="ch-title">Elections</div><div class="ch-meta">Electoral process in India, Election Commission (ECI), Lok Sabha and Rajya Sabha elections, voting rights, Model Code of Conduct, role of EVM</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Civics','Elections')">Practice →</button></div></div>
+  </div>
+
+  <!-- GEOGRAPHY -->
+  <div id="ch-geography" class="ch-grid" style="display:none;">
+    <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">Earth as a Planet</div><div class="ch-meta">Shape, size, rotation (24 hrs, day/night, Coriolis effect), revolution (365.25 days), latitudes and longitudes, time zones, IST, International Date Line</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Geography','Earth as Planet')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">Geographic Grid</div><div class="ch-meta">Parallels of latitude (equator, tropics, polar circles), meridians of longitude (prime meridian, 180°), great circles, small circles, angular distance</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Geography','Geographic Grid')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">Rotation and Revolution</div><div class="ch-meta">Effects of rotation (day/night, tides, wind deflection), effects of revolution (seasons, varying length of day/night, equinoxes 21 Mar & 23 Sep, solstices 21 Jun & 22 Dec)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Geography','Rotation Revolution')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.4</div><div class="ch-title">Structure of the Earth</div><div class="ch-meta">Layers: crust (sial/sima), mantle (asthenosphere), outer core, inner core; composition and properties; plate tectonics basics; types of rocks (igneous, sedimentary, metamorphic)</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Geography','Earth Structure')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.5</div><div class="ch-title">Landforms</div><div class="ch-meta">Mountains (fold, block, volcanic), plateaus (dissected, lava), plains (alluvial, glacial, coastal); rivers and their work (erosion, transportation, deposition); delta, meanders, ox-bow lakes</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Geography','Landforms')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.6</div><div class="ch-title">Earthquakes and Volcanoes</div><div class="ch-meta">Causes of earthquakes (seismic waves P, S, L), Richter scale, effects; volcanism (intrusive and extrusive), types of volcanoes (shield, cinder cone, composite), Ring of Fire</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Geography','Earthquakes Volcanoes')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.7</div><div class="ch-title">Weathering and Denudation</div><div class="ch-meta">Physical/mechanical weathering (frost, thermal expansion), chemical weathering (oxidation, carbonation, hydration), biological weathering; mass movement (landslides)</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Geography','Weathering Denudation')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.8</div><div class="ch-title">Hydrosphere</div><div class="ch-meta">Distribution of water, ocean floor features (continental shelf, slope, abyssal plain, trenches), ocean currents (warm and cold), tides (spring, neap), importance of oceans</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Geography','Hydrosphere')">Practice →</button></div></div>
+    <div class="ch-card"><div class="ch-num">Ch.9–11</div><div class="ch-title">Atmosphere — Composition, Insolation and Climate</div><div class="ch-meta">Layers (troposphere to exosphere), composition; insolation (factors affecting), temperature distribution; Torrid/Temperate/Frigid zones; importance of lines of latitude</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Geography','Atmosphere Climate')">Practice →</button></div></div>
+  </div>
+</div>
+</section>
+
+<section id="tips" style="background:var(--cream);">
+<div class="container">
+  <div class="sec-label">💡 Expert Tips</div>
+  <h2 class="sec-title">Score High in ICSE Class 9 — 2026-27</h2>
+  <p class="sec-sub">Tips based on the actual 2026-27 CISCE syllabus and exam pattern.</p>
+  <div class="tips-grid">
+    <div class="tip-card"><div class="tip-icon">⚡</div><div class="tip-title">Physics: New Electricity Unit</div><div class="tip-body">Electricity & Magnetism is a completely new unit in 2026-27 ICSE Physics. It covers circuits, current, potential difference, induced magnetism and electromagnets. Start this early — it'll be fresh for examiners.</div></div>
+    <div class="tip-card"><div class="tip-icon">📐</div><div class="tip-title">Maths: Logs + CI are Unique to ICSE</div><div class="tip-body">Logarithms and Compound Interest are present in ICSE but not in CBSE Class 9. These carry high marks. Master the log laws and CI formula A=P(1+r/100)ⁿ thoroughly.</div></div>
+    <div class="tip-card"><div class="tip-icon">🌱</div><div class="tip-title">Biology: Draw Diagrams</div><div class="tip-body">ICSE Biology is heavily diagram-based. Cell organelles, plant tissues, flower parts, seed structure — practice neat labelled diagrams for all chapters. Poor diagrams = lost marks.</div></div>
+    <div class="tip-card"><div class="tip-icon">🌍</div><div class="tip-title">Geography: Focus on Chapters 1–5</div><div class="tip-body">Earth as a Planet, Rotation/Revolution, and Structure of the Earth carry the most marks. Understand equinoxes, solstices, tides and rock types with diagrams.</div></div>
+    <div class="tip-card"><div class="tip-icon">✍️</div><div class="tip-title">English: Vocabulary from Text</div><div class="tip-body">The comprehension asks for antonyms "from the passage." Read the passage twice before answering. Vocabulary questions require you to find words from the passage itself — not general vocabulary.</div></div>
+    <div class="tip-card"><div class="tip-icon">🔄</div><div class="tip-title">ICSE Depth > CBSE Breadth</div><div class="tip-body">ICSE tests deeper understanding than CBSE. Don't just memorise — understand WHY. In Maths, know proofs of all geometry theorems. In History, understand causes and effects, not just dates.</div></div>
+  </div>
+</div>
+</section>
+
+<footer class="footer">
+  <div class="ft-inner">
+    <div><div class="ft-brand">Mock<span>Arena</span></div><div class="ft-desc">Official 2026-27 CISCE syllabus-based preparation.</div></div>
+    <div class="ft-links">
+      <a href="boards_9.html" class="ft-link">← Class 9 Boards</a>
+      <a href="mockarena_student_dashboard.html" class="ft-link">Dashboard</a>
+    </div>
+    <div class="ft-links">
+      <a href="boards_9_cbse.html" class="ft-link">Class 9 CBSE</a>
+      <a href="boards_9_state.html" class="ft-link">Class 9 State Board</a>
+    </div>
+  </div>
+  <div class="ft-inner"><div class="ft-copy">© 2026 MockArena · mockarena.co.in · Source: cisce.org (ICSE 2026-27)</div></div>
+</footer>
+
+<script>
+function setSubj(btn,id){
+  document.querySelectorAll('.subj-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  ['math','physics','chemistry','biology','english','history','geography'].forEach(s=>{
+    const el=document.getElementById('ch-'+s);
+    if(el)el.style.display=s===id?'grid':'none';
+  });
+}
+function startTest(subject,chapter){
+  alert('Coming soon! Questions for ICSE Class 9 2026-27 '+subject+' — '+chapter+' will be available once uploaded from Admin Panel.');
+}
+</script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",appId:"1:861067164791:web:28df5244e34361dd9d5a72"});
+const auth=getAuth(app);
+onAuthStateChanged(auth,(user)=>{if(!user){window.location.href='login.html';return;}const av=document.getElementById('nav-av');if(av){if(user.photoURL)av.innerHTML=`<img src="${user.photoURL}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;else av.textContent=(user.displayName||'S').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);}});
+</script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Class 9 State Board 2026-27 — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--forest:#1a2618;--sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-g:rgba(107,143,94,.2);--gold:#c8962a;--gold-l:rgba(200,150,42,.08);--rose:#c84b4b;--cream:#faf9f5;--cream-w:#f5f3ec;--border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.13);--txt:#1a2618;--txt-m:rgba(26,38,24,.64);--txt-lo:rgba(26,38,24,.44);--fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--txt);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.7;}
+a,a:hover,a:visited{text-decoration:none;color:inherit;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;background:rgba(26,38,24,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(107,143,94,.12);display:flex;align-items:center;padding:0 20px;gap:10px;}
+.nav-logo{display:flex;align-items:center;gap:8px;}
+.nav-n1{color:white;font-size:1.05rem;font-weight:900;letter-spacing:-.02em;}
+.nav-n2{font-size:1rem;font-weight:900;color:var(--sage);}
+.nav-pill{display:flex;align-items:center;gap:6px;background:rgba(107,143,94,.12);border:1px solid rgba(107,143,94,.2);border-radius:100px;padding:4px 12px;margin-left:6px;}
+.nav-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);animation:np 2.5s ease-in-out infinite;}
+@keyframes np{0%,100%{opacity:1;}50%{opacity:.2;}}
+.nav-pill-txt{font-size:.95rem;font-weight:700;color:rgba(255,255,255,.9);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-switch{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.78);text-decoration:none;white-space:nowrap;}
+.nav-dash{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;text-decoration:none;white-space:nowrap;}
+.nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4a035);display:flex;align-items:center;justify-content:center;font-size:.9rem;font-weight:700;color:black;overflow:hidden;flex-shrink:0;}
+/* JUMP BAR */
+.jump-bar{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;padding:12px 16px;background:white;border-bottom:1px solid var(--border);-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.jump-bar::-webkit-scrollbar{display:none;}
+.jump-btn{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:var(--cream-w);color:var(--txt);white-space:nowrap;cursor:pointer;transition:all .18s;flex-shrink:0;text-decoration:none;display:inline-block;}
+.jump-btn:hover{border-color:var(--sage);color:var(--sage);}
+.jump-btn.active{background:var(--forest);color:white;border-color:var(--forest);}
+/* STATE SELECTOR */
+.state-bar{background:white;border-bottom:1px solid var(--border);padding:16px 20px;margin-top:60px;}
+.state-inner{max-width:1060px;margin:0 auto;}
+.state-label{font-size:.9rem;font-weight:700;color:var(--txt-m);margin-bottom:10px;}
+.state-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.state-chip{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:7px 16px;border-radius:100px;border:1.5px solid var(--border);background:var(--cream-w);color:var(--txt);cursor:pointer;transition:all .18s;}
+.state-chip:hover{border-color:var(--sage);color:var(--sage);}
+.state-chip.on{background:var(--forest);color:white;border-color:var(--forest);}
+/* HERO */
+.hero{background:var(--cream);border-bottom:1px solid var(--border);padding:clamp(72px,8vh,100px) 20px clamp(44px,5vh,64px);}
+.hero-inner{max-width:1060px;margin:0 auto;}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--sage-l);border:1px solid rgba(107,143,94,.22);border-radius:100px;padding:5px 16px;margin-bottom:18px;}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:np 2.5s ease-in-out infinite;}
+.hero-tag-txt{font-size:.94rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.06em;}
+.hero-title{font-size:clamp(2rem,4vw,3.2rem);font-weight:900;color:var(--forest);line-height:1.06;letter-spacing:-.03em;margin-bottom:14px;}
+.h1{color:var(--sage);}
+.h2{color:var(--gold);}
+.hero-sub{font-size:1.08rem;color:var(--txt-m);line-height:1.78;margin-bottom:24px;font-weight:500;max-width:700px;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-primary{font-family:var(--fd);font-size:.94rem;font-weight:800;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-g);text-decoration:none;}
+.btn-secondary{font-family:var(--fd);font-size:.94rem;font-weight:700;padding:12px 22px;border-radius:11px;border:1.5px solid var(--bm);background:white;color:var(--txt);cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;text-decoration:none;}
+/* SECTIONS */
+section{padding:56px 20px;}
+.container{max-width:1060px;margin:0 auto;}
+.sec-label{font-size:.96rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sage);margin-bottom:8px;}
+.sec-title{font-size:clamp(1.6rem,2.6vw,2.1rem);font-weight:800;color:var(--forest);line-height:1.18;margin-bottom:8px;letter-spacing:-.02em;}
+.sec-sub{font-size:1.06rem;color:var(--txt-m);line-height:1.78;margin-bottom:28px;}
+/* STATE CONTENT */
+.state-content{display:none;}
+.state-content.on{display:block;}
+.subj-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px;}
+.subj-tab{font-family:var(--fd);font-size:1rem;font-weight:700;padding:10px 20px;border-radius:10px;border:1.5px solid var(--border);background:white;color:var(--txt-m);cursor:pointer;transition:all .18s;}
+.subj-tab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.subj-tab:hover:not(.on){border-color:var(--sage);color:var(--sage);}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.ch-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(26,38,24,.05);transition:all .2s;cursor:pointer;}
+.ch-card:hover{border-color:var(--sage);transform:translateY(-3px);box-shadow:0 6px 20px var(--sage-l);}
+.ch-num{font-family:var(--fm);font-size:.84rem;font-weight:700;color:var(--sage);background:var(--sage-l);border:1px solid rgba(107,143,94,.2);padding:3px 10px;border-radius:100px;display:inline-block;margin-bottom:10px;}
+.ch-title{font-size:1.08rem;font-weight:800;color:var(--forest);margin-bottom:6px;line-height:1.3;}
+.ch-meta{font-size:.96rem;color:var(--txt-m);line-height:1.6;margin-bottom:14px;}
+.ch-footer{display:flex;align-items:center;justify-content:space-between;}
+.ch-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.ch-tag{font-size:.84rem;font-weight:600;padding:3px 10px;border-radius:100px;background:var(--cream-w);color:var(--txt-lo);border:1px solid var(--border);}
+.ch-btn{font-family:var(--fd);font-size:.94rem;font-weight:700;padding:8px 16px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;white-space:nowrap;}
+.no-content{background:rgba(200,150,42,.05);border:1.5px dashed rgba(200,150,42,.25);border-radius:16px;padding:40px 24px;text-align:center;}
+.no-content-ic{font-size:2rem;margin-bottom:12px;}
+.no-content-t{font-size:1rem;font-weight:800;color:var(--forest);margin-bottom:6px;}
+.no-content-s{font-size:.92rem;color:var(--txt-m);line-height:1.65;}
+.footer{background:var(--forest);color:white;padding:40px 20px 28px;}
+.ft-inner{max-width:1060px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.ft-brand{font-size:1.2rem;font-weight:900;}
+.ft-brand span{color:var(--sage);}
+.ft-desc{font-size:.96rem;color:rgba(255,255,255,.55);margin-top:6px;max-width:300px;line-height:1.65;}
+.ft-links{display:flex;flex-direction:column;gap:8px;}
+.ft-link{font-size:.96rem;color:rgba(255,255,255,.58);}
+.ft-link:hover{color:white;}
+.ft-copy{font-size:.92rem;color:rgba(255,255,255,.38);margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.07);width:100%;}
+@media(min-width:1100px){section{padding:68px 40px;}.hero{padding:100px 40px 72px;}}
+/* DESKTOP */
+@media(min-width:960px){.nav-links{display:flex !important;}}
+@media(max-width:960px){.nav-ham{display:flex;}}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr;gap:20px;}}
+@media(min-width:1100px){
+  section{padding:64px 40px;}
+  .hero{padding:96px 40px 68px;}
+  .hero-title{font-size:3.1rem;}
+  .hero-sub{font-size:1.12rem;}
+  .sec-title{font-size:2.1rem;}
+  .sec-sub{font-size:1.1rem;}
+  .ch-grid{grid-template-columns:repeat(auto-fill,minmax(300px,1fr));}
+}
+@media(min-width:1400px){
+  .container{max-width:1200px;}
+  section{padding:72px 48px;}
+  .hero-title{font-size:3.4rem;}
+  .sec-title{font-size:2.1rem;}
+}
+@media(max-width:540px){section{padding:36px 16px;}.hero{padding:80px 16px 40px;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><span class="nav-n1">Mock</span><span class="nav-n2">Arena</span></a>
+  <div class="nav-pill"><div class="nav-pill-dot"></div><span class="nav-pill-txt">Class 9 · State Board 2026-27</span></div>
+  <div class="nav-right">
+    <a href="mockarena_onboarding.html" class="nav-switch">⇄ Switch Exam</a>
+    <a href="mockarena_student_dashboard.html" class="nav-dash">Dashboard →</a>
+    <div class="nav-av" id="nav-av">S</div>
+  </div>
+</nav>
+
+<!-- STATE SELECTOR -->
+<div class="state-bar">
+  <div class="state-inner">
+    <div class="state-label">Select your State Board:</div>
+    <div class="state-chips">
+      <button class="state-chip on" onclick="setState(this,'up')">🏛️ Uttar Pradesh (UP)</button>
+      <button class="state-chip" onclick="setState(this,'maha')">🏛️ Maharashtra</button>
+      <button class="state-chip" onclick="setState(this,'raj')">🏛️ Rajasthan (RBSE)</button>
+      <button class="state-chip" onclick="setState(this,'mp')">🏛️ Madhya Pradesh (MPBSE)</button>
+      <button class="state-chip" onclick="setState(this,'bihar')">🏛️ Bihar (BSEB)</button>
+      <button class="state-chip" onclick="setState(this,'other')">🏛️ Other States</button>
+    </div>
+  </div>
+</div>
+
+<!-- JUMP BAR -->
+<div class="jump-bar">
+  <a href="#chapters" class="jump-btn active">📚 Chapters</a>
+  <a href="#chapters" class="jump-btn">🏛️ Select State</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag"><div class="hero-tag-dot"></div><span class="hero-tag-txt">Class 9 · State Board 2026-27s · Revised 2024</span></div>
+    <h1 class="hero-title">Class 9 <span class="h1">State Board</span><br/>Chapter-wise <span class="h2">Practice.</span></h1>
+    <p class="hero-sub">Chapter-wise practice tests for major Indian state boards — UP Board, Maharashtra, RBSE, MPBSE and more. Content based on latest revised state syllabus aligned with NEP 2020.</p>
+    <div class="hero-btns">
+      <a href="#chapters" class="btn-primary">📚 Start Chapter Tests</a>
+      <a href="boards_9.html" class="btn-secondary">← Change Board</a>
+    </div>
+  </div>
+</div>
+
+<section id="chapters" style="background:var(--cream-w);">
+<div class="container">
+  <div class="sec-label">📚 Chapter-wise Practice</div>
+  <h2 class="sec-title">Practice by Chapter — Class 9 State Board</h2>
+  <p class="sec-sub">All state board content is based on the NCERT framework revised under NEP 2020. Select your state and start practising.</p>
+
+  <!-- UP Board -->
+  <div id="st-up" class="state-content on" style="display:block;">
+    <div style="background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:16px 20px;margin-bottom:24px;font-size:.94rem;color:var(--txt-m);line-height:1.65;"><strong style="color:var(--forest);">UP Board Class 9</strong> — Follows NCERT syllabus. Subjects: Hindi, English, Maths, Science, Social Science. Medium: Hindi & English both available.</div>
+    <div class="subj-tabs">
+      <button class="subj-tab on" onclick="setSubj(this,'up-math','up')">📐 Ganit</button>
+      <button class="subj-tab" onclick="setSubj(this,'up-sci','up')">🔬 Vigyan</button>
+      <button class="subj-tab" onclick="setSubj(this,'up-sst','up')">🌍 Samajik Vigyan</button>
+      <button class="subj-tab" onclick="setSubj(this,'up-hindi','up')">🇮🇳 Hindi</button>
+    </div>
+    <div id="up-math" class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Adhyay 1</div><div class="ch-title">Number Systems / संख्या पद्धति</div><div class="ch-meta">Rational, irrational numbers, surds, decimal expansion, real numbers on number line</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Based</span></div><button class="ch-btn" onclick="startTest('UP','Maths','Number Systems')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Adhyay 2</div><div class="ch-title">Polynomials / बहुपद</div><div class="ch-meta">Polynomials in one variable, zeroes, Remainder Theorem, Factor Theorem, identities</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Based</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('UP','Maths','Polynomials')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Adhyay 3</div><div class="ch-title">Coordinate Geometry / निर्देशांक ज्यामिति</div><div class="ch-meta">Cartesian plane, axes, quadrants, plotting points, distance formula basics</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Based</span></div><button class="ch-btn" onclick="startTest('UP','Maths','Coordinate Geometry')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Adhyay 4</div><div class="ch-title">Linear Equations / दो चरों में रैखिक समीकरण</div><div class="ch-meta">Linear equations in two variables, solutions, graphical representation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Based</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('UP','Maths','Linear Equations')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Adhyay 5–6</div><div class="ch-title">Lines & Angles / रेखाएं और कोण</div><div class="ch-meta">Basic terms, angle pairs, transversal, parallel lines, angle sum property</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Based</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('UP','Maths','Lines Angles')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Adhyay 7–9</div><div class="ch-title">Triangles & Quadrilaterals</div><div class="ch-meta">Congruence criteria, triangle properties, parallelogram theorems, mid-point theorem</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Based</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('UP','Maths','Triangles Quadrilaterals')">Practice →</button></div></div>
+    </div>
+    <div id="up-sci" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Adhyay 1–2</div><div class="ch-title">Matter / पदार्थ</div><div class="ch-meta">States of matter, particle nature, mixtures, solutions, separation methods</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Based</span></div><button class="ch-btn" onclick="startTest('UP','Science','Matter')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Adhyay 3–4</div><div class="ch-title">Atoms & Molecules / परमाणु और अणु</div><div class="ch-meta">Laws of chemical combination, Dalton's atomic theory, atomic mass, mole concept, atomic structure</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Based</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('UP','Science','Atoms Molecules')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Adhyay 7–9</div><div class="ch-title">Motion, Force & Gravitation / गति, बल, गुरुत्वाकर्षण</div><div class="ch-meta">Equations of motion, Newton's laws, momentum, gravitational force, free fall, weight</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Based</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('UP','Science','Motion Force')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Adhyay 5–6</div><div class="ch-title">Cell & Tissues / कोशिका और ऊतक</div><div class="ch-meta">Cell structure, organelles, plant & animal cell differences, types of tissues</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Based</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('UP','Science','Cell Tissues')">Practice →</button></div></div>
+    </div>
+    <div id="up-sst" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Itihas</div><div class="ch-title">French Revolution / फ्रांसीसी क्रांति</div><div class="ch-meta">Causes, key events, Robespierre, Napoleon, impact on Europe</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">History</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('UP','SST','French Revolution')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Bhugol</div><div class="ch-title">India — Size & Location / भारत का आकार और स्थिति</div><div class="ch-meta">Latitudinal & longitudinal extent, states, neighbours, standard meridian</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Geography</span></div><button class="ch-btn" onclick="startTest('UP','SST','India Size')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Rajniti</div><div class="ch-title">What is Democracy? / लोकतंत्र क्या है?</div><div class="ch-meta">Features, advantages, alternatives to democracy, examples from world</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Civics</span></div><button class="ch-btn" onclick="startTest('UP','SST','Democracy')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Arthshastra</div><div class="ch-title">Village Palampur / गांव पालमपुर</div><div class="ch-meta">Farm activities, capital, human capital, non-farm activities, sustainability</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Economics</span></div><button class="ch-btn" onclick="startTest('UP','SST','Palampur')">Practice →</button></div></div>
+    </div>
+    <div id="up-hindi" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Kshitij</div><div class="ch-title">दो बैलों की कथा — प्रेमचंद</div><div class="ch-meta">Gadya path — comprehension, character study, important questions</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Gadya</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('UP','Hindi','Do Bailon ki Katha')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Kshitij</div><div class="ch-title">साखियाँ एवं सबद — कबीर</div><div class="ch-meta">Dohe, meaning, philosophical themes and appreciation questions</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Kavya</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('UP','Hindi','Kabir Sakhiyan')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Vyakaran</div><div class="ch-title">हिंदी व्याकरण</div><div class="ch-meta">Sangya, Sarvanam, Visheshan, Kriya, Kaal, Sandhi, Samas</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Grammar</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('UP','Hindi','Vyakaran')">Practice →</button></div></div>
+    </div>
+  </div>
+
+  <!-- Maharashtra -->
+  <div id="st-maha" class="state-content" style="display:none;">
+    <div style="background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:16px 20px;margin-bottom:24px;font-size:.94rem;color:var(--txt-m);"><strong style="color:var(--forest);">Maharashtra State Board (MSBSHSE) Class 9</strong> — Semi-English & Marathi medium. Subjects: Maths Part 1 & 2, Science Part 1 & 2, Social Science, English, Marathi.</div>
+    <div class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Maths I</div><div class="ch-title">Sets</div><div class="ch-meta">Types of sets, subsets, operations on sets, Venn diagrams</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Mathematics</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('Maharashtra','Maths','Sets')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Maths I</div><div class="ch-title">Real Numbers</div><div class="ch-meta">Rational, irrational, real numbers, operations, representation on number line</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Mathematics</span></div><button class="ch-btn" onclick="startTest('Maharashtra','Maths','Real Numbers')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Maths I</div><div class="ch-title">Polynomials</div><div class="ch-meta">Types, zeroes, operations, Remainder & Factor theorem, factorisation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Mathematics</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('Maharashtra','Maths','Polynomials')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Science I</div><div class="ch-title">Laws of Motion</div><div class="ch-meta">Newton's laws, force, inertia, momentum, action-reaction</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Physics</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('Maharashtra','Science','Laws of Motion')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Science I</div><div class="ch-title">Work and Energy</div><div class="ch-meta">Work done, kinetic & potential energy, conservation of energy, power</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Physics</span></div><button class="ch-btn" onclick="startTest('Maharashtra','Science','Work Energy')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Science II</div><div class="ch-title">Cell Biology</div><div class="ch-meta">Cell structure, organelles, plant vs animal cells, cell division basics</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Biology</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('Maharashtra','Science','Cell Biology')">Practice →</button></div></div>
+    </div>
+  </div>
+
+  <!-- Rajasthan -->
+  <div id="st-raj" class="state-content" style="display:none;">
+    <div style="background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:16px 20px;margin-bottom:24px;font-size:.94rem;color:var(--txt-m);"><strong style="color:var(--forest);">Rajasthan Board (RBSE) Class 9</strong> — Follows NCERT syllabus with minor state additions. Medium: Hindi. English medium also available in select schools.</div>
+    <div class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Ganit</div><div class="ch-title">Number Systems / संख्या पद्धति</div><div class="ch-meta">Real numbers, surds, laws of exponents, NCERT-based content</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">RBSE</span></div><button class="ch-btn" onclick="startTest('RBSE','Maths','Number Systems')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Vigyan</div><div class="ch-title">Rajasthan's Natural Resources</div><div class="ch-meta">State-specific content — minerals, forests, rivers of Rajasthan</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">RBSE Specific</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('RBSE','Science','Natural Resources')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Bhugol</div><div class="ch-title">Rajasthan — Geography</div><div class="ch-meta">State-specific: Thar desert, Aravalli, rivers, lakes, climate of Rajasthan</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">RBSE Specific</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('RBSE','SST','Rajasthan Geography')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Vigyan</div><div class="ch-title">Motion & Force (NCERT Based)</div><div class="ch-meta">Newton's laws, equations of motion, gravitation, work & energy</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">RBSE</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('RBSE','Science','Motion Force')">Practice →</button></div></div>
+    </div>
+  </div>
+
+  <!-- MP -->
+  <div id="st-mp" class="state-content" style="display:none;">
+    <div style="background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:16px 20px;margin-bottom:24px;font-size:.94rem;color:var(--txt-m);"><strong style="color:var(--forest);">MP Board (MPBSE) Class 9</strong> — Based on NCERT with MP-specific additions. Medium: Hindi. Subjects: Hindi, English, Maths, Science, Social Science.</div>
+    <div class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Ganit</div><div class="ch-title">Polynomials / बहुपद</div><div class="ch-meta">Types, degree, zeroes, remainder theorem, factor theorem, factorisation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">MPBSE</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('MPBSE','Maths','Polynomials')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Vigyan</div><div class="ch-title">Motion / गति</div><div class="ch-meta">Speed, velocity, acceleration, uniform motion, equations of motion, graphs</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">MPBSE</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('MPBSE','Science','Motion')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Bhugol</div><div class="ch-title">MP — Physical Geography</div><div class="ch-meta">State-specific: Vindhya, Satpura ranges, Narmada, Son rivers, forests</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">MP Specific</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('MPBSE','SST','MP Geography')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Hindi</div><div class="ch-title">Kshitij & Sparsh Chapters</div><div class="ch-meta">NCERT-based Hindi literature and grammar as per MP Board syllabus</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">MPBSE</span></div><button class="ch-btn" onclick="startTest('MPBSE','Hindi','Literature')">Practice →</button></div></div>
+    </div>
+  </div>
+
+  <!-- Bihar -->
+  <div id="st-bihar" class="state-content" style="display:none;">
+    <div style="background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:16px 20px;margin-bottom:24px;font-size:.94rem;color:var(--txt-m);"><strong style="color:var(--forest);">Bihar Board (BSEB) Class 9</strong> — NCERT-based syllabus. Medium: Hindi & English. Subjects: Hindi, English, Maths, Science, Social Science.</div>
+    <div class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Ganit</div><div class="ch-title">Real Numbers / वास्तविक संख्याएं</div><div class="ch-meta">Number system, irrational numbers, decimal expansions, surds</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">BSEB</span></div><button class="ch-btn" onclick="startTest('BSEB','Maths','Real Numbers')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Vigyan</div><div class="ch-title">Atoms & Molecules / परमाणु व अणु</div><div class="ch-meta">Atomic theory, mole concept, formula writing, molecular mass</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">BSEB</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('BSEB','Science','Atoms Molecules')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Itihas</div><div class="ch-title">French Revolution / फ्रांसीसी क्रांति</div><div class="ch-meta">Causes, events, aftermath, Napoleon, impact on Europe and India</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">BSEB</span><span class="ch-tag">Important</span></div><button class="ch-btn" onclick="startTest('BSEB','SST','French Revolution')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Vigyan</div><div class="ch-title">Gravitation / गुरुत्वाकर्षण</div><div class="ch-meta">Universal law, g vs G, free fall, mass & weight, Archimedes principle</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">BSEB</span></div><button class="ch-btn" onclick="startTest('BSEB','Science','Gravitation')">Practice →</button></div></div>
+    </div>
+  </div>
+
+  <!-- Other -->
+  <div id="st-other" class="state-content" style="display:none;">
+    <div class="no-content">
+      <div class="no-content-ic">🗺️</div>
+      <div class="no-content-t">More State Boards Coming Soon</div>
+      <div class="no-content-s">We're adding Gujarat (GSEB), Karnataka (KSEEB), Tamil Nadu (TNBSE), Haryana (HBSE) and more states. In the meantime, CBSE content works for most state board students since syllabuses are aligned.<br/><br/><a href="boards_9_cbse.html" style="color:var(--sage);font-weight:700;">Practice CBSE Class 9 →</a></div>
+    </div>
+  </div>
+</div>
+</section>
+
+<footer class="footer">
+  <div class="ft-inner">
+    <div><div class="ft-brand">Mock<span>Arena</span></div><div class="ft-desc">India's smartest exam prep platform for all boards.</div></div>
+    <div class="ft-links">
+      <a href="boards_9.html" class="ft-link">← Class 9 Boards</a>
+      <a href="mockarena_student_dashboard.html" class="ft-link">Dashboard</a>
+    </div>
+    <div class="ft-links">
+      <a href="boards_9_cbse.html" class="ft-link">Class 9 CBSE</a>
+      <a href="boards_9_icse.html" class="ft-link">Class 9 ICSE</a>
+    </div>
+  </div>
+  <div class="ft-inner"><div class="ft-copy">© 2026 MockArena · mockarena.co.in</div></div>
+</footer>
+
+<script>
+// Show state content
+function setState(btn, state){
+  // Update chip styles
+  document.querySelectorAll('.state-chip').forEach(c => c.classList.remove('on'));
+  btn.classList.add('on');
+  // Show selected state, hide others
+  document.querySelectorAll('.state-content').forEach(d => {
+    d.style.display = 'none';
+    d.classList.remove('on');
+  });
+  const el = document.getElementById('st-' + state);
+  if(el){
+    el.style.display = 'block';
+    el.classList.add('on');
+  }
+}
+
+// Show subject grid within a state
+function setSubj(btn, gridId, statePrefix){
+  const parent = document.getElementById('st-' + statePrefix);
+  if(!parent) return;
+  // Update tab styles
+  parent.querySelectorAll('.subj-tab').forEach(t => t.classList.remove('on'));
+  btn.classList.add('on');
+  // Hide all ch-grids inside this state
+  parent.querySelectorAll('.ch-grid').forEach(g => g.style.display = 'none');
+  // Show selected grid
+  const target = document.getElementById(gridId);
+  if(target) target.style.display = 'grid';
+}
+
+function startTest(board, subject, chapter){
+  alert('Coming soon! Questions for Class 9 ' + board + ' ' + subject + ' — ' + chapter + ' will be available once uploaded from Admin Panel.');
+}
+
+// Init on page load — show UP by default, hide all others
+window.addEventListener('DOMContentLoaded', function(){
+  document.querySelectorAll('.state-content').forEach(d => {
+    d.style.display = 'none';
+    d.classList.remove('on');
+  });
+  const upEl = document.getElementById('st-up');
+  if(upEl){ upEl.style.display = 'block'; upEl.classList.add('on'); }
+
+  // For UP — show math grid by default, hide others
+  const upMath = document.getElementById('up-math');
+  if(upMath){
+    const upParent = document.getElementById('st-up');
+    upParent.querySelectorAll('.ch-grid').forEach(g => g.style.display = 'none');
+    upMath.style.display = 'grid';
+  }
+});
+</script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",appId:"1:861067164791:web:28df5244e34361dd9d5a72"});
+const auth=getAuth(app);
+onAuthStateChanged(auth,(user)=>{if(!user){window.location.href='login.html';return;}const av=document.getElementById('nav-av');if(av){if(user.photoURL)av.innerHTML=`<img src="${user.photoURL}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;else av.textContent=(user.displayName||'S').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);}});
+</script>
+</body>
+</html>
