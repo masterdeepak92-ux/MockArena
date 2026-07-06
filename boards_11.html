@@ -8,7 +8,7 @@
 <style>
 :root{--forest:#1a2618;--sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-g:rgba(107,143,94,.2);--gold:#c8962a;--cream:#faf9f5;--cream-w:#f5f3ec;--border:rgba(26,38,24,.09);--bm:rgba(26,38,24,.15);--txt:#1a2618;--txt-m:rgba(26,38,24,.64);--txt-lo:rgba(26,38,24,.44);--fd:'Outfit',sans-serif;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:var(--fd);background:var(--cream-w);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.7;}
+html{scroll-behavior:smooth;}body{font-family:var(--fd);overflow-x:hidden;background:var(--cream-w);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.7;}
 .nav{height:58px;display:flex;align-items:center;padding:0 18px;background:rgba(26,38,24,.97);border-bottom:1px solid rgba(107,143,94,.12);position:fixed;top:0;left:0;right:0;z-index:100;}
 .nav-brand{font-size:1.05rem;font-weight:900;color:white;letter-spacing:-.02em;text-decoration:none;}
 .nav-brand span{color:var(--sage);}
@@ -18,7 +18,7 @@ body{font-family:var(--fd);background:var(--cream-w);min-height:100vh;-webkit-fo
 .nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4a035);display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:700;color:black;overflow:hidden;flex-shrink:0;}
 .nav-ham{display:none;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);align-items:center;justify-content:center;font-size:1rem;color:white;cursor:pointer;flex-shrink:0;}
 @media(max-width:640px){.nav-ham{display:flex;}}
-.page{padding:78px 16px 48px;min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.page{padding:78px 16px 48px;min-height:100vh;display:flex;flex-direction:column;align-items:center;width:100%;max-width:1200px;margin:0 auto;box-sizing:border-box;}
 .hdr{text-align:center;max-width:500px;margin-bottom:32px;padding-top:16px;}
 .hdr-badge{display:inline-flex;align-items:center;gap:6px;background:var(--sage-l);border:1px solid rgba(107,143,94,.22);border-radius:100px;padding:5px 14px;margin-bottom:14px;}
 .hdr-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:dp 2.5s ease-in-out infinite;}
@@ -59,12 +59,23 @@ body{font-family:var(--fd);background:var(--cream-w);min-height:100vh;-webkit-fo
 .isc-note{width:100%;max-width:520px;background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:14px 18px;margin-bottom:14px;font-size:.96rem;color:var(--txt-m);line-height:1.65;}
 .isc-note strong{color:var(--forest);}
 @media(min-width:640px){.page{padding:88px 32px 56px;}.hdr{margin-bottom:36px;}.cards{max-width:580px;}.card{padding:24px 22px 22px;gap:20px;}.card-icon{width:64px;height:64px;font-size:1.9rem;}.card-name{font-size:1.16rem;}.info-note{max-width:580px;}.stream-row{max-width:580px;}.isc-note{max-width:580px;}}
-@media(min-width:1000px){.page{padding:96px 40px 64px;}.hdr{max-width:580px;margin-bottom:40px;}.hdr h1{font-size:2.9rem;}.hdr p{font-size:1.1rem;}.cards{max-width:640px;}.card{padding:28px 26px 26px;gap:22px;border-radius:20px;}.card-icon{width:68px;height:68px;font-size:2rem;border-radius:16px;}.card-name{font-size:1.22rem;}.card-full{font-size:1rem;}.card-tag{font-size:.94rem;padding:5px 13px;}.card-arrow{width:36px;height:36px;}.info-note{max-width:640px;}.stream-row{max-width:640px;}.isc-note{max-width:640px;}}
+@media(min-width:1100px){.page{padding:96px 40px 64px;.hero-title,.hero-strip-title{font-size:2.9rem;}.hdr h1{font-size:2.9rem;}.hdr p{font-size:1.1rem;}}.hdr{max-width:580px;margin-bottom:40px;}.hdr h1{font-size:2.9rem;}.hdr p{font-size:1.1rem;}.cards{max-width:640px;}.card{padding:28px 26px 26px;gap:22px;border-radius:20px;}.card-icon{width:68px;height:68px;font-size:2rem;border-radius:16px;}.card-name{font-size:1.22rem;}.card-full{font-size:1rem;}.card-tag{font-size:.94rem;padding:5px 13px;}.card-arrow{width:36px;height:36px;}.info-note{max-width:640px;}.stream-row{max-width:640px;}.isc-note{max-width:640px;}}
 @media(min-width:960px){.nav-ham{display:none;}}
 @media(max-width:960px){.nav-ham{display:flex;}}
-@media(min-width:1280px){.cards{max-width:680px;}.hdr h1{font-size:3.1rem;}.info-note{max-width:680px;}.stream-row{max-width:680px;}.isc-note{max-width:680px;}}
+@media(min-width:1400px){.cards{max-width:680px;}.hdr h1{font-size:3.1rem;}.info-note{max-width:680px;}.stream-row{max-width:680px;}.isc-note{max-width:680px;}}
 @media(max-width:768px){.hdr h1{font-size:2rem;}}
-@media(max-width:540px){.page{padding:72px 14px 40px;}.hdr h1{font-size:1.8rem;}.card{padding:16px 14px 14px;gap:12px;}.card-icon{width:46px;height:46px;font-size:1.3rem;}}
+@media(max-width:540px){.page{padding:72px 14px 40px;}.hdr h1{font-size:1.8rem;}.card{padding:16px 14px 14px;gap:12px;}.card-icon{width:46px;height:46px;font-size:1.3rem;}section{padding:28px 14px;}}
+
+.hero-strip{background:var(--cream);border-bottom:1px solid var(--border);padding:28px 16px 22px;}
+.hero-strip-inner{max-width:520px;margin:0 auto;text-align:center;}
+.hero-strip-tag{display:inline-flex;align-items:center;gap:6px;background:var(--sage-l);border:1px solid rgba(107,143,94,.22);border-radius:100px;padding:4px 12px;margin-bottom:12px;font-size:.9rem;font-weight:700;color:var(--sage);letter-spacing:.06em;text-transform:uppercase;}
+.hero-title,.hero-strip-title{font-size:clamp(1.7rem,5vw,2.4rem);font-weight:900;color:var(--forest);line-height:1.1;letter-spacing:-.03em;margin-bottom:8px;}
+.gs{color:var(--sage);}
+.gg{color:var(--gold);}
+.hero-strip-sub{font-size:1rem;color:var(--txt-m);line-height:1.7;font-weight:500;}
+@media(min-width:640px){.hero-strip{padding:36px 32px 28px;}.hero-strip-inner{max-width:580px;}}
+@media(min-width:1100px){.hero-strip{padding:44px 40px 32px;}.hero-strip-inner{max-width:660px;}.hero-strip-title{font-size:2.6rem;}.hero-strip-sub{font-size:1.06rem;}}
+@media(min-width:1400px){.hero-strip-inner{max-width:720px;}.hero-strip-title{font-size:2.8rem;}}
 </style>
 </head>
 <body>
@@ -79,6 +90,14 @@ body{font-family:var(--fd);background:var(--cream-w);min-height:100vh;-webkit-fo
 </nav>
 
 <div class="page">
+<div class="hero-strip">
+  <div class="hero-strip-inner">
+    <div class="hero-strip-tag"><div class="hdr-dot"></div><span>Class 11 · 2026-27</span></div>
+    <h1 class="hero-strip-title">Class 11 <span class="gs">Board</span> <span class="gg">Selection</span></h1>
+    <p class="hero-strip-sub">Chapter-wise tests based on official 2026-27 syllabuses. Science, Commerce and Humanities — pick your board to begin.</p>
+  </div>
+</div>
+
   <div class="hdr">
     <div class="hdr-badge"><div class="hdr-dot"></div><span class="hdr-badge-txt">Class 11 · 2026-27</span></div>
     <h1>Which <span class="g1">Board</span> do<br/>you <span class="g2">study in?</span></h1>

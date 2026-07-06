@@ -25,6 +25,7 @@ a,a:hover,a:visited{text-decoration:none;color:inherit;}
 .nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4a035);display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:700;color:black;overflow:hidden;flex-shrink:0;}
 .nav-ham{display:none;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);align-items:center;justify-content:center;font-size:1rem;color:white;cursor:pointer;flex-shrink:0;}
 @media(max-width:960px){.nav-links{display:none;}.nav-ham{display:flex;}}
+@media(min-width:960px){.nav-ham{display:none;}.nav-links{display:flex;}}
 .state-bar{background:white;border-bottom:1px solid var(--border);padding:14px 20px;margin-top:60px;}
 .state-inner{max-width:1060px;margin:0 auto;}
 .state-label{font-size:.96rem;font-weight:700;color:var(--txt-m);margin-bottom:10px;}
@@ -295,6 +296,46 @@ section{padding:52px 20px;}
 </div>
 </section>
 
+<section id="tips" style="background:var(--cream);">
+<div class="container">
+  <div class="sec-label">&#x1F4A1; Expert Tips</div>
+  <h2 class="sec-title">Score High in Class 11 State Board 2026-27</h2>
+  <p class="sec-sub">Tips that apply across all major state boards for Class 11.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;">
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+      <div style="font-size:1.5rem;margin-bottom:10px;">&#x1F4D6;</div>
+      <div style="font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:7px;">NCERT is the Foundation</div>
+      <div style="font-size:.97rem;color:var(--txt-m);line-height:1.72;">All major state boards are NCERT-aligned for Class 11. Complete NCERT thoroughly for Science subjects. State-specific additions are highlighted by your school teacher.</div>
+    </div>
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+      <div style="font-size:1.5rem;margin-bottom:10px;">&#x1F4DD;</div>
+      <div style="font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:7px;">Check Your Board&#x27;s Paper Pattern</div>
+      <div style="font-size:.97rem;color:var(--txt-m);line-height:1.72;">Question paper formats differ by state. UP Board has longer descriptive answers. Maharashtra HSC focuses on problem-solving. Download a sample paper from your state board&#x27;s official website.</div>
+    </div>
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+      <div style="font-size:1.5rem;margin-bottom:10px;">&#x1F3AF;</div>
+      <div style="font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:7px;">Class 11 &#x3D; Class 12 Foundation</div>
+      <div style="font-size:.97rem;color:var(--txt-m);line-height:1.72;">Class 11 is internally assessed but every topic continues in Class 12 board exams. A strong Class 11 cuts your Class 12 prep time significantly. Don&#x27;t neglect it.</div>
+    </div>
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+      <div style="font-size:1.5rem;margin-bottom:10px;">&#x1F5FA;&#xFE0F;</div>
+      <div style="font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:7px;">Learn State-Specific Content</div>
+      <div style="font-size:.97rem;color:var(--txt-m);line-height:1.72;">Every state board has state-specific geography, economy and history. These are usually easy marks but most students skip them. Give 1-2 extra hours per week to this content.</div>
+    </div>
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+      <div style="font-size:1.5rem;margin-bottom:10px;">&#x26A1;</div>
+      <div style="font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:7px;">Science: Build Concepts First</div>
+      <div style="font-size:.97rem;color:var(--txt-m);line-height:1.72;">State board Class 11 Science (Physics, Chemistry, Biology) requires strong conceptual understanding. Don&#x27;t rote-learn formulas &#x2014; understand the derivations. This pays off in Class 12 boards and entrance exams.</div>
+    </div>
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;">
+      <div style="font-size:1.5rem;margin-bottom:10px;">&#x1F4BC;</div>
+      <div style="font-size:1.05rem;font-weight:800;color:var(--forest);margin-bottom:7px;">Commerce: Practise Accounts Daily</div>
+      <div style="font-size:.97rem;color:var(--txt-m);line-height:1.72;">Accountancy is highly scoring for Commerce students but needs daily practice. Journal entries, BRS and Final Accounts must be practiced by hand. Reading alone will not help.</div>
+    </div>
+  </div>
+</div>
+</section>
+
 <footer class="footer">
   <div class="ft-inner">
     <div><div class="ft-brand">Mock<span>Arena</span></div><div class="ft-desc">State board Class 11 preparation based on official 2026-27 syllabuses.</div></div>
@@ -337,6 +378,7 @@ function setSubj(btn,gridId,streamId){
   if(target)target.style.display='grid';
 }
 function s(board,subject,chapter){alert('Coming soon! Class 11 '+board+' '+subject+' - '+chapter+' questions will be available once uploaded from Admin Panel.');}
+function startTest(board,subject,chapter){s(board,subject,chapter);}
 window.addEventListener('DOMContentLoaded',function(){
   document.querySelectorAll('.state-content').forEach(d=>d.style.display='none');
   const up=document.getElementById('st-up');
