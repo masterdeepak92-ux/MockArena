@@ -15,16 +15,18 @@
   --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
 body{
   font-family:var(--fd);background:var(--cream-w);color:var(--txt);
   min-height:100vh;-webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;overflow-x:hidden;
+  font-size:17px;line-height:1.7;
 }
 a,a:visited{text-decoration:none;color:inherit;}
 
 /* ── NAV ── */
 .nav{
-  height:62px;display:flex;align-items:center;padding:0 20px;
+  height:60px;display:flex;align-items:center;padding:0 20px;
   background:white;
   border-bottom:1px solid var(--border);
   position:sticky;top:0;z-index:100;
@@ -192,6 +194,8 @@ a,a:visited{text-decoration:none;color:inherit;}
 .e-jf{--ec:#f97316;--es:rgba(249,115,22,.18);}
 .e-b12{--ec:#7c3aed;--es:rgba(124,58,237,.18);}
 .e-b10{--ec:#f43f5e;--es:rgba(244,63,94,.18);}
+.e-b11{--ec:#6b8f5e;--es:rgba(107,143,94,.18);}
+.e-b9{--ec:#c8962a;--es:rgba(200,150,42,.18);}
 
 /* ── DIVIDER ── */
 .divider{height:1px;background:var(--border);margin:24px 20px 0;}
@@ -306,6 +310,19 @@ a,a:visited{text-decoration:none;color:inherit;}
 .modal-skip:hover{border-color:var(--sage);color:var(--sage);}
 .modal-note{font-size:0.88rem;color:var(--txt-lo);text-align:center;
   margin-top:12px;line-height:1.5;}
+
+.nav-ham{display:none;width:34px;height:34px;border-radius:8px;background:rgba(26,38,24,.07);border:1px solid rgba(26,38,24,.12);align-items:center;justify-content:center;font-size:1rem;color:var(--forest);cursor:pointer;margin-left:8px;flex-shrink:0;}
+@media(max-width:960px){.nav-ham{display:flex;}}
+@media(min-width:960px){.nav-ham{display:none;}}
+@media(max-width:540px){
+  .hero{padding:84px 16px 32px;}
+  .section{padding:24px 16px 0;}
+  .sec-title{font-size:1.05rem;}
+  .ecard{padding:13px 10px 12px;}
+  .ecard-name{font-size:.84rem;}
+  .skip-wrap{padding:20px 16px 40px;}
+  .divider{margin:20px 16px 0;}
+}
 </style>
 </head>
 <body>
@@ -314,6 +331,7 @@ a,a:visited{text-decoration:none;color:inherit;}
 <nav class="nav">
   <a href="index.html" class="nav-brand">Mock<span>Arena</span></a>
   <div class="nav-av" id="navAv">S</div>
+  <button class="nav-ham" id="navHam" onclick="document.getElementById('navMob').classList.toggle('open')" aria-label="Menu">&#x2630;</button>
 </nav>
 
 <!-- HERO -->
@@ -425,8 +443,8 @@ a,a:visited{text-decoration:none;color:inherit;}
 <div class="section section-last" style="background:var(--cream);">
   <div class="sec-hdr">
     <div class="sec-label">📋 Board Exams</div>
-    <div class="sec-title">CBSE &amp; State Board Preparation</div>
-    <div class="sec-sub">Chapter tests and previous year board papers</div>
+    <div class="sec-title">CBSE · ISC · State Board Preparation</div>
+    <div class="sec-sub">Chapter-wise tests based on official 2026-27 syllabuses — Class 9, 10, 11 &amp; 12</div>
   </div>
   <div class="grid g2">
 
@@ -434,22 +452,44 @@ a,a:visited{text-decoration:none;color:inherit;}
       <div class="ecard-icon-box">🎓</div>
       <div class="ecard-arrow">→</div>
       <div class="ecard-name">Class 12</div>
-      <div class="ecard-class">CBSE / State Boards</div>
+      <div class="ecard-class">CBSE / ISC / State Boards</div>
       <div class="ecard-stats">
-        <span class="ecard-stat">PCM or PCB</span>
+        <span class="ecard-stat">PCM · PCB · Commerce · Arts</span>
       </div>
-      <span class="ecard-tag">Class 12</span>
+      <span class="ecard-tag">Board Year</span>
+    </div>
+
+    <div class="ecard e-b11" onclick="go('boards_11.html','Class 11 Boards')">
+      <div class="ecard-icon-box">📗</div>
+      <div class="ecard-arrow">→</div>
+      <div class="ecard-name">Class 11</div>
+      <div class="ecard-class">CBSE / ISC / State Boards</div>
+      <div class="ecard-stats">
+        <span class="ecard-stat">Science · Commerce · Arts</span>
+      </div>
+      <span class="ecard-tag">2026-27</span>
     </div>
 
     <div class="ecard e-b10" onclick="go('boards_10.html','Class 10 Boards')">
       <div class="ecard-icon-box">📘</div>
       <div class="ecard-arrow">→</div>
       <div class="ecard-name">Class 10</div>
-      <div class="ecard-class">CBSE / State Boards</div>
+      <div class="ecard-class">CBSE / ICSE / State Boards</div>
       <div class="ecard-stats">
         <span class="ecard-stat">All Subjects</span>
       </div>
-      <span class="ecard-tag">Class 10</span>
+      <span class="ecard-tag">Board Year</span>
+    </div>
+
+    <div class="ecard e-b9" onclick="go('boards_9.html','Class 9 Boards')">
+      <div class="ecard-icon-box">📙</div>
+      <div class="ecard-arrow">→</div>
+      <div class="ecard-name">Class 9</div>
+      <div class="ecard-class">CBSE / ICSE / State Boards</div>
+      <div class="ecard-stats">
+        <span class="ecard-stat">All Subjects</span>
+      </div>
+      <span class="ecard-tag">2026-27</span>
     </div>
 
   </div>
