@@ -22,7 +22,7 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+html{scroll-behavior:smooth;}body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font-smoothing:antialiased;overflow-x:hidden;font-size:17px;line-height:1.7;}
 .container{max-width:var(--max);margin:0 auto;padding:0 32px;}
 
 /* ── NAV ── */
@@ -419,6 +419,30 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font
   .hero-inner{grid-template-columns:1fr 440px;gap:80px;}
   .hero-title{font-size:3.8rem;}
 }
+
+/* ── Standard desktop aliases ── */
+.nav-ham{display:none;}
+@media(max-width:768px){.nav-ham{display:flex;}}
+@media(max-width:540px){
+  .hero{padding:72px 0 36px;}
+  .section{padding:48px 0;}
+  .container{padding:0 16px;}
+  .hero-title{font-size:clamp(2rem,8vw,2.6rem);}
+  .exam-card{padding:16px 14px 16px 18px;}
+}
+@media(max-width:960px){.nav-links,.nav-divider,.btn-nav-login{display:none;}.nav-mob-btn,.nav-ham{display:flex !important;}}
+@media(min-width:960px){.nav-mob-btn,.nav-ham{display:none !important;}.nav-links{display:flex;}}
+@media(min-width:1100px){
+  .hero-title{font-size:clamp(2.8rem,4vw,3.6rem);}
+  .section-title{font-size:2.6rem;}
+  .container{padding:0 40px;}
+  .exam-card{padding:22px 20px 22px 26px;}
+}
+@media(min-width:1400px){
+  :root{--max:1200px;}
+  .hero-title{font-size:3.8rem;}
+  .section-title{font-size:2.8rem;}
+}
 </style>
 </head>
 <body>
@@ -507,7 +531,7 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font
   <div class="container">
     <div class="section-tag reveal">📚 All Major Exams Covered</div>
     <h2 class="section-title reveal">One Platform. Every Exam.</h2>
-    <p class="section-sub reveal">From Class 9 foundations to JEE Advanced — dedicated content, chapter-wise tests &amp; full mocks for every exam.</p>
+    <p class="section-sub reveal">From Class 9 &amp; 11 Boards to JEE Advanced — dedicated content, chapter-wise tests &amp; full mocks for every exam.</p>
     <div class="exam-grid">
       <a href="mockarena_onboarding.html" class="exam-card ec-adv reveal">
         <div class="ec-top"><div class="ec-icon-box">⚡</div><span class="ec-name">JEE Advanced</span><span class="ec-badge eb-pu">Toughest</span></div>
@@ -530,7 +554,7 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font
         <div class="ec-bottom"><div class="ec-body"><div class="ec-desc">Early start for medical aspirants · Biology &amp; Chemistry basics</div><div class="ec-meta">6,200+ students</div></div><div class="ec-right"><span class="ec-arr">Attempt →</span></div></div>
       </a>
       <a href="mockarena_onboarding.html" class="exam-card ec-boards reveal reveal-d2">
-        <div class="ec-top"><div class="ec-icon-box">📖</div><span class="ec-name">CBSE / State Boards</span><span class="ec-badge eb-ro">Class 10 &amp; 12</span></div>
+        <div class="ec-top"><div class="ec-icon-box">📖</div><span class="ec-name">CBSE / ISC / State Boards</span><span class="ec-badge eb-ro">Class 9, 10, 11 &amp; 12</span></div>
         <div class="ec-bottom"><div class="ec-body"><div class="ec-desc">Score 95%+ in Boards · Chapter-wise &amp; full paper tests</div><div class="ec-meta">9,800+ students</div></div><div class="ec-right"><span class="ec-arr">Attempt →</span></div></div>
       </a>
     </div>
@@ -721,7 +745,8 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font
           <li><a href="mockarena_onboarding.html">NEET UG</a></li>
           <li><a href="mockarena_onboarding.html">JEE Foundation</a></li>
           <li><a href="mockarena_onboarding.html">NEET Foundation</a></li>
-          <li><a href="mockarena_onboarding.html">Class 10 &amp; 12 Boards</a></li>
+          <li><a href="mockarena_onboarding.html">Class 9 &amp; 10 Boards</a></li>
+            <li><a href="mockarena_onboarding.html">Class 11 &amp; 12 Boards</a></li>
         </ul>
       </div>
       <div>
@@ -752,6 +777,8 @@ body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font
         <span class="footer-tag">JEE Mains</span>
         <span class="footer-tag">NEET UG</span>
         <span class="footer-tag">CBSE Boards</span>
+        <span class="footer-tag">Class 9 Boards</span>
+        <span class="footer-tag">Class 11 Boards</span>
       </div>
     </div>
   </div>

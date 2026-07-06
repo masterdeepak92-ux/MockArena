@@ -25,7 +25,7 @@
   --sbw:260px;--tbh:56px;--r:16px;
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{overflow-x:hidden;scroll-behavior:smooth;}
+html,html{scroll-behavior:smooth;}body{overflow-x:hidden;font-size:17px;line-height:1.7;-webkit-font-smoothing:antialiased;}
 body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;line-height:1.65;font-size:16px;}
 a{color:inherit;text-decoration:none;}
 button{font-family:var(--fd);cursor:pointer;}
@@ -494,6 +494,14 @@ button{font-family:var(--fd);cursor:pointer;}
 .toast{position:fixed;bottom:76px;right:18px;background:var(--forest);color:white;font-size:.88rem;font-weight:700;padding:12px 20px;border-radius:13px;box-shadow:var(--sh-lg);transform:translateY(80px);transition:.3s;z-index:999;}
 .toast.show{transform:translateY(0);}
 @media(min-width:980px){.toast{bottom:24px;right:26px;}}
+
+/* ── Standard desktop aliases (540/768/960/1100/1400) ── */
+@media(max-width:540px){.pw{padding:16px 12px 16px;}}
+@media(max-width:768px){.home-grid{grid-template-columns:1fr;}.home-side{display:none;}}
+@media(max-width:960px){.sb-nav{transform:translateX(-100%);}}
+@media(min-width:960px){.sb-nav{transform:translateX(0);}}
+@media(min-width:1100px){.pw{max-width:1080px;padding:28px 24px 28px;}.exam-n{font-size:1.06rem;}.exam-d{font-size:.96rem;}}
+@media(min-width:1400px){.pw{max-width:1200px;}.content{padding-bottom:80px;}}
 </style>
 </head>
 <body>
@@ -628,11 +636,22 @@ button{font-family:var(--fd);cursor:pointer;}
             <div>
               <div class="cta-label">Start now</div>
               <div class="cta-title">Start Practice Test</div>
-              <div class="cta-sub">JEE Mains · Chapter-wise · All subjects</div>
+              <div class="cta-sub">JEE Mains · Boards · Chapter-wise · All subjects</div>
             </div>
           </div>
           <div class="cta-arr">Begin →</div>
         </a>
+        <!-- Board Quick Links -->
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+          <a href="boards_11.html" style="flex:1;min-width:140px;display:flex;align-items:center;gap:10px;background:white;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--txt);transition:all .18s;" onmouseover="this.style.borderColor='#6b8f5e'" onmouseout="this.style.borderColor='var(--border)'">
+            <span style="font-size:1.4rem;">📗</span>
+            <div><div style="font-size:.92rem;font-weight:800;color:var(--forest);">Class 11 Boards</div><div style="font-size:.78rem;color:var(--txt-lo);">CBSE · ISC · State</div></div>
+          </a>
+          <a href="boards_9.html" style="flex:1;min-width:140px;display:flex;align-items:center;gap:10px;background:white;border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;text-decoration:none;color:var(--txt);transition:all .18s;" onmouseover="this.style.borderColor='#c8962a'" onmouseout="this.style.borderColor='var(--border)'">
+            <span style="font-size:1.4rem;">📙</span>
+            <div><div style="font-size:.92rem;font-weight:800;color:var(--forest);">Class 9 Boards</div><div style="font-size:.78rem;color:var(--txt-lo);">CBSE · ICSE · State</div></div>
+          </a>
+        </div>
 
         <!-- Today's Goal + Streak -->
         <div class="card">
@@ -688,6 +707,16 @@ button{font-family:var(--fd);cursor:pointer;}
           <div class="exam-em">⚛️</div>
           <div class="exam-info"><div class="exam-n">JEE Mains</div><div class="exam-d">NTA Pattern · Physics, Chemistry, Maths · Chapter-wise tests</div></div>
           <span class="pill pill-live">Active →</span>
+        </a>
+        <a href="boards_11.html" class="exam-card live-ex" style="margin-top:10px;">
+          <div class="exam-em">📗</div>
+          <div class="exam-info"><div class="exam-n">Class 11 — Board Prep</div><div class="exam-d">CBSE · ISC · State Board · Science, Commerce, Arts · 2026-27</div></div>
+          <span class="pill pill-live">Start →</span>
+        </a>
+        <a href="boards_9.html" class="exam-card live-ex" style="margin-top:10px;">
+          <div class="exam-em">📙</div>
+          <div class="exam-info"><div class="exam-n">Class 9 — Board Prep</div><div class="exam-d">CBSE · ICSE · State Board · All Subjects · 2026-27</div></div>
+          <span class="pill pill-live">Start →</span>
         </a>
       </div>
     </div>
