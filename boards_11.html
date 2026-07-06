@@ -2,847 +2,189 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Class 11 — Science Stream | MockArena</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Class 11 — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
 <style>
-:root{
-  --forest:#1a2618;--forest-m:#3d5239;--forest-l:#243420;
-  --sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-m:rgba(107,143,94,.18);--sage-glow:rgba(107,143,94,.22);
-  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);
-  --rose:#c84b4b;--rose-l:rgba(200,75,75,.08);
-  --sky:#3b82c4;--sky-l:rgba(59,130,196,.1);
-  --cream:#faf9f5;--cream-w:#f5f3ec;
-  --border:rgba(26,38,24,.07);--bm:rgba(26,38,24,.11);
-  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
-}
+:root{--forest:#1a2618;--sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-g:rgba(107,143,94,.2);--gold:#c8962a;--cream:#faf9f5;--cream-w:#f5f3ec;--border:rgba(26,38,24,.09);--bm:rgba(26,38,24,.15);--txt:#1a2618;--txt-m:rgba(26,38,24,.64);--txt-lo:rgba(26,38,24,.44);--fd:'Outfit',sans-serif;}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{font-family:var(--fd);background:var(--cream-w);color:var(--forest);overflow-x:hidden;}
-
-/* ── NAV ── */
-.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:58px;background:rgba(26,38,24,.97);backdrop-filter:blur(24px);border-bottom:1px solid rgba(255,255,255,.05);display:flex;align-items:center;padding:0 20px;gap:12px;}
-.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
-.nav-mark{width:32px;height:32px;background:linear-gradient(135deg,var(--sage),#4a7a3d);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:.68rem;font-weight:800;color:white;letter-spacing:-.01em;}
-.nav-n1{color:white;font-size:.92rem;font-weight:800;}
-.nav-n2{font-size:.92rem;font-weight:800;background:linear-gradient(135deg,#818cf8,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.nav-badge{background:linear-gradient(135deg,var(--gold),#b8832a);color:white;font-size:.62rem;font-weight:800;padding:3px 10px;border-radius:100px;letter-spacing:.04em;white-space:nowrap;}
-.nav-links{display:flex;align-items:center;gap:2px;margin-left:24px;}
-.nav-link{font-size:.7rem;font-weight:600;color:rgba(255,255,255,.72);text-decoration:none;padding:5px 10px;border-radius:7px;transition:all .18s;white-space:nowrap;}
-.nav-link:hover{color:white;background:rgba(255,255,255,.07);}
-.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
-.nav-dash{font-family:var(--fd);font-size:.7rem;font-weight:700;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;text-decoration:none;border:none;cursor:pointer;white-space:nowrap;}
-.nav-av{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#e8a830);display:flex;align-items:center;justify-content:center;font-size:.62rem;font-weight:700;color:white;overflow:hidden;cursor:pointer;flex-shrink:0;}
-@media(max-width:860px){.nav-links{display:none;}}
-
-/* ── HERO ── */
-.hero{min-height:100vh;background:linear-gradient(145deg,#0e1a0c 0%,#1a2618 50%,#0e1a0c 100%);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;padding:80px 20px 60px;}
-.hero-bg1{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(107,143,94,.07),transparent 70%);top:-100px;right:-150px;pointer-events:none;}
-.hero-bg2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,150,42,.04),transparent 70%);bottom:-100px;left:-100px;pointer-events:none;}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:48px 48px;}
-.hero-inner{position:relative;z-index:1;max-width:720px;text-align:center;}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:7px;background:rgba(107,143,94,.1);border:1px solid rgba(107,143,94,.2);border-radius:100px;padding:5px 14px;margin-bottom:24px;}
-.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:hpulse 2s infinite;}
-@keyframes hpulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(1.5);}}
-.hero-eyebrow-txt{font-size:.6rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.1em;}
-.hero-title{font-size:clamp(2.2rem,7.5vw,4rem);font-weight:900;color:white;line-height:1.08;letter-spacing:-.025em;margin-bottom:14px;}
-.hero-title .ht1{background:linear-gradient(135deg,var(--sage),#b5e09a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
-.hero-title .ht2{color:var(--gold);}
-.hero-sub{font-size:clamp(.88rem,2.5vw,1.05rem);color:rgba(255,255,255,.72);line-height:1.75;margin-bottom:32px;max-width:560px;margin-left:auto;margin-right:auto;}
-
-/* EXAM STRIP */
-.exam-strip{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px;}
-.es-item{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:10px;padding:8px 14px;}
-.es-label{font-size:.58rem;color:rgba(255,255,255,.72);text-transform:uppercase;letter-spacing:.07em;display:block;}
-.es-value{font-family:var(--fm);font-size:.8rem;font-weight:700;color:white;}
-.es-value.gold{color:var(--gold);}
-.es-value.green{color:#9bc48a;}
-.es-value.rose{color:#ff8080;}
-
-.hero-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:40px;}
-.btn-gold{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--gold),#b8832a);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px rgba(200,150,42,.25);}
-.btn-gold:hover{transform:translateY(-2px);box-shadow:0 8px 26px rgba(200,150,42,.3);}
-.btn-sage{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-glow);}
-.btn-sage:hover{transform:translateY(-2px);}
-.btn-ghost{font-family:var(--fd);font-size:.88rem;font-weight:700;padding:12px 24px;border-radius:11px;border:1.5px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);color:rgba(255,255,255,.65);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:7px;transition:all .22s;}
-.btn-ghost:hover{border-color:var(--sage);color:white;}
-
-.hero-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.07);border-radius:14px;overflow:hidden;max-width:560px;margin:0 auto;}
-.hs-item{padding:14px 8px;text-align:center;background:rgba(255,255,255,.02);}
-.hs-n{font-family:var(--fm);font-size:1.2rem;font-weight:700;color:white;display:block;}
-.hs-l{font-size:.52rem;color:rgba(255,255,255,.72);text-transform:uppercase;letter-spacing:.07em;}
-@media(max-width:500px){.hero-stats{grid-template-columns:repeat(2,1fr);}}
-
-/* ── SHARED ── */
-section{padding:72px 20px;}
-.container{max-width:1080px;margin:0 auto;}
-.slabel{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.13em;color:var(--sage);margin-bottom:8px;}
-.stitle{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:var(--forest);line-height:1.2;margin-bottom:10px;}
-.ssub{font-size:.9rem;color:rgba(26,38,24,.52);line-height:1.72;max-width:540px;}
-.sec-hdr{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:28px;gap:16px;flex-wrap:wrap;}
-.sec-hdr-right a{font-size:.74rem;font-weight:700;color:var(--sage);text-decoration:none;}
-
-/* ── EXAM OVERVIEW CARDS ── */
-.ov-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-top:32px;}
-.ov-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;position:relative;overflow:hidden;transition:all .22s;}
-.ov-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
-.ov-card.c1::after{background:linear-gradient(90deg,var(--sage),#4a7a3d);}
-.ov-card.c2::after{background:linear-gradient(90deg,var(--gold),#b8832a);}
-.ov-card.c3::after{background:linear-gradient(90deg,var(--sky),#2563eb);}
-.ov-card.c4::after{background:linear-gradient(90deg,var(--rose),#a83535);}
-.ov-card.c5::after{background:linear-gradient(90deg,#7c3aed,#6d28d9);}
-.ov-card.c6::after{background:linear-gradient(90deg,#0891b2,#0e7490);}
-.ov-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,38,24,.08);}
-.ov-icon{font-size:1.6rem;margin-bottom:12px;display:block;}
-.ov-label{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(26,38,24,.52);margin-bottom:3px;}
-.ov-value{font-size:1rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
-.ov-desc{font-size:.72rem;color:rgba(26,38,24,.52);line-height:1.6;}
-
-/* ── MARKING SCHEME ── */
-.mark-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-top:28px;}
-.mark-card{background:white;border:1px solid var(--border);border-radius:12px;padding:16px;text-align:center;}
-.mark-icon{font-size:1.3rem;display:block;margin-bottom:8px;}
-.mark-val{font-family:var(--fm);font-size:1.4rem;font-weight:800;display:block;margin-bottom:4px;}
-.mark-lbl{font-size:.62rem;font-weight:600;color:rgba(26,38,24,.52);text-transform:uppercase;letter-spacing:.06em;}
-.mark-desc{font-size:.68rem;color:rgba(26,38,24,.52);margin-top:5px;line-height:1.5;}
-
-/* ── SUBJECTS / CHAPTERS ── */
-.subj-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
-.stab{font-family:var(--fd);font-size:.72rem;font-weight:600;padding:6px 16px;border-radius:8px;border:1.5px solid var(--bm);background:white;color:var(--forest-m);cursor:pointer;transition:all .18s;}
-.stab.on{background:var(--forest);color:white;border-color:var(--forest);}
-.subj-panel{display:none;}
-.subj-panel.on{display:block;}
-.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
-.ch-card{background:white;border:1px solid var(--border);border-radius:12px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;text-decoration:none;transition:all .2s;gap:8px;}
-.ch-card:hover{border-color:var(--sage);background:var(--sage-l);transform:translateX(3px);}
-.ch-card.coming{opacity:.5;pointer-events:none;}
-.ch-left{display:flex;align-items:center;gap:9px;}
-.ch-num{width:28px;height:28px;border-radius:8px;background:var(--sage-l);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.62rem;font-weight:700;color:var(--sage);flex-shrink:0;}
-.ch-name{font-size:.78rem;font-weight:600;color:var(--forest);}
-.ch-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
-.ch-avail{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;background:var(--sage-m);color:var(--sage);}
-.ch-soon{font-size:.54rem;font-weight:700;padding:2px 7px;border-radius:100px;background:rgba(26,38,24,.06);color:rgba(26,38,24,.52);}
-.ch-arr{font-size:.7rem;color:rgba(26,38,24,.52);}
-.subj-footer{display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);}
-.subj-stat{font-size:.7rem;color:rgba(26,38,24,.52);}
-.subj-stat span{font-weight:700;color:var(--sage);}
-
-/* ── MOCK TESTS ── */
-.mock-wrap{background:var(--forest);border-radius:20px;padding:36px 28px;margin-top:28px;}
-.mock-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap;margin-bottom:28px;}
-.mock-hdr-l .slabel{color:rgba(107,143,94,.8);}
-.mock-hdr-l .stitle{color:white;font-size:1.4rem;}
-.mock-hdr-l .ssub{color:rgba(255,255,255,.72);font-size:.82rem;}
-.mock-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;}
-.mock-card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);border-radius:13px;padding:20px;transition:all .22s;text-decoration:none;display:block;}
-.mock-card:hover{background:rgba(255,255,255,.07);border-color:rgba(107,143,94,.25);transform:translateY(-2px);}
-.mock-card.locked{opacity:.5;pointer-events:none;}
-.mc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:11px;}
-.mc-badge{font-size:.52rem;font-weight:700;padding:2px 8px;border-radius:100px;text-transform:uppercase;letter-spacing:.05em;}
-.mcb-full{background:rgba(107,143,94,.2);color:#9bc48a;}
-.mcb-chapter{background:rgba(200,150,42,.18);color:#e8a830;}
-.mcb-lock{background:rgba(255,255,255,.07);color:rgba(255,255,255,.72);}
-.mc-title{font-size:.9rem;font-weight:700;color:white;margin-bottom:5px;}
-.mc-desc{font-size:.7rem;color:rgba(255,255,255,.72);line-height:1.5;margin-bottom:13px;}
-.mc-meta{display:flex;gap:12px;margin-bottom:14px;}
-.mc-m{font-size:.62rem;color:rgba(255,255,255,.72);display:flex;align-items:center;gap:3px;}
-.mc-btn{width:100%;font-family:var(--fd);font-size:.72rem;font-weight:700;padding:9px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#4a7a3d);color:white;cursor:pointer;transition:all .2s;}
-.mc-btn:hover{box-shadow:0 4px 14px var(--sage-glow);}
-.mc-btn-lock{background:rgba(255,255,255,.06);color:rgba(255,255,255,.72);cursor:not-allowed;}
-
-/* ── HIGH WEIGHTAGE ── */
-.hw-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:28px;}
-.hw-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;}
-.hw-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
-.hw-icon{width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1rem;}
-.hw-name{font-size:.88rem;font-weight:800;color:var(--forest);}
-.hw-topics{display:flex;flex-direction:column;gap:7px;}
-.hw-topic{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;border-radius:8px;background:var(--cream-w);}
-.hw-tname{font-size:.72rem;font-weight:600;color:var(--forest-m);}
-.hw-twt{font-size:.6rem;font-weight:700;padding:2px 7px;border-radius:100px;}
-.wt-high{background:rgba(200,75,75,.1);color:var(--rose);}
-.wt-med{background:rgba(200,150,42,.1);color:var(--gold);}
-
-/* ── PROGRESS ── */
-.prog-wrap{background:white;border:1px solid var(--border);border-radius:18px;padding:28px;margin-top:28px;}
-.prog-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-top:20px;}
-.pg-card{text-align:center;padding:16px 12px;border-radius:12px;background:var(--cream-w);}
-.pg-n{font-family:var(--fm);font-size:1.5rem;font-weight:800;display:block;margin-bottom:3px;}
-.pg-l{font-size:.56rem;text-transform:uppercase;letter-spacing:.07em;color:rgba(26,38,24,.52);}
-.pg-bar{height:3px;border-radius:3px;background:var(--border);margin-top:8px;overflow:hidden;}
-.pg-bar-f{height:100%;border-radius:3px;background:linear-gradient(90deg,var(--sage),#4a7a3d);}
-
-/* ── STRATEGY TIPS ── */
-.tips-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:28px;}
-.tip-card{background:white;border:1px solid var(--border);border-radius:13px;padding:18px;display:flex;gap:12px;transition:all .22s;}
-.tip-card:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(26,38,24,.06);}
-.tip-num{width:34px;height:34px;border-radius:9px;background:var(--forest);color:white;display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.76rem;font-weight:700;flex-shrink:0;}
-.tip-title{font-size:.82rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
-.tip-desc{font-size:.72rem;color:rgba(26,38,24,.52);line-height:1.62;}
-
-/* ── CTA ── */
-.cta-block{background:linear-gradient(135deg,var(--forest),var(--forest-l));border-radius:20px;padding:48px 32px;text-align:center;position:relative;overflow:hidden;margin-top:28px;}
-.cta-block::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 70% at 50% 50%,rgba(107,143,94,.07),transparent);}
-.cta-title{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:900;color:white;margin-bottom:10px;line-height:1.2;position:relative;z-index:1;}
-.cta-sub{font-size:.88rem;color:rgba(255,255,255,.72);margin-bottom:24px;max-width:440px;margin-left:auto;margin-right:auto;position:relative;z-index:1;}
-.cta-btns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;position:relative;z-index:1;}
-
-/* ── FOOTER ── */
-.footer{background:var(--forest);padding:44px 20px 22px;}
-.ft{display:flex;flex-wrap:wrap;gap:30px;max-width:1080px;margin:0 auto 28px;}
-.ft-brand{flex:1.5;min-width:180px;}
-.ft-logo{display:flex;align-items:center;gap:8px;margin-bottom:11px;}
-.ft-desc{font-size:.7rem;color:rgba(255,255,255,.72);line-height:1.7;max-width:240px;}
-.ft-col{flex:1;min-width:120px;}
-.ft-ct{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.72);margin-bottom:12px;}
-.ft-link{display:block;font-size:.72rem;color:rgba(255,255,255,.72);text-decoration:none;margin-bottom:7px;transition:color .18s;}
-.ft-link:hover{color:var(--sage);}
-.ft-bottom{max-width:1080px;margin:0 auto;padding-top:18px;border-top:1px solid rgba(255,255,255,.05);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
-.ft-copy{font-size:.6rem;color:rgba(255,255,255,.72);}
-
-@media(max-width:640px){
-  section{padding:52px 16px;}
-  .mock-wrap{padding:22px 14px;}
-  .cta-block{padding:32px 18px;}
-  .ov-grid,.mark-grid{grid-template-columns:repeat(2,1fr);}
-  .hero-stats{grid-template-columns:repeat(2,1fr);}
-}
-
-/* ═══ CLASS 11 & 12 EXTRA CSS ═══ */
-/* Stream Cards */
-.stream-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:28px;}
-.stream-card{background:white;border:1px solid var(--border);border-radius:18px;padding:24px;transition:all .25s;position:relative;overflow:hidden;}
-.stream-card::before{content:'';position:absolute;top:0;left:0;bottom:0;width:4px;border-radius:18px 0 0 18px;}
-.stream-card.pcm::before{background:linear-gradient(180deg,var(--sky),#2563eb);}
-.stream-card.pcb::before{background:linear-gradient(180deg,var(--sage),#4a7a3d);}
-.stream-card.commerce::before{background:linear-gradient(180deg,var(--gold),#b8832a);}
-.stream-card.arts::before{background:linear-gradient(180deg,#7c3aed,#5b21b6);}
-.stream-card:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(26,38,24,.1);}
-.sc-stream-icon{font-size:2rem;margin-bottom:12px;display:block;}
-.sc-stream-title{font-size:1rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
-.sc-stream-sub{font-size:.7rem;color:rgba(26,38,24,.5);margin-bottom:12px;}
-.sc-stream-subjects{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px;}
-.sc-subj-tag{font-size:.6rem;font-weight:600;padding:2px 8px;border-radius:100px;background:var(--sage-l);color:var(--forest-m);}
-.sc-stream-careers{font-size:.7rem;color:rgba(26,38,24,.5);line-height:1.6;}
-
-/* Subject deep-dive cards */
-.subj-deep-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:28px;}
-.subj-deep-card{background:white;border:1px solid var(--border);border-radius:16px;padding:22px;transition:all .22s;}
-.subj-deep-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(26,38,24,.08);}
-.sdc-hdr{display:flex;align-items:center;gap:10px;margin-bottom:14px;padding-bottom:12px;border-bottom:1px solid var(--border);}
-.sdc-icon{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
-.sdc-name{font-size:.92rem;font-weight:800;color:var(--forest);}
-.sdc-sub{font-size:.62rem;color:rgba(26,38,24,.5);}
-.sdc-topics{display:flex;flex-direction:column;gap:5px;}
-.sdc-topic{display:flex;align-items:flex-start;gap:7px;font-size:.74rem;color:var(--forest);line-height:1.5;}
-.sdc-topic::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--sage);flex-shrink:0;margin-top:5px;}
-.sdc-note{margin-top:12px;padding:9px 12px;background:var(--gold-l);border-radius:8px;font-size:.7rem;color:var(--forest);line-height:1.5;font-weight:600;}
-.sdc-note.sage{background:var(--sage-l);color:var(--forest);}
-
-/* Chapter test cards */
-.ch-grid-board{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px;margin-top:20px;}
-.chb-card{background:white;border:1px solid var(--border);border-radius:11px;padding:12px 14px;display:flex;align-items:center;gap:9px;transition:all .2s;text-decoration:none;}
-.chb-card:hover{border-color:var(--sage);background:var(--sage-l);}
-.chb-num{width:26px;height:26px;border-radius:7px;background:var(--sage-l);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:.6rem;font-weight:700;color:var(--sage);flex-shrink:0;}
-.chb-name{font-size:.76rem;font-weight:600;color:var(--forest);}
-
-/* Comparison table */
-.compare-table{background:white;border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:28px;}
-.cmp-head{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;background:var(--forest);padding:12px 18px;gap:8px;}
-.cmp-hc{font-size:.62rem;font-weight:700;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.07em;}
-.cmp-row{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;padding:11px 18px;border-bottom:1px solid var(--border);gap:8px;transition:background .18s;}
-.cmp-row:hover{background:var(--cream-w);}
-.cmp-row:last-child{border-bottom:none;}
-.cmp-c{font-size:.72rem;color:rgba(26,38,24,.62);}
-.cmp-c:first-child{font-weight:700;color:var(--forest);}
-.cmp-yes{color:var(--sage);font-weight:700;}
-.cmp-no{color:var(--rose);font-weight:600;}
-.cmp-opt{color:var(--gold);font-weight:600;}
-
-/* Roadmap */
-.rm-wrap{display:flex;flex-direction:column;gap:14px;margin-top:28px;}
-.rm-row{display:flex;gap:14px;align-items:flex-start;}
-.rm-left{display:flex;flex-direction:column;align-items:center;width:48px;flex-shrink:0;}
-.rm-circle{width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:800;color:white;flex-shrink:0;}
-.rm-connector{width:2px;flex:1;min-height:14px;background:var(--border);}
-.rm-card{background:white;border:1px solid var(--border);border-radius:13px;padding:16px 18px;flex:1;}
-.rm-title{font-size:.86rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
-.rm-desc{font-size:.74rem;color:rgba(26,38,24,.58);line-height:1.62;margin-bottom:9px;}
-.rm-tags{display:flex;flex-wrap:wrap;gap:5px;}
-.rm-tag{font-size:.58rem;font-weight:600;padding:2px 8px;border-radius:100px;background:var(--sage-l);color:var(--forest-m);}
-
-/* Career path cards */
-.career-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-top:28px;}
-.career-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:all .22s;}
-.career-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(26,38,24,.1);}
-.cc-icon{font-size:2rem;margin-bottom:10px;display:block;}
-.cc-title{font-size:.86rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
-.cc-tag{display:inline-block;font-size:.58rem;font-weight:700;padding:2px 9px;border-radius:100px;background:var(--sage-l);color:var(--sage);margin-bottom:7px;}
-.cc-desc{font-size:.7rem;color:rgba(26,38,24,.58);line-height:1.6;}
-
-/* Score guide */
-.score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:28px;}
-.score-card{background:white;border:1px solid var(--border);border-radius:14px;padding:20px;text-align:center;transition:all .22s;position:relative;overflow:hidden;}
-.score-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;}
-.score-card.s1::after{background:linear-gradient(90deg,var(--sage),#4a7a3d);}
-.score-card.s2::after{background:linear-gradient(90deg,var(--gold),#b8832a);}
-.score-card.s3::after{background:linear-gradient(90deg,var(--sky),#2563eb);}
-.score-card.s4::after{background:linear-gradient(90deg,var(--rose),#a83535);}
-.score-card:hover{transform:translateY(-3px);box-shadow:0 10px 28px rgba(26,38,24,.08);}
-.sc2-icon{font-size:1.8rem;display:block;margin-bottom:10px;}
-.sc2-label{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:rgba(26,38,24,.5);margin-bottom:3px;}
-.sc2-val{font-size:1rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
-.sc2-desc{font-size:.72rem;color:rgba(26,38,24,.58);line-height:1.6;}
-
-/* Ensure all text visible */
-a,a:hover,a:visited{text-decoration:none;}
+body{font-family:var(--fd);background:var(--cream-w);min-height:100vh;-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.7;}
+.nav{height:58px;display:flex;align-items:center;padding:0 18px;background:rgba(26,38,24,.97);border-bottom:1px solid rgba(107,143,94,.12);position:fixed;top:0;left:0;right:0;z-index:100;}
+.nav-brand{font-size:1.05rem;font-weight:900;color:white;letter-spacing:-.02em;text-decoration:none;}
+.nav-brand span{color:var(--sage);}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-switch{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:6px 13px;border-radius:8px;border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.07);color:rgba(255,255,255,.88);text-decoration:none;white-space:nowrap;}
+.nav-dash{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:7px 15px;border-radius:8px;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;text-decoration:none;white-space:nowrap;}
+.nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4a035);display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:700;color:black;overflow:hidden;flex-shrink:0;}
+.nav-ham{display:none;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);align-items:center;justify-content:center;font-size:1rem;color:white;cursor:pointer;flex-shrink:0;}
+@media(max-width:640px){.nav-ham{display:flex;}}
+.page{padding:78px 16px 48px;min-height:100vh;display:flex;flex-direction:column;align-items:center;}
+.hdr{text-align:center;max-width:500px;margin-bottom:32px;padding-top:16px;}
+.hdr-badge{display:inline-flex;align-items:center;gap:6px;background:var(--sage-l);border:1px solid rgba(107,143,94,.22);border-radius:100px;padding:5px 14px;margin-bottom:14px;}
+.hdr-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:dp 2.5s ease-in-out infinite;}
+@keyframes dp{0%,100%{opacity:1;}50%{opacity:.15;}}
+.hdr-badge-txt{font-size:.94rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.07em;}
+.hdr h1{font-size:clamp(1.8rem,5vw,2.7rem);font-weight:900;color:var(--forest);line-height:1.08;letter-spacing:-.03em;margin-bottom:10px;}
+.hdr h1 .g1{color:var(--sage);}
+.hdr h1 .g2{color:var(--gold);}
+.hdr p{font-size:1.06rem;color:var(--txt-m);line-height:1.7;font-weight:500;}
+.info-note{width:100%;max-width:520px;background:rgba(200,150,42,.06);border:1.5px solid rgba(200,150,42,.22);border-radius:14px;padding:14px 18px;margin-bottom:22px;display:flex;align-items:flex-start;gap:11px;}
+.info-note-ic{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+.info-note-txt{font-size:.96rem;color:var(--txt-m);line-height:1.65;font-weight:500;}
+.info-note-txt strong{color:var(--forest);font-weight:700;}
+/* STREAM SELECTOR */
+.stream-row{width:100%;max-width:520px;margin-bottom:18px;}
+.stream-label{font-size:.94rem;font-weight:700;color:var(--txt-m);margin-bottom:10px;}
+.stream-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.stream-chip{font-family:var(--fd);font-size:.94rem;font-weight:700;padding:7px 18px;border-radius:100px;border:1.5px solid var(--border);background:white;color:var(--txt);cursor:pointer;transition:all .18s;}
+.stream-chip:hover{border-color:var(--sage);color:var(--sage);}
+.stream-chip.on{background:var(--forest);color:white;border-color:var(--forest);}
+.cards{width:100%;max-width:520px;display:flex;flex-direction:column;gap:14px;}
+.card{background:white;border:2px solid var(--border);border-radius:18px;padding:20px 20px 18px;display:flex;align-items:center;gap:16px;cursor:pointer;text-decoration:none;color:inherit;transition:all .2s cubic-bezier(.34,1.2,.64,1);position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--sage);opacity:0;transition:opacity .2s;border-radius:18px 0 0 18px;}
+.card:hover,.card:active{border-color:var(--sage);transform:translateY(-3px);box-shadow:0 8px 24px var(--sage-l);}
+.card:hover::before,.card:active::before{opacity:1;}
+.card-icon{width:56px;height:56px;border-radius:14px;flex-shrink:0;background:var(--sage-l);display:flex;align-items:center;justify-content:center;font-size:1.6rem;}
+.card-body{flex:1;min-width:0;}
+.card-name{font-size:1.12rem;font-weight:900;color:var(--forest);letter-spacing:-.01em;margin-bottom:2px;}
+.card-full{font-size:.96rem;font-weight:600;color:var(--txt-m);margin-bottom:6px;}
+.card-tags{display:flex;gap:6px;flex-wrap:wrap;}
+.card-tag{font-size:.9rem;font-weight:600;padding:4px 11px;border-radius:100px;background:var(--sage-l);color:#3a6830;border:1px solid rgba(107,143,94,.2);}
+.card-arrow{width:32px;height:32px;border-radius:50%;flex-shrink:0;background:var(--cream-w);border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.9rem;color:var(--txt-lo);transition:all .2s;}
+.card:hover .card-arrow{background:var(--sage);color:white;border-color:var(--sage);}
+.back-row{margin-top:24px;}
+.back-btn{font-family:var(--fd);font-size:.96rem;font-weight:600;color:var(--txt-m);background:none;border:1.5px solid var(--border);border-radius:100px;cursor:pointer;padding:10px 24px;transition:all .18s;}
+.back-btn:hover{border-color:var(--bm);}
+/* NOTE: ISC info */
+.isc-note{width:100%;max-width:520px;background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:14px 18px;margin-bottom:14px;font-size:.96rem;color:var(--txt-m);line-height:1.65;}
+.isc-note strong{color:var(--forest);}
+@media(min-width:640px){.page{padding:88px 32px 56px;}.hdr{margin-bottom:36px;}.cards{max-width:580px;}.card{padding:24px 22px 22px;gap:20px;}.card-icon{width:64px;height:64px;font-size:1.9rem;}.card-name{font-size:1.16rem;}.info-note{max-width:580px;}.stream-row{max-width:580px;}.isc-note{max-width:580px;}}
+@media(min-width:1000px){.page{padding:96px 40px 64px;}.hdr{max-width:580px;margin-bottom:40px;}.hdr h1{font-size:2.9rem;}.hdr p{font-size:1.1rem;}.cards{max-width:640px;}.card{padding:28px 26px 26px;gap:22px;border-radius:20px;}.card-icon{width:68px;height:68px;font-size:2rem;border-radius:16px;}.card-name{font-size:1.22rem;}.card-full{font-size:1rem;}.card-tag{font-size:.94rem;padding:5px 13px;}.card-arrow{width:36px;height:36px;}.info-note{max-width:640px;}.stream-row{max-width:640px;}.isc-note{max-width:640px;}}
+@media(min-width:960px){.nav-ham{display:none;}}
+@media(max-width:960px){.nav-ham{display:flex;}}
+@media(min-width:1280px){.cards{max-width:680px;}.hdr h1{font-size:3.1rem;}.info-note{max-width:680px;}.stream-row{max-width:680px;}.isc-note{max-width:680px;}}
+@media(max-width:768px){.hdr h1{font-size:2rem;}}
+@media(max-width:540px){.page{padding:72px 14px 40px;}.hdr h1{font-size:1.8rem;}.card{padding:16px 14px 14px;gap:12px;}.card-icon{width:46px;height:46px;font-size:1.3rem;}}
 </style>
 </head>
-<body><!-- NAV -->
+<body>
 <nav class="nav">
-  <a href="index.html" class="nav-logo">
-    <div class="nav-mark">MA</div>
-    <span class="nav-n1">Mock</span><span class="nav-n2">Arena</span>
-  </a>
-  <span class="nav-badge" style="white-space:nowrap;">Class 11</span>
-  <div class="nav-links">
-    <a href="#overview" class="nav-link">Overview</a>
-    <a href="#streams" class="nav-link">Streams</a>
-    <a href="#syllabus" class="nav-link">Syllabus</a>
-    <a href="#chapters" class="nav-link">Chapters</a>
-    <a href="#tests" class="nav-link">Tests</a>
-    <a href="#strategy" class="nav-link">Strategy</a>
-  </div>
-  <div class="nav-right">
-    <a href="mockarena_dashboard.html" class="nav-dash">Dashboard →</a>
+  <a href="index.html" class="nav-brand">Mock<span>Arena</span></a>
+  <div class="nav-r">
+    <a href="mockarena_onboarding.html" class="nav-switch">⇄ Switch Exam</a>
+    <a href="mockarena_student_dashboard.html" class="nav-dash">Dashboard →</a>
     <div class="nav-av" id="nav-av">S</div>
+    <button class="nav-ham" onclick="this.style.display='none'">☰</button>
   </div>
 </nav>
 
-<!-- HERO -->
-<section class="hero">
-  <div class="hero-bg1"></div><div class="hero-bg2"></div><div class="hero-grid"></div>
-  <div class="hero-inner">
-    <div class="hero-eyebrow">
-      <div class="hero-dot"></div>
-      <span class="hero-eyebrow-txt">Class 11 Science · CBSE / ISC · PCM & PCB</span>
-    </div>
-    <h1 class="hero-title">
-      Class 11 is Where<br/>
-      <span class="ht1">Serious</span> Students<br/>
-      <span style="color:var(--gold);">Separate.</span>
-    </h1>
-    <p class="hero-sub">Class 11 is the biggest academic jump of your life. The syllabus triples in depth, the pace quadruples, and the competition begins in earnest. Students who master Class 11 find JEE and NEET significantly more manageable.</p>
-    <div class="exam-strip">
-      <div class="es-item"><span class="es-label">Stream PCM</span><span class="es-value green">JEE Path</span></div>
-      <div class="es-item"><span class="es-label">Stream PCB</span><span class="es-value green">NEET Path</span></div>
-      <div class="es-item"><span class="es-label">Physics</span><span class="es-value">70 Marks</span></div>
-      <div class="es-item"><span class="es-label">Maths/Bio</span><span class="es-value">80 Marks</span></div>
-      <div class="es-item"><span class="es-label">Chemistry</span><span class="es-value">70 Marks</span></div>
-      <div class="es-item"><span class="es-label">Target</span><span class="es-value gold">90%+</span></div>
-    </div>
-    <div class="hero-btns">
-      <a href="#chapters" class="btn-gold">📚 Start Chapter Tests</a>
-      <a href="#syllabus" class="btn-sage">📋 View Syllabus</a>
-      <a href="#strategy" class="btn-ghost">🎯 Study Strategy</a>
-    </div>
-    <div class="hero-stats">
-      <div class="hs-item"><span class="hs-n">PCM</span><span class="hs-l">JEE Stream</span></div>
-      <div class="hs-item"><span class="hs-n">PCB</span><span class="hs-l">NEET Stream</span></div>
-      <div class="hs-item"><span class="hs-n">90%+</span><span class="hs-l">Our Target</span></div>
-      <div class="hs-item"><span class="hs-n">Free</span><span class="hs-l">Full Access</span></div>
-    </div>
+<div class="page">
+  <div class="hdr">
+    <div class="hdr-badge"><div class="hdr-dot"></div><span class="hdr-badge-txt">Class 11 · 2026-27</span></div>
+    <h1>Which <span class="g1">Board</span> do<br/>you <span class="g2">study in?</span></h1>
+    <p>Select your board — chapter-wise tests and practice questions based on official 2026-27 syllabus.</p>
   </div>
-</section>
 
-<!-- WHY CLASS 11 — white -->
-<section id="overview" style="background:white;">
-  <div class="container">
-    <div class="slabel">Why Class 11 is Different</div>
-    <h2 class="stitle">The Biggest Academic Jump of Your Life</h2>
-    <p class="ssub">Nothing prepares you for Class 11. The depth, speed and volume are unlike anything before. Here's what changes and why it matters.</p>
-    <div class="ov-grid">
-      <div class="ov-card c1"><span class="ov-icon">🚀</span><div class="ov-label">Depth Jump</div><div class="ov-value">10× More Complex</div><div class="ov-desc">Class 11 Physics, Chemistry and Math are 10× deeper than Class 10. Concept understanding — not memorisation — is what works now</div></div>
-      <div class="ov-card c2"><span class="ov-icon">⏱️</span><div class="ov-label">Pace</div><div class="ov-value">Everything is Fast</div><div class="ov-desc">Topics that took a month in Class 9/10 now take a week. You must stay current — falling behind compounds rapidly</div></div>
-      <div class="ov-card c3"><span class="ov-icon">🎯</span><div class="ov-label">JEE/NEET Start</div><div class="ov-value">Competitive Exam Begins</div><div class="ov-desc">50-60% of JEE Mains and NEET question papers come from Class 11 syllabus. This year directly decides your rank</div></div>
-      <div class="ov-card c4"><span class="ov-icon">📐</span><div class="ov-label">Maths</div><div class="ov-value">Calculus Arrives</div><div class="ov-desc">Limits, Derivatives, Integration — these are completely new concepts. Students who struggle here struggle in JEE forever</div></div>
-      <div class="ov-card c5"><span class="ov-icon">🧪</span><div class="ov-label">Chemistry Split</div><div class="ov-value">Physical + Organic + Inorganic</div><div class="ov-desc">Chemistry now has 3 separate sections. Each needs a different approach — equations, mechanisms and memorisation respectively</div></div>
-      <div class="ov-card c6"><span class="ov-icon">📊</span><div class="ov-label">Internal Exams</div><div class="ov-value">Marks Count for Class 12</div><div class="ov-desc">Class 11 internal marks and performance determines how well you start Class 12. Strong Class 11 = smooth Class 12 boards</div></div>
-    </div>
+  <div class="info-note">
+    <span class="info-note-ic">ℹ️</span>
+    <div class="info-note-txt"><strong>No Board Exam in Class 11</strong> — Class 11 is internally assessed by your school. No previous year papers. All content based on official 2026-27 CBSE / ISC / State Board syllabuses. After Class 10, ICSE becomes <strong>ISC (Indian School Certificate)</strong>.</div>
   </div>
-</section>
 
-<!-- STREAM SELECTION — cream-w -->
-<section id="streams" style="background:var(--cream-w);">
-  <div class="container">
-    <div class="slabel">Stream Guide</div>
-    <h2 class="stitle">PCM vs PCB — Choose Your Path</h2>
-    <p class="ssub">The stream you choose in Class 11 determines your competitive exam. Here is exactly what each path leads to.</p>
-    <div class="stream-grid">
-      <div class="stream-card pcm">
-        <span class="sc-stream-icon">⚛️</span>
-        <div class="sc-stream-title">PCM — Physics, Chemistry, Maths</div>
-        <div class="sc-stream-sub">Engineering Path · JEE Mains + Advanced</div>
-        <div class="sc-stream-subjects">
-          <span class="sc-subj-tag">Physics</span>
-          <span class="sc-subj-tag">Chemistry</span>
-          <span class="sc-subj-tag">Mathematics</span>
-          <span class="sc-subj-tag">English</span>
-          <span class="sc-subj-tag">Optional 5th</span>
-        </div>
-        <div class="sc-stream-careers">Leads to: IIT JEE → B.Tech, NIT, IIIT. Also: BCA, B.Sc, Architecture, Design, Defence</div>
-      </div>
-      <div class="stream-card pcb">
-        <span class="sc-stream-icon">🧬</span>
-        <div class="sc-stream-title">PCB — Physics, Chemistry, Biology</div>
-        <div class="sc-stream-sub">Medical Path · NEET UG</div>
-        <div class="sc-stream-subjects">
-          <span class="sc-subj-tag">Physics</span>
-          <span class="sc-subj-tag">Chemistry</span>
-          <span class="sc-subj-tag">Biology</span>
-          <span class="sc-subj-tag">English</span>
-          <span class="sc-subj-tag">Optional 5th</span>
-        </div>
-        <div class="sc-stream-careers">Leads to: NEET → MBBS, BDS, AIIMS, JIPMER. Also: BSc Life Sciences, Biotechnology, Nursing</div>
-      </div>
-      <div class="stream-card commerce">
-        <span class="sc-stream-icon">📊</span>
-        <div class="sc-stream-title">PCMB — All Four</div>
-        <div class="sc-stream-sub">Both JEE + NEET eligible</div>
-        <div class="sc-stream-subjects">
-          <span class="sc-subj-tag">Physics</span>
-          <span class="sc-subj-tag">Chemistry</span>
-          <span class="sc-subj-tag">Maths</span>
-          <span class="sc-subj-tag">Biology</span>
-          <span class="sc-subj-tag">English</span>
-        </div>
-        <div class="sc-stream-careers">Heavy workload but maximum flexibility. Keeps both JEE and NEET options open simultaneously</div>
-      </div>
-      <div class="stream-card arts">
-        <span class="sc-stream-icon">💼</span>
-        <div class="sc-stream-title">Commerce / Arts</div>
-        <div class="sc-stream-sub">CA, CS, Humanities, Law</div>
-        <div class="sc-stream-subjects">
-          <span class="sc-subj-tag">Accounts</span>
-          <span class="sc-subj-tag">Business Studies</span>
-          <span class="sc-subj-tag">Economics</span>
-          <span class="sc-subj-tag">English</span>
-          <span class="sc-subj-tag">Optional</span>
-        </div>
-        <div class="sc-stream-careers">Leads to: CA, CS, MBA, Law, Civil Services, Economics, Journalism</div>
-      </div>
+  <!-- Stream filter -->
+  <div class="stream-row">
+    <div class="stream-label">Filter by stream (optional):</div>
+    <div class="stream-chips">
+      <button class="stream-chip on" onclick="filterStream(this,'all')">All Streams</button>
+      <button class="stream-chip" onclick="filterStream(this,'science')">🔬 Science</button>
+      <button class="stream-chip" onclick="filterStream(this,'commerce')">💼 Commerce</button>
+      <button class="stream-chip" onclick="filterStream(this,'arts')">🎭 Humanities/Arts</button>
     </div>
   </div>
-</section>
 
-<!-- CLASS 11 SYLLABUS — white -->
-<section id="syllabus" style="background:white;">
-  <div class="container">
-    <div class="slabel">Class 11 Syllabus</div>
-    <h2 class="stitle">What You Study in Class 11</h2>
-    <p class="ssub">CBSE Class 11 Science — the chapters that form 50-60% of JEE Mains and NEET question papers.</p>
-    <div class="subj-tabs">
-      <button class="stab on" onclick="showSubj('phy',this)">⚛️ Physics</button>
-      <button class="stab" onclick="showSubj('chem',this)">🧪 Chemistry</button>
-      <button class="stab" onclick="showSubj('math',this)">📐 Mathematics</button>
-      <button class="stab" onclick="showSubj('bio',this)">🧬 Biology (PCB)</button>
-    </div>
-    <div class="subj-panel on" id="subj-phy">
-      <div class="subj-deep-grid">
-        <div class="subj-deep-card">
-          <div class="sdc-hdr"><div class="sdc-icon" style="background:rgba(59,130,196,.1);">⚛️</div><div><div class="sdc-name">Mechanics</div><div class="sdc-sub">Units 1-5 · Highest JEE weightage</div></div></div>
-          <div class="sdc-topics">
-            <div class="sdc-topic">Units & Dimensions — Errors, significant figures</div>
-            <div class="sdc-topic">Kinematics — Vectors, projectile, relative motion</div>
-            <div class="sdc-topic">Laws of Motion — Friction, circular motion, NLM</div>
-            <div class="sdc-topic">Work, Energy, Power — Conservation laws</div>
-            <div class="sdc-topic">Rotational Motion — Moment of inertia, torque, rolling</div>
-            <div class="sdc-topic">Gravitation — Orbital motion, escape velocity, satellites</div>
-          </div>
-          <div class="sdc-note">🎯 50%+ of JEE Physics comes from Mechanics. Master this first.</div>
-        </div>
-        <div class="subj-deep-card">
-          <div class="sdc-hdr"><div class="sdc-icon" style="background:rgba(59,130,196,.1);">🌡️</div><div><div class="sdc-name">Thermodynamics & Waves</div><div class="sdc-sub">Units 6-10</div></div></div>
-          <div class="sdc-topics">
-            <div class="sdc-topic">Properties of Matter — Elasticity, surface tension, viscosity</div>
-            <div class="sdc-topic">Thermodynamics — Laws, heat engines, entropy</div>
-            <div class="sdc-topic">Kinetic Theory of Gases — PV=nRT, degrees of freedom</div>
-            <div class="sdc-topic">Oscillations — SHM, energy, damped oscillations</div>
-            <div class="sdc-topic">Waves — Speed, superposition, standing waves, Doppler</div>
-          </div>
-          <div class="sdc-note sage">⚡ Thermodynamics + Waves appear in both JEE and NEET. Study once, score twice.</div>
+  <div class="cards" id="cards-list">
+    <a href="boards_11_cbse.html" class="card" data-stream="all">
+      <div class="card-icon">📋</div>
+      <div class="card-body">
+        <div class="card-name">CBSE</div>
+        <div class="card-full">Central Board of Secondary Education</div>
+        <div class="card-tags">
+          <span class="card-tag">Science · PCM · PCB</span>
+          <span class="card-tag">Commerce</span>
+          <span class="card-tag">Humanities</span>
         </div>
       </div>
-    </div>
-    <div class="subj-panel" id="subj-chem">
-      <div class="subj-deep-grid">
-        <div class="subj-deep-card">
-          <div class="sdc-hdr"><div class="sdc-icon" style="background:rgba(200,150,42,.1);">🧪</div><div><div class="sdc-name">Physical Chemistry</div><div class="sdc-sub">Numerical + Conceptual</div></div></div>
-          <div class="sdc-topics">
-            <div class="sdc-topic">Mole Concept & Stoichiometry — Calculations, limiting reagent</div>
-            <div class="sdc-topic">Atomic Structure — Quantum numbers, orbitals, electronic config</div>
-            <div class="sdc-topic">Chemical Bonding & MOT — VSEPR, hybridisation, MOT</div>
-            <div class="sdc-topic">States of Matter — Gas laws, liquid state, solutions</div>
-            <div class="sdc-topic">Thermodynamics — Enthalpy, Hess's law, spontaneity</div>
-            <div class="sdc-topic">Equilibrium — Le Chatelier, Kp, Kc, ionic equilibrium</div>
-          </div>
-          <div class="sdc-note">🎯 Physical Chem needs daily problem solving — not just concept reading.</div>
-        </div>
-        <div class="subj-deep-card">
-          <div class="sdc-hdr"><div class="sdc-icon" style="background:rgba(200,150,42,.1);">🔬</div><div><div class="sdc-name">Organic & Inorganic</div><div class="sdc-sub">GOC + p-block</div></div></div>
-          <div class="sdc-topics">
-            <div class="sdc-topic">Organic Chemistry GOC — Inductive, resonance, hyperconjugation</div>
-            <div class="sdc-topic">Hydrocarbons — Alkanes, alkenes, alkynes, reactions</div>
-            <div class="sdc-topic">Periodic Table & Properties — Trends, ionisation energy</div>
-            <div class="sdc-topic">Hydrogen — Properties, preparation, water chemistry</div>
-            <div class="sdc-topic">s-Block Elements — Group 1 & 2 compounds, reactions</div>
-            <div class="sdc-topic">p-Block — Group 13 & 14 elements, compounds</div>
-          </div>
-          <div class="sdc-note">🎯 GOC + Hydrocarbons = highest Organic Chemistry weightage in both JEE and NEET.</div>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <div class="isc-note">💡 <strong>ICSE students note:</strong> After Class 10 (ICSE), Class 11 & 12 is called <strong>ISC — Indian School Certificate</strong>. Same CISCE board, different exam name.</div>
+
+    <a href="boards_11_isc.html" class="card" data-stream="all">
+      <div class="card-icon">📘</div>
+      <div class="card-body">
+        <div class="card-name">ISC <span style="font-size:.82rem;font-weight:600;color:var(--txt-m)">(formerly ICSE)</span></div>
+        <div class="card-full">Indian School Certificate — CISCE Board · Class 11</div>
+        <div class="card-tags">
+          <span class="card-tag">Science · PCM · PCB</span>
+          <span class="card-tag">Commerce</span>
+          <span class="card-tag">Humanities</span>
         </div>
       </div>
-    </div>
-    <div class="subj-panel" id="subj-math">
-      <div class="subj-deep-grid">
-        <div class="subj-deep-card">
-          <div class="sdc-hdr"><div class="sdc-icon" style="background:rgba(59,130,196,.1);">📐</div><div><div class="sdc-name">Algebra & Trigonometry</div><div class="sdc-sub">JEE core units</div></div></div>
-          <div class="sdc-topics">
-            <div class="sdc-topic">Sets, Relations & Functions — Domain, range, types</div>
-            <div class="sdc-topic">Trigonometry — All formulae, inverse trig, equations</div>
-            <div class="sdc-topic">Complex Numbers — Argand plane, De Moivre, roots</div>
-            <div class="sdc-topic">Quadratic Equations — Nature of roots, inequalities</div>
-            <div class="sdc-topic">Sequences & Series — AP, GP, AGP, sum to infinity</div>
-            <div class="sdc-topic">Permutations & Combinations — nCr, counting principles</div>
-            <div class="sdc-topic">Binomial Theorem — General term, middle term</div>
-          </div>
-          <div class="sdc-note">🎯 Trigonometry + Complex Numbers = 20%+ of JEE Maths. Master them early.</div>
-        </div>
-        <div class="subj-deep-card">
-          <div class="sdc-hdr"><div class="sdc-icon" style="background:rgba(59,130,196,.1);">∫</div><div><div class="sdc-name">Coordinate & Calculus</div><div class="sdc-sub">New in Class 11</div></div></div>
-          <div class="sdc-topics">
-            <div class="sdc-topic">Straight Lines — All forms, angle between lines, distance</div>
-            <div class="sdc-topic">Conic Sections — Circle, parabola, ellipse, hyperbola</div>
-            <div class="sdc-topic">3D Geometry Introduction — Direction cosines, lines</div>
-            <div class="sdc-topic">Limits & Derivatives — First principle, standard results</div>
-            <div class="sdc-topic">Mathematical Reasoning — Statements, connectives</div>
-            <div class="sdc-topic">Statistics — Mean, variance, standard deviation</div>
-            <div class="sdc-topic">Probability — Events, Bayes theorem</div>
-          </div>
-          <div class="sdc-note">🎯 Limits & Derivatives introduction here — Integration comes in Class 12. Don't skip.</div>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a href="boards_11_state.html" class="card" data-stream="all">
+      <div class="card-icon">🏛️</div>
+      <div class="card-body">
+        <div class="card-name">State Board</div>
+        <div class="card-full">UP · Maharashtra · Rajasthan · MP · Bihar &amp; more</div>
+        <div class="card-tags">
+          <span class="card-tag">All Major States</span>
+          <span class="card-tag">Science · Commerce · Arts</span>
         </div>
       </div>
-    </div>
-    <div class="subj-panel" id="subj-bio">
-      <div class="subj-deep-grid">
-        <div class="subj-deep-card">
-          <div class="sdc-hdr"><div class="sdc-icon" style="background:rgba(107,143,94,.1);">🧬</div><div><div class="sdc-name">Diversity & Structural Organisation</div><div class="sdc-sub">NEET core — 40-50 marks</div></div></div>
-          <div class="sdc-topics">
-            <div class="sdc-topic">The Living World — Characteristics, taxonomy, nomenclature</div>
-            <div class="sdc-topic">Biological Classification — 5 kingdoms, viruses, lichens</div>
-            <div class="sdc-topic">Plant Kingdom — Algae to Angiosperms, alternation of generations</div>
-            <div class="sdc-topic">Animal Kingdom — Classification, phyla characteristics</div>
-            <div class="sdc-topic">Morphology of Flowering Plants — Root, stem, leaf, flower</div>
-            <div class="sdc-topic">Anatomy of Flowering Plants — Tissues, tissue systems</div>
-            <div class="sdc-topic">Structural Organisation in Animals — Tissues, earthworm, cockroach</div>
-          </div>
-          <div class="sdc-note">🔥 Plant + Animal Kingdom = highest NEET Biology weightage. Every line = marks.</div>
-        </div>
-        <div class="subj-deep-card">
-          <div class="sdc-hdr"><div class="sdc-icon" style="background:rgba(107,143,94,.1);">🔬</div><div><div class="sdc-name">Cell Biology & Physiology</div><div class="sdc-sub">NEET core — 50-60 marks</div></div></div>
-          <div class="sdc-topics">
-            <div class="sdc-topic">Cell — The Unit of Life: prokaryotic, eukaryotic, organelles</div>
-            <div class="sdc-topic">Biomolecules — Carbohydrates, proteins, lipids, nucleic acids</div>
-            <div class="sdc-topic">Cell Cycle & Cell Division — Mitosis, meiosis in detail</div>
-            <div class="sdc-topic">Photosynthesis — Light & dark reaction, C3/C4, photorespiration</div>
-            <div class="sdc-topic">Respiration in Plants — Glycolysis, Krebs, ETC, fermentation</div>
-            <div class="sdc-topic">Plant Growth & Development — Hormones, photoperiodism</div>
-            <div class="sdc-topic">Digestion & Absorption, Breathing & Exchange of Gases</div>
-          </div>
-          <div class="sdc-note">🔥 Cell + Biomolecules + Photosynthesis — read NCERT 4-5 times. Every detail matters.</div>
-        </div>
-      </div>
-    </div>
+      <div class="card-arrow">→</div>
+    </a>
   </div>
-</section>
 
-<!-- CHAPTER TESTS — cream-w -->
-<section id="chapters" style="background:var(--cream-w);">
-  <div class="container">
-    <div class="slabel">Chapter Practice</div>
-    <h2 class="stitle">Class 11 Chapter Tests — Available Now</h2>
-    <p class="ssub">All 13 Physics chapters live with JEE Mains level questions. Chemistry and Biology launching soon.</p>
-    <div class="subj-tabs">
-      <button class="stab on" onclick="showSubj('phys',this)">⚛️ Physics — 13 Live</button>
-      <button class="stab" onclick="showSubj('chems',this)">🧪 Chemistry</button>
-      <button class="stab" onclick="showSubj('bios',this)">🧬 Biology</button>
-    </div>
-    <div class="subj-panel on" id="subj-phys">
-      <div class="ch-grid-board">
-        <a href="mockarena_chapter_physics_units.html" class="chb-card"><div class="chb-num">01</div><span class="chb-name">Units & Measurement</span></a>
-        <a href="mockarena_chapter_physics_motion.html" class="chb-card"><div class="chb-num">02</div><span class="chb-name">Motion in 1D & 2D</span></a>
-        <a href="mockarena_chapter_physics_laws.html" class="chb-card"><div class="chb-num">03</div><span class="chb-name">Laws of Motion</span></a>
-        <a href="mockarena_chapter_physics_wep.html" class="chb-card"><div class="chb-num">04</div><span class="chb-name">Work, Energy & Power</span></a>
-        <a href="mockarena_chapter_physics_rotation.html" class="chb-card"><div class="chb-num">05</div><span class="chb-name">Rotational Motion</span></a>
-        <a href="mockarena_chapter_physics_gravitation.html" class="chb-card"><div class="chb-num">06</div><span class="chb-name">Gravitation</span></a>
-        <a href="mockarena_chapter_physics_thermodynamics.html" class="chb-card"><div class="chb-num">07</div><span class="chb-name">Thermodynamics</span></a>
-        <a href="mockarena_chapter_physics_waves.html" class="chb-card"><div class="chb-num">08</div><span class="chb-name">Oscillations & Waves</span></a>
-        <a href="mockarena_chapter_physics_electrostatics.html" class="chb-card"><div class="chb-num">09</div><span class="chb-name">Electrostatics</span></a>
-        <a href="mockarena_chapter_physics_current.html" class="chb-card"><div class="chb-num">10</div><span class="chb-name">Current Electricity</span></a>
-        <a href="mockarena_chapter_physics_magnetic.html" class="chb-card"><div class="chb-num">11</div><span class="chb-name">Magnetic Effects</span></a>
-        <a href="mockarena_chapter_physics_optics.html" class="chb-card"><div class="chb-num">12</div><span class="chb-name">Optics ⭐</span></a>
-        <a href="mockarena_chapter_physics_modern.html" class="chb-card"><div class="chb-num">13</div><span class="chb-name">Modern Physics</span></a>
-      </div>
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid var(--border);">
-        <span style="font-size:.7rem;color:rgba(26,38,24,.55);">13/13 Physics chapters live · Start with Mechanics</span>
-        <a href="mockarena_chapter_physics_motion.html" class="btn-sage" style="font-size:.74rem;padding:8px 16px;">Start Motion →</a>
-      </div>
-    </div>
-    <div class="subj-panel" id="subj-chems">
-      <div class="ch-grid-board">
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">01</div><span class="chb-name">Mole Concept & Stoichiometry</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">02</div><span class="chb-name">Atomic Structure</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">03</div><span class="chb-name">Chemical Bonding & MOT</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">04</div><span class="chb-name">States of Matter</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">05</div><span class="chb-name">Thermodynamics</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">06</div><span class="chb-name">Equilibrium</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">07</div><span class="chb-name">Organic Chemistry — GOC</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">08</div><span class="chb-name">Hydrocarbons</span></div>
-      </div>
-      <div style="text-align:center;margin-top:14px;font-size:.74rem;color:rgba(26,38,24,.55);">Chemistry chapter tests launching soon</div>
-    </div>
-    <div class="subj-panel" id="subj-bios">
-      <div class="ch-grid-board">
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">01</div><span class="chb-name">The Living World ⭐</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">02</div><span class="chb-name">Biological Classification ⭐</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">03</div><span class="chb-name">Plant Kingdom ⭐</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">04</div><span class="chb-name">Animal Kingdom ⭐</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">05</div><span class="chb-name">Cell — Unit of Life ⭐</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">06</div><span class="chb-name">Biomolecules ⭐</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">07</div><span class="chb-name">Photosynthesis ⭐</span></div>
-        <div class="chb-card" style="opacity:.5;pointer-events:none;"><div class="chb-num" style="background:rgba(26,38,24,.06);color:rgba(26,38,24,.5);">08</div><span class="chb-name">Respiration ⭐</span></div>
-      </div>
-      <div style="text-align:center;margin-top:14px;font-size:.74rem;color:rgba(26,38,24,.55);">Biology chapter tests — critical for NEET — launching soon!</div>
-    </div>
+  <div class="back-row">
+    <button class="back-btn" onclick="window.location='mockarena_onboarding.html'">← Back to All Exams</button>
   </div>
-</section>
+</div>
 
-<!-- TESTS — white -->
-<section id="tests" style="background:white;">
-  <div class="container">
-    <div class="slabel">Mock Tests</div>
-    <h2 class="stitle">Available Mock Tests</h2>
-    <p class="ssub">Chapter tests and full mocks to prepare you for boards and competitive exams simultaneously.</p>
-    <div class="mock-wrap">
-      <div style="margin-bottom:20px;">
-        <div class="slabel green">Live Now</div>
-        <div class="stitle white" style="font-size:1.1rem;">Physics Chapter Tests + JEE & NEET Full Mocks</div>
-        <p class="ssub white" style="font-size:.8rem;">13 Physics chapters live · JEE Mains Mock · NEET UG Mock</p>
-      </div>
-      <div class="mock-grid">
-        <a href="mockarena_chapter_physics_rotation.html" class="mock-card">
-          <div class="mc-top"><span class="mc-badge mcb-full">Class 11 · High Weightage</span></div>
-          <div class="mc-title">Rotational Motion</div>
-          <div class="mc-desc">Most difficult Class 11 Physics chapter. MOI, torque, angular momentum, rolling — 10-15% of JEE Physics.</div>
-          <div class="mc-meta"><div class="mc-m">⏱️ 60 min</div><div class="mc-m">📝 30 Qs</div><div class="mc-m">🎯 JEE Level</div></div>
-          <button class="mc-btn">Start Test →</button>
-        </a>
-        <a href="mockarena_chapter_physics_thermodynamics.html" class="mock-card">
-          <div class="mc-top"><span class="mc-badge mcb-full">Class 11 · JEE + NEET</span></div>
-          <div class="mc-title">Thermodynamics</div>
-          <div class="mc-desc">Appears in both JEE and NEET. Laws of thermodynamics, heat engines, entropy, specific heats of gases.</div>
-          <div class="mc-meta"><div class="mc-m">⏱️ 60 min</div><div class="mc-m">📝 30 Qs</div><div class="mc-m">🎯 JEE + NEET</div></div>
-          <button class="mc-btn">Start Test →</button>
-        </a>
-        <a href="mockarena_jee_main_mocktest.html" class="mock-card">
-          <div class="mc-top"><span class="mc-badge mcb-full">Full Mock · JEE Mains</span></div>
-          <div class="mc-title">JEE Mains Full Mock</div>
-          <div class="mc-desc">Full JEE Mains mock. Physics + Chemistry + Maths. Real timer. Check your current level vs JEE standard.</div>
-          <div class="mc-meta"><div class="mc-m">⏱️ 3 Hours</div><div class="mc-m">📝 90 Qs</div><div class="mc-m">🎯 300 Marks</div></div>
-          <button class="mc-btn">Start JEE Mock →</button>
-        </a>
-        <a href="mockarena_neet_mocktest.html" class="mock-card">
-          <div class="mc-top"><span class="mc-badge mcb-full">Full Mock · NEET UG</span></div>
-          <div class="mc-title">NEET UG Full Mock</div>
-          <div class="mc-desc">Full NEET mock. Biology + Physics + Chemistry. Real 3h 20min timer. Ideal for PCB students.</div>
-          <div class="mc-meta"><div class="mc-m">⏱️ 3h 20min</div><div class="mc-m">📝 180 Qs</div><div class="mc-m">🎯 720 Marks</div></div>
-          <button class="mc-btn">Start NEET Mock →</button>
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CAREER PATHS — cream-w -->
-<section style="background:var(--cream-w);">
-  <div class="container">
-    <div class="slabel">After Class 12</div>
-    <h2 class="stitle">Where Science Stream Takes You</h2>
-    <p class="ssub">Know your destination before Class 11 begins. It gives every study session a clear purpose.</p>
-    <div class="career-grid">
-      <div class="career-card"><span class="cc-icon">🏛️</span><div class="cc-title">IITs via JEE Advanced</div><span class="cc-tag">PCM</span><div class="cc-desc">Top engineering colleges. JEE Advanced after JEE Mains qualify. B.Tech in CS, Electrical, Mechanical, Chemical and more.</div></div>
-      <div class="career-card"><span class="cc-icon">⚙️</span><div class="cc-title">NITs via JEE Mains</div><span class="cc-tag">PCM</span><div class="cc-desc">31 NITs across India. Strong engineering education. NIT Trichy, Warangal, Surathkal — excellent placements.</div></div>
-      <div class="career-card"><span class="cc-icon">🏥</span><div class="cc-title">AIIMS / MBBS via NEET</div><span class="cc-tag">PCB</span><div class="cc-desc">All medical colleges via NEET score. AIIMS Delhi needs 715+/720. Government MBBS from 550+/720.</div></div>
-      <div class="career-card"><span class="cc-icon">🔬</span><div class="cc-title">B.Sc + Research</div><span class="cc-tag">PCM / PCB</span><div class="cc-desc">BSc Physics, Chemistry, Biology, Maths at top universities. IISER, IISc, top central universities via CUET.</div></div>
-      <div class="career-card"><span class="cc-icon">💻</span><div class="cc-title">B.Tech via State CETs</div><span class="cc-tag">PCM</span><div class="cc-desc">MHT-CET, KCET, WBJEE, VITEEE — state engineering entrances for 1000s of engineering seats across India.</div></div>
-      <div class="career-card"><span class="cc-icon">🌐</span><div class="cc-title">Defence — NDA / AFCAT</div><span class="cc-tag">PCM</span><div class="cc-desc">NDA written exam after Class 12. Join Indian Army, Navy or Air Force as an officer. Prestigious career with security.</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- PROGRESS — white -->
-<section style="background:white;">
-  <div class="container">
-    <div class="slabel">Your Progress</div>
-    <h2 class="stitle">Track Your Class 11 Performance</h2>
-    <p class="ssub">Live data from your MockArena tests — where you stand right now.</p>
-    <div class="prog-wrap">
-      <div class="prog-grid">
-        <div class="pg-card"><span class="pg-n" style="color:var(--sage)" id="pg-tests">0</span><span class="pg-l">Tests Taken</span><div class="pg-bar"><div class="pg-bar-f" id="pg-tests-bar" style="width:0%"></div></div></div>
-        <div class="pg-card"><span class="pg-n" style="color:var(--sky)" id="pg-acc">0%</span><span class="pg-l">Accuracy</span><div class="pg-bar"><div class="pg-bar-f" id="pg-acc-bar" style="width:0%"></div></div></div>
-        <div class="pg-card"><span class="pg-n" style="color:var(--gold)" id="pg-best">0</span><span class="pg-l">Best Score</span><div class="pg-bar"><div class="pg-bar-f" id="pg-best-bar" style="width:0%"></div></div></div>
-        <div class="pg-card"><span class="pg-n" style="color:var(--forest)" id="pg-correct">0</span><span class="pg-l">Total Correct</span><div class="pg-bar"><div class="pg-bar-f" id="pg-correct-bar" style="width:0%"></div></div></div>
-        <div class="pg-card"><span class="pg-n" style="color:var(--rose)" id="pg-wrong">0</span><span class="pg-l">Total Wrong</span><div class="pg-bar"><div class="pg-bar-f" id="pg-wrong-bar" style="width:0%;background:var(--rose)"></div></div></div>
-        <div class="pg-card"><span class="pg-n" style="color:var(--sage)">13</span><span class="pg-l">Physics Live</span><div class="pg-bar"><div class="pg-bar-f" style="width:100%"></div></div></div>
-      </div>
-      <div style="text-align:center;margin-top:20px;">
-        <a href="mockarena_analytics.html" class="btn-sage" style="display:inline-flex;font-size:.78rem;">📊 Full Analytics →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- STRATEGY — cream-w -->
-<section id="strategy" style="background:var(--cream-w);">
-  <div class="container">
-    <div class="slabel">Study Strategy</div>
-    <h2 class="stitle">How to Ace Class 11 Science</h2>
-    <p class="ssub">From students who topped Class 11, cracked JEE and NEET simultaneously.</p>
-    <div class="tips-grid">
-      <div class="tip-card"><div class="tip-num">1</div><div><div class="tip-title">NCERT First — Always</div><div class="tip-desc">For boards AND competitive exams, NCERT is the backbone. Read every chapter thoroughly before coaching material. Concept clarity from NCERT saves hours later.</div></div></div>
-      <div class="tip-card"><div class="tip-num">2</div><div><div class="tip-title">Don't Fall Behind</div><div class="tip-desc">Class 11 pace is brutal. If you miss one week, it takes a month to recover. Stay current — every single day. Daily study is more effective than weekend cramming.</div></div></div>
-      <div class="tip-card"><div class="tip-num">3</div><div><div class="tip-title">Physics — Concept + Problems</div><div class="tip-desc">Physics is not a reading subject. After understanding the concept, solve 20 problems minimum per chapter. Rotational Motion and Thermodynamics need 50+ problems each.</div></div></div>
-      <div class="tip-card"><div class="tip-num">4</div><div><div class="tip-title">Chemistry — 3 Different Approaches</div><div class="tip-desc">Physical = solve daily. Organic = understand mechanisms. Inorganic = read + revise. Treating all three the same is the biggest Chemistry mistake in Class 11.</div></div></div>
-      <div class="tip-card"><div class="tip-num">5</div><div><div class="tip-title">PCB: Biology is 50% of NEET</div><div class="tip-desc">If you are a NEET aspirant, Biology is your priority. NCERT Biology read 4-5 times is worth more than any coaching notes. Start this habit in Class 11 itself.</div></div></div>
-      <div class="tip-card"><div class="tip-num">6</div><div><div class="tip-title">Take Monthly Mock Tests</div><div class="tip-desc">Give JEE or NEET level mock tests monthly from Class 11 itself. It shows you exactly where you stand and builds exam stamina much before Class 12 pressure begins.</div></div></div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA -->
-<section style="background:white;padding:60px 20px;">
-  <div class="container">
-    <div class="cta-block">
-      <h2 class="cta-title">
-        Class 11 is Not a <span class="ct-g">Transition Year</span>.<br/>
-        It is the <span class="ct-g">Most Important</span> Year.
-      </h2>
-      <p class="cta-sub">50-60% of JEE and NEET papers come from Class 11. Students who master this year find Class 12 significantly easier. Start the right way — today.</p>
-      <div class="cta-btns">
-        <a href="mockarena_chapter_physics_rotation.html" class="btn-gold">📚 Start Rotational Motion</a>
-        <a href="boards_12.html" class="btn-sage">➡️ View Class 12 →</a>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer class="footer">
-  <div class="ft">
-    <div class="ft-brand">
-      <div class="ft-logo"><div class="nav-mark">MA</div><span class="nav-n1">Mock</span><span class="nav-n2">Arena</span></div>
-      <p class="ft-desc">India's most complete test prep for boards, JEE and NEET. Ace Class 11 with MockArena.</p>
-    </div>
-    <div class="ft-col"><div class="ft-ct">Classes</div>
-      <a href="boards_9.html" class="ft-link">Class 9</a>
-      <a href="boards_10.html" class="ft-link">Class 10</a>
-      <a href="boards_11.html" class="ft-link">Class 11</a>
-      <a href="boards_12.html" class="ft-link">Class 12</a>
-    </div>
-    <div class="ft-col"><div class="ft-ct">Exam Pages</div>
-      <a href="jee_foundation.html" class="ft-link">JEE Foundation</a>
-      <a href="jee_main.html" class="ft-link">JEE Mains</a>
-      <a href="jee_advanced.html" class="ft-link">JEE Advanced</a>
-      <a href="neet_ug.html" class="ft-link">NEET UG</a>
-    </div>
-    <div class="ft-col"><div class="ft-ct">Top Tests</div>
-      <a href="mockarena_chapter_physics_rotation.html" class="ft-link">Rotational Motion ⭐</a>
-      <a href="mockarena_chapter_physics_thermodynamics.html" class="ft-link">Thermodynamics</a>
-      <a href="mockarena_chapter_physics_waves.html" class="ft-link">Waves</a>
-      <a href="mockarena_chapter_physics_gravitation.html" class="ft-link">Gravitation</a>
-    </div>
-    <div class="ft-col"><div class="ft-ct">Account</div>
-      <a href="mockarena_dashboard.html" class="ft-link">Dashboard</a>
-      <a href="mockarena_analytics.html" class="ft-link">Analytics</a>
-      <a href="mockarena_jee_main_mocktest.html" class="ft-link">JEE Mock</a>
-      <a href="mockarena_neet_mocktest.html" class="ft-link">NEET Mock</a>
-    </div>
-  </div>
-  <div class="ft-bottom">
-    <span class="ft-copy">© 2026 MockArena. All rights reserved.</span>
-    <span class="ft-copy">Ace Class 11 Science 🚀</span>
-  </div>
-</footer>
-<script>function showSubj(id,el){document.querySelectorAll('.subj-panel').forEach(function(p){p.classList.remove('on');});document.querySelectorAll('.stab').forEach(function(t){t.classList.remove('on');});document.getElementById('subj-'+id).classList.add('on');el.classList.add('on');}
-document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var el=document.getElementById(this.getAttribute('href').slice(1));if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}});});
-
-// Subject tabs
-function showSubj(id, el){
-  document.querySelectorAll('.subj-panel').forEach(function(p){p.classList.remove('on');});
-  document.querySelectorAll('.stab').forEach(function(t){t.classList.remove('on');});
-  document.getElementById('subj-'+id).classList.add('on');
-  el.classList.add('on');
+<script>
+function filterStream(btn, stream){
+  document.querySelectorAll('.stream-chip').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');
+  // For this page stream filter is just visual — all 3 boards support all streams
 }
+</script>
 
-// Smooth scroll
-document.querySelectorAll('a[href^="#"]').forEach(function(a){
-  a.addEventListener('click',function(e){
-    var el=document.getElementById(this.getAttribute('href').slice(1));
-    if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}
-  });
+<footer style="background:#1a2618;color:white;padding:32px 20px 24px;margin-top:8px;">
+  <div style="max-width:680px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;flex-wrap:wrap;">
+    <div>
+      <div style="font-size:1.1rem;font-weight:900;">Mock<span style="color:#6b8f5e;">Arena</span></div>
+      <div style="font-size:.92rem;color:rgba(255,255,255,.5);margin-top:4px;">Class 11 Board Exam Preparation</div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      <a href="boards_11_cbse.html" style="font-size:.92rem;color:rgba(255,255,255,.6);">Class 11 CBSE</a>
+      <a href="boards_11_isc.html" style="font-size:.92rem;color:rgba(255,255,255,.6);">Class 11 ISC</a>
+      <a href="boards_11_state.html" style="font-size:.92rem;color:rgba(255,255,255,.6);">Class 11 State Board</a>
+      <a href="mockarena_student_dashboard.html" style="font-size:.92rem;color:rgba(255,255,255,.6);">Dashboard</a>
+    </div>
+  </div>
+  <div style="max-width:680px;margin:20px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.08);font-size:.86rem;color:rgba(255,255,255,.32);">© 2026 MockArena · mockarena.co.in · Based on Official 2026-27 CBSE / ISC / State Board Syllabuses</div>
+</footer>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",appId:"1:861067164791:web:28df5244e34361dd9d5a72"});
+const auth=getAuth(app);
+onAuthStateChanged(auth,(user)=>{
+  if(!user){window.location.href='login.html';return;}
+  const av=document.getElementById('nav-av');
+  if(av){if(user.photoURL)av.innerHTML=`<img src="${user.photoURL}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;else av.textContent=(user.displayName||'S').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);}
 });
-
-// Firebase auth + stats
-(function(){
-  var _c={apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"};
-  function load(cb){
-    var s1=document.createElement('script');s1.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js';
-    s1.onload=function(){var s2=document.createElement('script');s2.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js';
-      s2.onload=function(){var s3=document.createElement('script');s3.src='https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js';
-        s3.onload=function(){if(!firebase.apps.length)firebase.initializeApp(_c);cb(firebase.firestore(),firebase.auth());};
-        document.head.appendChild(s3);};document.head.appendChild(s2);};document.head.appendChild(s1);
-  }
-  function set(id,val){var el=document.getElementById(id);if(el)el.textContent=val;}
-  function bar(id,pct){var el=document.getElementById(id);if(el)el.style.width=Math.min(pct,100)+'%';}
-  load(function(db,auth){
-    auth.onAuthStateChanged(function(u){
-      if(!u) return;
-      var nm=u.displayName||'S';
-      var av=document.getElementById('nav-av');
-      if(av){if(u.photoURL){av.innerHTML='<img src="'+u.photoURL+'" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">';}
-      else{av.textContent=nm.split(' ').map(function(w){return w[0];}).join('').toUpperCase().substring(0,2);}}
-      db.collection('results').doc(u.uid).collection('tests').orderBy('timestamp','desc').limit(100)
-        .get().then(function(snap){
-          var tests=[];snap.forEach(function(d){tests.push(d.data());});
-          if(!tests.length) return;
-          var totalC=tests.reduce(function(a,t){return a+(t.correct||0);},0);
-          var totalW=tests.reduce(function(a,t){return a+(t.wrong||0);},0);
-          var totalQ=tests.reduce(function(a,t){return a+(t.total||0);},0);
-          var best=Math.max.apply(null,tests.map(function(t){return t.score||0;}));
-          var acc=totalQ?Math.round(totalC/totalQ*100):0;
-          set('pg-tests',tests.length);
-          set('pg-acc',acc+'%');
-          set('pg-best',best);
-          set('pg-correct',totalC);
-          set('pg-wrong',totalW);
-          bar('pg-tests-bar',Math.min(tests.length*5,100));
-          bar('pg-acc-bar',acc);
-          bar('pg-best-bar',Math.min(best/3,100));
-          bar('pg-correct-bar',Math.min(totalC,100));
-          bar('pg-wrong-bar',Math.min(totalW,100));
-        });
-    });
-  });
-})();
 </script>
 </body>
 </html>

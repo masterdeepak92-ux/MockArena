@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Class 11 CBSE 2026-27 — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--forest:#1a2618;--sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-g:rgba(107,143,94,.2);--gold:#c8962a;--gold-l:rgba(200,150,42,.08);--sky:#3b82c4;--sky-l:rgba(59,130,196,.1);--cream:#faf9f5;--cream-w:#f5f3ec;--border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.13);--txt:#1a2618;--txt-m:rgba(26,38,24,.64);--txt-lo:rgba(26,38,24,.44);--fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--txt);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.7;}
+a,a:hover,a:visited{text-decoration:none;color:inherit;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;background:rgba(26,38,24,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(107,143,94,.12);display:flex;align-items:center;padding:0 20px;gap:10px;}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.nav-n1{color:white;font-size:1.05rem;font-weight:900;letter-spacing:-.02em;}
+.nav-n2{font-size:1rem;font-weight:900;color:var(--sage);}
+.nav-pill{display:flex;align-items:center;gap:6px;background:rgba(107,143,94,.12);border:1px solid rgba(107,143,94,.2);border-radius:100px;padding:4px 12px;margin-left:6px;}
+.nav-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);animation:np 2.5s ease-in-out infinite;}
+@keyframes np{0%,100%{opacity:1;}50%{opacity:.2;}}
+.nav-pill-txt{font-size:.95rem;font-weight:700;color:rgba(255,255,255,.9);}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:16px;}
+.nav-link{font-size:.95rem;font-weight:600;color:rgba(255,255,255,.65);padding:5px 10px;border-radius:7px;transition:all .18s;white-space:nowrap;}
+.nav-link:hover{color:white;background:rgba(255,255,255,.07);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-switch{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.78);text-decoration:none;white-space:nowrap;}
+.nav-dash{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;text-decoration:none;white-space:nowrap;}
+.nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4a035);display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:700;color:black;overflow:hidden;flex-shrink:0;}
+.nav-ham{display:none;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);align-items:center;justify-content:center;font-size:1rem;color:white;cursor:pointer;flex-shrink:0;}
+@media(max-width:960px){.nav-links{display:none;}.nav-ham{display:flex;}}
+.jump-bar{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;padding:12px 16px;background:white;border-bottom:1px solid var(--border);-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-top:60px;}
+.jump-bar::-webkit-scrollbar{display:none;}
+.jump-btn{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:var(--cream-w);color:var(--txt);white-space:nowrap;cursor:pointer;transition:all .18s;flex-shrink:0;text-decoration:none;display:inline-block;}
+.jump-btn:hover{border-color:var(--sage);color:var(--sage);}
+.jump-btn.active{background:var(--forest);color:white;border-color:var(--forest);}
+.hero{background:var(--cream);border-bottom:1px solid var(--border);padding:clamp(88px,9vh,110px) 20px clamp(48px,5vh,68px);}
+.hero-inner{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center;}
+.hero-left{max-width:600px;}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--sage-l);border:1px solid rgba(107,143,94,.22);border-radius:100px;padding:5px 14px;margin-bottom:16px;}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:np 2.5s ease-in-out infinite;}
+.hero-tag-txt{font-size:.94rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.06em;}
+.hero-title{font-size:clamp(2rem,4vw,3.1rem);font-weight:900;color:var(--forest);line-height:1.06;letter-spacing:-.03em;margin-bottom:14px;}
+.h1{color:var(--sage);}
+.h2{color:var(--gold);}
+.hero-sub{font-size:1.08rem;color:var(--txt-m);line-height:1.78;margin-bottom:22px;font-weight:500;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.btn-primary{font-family:var(--fd);font-size:.96rem;font-weight:800;padding:11px 22px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-g);text-decoration:none;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--sage-g);}
+.btn-secondary{font-family:var(--fd);font-size:.96rem;font-weight:700;padding:11px 20px;border-radius:11px;border:1.5px solid var(--bm);background:white;color:var(--txt);cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;text-decoration:none;}
+.btn-secondary:hover{border-color:var(--sage);color:var(--sage);}
+.hero-trust{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.trust-item{font-size:.96rem;font-weight:600;color:var(--txt-m);display:flex;align-items:center;gap:5px;}
+.trust-item span{color:var(--sage);font-weight:700;}
+.hero-right{flex-shrink:0;}
+.hero-stat-card{background:white;border:1.5px solid var(--border);border-radius:18px;padding:20px;min-width:220px;box-shadow:0 4px 20px rgba(26,38,24,.07);}
+.hsc-title{font-size:.94rem;font-weight:700;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}
+.hsc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-radius:12px;overflow:hidden;}
+.hsc-item{background:var(--cream-w);padding:13px 10px;text-align:center;}
+.hsc-n{font-family:var(--fm);font-size:1.15rem;font-weight:800;color:var(--forest);display:block;margin-bottom:2px;}
+.hsc-l{font-size:.9rem;font-weight:600;color:var(--txt-lo);}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr;gap:20px;}.hero-right{display:none;}}
+section{padding:52px 20px;}
+.container{max-width:1060px;margin:0 auto;}
+.sec-label{font-size:.96rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sage);margin-bottom:8px;}
+.sec-title{font-size:clamp(1.6rem,2.6vw,2.1rem);font-weight:800;color:var(--forest);line-height:1.18;margin-bottom:8px;letter-spacing:-.02em;}
+.sec-sub{font-size:1.06rem;color:var(--txt-m);line-height:1.78;margin-bottom:24px;}
+/* STREAM TABS */
+.stream-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.stream-tab{font-family:var(--fd);font-size:1rem;font-weight:700;padding:10px 22px;border-radius:12px;border:2px solid var(--border);background:white;color:var(--txt-m);cursor:pointer;transition:all .18s;}
+.stream-tab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.stream-tab:hover:not(.on){border-color:var(--sage);color:var(--sage);}
+/* SUBJECT TABS */
+.subj-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.subj-tab{font-family:var(--fd);font-size:1rem;font-weight:700;padding:9px 18px;border-radius:10px;border:1.5px solid var(--border);background:white;color:var(--txt-m);cursor:pointer;transition:all .18s;}
+.subj-tab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.subj-tab:hover:not(.on){border-color:var(--sage);color:var(--sage);}
+/* STREAM CONTENT */
+.stream-content{display:none;}
+.stream-content.on{display:block;}
+/* CHAPTER CARDS */
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:14px;}
+.ch-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(26,38,24,.05);transition:all .2s;}
+.ch-card:hover{border-color:var(--sage);transform:translateY(-3px);box-shadow:0 6px 20px var(--sage-l);}
+.ch-num{font-family:var(--fm);font-size:.84rem;font-weight:700;color:var(--sage);background:var(--sage-l);border:1px solid rgba(107,143,94,.2);padding:3px 10px;border-radius:100px;display:inline-block;margin-bottom:10px;}
+.ch-title{font-size:1.08rem;font-weight:800;color:var(--forest);margin-bottom:6px;line-height:1.3;}
+.ch-meta{font-size:.96rem;color:var(--txt-m);line-height:1.65;margin-bottom:14px;}
+.ch-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.ch-tags{display:flex;gap:5px;flex-wrap:wrap;}
+.ch-tag{font-size:.84rem;font-weight:600;padding:3px 9px;border-radius:100px;background:var(--cream-w);color:var(--txt-lo);border:1px solid var(--border);}
+.ch-tag.imp{background:rgba(200,150,42,.08);color:var(--gold);border-color:rgba(200,150,42,.2);}
+.ch-tag.jee{background:rgba(59,130,196,.08);color:var(--sky);border-color:rgba(59,130,196,.2);}
+.ch-tag.neet{background:rgba(107,143,94,.08);color:#3a6830;border-color:rgba(107,143,94,.2);}
+.ch-btn{font-family:var(--fd);font-size:.94rem;font-weight:700;padding:8px 14px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;white-space:nowrap;transition:all .18s;flex-shrink:0;}
+.ch-btn:hover{box-shadow:0 3px 12px var(--sage-g);}
+/* WEIGHTAGE */
+.wt-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.wt-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;}
+.wt-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.wt-chapter{font-size:1.06rem;font-weight:800;color:var(--forest);}
+.wt-marks{font-family:var(--fm);font-size:.94rem;font-weight:700;color:var(--sage);background:var(--sage-l);padding:4px 10px;border-radius:8px;}
+.wt-bar-wrap{height:6px;background:rgba(26,38,24,.07);border-radius:100px;margin-bottom:8px;overflow:hidden;}
+.wt-bar{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--sage),#4a8a3d);}
+.wt-meta{font-size:.94rem;color:var(--txt-m);}
+/* TIPS */
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.tip-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;}
+.tip-icon{font-size:1.6rem;margin-bottom:10px;}
+.tip-title{font-size:1.06rem;font-weight:800;color:var(--forest);margin-bottom:7px;}
+.tip-body{font-size:1rem;color:var(--txt-m);line-height:1.72;}
+/* FOOTER */
+.footer{background:var(--forest);color:white;padding:40px 20px 28px;}
+.ft-inner{max-width:1060px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.ft-brand{font-size:1.2rem;font-weight:900;}
+.ft-brand span{color:var(--sage);}
+.ft-desc{font-size:.96rem;color:rgba(255,255,255,.55);margin-top:6px;max-width:300px;line-height:1.65;}
+.ft-links{display:flex;flex-direction:column;gap:8px;}
+.ft-link{font-size:.96rem;color:rgba(255,255,255,.58);transition:color .18s;}
+.ft-link:hover{color:white;}
+.ft-copy{font-size:.92rem;color:rgba(255,255,255,.35);margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.07);width:100%;}
+@media(min-width:1100px){section{padding:64px 40px;}.hero{padding:96px 40px 68px;}.hero-title{font-size:3.1rem;}.sec-title{font-size:2.1rem;}.sec-sub{font-size:1.1rem;}.hero-sub{font-size:1.12rem;}}
+@media(min-width:1400px){.container{max-width:1200px;}section{padding:72px 48px;}.hero-title{font-size:3.4rem;}.sec-title{font-size:2.2rem;}}
+@media(max-width:540px){section{padding:36px 16px;}.hero{padding:76px 16px 40px;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><span class="nav-n1">Mock</span><span class="nav-n2">Arena</span></a>
+  <div class="nav-pill"><div class="nav-pill-dot"></div><span class="nav-pill-txt">Class 11 · CBSE 2026-27</span></div>
+  <div class="nav-links">
+    <a href="#chapters" class="nav-link">Chapters</a>
+    <a href="#weightage" class="nav-link">Weightage</a>
+    <a href="#tips" class="nav-link">Tips</a>
+  </div>
+  <div class="nav-right">
+    <a href="mockarena_onboarding.html" class="nav-switch">⇄ Switch Exam</a>
+    <a href="mockarena_student_dashboard.html" class="nav-dash">Dashboard →</a>
+    <div class="nav-av" id="nav-av">S</div>
+    <button class="nav-ham" onclick="document.querySelector('.nav-links').style.cssText='display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(26,38,24,.97);padding:16px;z-index:300;'">☰</button>
+  </div>
+</nav>
+
+<div class="jump-bar">
+  <a href="#chapters" class="jump-btn active">📚 Chapters</a>
+  <a href="#weightage" class="jump-btn">📊 Weightage</a>
+  <a href="#tips" class="jump-btn">💡 Tips</a>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag"><div class="hero-tag-dot"></div><span class="hero-tag-txt">CBSE Class 11 · Official 2026-27 Syllabus</span></div>
+      <h1 class="hero-title">Class 11 <span class="h1">CBSE</span><br/><span class="h2">2026-27</span> Syllabus.</h1>
+      <p class="hero-sub">Complete chapter-wise practice for Science (PCM/PCB), Commerce and Humanities — based on the official CBSE 2026-27 curriculum from cbseacademic.nic.in. Single final exam pattern.</p>
+      <div class="hero-btns">
+        <a href="#chapters" class="btn-primary">📚 Start Practising</a>
+        <a href="boards_11.html" class="btn-secondary">← Change Board</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><span>✓</span> Official 2026-27</div>
+        <div class="trust-item"><span>✓</span> Science · Commerce · Arts</div>
+        <div class="trust-item"><span>✓</span> JEE &amp; NEET Relevant</div>
+        <div class="trust-item"><span>✓</span> Single Final Exam</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-card">
+        <div class="hsc-title">CBSE Class 11 · 2026-27</div>
+        <div class="hsc-grid">
+          <div class="hsc-item"><span class="hsc-n">3</span><span class="hsc-l">Streams</span></div>
+          <div class="hsc-item"><span class="hsc-n">70-80</span><span class="hsc-l">Theory Marks</span></div>
+          <div class="hsc-item"><span class="hsc-n">30-20</span><span class="hsc-l">Practical/IA</span></div>
+          <div class="hsc-item"><span class="hsc-n">1 Exam</span><span class="hsc-l">Final Only</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CHAPTERS -->
+<section id="chapters" style="background:var(--cream-w);">
+<div class="container">
+  <div class="sec-label">📚 Chapter-wise Practice</div>
+  <h2 class="sec-title">CBSE Class 11 — All Streams 2026-27</h2>
+  <p class="sec-sub">Select your stream first, then choose a subject. All content from official CBSE 2026-27 PDFs.</p>
+
+  <div class="stream-tabs">
+    <button class="stream-tab on" onclick="setStream(this,'science')">🔬 Science (PCM / PCB)</button>
+    <button class="stream-tab" onclick="setStream(this,'commerce')">💼 Commerce</button>
+    <button class="stream-tab" onclick="setStream(this,'arts')">🎭 Humanities / Arts</button>
+  </div>
+
+  <!-- ══ SCIENCE STREAM ══ -->
+  <div id="st-science" class="stream-content on">
+    <div class="subj-tabs">
+      <button class="subj-tab on" onclick="setSubj(this,'phy','science')">⚡ Physics</button>
+      <button class="subj-tab" onclick="setSubj(this,'chem','science')">🧪 Chemistry</button>
+      <button class="subj-tab" onclick="setSubj(this,'math','science')">📐 Mathematics</button>
+      <button class="subj-tab" onclick="setSubj(this,'bio','science')">🌱 Biology</button>
+      <button class="subj-tab" onclick="setSubj(this,'eng','science')">📖 English</button>
+    </div>
+
+    <!-- PHYSICS — 10 Units, 70M theory + 30M practical -->
+    <div id="phy" class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Unit I · Ch.1</div><div class="ch-title">Physical World</div><div class="ch-meta">Scope of physics, nature of physical laws, fundamental forces, physics and technology</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">23M unit</span></div><button class="ch-btn" onclick="startTest('Physics','Physical World')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit II · Ch.2</div><div class="ch-title">Units and Measurements</div><div class="ch-meta">SI units, fundamental and derived units, dimensions, dimensional analysis, errors in measurement, significant figures</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Physics','Units and Measurements')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit III · Ch.3</div><div class="ch-title">Motion in a Straight Line</div><div class="ch-meta">Frame of reference, displacement, velocity, uniform and non-uniform motion, acceleration, kinematic equations, relative velocity</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Physics','Motion Straight Line')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit III · Ch.4</div><div class="ch-title">Motion in a Plane</div><div class="ch-meta">Scalars and vectors, vector operations, projectile motion, uniform circular motion, relative velocity in 2D</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Physics','Motion in Plane')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit IV · Ch.5</div><div class="ch-title">Laws of Motion</div><div class="ch-meta">Newton's 3 laws, impulse, friction (static, kinetic, rolling), circular motion dynamics, concept of inertia</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Physics','Laws of Motion')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Ch.6</div><div class="ch-title">Work, Energy and Power</div><div class="ch-meta">Work-Energy theorem, kinetic and potential energy, conservation of mechanical energy, power, collisions (elastic and inelastic)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Physics','Work Energy Power')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Ch.7</div><div class="ch-title">System of Particles and Rotational Motion</div><div class="ch-meta">Centre of mass, torque, angular momentum, moment of inertia, rolling motion (without slipping), theorems of MOI</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Physics','Rotational Motion')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit VI · Ch.8</div><div class="ch-title">Gravitation</div><div class="ch-meta">Kepler's laws, Newton's law of gravitation, gravitational constant G, acceleration due to gravity (g), variation with height/depth, escape velocity, orbital velocity, satellites</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Physics','Gravitation')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit VII · Ch.9</div><div class="ch-title">Mechanical Properties of Solids</div><div class="ch-meta">Elastic behaviour, stress-strain relationship, Hooke's law, elastic moduli (Young's, Bulk, Shear modulus), Poisson's ratio</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">23M unit</span></div><button class="ch-btn" onclick="startTest('Physics','Mechanical Properties Solids')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit VII · Ch.10</div><div class="ch-title">Mechanical Properties of Fluids</div><div class="ch-meta">Pressure, Pascal's law, Archimedes' principle, streamline flow, Bernoulli's theorem, viscosity, surface tension, capillary rise</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Physics','Mechanical Properties Fluids')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit VII · Ch.11</div><div class="ch-title">Thermal Properties of Matter</div><div class="ch-meta">Heat, temperature, thermal expansion, specific heat capacity, calorimetry, change of state, latent heat, heat transfer (conduction, convection, radiation), Newton's law of cooling</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Physics','Thermal Properties')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit VIII · Ch.12</div><div class="ch-title">Thermodynamics</div><div class="ch-meta">Thermal equilibrium, zeroth law, heat, work, first law of thermodynamics, isothermal/adiabatic processes, second law, reversible/irreversible processes, Carnot engine and its efficiency</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Physics','Thermodynamics')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit IX · Ch.13</div><div class="ch-title">Kinetic Theory of Gases</div><div class="ch-meta">Kinetic theory, equation of state of perfect gas, degrees of freedom, law of equipartition of energy, mean free path, Avogadro's number</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Physics','Kinetic Theory')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit X · Ch.14</div><div class="ch-title">Oscillations</div><div class="ch-meta">Periodic motion, SHM (simple harmonic motion), energy in SHM, free, forced and damped oscillations, resonance, simple pendulum</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Physics','Oscillations')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit X · Ch.15</div><div class="ch-title">Waves</div><div class="ch-meta">Transverse and longitudinal waves, speed of wave, displacement relation, superposition principle, reflection, standing waves, resonance, Doppler effect</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Physics','Waves')">Practice →</button></div></div>
+    </div>
+
+    <!-- CHEMISTRY — 9 Units, 70M theory + 30M practical -->
+    <div id="chem" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Unit I · Ch.1</div><div class="ch-title">Some Basic Concepts of Chemistry</div><div class="ch-meta">Matter, laws of chemical combination, Dalton's atomic theory, atomic and molecular masses, mole concept, stoichiometry, limiting reagent</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Chemistry','Basic Concepts Chemistry')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit II · Ch.2</div><div class="ch-title">Structure of Atom</div><div class="ch-meta">Atomic models (Bohr), dual nature of matter, de Broglie equation, Heisenberg's uncertainty principle, quantum numbers, orbital shapes, Aufbau principle, Pauli exclusion, Hund's rule</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Chemistry','Structure of Atom')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit III · Ch.3</div><div class="ch-title">Classification of Elements and Periodicity</div><div class="ch-meta">Genesis of periodic classification, modern periodic table, electronic configuration and types of elements, periodic trends: atomic radii, ionisation enthalpy, electron gain enthalpy, electronegativity, valency</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Chemistry','Classification Periodicity')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit IV · Ch.4</div><div class="ch-title">Chemical Bonding and Molecular Structure</div><div class="ch-meta">Ionic, covalent bonds, Lewis structure, VSEPR theory, bond parameters, dipole moment, hybridisation, molecular orbital theory (H₂, O₂, N₂, F₂), hydrogen bonding</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Chemistry','Chemical Bonding')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Ch.5</div><div class="ch-title">Chemical Thermodynamics</div><div class="ch-meta">System and surroundings, enthalpy (H), Hess's law, standard enthalpies of formation, bond enthalpies, entropy (S), Gibbs energy (G), spontaneity, equilibrium</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Chemistry','Thermodynamics')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit VI · Ch.6</div><div class="ch-title">Equilibrium</div><div class="ch-meta">Equilibrium in physical and chemical processes, law of mass action, Kc and Kp, Le Chatelier's principle, ionic equilibrium, pH, buffers, Henderson-Hasselbalch equation, solubility product</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Chemistry','Equilibrium')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit VII · Ch.7</div><div class="ch-title">Redox Reactions</div><div class="ch-meta">Oxidation and reduction, oxidation number, balancing redox reactions (ion-electron method and oxidation number method), applications</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Chemistry','Redox Reactions')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit VIII · Ch.8</div><div class="ch-title">Organic Chemistry — Basic Principles</div><div class="ch-meta">IUPAC nomenclature, classification, electronic displacement (inductive, mesomeric, hyperconjugation), types of organic reactions, homolytic/heterolytic bond cleavage, intermediates</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Chemistry','Organic Chemistry Basics')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit VIII · Ch.9</div><div class="ch-title">Hydrocarbons</div><div class="ch-meta">Alkanes (free radical substitution), alkenes (mechanism of addition), alkynes, Markovnikov's rule, aromatic hydrocarbons (Hückel rule, EAS mechanism), aromaticity</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Chemistry','Hydrocarbons')">Practice →</button></div></div>
+    </div>
+
+    <!-- MATHEMATICS — 6 Units, 80M theory + 20M IA -->
+    <div id="math" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Unit I · Sets & Functions</div><div class="ch-title">Sets</div><div class="ch-meta">Sets and their representations, empty set, finite and infinite sets, equal sets, subsets, power set, Venn diagrams, operations (union, intersection, complement)</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Maths','Sets')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit I · Sets & Functions</div><div class="ch-title">Relations and Functions</div><div class="ch-meta">Ordered pairs, Cartesian product, relations, types of functions (one-one, onto, bijective), composition of functions, domain and range, graphs</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Relations Functions')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit I · Sets & Functions</div><div class="ch-title">Trigonometric Functions</div><div class="ch-meta">Angles, degree and radian, trig functions, signs in quadrants, domain and range, graphs, trig identities, sum and product formulas, inverse trig functions (basic), principal value</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Maths','Trigonometric Functions')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit II · Algebra</div><div class="ch-title">Complex Numbers and Quadratic Equations</div><div class="ch-meta">Complex numbers, Argand plane, modulus and argument, De Moivre's theorem, algebraic operations, roots of quadratic equations with complex roots</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Maths','Complex Numbers')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit II · Algebra</div><div class="ch-title">Linear Inequalities</div><div class="ch-meta">Algebraic solutions of linear inequalities in one variable, graphical solutions, inequalities in two variables, system of linear inequalities</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Maths','Linear Inequalities')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit II · Algebra</div><div class="ch-title">Permutations and Combinations</div><div class="ch-meta">Fundamental principle of counting, factorial, permutations with and without repetition, combinations, binomial coefficient, applications</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Maths','Permutations Combinations')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit II · Algebra</div><div class="ch-title">Binomial Theorem</div><div class="ch-meta">Binomial theorem for positive integral index, Pascal's triangle, general and middle term, coefficient of x^r, binomial coefficients properties</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Maths','Binomial Theorem')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit II · Algebra</div><div class="ch-title">Sequence and Series</div><div class="ch-meta">Arithmetic Progression (AP), Geometric Progression (GP), Arithmetic Mean, Geometric Mean, sum of n terms, sum to infinity of GP, special series (Σn, Σn², Σn³)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Maths','Sequence and Series')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit III · Coordinate Geometry</div><div class="ch-title">Straight Lines</div><div class="ch-meta">Brief recall of 2D geometry, slope, equations of lines (various forms), angle between lines, distance from a point to a line, family of lines</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Maths','Straight Lines')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit III · Coordinate Geometry</div><div class="ch-title">Conic Sections</div><div class="ch-meta">Sections of a cone, circle (standard form, general form), parabola, ellipse, hyperbola — standard forms, foci, directrix, eccentricity, latus rectum</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Maths','Conic Sections')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit III · Coordinate Geometry</div><div class="ch-title">Introduction to 3D Geometry</div><div class="ch-meta">Coordinate axes and planes in 3D, coordinates of a point, distance between two points, section formula in 3D</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Maths','3D Geometry')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit IV · Calculus</div><div class="ch-title">Limits and Derivatives</div><div class="ch-meta">Limits of polynomials, rational, trig functions, limits at infinity, algebra of limits, first principle of derivative, derivatives of polynomial, trig, exponential and log functions, chain rule</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Maths','Limits and Derivatives')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Statistics & Probability</div><div class="ch-title">Statistics</div><div class="ch-meta">Measures of dispersion (range, mean deviation, variance, standard deviation), analysis of frequency distributions, comparison of variability</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Maths','Statistics')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Statistics & Probability</div><div class="ch-title">Probability</div><div class="ch-meta">Random experiments, sample space, events, axiomatic approach, addition theorem, conditional probability, Bayes' theorem, independent events</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag jee">JEE</span></div><button class="ch-btn" onclick="startTest('Maths','Probability')">Practice →</button></div></div>
+    </div>
+
+    <!-- BIOLOGY — 5 Units, 70M theory + 30M practical -->
+    <div id="bio" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Unit I · Ch.1</div><div class="ch-title">The Living World</div><div class="ch-meta">What is living? Diversity in living organisms, taxonomic categories, taxonomical aids, keys and herbaria</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Living World')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit I · Ch.2</div><div class="ch-title">Biological Classification</div><div class="ch-meta">5-kingdom classification (Monera, Protista, Fungi, Plantae, Animalia), viruses, viroids, lichens, basis of classification</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Biological Classification')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit I · Ch.3</div><div class="ch-title">Plant Kingdom</div><div class="ch-meta">Algae, Bryophytes, Pteridophytes, Gymnosperms, Angiosperms — salient features, classification, alternation of generations</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Plant Kingdom')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit I · Ch.4</div><div class="ch-title">Animal Kingdom</div><div class="ch-meta">Basis of classification, non-chordata (Porifera to Echinodermata) and chordata — salient features, phylogenetic position, key examples</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Animal Kingdom')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit II · Ch.5</div><div class="ch-title">Morphology of Flowering Plants</div><div class="ch-meta">Root, stem, leaf (modifications), flower, inflorescence, fruit, seed — morphology and modifications</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Morphology Flowering Plants')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit II · Ch.6</div><div class="ch-title">Anatomy of Flowering Plants</div><div class="ch-meta">Tissue systems, anatomy of dicot/monocot root, stem, leaf, secondary growth</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Anatomy Flowering Plants')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit II · Ch.7</div><div class="ch-title">Structural Organisation in Animals</div><div class="ch-meta">Animal tissues (epithelial, connective, muscular, neural), morphology and anatomy of cockroach (brief), frog</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Structural Organisation Animals')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit III · Ch.8</div><div class="ch-title">Cell: The Unit of Life</div><div class="ch-meta">Prokaryotic and eukaryotic cells, cell theory, cell organelles (detailed) — nucleus, chloroplasts, mitochondria, ER, Golgi, ribosomes, lysosomes, vacuoles, cytoskeleton</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Cell Unit of Life')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit III · Ch.9</div><div class="ch-title">Biomolecules</div><div class="ch-meta">Structure of proteins, carbohydrates, lipids, nucleic acids; enzymes (nature, mechanism, factors affecting), metabolism overview</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Biomolecules')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit III · Ch.10</div><div class="ch-title">Cell Cycle and Cell Division</div><div class="ch-meta">Cell cycle phases, mitosis (stages, significance), meiosis (stages I and II, significance), difference between mitosis and meiosis</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Cell Cycle Cell Division')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit IV · Ch.11</div><div class="ch-title">Transport in Plants</div><div class="ch-meta">Diffusion, osmosis, water potential, plasmolysis, long distance transport — xylem (transpiration pull) and phloem (pressure flow hypothesis), mineral nutrition, ion transport</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Transport in Plants')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit IV · Ch.12</div><div class="ch-title">Mineral Nutrition</div><div class="ch-meta">Essential minerals and their role, deficiency symptoms, mechanisms of mineral absorption, nitrogen metabolism</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Mineral Nutrition')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit IV · Ch.13</div><div class="ch-title">Photosynthesis in Higher Plants</div><div class="ch-meta">Light and dark reactions, photophosphorylation, C3 and C4 pathways, photorespiration, factors affecting photosynthesis</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Photosynthesis')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit IV · Ch.14</div><div class="ch-title">Respiration in Plants</div><div class="ch-meta">Glycolysis, aerobic respiration (Kreb's cycle, ETC), anaerobic respiration, respiratory quotient, energy calculations</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Respiration in Plants')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit IV · Ch.15</div><div class="ch-title">Plant Growth and Development</div><div class="ch-meta">Plant growth phases, growth regulators (auxins, gibberellins, cytokinin, ABA, ethylene), photoperiodism, vernalisation, seed dormancy</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Plant Growth Development')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Ch.16</div><div class="ch-title">Digestion and Absorption</div><div class="ch-meta">Alimentary canal, digestive glands, digestion of carbohydrates/proteins/fats, absorption, assimilation, disorders</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Digestion Absorption')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Ch.17</div><div class="ch-title">Breathing and Exchange of Gases</div><div class="ch-meta">Respiratory system, mechanism of breathing, exchange and transport of O₂ and CO₂, respiratory volumes, disorders</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Breathing and Exchange of Gases')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Ch.18</div><div class="ch-title">Body Fluids and Circulation</div><div class="ch-meta">Blood composition, blood groups (ABO, Rh), coagulation, lymph, circulatory system, cardiac cycle, ECG, disorders</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Body Fluids Circulation')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Ch.19</div><div class="ch-title">Excretory Products and their Elimination</div><div class="ch-meta">Modes of excretion, human excretory system, urine formation, tubular reabsorption, regulation of kidney function, disorders</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Excretory Products Elimination')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Ch.20</div><div class="ch-title">Locomotion and Movement</div><div class="ch-meta">Types of movement, skeletal muscle structure, mechanism of muscle contraction, types of joints, skeletal system overview, disorders</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Locomotion and Movement')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Ch.21</div><div class="ch-title">Neural Control and Coordination</div><div class="ch-meta">Neurons and nerves, CNS and PNS, reflex arc, sensory organs (ear and eye) — structure and function, neural impulse</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Neural Control Coordination')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit V · Ch.22</div><div class="ch-title">Chemical Coordination and Integration</div><div class="ch-meta">Endocrine glands and hormones (hypothalamus, pituitary, thyroid, adrenal, pancreas, gonads), hormone action, feedback regulation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span><span class="ch-tag neet">NEET</span></div><button class="ch-btn" onclick="startTest('Biology','Chemical Coordination')">Practice →</button></div></div>
+    </div>
+
+    <!-- ENGLISH (common) -->
+    <div id="eng" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Hornbill · Prose</div><div class="ch-title">The Portrait of a Lady</div><div class="ch-meta">Khushwant Singh — comprehension, themes, appreciation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Literature</span></div><button class="ch-btn" onclick="startTest('English','Portrait of Lady')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Hornbill · Prose</div><div class="ch-title">We're Not Afraid to Die…</div><div class="ch-meta">Gordon Cook & Alan East — survival, comprehension, language</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Literature</span></div><button class="ch-btn" onclick="startTest('English','Not Afraid to Die')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Hornbill · Prose</div><div class="ch-title">Discovering Tut: The Saga Continues</div><div class="ch-meta">A.R. Williams — comprehension, vocabulary, questions</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Literature</span></div><button class="ch-btn" onclick="startTest('English','Discovering Tut')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Hornbill · Poetry</div><div class="ch-title">A Photograph</div><div class="ch-meta">Shirley Toulson — theme, figures of speech, poetic devices</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('English','A Photograph')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Hornbill · Poetry</div><div class="ch-title">The Laburnum Top</div><div class="ch-meta">Ted Hughes — imagery, symbolism, appreciation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">Poetry</span></div><button class="ch-btn" onclick="startTest('English','Laburnum Top')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Snapshots · Supplementary</div><div class="ch-title">The Summer of the Beautiful White Horse</div><div class="ch-meta">William Saroyan — comprehension, character, theme</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('English','Beautiful White Horse')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Grammar & Writing</div><div class="ch-title">Notice / Poster / Letter / Essay</div><div class="ch-meta">Notice writing, formal letter, informal letter, article, speech, debate, essay — all formats practiced</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('English','Writing Skills')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Grammar</div><div class="ch-title">Reading Comprehension</div><div class="ch-meta">Unseen passage (factual, descriptive, literary), case-based passages, inference, vocabulary, tone questions</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('English','Reading Comprehension')">Practice →</button></div></div>
+    </div>
+  </div><!-- end science stream -->
+
+  <!-- ══ COMMERCE STREAM ══ -->
+  <div id="st-commerce" class="stream-content">
+    <div class="subj-tabs">
+      <button class="subj-tab on" onclick="setSubj(this,'accounts','commerce')">📊 Accountancy</button>
+      <button class="subj-tab" onclick="setSubj(this,'bst','commerce')">💼 Business Studies</button>
+      <button class="subj-tab" onclick="setSubj(this,'eco','commerce')">📈 Economics</button>
+      <button class="subj-tab" onclick="setSubj(this,'com-math','commerce')">📐 Mathematics</button>
+      <button class="subj-tab" onclick="setSubj(this,'com-eng','commerce')">📖 English</button>
+    </div>
+
+    <div id="accounts" class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Part A · Ch.1</div><div class="ch-title">Introduction to Accounting</div><div class="ch-meta">Need and importance of accounting, accounting as an information system, users, qualitative characteristics, basic accounting terms</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Accountancy','Introduction to Accounting')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part A · Ch.2</div><div class="ch-title">Theory Base of Accounting</div><div class="ch-meta">Fundamental accounting assumptions, accounting principles (GAAP), accounting standards, IFRS basics</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Accountancy','Theory Base Accounting')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part A · Ch.3</div><div class="ch-title">Recording of Transactions</div><div class="ch-meta">Source documents, vouchers, accounting equation, double entry bookkeeping, journal, posting to ledger, subsidiary books</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Accountancy','Recording Transactions')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part A · Ch.4</div><div class="ch-title">Bank Reconciliation Statement</div><div class="ch-meta">Need for BRS, causes of difference between cash book and passbook, preparing BRS, adjusted cash book</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Accountancy','Bank Reconciliation Statement')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part A · Ch.5</div><div class="ch-title">Depreciation, Provisions and Reserves</div><div class="ch-meta">Concept of depreciation, methods (SLM and WDV), change of method, disposal of assets, provisions vs reserves</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Accountancy','Depreciation Provisions Reserves')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part A · Ch.6</div><div class="ch-title">Trial Balance and Rectification of Errors</div><div class="ch-meta">Objectives of trial balance, errors and their classification, rectification, suspense account</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Accountancy','Trial Balance Rectification')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part B · Ch.7</div><div class="ch-title">Financial Statements of Sole Proprietorship</div><div class="ch-meta">Trading and profit/loss account, balance sheet, adjustments (closing stock, outstanding/prepaid, depreciation), marshalling</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Accountancy','Financial Statements')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part B · Ch.8</div><div class="ch-title">Accounts from Incomplete Records</div><div class="ch-meta">Statement of affairs, ascertainment of profit/loss, conversion to double entry (net worth method)</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Accountancy','Incomplete Records')">Practice →</button></div></div>
+    </div>
+
+    <div id="bst" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Part A · Ch.1</div><div class="ch-title">Nature and Purpose of Business</div><div class="ch-meta">Concept, characteristics, objectives, classification of business activities, industry, trade, auxiliaries</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Business Studies','Nature Purpose Business')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part A · Ch.2</div><div class="ch-title">Forms of Business Organisation</div><div class="ch-meta">Sole proprietorship, partnership (deed, types, dissolution), Hindu undivided family, cooperative, company (public/private)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Business Studies','Forms of Business Organisation')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part A · Ch.3</div><div class="ch-title">Private, Public and Global Enterprises</div><div class="ch-meta">Public sector enterprises (departmental, statutory, government company), changing role, global enterprises, MNCs, JV</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Business Studies','Private Public Global')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part A · Ch.4</div><div class="ch-title">Business Services</div><div class="ch-meta">Banking (types, services), insurance (types, principles), postal and telecom services, warehousing, transport</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Business Studies','Business Services')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part B · Ch.5</div><div class="ch-title">Emerging Modes of Business</div><div class="ch-meta">E-business (e-commerce, M-commerce), outsourcing (BPO, KPO), B2B, B2C, advantages and limitations</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Business Studies','Emerging Modes Business')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part B · Ch.6</div><div class="ch-title">Social Responsibility of Business and Business Ethics</div><div class="ch-meta">Concept, responsibility toward stakeholders, environment, government, community; business ethics and CSR</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Business Studies','Social Responsibility Ethics')">Practice →</button></div></div>
+    </div>
+
+    <div id="eco" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Statistics · Ch.1</div><div class="ch-title">Introduction to Statistics</div><div class="ch-meta">What is statistics? Scope and limitations, types of data, sources, census vs sampling</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Economics','Introduction Statistics')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Statistics · Ch.2</div><div class="ch-title">Collection of Data</div><div class="ch-meta">Primary and secondary data, methods of collection, questionnaire design, census of India</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Economics','Collection of Data')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Statistics · Ch.3</div><div class="ch-title">Organisation of Data</div><div class="ch-meta">Classification and tabulation, raw data to frequency distribution, cumulative frequency</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Economics','Organisation of Data')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Statistics · Ch.4</div><div class="ch-title">Presentation of Data</div><div class="ch-meta">Tabular, diagrammatic (bar, pie, frequency histogram, ogive, frequency polygon) and textual presentation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Economics','Presentation of Data')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Statistics · Ch.5</div><div class="ch-title">Measures of Central Tendency</div><div class="ch-meta">Mean (arithmetic, geometric, harmonic), median (partition values), mode — calculation for grouped and ungrouped data</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Economics','Measures of Central Tendency')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Statistics · Ch.6</div><div class="ch-title">Measures of Dispersion</div><div class="ch-meta">Range, mean deviation, variance, standard deviation, Lorenz curve, coefficient of variation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Economics','Measures of Dispersion')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Micro · Ch.1</div><div class="ch-title">Introduction to Microeconomics</div><div class="ch-meta">Meaning of economics, central problems of an economy, production possibility curve, opportunity cost, economic systems</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Economics','Introduction Microeconomics')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Micro · Ch.2</div><div class="ch-title">Consumer Equilibrium and Demand</div><div class="ch-meta">Utility analysis, indifference curves, budget line, consumer equilibrium, demand schedule, law of demand, elasticity of demand</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Economics','Consumer Equilibrium Demand')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Micro · Ch.3</div><div class="ch-title">Producer Behaviour and Supply</div><div class="ch-meta">Production function, returns to a factor, cost concepts (TC, TVC, TFC, MC, AC), supply, law of supply, elasticity of supply</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Economics','Producer Behaviour Supply')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Micro · Ch.4</div><div class="ch-title">Forms of Market and Price Determination</div><div class="ch-meta">Perfect competition, monopoly, monopolistic competition, oligopoly — price determination, equilibrium, producer's equilibrium (TR-TC, MR-MC)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Economics','Forms of Market Price Determination')">Practice →</button></div></div>
+    </div>
+
+    <div id="com-math" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Commerce Maths</div><div class="ch-title">Sets, Relations and Functions</div><div class="ch-meta">Same as Science stream — Sets, Relations, Functions, domain and range</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Maths','Sets Relations Functions')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Commerce Maths</div><div class="ch-title">Algebra — Sequence, Series, Logarithms</div><div class="ch-meta">AP, GP, compound interest applications, logarithms with commercial applications</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Algebra Sequence Series')">Practice →</button></div></div>
+      <div class="ch-card"><div class="ch-num">Commerce Maths</div><div class="ch-title">Statistics and Probability</div><div class="ch-meta">Mean, median, mode, standard deviation, correlation, regression, probability — all with commerce applications</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Maths','Statistics Probability Commerce')">Practice →</button></div></div>
+    </div>
+
+    <div id="com-eng" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">English Core</div><div class="ch-title">Reading Comprehension + Writing Skills</div><div class="ch-meta">Same as Science stream — unseen passage, notice, poster, letter, article, essay, Hornbill and Snapshots literature</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('English','English Core Commerce')">Practice →</button></div></div>
+    </div>
+  </div><!-- end commerce stream -->
+
+  <!-- ══ HUMANITIES / ARTS STREAM ══ -->
+  <div id="st-arts" class="stream-content">
+    <div class="subj-tabs">
+      <button class="subj-tab on" onclick="setSubj(this,'history','arts')">🏛️ History</button>
+      <button class="subj-tab" onclick="setSubj(this,'polsci','arts')">🏛️ Political Science</button>
+      <button class="subj-tab" onclick="setSubj(this,'geo','arts')">🗺️ Geography</button>
+      <button class="subj-tab" onclick="setSubj(this,'eco-arts','arts')">📈 Economics</button>
+      <button class="subj-tab" onclick="setSubj(this,'psych','arts')">🧠 Psychology</button>
+      <button class="subj-tab" onclick="setSubj(this,'arts-eng','arts')">📖 English</button>
+    </div>
+
+    <div id="history" class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">Writing and City Life — Mesopotamia</div><div class="ch-meta">Mesopotamian civilization, writing systems (cuneiform), cities, trade, society, sources</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('History','Writing City Life')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">An Empire Across Three Continents &#x2014; Rome</div><div class="ch-meta">Roman Empire, economy, political institutions, religion, Christianity, decline</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('History','Roman Empire')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">Nomadic Empires &#x2014; Mongols</div><div class="ch-meta">Mongol empire, Chengiz Khan, successor states, impact on Asian and European history</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('History','Nomadic Empires')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.4</div><div class="ch-title">The Three Orders &#x2014; Feudal Europe</div><div class="ch-meta">Feudalism, clergy, nobles, peasants, manorial system, serfdom, growth of towns</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('History','Three Orders')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.5</div><div class="ch-title">Changing Cultural Traditions &#x2014; Renaissance</div><div class="ch-meta">Renaissance, humanism, art, scientific revolution, Reformation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('History','Renaissance')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.6</div><div class="ch-title">Displacing Indigenous Peoples</div><div class="ch-meta">European colonisation of Americas and Australia, displacement, resistance</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('History','Indigenous Peoples')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.7</div><div class="ch-title">Paths to Modernisation</div><div class="ch-meta">Japan and China &#x2014; modernisation, industrialisation, nationalism, Meiji Restoration</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('History','Paths to Modernisation')">Practice &#x2192;</button></div></div>
+    </div>
+
+    <div id="polsci" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Indian Const. &#x00B7; Ch.1</div><div class="ch-title">Constitution: Why and How?</div><div class="ch-meta">Need for constitution, making of Indian Constitution, philosophical foundations, Constituent Assembly</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Political Science','Constitution')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Indian Const. &#x00B7; Ch.2</div><div class="ch-title">Rights in the Indian Constitution</div><div class="ch-meta">Fundamental Rights (Art.12-35), DPSP, Fundamental Duties</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Political Science','Rights')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Indian Const. &#x00B7; Ch.3</div><div class="ch-title">Election and Representation</div><div class="ch-meta">Electoral system, FPTP, PR, Election Commission</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Political Science','Election Representation')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Indian Const. &#x00B7; Ch.4</div><div class="ch-title">Executive</div><div class="ch-meta">President, Vice-President, Prime Minister, Council of Ministers, powers and functions</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Political Science','Executive')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Indian Const. &#x00B7; Ch.5</div><div class="ch-title">Legislature</div><div class="ch-meta">Parliament structure, Lok Sabha, Rajya Sabha, legislative process, committees</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Political Science','Legislature')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Political Theory &#x00B7; Ch.1</div><div class="ch-title">Freedom</div><div class="ch-meta">Concept of freedom, negative and positive freedom, constraints, free speech</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Political Science','Freedom')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Political Theory &#x00B7; Ch.2</div><div class="ch-title">Equality</div><div class="ch-meta">Types of equality, natural and social inequalities, policies for equality, reservations</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Political Science','Equality')">Practice &#x2192;</button></div></div>
+    </div>
+
+    <div id="geo" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Physical Geo &#x00B7; Ch.1</div><div class="ch-title">Origin and Evolution of Earth</div><div class="ch-meta">Big Bang, solar system formation, origin of Earth, evolution of atmosphere and hydrosphere</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Geography','Origin Evolution Earth')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Physical Geo &#x00B7; Ch.2</div><div class="ch-title">Interior of the Earth</div><div class="ch-meta">Earthquake waves (P, S, L), layers of earth, seismograph, isostasy</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Geography','Interior of Earth')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Physical Geo &#x00B7; Ch.3</div><div class="ch-title">Distribution of Oceans and Continents</div><div class="ch-meta">Continental drift, sea floor spreading, plate tectonics, types of plate boundaries</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Geography','Oceans Continents')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">India Geo &#x00B7; Ch.1</div><div class="ch-title">India &#x2014; Location, Structure, Physiography</div><div class="ch-meta">India&apos;s location, geological structure, physiographic divisions &#x2014; Himalayan, Northern plains, Peninsular, coastal, islands</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Geography','India Location Structure')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">India Geo &#x00B7; Ch.2</div><div class="ch-title">Drainage System</div><div class="ch-meta">River systems, Himalayan and Peninsular rivers, river basins, lakes</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Geography','Drainage System')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">India Geo &#x00B7; Ch.3</div><div class="ch-title">Climate of India</div><div class="ch-meta">Factors controlling Indian climate, monsoon mechanism, seasons, distribution of rainfall</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Geography','Climate India')">Practice &#x2192;</button></div></div>
+    </div>
+
+    <div id="eco-arts" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Indian Eco. &#x00B7; Ch.1</div><div class="ch-title">Indian Economy on Eve of Independence</div><div class="ch-meta">Colonial impact on agriculture, industry and trade, demographic profile</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Economics','Eve of Independence')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Indian Eco. &#x00B7; Ch.2</div><div class="ch-title">Indian Economy 1950&#x2013;1990</div><div class="ch-meta">Five year plans, Green Revolution, import substitution, Nehru-Mahalanobis model</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Economics','Indian Economy 1950-1990')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Indian Eco. &#x00B7; Ch.3</div><div class="ch-title">Liberalisation, Privatisation and Globalisation</div><div class="ch-meta">1991 reforms (LPG), new economic policy, WTO, effects on Indian economy</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Economics','LPG Reforms')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Indian Eco. &#x00B7; Ch.4</div><div class="ch-title">Poverty</div><div class="ch-meta">Causes and types of poverty, poverty line, government policies, MGNREGA</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Economics','Poverty')">Practice &#x2192;</button></div></div>
+    </div>
+
+    <div id="psych" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">What is Psychology?</div><div class="ch-meta">Definition, history, branches of psychology, research methods</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('Psychology','What is Psychology')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">Methods of Enquiry</div><div class="ch-meta">Observation, case study, surveys, experiments, ethical issues in research</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Psychology','Methods of Enquiry')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">The Bases of Human Behaviour</div><div class="ch-meta">Evolutionary perspective, neurons, nervous system, endocrine system, heredity vs environment</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Psychology','Bases Human Behaviour')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.4</div><div class="ch-title">Human Development</div><div class="ch-meta">Life span approach, stages of development, Piaget, Kohlberg, Erikson, adolescence</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('Psychology','Human Development')">Practice &#x2192;</button></div></div>
+    </div>
+
+    <div id="arts-eng" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">English Core</div><div class="ch-title">Reading Comprehension + Writing Skills</div><div class="ch-meta">Unseen passage, notice, poster, letter, article, essay, Hornbill and Snapshots literature</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('English','English Core')">Practice &#x2192;</button></div></div>
+    </div>
+  </div><!-- end arts stream -->
+
+</div>
+</section>
+
+<!-- WEIGHTAGE -->
+<section id="weightage" style="background:var(--cream);">
+<div class="container">
+  <div class="sec-label">&#x1F4CA; Mark Distribution</div>
+  <h2 class="sec-title">CBSE Class 11 &#x2014; Official Marks 2026-27</h2>
+  <p class="sec-sub">Theory + Practical/Internal Assessment marks as per official CBSE 2026-27 PDFs.</p>
+  <div class="wt-grid">
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">Physics</div><div class="wt-marks">70+30</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">70M Theory (10 units) + 30M Practical</div></div>
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">Chemistry</div><div class="wt-marks">70+30</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">70M Theory (9 units) + 30M Practical</div></div>
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">Mathematics</div><div class="wt-marks">80+20</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">80M Theory + 20M Internal Assessment</div></div>
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">Biology</div><div class="wt-marks">70+30</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">70M Theory (22 chapters) + 30M Practical</div></div>
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">English Core</div><div class="wt-marks">80+20</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">80M Theory + 20M Internal Assessment</div></div>
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">Accountancy</div><div class="wt-marks">80+20</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">80M Theory + 20M Project work</div></div>
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">Business Studies</div><div class="wt-marks">80+20</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">80M Theory + 20M Project work</div></div>
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">Economics</div><div class="wt-marks">80+20</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">80M Theory (Statistics + Microeconomics) + 20M Project</div></div>
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">History</div><div class="wt-marks">80+20</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">80M Theory + 20M Project</div></div>
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">Political Science</div><div class="wt-marks">80+20</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">Indian Constitution + Political Theory = 80M + 20M project</div></div>
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">Geography</div><div class="wt-marks">70+30</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">70M Theory + 30M Practical (Map, fieldwork, project)</div></div>
+    <div class="wt-card"><div class="wt-top"><div class="wt-chapter">Psychology</div><div class="wt-marks">70+30</div></div><div class="wt-bar-wrap"><div class="wt-bar" style="width:100%"></div></div><div class="wt-meta">70M Theory + 30M Practical (experiments, case study)</div></div>
+  </div>
+</div>
+</section>
+
+<!-- TIPS -->
+<section id="tips" style="background:var(--cream-w);">
+<div class="container">
+  <div class="sec-label">&#x1F4A1; Expert Tips</div>
+  <h2 class="sec-title">Score High in CBSE Class 11 &#x2014; 2026-27</h2>
+  <p class="sec-sub">Class 11 is the hardest jump in your school career. These tips will help you stay ahead.</p>
+  <div class="tips-grid">
+    <div class="tip-card"><div class="tip-icon">&#x1F3AF;</div><div class="tip-title">Class 11 = 45% of JEE/NEET</div><div class="tip-body">JEE and NEET have 40-45% questions from Class 11. Mechanics (Physics), Organic Chemistry, Calculus (Maths), and Human Physiology (Biology) are highest-weighted. Build strong foundations now.</div></div>
+    <div class="tip-card"><div class="tip-icon">&#x26A1;</div><div class="tip-title">Physics: Master NLM Early</div><div class="tip-body">Laws of Motion (NLM) is the most important chapter for both boards and JEE. It connects to Work-Energy, Rotational Motion, and Gravitation. Don&apos;t move forward without mastering NLM.</div></div>
+    <div class="tip-card"><div class="tip-icon">&#x1F9EA;</div><div class="tip-title">Chemistry: NCERT is Everything</div><div class="tip-body">For Inorganic and Physical Chemistry, NCERT is sufficient for school exams. For Organic Chemistry, understand mechanisms deeply &#x2014; don&apos;t memorise reactions without understanding why.</div></div>
+    <div class="tip-card"><div class="tip-icon">&#x1F4D0;</div><div class="tip-title">Maths: Calculus Changes Everything</div><div class="tip-body">Limits and Derivatives introduce calculus &#x2014; a completely new concept. If you master this in Class 11, integration in Class 12 becomes easy. Practice 10 problems daily on derivatives.</div></div>
+    <div class="tip-card"><div class="tip-icon">&#x1F331;</div><div class="tip-title">Biology: Draw Diagrams Daily</div><div class="tip-body">NEET Biology needs neat, well-labelled diagrams. Practice drawing cell organelles, plant anatomy, animal kingdom diagrams daily. Biomolecules and Human Physiology are highest-scoring for NEET.</div></div>
+    <div class="tip-card"><div class="tip-icon">&#x1F4BC;</div><div class="tip-title">Commerce: Accounts = Practice Daily</div><div class="tip-body">Accountancy is a scoring subject but only if you practice daily. Financial statements and BRS need regular problem-solving. Aim for 90%+ in Accounts to boost your overall Commerce score.</div></div>
+  </div>
+</div>
+</section>
+
+<footer class="footer">
+  <div class="ft-inner">
+    <div><div class="ft-brand">Mock<span>Arena</span></div><div class="ft-desc">Official 2026-27 CBSE syllabus-based preparation for Class 11.</div></div>
+    <div class="ft-links">
+      <a href="boards_11.html" class="ft-link">&#x2190; Class 11 Boards</a>
+      <a href="mockarena_student_dashboard.html" class="ft-link">Dashboard</a>
+      <a href="mockarena_support.html" class="ft-link">Support</a>
+    </div>
+    <div class="ft-links">
+      <a href="boards_11_isc.html" class="ft-link">Class 11 ISC</a>
+      <a href="boards_11_state.html" class="ft-link">Class 11 State Board</a>
+      <a href="boards_9.html" class="ft-link">Class 9 Boards</a>
+    </div>
+  </div>
+  <div class="ft-inner"><div class="ft-copy">&#xA9; 2026 MockArena &#xB7; mockarena.co.in &#xB7; Source: cbseacademic.nic.in (CBSE Class 11 Curriculum 2026-27)</div></div>
+</footer>
+
+<script>
+function setStream(btn, stream){
+  document.querySelectorAll('.stream-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.stream-content').forEach(d=>{d.style.display='none';d.classList.remove('on');});
+  const el=document.getElementById('st-'+stream);
+  if(el){el.style.display='block';el.classList.add('on');}
+}
+function setSubj(btn, gridId, streamId){
+  const parent=document.getElementById('st-'+streamId);
+  if(!parent)return;
+  parent.querySelectorAll('.subj-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  parent.querySelectorAll('.ch-grid').forEach(g=>g.style.display='none');
+  const target=document.getElementById(gridId);
+  if(target)target.style.display='grid';
+}
+function startTest(subject, chapter){
+  alert('Coming soon! Questions for Class 11 CBSE '+subject+' - '+chapter+' will be available once uploaded from Admin Panel.');
+}
+window.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.stream-content').forEach(d=>{d.style.display='none';d.classList.remove('on');});
+  const sci=document.getElementById('st-science');
+  if(sci){sci.style.display='block';sci.classList.add('on');}
+  document.querySelectorAll('#st-science .ch-grid').forEach(g=>g.style.display='none');
+  const phy=document.getElementById('phy');
+  if(phy)phy.style.display='grid';
+  document.querySelectorAll('#st-commerce .ch-grid').forEach(g=>g.style.display='none');
+  const acc=document.getElementById('accounts');
+  if(acc)acc.style.display='grid';
+  document.querySelectorAll('#st-arts .ch-grid').forEach(g=>g.style.display='none');
+  const hist=document.getElementById('history');
+  if(hist)hist.style.display='grid';
+});
+</script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",appId:"1:861067164791:web:28df5244e34361dd9d5a72"});
+const auth=getAuth(app);
+onAuthStateChanged(auth,(user)=>{
+  if(!user){window.location.href='login.html';return;}
+  const av=document.getElementById('nav-av');
+  if(av){if(user.photoURL)av.innerHTML=`<img src="${user.photoURL}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;else av.textContent=(user.displayName||'S').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);}
+});
+</script>
+</body>
+</html>

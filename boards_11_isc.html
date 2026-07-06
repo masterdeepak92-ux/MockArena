@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Class 11 ISC 2026-27 — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--forest:#1a2618;--sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-g:rgba(107,143,94,.2);--gold:#c8962a;--gold-l:rgba(200,150,42,.08);--sky:#3b82c4;--sky-l:rgba(59,130,196,.1);--cream:#faf9f5;--cream-w:#f5f3ec;--border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.13);--txt:#1a2618;--txt-m:rgba(26,38,24,.64);--txt-lo:rgba(26,38,24,.44);--fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--txt);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.7;}
+a,a:hover,a:visited{text-decoration:none;color:inherit;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;background:rgba(26,38,24,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(107,143,94,.12);display:flex;align-items:center;padding:0 20px;gap:10px;}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.nav-n1{color:white;font-size:1.05rem;font-weight:900;letter-spacing:-.02em;}
+.nav-n2{font-size:1rem;font-weight:900;color:var(--sage);}
+.nav-pill{display:flex;align-items:center;gap:6px;background:rgba(107,143,94,.12);border:1px solid rgba(107,143,94,.2);border-radius:100px;padding:4px 12px;margin-left:6px;}
+.nav-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);animation:np 2.5s ease-in-out infinite;}
+@keyframes np{0%,100%{opacity:1;}50%{opacity:.2;}}
+.nav-pill-txt{font-size:.95rem;font-weight:700;color:rgba(255,255,255,.9);}
+.nav-links{display:flex;align-items:center;gap:2px;margin-left:16px;}
+.nav-link{font-size:.95rem;font-weight:600;color:rgba(255,255,255,.65);padding:5px 10px;border-radius:7px;transition:all .18s;white-space:nowrap;}
+.nav-link:hover{color:white;background:rgba(255,255,255,.07);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-switch{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.78);text-decoration:none;white-space:nowrap;}
+.nav-dash{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;text-decoration:none;white-space:nowrap;}
+.nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4a035);display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:700;color:black;overflow:hidden;flex-shrink:0;}
+.nav-ham{display:none;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);align-items:center;justify-content:center;font-size:1rem;color:white;cursor:pointer;flex-shrink:0;}
+@media(max-width:960px){.nav-links{display:none;}.nav-ham{display:flex;}}
+.jump-bar{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;padding:12px 16px;background:white;border-bottom:1px solid var(--border);-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-top:60px;}
+.jump-bar::-webkit-scrollbar{display:none;}
+.jump-btn{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:var(--cream-w);color:var(--txt);white-space:nowrap;cursor:pointer;transition:all .18s;flex-shrink:0;text-decoration:none;display:inline-block;}
+.jump-btn:hover{border-color:var(--sage);color:var(--sage);}
+.jump-btn.active{background:var(--forest);color:white;border-color:var(--forest);}
+.hero{background:var(--cream);border-bottom:1px solid var(--border);padding:clamp(88px,9vh,110px) 20px clamp(48px,5vh,68px);}
+.hero-inner{max-width:1060px;margin:0 auto;display:grid;grid-template-columns:1fr auto;gap:36px;align-items:center;}
+.hero-left{max-width:620px;}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--sage-l);border:1px solid rgba(107,143,94,.22);border-radius:100px;padding:5px 14px;margin-bottom:16px;}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:np 2.5s ease-in-out infinite;}
+.hero-tag-txt{font-size:.94rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.06em;}
+.hero-title{font-size:clamp(2rem,4vw,3.1rem);font-weight:900;color:var(--forest);line-height:1.06;letter-spacing:-.03em;margin-bottom:14px;}
+.h1{color:var(--sage);}
+.h2{color:var(--gold);}
+.hero-sub{font-size:1.08rem;color:var(--txt-m);line-height:1.78;margin-bottom:22px;font-weight:500;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.btn-primary{font-family:var(--fd);font-size:.96rem;font-weight:800;padding:11px 22px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-g);text-decoration:none;}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px var(--sage-g);}
+.btn-secondary{font-family:var(--fd);font-size:.96rem;font-weight:700;padding:11px 20px;border-radius:11px;border:1.5px solid var(--bm);background:white;color:var(--txt);cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;text-decoration:none;}
+.btn-secondary:hover{border-color:var(--sage);color:var(--sage);}
+.hero-trust{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+.trust-item{font-size:.96rem;font-weight:600;color:var(--txt-m);display:flex;align-items:center;gap:5px;}
+.trust-item span{color:var(--sage);font-weight:700;}
+.hero-right{flex-shrink:0;}
+.hero-stat-card{background:white;border:1.5px solid var(--border);border-radius:18px;padding:20px;min-width:220px;box-shadow:0 4px 20px rgba(26,38,24,.07);}
+.hsc-title{font-size:.94rem;font-weight:700;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.07em;margin-bottom:14px;}
+.hsc-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border-radius:12px;overflow:hidden;}
+.hsc-item{background:var(--cream-w);padding:13px 10px;text-align:center;}
+.hsc-n{font-family:var(--fm);font-size:1.15rem;font-weight:800;color:var(--forest);display:block;margin-bottom:2px;}
+.hsc-l{font-size:.9rem;font-weight:600;color:var(--txt-lo);}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr;gap:20px;}.hero-right{display:none;}}
+section{padding:52px 20px;}
+.container{max-width:1060px;margin:0 auto;}
+.sec-label{font-size:.96rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sage);margin-bottom:8px;}
+.sec-title{font-size:clamp(1.6rem,2.6vw,2.1rem);font-weight:800;color:var(--forest);line-height:1.18;margin-bottom:8px;letter-spacing:-.02em;}
+.sec-sub{font-size:1.06rem;color:var(--txt-m);line-height:1.78;margin-bottom:24px;}
+.stream-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:24px;}
+.stream-tab{font-family:var(--fd);font-size:1rem;font-weight:700;padding:10px 22px;border-radius:12px;border:2px solid var(--border);background:white;color:var(--txt-m);cursor:pointer;transition:all .18s;}
+.stream-tab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.stream-tab:hover:not(.on){border-color:var(--sage);color:var(--sage);}
+.subj-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;}
+.subj-tab{font-family:var(--fd);font-size:1rem;font-weight:700;padding:9px 18px;border-radius:10px;border:1.5px solid var(--border);background:white;color:var(--txt-m);cursor:pointer;transition:all .18s;}
+.subj-tab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.subj-tab:hover:not(.on){border-color:var(--sage);color:var(--sage);}
+.stream-content{display:none;}
+.stream-content.on{display:block;}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:14px;}
+.ch-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(26,38,24,.05);transition:all .2s;}
+.ch-card:hover{border-color:var(--sage);transform:translateY(-3px);box-shadow:0 6px 20px var(--sage-l);}
+.ch-num{font-family:var(--fm);font-size:.84rem;font-weight:700;color:var(--sage);background:var(--sage-l);border:1px solid rgba(107,143,94,.2);padding:3px 10px;border-radius:100px;display:inline-block;margin-bottom:10px;}
+.ch-title{font-size:1.08rem;font-weight:800;color:var(--forest);margin-bottom:6px;line-height:1.3;}
+.ch-meta{font-size:.96rem;color:var(--txt-m);line-height:1.65;margin-bottom:14px;}
+.ch-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.ch-tags{display:flex;gap:5px;flex-wrap:wrap;}
+.ch-tag{font-size:.84rem;font-weight:600;padding:3px 9px;border-radius:100px;background:var(--cream-w);color:var(--txt-lo);border:1px solid var(--border);}
+.ch-tag.imp{background:rgba(200,150,42,.08);color:var(--gold);border-color:rgba(200,150,42,.2);}
+.ch-btn{font-family:var(--fd);font-size:.94rem;font-weight:700;padding:8px 14px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;white-space:nowrap;transition:all .18s;flex-shrink:0;}
+.ch-btn:hover{box-shadow:0 3px 12px var(--sage-g);}
+.tips-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;}
+.tip-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;}
+.tip-icon{font-size:1.6rem;margin-bottom:10px;}
+.tip-title{font-size:1.06rem;font-weight:800;color:var(--forest);margin-bottom:7px;}
+.tip-body{font-size:1rem;color:var(--txt-m);line-height:1.72;}
+.footer{background:var(--forest);color:white;padding:40px 20px 28px;}
+.ft-inner{max-width:1060px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.ft-brand{font-size:1.2rem;font-weight:900;}
+.ft-brand span{color:var(--sage);}
+.ft-desc{font-size:.96rem;color:rgba(255,255,255,.55);margin-top:6px;max-width:300px;line-height:1.65;}
+.ft-links{display:flex;flex-direction:column;gap:8px;}
+.ft-link{font-size:.96rem;color:rgba(255,255,255,.58);transition:color .18s;}
+.ft-link:hover{color:white;}
+.ft-copy{font-size:.92rem;color:rgba(255,255,255,.35);margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.07);width:100%;}
+@media(min-width:1100px){section{padding:64px 40px;}.hero{padding:96px 40px 68px;}.hero-title{font-size:3.1rem;}.sec-title{font-size:2.1rem;}.sec-sub{font-size:1.1rem;}.hero-sub{font-size:1.12rem;}}
+@media(min-width:1400px){.container{max-width:1200px;}section{padding:72px 48px;}.hero-title{font-size:3.4rem;}.sec-title{font-size:2.2rem;}}
+@media(max-width:768px){.hero-inner{grid-template-columns:1fr;gap:20px;}.hero-right{display:none;}}
+@media(max-width:540px){section{padding:36px 16px;}.hero{padding:76px 16px 40px;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><span class="nav-n1">Mock</span><span class="nav-n2">Arena</span></a>
+  <div class="nav-pill"><div class="nav-pill-dot"></div><span class="nav-pill-txt">Class 11 · ISC 2026-27</span></div>
+  <div class="nav-links">
+    <a href="#chapters" class="nav-link">Chapters</a>
+    <a href="#tips" class="nav-link">Tips</a>
+  </div>
+  <div class="nav-right">
+    <a href="mockarena_onboarding.html" class="nav-switch">&#x21C4; Switch Exam</a>
+    <a href="mockarena_student_dashboard.html" class="nav-dash">Dashboard &#x2192;</a>
+    <div class="nav-av" id="nav-av">S</div>
+    <button class="nav-ham" onclick="document.querySelector('.nav-links').style.cssText='display:flex;flex-direction:column;position:fixed;top:60px;left:0;right:0;background:rgba(26,38,24,.97);padding:16px;z-index:300;'">&#x2630;</button>
+  </div>
+</nav>
+
+<div class="jump-bar">
+  <a href="#chapters" class="jump-btn active">&#x1F4DA; Chapters</a>
+  <a href="#tips" class="jump-btn">&#x1F4A1; Tips</a>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag"><div class="hero-tag-dot"></div><span class="hero-tag-txt">ISC Class 11 · CISCE Official 2026-27</span></div>
+      <h1 class="hero-title">Class 11 <span class="h1">ISC</span><br/><span class="h2">2026-27</span> Syllabus.</h1>
+      <p class="hero-sub">After Class 10 ICSE, Class 11 &amp; 12 is the <strong>ISC programme</strong> by CISCE. This page covers the complete ISC Class 11 syllabus for 2026-27 &#x2014; Science, Commerce and Humanities streams &#x2014; based on official cisce.org curriculum. More detailed and analytical than CBSE.</p>
+      <div class="hero-btns">
+        <a href="#chapters" class="btn-primary">&#x1F4DA; Start Practising</a>
+        <a href="boards_11.html" class="btn-secondary">&#x2190; Change Board</a>
+      </div>
+      <div class="hero-trust">
+        <div class="trust-item"><span>&#x2713;</span> CISCE Official 2026-27</div>
+        <div class="trust-item"><span>&#x2713;</span> Science · Commerce · Arts</div>
+        <div class="trust-item"><span>&#x2713;</span> 80M Theory + Practical</div>
+        <div class="trust-item"><span>&#x2713;</span> Deeper than CBSE</div>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-card">
+        <div class="hsc-title">ISC Class 11 · 2026-27</div>
+        <div class="hsc-grid">
+          <div class="hsc-item"><span class="hsc-n">3</span><span class="hsc-l">Streams</span></div>
+          <div class="hsc-item"><span class="hsc-n">5+</span><span class="hsc-l">Subjects</span></div>
+          <div class="hsc-item"><span class="hsc-n">80+20</span><span class="hsc-l">Theory+Prac</span></div>
+          <div class="hsc-item"><span class="hsc-n">ISC</span><span class="hsc-l">Exam Yr 2</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="chapters" style="background:var(--cream-w);">
+<div class="container">
+  <div class="sec-label">&#x1F4DA; Chapter-wise Practice</div>
+  <h2 class="sec-title">ISC Class 11 &#x2014; All Streams 2026-27</h2>
+  <p class="sec-sub">Official CISCE 2026-27 syllabus from cisce.org. ISC is more detailed and analytical than CBSE. Select your stream and subject.</p>
+
+  <div class="stream-tabs">
+    <button class="stream-tab on" onclick="setStream(this,'isc-sci')">&#x1F52C; Science (PCM / PCB)</button>
+    <button class="stream-tab" onclick="setStream(this,'isc-com')">&#x1F4BC; Commerce</button>
+    <button class="stream-tab" onclick="setStream(this,'isc-arts')">&#x1F3AD; Humanities / Arts</button>
+  </div>
+
+  <!-- SCIENCE -->
+  <div id="st-isc-sci" class="stream-content on">
+    <div class="subj-tabs">
+      <button class="subj-tab on" onclick="setSubj(this,'isc-phy','isc-sci')">&#x26A1; Physics</button>
+      <button class="subj-tab" onclick="setSubj(this,'isc-chem','isc-sci')">&#x1F9EA; Chemistry</button>
+      <button class="subj-tab" onclick="setSubj(this,'isc-math','isc-sci')">&#x1F4D0; Mathematics</button>
+      <button class="subj-tab" onclick="setSubj(this,'isc-bio','isc-sci')">&#x1F331; Biology</button>
+      <button class="subj-tab" onclick="setSubj(this,'isc-eng','isc-sci')">&#x1F4D6; English</button>
+    </div>
+
+    <div id="isc-phy" class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Unit 1</div><div class="ch-title">Physical World and Measurement</div><div class="ch-meta">Scope of physics, fundamental forces, SI units, dimensional analysis, significant figures, errors in measurement (systematic, random, gross errors)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Physics','Physical World Measurement')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 2</div><div class="ch-title">Kinematics</div><div class="ch-meta">Uniform and non-uniform motion, instantaneous velocity, acceleration, kinematic equations, projectile motion, relative velocity, circular motion (uniform and non-uniform)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Physics','Kinematics')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 3</div><div class="ch-title">Laws of Motion</div><div class="ch-meta">Newton's 3 laws, inertia, linear momentum, impulse, friction (static, kinetic, rolling), free body diagrams, tension, normal force, banking of roads</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Physics','Laws of Motion')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 4</div><div class="ch-title">Work, Energy and Power</div><div class="ch-meta">Work-energy theorem, conservative forces, potential energy, conservation of mechanical energy, power, elastic and inelastic collisions in 1D and 2D</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Physics','Work Energy Power')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 5</div><div class="ch-title">Motion of System of Particles</div><div class="ch-meta">Centre of mass, torque, angular momentum, moment of inertia (rod, ring, disc, sphere), radius of gyration, parallel and perpendicular axes theorems, rolling motion</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Physics','System of Particles')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 6</div><div class="ch-title">Gravitation</div><div class="ch-meta">Kepler's laws (with proofs), Newton's universal law of gravitation, g at different heights/depths/latitudes, gravitational potential energy, escape velocity, satellites (orbital velocity, geostationary)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Physics','Gravitation')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 7</div><div class="ch-title">Properties of Bulk Matter</div><div class="ch-meta">Elasticity (stress-strain, Young's modulus, Bulk modulus, Poisson's ratio), fluid statics (pressure, Pascal's law, Archimedes), Bernoulli's theorem, viscosity (Stokes' law), surface tension (excess pressure, capillarity)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Physics','Bulk Matter')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 8</div><div class="ch-title">Heat and Thermodynamics</div><div class="ch-meta">Thermal expansion, specific heat capacity, calorimetry, latent heat; zeroth, first and second laws of thermodynamics; isothermal, adiabatic, isochoric processes; Carnot cycle and efficiency; Newton's law of cooling</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Physics','Heat Thermodynamics')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 9</div><div class="ch-title">Kinetic Theory of Gases</div><div class="ch-meta">Assumptions, derivation of pressure of ideal gas, kinetic energy and temperature, degrees of freedom, law of equipartition, mean free path</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC Physics','Kinetic Theory')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 10</div><div class="ch-title">Oscillations and Waves</div><div class="ch-meta">SHM (displacement, velocity, acceleration, energy), simple pendulum (period, g calculation), damped oscillations; transverse/longitudinal waves, speed, superposition, standing waves, Doppler effect</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Physics','Oscillations Waves')">Practice &#x2192;</button></div></div>
+    </div>
+
+    <div id="isc-chem" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">Some Basic Concepts of Chemistry</div><div class="ch-meta">Significant figures, SI units, laws of chemical combination, Dalton's theory, mole concept, empirical and molecular formula, stoichiometry, limiting reagent calculations</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Chemistry','Basic Concepts')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">Atomic Structure</div><div class="ch-meta">Atomic models, dual nature, de Broglie wavelength, Heisenberg's uncertainty principle, quantum numbers (n, l, m, s), orbital shapes, electronic configuration (Aufbau, Pauli, Hund), isotopes/isobars</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Chemistry','Atomic Structure')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">Chemical Bonding</div><div class="ch-meta">Ionic, covalent, coordinate bonds; Lewis structures; VSEPR theory; hybridisation (sp, sp2, sp3, sp3d, sp3d2); MOT (H2, N2, O2, F2, CO, NO); dipole moment; H-bonding types</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Chemistry','Chemical Bonding')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.4</div><div class="ch-title">Periodic Table and Periodicity</div><div class="ch-meta">Mendeleev's and modern periodic tables, s/p/d/f blocks, periodic trends (atomic radius, ionisation energy, electron affinity, electronegativity, metallic character) with explanation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Chemistry','Periodic Table')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.5</div><div class="ch-title">Chemical Thermodynamics</div><div class="ch-meta">System and surroundings, enthalpy (ΔH), Hess's law, bond enthalpies, entropy (ΔS), Gibbs free energy (ΔG), spontaneity conditions, equilibrium condition ΔG=0</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Chemistry','Thermodynamics')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.6</div><div class="ch-title">Chemical Equilibrium</div><div class="ch-meta">Law of mass action, Kc and Kp relation, Le Chatelier's principle, ionic equilibrium, pH calculations (strong/weak acid/base), buffer solutions, solubility product (Ksp), common ion effect</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Chemistry','Chemical Equilibrium')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.7</div><div class="ch-title">Hydrogen</div><div class="ch-meta">Position in periodic table, isotopes, preparation (Bosch process, electrolysis), physical and chemical properties, reducing nature, uses, heavy water, hydrogen as fuel</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC Chemistry','Hydrogen')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.8</div><div class="ch-title">s-Block Elements</div><div class="ch-meta">Group 1 (alkali metals) and Group 2 (alkaline earth metals) &#x2014; general characteristics, anomalous properties of Li and Be, compounds (NaOH, Na2CO3, Na2SO4), biological importance</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Chemistry','s-Block Elements')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.9</div><div class="ch-title">Organic Chemistry &#x2014; Basic Principles</div><div class="ch-meta">IUPAC nomenclature (alkanes, alkenes, alkynes, functional groups), isomerism (structural, stereo), electronic effects (inductive, resonance, hyperconjugation), reaction intermediates</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Chemistry','Organic Basic Principles')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.10</div><div class="ch-title">Hydrocarbons</div><div class="ch-meta">Alkanes (free radical mechanism), alkenes (electrophilic addition, Markovnikov's rule, anti-Markovnikov), alkynes, benzene (Kekule structure, EAS mechanism), aromaticity (Huckel's rule)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Chemistry','Hydrocarbons')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.11</div><div class="ch-title">Environmental Chemistry</div><div class="ch-meta">Atmospheric pollution (tropospheric &#x2014; smog, acid rain; stratospheric &#x2014; ozone depletion), water pollution, soil pollution, industrial waste, green chemistry</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC Chemistry','Environmental Chemistry')">Practice &#x2192;</button></div></div>
+    </div>
+
+    <div id="isc-math" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 1</div><div class="ch-title">Sets and Functions</div><div class="ch-meta">Sets (types, operations, De Morgan's laws), relations (types), functions (domain, range, types &#x2014; injective, surjective, bijective), composition, inverse functions, real-valued functions</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Maths','Sets Functions')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 2</div><div class="ch-title">Complex Numbers</div><div class="ch-meta">Argand plane, polar form, modulus and argument, De Moivre's theorem, cube roots of unity, n-th roots of a complex number, conjugate properties</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Maths','Complex Numbers')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 3</div><div class="ch-title">Quadratic Equations</div><div class="ch-meta">Roots of quadratic equations over complex numbers, discriminant, sum and product of roots, equations with given roots, symmetric functions of roots</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Maths','Quadratic Equations')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 4</div><div class="ch-title">Sequence and Series</div><div class="ch-meta">AP, GP, HP (harmonic progression), AM, GM, HM and their inequalities, sum of n terms of AP and GP, sum to infinity of GP, special series</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Maths','Sequence Series')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 5</div><div class="ch-title">Permutations and Combinations</div><div class="ch-meta">Fundamental counting principle, factorial notation, permutations (with and without repetition, circular), combinations, Pascal's triangle, binomial theorem</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Maths','Permutations Combinations')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 6</div><div class="ch-title">Trigonometry</div><div class="ch-meta">Compound angle formulae (sin/cos/tan of A&#x00B1;B), multiple angles (2A, 3A), sub-multiple angles, sum to product and product to sum formulae, solution of trig equations, inverse trig functions (detailed)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Maths','Trigonometry')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 7</div><div class="ch-title">Co-ordinate Geometry &#x2014; Straight Lines and Circles</div><div class="ch-meta">Straight lines (all forms, angle between lines, distance from point, family of lines), circle (standard, general, diameter form), intersection of line and circle, tangent conditions</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Maths','Coordinate Geometry')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 8</div><div class="ch-title">Conic Sections</div><div class="ch-meta">Parabola, ellipse, hyperbola &#x2014; standard forms, focus, directrix, eccentricity, latus rectum, tangent and normal equations</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Maths','Conic Sections')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 9</div><div class="ch-title">Introduction to 3D Geometry</div><div class="ch-meta">3D coordinate system, distance between two points, section formula, direction cosines and ratios, equation of a line in 3D</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC Maths','3D Geometry')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 10</div><div class="ch-title">Limits and Derivatives (Calculus)</div><div class="ch-meta">Intuitive concept, algebra of limits, limits of trig functions, first principle of differentiation, derivatives of algebraic, trig, exponential, log functions, product, quotient, chain rule</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Maths','Limits Derivatives')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 11</div><div class="ch-title">Mathematical Reasoning</div><div class="ch-meta">Mathematically acceptable statements, negation, compound statements, connectives (and, or, implies), quantifiers, contrapositive, converse, inverse, truth tables, mathematical induction</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC Maths','Mathematical Reasoning')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Section A &#x00B7; 12</div><div class="ch-title">Statistics and Probability</div><div class="ch-meta">Mean deviation, variance, standard deviation (grouped/ungrouped), coefficient of variation; probability (axiomatic, addition theorem, conditional probability, independent events, Bayes' theorem)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Maths','Statistics Probability')">Practice &#x2192;</button></div></div>
+    </div>
+
+    <div id="isc-bio" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Unit 1 &#x00B7; Diversity</div><div class="ch-title">Diversity of Living Organisms</div><div class="ch-meta">Need for classification, 5-kingdom system, viruses and viroids, Monera (bacteria &#x2014; detailed), Protista, Fungi &#x2014; features, examples, economic importance</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Biology','Diversity Living Organisms')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 1 &#x00B7; Diversity</div><div class="ch-title">Plant Kingdom</div><div class="ch-meta">Algae (divisions, examples, economic importance), Bryophyta, Pteridophyta, Gymnospermae, Angiospermae &#x2014; features, life cycles, alternation of generations (detailed)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Biology','Plant Kingdom')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 1 &#x00B7; Diversity</div><div class="ch-title">Animal Kingdom</div><div class="ch-meta">Classification (up to phylum level), basis of classification, non-chordates (Porifera to Echinodermata), chordates (Urochordata to Mammalia) &#x2014; features and examples</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Biology','Animal Kingdom')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 2 &#x00B7; Structural Org.</div><div class="ch-title">Morphology and Anatomy of Flowering Plants</div><div class="ch-meta">Root (types, modifications), stem (modifications), leaf (modifications, venation, phyllotaxy), flower (parts, types), inflorescence, fruit, seed; anatomy (primary growth, secondary growth)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Biology','Morphology Anatomy')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 3 &#x00B7; Cell Biology</div><div class="ch-title">Cell: Structure and Function</div><div class="ch-meta">Cell theory, prokaryotic vs eukaryotic (detailed comparison), all organelles (structure and function), cell membrane (fluid mosaic model), nucleus, cell cycle, mitosis, meiosis (detailed)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Biology','Cell Structure Function')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 3 &#x00B7; Cell Biology</div><div class="ch-title">Biomolecules</div><div class="ch-meta">Carbohydrates (mono, di, polysaccharides), proteins (amino acids, peptide bonds, levels of structure), lipids (types), nucleic acids (DNA and RNA structure), enzymes (detailed mechanism, inhibition)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Biology','Biomolecules')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 4 &#x00B7; Plant Physiology</div><div class="ch-title">Plant Physiology</div><div class="ch-meta">Transport (osmosis, plasmolysis, transpiration pull, phloem loading), mineral nutrition (macro and micro elements, deficiency), photosynthesis (light and dark reactions, C3/C4), respiration (glycolysis, Kreb's, ETC), plant growth regulators</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Biology','Plant Physiology')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 5 &#x00B7; Human Physiology</div><div class="ch-title">Human Physiology &#x2014; I</div><div class="ch-meta">Digestion and absorption (alimentary canal, enzymes, villus absorption), breathing (respiratory system, mechanism, exchange of gases, transport of O2 and CO2, regulation)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Biology','Human Physiology I')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Unit 5 &#x00B7; Human Physiology</div><div class="ch-title">Human Physiology &#x2014; II</div><div class="ch-meta">Circulation (blood composition, ABO/Rh groups, cardiac cycle, ECG), excretion (nephron, urine formation, dialysis), locomotion and movement (muscle contraction mechanism), neural and chemical coordination</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Biology','Human Physiology II')">Practice &#x2192;</button></div></div>
+    </div>
+
+    <div id="isc-eng" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">English Language</div><div class="ch-title">Comprehension and Essay Writing</div><div class="ch-meta">Unseen comprehension passage (inference, vocabulary, language questions), directed writing (speech, article, report, letter), essay (argumentative, discursive, narrative)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC English','Comprehension Essay')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Literature</div><div class="ch-title">Treasure Trove &#x2014; Prose and Poetry</div><div class="ch-meta">ISC prescribed collection &#x2014; short stories and poems: detailed comprehension, theme analysis, character study, figures of speech, appreciation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC English','Treasure Trove')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Drama / Novel</div><div class="ch-title">Prescribed Play / Novel</div><div class="ch-meta">Study of the prescribed ISC play and novel for 2026-27 &#x2014; theme, character, plot, literary devices</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC English','Play Novel')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Grammar</div><div class="ch-title">Advanced Grammar</div><div class="ch-meta">Transformation of sentences, synthesis, analysis, vocabulary in context, idioms and phrases, one-word substitution, voice and narration</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC English','Advanced Grammar')">Practice &#x2192;</button></div></div>
+    </div>
+  </div>
+
+  <!-- COMMERCE -->
+  <div id="st-isc-com" class="stream-content">
+    <div class="subj-tabs">
+      <button class="subj-tab on" onclick="setSubj(this,'isc-acc','isc-com')">&#x1F4CA; Accounts</button>
+      <button class="subj-tab" onclick="setSubj(this,'isc-com-subj','isc-com')">&#x1F4BC; Commerce</button>
+      <button class="subj-tab" onclick="setSubj(this,'isc-eco','isc-com')">&#x1F4C8; Economics</button>
+    </div>
+    <div id="isc-acc" class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">Introduction to Accounting</div><div class="ch-meta">Meaning, objectives, users, qualitative characteristics, accounting concepts and conventions (GAAP)</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC Accountancy','Introduction')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">Journal, Ledger and Trial Balance</div><div class="ch-meta">Double entry system, journalising transactions, posting to ledger, balancing accounts, trial balance preparation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Accountancy','Journal Ledger Trial Balance')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">Bank Reconciliation and Subsidiary Books</div><div class="ch-meta">BRS preparation, cash book (types), petty cash book, purchases/sales/returns journals</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Accountancy','BRS Subsidiary Books')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.4</div><div class="ch-title">Depreciation</div><div class="ch-meta">Concept and need, SLM and WDV methods, change of method, disposal of asset, depreciation fund method</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Accountancy','Depreciation')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.5</div><div class="ch-title">Final Accounts &#x2014; Sole Proprietorship</div><div class="ch-meta">Trading and profit/loss account, balance sheet with adjustments (closing stock, outstanding, prepaid, depreciation, provision for bad debts)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Accountancy','Final Accounts')">Practice &#x2192;</button></div></div>
+    </div>
+    <div id="isc-com-subj" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">Forms of Business Organisation</div><div class="ch-meta">Sole proprietorship, partnership, companies (public/private), cooperatives &#x2014; features, merits, demerits, suitability</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Commerce','Business Organisation')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">Trade and Auxiliaries to Trade</div><div class="ch-meta">Internal and external trade, warehousing, transportation, insurance, advertising, banking, communication</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Commerce','Trade Auxiliaries')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">Consumer Protection</div><div class="ch-meta">Consumer rights and responsibilities, Consumer Protection Act 2019, redressal forums, e-commerce consumer issues</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC Commerce','Consumer Protection')">Practice &#x2192;</button></div></div>
+    </div>
+    <div id="isc-eco" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">Introduction to Economics</div><div class="ch-meta">Meaning, scope, basic concepts &#x2014; goods, utility, wealth, welfare, scarcity, choice, PPC, opportunity cost</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC Economics','Introduction Economics')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">Demand and Supply</div><div class="ch-meta">Law of demand, demand schedule and curve, determinants, elasticity of demand (types, measurement); law of supply, supply schedule, elasticity of supply</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Economics','Demand Supply')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">Market Equilibrium and Price Determination</div><div class="ch-meta">Market equilibrium, price determination, shifts in demand and supply, effects of price ceiling and floor</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Economics','Market Equilibrium')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.4</div><div class="ch-title">Production and Cost</div><div class="ch-meta">Production function, law of variable proportions, returns to scale; concepts of cost (TC, TFC, TVC, MC, AC, AR, MR), producer equilibrium (MR=MC method)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Economics','Production Cost')">Practice &#x2192;</button></div></div>
+    </div>
+  </div>
+
+  <!-- HUMANITIES -->
+  <div id="st-isc-arts" class="stream-content">
+    <div class="subj-tabs">
+      <button class="subj-tab on" onclick="setSubj(this,'isc-hist','isc-arts')">&#x1F3DB; History</button>
+      <button class="subj-tab" onclick="setSubj(this,'isc-pol','isc-arts')">&#x1F4DC; Political Science</button>
+      <button class="subj-tab" onclick="setSubj(this,'isc-soc','isc-arts')">&#x1F46B; Sociology</button>
+      <button class="subj-tab" onclick="setSubj(this,'isc-psych2','isc-arts')">&#x1F9E0; Psychology</button>
+    </div>
+    <div id="isc-hist" class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Part 1</div><div class="ch-title">A Study of European History 1789&#x2013;1960</div><div class="ch-meta">French Revolution, Napoleon, Metternich, revolutions of 1848, unification of Italy and Germany, imperialism, World War I (causes, events, Treaty of Versailles), rise of fascism and Nazism, World War II</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC History','European History')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part 2</div><div class="ch-title">A Study of Indian History 1857&#x2013;1947</div><div class="ch-meta">Revolt of 1857, early nationalist movement, Congress (moderate and extremist), partition of Bengal, Non-Cooperation, Civil Disobedience, Quit India, Cabinet Mission, Independence and Partition</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC History','Indian History')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Part 3</div><div class="ch-title">History of the World Since 1945</div><div class="ch-meta">Cold War, UNO formation, decolonisation (Africa and Asia), Non-Aligned Movement, disintegration of USSR, globalisation</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC History','World History Since 1945')">Practice &#x2192;</button></div></div>
+    </div>
+    <div id="isc-pol" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">Political Science &#x2014; An Introduction</div><div class="ch-meta">Meaning, scope, traditional and modern approaches, relationship with other social sciences</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC Political Science','Introduction')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">The State</div><div class="ch-meta">Concept of state, elements (population, territory, government, sovereignty), theories of origin of state, distinction from nation/government/society</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Political Science','The State')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">Sovereignty and Law</div><div class="ch-meta">Sovereignty (internal, external, legal, political), Austin's monistic theory, limitations; law (sources, classification, rule of law)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Political Science','Sovereignty Law')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.4</div><div class="ch-title">Constitution and Government</div><div class="ch-meta">Indian Constitution (salient features, preamble, fundamental rights, DPSP, federal features), forms of government (parliamentary, presidential, unitary, federal)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Political Science','Constitution Government')">Practice &#x2192;</button></div></div>
+    </div>
+    <div id="isc-soc" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">Sociology &#x2014; An Introduction</div><div class="ch-meta">Definition, nature and scope, relationship with other social sciences, sociology in India</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC Sociology','Introduction')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">Basic Concepts</div><div class="ch-meta">Society, community, association, institution, culture (material and non-material), socialisation, social control, social change</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Sociology','Basic Concepts')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">Social Groups and Institutions</div><div class="ch-meta">Primary and secondary groups, in-group and out-group, reference groups; family (types, functions, changes), marriage (types), kinship</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Sociology','Social Groups Institutions')">Practice &#x2192;</button></div></div>
+    </div>
+    <div id="isc-psych2" class="ch-grid" style="display:none;">
+      <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">Introduction to Psychology</div><div class="ch-meta">Definition, schools of psychology (structuralism, functionalism, behaviourism, Gestalt, psychoanalysis, humanistic), scope, branches</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="startTest('ISC Psychology','Introduction')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">Research Methods</div><div class="ch-meta">Scientific method in psychology, observation (naturalistic, systematic), interview, survey, case study, experiment, correlation</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Psychology','Research Methods')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">Biological Basis of Behaviour</div><div class="ch-meta">Neuron structure, types, neural impulse, synapse; nervous system (CNS, PNS, ANS); endocrine glands and behaviour; heredity and environment</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Psychology','Biological Basis')">Practice &#x2192;</button></div></div>
+      <div class="ch-card"><div class="ch-num">Ch.4</div><div class="ch-title">Sensation, Perception and Attention</div><div class="ch-meta">Sensation (thresholds, sensory adaptation), perception (depth, constancy, illusions, laws of perceptual organisation), attention (types, span, factors)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="startTest('ISC Psychology','Sensation Perception')">Practice &#x2192;</button></div></div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<section id="tips" style="background:var(--cream);">
+<div class="container">
+  <div class="sec-label">&#x1F4A1; Expert Tips</div>
+  <h2 class="sec-title">Score High in ISC Class 11 &#x2014; 2026-27</h2>
+  <p class="sec-sub">ISC demands deeper understanding and detailed answers. These tips are specific to the CISCE ISC pattern.</p>
+  <div class="tips-grid">
+    <div class="tip-card"><div class="tip-icon">&#x1F4DA;</div><div class="tip-title">ISC is Deeper than CBSE</div><div class="tip-body">ISC Maths has Harmonic Progressions, De Moivre's theorem, and detailed conic sections not in CBSE. ISC Chemistry covers Environmental Chemistry and s-Block separately. Plan more time per chapter.</div></div>
+    <div class="tip-card"><div class="tip-icon">&#x1F4DD;</div><div class="tip-title">Write Long Answers Well</div><div class="tip-body">ISC values detailed, structured answers. Use headings, sub-points, and diagrams. A 5-mark answer needs 5 clear points. Practice writing answers within word limits from Day 1.</div></div>
+    <div class="tip-card"><div class="tip-icon">&#x1F9EA;</div><div class="tip-title">Chemistry: Mechanisms are Key</div><div class="tip-body">ISC Organic Chemistry requires full mechanism writing (arrow pushing). SN1, SN2, electrophilic addition, EAS &#x2014; you must draw these correctly for full marks. CBSE doesn't test mechanisms as deeply.</div></div>
+    <div class="tip-card"><div class="tip-icon">&#x1F4D0;</div><div class="tip-title">Maths: Section A is Compulsory</div><div class="tip-body">ISC Maths has Section A (compulsory), Section B (Pure Maths), and Section C (Applied/Statistics). Focus on Section A first &#x2014; it covers the most marks. Don't attempt Section B before mastering A.</div></div>
+    <div class="tip-card"><div class="tip-icon">&#x1F4D6;</div><div class="tip-title">English: Literature is Half the Paper</div><div class="tip-body">ISC English Literature (Treasure Trove + prescribed novel/play) carries 40+ marks. Read every prescribed text at least twice. Learn character names, themes, and key quotes for each piece.</div></div>
+    <div class="tip-card"><div class="tip-icon">&#x1F331;</div><div class="tip-title">Biology: Diagrams = Marks</div><div class="tip-body">ISC Biology is heavy on detailed diagrams. Meiosis stages, chloroplast structure, nephron, heart, motor neuron &#x2014; practice drawing and labelling these without reference. Neat diagrams earn full marks.</div></div>
+  </div>
+</div>
+</section>
+
+<footer class="footer">
+  <div class="ft-inner">
+    <div><div class="ft-brand">Mock<span>Arena</span></div><div class="ft-desc">Official 2026-27 ISC (CISCE) syllabus-based preparation.</div></div>
+    <div class="ft-links">
+      <a href="boards_11.html" class="ft-link">&#x2190; Class 11 Boards</a>
+      <a href="mockarena_student_dashboard.html" class="ft-link">Dashboard</a>
+      <a href="mockarena_support.html" class="ft-link">Support</a>
+    </div>
+    <div class="ft-links">
+      <a href="boards_11_cbse.html" class="ft-link">Class 11 CBSE</a>
+      <a href="boards_11_state.html" class="ft-link">Class 11 State Board</a>
+      <a href="boards_9_icse.html" class="ft-link">Class 9 ICSE</a>
+    </div>
+  </div>
+  <div class="ft-inner"><div class="ft-copy">&#xA9; 2026 MockArena &#xB7; mockarena.co.in &#xB7; Source: cisce.org (ISC Class 11 Curriculum 2026-27)</div></div>
+</footer>
+
+<script>
+function setStream(btn,stream){
+  document.querySelectorAll('.stream-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.stream-content').forEach(d=>{d.style.display='none';d.classList.remove('on');});
+  const el=document.getElementById('st-'+stream);
+  if(el){el.style.display='block';el.classList.add('on');}
+}
+function setSubj(btn,gridId,streamId){
+  const parent=document.getElementById('st-'+streamId);
+  if(!parent)return;
+  parent.querySelectorAll('.subj-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  parent.querySelectorAll('.ch-grid').forEach(g=>g.style.display='none');
+  const target=document.getElementById(gridId);
+  if(target)target.style.display='grid';
+}
+function startTest(subject,chapter){alert('Coming soon! '+subject+' \u2014 '+chapter+' questions will be available once uploaded from Admin Panel.');}
+window.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.stream-content').forEach(d=>{d.style.display='none';d.classList.remove('on');});
+  const sci=document.getElementById('st-isc-sci');
+  if(sci){sci.style.display='block';sci.classList.add('on');}
+  document.querySelectorAll('#st-isc-sci .ch-grid').forEach(g=>g.style.display='none');
+  const phy=document.getElementById('isc-phy');
+  if(phy)phy.style.display='grid';
+  document.querySelectorAll('#st-isc-com .ch-grid').forEach(g=>g.style.display='none');
+  const acc=document.getElementById('isc-acc');
+  if(acc)acc.style.display='grid';
+  document.querySelectorAll('#st-isc-arts .ch-grid').forEach(g=>g.style.display='none');
+  const hist=document.getElementById('isc-hist');
+  if(hist)hist.style.display='grid';
+});
+</script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",appId:"1:861067164791:web:28df5244e34361dd9d5a72"});
+const auth=getAuth(app);
+onAuthStateChanged(auth,(user)=>{if(!user){window.location.href='login.html';return;}const av=document.getElementById('nav-av');if(av){if(user.photoURL)av.innerHTML=`<img src="${user.photoURL}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;else av.textContent=(user.displayName||'S').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);}});
+</script>
+</body>
+</html>

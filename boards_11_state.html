@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Class 11 State Board 2026-27 - MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--forest:#1a2618;--sage:#6b8f5e;--sage-l:rgba(107,143,94,.1);--sage-g:rgba(107,143,94,.2);--gold:#c8962a;--gold-l:rgba(200,150,42,.08);--cream:#faf9f5;--cream-w:#f5f3ec;--border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.13);--txt:#1a2618;--txt-m:rgba(26,38,24,.64);--txt-lo:rgba(26,38,24,.44);--fd:"Outfit",sans-serif;--fm:"IBM Plex Mono",monospace;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fd);background:var(--cream-w);color:var(--txt);overflow-x:hidden;-webkit-font-smoothing:antialiased;font-size:17px;line-height:1.7;}
+a,a:hover,a:visited{text-decoration:none;color:inherit;}
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;height:60px;background:rgba(26,38,24,.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(107,143,94,.12);display:flex;align-items:center;padding:0 20px;gap:10px;}
+.nav-logo{display:flex;align-items:center;gap:8px;text-decoration:none;}
+.nav-n1{color:white;font-size:1.05rem;font-weight:900;letter-spacing:-.02em;}
+.nav-n2{font-size:1rem;font-weight:900;color:var(--sage);}
+.nav-pill{display:flex;align-items:center;gap:6px;background:rgba(107,143,94,.12);border:1px solid rgba(107,143,94,.2);border-radius:100px;padding:4px 12px;margin-left:6px;}
+.nav-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--sage);animation:np 2.5s ease-in-out infinite;}
+@keyframes np{0%,100%{opacity:1;}50%{opacity:.2;}}
+.nav-pill-txt{font-size:.95rem;font-weight:700;color:rgba(255,255,255,.9);}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-switch{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid rgba(255,255,255,.15);background:rgba(255,255,255,.06);color:rgba(255,255,255,.78);text-decoration:none;white-space:nowrap;}
+.nav-dash{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:6px 14px;border-radius:8px;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;text-decoration:none;white-space:nowrap;}
+.nav-av{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--gold),#d4a035);display:flex;align-items:center;justify-content:center;font-size:.88rem;font-weight:700;color:black;overflow:hidden;flex-shrink:0;}
+.nav-ham{display:none;width:34px;height:34px;border-radius:8px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);align-items:center;justify-content:center;font-size:1rem;color:white;cursor:pointer;flex-shrink:0;}
+@media(max-width:960px){.nav-links{display:none;}.nav-ham{display:flex;}}
+.state-bar{background:white;border-bottom:1px solid var(--border);padding:14px 20px;margin-top:60px;}
+.state-inner{max-width:1060px;margin:0 auto;}
+.state-label{font-size:.96rem;font-weight:700;color:var(--txt-m);margin-bottom:10px;}
+.state-chips{display:flex;gap:8px;flex-wrap:wrap;}
+.state-chip{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:8px 18px;border-radius:100px;border:1.5px solid var(--border);background:var(--cream-w);color:var(--txt);cursor:pointer;transition:all .18s;}
+.state-chip:hover{border-color:var(--sage);color:var(--sage);}
+.state-chip.on{background:var(--forest);color:white;border-color:var(--forest);}
+.jump-bar{display:flex;gap:8px;flex-wrap:nowrap;overflow-x:auto;padding:12px 16px;background:white;border-bottom:1px solid var(--border);scrollbar-width:none;}
+.jump-bar::-webkit-scrollbar{display:none;}
+.jump-btn{font-family:var(--fd);font-size:.95rem;font-weight:700;padding:8px 16px;border-radius:100px;border:1.5px solid var(--border);background:var(--cream-w);color:var(--txt);white-space:nowrap;cursor:pointer;transition:all .18s;flex-shrink:0;text-decoration:none;display:inline-block;}
+.jump-btn:hover{border-color:var(--sage);color:var(--sage);}
+.jump-btn.active{background:var(--forest);color:white;border-color:var(--forest);}
+.hero{background:var(--cream);border-bottom:1px solid var(--border);padding:clamp(80px,8vh,100px) 20px clamp(44px,5vh,60px);}
+.hero-inner{max-width:1060px;margin:0 auto;}
+.hero-tag{display:inline-flex;align-items:center;gap:7px;background:var(--sage-l);border:1px solid rgba(107,143,94,.22);border-radius:100px;padding:5px 14px;margin-bottom:16px;}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--sage);animation:np 2.5s ease-in-out infinite;}
+.hero-tag-txt{font-size:.94rem;font-weight:700;color:var(--sage);text-transform:uppercase;letter-spacing:.06em;}
+.hero-title{font-size:clamp(2rem,4vw,3rem);font-weight:900;color:var(--forest);line-height:1.06;letter-spacing:-.03em;margin-bottom:14px;}
+.h1{color:var(--sage);}
+.h2{color:var(--gold);}
+.hero-sub{font-size:1.06rem;color:var(--txt-m);line-height:1.78;margin-bottom:20px;font-weight:500;max-width:720px;}
+.hero-btns{display:flex;gap:10px;flex-wrap:wrap;}
+.btn-primary{font-family:var(--fd);font-size:.96rem;font-weight:800;padding:11px 22px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;box-shadow:0 4px 18px var(--sage-g);text-decoration:none;}
+.btn-secondary{font-family:var(--fd);font-size:.96rem;font-weight:700;padding:11px 20px;border-radius:11px;border:1.5px solid var(--bm);background:white;color:var(--txt);cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:all .22s;text-decoration:none;}
+section{padding:52px 20px;}
+.container{max-width:1060px;margin:0 auto;}
+.sec-label{font-size:.96rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--sage);margin-bottom:8px;}
+.sec-title{font-size:clamp(1.6rem,2.6vw,2.1rem);font-weight:800;color:var(--forest);line-height:1.18;margin-bottom:8px;letter-spacing:-.02em;}
+.sec-sub{font-size:1.06rem;color:var(--txt-m);line-height:1.78;margin-bottom:24px;}
+.state-content{display:none;}
+.state-content.on{display:block;}
+.stream-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:20px;}
+.stream-tab{font-family:var(--fd);font-size:1rem;font-weight:700;padding:9px 20px;border-radius:10px;border:1.5px solid var(--border);background:white;color:var(--txt-m);cursor:pointer;transition:all .18s;}
+.stream-tab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.stream-tab:hover:not(.on){border-color:var(--sage);color:var(--sage);}
+.subj-tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+.subj-tab{font-family:var(--fd);font-size:1rem;font-weight:700;padding:9px 18px;border-radius:10px;border:1.5px solid var(--border);background:white;color:var(--txt-m);cursor:pointer;transition:all .18s;}
+.subj-tab.on{background:var(--forest);color:white;border-color:var(--forest);}
+.subj-tab:hover:not(.on){border-color:var(--sage);color:var(--sage);}
+.stream-inner{display:none;}
+.stream-inner.on{display:block;}
+.ch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(295px,1fr));gap:14px;}
+.ch-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;box-shadow:0 1px 4px rgba(26,38,24,.05);transition:all .2s;}
+.ch-card:hover{border-color:var(--sage);transform:translateY(-3px);box-shadow:0 6px 20px var(--sage-l);}
+.ch-num{font-family:var(--fm);font-size:.84rem;font-weight:700;color:var(--sage);background:var(--sage-l);border:1px solid rgba(107,143,94,.2);padding:3px 10px;border-radius:100px;display:inline-block;margin-bottom:10px;}
+.ch-title{font-size:1.08rem;font-weight:800;color:var(--forest);margin-bottom:6px;line-height:1.3;}
+.ch-meta{font-size:.96rem;color:var(--txt-m);line-height:1.65;margin-bottom:14px;}
+.ch-footer{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.ch-tags{display:flex;gap:5px;flex-wrap:wrap;}
+.ch-tag{font-size:.84rem;font-weight:600;padding:3px 9px;border-radius:100px;background:var(--cream-w);color:var(--txt-lo);border:1px solid var(--border);}
+.ch-tag.imp{background:rgba(200,150,42,.08);color:var(--gold);border-color:rgba(200,150,42,.2);}
+.ch-btn{font-family:var(--fd);font-size:.94rem;font-weight:700;padding:8px 14px;border-radius:9px;border:none;background:linear-gradient(135deg,var(--sage),#3a6830);color:white;cursor:pointer;white-space:nowrap;transition:all .18s;flex-shrink:0;}
+.no-content{background:rgba(107,143,94,.05);border:1.5px dashed rgba(107,143,94,.25);border-radius:16px;padding:48px 24px;text-align:center;}
+.no-content-ic{font-size:2.2rem;margin-bottom:12px;}
+.no-content-t{font-size:1.06rem;font-weight:800;color:var(--forest);margin-bottom:6px;}
+.no-content-s{font-size:.96rem;color:var(--txt-m);line-height:1.65;}
+.footer{background:var(--forest);color:white;padding:40px 20px 28px;}
+.ft-inner{max-width:1060px;margin:0 auto;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;flex-wrap:wrap;}
+.ft-brand{font-size:1.2rem;font-weight:900;}
+.ft-brand span{color:var(--sage);}
+.ft-desc{font-size:.96rem;color:rgba(255,255,255,.55);margin-top:6px;max-width:300px;line-height:1.65;}
+.ft-links{display:flex;flex-direction:column;gap:8px;}
+.ft-link{font-size:.96rem;color:rgba(255,255,255,.58);transition:color .18s;}
+.ft-link:hover{color:white;}
+.ft-copy{font-size:.92rem;color:rgba(255,255,255,.35);margin-top:28px;padding-top:20px;border-top:1px solid rgba(255,255,255,.07);width:100%;}
+@media(min-width:1100px){section{padding:64px 40px;}.hero{padding:90px 40px 60px;}.hero-title{font-size:3rem;}.sec-title{font-size:2.1rem;}.sec-sub{font-size:1.1rem;}}
+@media(min-width:1400px){.container{max-width:1200px;}section{padding:72px 48px;}}
+@media(max-width:768px){.stream-tabs{gap:8px;}.hero-inner{grid-template-columns:1fr;}.hero-right{display:none;}}
+@media(max-width:540px){section{padding:36px 16px;}.hero{padding:76px 16px 36px;}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <a href="index.html" class="nav-logo"><span class="nav-n1">Mock</span><span class="nav-n2">Arena</span></a>
+  <div class="nav-pill"><div class="nav-pill-dot"></div><span class="nav-pill-txt">Class 11 State Board 2026-27</span></div>
+  <div class="nav-right">
+    <a href="mockarena_onboarding.html" class="nav-switch">Switch Exam</a>
+    <a href="mockarena_student_dashboard.html" class="nav-dash">Dashboard</a>
+    <div class="nav-av" id="nav-av">S</div>
+    <button class="nav-ham">&#x2630;</button>
+  </div>
+</nav>
+
+<div class="state-bar">
+  <div class="state-inner">
+    <div class="state-label">Select your State Board:</div>
+    <div class="state-chips">
+      <button class="state-chip on" onclick="setState(this,'up')">UP Board (UPMSP)</button>
+      <button class="state-chip" onclick="setState(this,'maha')">Maharashtra (HSC)</button>
+      <button class="state-chip" onclick="setState(this,'raj')">Rajasthan (RBSE)</button>
+      <button class="state-chip" onclick="setState(this,'mp')">MP Board (MPBSE)</button>
+      <button class="state-chip" onclick="setState(this,'bihar')">Bihar (BSEB)</button>
+      <button class="state-chip" onclick="setState(this,'other')">Other States</button>
+    </div>
+  </div>
+</div>
+
+<div class="jump-bar">
+  <a href="#chapters" class="jump-btn active">Chapters</a>
+  <a href="#tips" class="jump-btn">Tips</a>
+</div>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag"><div class="hero-tag-dot"></div><span class="hero-tag-txt">Class 11 State Board 2026-27</span></div>
+    <h1 class="hero-title">Class 11 <span class="h1">State Board</span><br/><span class="h2">2026-27</span> Syllabus.</h1>
+    <p class="hero-sub">Chapter-wise practice for major Indian state boards including UP, Maharashtra, Rajasthan, MP and Bihar. Science, Commerce and Arts streams. Based on latest 2026-27 state board syllabuses aligned with NCF-SE 2023 and NEP 2020.</p>
+    <div class="hero-btns">
+      <a href="#chapters" class="btn-primary">Start Chapter Tests</a>
+      <a href="boards_11.html" class="btn-secondary">Change Board</a>
+    </div>
+  </div>
+</div>
+
+<section id="chapters" style="background:var(--cream-w);">
+<div class="container">
+  <div class="sec-label">Chapter-wise Practice</div>
+  <h2 class="sec-title">Class 11 State Board 2026-27</h2>
+  <p class="sec-sub">Select your state, then choose your stream and subject. All content aligned with NCERT and latest state board 2026-27 syllabus.</p>
+
+  <!-- UP BOARD -->
+  <div id="st-up" class="state-content on">
+    <div style="background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:16px 20px;margin-bottom:22px;font-size:.96rem;color:var(--txt-m);line-height:1.65;"><strong style="color:var(--forest);">UP Board (UPMSP) Class 11</strong> — Intermediate (Class 11) syllabus follows NCERT. Streams: Science, Commerce, Arts. Medium: Hindi and English both available.</div>
+    <div class="stream-tabs">
+      <button class="stream-tab on" onclick="setStreamInState(this,'up-sci')">Science (PCM/PCB)</button>
+      <button class="stream-tab" onclick="setStreamInState(this,'up-com')">Commerce</button>
+      <button class="stream-tab" onclick="setStreamInState(this,'up-arts')">Arts</button>
+    </div>
+    <div id="up-sci" class="stream-inner on">
+      <div class="subj-tabs">
+        <button class="subj-tab on" onclick="setSubj(this,'up-phy','up-sci')">Physics</button>
+        <button class="subj-tab" onclick="setSubj(this,'up-chem','up-sci')">Chemistry</button>
+        <button class="subj-tab" onclick="setSubj(this,'up-math','up-sci')">Mathematics</button>
+        <button class="subj-tab" onclick="setSubj(this,'up-bio','up-sci')">Biology</button>
+      </div>
+      <div id="up-phy" class="ch-grid">
+        <div class="ch-card"><div class="ch-num">Unit 1</div><div class="ch-title">Physical World and Measurement</div><div class="ch-meta">SI units, dimensions, significant figures, errors in measurement</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Based</span></div><button class="ch-btn" onclick="s('UP','Physics','Physical World')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Unit 2-3</div><div class="ch-title">Kinematics and Laws of Motion</div><div class="ch-meta">Equations of motion, projectile, Newton's 3 laws, friction, circular motion</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Physics','Kinematics Laws Motion')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Unit 4-5</div><div class="ch-title">Work, Energy and Rotational Motion</div><div class="ch-meta">Work-energy theorem, conservation of energy, collisions, torque, angular momentum, MOI</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Physics','Work Energy Rotational')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Unit 6</div><div class="ch-title">Gravitation</div><div class="ch-meta">Kepler&#x27;s laws, universal gravitation, g, escape velocity, satellites</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Physics','Gravitation')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Unit 7-8</div><div class="ch-title">Properties of Matter and Thermodynamics</div><div class="ch-meta">Elasticity, fluid properties, Bernoulli, surface tension, viscosity; laws of thermodynamics, Carnot engine</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Physics','Properties Matter Thermodynamics')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Unit 9-10</div><div class="ch-title">Oscillations and Waves</div><div class="ch-meta">SHM, simple pendulum, wave motion, speed of sound, Doppler effect</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Physics','Oscillations Waves')">Practice</button></div></div>
+      </div>
+      <div id="up-chem" class="ch-grid" style="display:none;">
+        <div class="ch-card"><div class="ch-num">Ch.1</div><div class="ch-title">Basic Concepts of Chemistry</div><div class="ch-meta">Mole concept, stoichiometry, limiting reagent</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT</span></div><button class="ch-btn" onclick="s('UP','Chemistry','Basic Concepts')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Ch.2</div><div class="ch-title">Atomic Structure and Periodicity</div><div class="ch-meta">Bohr model, quantum numbers, electronic config, periodic trends</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Chemistry','Atomic Structure')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Ch.3</div><div class="ch-title">Chemical Bonding and Thermodynamics</div><div class="ch-meta">Ionic, covalent, VSEPR, hybridisation; enthalpy, entropy, Gibbs energy</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Chemistry','Bonding Thermodynamics')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Ch.4</div><div class="ch-title">Equilibrium and Organic Chemistry</div><div class="ch-meta">Kc, Kp, pH, buffers; IUPAC nomenclature, isomerism, hydrocarbons</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Chemistry','Equilibrium Organic')">Practice</button></div></div>
+      </div>
+      <div id="up-math" class="ch-grid" style="display:none;">
+        <div class="ch-card"><div class="ch-num">Unit 1</div><div class="ch-title">Sets, Relations and Functions</div><div class="ch-meta">Sets operations, types of relations, types of functions, domain, range</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT</span></div><button class="ch-btn" onclick="s('UP','Maths','Sets Relations Functions')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Unit 2</div><div class="ch-title">Algebra</div><div class="ch-meta">Complex numbers, AP/GP, permutations, binomial theorem, sequences</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Maths','Algebra')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Unit 3</div><div class="ch-title">Coordinate Geometry and Calculus</div><div class="ch-meta">Straight lines, conic sections, limits, derivatives</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Maths','Coordinate Geometry Calculus')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Unit 4</div><div class="ch-title">Trigonometry and Statistics</div><div class="ch-meta">Trig functions, identities; mean deviation, variance, probability</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Maths','Trigonometry Statistics')">Practice</button></div></div>
+      </div>
+      <div id="up-bio" class="ch-grid" style="display:none;">
+        <div class="ch-card"><div class="ch-num">Unit 1</div><div class="ch-title">Diversity in Living World</div><div class="ch-meta">5-kingdom classification, plant kingdom, animal kingdom</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT</span></div><button class="ch-btn" onclick="s('UP','Biology','Diversity')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Unit 2</div><div class="ch-title">Cell Biology and Biomolecules</div><div class="ch-meta">Cell structure, organelles, cell cycle, biomolecules, enzymes</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Biology','Cell Biology')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Unit 3</div><div class="ch-title">Plant Physiology</div><div class="ch-meta">Photosynthesis, respiration, transport, mineral nutrition, growth hormones</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Biology','Plant Physiology')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Unit 4</div><div class="ch-title">Human Physiology</div><div class="ch-meta">Digestion, breathing, circulation, excretion, neural coordination</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Biology','Human Physiology')">Practice</button></div></div>
+      </div>
+    </div>
+    <div id="up-com" class="stream-inner">
+      <div class="ch-grid">
+        <div class="ch-card"><div class="ch-num">Accountancy</div><div class="ch-title">Journal, Ledger, Trial Balance and Final Accounts</div><div class="ch-meta">Double entry system, BRS, depreciation, trading and P&L account, balance sheet</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Accountancy','Accounting Basics')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Economics</div><div class="ch-title">Microeconomics and Statistics for Economics</div><div class="ch-meta">Demand, supply, market equilibrium, production, cost; data presentation, central tendency</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Economics','Micro and Stats')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Business Studies</div><div class="ch-title">Forms of Business and Business Services</div><div class="ch-meta">Sole proprietorship, partnership, company; banking, insurance, transport, warehousing</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="s('UP','Business Studies','Business Forms Services')">Practice</button></div></div>
+      </div>
+    </div>
+    <div id="up-arts" class="stream-inner">
+      <div class="ch-grid">
+        <div class="ch-card"><div class="ch-num">History</div><div class="ch-title">World and Indian History (Class 11)</div><div class="ch-meta">World: Mesopotamia, Roman Empire, Renaissance, nomadic empires. India: from ancient period to colonial era</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','History','World Indian History')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Political Science</div><div class="ch-title">Indian Constitution and Political Theory</div><div class="ch-meta">Preamble, Fundamental Rights, DPSP, Parliament, Executive; Freedom, Equality, Citizenship</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Political Science','Constitution Political Theory')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Geography</div><div class="ch-title">Physical Geography and India Geography</div><div class="ch-meta">Origin of Earth, interior, plate tectonics, India location/structure, rivers, climate</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('UP','Geography','Physical India Geography')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Hindi / Samajshastra</div><div class="ch-title">Hindi Literature and Sociology</div><div class="ch-meta">Kshitij/Aroh prose and poetry; Sociology: society, social groups, culture, institutions</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="s('UP','Hindi Sociology','Literature Sociology')">Practice</button></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAHARASHTRA -->
+  <div id="st-maha" class="state-content" style="display:none;">
+    <div style="background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:16px 20px;margin-bottom:22px;font-size:.96rem;color:var(--txt-m);line-height:1.65;"><strong style="color:var(--forest);">Maharashtra HSC Board Class 11 (FYJC)</strong> &#x2014; First Year Junior College (Class 11) syllabus. Science, Commerce and Arts streams. Medium: English, Marathi, Semi-English. Follows Maharashtra State Board of Secondary and Higher Secondary Education (MSBSHSE) 2026-27 syllabus.</div>
+    <div class="stream-tabs">
+      <button class="stream-tab on" onclick="setStreamInState(this,'maha-sci')">Science</button>
+      <button class="stream-tab" onclick="setStreamInState(this,'maha-com')">Commerce</button>
+      <button class="stream-tab" onclick="setStreamInState(this,'maha-arts')">Arts</button>
+    </div>
+    <div id="maha-sci" class="stream-inner on">
+      <div class="ch-grid">
+        <div class="ch-card"><div class="ch-num">Physics</div><div class="ch-title">Mechanics, Gravitation and Thermodynamics</div><div class="ch-meta">MH HSC Physics: units, kinematics, laws of motion, work-energy, gravitation, thermal properties, thermodynamics</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('Maharashtra','Physics','Mechanics Gravitation Thermodynamics')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Chemistry</div><div class="ch-title">Physical, Inorganic and Organic Chemistry</div><div class="ch-meta">MH HSC Chemistry: basic concepts, atomic structure, bonding, thermodynamics, equilibrium, hydrocarbons</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('Maharashtra','Chemistry','Physical Inorganic Organic')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Mathematics</div><div class="ch-title">Algebra, Trigonometry, Coordinate Geometry and Calculus</div><div class="ch-meta">MH HSC Maths Part I (Algebra, Trig) and Part II (Coordinate Geometry, Calculus, Stats)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('Maharashtra','Mathematics','All Units')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Biology</div><div class="ch-title">Botany and Zoology</div><div class="ch-meta">MH HSC: plant diversity, cell biology, plant physiology; animal classification, human physiology</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('Maharashtra','Biology','Botany Zoology')">Practice</button></div></div>
+      </div>
+    </div>
+    <div id="maha-com" class="stream-inner">
+      <div class="ch-grid">
+        <div class="ch-card"><div class="ch-num">Book Keeping</div><div class="ch-title">Book Keeping and Accountancy</div><div class="ch-meta">Journal, ledger, trial balance, BRS, depreciation, final accounts &#x2014; MH HSC Commerce</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('Maharashtra','Accountancy','Book Keeping')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Economics</div><div class="ch-title">Introduction to Micro and Macro Economics</div><div class="ch-meta">Demand, supply, market; national income, money, banking &#x2014; MH HSC Economics</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('Maharashtra','Economics','Micro Macro Economics')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">OC and SP</div><div class="ch-title">Organisation of Commerce and Secretarial Practice</div><div class="ch-meta">Forms of business, trade, banking, insurance; company secretary, MoA, AoA, share capital</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="s('Maharashtra','Commerce','OC and SP')">Practice</button></div></div>
+      </div>
+    </div>
+    <div id="maha-arts" class="stream-inner">
+      <div class="ch-grid">
+        <div class="ch-card"><div class="ch-num">History</div><div class="ch-title">History of Modern World and India</div><div class="ch-meta">MH HSC History: Renaissance, Industrial Revolution, colonialism, Indian freedom movement</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('Maharashtra','History','Modern World India')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Geography</div><div class="ch-title">Physical and Human Geography</div><div class="ch-meta">MH HSC Geography: landforms, rivers, climate, population, agriculture, industries</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('Maharashtra','Geography','Physical Human')">Practice</button></div></div>
+        <div class="ch-card"><div class="ch-num">Sociology</div><div class="ch-title">Understanding Society and Social Institutions</div><div class="ch-meta">Society, culture, socialisation, family, marriage, religion, caste &#x2014; MH HSC Sociology</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="s('Maharashtra','Sociology','Society Institutions')">Practice</button></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RAJASTHAN -->
+  <div id="st-raj" class="state-content" style="display:none;">
+    <div style="background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:16px 20px;margin-bottom:22px;font-size:.96rem;color:var(--txt-m);line-height:1.65;"><strong style="color:var(--forest);">Rajasthan Board (RBSE) Class 11</strong> &#x2014; Class 11 Intermediate (Senior Secondary) syllabus. Follows NCERT with Rajasthan-specific additions. Streams: Science, Commerce, Arts. Medium: Hindi and English.</div>
+    <div class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Science</div><div class="ch-title">Physics, Chemistry, Maths/Biology</div><div class="ch-meta">NCERT-based PCM/PCB &#x2014; same chapters as CBSE with Rajasthan state-specific examples and questions</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Aligned</span></div><button class="ch-btn" onclick="s('RBSE','Science','PCM PCB')">Practice</button></div></div>
+      <div class="ch-card"><div class="ch-num">Commerce</div><div class="ch-title">Accountancy, Economics, Business Studies</div><div class="ch-meta">RBSE Commerce Class 11 &#x2014; NCERT based with Rajasthan context</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Aligned</span></div><button class="ch-btn" onclick="s('RBSE','Commerce','Accounts Economics BST')">Practice</button></div></div>
+      <div class="ch-card"><div class="ch-num">Arts</div><div class="ch-title">History, Political Science, Geography, Economics</div><div class="ch-meta">RBSE Arts &#x2014; includes Rajasthan-specific history, geography sections</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('RBSE','Arts','History Pol Geo Eco')">Practice</button></div></div>
+      <div class="ch-card"><div class="ch-num">Rajasthan-Specific</div><div class="ch-title">Rajasthan Geography and Economy</div><div class="ch-meta">Thar Desert, Aravalli, rivers, major industries, tourism, MNREGA in Rajasthan context</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">RBSE Only</span></div><button class="ch-btn" onclick="s('RBSE','Geography','Rajasthan Specific')">Practice</button></div></div>
+    </div>
+  </div>
+
+  <!-- MP BOARD -->
+  <div id="st-mp" class="state-content" style="display:none;">
+    <div style="background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:16px 20px;margin-bottom:22px;font-size:.96rem;color:var(--txt-m);line-height:1.65;"><strong style="color:var(--forest);">MP Board (MPBSE) Class 11</strong> &#x2014; Class 11 Higher Secondary syllabus. Follows NCERT with MP-specific additions. Streams: Science, Commerce, Arts. Medium: Hindi primarily.</div>
+    <div class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Science</div><div class="ch-title">PCM/PCB &#x2014; NCERT Based</div><div class="ch-meta">Physics, Chemistry, Maths and Biology &#x2014; NCERT curriculum with MP Board exam pattern</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Aligned</span></div><button class="ch-btn" onclick="s('MPBSE','Science','PCM PCB')">Practice</button></div></div>
+      <div class="ch-card"><div class="ch-num">Commerce</div><div class="ch-title">Accountancy, Economics, Business Studies</div><div class="ch-meta">MP Board Commerce 11 &#x2014; standard NCERT content with MP board pattern</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="s('MPBSE','Commerce','Accounts Economics BST')">Practice</button></div></div>
+      <div class="ch-card"><div class="ch-num">Arts</div><div class="ch-title">History, Political Science, Geography, Economics</div><div class="ch-meta">MP Arts including MP-specific history, Vindhya/Satpura geography, Narmada Valley</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('MPBSE','Arts','History Pol Geo')">Practice</button></div></div>
+      <div class="ch-card"><div class="ch-num">MP Specific</div><div class="ch-title">MP Geography, Culture and Economy</div><div class="ch-meta">Vindhya, Satpura, Narmada river system, Bhopal/Indore industries, tribal culture, MP tourism</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">MPBSE Only</span></div><button class="ch-btn" onclick="s('MPBSE','Geography','MP Specific')">Practice</button></div></div>
+    </div>
+  </div>
+
+  <!-- BIHAR -->
+  <div id="st-bihar" class="state-content" style="display:none;">
+    <div style="background:rgba(107,143,94,.06);border:1.5px solid rgba(107,143,94,.2);border-radius:14px;padding:16px 20px;margin-bottom:22px;font-size:.96rem;color:var(--txt-m);line-height:1.65;"><strong style="color:var(--forest);">Bihar Board (BSEB) Class 11</strong> &#x2014; Intermediate Part 1 (Class 11). NCERT-aligned syllabus. Streams: Science, Commerce, Arts. Medium: Hindi and English.</div>
+    <div class="ch-grid">
+      <div class="ch-card"><div class="ch-num">Science</div><div class="ch-title">PCM/PCB &#x2014; NCERT Based</div><div class="ch-meta">Physics (units &#x2014; mechanics to waves), Chemistry (basic to hydrocarbons), Maths (sets to probability), Biology (diversity to human physiology)</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag">NCERT Aligned</span></div><button class="ch-btn" onclick="s('BSEB','Science','PCM PCB')">Practice</button></div></div>
+      <div class="ch-card"><div class="ch-num">Commerce</div><div class="ch-title">Accountancy, Economics, Business Studies</div><div class="ch-meta">Bihar Board Commerce 11 &#x2014; journal, ledger, BRS, micro/macro economics, business organisation</div><div class="ch-footer"><div class="ch-tags"></div><button class="ch-btn" onclick="s('BSEB','Commerce','Commerce Subjects')">Practice</button></div></div>
+      <div class="ch-card"><div class="ch-num">Arts</div><div class="ch-title">History, Political Science, Geography, Economics</div><div class="ch-meta">Bihar Arts 11 &#x2014; World history, Indian Constitution, Physical Geography, Indian Economy Development</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">Important</span></div><button class="ch-btn" onclick="s('BSEB','Arts','Arts Subjects')">Practice</button></div></div>
+      <div class="ch-card"><div class="ch-num">Bihar Specific</div><div class="ch-title">Bihar Economy and History</div><div class="ch-meta">Ganga river system, Bihar in independence movement, MGNREGA in Bihar context, agriculture patterns</div><div class="ch-footer"><div class="ch-tags"><span class="ch-tag imp">BSEB Only</span></div><button class="ch-btn" onclick="s('BSEB','Geography','Bihar Specific')">Practice</button></div></div>
+    </div>
+  </div>
+
+  <!-- OTHER STATES -->
+  <div id="st-other" class="state-content" style="display:none;">
+    <div class="no-content">
+      <div class="no-content-ic">&#x1F5FA;&#xFE0F;</div>
+      <div class="no-content-t">More State Boards Coming Soon</div>
+      <div class="no-content-s">We are adding Gujarat (GSEB), Karnataka (PUC), Tamil Nadu (TNHSC), Haryana (HBSE) and more. Most state board Class 11 syllabuses are NCERT-aligned, so practising CBSE content works for most states.<br/><br/><a href="boards_11_cbse.html" style="color:var(--sage);font-weight:700;">Practice CBSE Class 11 instead</a></div>
+    </div>
+  </div>
+
+</div>
+</section>
+
+<section id="tips" style="background:var(--cream);">
+<div class="container">
+  <div class="sec-label">Tips</div>
+  <h2 class="sec-title">Score High in Class 11 State Board 2026-27</h2>
+  <p class="sec-sub">Tips that apply across all state boards for Class 11.</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;">
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;"><div style="font-size:1.6rem;margin-bottom:10px;">&#x1F4D6;</div><div style="font-size:1.06rem;font-weight:800;color:var(--forest);margin-bottom:7px;">NCERT is the Foundation</div><div style="font-size:1rem;color:var(--txt-m);line-height:1.72;">All major state boards are NCERT-aligned. Complete NCERT thoroughly for all science subjects. State-specific additions are usually small and school teachers will highlight them.</div></div>
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;"><div style="font-size:1.6rem;margin-bottom:10px;">&#x1F4DD;</div><div style="font-size:1.06rem;font-weight:800;color:var(--forest);margin-bottom:7px;">Know Your Board Pattern</div><div style="font-size:1rem;color:var(--txt-m);line-height:1.72;">Question paper patterns differ by state. UP Board has longer descriptive answers. Maharashtra HSC focuses on problem-solving. Check your state board&#x27;s sample paper from the official website.</div></div>
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;"><div style="font-size:1.6rem;margin-bottom:10px;">&#x1F3AF;</div><div style="font-size:1.06rem;font-weight:800;color:var(--forest);margin-bottom:7px;">Class 11 = Class 12 Foundation</div><div style="font-size:1rem;color:var(--txt-m);line-height:1.72;">Class 11 is internally assessed, but every topic continues in Class 12 board exams. Strong Class 11 = strong Class 12 = better board marks.</div></div>
+    <div style="background:white;border:1.5px solid var(--border);border-radius:16px;padding:20px;"><div style="font-size:1.6rem;margin-bottom:10px;">&#x1F5FA;&#xFE0F;</div><div style="font-size:1.06rem;font-weight:800;color:var(--forest);margin-bottom:7px;">Learn State-Specific Content</div><div style="font-size:1rem;color:var(--txt-m);line-height:1.72;">Every state board has chapters specific to that state &#x2014; geography, economy, history. These are usually easy marks but students skip them. Give 1-2 extra hours per week to state-specific content.</div></div>
+  </div>
+</div>
+</section>
+
+<footer class="footer">
+  <div class="ft-inner">
+    <div><div class="ft-brand">Mock<span>Arena</span></div><div class="ft-desc">State board Class 11 preparation based on official 2026-27 syllabuses.</div></div>
+    <div class="ft-links">
+      <a href="boards_11.html" class="ft-link">Class 11 Boards</a>
+      <a href="mockarena_student_dashboard.html" class="ft-link">Dashboard</a>
+    </div>
+    <div class="ft-links">
+      <a href="boards_11_cbse.html" class="ft-link">Class 11 CBSE</a>
+      <a href="boards_11_isc.html" class="ft-link">Class 11 ISC</a>
+    </div>
+  </div>
+  <div class="ft-inner"><div class="ft-copy">2026 MockArena mockarena.co.in</div></div>
+</footer>
+
+<script>
+function setState(btn,state){
+  document.querySelectorAll('.state-chip').forEach(c=>c.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.state-content').forEach(d=>{d.style.display='none';d.classList.remove('on');});
+  const el=document.getElementById('st-'+state);
+  if(el){el.style.display='block';el.classList.add('on');}
+}
+function setStreamInState(btn,streamId){
+  const parent=btn.closest('.state-content');
+  if(!parent)return;
+  parent.querySelectorAll('.stream-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  parent.querySelectorAll('.stream-inner').forEach(d=>{d.style.display='none';d.classList.remove('on');});
+  const el=document.getElementById(streamId);
+  if(el){el.style.display='block';el.classList.add('on');}
+}
+function setSubj(btn,gridId,streamId){
+  const parent=document.getElementById(streamId);
+  if(!parent)return;
+  parent.querySelectorAll('.subj-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  parent.querySelectorAll('.ch-grid').forEach(g=>g.style.display='none');
+  const target=document.getElementById(gridId);
+  if(target)target.style.display='grid';
+}
+function s(board,subject,chapter){alert('Coming soon! Class 11 '+board+' '+subject+' - '+chapter+' questions will be available once uploaded from Admin Panel.');}
+window.addEventListener('DOMContentLoaded',function(){
+  document.querySelectorAll('.state-content').forEach(d=>d.style.display='none');
+  const up=document.getElementById('st-up');
+  if(up)up.style.display='block';
+  document.querySelectorAll('#up-sci .ch-grid').forEach(g=>g.style.display='none');
+  const uphy=document.getElementById('up-phy');
+  if(uphy)uphy.style.display='grid';
+});
+</script>
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",appId:"1:861067164791:web:28df5244e34361dd9d5a72"});
+const auth=getAuth(app);
+onAuthStateChanged(auth,(user)=>{if(!user){window.location.href='login.html';return;}const av=document.getElementById('nav-av');if(av){if(user.photoURL)av.innerHTML=`<img src="${user.photoURL}" style="width:100%;height:100%;border-radius:50%;object-fit:cover;">`;else av.textContent=(user.displayName||'S').split(' ').map(w=>w[0]).join('').toUpperCase().substring(0,2);}});
+</script>
+</body>
+</html>
