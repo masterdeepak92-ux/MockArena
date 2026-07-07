@@ -1815,6 +1815,7 @@ window.adminLogin=function(){
     unsub();
     if(user){
       document.getElementById("admin-login").style.display="none";
+      window.adminAuthenticated=true;
       const pd=document.getElementById("page-dashboard");
       if(pd){pd.classList.add("on");pd.style.display="";}
       const t=document.getElementById("pt-dashboard");
@@ -1828,15 +1829,9 @@ window.adminLogin=function(){
 };
 
 onAuthStateChanged(auth,user=>{
-  if(!user){
-    const al=document.getElementById("admin-login");
-    if(al)al.style.display="flex";
-    document.querySelectorAll(".pane").forEach(p=>{p.classList.remove("on");p.style.display="none";});
-    return;
-  }
-  const al=document.getElementById("admin-login");
-  if(al)al.style.display="none";
-  loadAll();
+  // Firebase auth state — just track it, don't force login flow
+  // Admin login is handled by password check (adminLogin function)
+  console.log("Auth state:", user ? "signed in" : "not signed in");
 });
 
 // ── DATA LOAD ──
@@ -2033,9 +2028,8 @@ window.saveAll=async function(){
     window.statUp("up-status","Nothing to save — parse a CSV or JSON file first.","err");
     return;
   }
-  const user=auth.currentUser;
-  if(!user){
-    window.statUp("up-status","Not logged in. Please sign in first.","err");
+  if(!window.adminAuthenticated){
+    window.statUp("up-status","Please login to admin first.","err");
     return;
   }
   loader(true,"Uploading "+qs.length+" questions...","Saving to Firebase...");
