@@ -1670,9 +1670,13 @@ window.statUp = function(id, msg, type) {
 };
 
 window.preview = function(data) {
-  parsedQs = [];
+  window.parsedQs = [];
   var errors = [];
-  var ENAMES2 = {JM:'JEE Mains',JA:'JEE Advanced',NT:'NEET UG',NF:'NEET Foundation',JF:'JEE Foundation',CB10:'Class 10 CBSE',CB12:'Class 12 CBSE'};
+  var ENAMES2 = {
+    JM:'JEE Mains',JA:'JEE Advanced',NT:'NEET UG',NF:'NEET Foundation',JF:'JEE Foundation',
+    CB9:'Class 9 CBSE',CB10:'Class 10 CBSE',CB11:'Class 11 CBSE',CB12:'Class 12 CBSE',
+    IC9:'Class 9 ICSE',IC10:'Class 10 ICSE',IS11:'Class 11 ISC',IS12:'Class 12 ISC'
+  };
   data.forEach(function(row, i) {
     var q = {
       exam: (row.exam||'').toUpperCase().trim(),
@@ -1692,19 +1696,19 @@ window.preview = function(data) {
       year: row.year||null
     };
     if(!q.exam||!q.subject||!q.question) errors.push('Row '+(i+1));
-    else parsedQs.push(q);
+    else window.parsedQs.push(q);
   });
   
   var sec = document.getElementById('parsed-section');
   var sub = document.getElementById('parsed-sub');
   var list = document.getElementById('parsed-list');
-  if(!parsedQs.length){ 
+  if(!window.parsedQs.length){ 
     window.statUp('up-status','No valid questions found. Check format.','err'); 
     return; 
   }
   if(sec) sec.style.display = 'block';
-  if(sub) sub.textContent = parsedQs.length + ' questions ready' + (errors.length?' ('+errors.length+' skipped)':'');
-  if(list) list.innerHTML = parsedQs.map(function(q,i){
+  if(sub) sub.textContent = window.parsedQs.length + ' questions ready' + (errors.length?' ('+errors.length+' skipped)':'');
+  if(list) list.innerHTML = window.parsedQs.map(function(q,i){
     return '<div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:14px;margin-bottom:10px;">'
       +'<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">'
       +'<span style="font-family:var(--fm);font-size:.92rem;font-weight:700;background:var(--forest);color:var(--gold);padding:2px 8px;border-radius:5px;">#'+(i+1)+'</span>'
@@ -1720,11 +1724,11 @@ window.preview = function(data) {
       +'<div style="font-size:.88rem;font-weight:700;color:var(--sage);margin-top:6px;">✓ Correct: '+q.correct+'</div>'
       +'</div>';
   }).join('');
-  window.statUp('up-status','✓ '+parsedQs.length+' questions parsed successfully!','ok');
+  window.statUp('up-status','✓ '+window.parsedQs.length+' questions parsed successfully!','ok');
 };
 
 window.clearParsed = function() {
-  parsedQs = [];
+  window.parsedQs = [];
   var sec = document.getElementById('parsed-section');
   if(sec) sec.style.display = 'none';
   window.statUp('up-status','','');
@@ -1994,11 +1998,22 @@ window.delQ=async function(id){
 };
 
 // ── UPLOAD / AI EXTRACT ──
+window.clearUpload=function(){
+  window.parsedQs=[];
+  window.parsedQs_up=[];
+  const sec=document.getElementById('parsed-section');
+  if(sec)sec.style.display='none';
+  const list=document.getElementById('parsed-list');
+  if(list)list.innerHTML='';
+  window.statUp('up-status','Cleared.','ok');
+};
+
 window.saveAll=async function(){
-  if(!window.parsedQs_up||!window.parsedQs_up.length){stat("up-status","Nothing to save.","err");return;}
-  loader(true,"Uploading "+window.parsedQs_up.length+" questions...","Saving to Firebase...");
+  const qs=window.parsedQs_up||(window.parsedQs&&window.parsedQs.length?window.parsedQs:null);
+  if(!qs||!qs.length){stat("up-status","Nothing to save. Parse a CSV/JSON file first.","err");return;}
+  loader(true,"Uploading "+qs.length+" questions...","Saving to Firebase...");
   let saved=0,failed=0;
-  for(const q of window.parsedQs_up){
+  for(const q of qs){
     try{
       const sc2=SC[q.subject]||q.subject?.substring(0,3).toUpperCase()||"GEN";
       const diffCode=DIFF[q.difficulty]||"MED";
@@ -2011,6 +2026,7 @@ window.saveAll=async function(){
   }
   loader(false);
   window.parsedQs_up=[];
+  window.parsedQs=[];
   const ps=document.getElementById("parsed-section");if(ps)ps.style.display="none";
   stat("up-status","✓ Saved "+saved+" questions!"+(failed?" · "+failed+" failed":""),"ok");
   refreshStats();renderDashboard();populateBuildChapters();
@@ -2163,6 +2179,16 @@ function stat(id,msg,type){
 
 window.logout=function(){
   signOut(auth).then(()=>{window.location.href="login.html";}).catch(e=>alert(e.message));
+};
+
+window.downloadTemplate=function(){
+  const h=['exam','subject','chapter','topic','difficulty','type','marks','question','option_a','option_b','option_c','option_d','correct','explanation','year'];
+  const sample=['JM','Physics','Kinematics','Motion','Medium','MCQ','4','A body moves with uniform velocity. Its acceleration is:','Zero','Constant','Variable','Increasing','A','Acceleration is zero for uniform velocity.','2024'];
+  const csv=h.join(',')+'\n'+sample.map(v=>`"${v}"`).join(',');
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));
+  a.download='mockarena_questions_template.csv';
+  a.click();
 };
 
 // ── TEACHER STUBS ──
