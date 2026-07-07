@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>NEET UG 2025–26 — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<style>
+
+:root{
+  --forest:#1a2618;--sage:#6b8f5e;--sage-d:#3a6830;
+  --sage-l:rgba(107,143,94,.11);--sage-g:rgba(107,143,94,.22);
+  --gold:#c8962a;--gold-l:rgba(200,150,42,.1);--gold-g:rgba(200,150,42,.22);
+  --rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
+  --sky:#2563eb;--sky-l:rgba(37,99,235,.09);
+  --violet:#7c3aed;--violet-l:rgba(124,58,237,.09);
+  --cream:#faf9f5;--cw:#f5f3ec;--white:#fff;
+  --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.14);
+  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.38);
+  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
+  --sh:0 2px 12px rgba(26,38,24,.07);
+  --sh-lg:0 6px 24px rgba(26,38,24,.11);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:var(--fd);background:var(--cream);color:var(--txt);-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;overflow-x:hidden;}
+
+/* ── NAV ── */
+.nav{height:56px;display:flex;align-items:center;padding:0 16px;gap:10px;background:var(--forest);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(107,143,94,.15);}
+.nav-logo{font-size:1.05rem;font-weight:900;text-decoration:none;color:white;letter-spacing:-.02em;}
+.nav-logo span{color:var(--sage);}
+.nav-pill{font-size:.9rem;font-weight:800;padding:4px 12px;border-radius:100px;background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
+.nav-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.nav-switch{font-family:var(--fd);font-size:.9rem;font-weight:700;padding:6px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);text-decoration:none;transition:all .18s;}
+.nav-switch:hover{background:rgba(255,255,255,.16);}
+
+/* ── HERO ── */
+.hero{background:var(--cream);padding:32px 20px 0;border-bottom:1.5px solid var(--border);}
+.hero-inner{max-width:900px;margin:0 auto;}
+.hero-eyebrow{display:flex;align-items:center;gap:8px;margin-bottom:14px;flex-wrap:wrap;}
+.hero-badge{font-size:.88rem;font-weight:800;padding:5px 13px;border-radius:100px;background:var(--sky-l);color:var(--sky);border:1px solid rgba(37,99,235,.18);}
+.hero-updated{font-size:.88rem;font-weight:700;color:var(--txt-lo);}
+.hero-title{font-size:2.2rem;font-weight:900;color:var(--forest);letter-spacing:-.03em;line-height:1.08;margin-bottom:10px;}
+.hero-title span{color:var(--sage);}
+.hero-desc{font-size:1.02rem;color:var(--txt-m);line-height:1.75;max-width:600px;margin-bottom:20px;}
+.hero-stats{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:24px;}
+.h-stat{display:flex;align-items:center;gap:7px;background:white;border:1.5px solid var(--border);border-radius:11px;padding:9px 14px;box-shadow:var(--sh);}
+.h-stat-icon{font-size:1.1rem;}
+.h-stat-val{font-family:var(--fm);font-size:.96rem;font-weight:800;color:var(--forest);}
+.h-stat-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
+.hero-cta{display:flex;gap:10px;flex-wrap:wrap;padding-bottom:28px;}
+.cta-btn{font-family:var(--fd);font-size:1rem;font-weight:800;padding:14px 26px;border-radius:13px;border:none;cursor:pointer;display:inline-flex;align-items:center;gap:9px;text-decoration:none;transition:all .22s;}
+.cta-btn.primary{background:linear-gradient(135deg,var(--sage),var(--sage-d));color:white;box-shadow:0 4px 18px var(--sage-g);}
+.cta-btn.primary:hover{transform:translateY(-2px);box-shadow:0 7px 24px var(--sage-g);}
+.cta-btn.secondary{background:white;color:var(--forest);border:1.5px solid var(--bm);box-shadow:var(--sh);}
+.cta-btn.secondary:hover{border-color:var(--sage-g);color:var(--sage);}
+.cta-btn.gold{background:linear-gradient(135deg,var(--gold),#9a6e18);color:white;box-shadow:0 4px 18px var(--gold-g);}
+.cta-btn.gold:hover{transform:translateY(-2px);}
+
+/* ── INFO STRIP ── */
+.info-strip{background:white;border-bottom:1.5px solid var(--border);overflow-x:auto;scrollbar-width:none;}
+.info-strip::-webkit-scrollbar{display:none;}
+.info-inner{max-width:900px;margin:0 auto;padding:0 20px;display:flex;}
+.info-item{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 20px;border-right:1px solid var(--border);flex-shrink:0;text-align:center;gap:3px;}
+.info-item:last-child{border-right:none;}
+.info-val{font-family:var(--fm);font-size:1rem;font-weight:800;color:var(--forest);}
+.info-lbl{font-size:.88rem;font-weight:600;color:var(--txt-lo);}
+
+/* ── MAIN ── */
+.main{max-width:900px;margin:0 auto;padding:24px 16px 48px;}
+@media(min-width:700px){.main{padding:28px 24px 48px;}}
+@media(min-width:960px){.main{padding:32px 32px 56px;}}
+
+/* ── SECTION ── */
+.sec{margin-bottom:32px;}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:8px;}
+.sec-title{font-size:1.15rem;font-weight:900;color:var(--forest);letter-spacing:-.01em;}
+.sec-sub{font-size:.92rem;color:var(--txt-lo);margin-top:2px;}
+
+/* ── QUICK TEST CARDS ── */
+.test-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+.test-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:18px 14px;text-align:center;cursor:pointer;transition:all .22s;box-shadow:var(--sh);text-decoration:none;display:block;position:relative;overflow:hidden;}
+.test-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;}
+.test-card.mock::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.test-card.phy::before{background:linear-gradient(90deg,var(--sky),#1d4ed8);}
+.test-card.che::before{background:linear-gradient(90deg,var(--gold),#9a6e18);}
+.test-card.mat::before{background:linear-gradient(90deg,var(--gold),#9a6e18);}
+.test-card.easy::before{background:linear-gradient(90deg,var(--sage),#2d7a45);}
+.test-card.hard::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
+.test-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--sage-g);}
+.tc-icon{font-size:1.9rem;margin-bottom:10px;display:block;}
+.tc-name{font-size:1rem;font-weight:800;color:var(--forest);margin-bottom:4px;}
+.tc-meta{font-size:.92rem;color:var(--txt-lo);}
+.tc-badge{position:absolute;top:12px;right:10px;font-size:.9rem;font-weight:800;padding:2px 8px;border-radius:100px;background:var(--sage-l);color:var(--sage);}
+
+/* ── PATTERN CARDS ── */
+.pattern-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin-bottom:14px;}
+.pc{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 14px;box-shadow:var(--sh);text-align:center;}
+.pc-icon{font-size:1.4rem;margin-bottom:8px;}
+.pc-val{font-family:var(--fm);font-size:1.6rem;font-weight:900;color:var(--forest);display:block;line-height:1;margin-bottom:5px;}
+.pc-lbl{font-size:.9rem;font-weight:600;color:var(--txt-lo);}
+.section-note{background:var(--sky-l);border:1px solid rgba(37,99,235,.14);border-radius:12px;padding:13px 16px;font-size:.94rem;color:var(--txt-m);line-height:1.65;}
+.section-note strong{color:var(--sky);}
+
+/* ── MARKING ── */
+.marking-wrap{background:white;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:var(--sh);}
+.mk-row{display:flex;align-items:center;justify-content:space-between;padding:13px 18px;border-bottom:1px solid var(--border);}
+.mk-row:last-child{border-bottom:none;}
+.mk-left{display:flex;align-items:center;gap:10px;}
+.mk-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.mk-label{font-size:.96rem;font-weight:600;color:var(--txt-m);}
+.mk-val{font-family:var(--fm);font-size:1rem;font-weight:800;padding:4px 12px;border-radius:8px;}
+.mk-val.pos{color:var(--sage);background:var(--sage-l);}
+.mk-val.neg{color:var(--rose);background:var(--rose-l);}
+.mk-val.neu{color:var(--txt-lo);background:var(--cw);}
+
+/* ── SUBJECT TABS ── */
+.subj-tabs{display:flex;background:white;border:1.5px solid var(--border);border-radius:13px;padding:4px;gap:4px;margin-bottom:16px;box-shadow:var(--sh);}
+.subj-tab{flex:1;font-family:var(--fd);font-size:.94rem;font-weight:700;padding:9px 12px;border-radius:10px;border:none;background:transparent;color:var(--txt-lo);cursor:pointer;transition:all .18s;text-align:center;}
+.subj-tab.on{color:white;}
+.subj-tab.phy.on{background:var(--sky);}
+.subj-tab.che.on{background:#059669;}
+.subj-tab.mat.on{background:var(--gold);color:var(--forest);}
+
+/* ── CHAPTER LIST ── */
+.chap-section{display:none;}
+.chap-section.on{display:block;}
+.removed-notice{background:white;border:1.5px solid rgba(200,75,75,.2);border-left:4px solid var(--rose);border-radius:12px;padding:12px 16px;margin-bottom:16px;display:flex;align-items:flex-start;gap:10px;}
+.rn-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px;}
+.rn-title{font-size:.92rem;font-weight:800;color:var(--rose);margin-bottom:3px;}
+.rn-txt{font-size:.9rem;color:var(--txt-m);line-height:1.6;}
+.sub-section-title{font-size:.9rem;font-weight:800;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.08em;margin:16px 0 10px;padding-bottom:8px;border-bottom:1.5px solid var(--border);}
+.chap-list{display:flex;flex-direction:column;gap:6px;margin-bottom:8px;}
+.chap-row{background:white;border:1.5px solid var(--border);border-radius:12px;padding:13px 15px;display:flex;align-items:flex-start;gap:10px;transition:all .18s;}
+.chap-row:hover{border-color:var(--sage-g);box-shadow:0 3px 14px var(--sage-l);}
+
+.chap-num{font-family:var(--fm);font-size:.92rem;font-weight:700;color:var(--txt-lo);width:26px;flex-shrink:0;}
+.chap-body{flex:1;min-width:0;}
+.chap-name{font-size:1rem;font-weight:700;color:var(--txt);margin-bottom:3px;}
+.chap-sub{font-size:.92rem;color:var(--txt-lo);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.chap-tags{display:flex;gap:5px;flex-shrink:0;align-items:center;min-width:0;}
+.tag{font-size:.9rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.tag.hot{background:var(--rose-l);color:var(--rose);border:1px solid rgba(200,75,75,.18);}
+.tag.mod{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
+.chap-arrow{font-size:.9rem;color:var(--txt-lo);flex-shrink:0;transition:all .18s;}
+.chap-row:hover .chap-arrow{color:var(--sage);transform:translateX(3px);}
+.chap-meta-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-top:4px;}
+.chap-practice{
+  font-family:var(--fd);font-size:.88rem;font-weight:800;
+  padding:6px 14px;border-radius:100px;border:none;
+  background:linear-gradient(135deg,var(--sage),var(--sage-d));
+  color:white;cursor:pointer;flex-shrink:0;
+  text-decoration:none;display:inline-flex;align-items:center;
+  transition:all .2s;white-space:nowrap;
+  box-shadow:0 2px 8px var(--sage-g);
+  min-width:fit-content;
+  font-size:.9rem;
+  padding:5px 12px;
+}
+
+.chap-practice:hover{transform:translateY(-1px);box-shadow:0 4px 12px var(--sage-g);}
+
+/* ── PYQ SECTION ── */
+.pyq-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;}
+.pyq-card{background:white;border:1.5px solid var(--border);border-radius:16px;padding:16px 14px;text-align:center;box-shadow:var(--sh);transition:all .22s;position:relative;overflow:hidden;}
+.pyq-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:16px 16px 0 0;}
+.pyq-card.y2025::before{background:linear-gradient(90deg,#c84b4b,#9b1c1c);}
+.pyq-card.y2024::before{background:linear-gradient(90deg,#7c3aed,#5b21b6);}
+.pyq-card.y2023::before{background:linear-gradient(90deg,#2563eb,#1d4ed8);}
+.pyq-card.y2022::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.pyq-card.y2021::before{background:linear-gradient(90deg,#c8962a,#9a6e18);}
+.pyq-card.y2020::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
+.pyq-card.y2019::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.pyq-card.y2018::before{background:linear-gradient(90deg,#0891b2,#0e7490);}
+.pyq-card.y2017::before{background:linear-gradient(90deg,#7c3aed,#6d28d9);}
+.pyq-card.y2016::before{background:linear-gradient(90deg,#c84b4b,#991b1b);}
+.pyq-card.y2015::before{background:linear-gradient(90deg,var(--sage),#2d7a45);}
+.pyq-card.y2014::before{background:linear-gradient(90deg,#c8962a,#b45309);}
+.pyq-card.y2013::before{background:linear-gradient(90deg,#1a2618,#243d20);}
+.pyq-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--sage-g);}
+.pyq-year{font-family:var(--fm);font-size:1.3rem;font-weight:900;color:var(--forest);margin-bottom:4px;display:block;}
+.pyq-session{font-size:.88rem;font-weight:600;color:var(--txt-lo);margin-bottom:12px;}
+.pyq-btns{display:flex;flex-direction:column;gap:6px;}
+.pyq-btn{font-family:var(--fd);font-size:.88rem;font-weight:800;padding:7px 10px;border-radius:9px;border:none;cursor:pointer;text-decoration:none;display:block;text-align:center;transition:all .18s;}
+.pyq-btn.jan{background:var(--sky-l);color:var(--sky);border:1px solid rgba(37,99,235,.2);}
+.pyq-btn.apr{background:var(--sage-l);color:var(--sage);border:1px solid var(--sage-g);}
+.pyq-btn.jan:hover{background:var(--sky);color:white;}
+.pyq-btn.apr:hover{background:var(--sage);color:white;}
+.pyq-btn.single{background:linear-gradient(135deg,var(--forest),#243d20);color:white;}
+.pyq-btn.single:hover{transform:translateY(-1px);}
+.pyq-note{background:var(--gold-l);border:1px solid var(--gold-g);border-radius:12px;padding:12px 16px;font-size:.94rem;color:var(--txt-m);line-height:1.65;margin-bottom:16px;}
+.pyq-note strong{color:var(--gold);}
+/* ── STRATEGY BOX ── */
+.strategy-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;}
+.strategy-card{background:white;border:1.5px solid var(--border);border-radius:14px;padding:16px 16px;box-shadow:var(--sh);}
+.sc-icon{font-size:1.5rem;margin-bottom:10px;}
+.sc-title{font-size:.97rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
+.sc-txt{font-size:.92rem;color:var(--txt-m);line-height:1.65;}
+
+/* ── DESKTOP ── */
+@media(min-width:900px){
+  .hero{padding:48px 32px 0;}
+  .hero-title{font-size:2.6rem;}
+  .hero-desc{font-size:1.04rem;}
+  .chap-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+  .chap-name{font-size:1rem;}
+  .chap-sub{font-size:.92rem;}
+  .test-grid{grid-template-columns:repeat(6,1fr);}
+  .pattern-grid{grid-template-columns:repeat(6,1fr);}
+  .strategy-grid{grid-template-columns:repeat(3,1fr);}
+  .pyq-grid{grid-template-columns:repeat(4,1fr);}
+  .info-item{padding:16px 24px;}
+  .info-val{font-size:1.05rem;}
+}
+/* ── FOOTER ── */
+.footer{background:var(--forest);padding:28px 20px;text-align:center;}
+.footer-logo{font-size:1.1rem;font-weight:900;color:white;letter-spacing:-.02em;margin-bottom:6px;}
+.footer-logo span{color:var(--sage);}
+.footer-txt{font-size:.9rem;color:rgba(255,255,255,.4);}
+
+@media(max-width:500px){
+  .hero-title{font-size:1.65rem;}
+  .subj-tabs{flex-direction:column;}
+  .test-grid{grid-template-columns:repeat(2,1fr);}
+  .info-item{padding:12px 14px;}
+}
+
+/* NEET Biology tab */
+.subj-tab.zoo.on{background:var(--gold);color:var(--forest);}
+/* NEET accent for nav pill */
+
+/* Bio test card */
+.test-card.bio::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+/* Zoology section */
+
+
+
+/* ── DESKTOP BREAKPOINTS ── */
+@media(min-width:540px){
+  .hero-title{font-size:2.4rem;}
+  .chap-grid{grid-template-columns:repeat(2,1fr);}
+}
+@media(min-width:768px){
+  .nav{padding:0 32px;}
+  .hero-inner{padding:0 8px;}
+  .hero-title{font-size:2.8rem;}
+  .chap-grid{grid-template-columns:repeat(2,1fr);}
+  .info-strip{justify-content:center;}
+}
+@media(min-width:1100px){
+  .hero-inner,.sec-inner,main>.sec>.sec-inner,div.main-w{max-width:1000px;margin-left:auto;margin-right:auto;}
+  .chap-grid{grid-template-columns:repeat(3,1fr);}
+  .hero-title{font-size:3rem;}
+  .hero-cta{flex-wrap:nowrap;}
+}
+@media(min-width:1400px){
+  .chap-grid{grid-template-columns:repeat(4,1fr);}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" class="nav-logo">Mock<span>Arena</span></a>
+  <span class="nav-pill">🔬 NEET UG</span>
+  <div class="nav-r">
+    <a href="mockarena_student_dashboard.html" class="nav-switch">📊 Dashboard</a>
+    <a href="mockarena_onboarding.html" class="nav-switch">Switch Exam</a>
+    <a href="login.html" class="nav-switch" id="nav-login-btn" style="display:none">Login</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow">
+      <span class="hero-badge" >🏥 NMC/NTA — NEET UG 2025–26</span>
+      <span class="hero-updated">Updated Syllabus · NCERT Based · Reduced Topics</span>
+    </div>
+    <div class="hero-title">National Eligibility cum<br/>Entrance Test — <span>NEET UG</span></div>
+    <div class="hero-desc">India's single medical entrance for MBBS, BDS and AYUSH. Strictly NCERT based — every line, every diagram matters. Syllabus updated by NMC with specific topics removed from Physics, Chemistry and Biology.</div>
+    <div class="hero-stats">
+      <div class="h-stat"><span class="h-stat-icon">📝</span><div><div class="h-stat-val">180</div><div class="h-stat-lbl">Questions</div></div></div>
+      <div class="h-stat"><span class="h-stat-icon">⏱</span><div><div class="h-stat-val">3h 20m</div><div class="h-stat-lbl">Duration</div></div></div>
+      <div class="h-stat"><span class="h-stat-icon">🎯</span><div><div class="h-stat-val">720</div><div class="h-stat-lbl">Max Marks</div></div></div>
+      <div class="h-stat"><span class="h-stat-icon">📊</span><div><div class="h-stat-val">+4 / −1</div><div class="h-stat-lbl">Marking</div></div></div>
+      <div class="h-stat"><span class="h-stat-icon">🏥</span><div><div class="h-stat-val">MBBS+BDS</div><div class="h-stat-lbl">Colleges</div></div></div>
+    </div>
+    <div class="hero-cta">
+      <a href="mockarena_test.html?exam=NT&type=mock&name=NEET+UG+Full+Mock&count=180" class="cta-btn primary">🎯 Start Full Mock Test</a>
+      <a href="#pyq" class="cta-btn gold">📜 Previous Year Papers</a>
+      <a href="#syllabus" class="cta-btn secondary">📚 View Syllabus</a>
+    </div>
+  </div>
+</div>
+
+<div class="info-strip">
+  <div class="info-inner">
+    <div class="info-item"><div class="info-val">Pen & Paper</div><div class="info-lbl">Exam Mode</div></div>
+    <div class="info-item"><div class="info-val">May</div><div class="info-lbl">Exam Month</div></div>
+    <div class="info-item"><div class="info-val">11</div><div class="info-lbl">Languages</div></div>
+    <div class="info-item"><div class="info-val">OMR Sheet</div><div class="info-lbl">Answer Mode</div></div>
+    <div class="info-item"><div class="info-val">PCB</div><div class="info-lbl">Subjects</div></div>
+    <div class="info-item"><div class="info-val">45+45+90</div><div class="info-lbl">Qs per Subject</div></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <div class="sec">
+    <div class="sec-hdr"><div><div class="sec-title">Start Practicing Now</div><div class="sec-sub">Tests built from your question bank</div></div></div>
+    <div class="test-grid">
+      <a href="mockarena_test.html?exam=NT&type=mock&name=NEET+UG+Full+Mock&count=180" class="test-card mock">
+        <span class="tc-icon">🎯</span><div class="tc-name">Full Mock Test</div><div class="tc-meta">180 Qs · 3h 20m · All Subjects</div><span class="tc-badge">Recommended</span>
+      </a>
+      <a href="mockarena_test.html?exam=NT&subj=Physics&name=Physics+Test&count=45" class="test-card phy">
+        <span class="tc-icon">⚡</span><div class="tc-name">Physics</div><div class="tc-meta">45 Qs · 1 hr</div>
+      </a>
+      <a href="mockarena_test.html?exam=NT&subj=Chemistry&name=Chemistry+Test&count=45" class="test-card che">
+        <span class="tc-icon">🧪</span><div class="tc-name">Chemistry</div><div class="tc-meta">45 Qs · 1 hr</div>
+      </a>
+      <a href="mockarena_test.html?exam=NT&subj=Biology&name=Biology+Test&count=90" class="test-card bio">
+        <span class="tc-icon">🌿</span><div class="tc-name">Biology</div><div class="tc-meta">90 Qs · 2 hrs</div>
+      </a>
+      <a href="mockarena_test.html?exam=NT&diff=Easy&name=Easy+Level&count=45" class="test-card easy">
+        <span class="tc-icon">🌱</span><div class="tc-name">Easy Level</div><div class="tc-meta">45 Qs · Beginner</div>
+      </a>
+      <a href="mockarena_test.html?exam=NT&diff=Hard&name=Hard+Level&count=45" class="test-card hard">
+        <span class="tc-icon">🔥</span><div class="tc-name">Hard Level</div><div class="tc-meta">45 Qs · Challenge</div>
+      </a>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-hdr"><div><div class="sec-title">Exam Pattern 2025–26</div></div></div>
+    <div class="pattern-grid">
+      <div class="pc"><div class="pc-icon">📝</div><span class="pc-val">180</span><div class="pc-lbl">Total Questions</div></div>
+      <div class="pc"><div class="pc-icon">🎯</div><span class="pc-val">720</span><div class="pc-lbl">Maximum Marks</div></div>
+      <div class="pc"><div class="pc-icon">⏱</div><span class="pc-val">200</span><div class="pc-lbl">Minutes</div></div>
+      <div class="pc"><div class="pc-icon">⚡</div><span class="pc-val">45</span><div class="pc-lbl">Physics Questions</div></div>
+      <div class="pc"><div class="pc-icon">🧪</div><span class="pc-val">45</span><div class="pc-lbl">Chemistry Questions</div></div>
+      <div class="pc"><div class="pc-icon">🌿</div><span class="pc-val">90</span><div class="pc-lbl">Biology Questions</div></div>
+    </div>
+    <div class="section-note"><strong>Biology = 360 Marks:</strong> Botany (45 Qs) + Zoology (45 Qs) · All MCQs with single correct answer · No optional questions · No Section B</div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-hdr"><div class="sec-title">Marking Scheme</div></div>
+    <div class="marking-wrap">
+      <div class="mk-row"><div class="mk-left"><div class="mk-dot" style="background:var(--sage);"></div><span class="mk-label">Correct Answer</span></div><span class="mk-val pos">+4</span></div>
+      <div class="mk-row"><div class="mk-left"><div class="mk-dot" style="background:var(--rose);"></div><span class="mk-label">Wrong Answer</span></div><span class="mk-val neg">−1</span></div>
+      <div class="mk-row"><div class="mk-left"><div class="mk-dot" style="background:var(--border);"></div><span class="mk-label">Unattempted</span></div><span class="mk-val neu">0</span></div>
+      <div class="mk-row"><div class="mk-left"><div class="mk-dot" style="background:var(--gold);"></div><span class="mk-label">Perfect Score (180 × 4)</span></div><span class="mk-val pos">720</span></div>
+    </div>
+  </div>
+
+  <div class="sec" id="pyq">
+    <div class="sec-hdr"><div><div class="sec-title">📜 Previous Year Papers — 13 Years</div><div class="sec-sub">NEET UG 2013–2025 · Single session each year · Real exam experience</div></div></div>
+    <div class="pyq-note"><strong>💡 Pro Tip:</strong> NEET questions come directly from NCERT lines and diagrams. PYQs show exactly which lines are repeated every year. Solve all 13 years before the exam.</div>
+    <div class="pyq-grid">
+      <div class="pyq-card y2025"><span class="pyq-year">2025</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2025&name=NEET+UG+2025&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2024"><span class="pyq-year">2024</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2024&name=NEET+UG+2024&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2023"><span class="pyq-year">2023</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2023&name=NEET+UG+2023&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2022"><span class="pyq-year">2022</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2022&name=NEET+UG+2022&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2021"><span class="pyq-year">2021</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2021&name=NEET+UG+2021&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2020"><span class="pyq-year">2020</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2020&name=NEET+UG+2020&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2019"><span class="pyq-year">2019</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2019&name=NEET+UG+2019&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2018"><span class="pyq-year">2018</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2018&name=NEET+UG+2018&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2017"><span class="pyq-year">2017</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2017&name=NEET+UG+2017&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2016"><span class="pyq-year">2016</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2016&name=NEET+UG+2016&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2015"><span class="pyq-year">2015</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2015&name=NEET+UG+2015&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2014"><span class="pyq-year">2014</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2014&name=NEET+UG+2014&count=180" class="pyq-btn single">Start Test</a></div></div>
+      <div class="pyq-card y2013"><span class="pyq-year">2013</span><div class="pyq-session">1 Session</div><div class="pyq-btns"><a href="mockarena_test.html?exam=NT&type=pyq&year=2013&name=NEET+UG+2013&count=180" class="pyq-btn single">Start Test</a></div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="sec-hdr"><div class="sec-title">Preparation Strategy</div></div>
+    <div class="strategy-grid">
+      <div class="strategy-card"><div class="sc-icon">📖</div><div class="sc-title">NCERT is Bible</div><div class="sc-txt">95% of NEET questions come directly from NCERT lines and diagrams. Read every line of Class 11 &amp; 12 NCERT multiple times.</div></div>
+      <div class="strategy-card"><div class="sc-icon">🌿</div><div class="sc-title">Biology = 50% Marks</div><div class="sc-txt">Biology has 90 questions (360 marks). Master it first. Genetics, Ecology, Photosynthesis and Human Physiology are highest scoring.</div></div>
+      <div class="strategy-card"><div class="sc-icon">🔬</div><div class="sc-title">Diagrams are Critical</div><div class="sc-txt">Learn to label all NCERT diagrams — heart, nephron, brain, mitochondria, cell, life cycles. Several questions come from diagrams directly.</div></div>
+      <div class="strategy-card"><div class="sc-icon">⚡</div><div class="sc-title">Physics is Formula Based</div><div class="sc-txt">NEET Physics is easier than JEE. Focus on Mechanics, Electrostatics, Modern Physics and Optics. Formula application is key.</div></div>
+      <div class="strategy-card"><div class="sc-icon">🧪</div><div class="sc-title">Chemistry from NCERT Only</div><div class="sc-txt">Organic reactions, p-Block elements, Coordination Compounds — stick to NCERT only. Don't use reference books for NEET Chemistry.</div></div>
+      <div class="strategy-card"><div class="sc-icon">🎯</div><div class="sc-title">Target 550+ in Mocks</div><div class="sc-txt">Take full 180-question mock every week. Aim for 550+ consistently before the real exam. Analyse each mistake carefully.</div></div>
+    </div>
+  </div>
+
+  <div class="sec" id="syllabus">
+    <div class="sec-hdr"><div><div class="sec-title">Complete Syllabus 2025–26</div><div class="sec-sub">Click Practice → on any chapter to start a test</div></div></div>
+    <div class="subj-tabs">
+      <button class="subj-tab phy on" onclick="showSubj('phy',this)">⚡ Physics</button>
+      <button class="subj-tab che" onclick="showSubj('che',this)">🧪 Chemistry</button>
+      <button class="subj-tab bot" onclick="showSubj('bot',this)">🌿 Biology</button>
+    </div>
+
+    <!-- PHYSICS -->
+    <div class="chap-section on" id="sec-phy">
+      <div class="removed-notice"><span class="rn-icon">🚫</span><div><div class="rn-title">Removed from Physics 2025</div><div class="rn-txt">Scalar/Vector intro topics · Geostationary Satellites · Van de Graaff Generator · Lubrication · Equilibrium of Concurrent Forces · Reynolds Number · Poisson Ratio · Elastic Energy · Wien's Law · Greenhouse Effect · Newton's Law of Cooling · Stefan's Law · Potentiometer detailed topics · LC Oscillations · Cyclotron · Doppler Effect · Free/Forced/Damped Oscillations · Resonance · Transistor details · Some Optics topics</div></div></div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">01</span><div class="chap-body"><div class="chap-name">Physical World &amp; Measurement</div><div class="chap-meta-row"><span class="chap-sub">Units · Dimensions · Errors · SI Units</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Physical+World&name=Physical+Worldld&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">02</span><div class="chap-body"><div class="chap-name">Kinematics</div><div class="chap-meta-row"><span class="chap-sub">Motion · Projectile · Graphs · Relative Motion</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Kinematics&name=Kinematics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">03</span><div class="chap-body"><div class="chap-name">Laws of Motion</div><div class="chap-meta-row"><span class="chap-sub">Newton's Laws · Friction · Circular Motion</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Laws+of+Motion&name=Laws+of+Motion&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">04</span><div class="chap-body"><div class="chap-name">Work, Energy &amp; Power</div><div class="chap-meta-row"><span class="chap-sub">Conservation · Collisions · Power</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Work+Energy+Power&name=Work+Energy+Power&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">05</span><div class="chap-body"><div class="chap-name">Rotational Motion</div><div class="chap-meta-row"><span class="chap-sub">Centre of Mass · Moment of Inertia · Torque</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Rotational+Motion&name=Rotational+Motion&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">06</span><div class="chap-body"><div class="chap-name">Gravitation</div><div class="chap-meta-row"><span class="chap-sub">Kepler's Laws · Satellites · Escape Velocity</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Gravitation&name=Gravitation&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">07</span><div class="chap-body"><div class="chap-name">Properties of Solids &amp; Liquids</div><div class="chap-meta-row"><span class="chap-sub">Elasticity · Viscosity · Surface Tension · Pressure</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Properties+of+Solids+and+Liquids&name=Properties+of+Matter&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">08</span><div class="chap-body"><div class="chap-name">Thermodynamics</div><div class="chap-meta-row"><span class="chap-sub">Laws of Thermodynamics · Carnot Engine · Entropy</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Thermodynamics&name=Thermodynamics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">09</span><div class="chap-body"><div class="chap-name">Kinetic Theory of Gases</div><div class="chap-meta-row"><span class="chap-sub">KTG · RMS Speed · Degrees of Freedom</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Kinetic+Theory+of+Gases&name=Kinetic+Theory&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">10</span><div class="chap-body"><div class="chap-name">Oscillations &amp; Waves</div><div class="chap-meta-row"><span class="chap-sub">SHM · Spring · Pendulum · Sound Waves</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Oscillations+and+Waves&name=Oscillations+%26+Waves&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">11</span><div class="chap-body"><div class="chap-name">Electrostatics</div><div class="chap-meta-row"><span class="chap-sub">Coulomb's Law · Electric Field · Potential · Gauss Law</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Electrostatics&name=Electrostatics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">12</span><div class="chap-body"><div class="chap-name">Current Electricity</div><div class="chap-meta-row"><span class="chap-sub">Ohm's Law · Kirchhoff · Wheatstone Bridge</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Current+Electricity&name=Current+Electricity&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">13</span><div class="chap-body"><div class="chap-name">Magnetic Effects &amp; Magnetism</div><div class="chap-meta-row"><span class="chap-sub">Biot-Savart · Ampere's Law · Magnetic Materials</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Magnetic+Effects+and+Magnetism&name=Magnetism&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">14</span><div class="chap-body"><div class="chap-name">Electromagnetic Induction &amp; AC</div><div class="chap-meta-row"><span class="chap-sub">Faraday · Lenz · RLC Circuits · Transformer</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=EMI+and+AC&name=EMI+%26+AC&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">15</span><div class="chap-body"><div class="chap-name">Electromagnetic Waves</div><div class="chap-meta-row"><span class="chap-sub">EM Spectrum · Properties · Applications</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Electromagnetic+Waves&name=EM+Waves&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">16</span><div class="chap-body"><div class="chap-name">Optics</div><div class="chap-meta-row"><span class="chap-sub">Ray Optics · Wave Optics · YDSE · Lenses · Prism</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Optics&name=Optics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">17</span><div class="chap-body"><div class="chap-name">Dual Nature of Matter &amp; Radiation</div><div class="chap-meta-row"><span class="chap-sub">Photoelectric Effect · de-Broglie · X-Rays</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Dual+Nature+of+Matter&name=Dual+Nature&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">18</span><div class="chap-body"><div class="chap-name">Atoms &amp; Nuclei</div><div class="chap-meta-row"><span class="chap-sub">Bohr Model · Radioactivity · Nuclear Reactions</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Atoms+and+Nuclei&name=Atoms+%26+Nuclei&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">19</span><div class="chap-body"><div class="chap-name">Electronic Devices</div><div class="chap-meta-row"><span class="chap-sub">Semiconductors · Diodes · Logic Gates</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Physics&chap=Electronic+Devices&name=Electronic+Devices&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+    </div>
+
+    <!-- CHEMISTRY -->
+    <div class="chap-section" id="sec-che">
+      <div class="removed-notice"><span class="rn-icon">🚫</span><div><div class="rn-title">Removed from Chemistry 2025</div><div class="rn-txt">Environmental Chemistry (removed) · Chemistry in Everyday Life (removed) · Parts of Organic Nitrogen Compounds · Some topics from p-Block (check new NCERT) · Some Inorganic Chemistry topics streamlined</div></div></div>
+      <div class="sub-section-title">Physical Chemistry</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">01</span><div class="chap-body"><div class="chap-name">Some Basic Concepts of Chemistry</div><div class="chap-meta-row"><span class="chap-sub">Mole Concept · Stoichiometry · Empirical Formula</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Basic+Concepts+of+Chemistry&name=Basic+Concepts&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">02</span><div class="chap-body"><div class="chap-name">States of Matter</div><div class="chap-meta-row"><span class="chap-sub">Gas Laws · Ideal Gas · Liquid State · KTG</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=States+of+Matter&name=States+of+Matter&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">03</span><div class="chap-body"><div class="chap-name">Atomic Structure</div><div class="chap-meta-row"><span class="chap-sub">Quantum Numbers · Orbitals · Electronic Config</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Atomic+Structure&name=Atomic+Structure&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">04</span><div class="chap-body"><div class="chap-name">Chemical Bonding &amp; Molecular Structure</div><div class="chap-meta-row"><span class="chap-sub">VSEPR · Hybridisation · MOT · Hydrogen Bond</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Chemical+Bonding&name=Chemical+Bonding&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">05</span><div class="chap-body"><div class="chap-name">Thermodynamics</div><div class="chap-meta-row"><span class="chap-sub">Enthalpy · Entropy · Gibbs Free Energy · Hess's Law</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Chemical+Thermodynamics&name=Thermodynamics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">06</span><div class="chap-body"><div class="chap-name">Equilibrium</div><div class="chap-meta-row"><span class="chap-sub">Kp · Kc · Le Chatelier · pH · Buffer · Ksp</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Equilibrium&name=Equilibrium&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">07</span><div class="chap-body"><div class="chap-name">Redox Reactions &amp; Electrochemistry</div><div class="chap-meta-row"><span class="chap-sub">Oxidation State · Nernst · Electrolysis · Batteries</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Redox+and+Electrochemistry&name=Redox+%26+Electrochemistry&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">08</span><div class="chap-body"><div class="chap-name">Solutions</div><div class="chap-meta-row"><span class="chap-sub">Colligative Properties · Osmosis · van't Hoff Factor</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Solutions&name=Solutions&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">09</span><div class="chap-body"><div class="chap-name">Chemical Kinetics</div><div class="chap-meta-row"><span class="chap-sub">Rate Laws · Order · Half Life · Activation Energy</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Chemical+Kinetics&name=Chemical+Kinetics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">10</span><div class="chap-body"><div class="chap-name">Surface Chemistry</div><div class="chap-meta-row"><span class="chap-sub">Adsorption · Colloids · Emulsions · Catalysis</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Surface+Chemistry&name=Surface+Chemistry&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+      <div class="sub-section-title">Inorganic Chemistry</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">11</span><div class="chap-body"><div class="chap-name">Periodic Table &amp; Properties</div><div class="chap-meta-row"><span class="chap-sub">Trends · IE · EA · Electronegativity · Atomic Radii</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Periodic+Table&name=Periodic+Table&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">12</span><div class="chap-body"><div class="chap-name">Hydrogen</div><div class="chap-meta-row"><span class="chap-sub">Isotopes · Water · Hydrogen Peroxide · Heavy Water</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Hydrogen&name=Hydrogen&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">13</span><div class="chap-body"><div class="chap-name">s-Block Elements</div><div class="chap-meta-row"><span class="chap-sub">Alkali · Alkaline Earth Metals · Anomalous Behaviour</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=s-Block+Elements&name=s-Block+Elements&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">14</span><div class="chap-body"><div class="chap-name">p-Block Elements</div><div class="chap-meta-row"><span class="chap-sub">Groups 13–18 · Oxoacids · Interhalogen · Noble Gases</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=p-Block+Elements&name=p-Block+Elements&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">15</span><div class="chap-body"><div class="chap-name">d and f-Block Elements</div><div class="chap-meta-row"><span class="chap-sub">Transition Metals · Lanthanides · Actinides</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=d+and+f+Block+Elements&name=d+%26+f+Block&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">16</span><div class="chap-body"><div class="chap-name">Coordination Compounds</div><div class="chap-meta-row"><span class="chap-sub">Werner · IUPAC · Isomerism · VBT · CFT</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Coordination+Compounds&name=Coordination+Compounds&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+      <div class="sub-section-title">Organic Chemistry</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">17</span><div class="chap-body"><div class="chap-name">General Organic Chemistry</div><div class="chap-meta-row"><span class="chap-sub">IUPAC · Isomerism · Inductive · Mesomeric Effects</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=General+Organic+Chemistry&name=Organic+Basics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">18</span><div class="chap-body"><div class="chap-name">Hydrocarbons</div><div class="chap-meta-row"><span class="chap-sub">Alkanes · Alkenes · Alkynes · Benzene · Aromaticity</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Hydrocarbons&name=Hydrocarbons&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">19</span><div class="chap-body"><div class="chap-name">Haloalkanes &amp; Haloarenes</div><div class="chap-meta-row"><span class="chap-sub">SN1 · SN2 · E1 · E2 Reactions</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Haloalkanes+and+Haloarenes&name=Haloalkanes&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">20</span><div class="chap-body"><div class="chap-name">Alcohols, Phenols &amp; Ethers</div><div class="chap-meta-row"><span class="chap-sub">Reactions · Lucas Test · Kolbe's · Acidic Character</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Alcohols+Phenols+and+Ethers&name=Alcohols+Phenols&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">21</span><div class="chap-body"><div class="chap-name">Aldehydes, Ketones &amp; Carboxylic Acids</div><div class="chap-meta-row"><span class="chap-sub">Nucleophilic Addition · Aldol · Cannizzaro</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Carbonyl+Compounds&name=Carbonyl+Compounds&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">22</span><div class="chap-body"><div class="chap-name">Organic Compounds with Nitrogen</div><div class="chap-meta-row"><span class="chap-sub">Amines · Diazonium Salts · Cyanides</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Nitrogen+Compounds&name=Nitrogen+Compounds&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">23</span><div class="chap-body"><div class="chap-name">Biomolecules</div><div class="chap-meta-row"><span class="chap-sub">Carbohydrates · Proteins · Nucleic Acids · Enzymes</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Biomolecules+Chemistry&name=Biomolecules&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">24</span><div class="chap-body"><div class="chap-name">Polymers</div><div class="chap-meta-row"><span class="chap-sub">Classification · Addition · Condensation Polymers</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Chemistry&chap=Polymers&name=Polymers&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+    </div>
+
+    <!-- BIOLOGY -->
+    <div class="chap-section" id="sec-bot">
+      <div class="removed-notice"><span class="rn-icon">🚫</span><div><div class="rn-title">Removed from Biology 2025</div><div class="rn-txt">Detailed Cockroach anatomy · Some topics from Structural Organisation in Animals · Modes of reproduction (binary fission, budding etc. introductory) · Some digestive enzyme details · Elementary eye &amp; ear structure details · Caloric values of nutrients · Some topics from Genetics and Evolution</div></div></div>
+      <div class="sub-section-title">🌱 Botany — Plant Biology (45 Questions)</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">01</span><div class="chap-body"><div class="chap-name">The Living World</div><div class="chap-meta-row"><span class="chap-sub">Characteristics · Taxonomy · Nomenclature · Classification</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=The+Living+World&name=The+Living+World&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">02</span><div class="chap-body"><div class="chap-name">Biological Classification</div><div class="chap-meta-row"><span class="chap-sub">5 Kingdom · Monera · Protista · Fungi · Virus</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Biological+Classification&name=Biological+Classification&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">03</span><div class="chap-body"><div class="chap-name">Plant Kingdom</div><div class="chap-meta-row"><span class="chap-sub">Algae · Bryophyta · Pteridophyta · Gymnosperms · Angiosperms</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Plant+Kingdom&name=Plant+Kingdom&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">04</span><div class="chap-body"><div class="chap-name">Morphology of Flowering Plants</div><div class="chap-meta-row"><span class="chap-sub">Root · Stem · Leaf · Flower · Fruit · Seed</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Morphology+of+Flowering+Plants&name=Morphology&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">05</span><div class="chap-body"><div class="chap-name">Anatomy of Flowering Plants</div><div class="chap-meta-row"><span class="chap-sub">Meristems · Tissues · Root/Stem/Leaf Cross Sections</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Anatomy+of+Flowering+Plants&name=Plant+Anatomy&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">06</span><div class="chap-body"><div class="chap-name">Cell: The Unit of Life</div><div class="chap-meta-row"><span class="chap-sub">Prokaryotic · Eukaryotic · Organelles · Cell Membrane</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Cell+The+Unit+of+Life&name=Cell+Biology&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">07</span><div class="chap-body"><div class="chap-name">Biomolecules</div><div class="chap-meta-row"><span class="chap-sub">Carbohydrates · Proteins · Lipids · Enzymes · Nucleic Acids</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Biomolecules+Biology&name=Biomolecules&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">08</span><div class="chap-body"><div class="chap-name">Cell Cycle &amp; Cell Division</div><div class="chap-meta-row"><span class="chap-sub">Mitosis · Meiosis · Checkpoints · Significance</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Cell+Cycle+and+Division&name=Cell+Division&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">09</span><div class="chap-body"><div class="chap-name">Transport in Plants</div><div class="chap-meta-row"><span class="chap-sub">Osmosis · Plasmolysis · Transpiration · Phloem Transport</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Transport+in+Plants&name=Transport+in+Plants&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">10</span><div class="chap-body"><div class="chap-name">Mineral Nutrition</div><div class="chap-meta-row"><span class="chap-sub">Macro/Micro Nutrients · Deficiency · N₂ Fixation</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Mineral+Nutrition&name=Mineral+Nutrition&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">11</span><div class="chap-body"><div class="chap-name">Photosynthesis in Higher Plants</div><div class="chap-meta-row"><span class="chap-sub">Light Reactions · Calvin Cycle · C₃ C₄ CAM · Photorespiration</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Photosynthesis&name=Photosynthesis&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">12</span><div class="chap-body"><div class="chap-name">Respiration in Plants</div><div class="chap-meta-row"><span class="chap-sub">Glycolysis · Krebs Cycle · ETC · ATP · RQ</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Respiration+in+Plants&name=Plant+Respiration&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">13</span><div class="chap-body"><div class="chap-name">Plant Growth &amp; Development</div><div class="chap-meta-row"><span class="chap-sub">Auxin · Gibberellin · Cytokinin · ABA · Ethylene · Photoperiodism</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Plant+Growth+and+Development&name=Plant+Growth&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">14</span><div class="chap-body"><div class="chap-name">Sexual Reproduction in Flowering Plants</div><div class="chap-meta-row"><span class="chap-sub">Pollination · Double Fertilization · Endosperm · Embryo</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Sexual+Reproduction+Flowering+Plants&name=Plant+Reproduction&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">15</span><div class="chap-body"><div class="chap-name">Strategies for Enhancement in Food Production</div><div class="chap-meta-row"><span class="chap-sub">Plant Breeding · Tissue Culture · Biofortification · SCP</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Enhancement+in+Food+Production&name=Food+Production&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">16</span><div class="chap-body"><div class="chap-name">Microbes in Human Welfare</div><div class="chap-meta-row"><span class="chap-sub">Fermentation · Antibiotics · Biogas · STP · Biocontrol</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Microbes+in+Human+Welfare&name=Microbes&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+      <div class="sub-section-title">🦁 Zoology — Animal Biology (45 Questions)</div>
+      <div class="chap-list">
+        <div class="chap-row"><span class="chap-num">17</span><div class="chap-body"><div class="chap-name">Animal Kingdom</div><div class="chap-meta-row"><span class="chap-sub">Classification · Phyla · Characteristics · Examples</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Animal+Kingdom&name=Animal+Kingdom&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">18</span><div class="chap-body"><div class="chap-name">Structural Organisation in Animals</div><div class="chap-meta-row"><span class="chap-sub">Animal Tissues · Earthworm · Frog Anatomy</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Structural+Organisation+Animals&name=Animal+Organisation&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">19</span><div class="chap-body"><div class="chap-name">Digestion &amp; Absorption</div><div class="chap-meta-row"><span class="chap-sub">GI Tract · Digestive Enzymes · Absorption · Disorders</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Digestion+and+Absorption&name=Digestion&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">20</span><div class="chap-body"><div class="chap-name">Breathing &amp; Exchange of Gases</div><div class="chap-meta-row"><span class="chap-sub">Respiratory Organs · Lung Volumes · Transport of Gases</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Breathing+and+Exchange+of+Gases&name=Breathing+%26+Gases&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">21</span><div class="chap-body"><div class="chap-name">Body Fluids &amp; Circulation</div><div class="chap-meta-row"><span class="chap-sub">Blood · Heart · Cardiac Cycle · ECG · Lymph</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Body+Fluids+and+Circulation&name=Circulation&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">22</span><div class="chap-body"><div class="chap-name">Excretory Products &amp; Elimination</div><div class="chap-meta-row"><span class="chap-sub">Kidney · Nephron · Urine Formation · ADH · Dialysis</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Excretory+Products+and+Elimination&name=Excretion&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">23</span><div class="chap-body"><div class="chap-name">Locomotion &amp; Movement</div><div class="chap-meta-row"><span class="chap-sub">Muscle Types · Sarcomere · Skeletal System · Joints</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Locomotion+and+Movement&name=Locomotion&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">24</span><div class="chap-body"><div class="chap-name">Neural Control &amp; Coordination</div><div class="chap-meta-row"><span class="chap-sub">Neuron · Brain · Synapse · Reflex Arc · Sense Organs</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Neural+Control+and+Coordination&name=Neural+Control&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">25</span><div class="chap-body"><div class="chap-name">Chemical Coordination &amp; Integration</div><div class="chap-meta-row"><span class="chap-sub">Hormones · Endocrine Glands · Feedback · Disorders</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Chemical+Coordination+and+Integration&name=Endocrine+System&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">26</span><div class="chap-body"><div class="chap-name">Human Reproduction</div><div class="chap-meta-row"><span class="chap-sub">Male/Female System · Gametogenesis · Fertilisation · Embryo</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Human+Reproduction&name=Human+Reproduction&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">27</span><div class="chap-body"><div class="chap-name">Reproductive Health</div><div class="chap-meta-row"><span class="chap-sub">Contraception · STDs · MTP · ART · Infertility</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Reproductive+Health&name=Reproductive+Health&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">28</span><div class="chap-body"><div class="chap-name">Principles of Inheritance &amp; Variation</div><div class="chap-meta-row"><span class="chap-sub">Mendelism · Chromosomal Theory · Linkage · Disorders</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Principles+of+Inheritance&name=Genetics&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">29</span><div class="chap-body"><div class="chap-name">Molecular Basis of Inheritance</div><div class="chap-meta-row"><span class="chap-sub">DNA Structure · Replication · Transcription · Translation · Gene Regulation</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Molecular+Basis+of+Inheritance&name=Molecular+Biology&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">30</span><div class="chap-body"><div class="chap-name">Evolution</div><div class="chap-meta-row"><span class="chap-sub">Origin of Life · Darwin · Natural Selection · Hardy-Weinberg</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Evolution&name=Evolution&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">31</span><div class="chap-body"><div class="chap-name">Human Health &amp; Disease</div><div class="chap-meta-row"><span class="chap-sub">Immunity · Vaccines · Cancer · AIDS · Drugs · Alcohol</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Human+Health+and+Disease&name=Health+%26+Disease&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">32</span><div class="chap-body"><div class="chap-name">Biotechnology — Principles &amp; Processes</div><div class="chap-meta-row"><span class="chap-sub">Recombinant DNA · PCR · Gel Electrophoresis · Cloning</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Biotechnology+Principles&name=Biotechnology+Principles&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">33</span><div class="chap-body"><div class="chap-name">Biotechnology &amp; Its Applications</div><div class="chap-meta-row"><span class="chap-sub">GM Crops · Insulin · Gene Therapy · Bt Cotton · Bioreactor</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Biotechnology+Applications&name=Biotechnology+Applications&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">34</span><div class="chap-body"><div class="chap-name">Organisms &amp; Populations</div><div class="chap-meta-row"><span class="chap-sub">Ecology · Population Growth · Interspecific Interactions</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Organisms+and+Populations&name=Organisms+%26+Populations&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">35</span><div class="chap-body"><div class="chap-name">Ecosystem</div><div class="chap-meta-row"><span class="chap-sub">Food Chain · Energy Flow · Nutrient Cycling · Productivity</span><span class="tag hot">High Weightage</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Ecosystem&name=Ecosystem&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">36</span><div class="chap-body"><div class="chap-name">Biodiversity &amp; Conservation</div><div class="chap-meta-row"><span class="chap-sub">Hotspots · Extinction · In-situ · Ex-situ Conservation</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Biodiversity+and+Conservation&name=Biodiversity&count=20" class="chap-practice">Practice →</a></div></div></div>
+        <div class="chap-row"><span class="chap-num">37</span><div class="chap-body"><div class="chap-name">Environmental Issues</div><div class="chap-meta-row"><span class="chap-sub">Pollution · Global Warming · Ozone Depletion · Case Studies</span><span class="tag mod">Moderate</span><a href="mockarena_test.html?exam=NT&subj=Biology&chap=Environmental+Issues&name=Environmental+Issues&count=20" class="chap-practice">Practice →</a></div></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  <div class="footer-logo">Mock<span>Arena</span></div>
+  <div class="footer-txt">India's most complete NEET preparation platform · Updated 2025–26</div>
+</div>
+
+<script>
+function showSubj(s,btn){
+  document.querySelectorAll('.chap-section').forEach(function(c){c.classList.remove('on');});
+  document.querySelectorAll('.subj-tab').forEach(function(t){t.classList.remove('on');});
+  document.getElementById('sec-'+s).classList.add('on');
+  btn.classList.add('on');
+}
+</script>
+
+<footer style="background:var(--forest);color:rgba(255,255,255,.7);padding:32px 20px;margin-top:40px;">
+  <div style="max-width:1000px;margin:0 auto;">
+    <div style="display:flex;flex-wrap:wrap;gap:24px;justify-content:space-between;margin-bottom:24px;">
+      <div>
+        <div style="font-size:1.1rem;font-weight:900;color:white;margin-bottom:8px;">Mock<span style="color:var(--sage);">Arena</span></div>
+        <div style="font-size:.9rem;line-height:1.7;">Free chapter-wise tests for<br/>JEE · NEET · Board Exams</div>
+      </div>
+      <div style="display:flex;gap:32px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:.88rem;font-weight:700;color:white;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;">Exams</div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:.9rem;">
+            <a href="jee_main.html" style="color:rgba(255,255,255,.7);text-decoration:none;">JEE Mains</a>
+            <a href="neet_ug.html" style="color:rgba(255,255,255,.7);text-decoration:none;">NEET UG</a>
+            <a href="boards_9.html" style="color:rgba(255,255,255,.7);text-decoration:none;">Class 9 Boards</a>
+            <a href="boards_11.html" style="color:rgba(255,255,255,.7);text-decoration:none;">Class 11 Boards</a>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.88rem;font-weight:700;color:white;margin-bottom:10px;text-transform:uppercase;letter-spacing:.05em;">Platform</div>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:.9rem;">
+            <a href="mockarena_student_dashboard.html" style="color:rgba(255,255,255,.7);text-decoration:none;">Dashboard</a>
+            <a href="mockarena_leaderboard.html" style="color:rgba(255,255,255,.7);text-decoration:none;">Leaderboard</a>
+            <a href="mockarena_support.html" style="color:rgba(255,255,255,.7);text-decoration:none;">Support</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="border-top:1px solid rgba(255,255,255,.1);padding-top:16px;font-size:.85rem;display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;">
+      <span>© 2026 MockArena · Free NEET Preparation</span>
+      <span>Made with ❤️ for Indian students</span>
+    </div>
+  </div>
+</footer>
+
+<script type="module">
+import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+const app=initializeApp({
+  apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
+  authDomain:"mockarena-c18c4.firebaseapp.com",
+  projectId:"mockarena-c18c4",
+  appId:"1:861067164791:web:28df5244e34361dd9d5a72"
+});
+const auth=getAuth(app);
+onAuthStateChanged(auth,user=>{
+  const loginBtn=document.getElementById('nav-login-btn');
+  if(loginBtn) loginBtn.style.display=user?'none':'block';
+});
+</script>
+</body>
+</html>
