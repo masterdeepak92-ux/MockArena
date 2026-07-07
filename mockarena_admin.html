@@ -1549,15 +1549,15 @@ window.procFile = function(file, type) {
       if(type === 'json') {
         window.preview(JSON.parse(ev.target.result));
       } else {
-        var __t = ev.target.result;
-        if(__t.charCodeAt(0) === 0xFEFF) __t = __t.slice(1);
-        var rows = __t.split(/\r\n|\r|\n/).filter(function(r){return r.trim();});
-        var hs = rows[0].split(',').map(function(h){return h.replace(/"/g,'').trim().toLowerCase();});
-        var data = rows.slice(1).map(function(row){
-          var vs = window.parseCSV(row), o = {};
-          hs.forEach(function(h,i){ o[h] = (vs[i]||'').replace(/"/g,'').trim(); });
+        // Use full RFC-4180 parser that handles multiline quoted fields
+        var allRows = window.parseCSV(ev.target.result);
+        if(!allRows.length){ window.statUp('up-status','Empty file.','err'); return; }
+        var hs = allRows[0].map(function(h){ return h.replace(/"/g,'').trim().toLowerCase(); });
+        var data = allRows.slice(1).map(function(cols){
+          var o = {};
+          hs.forEach(function(h,i){ o[h] = (cols[i]||'').trim(); });
           return o;
-        }).filter(function(r){return r.question;});
+        }).filter(function(r){ return r.question && r.question.length > 0; });
         window.preview(data);
       }
     } catch(err) {
@@ -1567,16 +1567,33 @@ window.procFile = function(file, type) {
   r.readAsText(file);
 };
 
-window.parseCSV = function(row) {
-  var res=[], c='', q=false;
-  for(var i=0;i<row.length;i++){
-    var ch=row[i];
-    if(ch==='"') q=!q;
-    else if(ch===','&&!q){res.push(c);c='';}
-    else c+=ch;
+window.parseCSV = function(text) {
+  var rows=[],row=[],field='',inQ=false,i=0,cc;
+  if(text.charCodeAt(0)===0xFEFF) text=text.slice(1);
+  while(i<text.length){
+    cc=text.charCodeAt(i);
+    if(inQ){
+      if(cc===34){// "
+        if(text.charCodeAt(i+1)===34){field+='"';i+=2;continue;}// escaped ""
+        inQ=false;i++;continue;
+      }
+      field+=text[i];i++;// keep everything inside quotes including \r\n
+    } else {
+      if(cc===34){inQ=true;i++;continue;}// opening "
+      if(cc===44){row.push(field.trim());field='';i++;continue;}// comma
+      if(cc===13){i++;continue;}// skip \r in \r\n
+      if(cc===10){// newline — end of row
+        row.push(field.trim());field='';
+        if(row.some(function(x){return x;}))rows.push(row);
+        row=[];i++;continue;
+      }
+      field+=text[i];i++;
+    }
   }
-  res.push(c);
-  return res;
+  // last field
+  row.push(field.trim());
+  if(row.some(function(x){return x;}))rows.push(row);
+  return rows;
 };
 
 window.parsePaste = function() {
@@ -2009,8 +2026,18 @@ window.clearUpload=function(){
 };
 
 window.saveAll=async function(){
-  const qs=window.parsedQs_up||(window.parsedQs&&window.parsedQs.length?window.parsedQs:null);
-  if(!qs||!qs.length){stat("up-status","Nothing to save. Parse a CSV/JSON file first.","err");return;}
+  console.log("saveAll called, parsedQs=",window.parsedQs?.length, "parsedQs_up=",window.parsedQs_up?.length);
+  const qs=(window.parsedQs&&window.parsedQs.length>0)?window.parsedQs:
+            (window.parsedQs_up&&window.parsedQs_up.length>0)?window.parsedQs_up:null;
+  if(!qs||!qs.length){
+    window.statUp("up-status","Nothing to save — parse a CSV or JSON file first.","err");
+    return;
+  }
+  const user=auth.currentUser;
+  if(!user){
+    window.statUp("up-status","Not logged in. Please sign in first.","err");
+    return;
+  }
   loader(true,"Uploading "+qs.length+" questions...","Saving to Firebase...");
   let saved=0,failed=0;
   for(const q of qs){
@@ -2019,16 +2046,23 @@ window.saveAll=async function(){
       const diffCode=DIFF[q.difficulty]||"MED";
       const n=allQs.filter(x=>x.examCode===q.exam&&x.subjCode===sc2&&x.difficulty===q.difficulty).length;
       const qId=sc2+"-"+diffCode+"-"+String(n+saved+1).padStart(6,"0");
-      const data={id:qId,examCode:q.exam,examName:ENAMES[q.exam]||q.exam,subjCode:sc2,subject:q.subject,chapter:q.chapter||"General",topic:q.topic||"",difficulty:q.difficulty||"Medium",type:q.type||"MCQ",marks:parseInt(q.marks)||4,question:q.question,options:q.type!=="INTEGER"?{A:q.option_a||"",B:q.option_b||"",C:q.option_c||"",D:q.option_d||""}:{},correct:q.correct||"A",explanation:q.explanation||"",year:q.year||null,createdAt:new Date().toISOString(),active:true};
+      const data={id:qId,examCode:q.exam,examName:ENAMES[q.exam]||q.exam,subjCode:sc2,
+        subject:q.subject,chapter:q.chapter||"General",topic:q.topic||"",
+        difficulty:q.difficulty||"Medium",type:q.type||"MCQ",marks:parseInt(q.marks)||4,
+        question:q.question,
+        options:q.type!=="INTEGER"?{A:q.option_a||"",B:q.option_b||"",C:q.option_c||"",D:q.option_d||""}:{},
+        correct:q.correct||"A",explanation:q.explanation||"",
+        year:q.year||null,createdAt:new Date().toISOString(),active:true};
       await setDoc(doc(db,"questions",qId),data);
       allQs.unshift(data);saved++;
-    }catch(e){failed++;console.error(e);}
+      console.log("Saved:",qId);
+    }catch(e){failed++;console.error("Failed to save:",e);}
   }
   loader(false);
-  window.parsedQs_up=[];
   window.parsedQs=[];
+  window.parsedQs_up=[];
   const ps=document.getElementById("parsed-section");if(ps)ps.style.display="none";
-  stat("up-status","✓ Saved "+saved+" questions!"+(failed?" · "+failed+" failed":""),"ok");
+  window.statUp("up-status","✓ Saved "+saved+" questions!"+(failed?" · "+failed+" failed":""),"ok");
   refreshStats();renderDashboard();populateBuildChapters();
 };
 
