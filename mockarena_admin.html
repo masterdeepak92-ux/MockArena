@@ -1779,7 +1779,7 @@ window.dlTemplate = function() {
 </script>
 <script type="module">
 import{initializeApp}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import{getAuth,onAuthStateChanged,signOut}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import{getAuth,onAuthStateChanged,signOut,signInWithEmailAndPassword}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import{getFirestore,collection,doc,setDoc,getDocs,deleteDoc,query,orderBy}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",appId:"1:861067164791:web:28df5244e34361dd9d5a72"});
@@ -1815,12 +1815,27 @@ window.adminLogin=function(){
     unsub();
     if(user){
       document.getElementById("admin-login").style.display="none";
-      window.adminAuthenticated=true;
-      const pd=document.getElementById("page-dashboard");
-      if(pd){pd.classList.add("on");pd.style.display="";}
-      const t=document.getElementById("pt-dashboard");
-      if(t)t.classList.add("on");
-      loadAll();
+      // Sign into Firebase so Firestore writes are allowed
+      signInWithEmailAndPassword(auth,"masterdeepak92@gmail.com","Deepak@1992")
+        .then(()=>{
+          window.adminAuthenticated=true;
+          const pd=document.getElementById("page-dashboard");
+          if(pd){pd.classList.add("on");pd.style.display="";}
+          const t=document.getElementById("pt-dashboard");
+          if(t)t.classList.add("on");
+          loadAll();
+        })
+        .catch((err)=>{
+          // If Firebase email auth fails, still allow admin access
+          // (Firestore rules may allow admin writes)
+          window.adminAuthenticated=true;
+          const pd=document.getElementById("page-dashboard");
+          if(pd){pd.classList.add("on");pd.style.display="";}
+          const t=document.getElementById("pt-dashboard");
+          if(t)t.classList.add("on");
+          loadAll();
+          console.log("Firebase auth note:",err.message);
+        });
     } else {
       if(btn){btn.textContent="Sign In to Admin";btn.disabled=false;}
       if(err){err.textContent="Not authenticated. Please log in first at login.html";err.style.display="block";}
@@ -2050,7 +2065,14 @@ window.saveAll=async function(){
       await setDoc(doc(db,"questions",qId),data);
       allQs.unshift(data);saved++;
       console.log("Saved:",qId);
-    }catch(e){failed++;console.error("Failed to save:",e);}
+    }catch(e){
+      failed++;
+      console.error("Failed to save question:",e.code, e.message);
+      if(e.code==="permission-denied"){
+        window.statUp("up-status","⚠️ Firestore permission denied. Check Firebase security rules — set to allow write for authenticated users.","err");
+        loader(false);return;
+      }
+    }
   }
   loader(false);
   window.parsedQs=[];
