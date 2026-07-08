@@ -415,6 +415,26 @@ html,
 .katex .base{
   white-space:normal;
 }
+
+/* ── RESULT OVERFLOW FIX ── */
+#result-screen *{
+  max-width:100%;
+  box-sizing:border-box;
+}
+#result-screen{
+  overflow-x:hidden;
+}
+.sol-card,.sol-expl,.sol-q,.result-body{
+  overflow-x:hidden;
+  word-break:break-word;
+  overflow-wrap:break-word;
+  max-width:100%;
+  box-sizing:border-box;
+}
+.katex-display{
+  overflow-x:auto;
+  max-width:100%;
+}
 </style>
 </head>
 <body>
@@ -974,7 +994,7 @@ function showResults(score,maxScore,pct,correct,wrong,skipped,timeTaken,subjScor
       });
       optsHtml+='</div>';
     }
-    const explHtml=q.explanation?'<div class="sol-expl"><div class="sol-expl-lbl">📖 Explanation</div>'+q.explanation.replace(/\n/g,'<br>')+'</div>':'';
+    const explHtml=q.explanation?'<div class="sol-expl"><div class="sol-expl-lbl">📖 Explanation</div>'+q.explanation+'</div>':'';
     solHtml+='<div class="sol-card"><div class="sol-card-top"><span class="sol-qnum">Q'+(i+1)+'</span><span class="sol-result '+resultType+'">'+resultTxt+'</span><span class="sol-marks">'+marksStr+'</span></div><div class="sol-q">'+q.question+'</div>'+optsHtml+explHtml+'</div>';
   });
   document.getElementById('r-solutions').innerHTML=solHtml;
