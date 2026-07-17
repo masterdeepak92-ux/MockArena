@@ -1,0 +1,1551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>MockArena · Study Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+/* ══════════════════════════════════════════
+   DESIGN TOKENS
+══════════════════════════════════════════ */
+:root{
+  /* Backgrounds */
+  --bg:#faf9f6; --bg2:#f2efe8; --sur:#ffffff;
+  /* Text — carefully calibrated contrast */
+  --t1:#1c1c1a; --t2:#373530; --t3:#68665e; --t4:#9e9b92;
+  /* Borders */
+  --bd:rgba(28,28,26,.08); --bd2:rgba(28,28,26,.14);
+  /* Brand colors */
+  --ac:#3a6830; --acl:rgba(58,104,48,.09);
+  --go:#b8861e; --gol:rgba(184,134,30,.1);
+  --rd:#c04040; --rdl:rgba(192,64,64,.09);
+  --sk:#1d4ed8; --skl:rgba(29,78,216,.07);
+  --pu:#6d28d9; --pul:rgba(109,40,217,.07);
+  /* Shadows */
+  --sh:0 1px 12px rgba(0,0,0,.06);
+  --shl:0 8px 40px rgba(0,0,0,.12);
+  /* Fonts */
+  --rf:'Lora',Georgia,serif;
+  --uf:'Outfit',sans-serif;
+  --mf:'IBM Plex Mono',monospace;
+  /* Layout */
+  --sw:272px; --tw:224px;
+  /* Reading — scientifically optimal */
+  --cw:68ch;       /* character-based width — best for reading */
+  --fs:18.5px;     /* optimal body size */
+  --lh:1.95;       /* golden ratio line height */
+  --ls:0.012em;    /* subtle letter spacing for serif */
+  --ps:1.4em;      /* paragraph spacing */
+}
+body.sepia{
+  --bg:#f6edd8; --bg2:#ede0c4; --sur:#fdf6e4;
+  --t1:#2c1f0e; --t2:#4a3520; --t3:#7a6040; --t4:#a89070;
+  --bd:rgba(44,31,14,.1); --bd2:rgba(44,31,14,.17);
+  --ac:#7a5c1e; --acl:rgba(122,92,30,.1);
+  --go:#9a6e10; --sk:#3b5ba8; --pu:#6b3fa0;
+}
+body.dark{
+  --bg:#0f0f0e; --bg2:#1a1a18; --sur:#161614;
+  --t1:#ede9e0; --t2:#cac6bc; --t3:#8a8780; --t4:#555250;
+  --bd:rgba(255,255,255,.07); --bd2:rgba(255,255,255,.13);
+  --ac:#7aaa6c; --acl:rgba(122,170,108,.12);
+  --go:#e0b050; --gol:rgba(224,176,80,.12);
+  --rd:#f08080; --rdl:rgba(240,128,128,.1);
+  --sk:#6ab0f8; --skl:rgba(106,176,248,.1);
+  --pu:#b49af8; --pul:rgba(180,154,248,.08);
+  --sh:0 2px 16px rgba(0,0,0,.4); --shl:0 8px 40px rgba(0,0,0,.5);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;font-size:var(--fs);}
+body{font-family:var(--uf);background:var(--bg);color:var(--t1);min-height:100vh;transition:background .3s,color .3s;overflow-x:hidden;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:transparent;}
+::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:10px;}
+::-webkit-scrollbar-thumb:hover{background:var(--t4);}
+
+/* ══ READING PROGRESS ══ */
+#prog{position:fixed;top:0;left:0;right:0;z-index:999;height:3px;width:0%;
+  background:linear-gradient(90deg,var(--ac),var(--go));transition:width .2s ease;height:3px;}
+
+/* ══ TOPBAR ══ */
+.topbar{
+  position:fixed;top:3px;left:0;right:0;z-index:200;height:56px;
+  background:var(--sur);border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;padding:0 16px;gap:10px;
+  box-shadow:var(--sh);transition:background .3s;
+}
+.ham{width:36px;height:36px;border-radius:8px;border:1.5px solid var(--bd);
+  background:transparent;cursor:pointer;font-size:1.1rem;color:var(--t3);
+  display:none;align-items:center;justify-content:center;flex-shrink:0;transition:.15s;}
+.ham:hover{background:var(--bg2);color:var(--t1);}
+.tb-logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0;}
+.tb-mark{width:32px;height:32px;border-radius:8px;
+  background:linear-gradient(135deg,#6b8f5e,#3a6830);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:900;color:white;}
+.tb-name{font-size:.95rem;font-weight:800;color:var(--t1);letter-spacing:-.02em;}
+.tb-name em{color:var(--ac);font-style:normal;}
+.tb-sep{width:1px;height:18px;background:var(--bd);flex-shrink:0;}
+.tb-chap{font-size:.82rem;font-weight:600;color:var(--t3);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px;}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.cbtn{height:34px;border-radius:8px;border:1.5px solid var(--bd);
+  background:transparent;cursor:pointer;transition:.15s;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.82rem;font-weight:700;color:var(--t3);
+  font-family:var(--uf);padding:0 10px;gap:5px;white-space:nowrap;}
+.cbtn:hover{border-color:var(--bd2);color:var(--t1);background:var(--bg2);}
+.cbtn.on{border-color:var(--ac);color:var(--ac);background:var(--acl);}
+.fbtns{display:flex;border:1.5px solid var(--bd);border-radius:8px;overflow:hidden;}
+.fbtns .cbtn{border:none;border-radius:0;border-right:1px solid var(--bd);}
+.fbtns .cbtn:last-child{border-right:none;}
+.tb-a{padding:6px 13px;border-radius:8px;border:1.5px solid var(--bd);
+  font-family:var(--uf);font-size:.76rem;font-weight:600;color:var(--t3);
+  background:transparent;cursor:pointer;text-decoration:none;transition:.15s;white-space:nowrap;}
+.tb-a:hover{border-color:var(--bd2);color:var(--t1);}
+.tb-a.pri{background:linear-gradient(135deg,#6b8f5e,#3a6830);color:white;border-color:transparent;}
+.tb-a.pri:hover{opacity:.9;}
+
+/* ══ LAYOUT ══ */
+.layout{display:grid;grid-template-columns:var(--sw) 1fr var(--tw);
+  min-height:calc(100vh - 59px);margin-top:59px;}
+
+/* ══ LEFT SIDEBAR ══ */
+.sb-l{
+  position:fixed;top:59px;left:0;bottom:0;width:var(--sw);
+  overflow-y:auto;overflow-x:hidden;
+  background:var(--sur);border-right:1px solid var(--bd);
+  display:flex;flex-direction:column;
+  transition:background .3s,border-color .3s,transform .3s;z-index:150;
+}
+.sb-l::-webkit-scrollbar{width:3px;}
+
+.sb-top{padding:14px 14px 10px;border-bottom:1px solid var(--bd);flex-shrink:0;}
+.sb-top-lbl{font-size:.63rem;font-weight:800;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--t4);margin-bottom:9px;}
+.sb-search{width:100%;padding:8px 11px;border-radius:9px;
+  border:1.5px solid var(--bd);background:var(--bg);
+  font-family:var(--uf);font-size:.83rem;color:var(--t1);
+  outline:none;transition:.2s;}
+.sb-search:focus{border-color:var(--ac);background:var(--sur);
+  box-shadow:0 0 0 3px var(--acl);}
+.sb-search::placeholder{color:var(--t4);}
+
+.nav-root{flex:1;overflow-y:auto;padding-bottom:20px;}
+.nav-root::-webkit-scrollbar{width:3px;}
+
+/* Nav groups */
+.ng{border-bottom:1px solid var(--bd);}
+.ne{display:flex;align-items:center;gap:9px;padding:11px 14px;
+  cursor:pointer;transition:.15s;font-size:.86rem;font-weight:700;color:var(--t2);}
+.ne:hover{background:var(--bg2);color:var(--t1);}
+.ne.on{color:var(--ac);background:var(--acl);}
+.ne-ic{font-size:.95rem;width:20px;text-align:center;flex-shrink:0;}
+.ne-tag{font-size:.61rem;font-weight:800;padding:2px 6px;border-radius:4px;
+  margin-left:auto;flex-shrink:0;font-family:var(--mf);}
+.tag-neet{background:rgba(58,104,48,.12);color:#3a6830;}
+.tag-jee{background:rgba(37,99,200,.1);color:#1d4ed8;}
+.tag-cbse{background:rgba(146,64,14,.1);color:#92400e;}
+.tag-icse{background:rgba(109,40,217,.1);color:#6d28d9;}
+.tag-state{background:rgba(200,75,75,.1);color:#c84b4b;}
+.ne-arr{font-size:.65rem;transition:.2s;color:var(--t4);margin-left:4px;}
+.ne.on .ne-arr{transform:rotate(90deg);}
+.ns{display:none;background:var(--bg);}
+.ne.on + .ns{display:block;}
+.nsub{display:flex;align-items:center;gap:7px;font-size:.79rem;font-weight:700;
+  color:var(--t3);padding:7px 14px 7px 36px;cursor:pointer;transition:.15s;}
+.nsub:hover{color:var(--t1);background:var(--bg2);}
+.nsub.on{color:var(--ac);}
+.nsub-arr{font-size:.62rem;transition:.2s;margin-left:auto;color:var(--t4);}
+.nsub.on .nsub-arr{transform:rotate(90deg);}
+.nchaps{display:none;background:var(--sur);}
+.nsub.on + .nchaps{display:block;}
+.nchap{font-size:.76rem;font-weight:500;color:var(--t3);
+  padding:5px 14px 5px 52px;cursor:pointer;transition:.15s;
+  line-height:1.4;border-left:2px solid transparent;}
+.nchap:hover{color:var(--t1);background:var(--bg2);}
+.nchap.on{color:var(--ac);font-weight:700;border-left-color:var(--ac);background:var(--acl);}
+.nchap.saved::after{content:'✓';font-size:.65rem;color:var(--ac);margin-left:5px;}
+
+/* ══ READER ══ */
+.reader{
+  grid-column:2;display:flex;flex-direction:column;
+  align-items:center;padding:52px 32px 160px;min-height:100%;
+  background:var(--bg);
+}
+
+/* Welcome */
+.welcome{max-width:580px;width:100%;text-align:center;padding:52px 24px;}
+.wic{width:76px;height:76px;border-radius:18px;
+  background:linear-gradient(135deg,#6b8f5e,#3a6830);
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.9rem;margin:0 auto 22px;
+  box-shadow:0 8px 24px rgba(58,104,48,.25);}
+.welcome h2{
+  font-family:var(--rf);font-size:2rem;font-weight:700;
+  color:var(--t1);margin-bottom:14px;line-height:1.2;
+  letter-spacing:-.02em;
+}
+.welcome p{font-size:.95rem;color:var(--t3);line-height:1.75;margin-bottom:28px;}
+.wsteps{display:flex;flex-direction:column;gap:10px;text-align:left;}
+.wstep{display:flex;align-items:flex-start;gap:12px;padding:13px 15px;
+  background:var(--sur);border:1.5px solid var(--bd);border-radius:12px;}
+.wn{width:26px;height:26px;border-radius:7px;
+  background:linear-gradient(135deg,#6b8f5e,#3a6830);
+  color:white;font-size:.72rem;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.wt strong{font-size:.85rem;font-weight:700;color:var(--t1);display:block;margin-bottom:2px;}
+.wt span{font-size:.8rem;color:var(--t3);line-height:1.5;}
+
+/* Generating */
+.generating{display:none;max-width:440px;width:100%;text-align:center;padding:60px 24px;}
+.gsp{width:56px;height:56px;margin:0 auto 18px;position:relative;}
+.gs1{position:absolute;inset:0;border-radius:50%;border:3px solid var(--bd);border-top-color:var(--ac);animation:sp 1s linear infinite;}
+.gs2{position:absolute;top:9px;left:9px;right:9px;bottom:9px;border-radius:50%;border:3px solid var(--bd);border-top-color:var(--go);animation:sp 1.5s linear infinite reverse;}
+@keyframes sp{to{transform:rotate(360deg);}}
+.gh{font-size:1.05rem;font-weight:800;color:var(--t1);margin-bottom:6px;}
+.gp{font-size:.86rem;color:var(--t3);line-height:1.6;}
+.gprg{height:4px;background:var(--bg2);border-radius:100px;overflow:hidden;margin-top:16px;}
+.gb{height:100%;background:linear-gradient(90deg,var(--ac),var(--go));border-radius:100px;width:0%;transition:width .4s;}
+.gst{margin-top:8px;font-size:.72rem;font-family:var(--mf);color:var(--ac);}
+
+/* ══ NOTES AREA ══ */
+.nwrap{
+  max-width:var(--cw);width:100%;display:none;
+  /* Ensure proper centering */
+}
+
+/* Chapter header */
+.ch-hd{margin-bottom:38px;padding-bottom:22px;border-bottom:2px solid var(--bd);}
+.ch-bc{font-size:.74rem;font-weight:600;color:var(--t4);
+  margin-bottom:10px;display:flex;align-items:center;gap:5px;flex-wrap:wrap;}
+.ch-bc span{color:var(--t3);}
+.ch-badge{display:inline-flex;align-items:center;font-size:.7rem;font-weight:700;
+  padding:3px 10px;border-radius:100px;border:1.5px solid;margin-bottom:13px;}
+.b-neet{color:#3a6830;border-color:rgba(58,104,48,.3);background:rgba(58,104,48,.08);}
+.b-jee{color:#1d4ed8;border-color:rgba(29,78,216,.3);background:rgba(29,78,216,.08);}
+.b-cbse{color:#92400e;border-color:rgba(146,64,14,.3);background:rgba(146,64,14,.08);}
+.b-icse{color:#6d28d9;border-color:rgba(109,40,217,.3);background:rgba(109,40,217,.08);}
+.b-state{color:#b45309;border-color:rgba(180,83,9,.3);background:rgba(180,83,9,.08);}
+.ch-title{
+  font-family:var(--rf);
+  font-size:2.4rem;font-weight:700;color:var(--t1);
+  line-height:1.15;margin-bottom:14px;
+  letter-spacing:-.03em;
+  text-wrap:balance;
+}
+.ch-meta{display:flex;align-items:center;gap:14px;flex-wrap:wrap;font-size:.76rem;color:var(--t4);}
+.ch-actions{display:flex;align-items:center;gap:8px;margin-top:16px;flex-wrap:wrap;}
+.ca-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:9px;
+  border:1.5px solid var(--bd);font-family:var(--uf);font-size:.78rem;font-weight:700;
+  cursor:pointer;transition:.2s;background:var(--sur);color:var(--t3);}
+.ca-btn:hover{border-color:var(--bd2);color:var(--t1);}
+.ca-btn.green{color:var(--ac);border-color:var(--acl);}
+.ca-btn.green:hover{background:var(--ac);color:white;border-color:var(--ac);}
+.ca-btn.gold{color:var(--go);border-color:var(--gol);}
+.ca-btn.gold:hover{background:var(--go);color:white;border-color:var(--go);}
+.ca-btn.red{color:var(--rd);border-color:var(--rdl);}
+.ca-btn.red:hover{background:var(--rd);color:white;border-color:var(--rd);}
+
+/* ══ NOTES TYPOGRAPHY — KINDLE LEVEL ══ */
+.nb{
+  font-family:var(--rf);
+  font-size:1.05rem;
+  line-height:var(--lh);
+  color:var(--t2);
+  letter-spacing:var(--ls);
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+  font-feature-settings:'kern' 1,'liga' 1,'calt' 1;
+}
+/* Section headings — clear visual hierarchy */
+.nb h2{
+  font-family:var(--rf);
+  font-size:1.5rem;font-weight:700;color:var(--t1);
+  margin:52px 0 18px;
+  padding-bottom:12px;
+  border-bottom:2px solid var(--bd);
+  line-height:1.25;
+  letter-spacing:-.02em;
+}
+.nb h3{
+  font-family:var(--rf);
+  font-size:1.18rem;font-weight:700;color:var(--t1);
+  margin:36px 0 12px;line-height:1.3;
+  letter-spacing:-.01em;
+}
+.nb h4{
+  font-family:var(--uf);
+  font-size:.78rem;font-weight:800;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ac);margin:28px 0 10px;
+}
+/* Paragraphs — generous breathing room */
+.nb p{
+  margin-bottom:var(--ps);
+  font-size:1.05rem;
+  line-height:var(--lh);
+  color:var(--t2);
+  max-width:65ch;
+  hyphens:auto;
+}
+.nb strong{color:var(--t1);font-weight:700;}
+.nb em{font-style:italic;color:var(--t1);}
+/* Highlights */
+.hl{
+  background:linear-gradient(120deg,rgba(184,134,30,.22) 0%,rgba(184,134,30,.12) 100%);
+  padding:1px 4px;border-radius:3px;color:var(--t1);
+}
+.hl-g{
+  background:linear-gradient(120deg,rgba(58,104,48,.18) 0%,rgba(58,104,48,.08) 100%);
+  padding:1px 4px;border-radius:3px;color:var(--t1);
+}
+.hl-r{
+  background:linear-gradient(120deg,rgba(192,64,64,.15) 0%,rgba(192,64,64,.07) 100%);
+  padding:1px 4px;border-radius:3px;color:var(--t1);
+}
+/* Lists — airy and scannable */
+.nb ul,.nb ol{
+  margin:16px 0 24px;padding-left:0;
+  list-style:none;display:flex;flex-direction:column;gap:10px;
+}
+.nb li{
+  display:flex;align-items:flex-start;gap:14px;
+  font-size:1.02rem;line-height:1.8;color:var(--t2);
+}
+.nb li::before{
+  content:'•';color:var(--ac);
+  font-size:1.1rem;flex-shrink:0;margin-top:2px;font-weight:900;
+}
+.nb ol{counter-reset:oi;}
+.nb ol li::before{
+  content:counter(oi)'.';counter-increment:oi;
+  color:var(--ac);font-weight:800;font-size:.85rem;
+  font-family:var(--mf);min-width:22px;margin-top:3px;
+}
+
+/* Callout boxes */
+.cal{
+  border-radius:14px;padding:18px 20px;
+  margin:28px 0;border-left:4px solid;
+  font-size:1rem;line-height:1.85;
+  box-shadow:0 1px 8px rgba(0,0,0,.04);
+}
+.ct{
+  font-family:var(--uf);font-size:.7rem;font-weight:900;
+  letter-spacing:.1em;text-transform:uppercase;
+  margin-bottom:9px;display:flex;align-items:center;gap:7px;
+}
+.cal.concept{background:var(--skl);border-left-color:var(--sk);}
+.cal.concept .ct{color:var(--sk);}
+.cal.formula{background:var(--acl);border-left-color:var(--ac);}
+.cal.formula .ct{color:var(--ac);}
+.cal.tip{background:var(--gol);border-left-color:var(--go);}
+.cal.tip .ct{color:var(--go);}
+.cal.warning{background:var(--rdl);border-left-color:var(--rd);}
+.cal.warning .ct{color:var(--rd);}
+.cal.memory{background:var(--pul);border-left-color:var(--pu);}
+.cal.memory .ct{color:var(--pu);}
+
+/* Formula block */
+.fb{
+  background:var(--bg2);
+  border:1.5px solid var(--bd);
+  border-radius:14px;
+  padding:22px 24px;
+  margin:24px 0;
+  text-align:center;
+  overflow-x:auto;
+  box-shadow:inset 0 1px 3px rgba(0,0,0,.04);
+}
+.fl{
+  font-family:var(--uf);font-size:.67rem;font-weight:900;
+  letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ac);margin-bottom:14px;opacity:.8;
+}
+.katex-display{margin:0 !important;overflow-x:auto;}
+.katex{font-size:1.15em;color:var(--t1);}
+
+/* Table */
+.nt{
+  width:100%;border-collapse:collapse;
+  margin:24px 0;font-size:.94rem;
+  border-radius:12px;overflow:hidden;
+  border:1.5px solid var(--bd);
+  box-shadow:0 2px 12px rgba(0,0,0,.05);
+}
+.nt th{
+  background:var(--bg2);color:var(--t1);
+  font-family:var(--uf);font-size:.72rem;font-weight:800;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:12px 16px;text-align:left;
+  border-bottom:1.5px solid var(--bd);
+}
+.nt td{
+  padding:12px 16px;border-bottom:1px solid var(--bd);
+  color:var(--t2);line-height:1.65;font-family:var(--rf);
+  font-size:.96rem;
+}
+.nt tr:last-child td{border-bottom:none;}
+.nt tr:hover td{background:var(--bg2);transition:background .15s;}
+.nt tr:nth-child(even) td{background:rgba(0,0,0,.018);}
+.ndiv{
+  height:1px;
+  background:linear-gradient(90deg,transparent,var(--bd2),transparent);
+  margin:40px 0;border:none;
+}
+
+/* Practice CTA */
+.prac-cta{margin-top:50px;padding:26px;
+  background:linear-gradient(135deg,#1a2618,#243422);
+  border-radius:20px;text-align:center;}
+.prac-cta h3{font-family:var(--rf);font-size:1.2rem;font-weight:700;color:white;margin-bottom:7px;}
+.prac-cta p{font-size:.84rem;color:rgba(255,255,255,.62);margin-bottom:18px;}
+.prac-btn{display:inline-flex;align-items:center;gap:8px;padding:12px 28px;
+  border-radius:12px;border:none;
+  background:linear-gradient(135deg,#6b8f5e,#3a6830);
+  color:white;font-family:var(--uf);font-size:.95rem;font-weight:800;
+  cursor:pointer;text-decoration:none;transition:.2s;
+  box-shadow:0 4px 14px rgba(58,104,48,.3);}
+.prac-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(58,104,48,.4);}
+
+/* ══ RIGHT TOC ══ */
+.sb-r{position:fixed;top:59px;right:0;bottom:0;width:var(--tw);
+  overflow-y:auto;background:var(--sur);border-left:1px solid var(--bd);
+  padding:20px 14px;transition:background .3s;}
+.sb-r::-webkit-scrollbar{width:3px;}
+.toc-lbl{font-size:.63rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--t4);margin-bottom:10px;}
+.ti{font-size:.76rem;color:var(--t3);padding:4px 0 4px 10px;
+  border-left:2px solid var(--bd);cursor:pointer;transition:.15s;line-height:1.4;margin-bottom:3px;}
+.ti:hover{color:var(--t1);border-left-color:var(--ac);}
+.ti.on{color:var(--ac);border-left-color:var(--ac);font-weight:600;}
+.ri{margin-top:20px;padding-top:14px;border-top:1px solid var(--bd);display:none;}
+.ri-row{display:flex;align-items:center;gap:6px;font-size:.74rem;color:var(--t3);margin-bottom:7px;}
+
+/* ══ UPLOAD MODAL ══ */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.55);
+  z-index:500;display:none;align-items:center;justify-content:center;
+  backdrop-filter:blur(6px);}
+.modal-ov.on{display:flex;}
+.modal{background:var(--sur);border:1.5px solid var(--bd2);border-radius:20px;
+  padding:0;max-width:560px;width:92%;max-height:90vh;
+  overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);}
+.modal-head{padding:22px 24px 16px;border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;justify-content:space-between;}
+.modal-head h3{font-size:1rem;font-weight:800;color:var(--t1);}
+.modal-close{width:32px;height:32px;border-radius:8px;border:1.5px solid var(--bd);
+  background:transparent;cursor:pointer;font-size:1rem;color:var(--t3);
+  display:flex;align-items:center;justify-content:center;transition:.15s;}
+.modal-close:hover{background:var(--bg2);color:var(--t1);}
+.modal-body{padding:22px 24px;}
+.modal-tabs{display:flex;gap:6px;margin-bottom:20px;
+  background:var(--bg2);padding:4px;border-radius:10px;}
+.mtab{flex:1;padding:8px;border-radius:7px;border:none;
+  font-family:var(--uf);font-size:.8rem;font-weight:700;
+  color:var(--t3);background:transparent;cursor:pointer;transition:.2s;text-align:center;}
+.mtab.on{background:var(--sur);color:var(--t1);box-shadow:var(--sh);}
+
+/* Upload zones */
+.upload-zone{border:2px dashed var(--bd2);border-radius:13px;padding:32px 24px;
+  text-align:center;cursor:pointer;transition:.2s;background:var(--bg);}
+.upload-zone:hover,.upload-zone.drag{border-color:var(--ac);background:var(--acl);}
+.uz-icon{font-size:2.2rem;margin-bottom:10px;}
+.uz-title{font-size:.92rem;font-weight:700;color:var(--t1);margin-bottom:5px;}
+.uz-sub{font-size:.78rem;color:var(--t3);line-height:1.5;}
+.uz-formats{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-top:12px;}
+.uz-fmt{font-size:.68rem;font-weight:700;padding:3px 8px;border-radius:5px;
+  background:var(--bg2);color:var(--t3);border:1px solid var(--bd);}
+#file-input{display:none;}
+
+/* Paste area */
+.paste-area{width:100%;min-height:160px;padding:14px;border-radius:12px;
+  border:1.5px solid var(--bd);background:var(--bg);
+  font-family:var(--rf);font-size:.9rem;color:var(--t1);
+  outline:none;resize:vertical;line-height:1.7;transition:.2s;}
+.paste-area:focus{border-color:var(--ac);background:var(--sur);box-shadow:0 0 0 3px var(--acl);}
+.paste-area::placeholder{color:var(--t4);}
+
+/* Processing state */
+.proc-state{display:none;text-align:center;padding:24px;}
+.proc-spin{width:44px;height:44px;margin:0 auto 14px;position:relative;}
+.ps1{position:absolute;inset:0;border-radius:50%;border:3px solid var(--bd);border-top-color:var(--ac);animation:sp 1s linear infinite;}
+.ps2{position:absolute;top:7px;left:7px;right:7px;bottom:7px;border-radius:50%;border:3px solid var(--bd);border-top-color:var(--go);animation:sp 1.5s linear infinite reverse;}
+.proc-h{font-size:.92rem;font-weight:700;color:var(--t1);margin-bottom:4px;}
+.proc-p{font-size:.8rem;color:var(--t3);}
+
+/* Modal footer */
+.modal-foot{padding:16px 24px;border-top:1px solid var(--bd);display:flex;gap:8px;justify-content:flex-end;}
+.m-btn{padding:9px 20px;border-radius:9px;border:1.5px solid var(--bd);
+  font-family:var(--uf);font-size:.82rem;font-weight:700;cursor:pointer;transition:.2s;background:var(--sur);color:var(--t3);}
+.m-btn:hover{border-color:var(--bd2);color:var(--t1);}
+.m-btn.primary{background:linear-gradient(135deg,#6b8f5e,#3a6830);color:white;border-color:transparent;}
+.m-btn.primary:hover{opacity:.9;transform:translateY(-1px);}
+.m-btn.primary:disabled{opacity:.4;cursor:not-allowed;transform:none;}
+
+/* ══ MOBILE / OVERLAY ══ */
+.mob-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:149;backdrop-filter:blur(3px);}
+.mob-ov.on{display:block;}
+
+@media(max-width:1100px){
+  :root{--tw:0px;}
+  .sb-r{display:none;}
+  .layout{grid-template-columns:var(--sw) 1fr;}
+}
+@media(max-width:768px){
+  :root{--sw:0px;}
+  .layout{grid-template-columns:1fr;}
+  .sb-l{transform:translateX(-290px);width:290px;}
+  .sb-l.on{transform:translateX(0);}
+  .ham{display:flex;}
+  .reader{padding:28px 14px 120px;}
+  .ch-title{font-size:1.65rem;}
+  .tb-chap{display:none;}
+  .nwrap{--cw:100%;}
+}
+@media(min-width:769px){.ham{display:none !important;}}
+
+/* ══ TOAST ══ */
+.toast{position:fixed;bottom:20px;right:20px;z-index:1000;
+  padding:10px 16px;border-radius:12px;font-size:.83rem;font-weight:600;
+  transform:translateY(60px);opacity:0;transition:.3s;
+  border:1.5px solid var(--bd2);box-shadow:var(--shl);
+  background:var(--sur);color:var(--t1);pointer-events:none;max-width:280px;}
+.toast.on{transform:translateY(0);opacity:1;}
+
+/* ══ PRINT STYLES ══ */
+@media print{
+  .topbar,.sb-l,.sb-r,.ch-actions,.prac-cta,.toast,.modal-ov{display:none !important;}
+  .layout{display:block;}
+  .reader{padding:0;}
+  .nwrap{max-width:100%;}
+  body{background:white;color:black;}
+  .nb h2,.nb h3,.nb h4,.ch-title{color:black !important;}
+  .cal{border:1px solid #ccc !important;background:#f9f9f9 !important;}
+  .fb{border:1px solid #ccc !important;background:#f5f5f5 !important;}
+}
+</style>
+</head>
+<body>
+
+<div id="prog"></div>
+<div class="mob-ov" id="mob-ov" onclick="closeSb()"></div>
+
+<!-- TOPBAR -->
+<header class="topbar">
+  <button class="ham" id="ham" onclick="toggleSb()">☰</button>
+  <a href="index.html" class="tb-logo">
+    <div class="tb-mark">MA</div>
+    <span class="tb-name">Mock<em>Arena</em></span>
+  </a>
+  <div class="tb-sep"></div>
+  <div class="tb-chap" id="tb-chap">📖 Study Notes</div>
+  <div class="tb-r">
+    <div class="fbtns">
+      <button class="cbtn" onclick="chgFont(-1)" title="Decrease font">A−</button>
+      <button class="cbtn" onclick="chgFont(1)"  title="Increase font">A+</button>
+    </div>
+    <button class="cbtn" id="t-light" onclick="setTheme('light')" title="Light mode">☀️</button>
+    <button class="cbtn" id="t-sepia" onclick="setTheme('sepia')" title="Sepia mode">📜</button>
+    <button class="cbtn" id="t-dark"  onclick="setTheme('dark')"  title="Dark mode">🌙</button>
+    <div class="tb-sep"></div>
+    <a href="index.html" class="tb-a pri">← Home</a>
+  </div>
+</header>
+
+<div class="layout">
+
+<!-- ══ LEFT SIDEBAR ══ -->
+<aside class="sb-l" id="sb-l">
+  <div class="sb-top">
+    <div class="sb-top-lbl">📚 All Courses</div>
+    <input class="sb-search" id="sb-search" placeholder="Search chapter..." oninput="searchChaps(this.value)"/>
+  </div>
+  <div class="nav-root" id="nav-root"></div>
+</aside>
+
+<!-- ══ READER ══ -->
+<main class="reader" id="reader">
+
+  <!-- Welcome -->
+  <div class="welcome" id="welcome">
+    <div class="wic">📖</div>
+    <h2>The Best Way to Study</h2>
+    <p>AI-powered notes with beautiful typography, rendered formulas, memory tips — and now you can upload your own PDF, Word, or text notes too.</p>
+    <div class="wsteps">
+      <div class="wstep"><div class="wn">1</div><div class="wt"><strong>Choose a chapter</strong><span>Select any exam, class and chapter from the left panel.</span></div></div>
+      <div class="wstep"><div class="wn">2</div><div class="wt"><strong>AI generates or upload yours</strong><span>Get instant AI notes, or upload your own PDF / Word / text notes.</span></div></div>
+      <div class="wstep"><div class="wn">3</div><div class="wt"><strong>Read in comfort</strong><span>Three themes, adjustable font, reading progress bar — better than Kindle.</span></div></div>
+      <div class="wstep"><div class="wn">4</div><div class="wt"><strong>Download PDF &amp; Practise</strong><span>Download notes as PDF or go directly to practice questions.</span></div></div>
+    </div>
+  </div>
+
+  <!-- Generating -->
+  <div class="generating" id="generating">
+    <div class="gsp"><div class="gs1"></div><div class="gs2"></div></div>
+    <div class="gh">Preparing your notes...</div>
+    <p class="gp" id="gp">Claude AI is writing comprehensive notes for this chapter</p>
+    <div class="gprg"><div class="gb" id="gb"></div></div>
+    <div class="gst" id="gst">▶ Analysing syllabus</div>
+  </div>
+
+  <!-- Notes content -->
+  <div class="nwrap" id="nwrap">
+
+    <!-- Chapter header -->
+    <div class="ch-hd" id="ch-hd"></div>
+
+    <!-- Notes body -->
+    <div class="nb" id="nb"></div>
+
+    <!-- Practice CTA -->
+    <div class="prac-cta">
+      <h3>Ready to Test Yourself?</h3>
+      <p>You have read the notes — now attempt questions on this chapter</p>
+      <a href="#" class="prac-btn" id="prac-btn">📝 Practice Questions →</a>
+    </div>
+
+  </div>
+</main>
+
+<!-- ══ RIGHT TOC ══ -->
+<aside class="sb-r" id="sb-r">
+  <div class="toc-lbl">On This Page</div>
+  <div id="toc"></div>
+  <div class="ri" id="ri">
+    <div class="toc-lbl" style="margin-top:0;">Reading</div>
+    <div class="ri-row">⏱ <span id="ri-t">—</span></div>
+    <div class="ri-row">📄 <span id="ri-w">—</span></div>
+  </div>
+</aside>
+
+</div><!-- /layout -->
+
+<!-- ══ UPLOAD MODAL ══ -->
+<div class="modal-ov" id="modal-ov" onclick="if(event.target===this)closeModal()">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>📤 Upload Your Notes</h3>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <!-- Tabs -->
+      <div class="modal-tabs">
+        <button class="mtab on" id="tab-pdf"  onclick="switchTab('pdf')">📄 PDF</button>
+        <button class="mtab"    id="tab-word" onclick="switchTab('word')">📝 Word</button>
+        <button class="mtab"    id="tab-img"  onclick="switchTab('img')">🖼 Image</button>
+        <button class="mtab"    id="tab-txt"  onclick="switchTab('txt')">✏️ Paste Text</button>
+      </div>
+
+      <!-- PDF tab -->
+      <div id="tab-pdf-content">
+        <div class="upload-zone" id="pdf-zone" onclick="document.getElementById('pdf-input').click()"
+             ondragover="event.preventDefault();this.classList.add('drag')"
+             ondragleave="this.classList.remove('drag')"
+             ondrop="handleDrop(event,'pdf')">
+          <div class="uz-icon">📄</div>
+          <div class="uz-title">Drop your PDF here or click to browse</div>
+          <div class="uz-sub">AI will extract text and format it beautifully into notes</div>
+          <div class="uz-formats"><span class="uz-fmt">.pdf</span></div>
+          <input type="file" id="pdf-input" accept=".pdf" onchange="handleFile(this,'pdf')"/>
+        </div>
+        <div id="pdf-name" style="margin-top:10px;font-size:.8rem;color:var(--ac);font-weight:600;display:none;"></div>
+      </div>
+
+      <!-- Word tab -->
+      <div id="tab-word-content" style="display:none;">
+        <div class="upload-zone" id="word-zone" onclick="document.getElementById('word-input').click()"
+             ondragover="event.preventDefault();this.classList.add('drag')"
+             ondragleave="this.classList.remove('drag')"
+             ondrop="handleDrop(event,'word')">
+          <div class="uz-icon">📝</div>
+          <div class="uz-title">Drop your Word document here or click to browse</div>
+          <div class="uz-sub">Supports .docx and .doc files — AI formats everything beautifully</div>
+          <div class="uz-formats"><span class="uz-fmt">.docx</span><span class="uz-fmt">.doc</span></div>
+          <input type="file" id="word-input" accept=".docx,.doc" onchange="handleFile(this,'word')"/>
+        </div>
+        <div id="word-name" style="margin-top:10px;font-size:.8rem;color:var(--ac);font-weight:600;display:none;"></div>
+      </div>
+
+      <!-- Image tab -->
+      <div id="tab-img-content" style="display:none;">
+        <div class="upload-zone" id="img-zone" onclick="document.getElementById('img-input').click()"
+             ondragover="event.preventDefault();this.classList.add('drag')"
+             ondragleave="this.classList.remove('drag')"
+             ondrop="handleDrop(event,'img')">
+          <div class="uz-icon">🖼</div>
+          <div class="uz-title">Drop your image here or click to browse</div>
+          <div class="uz-sub">Handwritten notes, printed pages, photographs — AI reads and formats all</div>
+          <div class="uz-formats"><span class="uz-fmt">.jpg</span><span class="uz-fmt">.png</span><span class="uz-fmt">.jpeg</span><span class="uz-fmt">.webp</span></div>
+          <input type="file" id="img-input" accept="image/*" onchange="handleFile(this,'img')"/>
+        </div>
+        <div id="img-name" style="margin-top:10px;font-size:.8rem;color:var(--ac);font-weight:600;display:none;"></div>
+      </div>
+
+      <!-- Paste text tab -->
+      <div id="tab-txt-content" style="display:none;">
+        <label style="font-size:.76rem;font-weight:700;color:var(--t3);display:block;margin-bottom:8px;text-transform:uppercase;letter-spacing:.05em;">Paste your notes here</label>
+        <textarea class="paste-area" id="paste-txt" placeholder="Paste your notes text here...
+
+Can be from any source — textbook, your own notes, any website content. AI will format it beautifully with proper headings, formula boxes, callouts and more."></textarea>
+      </div>
+
+      <!-- Processing state -->
+      <div class="proc-state" id="proc-state">
+        <div class="proc-spin"><div class="ps1"></div><div class="ps2"></div></div>
+        <div class="proc-h" id="proc-h">Reading your notes...</div>
+        <p class="proc-p" id="proc-p">Claude AI is extracting and formatting content</p>
+      </div>
+
+    </div>
+    <div class="modal-foot">
+      <button class="m-btn" onclick="closeModal()">Cancel</button>
+      <button class="m-btn primary" id="process-btn" onclick="processUpload()">✦ Format with AI</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══ SELECTION EXPLAIN POPUP ══ -->
+<div class="sel-popup" id="sel-popup">
+  <div class="sp-top">
+    <div class="sp-word" id="sp-selected"></div>
+    <button class="sp-close" onclick="closePopup()">✕</button>
+  </div>
+  <div class="sp-body">
+    <div class="sp-loading" id="sp-loading">
+      <div class="sp-dots">
+        <div class="sp-dot"></div>
+        <div class="sp-dot"></div>
+        <div class="sp-dot"></div>
+      </div>
+    </div>
+    <div class="sp-content" id="sp-content"></div>
+  </div>
+  <div class="sp-footer" id="sp-footer" style="display:none;">
+    <button class="sp-ft-btn" onclick="openFullDict()">Full definition ↗</button>
+    <button class="sp-ft-btn primary" onclick="closePopup()">Got it</button>
+  </div>
+</div>
+
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════
+// FULL SYLLABUS — ALL 17 COURSES
+// ══════════════════════════════════════
+const SYL = {
+  NT:{label:'NEET UG',tag:'neet',icon:'🩺',Physics:['Physical World','Units and Measurements','Motion in a Straight Line','Motion in a Plane','Laws of Motion','Work Energy and Power','System of Particles and Rotational Motion','Gravitation','Mechanical Properties of Solids','Mechanical Properties of Fluids','Thermal Properties of Matter','Thermodynamics','Kinetic Theory','Oscillations','Waves','Electric Charges and Fields','Electrostatic Potential and Capacitance','Current Electricity','Moving Charges and Magnetism','Magnetism and Matter','Electromagnetic Induction','Alternating Current','Electromagnetic Waves','Ray Optics and Optical Instruments','Wave Optics','Dual Nature of Radiation and Matter','Atoms','Nuclei','Semiconductor Electronics'],Chemistry:['Some Basic Concepts of Chemistry','Structure of Atom','Classification of Elements and Periodicity','Chemical Bonding and Molecular Structure','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Hydrogen','The s-Block Elements','The p-Block Elements (11th)','Organic Chemistry Basics','Hydrocarbons','Environmental Chemistry','The Solid State','Solutions','Electrochemistry','Chemical Kinetics','Surface Chemistry','General Principles of Isolation of Elements','The p-Block Elements (12th)','The d and f-Block Elements','Coordination Compounds','Haloalkanes and Haloarenes','Alcohols Phenols and Ethers','Aldehydes Ketones and Carboxylic Acids','Amines','Biomolecules','Polymers','Chemistry in Everyday Life'],Biology:['The Living World','Biological Classification','Plant Kingdom','Animal Kingdom','Morphology of Flowering Plants','Anatomy of Flowering Plants','Structural Organisation in Animals','Cell — The Unit of Life','Biomolecules','Cell Cycle and Cell Division','Transport in Plants','Mineral Nutrition','Photosynthesis in Higher Plants','Respiration in Plants','Plant Growth and Development','Digestion and Absorption','Breathing and Exchange of Gases','Body Fluids and Circulation','Excretory Products and Their Elimination','Locomotion and Movement','Neural Control and Coordination','Chemical Coordination and Integration','Reproduction in Organisms','Sexual Reproduction in Flowering Plants','Human Reproduction','Reproductive Health','Principles of Inheritance and Variation','Molecular Basis of Inheritance','Evolution','Human Health and Disease','Strategies for Enhancement in Food Production','Microbes in Human Welfare','Biotechnology — Principles and Processes','Biotechnology and Its Applications','Organisms and Populations','Ecosystem','Biodiversity and Conservation','Environmental Issues']},
+  NF:{label:'NEET Foundation',tag:'neet',icon:'🩺',Physics:['Motion','Force and Laws of Motion','Gravitation','Work and Energy','Sound','Light','Electricity'],Chemistry:['Matter in Our Surroundings','Atoms and Molecules','Structure of the Atom','Chemical Reactions and Equations'],Biology:['Cell — The Unit of Life','Tissues','Diversity in Living Organisms','Life Processes','Control and Coordination','Reproduction']},
+  JF:{label:'JEE Foundation',tag:'jee',icon:'⚛️',Physics:['Motion and Laws of Motion','Gravitation','Work Energy and Power','Properties of Matter','Heat and Thermodynamics','Light and Optics','Electricity and Magnetism'],Chemistry:['Matter and Its Properties','Atomic Structure','Chemical Bonding','Chemical Reactions','Acids Bases and Salts','Metals and Non-metals'],Mathematics:['Number Systems and Sets','Algebra — Polynomials and Equations','Coordinate Geometry','Trigonometry','Mensuration and Geometry','Statistics and Probability']},
+  JM:{label:'JEE Mains',tag:'jee',icon:'⚛️',Physics:['Units and Measurements','Kinematics','Laws of Motion','Work Energy and Power','Rotational Motion','Gravitation','Properties of Matter','Thermodynamics','Kinetic Theory of Gases','Oscillations','Waves','Electrostatics','Current Electricity','Magnetic Effects of Current','Magnetism','Electromagnetic Induction','Alternating Current','Electromagnetic Waves','Ray Optics','Wave Optics','Dual Nature of Matter','Atoms and Nuclei','Semiconductor Electronics'],Chemistry:['Some Basic Concepts','Atomic Structure','Chemical Bonding','Thermodynamics','Equilibrium','Redox Reactions','Electrochemistry','Chemical Kinetics','p-Block Elements','d and f Block Elements','Coordination Compounds','Organic Chemistry Basics','Hydrocarbons','Haloalkanes','Alcohols and Ethers','Aldehydes and Ketones','Carboxylic Acids','Amines','Biomolecules','Polymers'],Mathematics:['Sets Relations and Functions','Complex Numbers','Quadratic Equations','Sequences and Series','Permutation and Combination','Binomial Theorem','Matrices and Determinants','Limits Continuity and Differentiability','Differentiation','Application of Derivatives','Integration','Application of Integrals','Differential Equations','Straight Lines','Circles','Parabola Ellipse Hyperbola','Three Dimensional Geometry','Vector Algebra','Probability','Statistics']},
+  JA:{label:'JEE Advanced',tag:'jee',icon:'⚛️',Physics:['Mechanics — Kinematics','Mechanics — Newton Laws','Mechanics — Work Energy Power','Mechanics — Rotational Motion','Mechanics — Gravitation','Thermal Physics','Waves and Sound','Electrostatics','Current Electricity','Magnetic Effects','Electromagnetic Induction','Optics — Ray Optics','Optics — Wave Optics','Modern Physics — Dual Nature','Modern Physics — Atoms and Nuclei'],Chemistry:['Physical Chemistry — Mole Concept','Physical Chemistry — Atomic Structure','Physical Chemistry — Chemical Bonding','Physical Chemistry — Thermodynamics','Physical Chemistry — Equilibrium','Physical Chemistry — Electrochemistry','Physical Chemistry — Chemical Kinetics','Inorganic Chemistry — s-Block','Inorganic Chemistry — p-Block','Inorganic Chemistry — d-Block','Inorganic Chemistry — Coordination Compounds','Organic Chemistry — Basics and Mechanisms','Organic Chemistry — Hydrocarbons','Organic Chemistry — Functional Groups','Organic Chemistry — Biomolecules'],Mathematics:['Complex Numbers','Matrices and Determinants','Quadratic Equations','Sequences and Series','Permutations and Combinations','Binomial Theorem','Trigonometry','Coordinate Geometry — 2D','Coordinate Geometry — 3D','Limits and Continuity','Differentiation','Applications of Derivatives','Integration','Differential Equations','Probability']},
+  CB9:{label:'CBSE Class 9',tag:'cbse',icon:'📗',Science:['Matter in Our Surroundings','Is Matter Around Us Pure','Atoms and Molecules','Structure of the Atom','The Fundamental Unit of Life','Tissues','Diversity in Living Organisms','Motion','Force and Laws of Motion','Gravitation','Work and Energy','Sound','Why Do We Fall Ill','Natural Resources','Improvement in Food Resources'],Mathematics:['Number Systems','Polynomials','Coordinate Geometry','Linear Equations in Two Variables','Introduction to Euclid Geometry','Lines and Angles','Triangles','Quadrilaterals','Areas of Parallelograms and Triangles','Circles','Constructions','Heron Formula','Surface Areas and Volumes','Statistics','Probability'],'Social Science':['The French Revolution','Socialism in Europe and the Russian Revolution','Nazism and the Rise of Hitler','Forest Society and Colonialism','Pastoralists in the Modern World','India Size and Location','Physical Features of India','Drainage','Climate','Natural Vegetation and Wildlife','Population','What is Democracy','Electoral Politics','Working of Institutions','Democratic Rights','The Story of Village Palampur','People as Resource','Poverty as a Challenge','Food Security in India'],English:['The Fun They Had','The Sound of Music','The Little Girl','A Truly Beautiful Mind','The Snake and the Mirror','My Childhood','Packing','Reach for the Top','The Bond of Love','Kathmandu','If I Were You'],Hindi:['दो बैलों की कथा','ल्हासा की ओर','उपभोक्तावाद की संस्कृति','साँवले सपनों की याद','नाना साहब की पुत्री','प्रेमचंद के फटे जूते','मेरे बचपन के दिन','एक कुत्ता और एक मैना']},
+  CB10:{label:'CBSE Class 10',tag:'cbse',icon:'📘',Science:['Chemical Reactions and Equations','Acids Bases and Salts','Metals and Non-metals','Carbon and its Compounds','Periodic Classification of Elements','Life Processes','Control and Coordination','How do Organisms Reproduce','Heredity and Evolution','Light — Reflection and Refraction','Human Eye and the Colourful World','Electricity','Magnetic Effects of Electric Current','Sources of Energy','Our Environment','Management of Natural Resources'],Mathematics:['Real Numbers','Polynomials','Pair of Linear Equations in Two Variables','Quadratic Equations','Arithmetic Progressions','Triangles','Coordinate Geometry','Introduction to Trigonometry','Some Applications of Trigonometry','Circles','Constructions','Areas Related to Circles','Surface Areas and Volumes','Statistics','Probability'],'Social Science':['The Rise of Nationalism in Europe','Nationalism in India','The Making of a Global World','The Age of Industrialisation','Print Culture and the Modern World','Resources and Development','Forest and Wildlife Resources','Water Resources','Agriculture','Minerals and Energy Resources','Manufacturing Industries','Lifelines of National Economy','Power Sharing','Federalism','Democracy and Diversity','Gender Religion and Caste','Popular Struggles and Movements','Political Parties','Outcomes of Democracy','Development','Sectors of the Indian Economy','Money and Credit','Globalisation and the Indian Economy','Consumer Rights'],English:['A Letter to God','Nelson Mandela Long Walk to Freedom','Two Stories about Flying','From the Diary of Anne Frank','Glimpses of India','Mijbil the Otter','Madam Rides the Bus','The Sermon at Benares','The Proposal'],Hindi:['सूरदास — पद','तुलसीदास — राम-लक्ष्मण-परशुराम संवाद','देव — सवैया और कवित्त','जयशंकर प्रसाद — आत्मकथ्य','सूर्यकांत त्रिपाठी निराला — उत्साह और अट नहीं रही']},
+  CB11:{label:'CBSE Class 11',tag:'cbse',icon:'📙',Physics:['Physical World','Units and Measurements','Motion in a Straight Line','Motion in a Plane','Laws of Motion','Work Energy and Power','System of Particles and Rotational Motion','Gravitation','Mechanical Properties of Solids','Mechanical Properties of Fluids','Thermal Properties of Matter','Thermodynamics','Kinetic Theory','Oscillations','Waves'],Chemistry:['Some Basic Concepts of Chemistry','Structure of Atom','Classification of Elements and Periodicity','Chemical Bonding and Molecular Structure','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Hydrogen','The s-Block Elements','The p-Block Elements','Organic Chemistry Some Basic Principles','Hydrocarbons','Environmental Chemistry'],Biology:['The Living World','Biological Classification','Plant Kingdom','Animal Kingdom','Morphology of Flowering Plants','Anatomy of Flowering Plants','Structural Organisation in Animals','Cell — The Unit of Life','Biomolecules','Cell Cycle and Cell Division','Transport in Plants','Mineral Nutrition','Photosynthesis in Higher Plants','Respiration in Plants','Plant Growth and Development'],Mathematics:['Sets','Relations and Functions','Trigonometric Functions','Principle of Mathematical Induction','Complex Numbers and Quadratic Equations','Linear Inequalities','Permutations and Combinations','Binomial Theorem','Sequences and Series','Straight Lines','Conic Sections','Introduction to Three Dimensional Geometry','Limits and Derivatives','Mathematical Reasoning','Statistics','Probability'],Accountancy:['Introduction to Accounting','Theory Base of Accounting','Recording of Transactions I','Recording of Transactions II','Bank Reconciliation Statement','Trial Balance and Rectification of Errors','Depreciation Provisions and Reserves','Bill of Exchange','Financial Statements','Financial Statements with Adjustments','Accounts from Incomplete Records'],Economics:['Introduction to Economics and Statistics','Collection Organisation and Presentation of Data','Statistical Tools and Interpretation','Introduction to Microeconomics','Theory of Consumer Behaviour','Production and Costs','The Theory of the Firm under Perfect Competition','Non-Competitive Markets','Indian Economic Development']},
+  CB12:{label:'CBSE Class 12',tag:'cbse',icon:'📕',Physics:['Electric Charges and Fields','Electrostatic Potential and Capacitance','Current Electricity','Moving Charges and Magnetism','Magnetism and Matter','Electromagnetic Induction','Alternating Current','Electromagnetic Waves','Ray Optics and Optical Instruments','Wave Optics','Dual Nature of Radiation and Matter','Atoms','Nuclei','Semiconductor Electronics','Communication Systems'],Chemistry:['The Solid State','Solutions','Electrochemistry','Chemical Kinetics','Surface Chemistry','General Principles of Isolation of Elements','The p-Block Elements','The d and f-Block Elements','Coordination Compounds','Haloalkanes and Haloarenes','Alcohols Phenols and Ethers','Aldehydes Ketones and Carboxylic Acids','Amines','Biomolecules','Polymers','Chemistry in Everyday Life'],Biology:['Reproduction in Organisms','Sexual Reproduction in Flowering Plants','Human Reproduction','Reproductive Health','Principles of Inheritance and Variation','Molecular Basis of Inheritance','Evolution','Human Health and Disease','Strategies for Enhancement in Food Production','Microbes in Human Welfare','Biotechnology Principles and Processes','Biotechnology and its Applications','Organisms and Populations','Ecosystem','Biodiversity and Conservation','Environmental Issues'],Mathematics:['Relations and Functions','Inverse Trigonometric Functions','Matrices','Determinants','Continuity and Differentiability','Application of Derivatives','Integrals','Application of Integrals','Differential Equations','Vector Algebra','Three Dimensional Geometry','Linear Programming','Probability'],Accountancy:['Accounting for Not-for-Profit Organisations','Accounting for Partnership Firms Fundamentals','Reconstitution of a Partnership Firm — Admission','Reconstitution of a Partnership Firm — Retirement','Dissolution of Partnership Firm','Accounting for Share Capital','Issue and Redemption of Debentures','Financial Statements of a Company','Analysis of Financial Statements','Accounting Ratios','Cash Flow Statement'],Economics:['Introduction to Macroeconomics','National Income Accounting','Money and Banking','Determination of Income and Employment','Government Budget and the Economy','Open Economy Macroeconomics','Indian Economy on the Eve of Independence','Indian Economy 1950–1990','Liberalisation Privatisation and Globalisation','Poverty','Human Capital Formation','Rural Development','Employment Growth Informalisation and Other Issues','Infrastructure','Sustainable Economic Development']},
+  IC9:{label:'ICSE Class 9',tag:'icse',icon:'📒',Physics:['Measurements and Experimentation','Motion in One Dimension','Laws of Motion','Pressure in Fluids and Atmospheric Pressure','Upthrust in Fluids Archimedes Principle','Heat and Energy','Reflection of Light','Propagation of Sound Waves'],Chemistry:['The Language of Chemistry','Chemical Changes and Reactions','Water','Atomic Structure and Chemical Bonding','The Periodic Table','Study of the First Element Hydrogen','Study of Gas Laws'],Biology:['Basic Biology','Plant Life','Animal Life','Physical Health and Hygiene','Environmental Science'],Mathematics:['Rational and Irrational Numbers','Compound Interest','Expansions','Factorisation','Simultaneous Linear Equations','Indices and Logarithms','Triangles','Mid-point and Intercept Theorems','Rectilinear Figures','Area Theorems','Circle','Statistics','Area and Perimeter of Plane Figures','Solids'],History:['The Harappan Civilisation','The Vedic Period','The Age of the Guptas','Medieval India','The Delhi Sultanate','The Mughal Empire','The Maratha Empire','European Powers in India','Rise of British Power'],Geography:['Earth as a Planet','Geographic Grid','Rotation and Revolution','Structure of the Earth','Landforms','Rocks','Volcanoes','Earthquakes','Weathering','Hydrosphere']},
+  IC10:{label:'ICSE Class 10',tag:'icse',icon:'📒',Physics:['Force','Work Energy and Power','Machines','Refraction of Light at Plane Surfaces','Refraction through a Lens','Spectrum','Sound','Current Electricity','Household Circuits','Magnetic Effect of Current','Calorimetry','Radioactivity'],Chemistry:['Periodic Table Periodicity and Properties','Chemical Bonding','Study of Acids Bases and Salts','Analytical Chemistry','Mole Concept and Stoichiometry','Electrolysis','Metallurgy','Study of Compounds — Ammonia','Study of Compounds — Nitric Acid','Study of Compounds — Sulphuric Acid','Organic Chemistry'],Biology:['Cell Division','Plant Physiology','Human Anatomy and Physiology — Nutrition','Human Anatomy and Physiology — Circulation','Human Anatomy and Physiology — Respiration','Human Anatomy and Physiology — Excretion','Human Anatomy and Physiology — Nervous System','Genetics','Evolution','Population','Pollution'],Mathematics:['Commercial Mathematics','Algebra — Linear Inequations','Algebra — Quadratic Equations','Algebra — Ratio and Proportion','Algebra — Matrices','Geometry — Circles','Geometry — Constructions','Mensuration','Trigonometry','Statistics','Probability'],History:['The Rise of Nationalism in Europe','Nationalist Movement in Indo-China','Nationalism in India','The Making of a Global World','The Age of Industrialisation','Print Culture and the Modern World'],Geography:['Natural Regions of the World','Map of India','Climate of India','Soils of India','Natural Vegetation of India','Water Resources','Mineral and Energy Resources','Manufacturing Industries','Transport and Communication']},
+  IS11:{label:'ISC Class 11',tag:'icse',icon:'📓',Physics:['Physical World and Measurement','Kinematics','Laws of Motion','Work Energy and Power','Motion of System of Particles','Gravitation','Properties of Bulk Matter','Heat and Thermodynamics','Kinetic Theory','Oscillations','Waves'],Chemistry:['Some Basic Concepts of Chemistry','Structure of Atom','Classification of Elements','Chemical Bonding and Molecular Structure','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Hydrogen','The s-Block Elements','The p-Block Elements','Organic Chemistry Basics','Hydrocarbons','Environmental Chemistry'],Mathematics:['Sets and Functions','Algebra','Coordinate Geometry','Calculus','Mathematical Reasoning','Statistics and Probability'],Biology:['Diversity in Living World','Structural Organisation in Plants and Animals','Cell Structure and Function','Plant Physiology','Human Physiology'],Accounts:['Introduction to Accounting','Theory Base of Accounting','Recording of Transactions','Bank Reconciliation Statement','Trial Balance','Depreciation','Financial Statements'],Economics:['Introduction to Economics','Consumer Behaviour and Demand','Producer Behaviour and Supply','Forms of Market','National Income','Money and Banking']},
+  IS12:{label:'ISC Class 12',tag:'icse',icon:'📓',Physics:['Electrostatics','Current Electricity','Magnetic Effects of Current and Magnetism','Electromagnetic Induction and Alternating Currents','Electromagnetic Waves','Optics','Dual Nature of Radiation and Matter','Atoms and Nuclei','Electronic Devices','Communication Systems'],Chemistry:['Solid State','Solutions','Electrochemistry','Chemical Kinetics','Surface Chemistry','General Principles of Isolation of Elements','The p-Block Elements','The d and f-Block Elements','Coordination Compounds','Haloalkanes and Haloarenes','Alcohols Phenols and Ethers','Aldehydes Ketones and Carboxylic Acids','Organic Compounds Containing Nitrogen','Biomolecules','Polymers','Chemistry in Everyday Life'],Mathematics:['Relations and Functions','Algebra','Calculus','Vectors and Three Dimensional Geometry','Linear Programming','Probability'],Biology:['Reproduction','Genetics and Evolution','Biology and Human Welfare','Biotechnology and Its Applications','Ecology and Environment'],Accounts:['Partnership Accounts','Company Accounts','Analysis of Financial Statements','Cash Flow Statement'],Economics:['Macroeconomic Concepts','National Income','Money and Banking','Fiscal Policy','Balance of Payments','Indian Economic Development']},
+  SB9:{label:'State Board Class 9',tag:'state',icon:'📔',Science:['Matter in Our Surroundings','Atoms and Molecules','Structure of Atom','The Fundamental Unit of Life','Tissues','Diversity in Living Organisms','Motion','Force and Laws of Motion','Gravitation','Work and Energy','Sound','Natural Resources'],Mathematics:['Number Systems','Polynomials','Coordinate Geometry','Linear Equations','Triangles','Quadrilaterals','Circles','Heron Formula','Surface Areas and Volumes','Statistics'],'Social Science':['History — French Revolution','History — Russian Revolution','History — Nazism','Geography — India Size and Location','Geography — Physical Features','Geography — Drainage','Geography — Climate','Civics — What is Democracy','Economics — The Story of Village Palampur','Economics — People as Resource','Economics — Poverty as a Challenge']},
+  SB10:{label:'State Board Class 10',tag:'state',icon:'📔',Science:['Chemical Reactions and Equations','Acids Bases and Salts','Metals and Non-metals','Carbon and its Compounds','Life Processes','Control and Coordination','Heredity and Evolution','Light','Electricity','Magnetic Effects','Sources of Energy','Our Environment'],Mathematics:['Real Numbers','Polynomials','Pair of Linear Equations','Quadratic Equations','Arithmetic Progressions','Triangles','Coordinate Geometry','Trigonometry','Circles','Mensuration','Statistics','Probability'],'Social Science':['History — Nationalism in Europe','History — Nationalism in India','Geography — Resources and Development','Geography — Water Resources','Geography — Agriculture','Civics — Power Sharing','Civics — Federalism','Economics — Development','Economics — Sectors of Indian Economy','Economics — Money and Credit']},
+  SB11:{label:'State Board Class 11',tag:'state',icon:'📔',Physics:['Units and Measurements','Motion in a Straight Line','Motion in a Plane','Laws of Motion','Work Energy and Power','Rotational Motion','Gravitation','Properties of Matter','Thermodynamics','Oscillations','Waves'],Chemistry:['Some Basic Concepts','Structure of Atom','Classification of Elements','Chemical Bonding','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Organic Chemistry Basics','Hydrocarbons'],Mathematics:['Sets','Relations and Functions','Trigonometric Functions','Complex Numbers','Sequences and Series','Permutations and Combinations','Straight Lines','Conic Sections','Limits and Derivatives','Statistics','Probability'],Biology:['The Living World','Cell Structure and Function','Plant Physiology','Human Physiology']},
+  SB12:{label:'State Board Class 12',tag:'state',icon:'📔',Physics:['Electrostatics','Current Electricity','Magnetic Effects','Electromagnetic Induction','Optics','Dual Nature','Atoms and Nuclei','Semiconductor Electronics'],Chemistry:['Solid State','Solutions','Electrochemistry','Chemical Kinetics','Surface Chemistry','p-Block Elements','d-Block Elements','Coordination Compounds','Organic Chemistry','Biomolecules'],Mathematics:['Relations and Functions','Inverse Trigonometry','Matrices and Determinants','Calculus — Differentiation','Calculus — Integration','Differential Equations','Vectors','3D Geometry','Linear Programming','Probability'],Biology:['Reproduction','Genetics and Evolution','Biology and Human Welfare','Biotechnology','Ecology']}
+};
+
+const EC = {NT:'NT',NF:'NT',JF:'JM',JM:'JM',JA:'JM',CB9:'CB9',CB10:'CB10',CB11:'CB11',CB12:'CB12',IC9:'IC10',IC10:'IC10',IS11:'IS12',IS12:'IS12',SB9:'CB9',SB10:'CB10',SB11:'CB11',SB12:'CB12'};
+
+// ══ STATE ══
+let curE='',curS='',curC='';
+let fs = parseInt(localStorage.getItem('nfs')||'19');
+let theme = localStorage.getItem('nth')||'light';
+let curTab = 'pdf';
+let uploadedFile = null, uploadedType = '';
+
+// ══ BUILD NAV ══
+function subIcon(s){
+  return {'Physics':'⚡','Chemistry':'🧪','Biology':'🌿','Mathematics':'📐','Science':'🔬','Social Science':'🌍','History':'🏛','Geography':'🗺','English':'📝','Hindi':'📝','Accountancy':'📊','Economics':'📈','Accounts':'📊','Computer Science':'💻'}[s]||'📚';
+}
+
+function buildNav(){
+  const root = document.getElementById('nav-root');
+  Object.entries(SYL).forEach(([ex,data]) => {
+    const {label,tag,icon,...subs} = data;
+    const grp = document.createElement('div');
+    grp.className = 'ng';
+    const ne = document.createElement('div');
+    ne.className = 'ne';
+    ne.innerHTML = `<span class="ne-ic">${icon}</span>${label}<span class="ne-tag tag-${tag}">${ex}</span><span class="ne-arr">▶</span>`;
+    ne.onclick = () => ne.classList.toggle('on');
+    const ns = document.createElement('div');
+    ns.className = 'ns';
+    Object.entries(subs).forEach(([sub,chaps]) => {
+      const nsub = document.createElement('div');
+      nsub.className = 'nsub';
+      nsub.innerHTML = `${subIcon(sub)} ${sub}<span class="nsub-arr">▶</span>`;
+      nsub.onclick = () => nsub.classList.toggle('on');
+      const nchaps = document.createElement('div');
+      nchaps.className = 'nchaps';
+      chaps.forEach(ch => {
+        const nch = document.createElement('div');
+        nch.className = 'nchap';
+        nch.id = `nc-${ex}-${sub}-${ch}`.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9\-]/g,'');
+        nch.textContent = ch;
+        nch.onclick = () => loadNotes(ex,sub,ch,nch);
+        nchaps.appendChild(nch);
+      });
+      ns.appendChild(nsub);
+      ns.appendChild(nchaps);
+    });
+    grp.appendChild(ne); grp.appendChild(ns);
+    root.appendChild(grp);
+  });
+}
+
+// ══ SEARCH ══
+function searchChaps(q){
+  const t = q.toLowerCase().trim();
+  document.querySelectorAll('.nchap').forEach(el => {
+    const match = !t || el.textContent.toLowerCase().includes(t);
+    el.style.display = match ? '' : 'none';
+    if(match && t){
+      const nchaps = el.closest('.nchaps');
+      const nsub = nchaps?.previousElementSibling;
+      const ns = nchaps?.closest('.ns');
+      const ne = ns?.previousElementSibling;
+      if(nsub) nsub.classList.add('on');
+      if(ne) ne.classList.add('on');
+    }
+  });
+}
+
+// ══ SIDEBAR (mobile) ══
+function toggleSb(){
+  const sb = document.getElementById('sb-l');
+  const ov = document.getElementById('mob-ov');
+  const h = document.getElementById('ham');
+  sb.classList.toggle('on');
+  ov.classList.toggle('on');
+  h.textContent = sb.classList.contains('on') ? '✕' : '☰';
+}
+function closeSb(){
+  document.getElementById('sb-l').classList.remove('on');
+  document.getElementById('mob-ov').classList.remove('on');
+  document.getElementById('ham').textContent = '☰';
+}
+
+// ══ THEME ══
+function setTheme(t){
+  theme=t;
+  document.body.className = t==='light'?'':t;
+  localStorage.setItem('nth',t);
+  ['light','sepia','dark'].forEach(m=>document.getElementById('t-'+m)?.classList.toggle('on',m===t));
+}
+
+// ══ FONT SIZE ══
+function chgFont(d){
+  fs = Math.max(15,Math.min(24,fs+d));
+  document.documentElement.style.setProperty('--fs',fs+'px');
+  localStorage.setItem('nfs',fs);
+}
+
+// ══ PROGRESS BAR ══
+window.addEventListener('scroll',()=>{
+  const d = document.documentElement;
+  document.getElementById('prog').style.width = (d.scrollTop/(d.scrollHeight-d.clientHeight)*100||0)+'%';
+  document.querySelectorAll('.nb h2').forEach((h,i)=>{
+    if(h.getBoundingClientRect().top < 100){
+      document.querySelectorAll('.ti').forEach(t=>t.classList.remove('on'));
+      document.getElementById('ti-'+i)?.classList.add('on');
+    }
+  });
+});
+
+// ══ TOAST ══
+function toast(m){
+  const el=document.getElementById('toast');
+  el.textContent=m; el.className='toast on';
+  setTimeout(()=>el.className='toast',3000);
+}
+
+// ══ RENDER NOTES ══
+function renderNotes(html, examLabel, sub, chap, tagClass, source){
+  document.getElementById('generating').style.display='none';
+  document.getElementById('nwrap').style.display='block';
+
+  const wc = html.replace(/<[^>]+>/g,' ').split(/\s+/).filter(Boolean).length;
+  const rt = Math.ceil(wc/200);
+
+  document.getElementById('ch-hd').innerHTML = `
+    <div class="ch-bc">${examLabel} <span>›</span> ${sub} <span>›</span> ${chap}</div>
+    <div class="ch-badge b-${tagClass}">${examLabel} · ${sub}</div>
+    <div class="ch-title">${chap}</div>
+    <div class="ch-meta">
+      <span>⏱ ${rt} min read</span>
+      <span>📄 ${wc.toLocaleString()} words</span>
+      <span>${source==='upload'?'📤 Your notes':'🤖 AI generated'}</span>
+    </div>
+    <div class="ch-actions">
+      <button class="ca-btn" onclick="openModal()" title="Upload your own notes for this chapter">📤 Upload Your Notes</button>
+      <button class="ca-btn" onclick="regenNotes()" title="Regenerate with AI">🔄 Regenerate</button>
+      <button class="ca-btn gold" onclick="downloadPDF()" title="Download as PDF">⬇ Download PDF</button>
+      <button class="ca-btn" onclick="window.print()" title="Print notes">🖨 Print</button>
+    </div>`;
+
+  document.getElementById('nb').innerHTML = html;
+
+  // Practice link
+  const ec = EC[curE]||curE;
+  document.getElementById('prac-btn').href = `mockarena_test.html?exam=${ec}&subj=${encodeURIComponent(curS)}&chap=${encodeURIComponent(curC)}&count=20&name=${encodeURIComponent(curC)}`;
+
+  // Build TOC
+  const heads = document.querySelectorAll('.nb h2');
+  document.getElementById('toc').innerHTML = Array.from(heads).map((h,i)=>{
+    h.id = 'hs-'+i;
+    const txt = h.textContent.replace(/[🔵🟢🟡🔴🟠💜🔷📌⚡🧪]/g,'').trim();
+    return `<div class="ti" id="ti-${i}" onclick="document.getElementById('hs-${i}').scrollIntoView({behavior:'smooth',block:'start'})">${txt}</div>`;
+  }).join('') || '<div style="font-size:.74rem;color:var(--t4)">—</div>';
+
+  document.getElementById('ri-t').textContent = rt+' min read';
+  document.getElementById('ri-w').textContent = wc.toLocaleString()+' words';
+  document.getElementById('ri').style.display = 'block';
+
+  // KaTeX
+  try{ renderMathInElement(document.getElementById('nb'),{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false}); }catch(e){}
+
+  toast(source==='upload'?'Your notes formatted beautifully!':'Notes ready · '+rt+' min read');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ══ LOAD NOTES (AI Generate) ══
+async function loadNotes(ex,sub,chap,el){
+  document.querySelectorAll('.nchap').forEach(c=>c.classList.remove('on'));
+  if(el) el.classList.add('on');
+  curE=ex; curS=sub; curC=chap;
+  if(window.innerWidth<=768) closeSb();
+
+  document.getElementById('tb-chap').textContent = '📖 '+chap;
+  document.title = chap+' — MockArena Notes';
+
+  document.getElementById('welcome').style.display='none';
+  document.getElementById('nwrap').style.display='none';
+  document.getElementById('generating').style.display='block';
+  document.getElementById('toc').innerHTML='';
+  document.getElementById('ri').style.display='none';
+  window.scrollTo({top:0,behavior:'smooth'});
+
+  const bar=document.getElementById('gb'),stg=document.getElementById('gst'),gp=document.getElementById('gp');
+  const steps=[[10,'▶ Analysing syllabus','Identifying key concepts and exam weightage...'],[28,'▶ Structuring content','Organising topics in logical order...'],[50,'▶ Writing notes','Creating comprehensive explanations...'],[70,'▶ Adding formulas','Formatting mathematical equations with LaTeX...'],[85,'▶ Adding tips','Writing memory tips and exam strategies...'],[94,'▶ Polishing','Final formatting for the best reading experience...']];
+  let si=0; const iv=setInterval(()=>{ if(si<steps.length){bar.style.width=steps[si][0]+'%';stg.textContent=steps[si][1];gp.textContent=steps[si][2];si++;} },1400);
+
+  const data = SYL[ex]||{};
+  const examLabel = data.label||ex;
+  const tagClass = data.tag||'cbse';
+
+  const sys=`You are an expert educator creating beautiful comprehensive study notes for Indian students.
+Write complete chapter notes for: ${examLabel} — ${sub} — ${chap}
+Return ONLY valid HTML. No markdown, no preamble, no script or style tags.
+
+Use EXACTLY these HTML structures:
+Section: <h2>🔵 Section Title</h2>
+Sub-section: <h3>Title</h3>
+Paragraph: <p>text</p>
+Key concept: <div class="cal concept"><div class="ct">📘 KEY CONCEPT</div><p>content</p></div>
+Formula box: <div class="fb"><div class="fl">Formula</div>$$LaTeX$$</div>
+Memory tip: <div class="cal memory"><div class="ct">🧠 MEMORY TIP</div><p>content</p></div>
+Common mistake: <div class="cal warning"><div class="ct">⚠️ COMMON MISTAKE</div><p>content</p></div>
+Exam tip: <div class="cal tip"><div class="ct">💡 EXAM TIP</div><p>content</p></div>
+Important: <div class="cal formula"><div class="ct">📌 IMPORTANT</div><p>content</p></div>
+Bullet list: <ul><li>item</li></ul>
+Table: <table class="nt"><thead><tr><th>Col</th></tr></thead><tbody><tr><td>data</td></tr></tbody></table>
+Highlight: <strong>term</strong> or <span class="hl">text</span>
+Divider: <div class="ndiv"></div>
+Inline math: $formula$  Display math: $$formula$$
+
+MUST include:
+- 8+ major sections with h2 headings (use descriptive section names, not just chapter name)
+- Every formula in a <div class="fb"> with proper LaTeX
+- 3+ memory tips in <div class="cal memory">
+- 2+ common mistakes in <div class="cal warning">  
+- 3+ exam-specific tips in <div class="cal tip">
+- At least 1 comparison table using <table class="nt">
+- Key terms highlighted with <strong>
+- Chapter must be covered COMPLETELY — no subtopic skipped
+- Write like a brilliant teacher explaining to a bright student
+- Return ONLY HTML. No markdown. No preamble.`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8000,system:sys,messages:[{role:'user',content:`Write complete notes for ${examLabel} ${sub}: ${chap}. Return only HTML.`}]})});
+    clearInterval(iv); bar.style.width='100%'; stg.textContent='▶ Done!';
+    const d=await res.json();
+    if(d.error) throw new Error(d.error.message);
+    let html=d.content.map(b=>b.text||'').join('').trim();
+    html=html.replace(/^```html?/i,'').replace(/```$/,'').trim();
+    renderNotes(html,examLabel,sub,chap,tagClass,'ai');
+  }catch(err){
+    clearInterval(iv);
+    document.getElementById('generating').style.display='none';
+    document.getElementById('welcome').style.display='block';
+    toast('Error: '+err.message);
+  }
+}
+
+function regenNotes(){ if(curE&&curS&&curC) loadNotes(curE,curS,curC,document.querySelector('.nchap.on')); }
+
+// ══ DOWNLOAD PDF ══
+function downloadPDF(){
+  if(!curC){ toast('No notes to download'); return; }
+  const nb = document.getElementById('nb');
+  const chHead = document.getElementById('ch-hd');
+  if(!nb||!chHead){ toast('No notes loaded'); return; }
+
+  const bcText = chHead.querySelector('.ch-bc')?.textContent||'';
+  const badgeText = chHead.querySelector('.ch-badge')?.textContent||'';
+
+  const printContent = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8"/>
+<title>${curC} — MockArena Notes</title>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Outfit:wght@400;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Lora',Georgia,serif;font-size:11pt;line-height:1.85;color:#1a1a18;padding:28mm 22mm;background:white;}
+.pdf-header{border-bottom:2pt solid #1a2618;padding-bottom:14pt;margin-bottom:28pt;}
+.pdf-bc{font-family:'Outfit',sans-serif;font-size:8pt;color:#9a9a8e;margin-bottom:8pt;}
+.pdf-badge{font-family:'Outfit',sans-serif;font-size:7pt;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#3a6830;border:1pt solid rgba(58,104,48,.3);background:rgba(58,104,48,.06);padding:3pt 8pt;border-radius:100pt;display:inline-block;margin-bottom:10pt;}
+.pdf-title{font-size:22pt;font-weight:700;color:#1a1a18;line-height:1.2;margin-bottom:8pt;}
+.pdf-meta{font-family:'Outfit',sans-serif;font-size:8pt;color:#9a9a8e;}
+.pdf-footer{font-family:'Outfit',sans-serif;font-size:7.5pt;color:#9a9a8e;border-top:1pt solid #e0e0dc;padding-top:10pt;margin-top:32pt;display:flex;justify-content:space-between;}
+h2{font-size:14pt;font-weight:700;color:#1a1a18;margin:28pt 0 10pt;padding-bottom:6pt;border-bottom:1.5pt solid #e0e0dc;page-break-after:avoid;}
+h3{font-size:12pt;font-weight:700;color:#1a1a18;margin:20pt 0 8pt;page-break-after:avoid;}
+h4{font-family:'Outfit',sans-serif;font-size:8pt;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#6b6b62;margin:16pt 0 6pt;}
+p{margin-bottom:11pt;orphans:3;widows:3;}
+strong{font-weight:700;color:#1a1a18;}
+.hl{background:#fef3c7;padding:0 2pt;}
+ul,ol{margin:8pt 0 12pt;padding-left:0;list-style:none;}
+li{display:flex;gap:8pt;margin-bottom:5pt;align-items:flex-start;}
+li::before{content:'•';color:#3a6830;font-weight:700;flex-shrink:0;}
+.cal{border-radius:6pt;padding:11pt 13pt;margin:14pt 0;border-left:3pt solid;page-break-inside:avoid;}
+.ct{font-family:'Outfit',sans-serif;font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6pt;}
+.cal.concept{background:#eff6ff;border-left-color:#2563c8;}.cal.concept .ct{color:#2563c8;}
+.cal.formula{background:#f0fdf4;border-left-color:#3a6830;}.cal.formula .ct{color:#3a6830;}
+.cal.tip{background:#fffbeb;border-left-color:#c8962a;}.cal.tip .ct{color:#c8962a;}
+.cal.warning{background:#fef2f2;border-left-color:#c84b4b;}.cal.warning .ct{color:#c84b4b;}
+.cal.memory{background:#f5f3ff;border-left-color:#6d28d9;}.cal.memory .ct{color:#6d28d9;}
+.fb{background:#f8f7f4;border:1pt solid #e0e0dc;border-radius:6pt;padding:12pt 14pt;margin:12pt 0;text-align:center;page-break-inside:avoid;}
+.fl{font-family:'Outfit',sans-serif;font-size:7.5pt;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#3a6830;margin-bottom:8pt;}
+.nt{width:100%;border-collapse:collapse;margin:12pt 0;font-size:10pt;page-break-inside:avoid;}
+.nt th{background:#f4f3ef;font-family:'Outfit',sans-serif;font-size:8pt;font-weight:800;text-transform:uppercase;padding:8pt 10pt;text-align:left;border:1pt solid #e0e0dc;}
+.nt td{padding:7pt 10pt;border:1pt solid #e0e0dc;color:#3a3a35;line-height:1.5;}
+.nt tr:nth-child(even) td{background:#faf9f5;}
+.ndiv{height:1pt;background:#e0e0dc;margin:20pt 0;}
+
+/* ══ SELECTION EXPLAIN POPUP ══ */
+.sel-popup{
+  position:fixed;z-index:800;
+  max-width:300px;width:88vw;
+  background:var(--sur);
+  border:1.5px solid var(--bd2);
+  border-radius:14px;
+  box-shadow:0 8px 40px rgba(0,0,0,.16);
+  overflow:hidden;
+  visibility:hidden;
+  opacity:0;
+  pointer-events:none;
+}
+.sel-popup.on{
+  visibility:visible;
+  opacity:1;
+  pointer-events:auto;
+  animation:popIn .2s cubic-bezier(.34,1.56,.64,1);
+}
+/* Close button — top right */
+.sp-top{
+  display:flex;align-items:flex-start;
+  justify-content:space-between;gap:8px;
+  padding:14px 14px 0;
+}
+.sp-word{
+  font-family:var(--rf);font-size:1.05rem;font-weight:700;
+  color:var(--t1);line-height:1.3;flex:1;
+}
+.sp-close{
+  width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:2px;
+  border:1.5px solid var(--bd2);
+  background:var(--bg2);cursor:pointer;
+  color:var(--t4);font-size:.68rem;
+  display:flex;align-items:center;justify-content:center;
+  transition:.15s;font-family:var(--uf);
+}
+.sp-close:hover{background:var(--bd2);color:var(--t1);}
+.sp-body{padding:8px 16px 14px;}
+.sp-loading{
+  display:flex;align-items:center;gap:6px;
+  padding:4px 0;
+}
+.sp-dots{display:flex;gap:4px;}
+.sp-dot{
+  width:5px;height:5px;border-radius:50%;background:var(--ac);
+  animation:dot-bounce .8s ease-in-out infinite;
+}
+.sp-dot:nth-child(2){animation-delay:.15s;}
+.sp-dot:nth-child(3){animation-delay:.3s;}
+@keyframes dot-bounce{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
+.sp-content{display:none;}
+.sp-content.on{display:block;}
+.sp-phonetic{
+  font-family:var(--mf);font-size:.75rem;color:var(--t4);
+  margin-bottom:8px;
+}
+.sp-part{
+  font-family:var(--uf);font-size:.67rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ac);margin-bottom:4px;margin-top:10px;
+}
+.sp-part:first-child{margin-top:0;}
+.sp-def{
+  font-family:var(--rf);font-size:.88rem;color:var(--t2);
+  line-height:1.7;margin-bottom:5px;
+}
+.sp-eg{
+  font-family:var(--rf);font-size:.78rem;color:var(--t3);
+  font-style:italic;line-height:1.6;
+  border-left:2px solid var(--bd2);padding-left:8px;
+  margin-top:5px;
+}
+.sp-syn{
+  font-family:var(--uf);font-size:.72rem;color:var(--t4);
+  margin-top:6px;
+}
+.sp-footer{
+  display:flex;gap:6px;padding:10px 14px;
+  border-top:1px solid var(--bd);background:var(--bg);
+}
+.sp-ft-btn{
+  flex:1;padding:6px 10px;border-radius:7px;
+  border:1.5px solid var(--bd);
+  font-family:var(--uf);font-size:.73rem;font-weight:700;
+  cursor:pointer;transition:.15s;background:var(--sur);
+  color:var(--t3);text-align:center;
+}
+.sp-ft-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl);}
+.sp-ft-btn.primary{
+  background:linear-gradient(135deg,var(--ac),#2d5225);
+  color:white;border-color:transparent;
+}
+.sp-ft-btn.primary:hover{opacity:.88;}
+@keyframes popIn{
+  from{opacity:0;transform:scale(.93) translateY(8px);}
+  to{opacity:1;transform:scale(1) translateY(0);}
+}
+.sel-popup.on{
+  display:block;
+  animation:popIn .2s cubic-bezier(.34,1.56,.64,1);
+}
+
+
+
+.sp-close{
+  width:22px;height:22px;border-radius:5px;border:none;
+  background:rgba(255,255,255,.18);cursor:pointer;color:white;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;transition:.15s;flex-shrink:0;font-family:var(--uf);
+}
+.sp-close:hover{background:rgba(255,255,255,.3);}
+
+.sp-body{padding:13px 14px;}
+.sp-loading{
+  display:flex;align-items:center;gap:10px;
+  font-size:.82rem;color:var(--t3);font-family:var(--uf);
+}
+.sp-dots{display:flex;gap:4px;}
+.sp-dot{
+  width:6px;height:6px;border-radius:50%;background:var(--ac);
+  animation:dot-bounce .8s ease-in-out infinite;
+}
+.sp-dot:nth-child(2){animation-delay:.15s;}
+.sp-dot:nth-child(3){animation-delay:.3s;}
+@keyframes dot-bounce{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
+.sp-content{display:none;}
+.sp-content.on{display:block;}
+.sp-phonetic{
+  font-family:var(--mf);font-size:.78rem;color:var(--t4);
+  margin-bottom:8px;
+}
+.sp-part{
+  font-family:var(--uf);font-size:.68rem;font-weight:800;
+  text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ac);margin-bottom:5px;margin-top:10px;
+}
+.sp-part:first-child{margin-top:0;}
+.sp-def{
+  font-family:var(--rf);font-size:.88rem;color:var(--t1);
+  line-height:1.7;margin-bottom:6px;
+}
+.sp-eg{
+  font-family:var(--rf);font-size:.8rem;color:var(--t3);
+  font-style:italic;line-height:1.6;margin-bottom:5px;
+}
+.sp-syn{
+  font-family:var(--uf);font-size:.74rem;color:var(--t4);
+  margin-top:3px;
+}
+.sp-footer{
+  display:flex;gap:6px;padding:9px 13px;
+  border-top:1px solid var(--bd);background:var(--bg);
+}
+.sp-ft-btn{
+  flex:1;padding:6px 8px;border-radius:7px;
+  border:1.5px solid var(--bd);
+  font-family:var(--uf);font-size:.72rem;font-weight:700;
+  cursor:pointer;transition:.15s;background:var(--sur);
+  color:var(--t3);text-align:center;
+}
+.sp-ft-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl);}
+.sp-ft-btn.primary{
+  background:linear-gradient(135deg,var(--ac),#2d5225);
+  color:white;border-color:transparent;
+}
+.sp-ft-btn.primary:hover{opacity:.88;}
+
+
+</style>
+</head>
+<body>
+<div class="pdf-header">
+  <div class="pdf-bc">${bcText}</div>
+  <div class="pdf-badge">${badgeText}</div>
+  <div class="pdf-title">${curC}</div>
+  <div class="pdf-meta">MockArena Study Notes · ${new Date().toLocaleDateString('en-IN',{year:'numeric',month:'long',day:'numeric'})}</div>
+</div>
+${nb.innerHTML}
+<div class="pdf-footer">
+  <span>MockArena · mockarena.co.in</span>
+  <span>${curC} — Study Notes</span>
+  <span>Downloaded ${new Date().toLocaleDateString('en-IN')}</span>
+</div>
+</body>
+</html>`;
+
+  const win = window.open('','_blank');
+  if(!win){ toast('Please allow popups to download PDF'); return; }
+  win.document.write(printContent);
+  win.document.close();
+  win.onload = () => { win.focus(); win.print(); };
+  toast('Opening PDF — click Save as PDF in print dialog');
+}
+
+// ══ UPLOAD MODAL ══
+function openModal(){
+  if(!curC){ toast('Please select a chapter first'); return; }
+  document.getElementById('modal-ov').classList.add('on');
+  document.getElementById('proc-state').style.display='none';
+  ['pdf','word','img','txt'].forEach(t=>{
+    document.getElementById('tab-'+t+'-content').style.display = t==='pdf' ? '' : 'none';
+    document.getElementById('tab-'+t).classList.toggle('on', t==='pdf');
+  });
+  document.getElementById('process-btn').disabled=false;
+  document.getElementById('paste-txt').value='';
+  uploadedFile=null; uploadedType='';
+  ['pdf-name','word-name','img-name'].forEach(id=>{
+    const el=document.getElementById(id); if(el) el.style.display='none';
+  });
+}
+function closeModal(){ document.getElementById('modal-ov').classList.remove('on'); }
+
+function switchTab(t){
+  curTab=t;
+  ['pdf','word','img','txt'].forEach(x=>{
+    document.getElementById('tab-'+x).classList.toggle('on',x===t);
+    document.getElementById('tab-'+x+'-content').style.display=x===t?'':'none';
+  });
+}
+
+function handleFile(input,type){
+  const file = input.files[0]; if(!file) return;
+  uploadedFile=file; uploadedType=type;
+  const nameEl = document.getElementById(type+'-name');
+  if(nameEl){ nameEl.textContent='✓ '+file.name+' ('+Math.round(file.size/1024)+'KB)'; nameEl.style.display='block'; }
+  toast('File ready: '+file.name);
+}
+
+function handleDrop(ev,type){
+  ev.preventDefault();
+  document.getElementById(type+'-zone').classList.remove('drag');
+  const file = ev.dataTransfer.files[0]; if(!file) return;
+  uploadedFile=file; uploadedType=type;
+  const nameEl=document.getElementById(type+'-name');
+  if(nameEl){nameEl.textContent='✓ '+file.name+' ('+Math.round(file.size/1024)+'KB)';nameEl.style.display='block';}
+  toast('File dropped: '+file.name);
+}
+
+// ══ PROCESS UPLOAD ══
+async function processUpload(){
+  const pasteText = document.getElementById('paste-txt').value.trim();
+  if(curTab==='txt' && !pasteText){ toast('Please paste some text first'); return; }
+  if(curTab!=='txt' && !uploadedFile){ toast('Please select a file first'); return; }
+
+  document.getElementById('proc-state').style.display='block';
+  ['pdf','word','img','txt'].forEach(t=>{ const el=document.getElementById('tab-'+t+'-content'); if(el) el.style.display='none'; });
+  document.getElementById('process-btn').disabled=true;
+
+  const data = SYL[curE]||{};
+  const examLabel = data.label||curE;
+  const tagClass = data.tag||'cbse';
+  const proc_h = document.getElementById('proc-h');
+  const proc_p = document.getElementById('proc-p');
+
+  try{
+    let content = '';
+
+    if(curTab === 'txt'){
+      content = pasteText;
+      proc_h.textContent = 'Formatting your notes...';
+      proc_p.textContent = 'Claude AI is converting text into beautiful reading format';
+
+    } else if(curTab === 'img'){
+      proc_h.textContent = 'Reading your image...';
+      proc_p.textContent = 'Claude Vision is extracting text from the image';
+      const b64 = await fileToBase64(uploadedFile);
+      const mediaType = uploadedFile.type||'image/jpeg';
+      const imgRes = await fetch('https://api.anthropic.com/v1/messages',{
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({model:'claude-sonnet-4-6', max_tokens:4000,
+          messages:[{role:'user', content:[
+            {type:'image', source:{type:'base64', media_type:mediaType, data:b64}},
+            {type:'text', text:'Extract ALL text from this image completely. This appears to be study notes for '+examLabel+' '+curS+': '+curC+'. Extract every word, formula, diagram label, and table content accurately. Return only the extracted text, nothing else.'}
+          ]}]})
+      });
+      const imgData = await imgRes.json();
+      if(imgData.error) throw new Error(imgData.error.message);
+      content = imgData.content.map(b=>b.text||'').join('');
+      proc_h.textContent = 'Formatting extracted content...';
+      proc_p.textContent = 'Structuring into beautiful notes format';
+
+    } else {
+      proc_h.textContent = 'Reading your file...';
+      proc_p.textContent = 'Extracting text content from the file';
+      content = await readFileAsText(uploadedFile);
+      if(!content.trim()){ toast('Could not read file text. Try paste text option.'); closeModal(); return; }
+      proc_h.textContent = 'Formatting your notes...';
+      proc_p.textContent = 'Claude AI is converting content into beautiful reading format';
+    }
+
+    // Format with AI
+    const sys = 'You are an expert educator. Format the provided study notes content into beautiful HTML notes for '+examLabel+' - '+curS+' - '+curC+'.'
+    + '\n\nUse EXACTLY these HTML structures:'
+    + '\nSection: <h2>Section Title</h2>'
+    + '\nSub-section: <h3>Title</h3>'
+    + '\nParagraph: <p>text</p>'
+    + '\nKey concept: <div class=\"cal concept\"><div class=\"ct\">KEY CONCEPT</div><p>content</p></div>'
+    + '\nFormula box: <div class=\"fb\"><div class=\"fl\">Formula</div>$$LaTeX$$</div>'
+    + '\nMemory tip: <div class=\"cal memory\"><div class=\"ct\">MEMORY TIP</div><p>content</p></div>'
+    + '\nCommon mistake: <div class=\"cal warning\"><div class=\"ct\">COMMON MISTAKE</div><p>content</p></div>'
+    + '\nExam tip: <div class=\"cal tip\"><div class=\"ct\">EXAM TIP</div><p>content</p></div>'
+    + '\nImportant: <div class=\"cal formula\"><div class=\"ct\">IMPORTANT</div><p>content</p></div>'
+    + '\nBullet list: <ul><li>item</li></ul>'
+    + '\nTable: <table class=\"nt\"><thead><tr><th>Col</th></tr></thead><tbody><tr><td>data</td></tr></tbody></table>'
+    + '\nHighlight: <strong>term</strong> or <span class=\"hl\">text</span>'
+    + '\nInline math: $formula$ Display math: $$formula$$'
+    + '\nDivider: <div class=\"ndiv\"></div>'
+    + '\n\nPreserve ALL original content. Format with the highest quality. Structure headings as h2/h3. Wrap formulas in fb boxes with LaTeX. Highlight key terms with strong. Format lists and tables properly. Return ONLY the HTML content.';
+
+    const fmtRes = await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:'claude-sonnet-4-6', max_tokens:8000, system:sys,
+        messages:[{role:'user', content:'Format these notes into beautiful HTML:\n\n'+content.slice(0,12000)}]})
+    });
+    const fmtData = await fmtRes.json();
+    if(fmtData.error) throw new Error(fmtData.error.message);
+    let html = fmtData.content.map(b=>b.text||'').join('').trim();
+    html = html.replace(/^```html?/i,'').replace(/```$/,'').trim();
+
+    closeModal();
+    renderNotes(html, examLabel, curS, curC, tagClass, 'upload');
+
+  }catch(err){
+    closeModal();
+    toast('Error: '+err.message);
+    console.error(err);
+  }
+}
+
+function fileToBase64(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=()=>res(r.result.split(',')[1]);
+    r.onerror=rej;
+    r.readAsDataURL(file);
+  });
+}
+
+function readFileAsText(file){
+  return new Promise((res,rej)=>{
+    const r=new FileReader();
+    r.onload=()=>res(r.result);
+    r.onerror=rej;
+    r.readAsText(file);
+  });
+}
+
+
+// ══ SELECTION EXPLAIN FEATURE ══
+let popupLocked = false;
+let lastWord = '';
+
+function positionPopup(x, y){
+  const popup = document.getElementById('sel-popup');
+  popup.classList.add('on');
+  const pw = popup.offsetWidth || 320;
+  const ph = popup.offsetHeight || 200;
+  const ww = window.innerWidth;
+  let left = Math.min(x - pw/2, ww - pw - 12);
+  left = Math.max(12, left);
+  let top = y - ph - 16;
+  if(top < 70) top = y + 20;
+  popup.style.left = left + 'px';
+  popup.style.top  = top  + 'px';
+}
+
+function closePopup(){
+  const p = document.getElementById('sel-popup');
+  p.classList.remove('on');
+  popupLocked = false;
+}
+
+// ── FREE DICTIONARY API (no key, instant) ──
+async function explainSelection(text, x, y){
+  const word = text.trim();
+  if(!word || word.length < 2 || word.split(' ').length > 4) return;
+  lastWord = word;
+  popupLocked = true;
+
+  const popup   = document.getElementById('sel-popup');
+  const selEl   = document.getElementById('sp-selected');
+  const loadEl  = document.getElementById('sp-loading');
+  const contEl  = document.getElementById('sp-content');
+  const footEl  = document.getElementById('sp-footer');
+
+  selEl.textContent = word;
+  loadEl.style.display = 'flex';
+  contEl.classList.remove('on');
+  contEl.innerHTML = '';
+  footEl.style.display = 'none';
+  popup.style.left = '-9999px';
+  popup.classList.add('on');
+
+  try{
+    // Try Free Dictionary API first
+    const res = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + encodeURIComponent(word));
+
+    if(res.ok){
+      const data = await res.json();
+      const entry = data[0];
+      const phonetic = entry.phonetics?.find(p=>p.text)?.text || '';
+      
+      // Collect all meanings
+      let html = '';
+      entry.meanings?.slice(0,2).forEach(m => {
+        const def = m.definitions[0];
+        html += `<div class="sp-part">${m.partOfSpeech}</div>`;
+        html += `<div class="sp-def">${def.definition}</div>`;
+        if(def.example) html += `<div class="sp-eg">"${def.example}"</div>`;
+        if(def.synonyms?.length) html += `<div class="sp-syn">Also: ${def.synonyms.slice(0,4).join(', ')}</div>`;
+      });
+
+      loadEl.style.display = 'none';
+      contEl.innerHTML = phonetic
+        ? `<div class="sp-phonetic">${phonetic}</div>${html}`
+        : html;
+      contEl.classList.add('on');
+      footEl.style.display = 'flex';
+
+    } else {
+      // Word not in dictionary — try to explain as a concept/abbreviation
+      contEl.innerHTML = `<div class="sp-def" style="color:var(--t3);font-style:italic;">
+        "${word}" — not found in dictionary.<br>
+        <span style="font-size:.78rem;">This may be a subject-specific term or formula. Try selecting a single word.</span>
+      </div>`;
+      loadEl.style.display = 'none';
+      contEl.classList.add('on');
+      footEl.style.display = 'flex';
+    }
+  }catch(err){
+    loadEl.style.display = 'none';
+    contEl.innerHTML = `<div class="sp-def" style="color:var(--rd);">Connection error. Check internet.</div>`;
+    contEl.classList.add('on');
+  }
+
+  setTimeout(() => positionPopup(x, y), 30);
+}
+
+// ── OPEN FULL DEFINITION IN NEW TAB ──
+function openFullDict(){
+  if(lastWord) window.open('https://www.merriam-webster.com/dictionary/'+encodeURIComponent(lastWord), '_blank');
+}
+
+// Listen for text selection
+document.addEventListener('mouseup', function(e){
+  if(popupLocked) return;
+  if(e.target.closest('.sel-popup')) return;
+  setTimeout(()=>{
+    const sel = window.getSelection();
+    const text = sel?.toString().trim();
+    if(text && text.length >= 2 && text.length <= 500){
+      // Only trigger inside notes body
+      const nb = document.getElementById('nb');
+      if(nb && nb.contains(sel.anchorNode)){
+        const range = sel.getRangeAt(0);
+        const rect = range.getBoundingClientRect();
+        const x = rect.left + rect.width/2 + window.scrollX;
+        const y = rect.top + window.scrollY;
+        explainSelection(text, x, y);
+      }
+    }
+  }, 100);
+});
+
+// Touch support
+document.addEventListener('touchend', function(e){
+  if(popupLocked) return;
+  if(e.target.closest('.sel-popup')) return;
+  setTimeout(()=>{
+    const sel = window.getSelection();
+    const text = sel?.toString().trim();
+    if(text && text.length >= 2){
+      const nb = document.getElementById('nb');
+      if(nb && nb.contains(sel.anchorNode)){
+        const t = e.changedTouches[0];
+        explainSelection(text, t.clientX + window.scrollX, t.clientY + window.scrollY - 60);
+      }
+    }
+  }, 200);
+});
+
+// Close popup on click outside
+document.addEventListener('mousedown', function(e){
+  if(!e.target.closest('.sel-popup') && !e.target.closest('.nb')){
+    if(document.getElementById('sel-popup').classList.contains('on')){
+      closePopup();
+    }
+  }
+});
+
+// Show hint when notes are loaded
+
+// ══ INIT ══
+buildNav();
+setTheme(theme);
+document.documentElement.style.setProperty('--fs',fs+'px');
+</script>
+</body>
+</html>
