@@ -530,6 +530,26 @@ body{font-family:var(--uf);background:var(--bg);color:var(--t1);min-height:100vh
   .fb{border:1px solid #ccc !important;background:#f5f5f5 !important;}
 }
 </style>
+<script type="module">
+// ══ FIREBASE SETUP ══
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getFirestore, doc, getDoc, setDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
+  authDomain: "mockarena-c18c4.firebaseapp.com",
+  projectId: "mockarena-c18c4",
+  storageBucket: "mockarena-c18c4.appspot.com",
+  messagingSenderId: "1234567890",
+  appId: "mockarena-c18c4"
+};
+const fbApp = initializeApp(firebaseConfig);
+const db = getFirestore(fbApp);
+window._db = db;
+window._fsDoc = doc;
+window._fsGetDoc = getDoc;
+window._fsSetDoc = setDoc;
+</script>
 </head>
 <body>
 
@@ -711,32 +731,16 @@ Can be from any source — textbook, your own notes, any website content. AI wil
 </div>
 
 
-<!-- ══ SELECTION EXPLAIN POPUP ══ -->
-<div class="sel-popup" id="sel-popup">
-  <div class="sp-top">
-    <div class="sp-word" id="sp-selected"></div>
-    <button class="sp-close" onclick="closePopup()">✕</button>
-  </div>
-  <div class="sp-body">
-    <div class="sp-loading" id="sp-loading">
-      <div class="sp-dots">
-        <div class="sp-dot"></div>
-        <div class="sp-dot"></div>
-        <div class="sp-dot"></div>
-      </div>
-    </div>
-    <div class="sp-content" id="sp-content"></div>
-  </div>
-  <div class="sp-footer" id="sp-footer" style="display:none;">
-    <button class="sp-ft-btn" onclick="openFullDict()">Full definition ↗</button>
-    <button class="sp-ft-btn primary" onclick="closePopup()">Got it</button>
-  </div>
-</div>
-
-
+<!-- word tooltip created dynamically -->
 <div class="toast" id="toast"></div>
 
 <script>
+// ══ ANTHROPIC API KEY ══
+// Replace with your actual API key from console.anthropic.com
+const ANTHROPIC_KEY = 'YOUR_API_KEY_HERE'; // Get from console.anthropic.com/keys
+// 💡 Model: Claude Sonnet — best quality notes
+// 💡 Firestore: Notes saved after first generation — loaded FREE next time
+
 // ══════════════════════════════════════
 // FULL SYLLABUS — ALL 17 COURSES
 // ══════════════════════════════════════
@@ -799,6 +803,9 @@ function buildNav(){
         nch.id = `nc-${ex}-${sub}-${ch}`.replace(/\s+/g,'-').replace(/[^a-zA-Z0-9\-]/g,'');
         nch.textContent = ch;
         nch.onclick = () => loadNotes(ex,sub,ch,nch);
+        // Check if cached (will be marked after first load)
+        const key = (ex+'_'+sub+'_'+ch).replace(/[^a-zA-Z0-9]/g,'_').slice(0,100);
+        if(localStorage.getItem('nc_'+key)) nch.classList.add('saved');
         nchaps.appendChild(nch);
       });
       ns.appendChild(nsub);
@@ -890,7 +897,7 @@ function renderNotes(html, examLabel, sub, chap, tagClass, source){
     <div class="ch-meta">
       <span>⏱ ${rt} min read</span>
       <span>📄 ${wc.toLocaleString()} words</span>
-      <span>${source==='upload'?'📤 Your notes':'🤖 AI generated'}</span>
+      <span>${source==='upload'?'📤 Your notes':source==='cached'?'⚡ Instant load':'🤖 AI generated'}</span>
     </div>
     <div class="ch-actions">
       <button class="ca-btn" onclick="openModal()" title="Upload your own notes for this chapter">📤 Upload Your Notes</button>
@@ -981,14 +988,57 @@ MUST include:
 - Write like a brilliant teacher explaining to a bright student
 - Return ONLY HTML. No markdown. No preamble.`;
 
+  // ── CHECK FIRESTORE FIRST ──
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8000,system:sys,messages:[{role:'user',content:`Write complete notes for ${examLabel} ${sub}: ${chap}. Return only HTML.`}]})});
+    const db = window._db;
+    if(db){
+      const key = (ex+'_'+sub+'_'+chap).replace(/[^a-zA-Z0-9]/g,'_').slice(0,100);
+      const docRef = window._fsDoc(db, 'notes', key);
+      const snap = await window._fsGetDoc(docRef);
+      if(snap.exists()){
+        // ✅ Found in Firestore — load instantly, no API cost
+        clearInterval(iv); bar.style.width='100%'; stg.textContent='▶ Loaded from cache!';
+        const saved = snap.data();
+        renderNotes(saved.html, examLabel, sub, chap, tagClass, 'cached');
+        toast('📚 Notes loaded instantly · No API cost');
+        return;
+      }
+    }
+  }catch(fbErr){ console.log('Firestore read skipped:', fbErr.message); }
+
+  // ── NOT IN FIRESTORE — GENERATE WITH AI ──
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{
+        'Content-Type':'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:8000,system:sys,messages:[{role:'user',content:`Write complete notes for ${examLabel} ${sub}: ${chap}. Return only HTML.`}]})});
     clearInterval(iv); bar.style.width='100%'; stg.textContent='▶ Done!';
     const d=await res.json();
     if(d.error) throw new Error(d.error.message);
     let html=d.content.map(b=>b.text||'').join('').trim();
     html=html.replace(/^```html?/i,'').replace(/```$/,'').trim();
     renderNotes(html,examLabel,sub,chap,tagClass,'ai');
+    // ── SAVE TO FIRESTORE (generate once, serve forever) ──
+    try{
+      const db = window._db;
+      if(db){
+        const key = (ex+'_'+sub+'_'+chap).replace(/[^a-zA-Z0-9]/g,'_').slice(0,100);
+        const docRef = window._fsDoc(db,'notes',key);
+        await window._fsSetDoc(docRef,{
+          html: html,
+          exam: ex, subject: sub, chapter: chap,
+          examLabel: examLabel,
+          savedAt: new Date().toISOString()
+        });
+        console.log('Notes saved to Firestore ✅');
+        const key2 = (ex+'_'+sub+'_'+chap).replace(/[^a-zA-Z0-9]/g,'_').slice(0,100);
+        localStorage.setItem('nc_'+key2, '1');
+        // Mark chapter in nav
+        document.querySelectorAll('.nchap.on').forEach(el=>el.classList.add('saved'));
+      }
+    }catch(fbErr){ console.log('Firestore save skipped:', fbErr.message); }
   }catch(err){
     clearInterval(iv);
     document.getElementById('generating').style.display='none';
@@ -1049,160 +1099,7 @@ li::before{content:'•';color:#3a6830;font-weight:700;flex-shrink:0;}
 .nt tr:nth-child(even) td{background:#faf9f5;}
 .ndiv{height:1pt;background:#e0e0dc;margin:20pt 0;}
 
-/* ══ SELECTION EXPLAIN POPUP ══ */
-.sel-popup{
-  position:fixed;z-index:800;
-  max-width:300px;width:88vw;
-  background:var(--sur);
-  border:1.5px solid var(--bd2);
-  border-radius:14px;
-  box-shadow:0 8px 40px rgba(0,0,0,.16);
-  overflow:hidden;
-  visibility:hidden;
-  opacity:0;
-  pointer-events:none;
-}
-.sel-popup.on{
-  visibility:visible;
-  opacity:1;
-  pointer-events:auto;
-  animation:popIn .2s cubic-bezier(.34,1.56,.64,1);
-}
-/* Close button — top right */
-.sp-top{
-  display:flex;align-items:flex-start;
-  justify-content:space-between;gap:8px;
-  padding:14px 14px 0;
-}
-.sp-word{
-  font-family:var(--rf);font-size:1.05rem;font-weight:700;
-  color:var(--t1);line-height:1.3;flex:1;
-}
-.sp-close{
-  width:20px;height:20px;border-radius:50%;flex-shrink:0;margin-top:2px;
-  border:1.5px solid var(--bd2);
-  background:var(--bg2);cursor:pointer;
-  color:var(--t4);font-size:.68rem;
-  display:flex;align-items:center;justify-content:center;
-  transition:.15s;font-family:var(--uf);
-}
-.sp-close:hover{background:var(--bd2);color:var(--t1);}
-.sp-body{padding:8px 16px 14px;}
-.sp-loading{
-  display:flex;align-items:center;gap:6px;
-  padding:4px 0;
-}
-.sp-dots{display:flex;gap:4px;}
-.sp-dot{
-  width:5px;height:5px;border-radius:50%;background:var(--ac);
-  animation:dot-bounce .8s ease-in-out infinite;
-}
-.sp-dot:nth-child(2){animation-delay:.15s;}
-.sp-dot:nth-child(3){animation-delay:.3s;}
-@keyframes dot-bounce{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
-.sp-content{display:none;}
-.sp-content.on{display:block;}
-.sp-phonetic{
-  font-family:var(--mf);font-size:.75rem;color:var(--t4);
-  margin-bottom:8px;
-}
-.sp-part{
-  font-family:var(--uf);font-size:.67rem;font-weight:800;
-  text-transform:uppercase;letter-spacing:.08em;
-  color:var(--ac);margin-bottom:4px;margin-top:10px;
-}
-.sp-part:first-child{margin-top:0;}
-.sp-def{
-  font-family:var(--rf);font-size:.88rem;color:var(--t2);
-  line-height:1.7;margin-bottom:5px;
-}
-.sp-eg{
-  font-family:var(--rf);font-size:.78rem;color:var(--t3);
-  font-style:italic;line-height:1.6;
-  border-left:2px solid var(--bd2);padding-left:8px;
-  margin-top:5px;
-}
-.sp-syn{
-  font-family:var(--uf);font-size:.72rem;color:var(--t4);
-  margin-top:6px;
-}
-.sp-footer{
-  display:flex;gap:6px;padding:10px 14px;
-  border-top:1px solid var(--bd);background:var(--bg);
-}
-.sp-ft-btn{
-  flex:1;padding:6px 10px;border-radius:7px;
-  border:1.5px solid var(--bd);
-  font-family:var(--uf);font-size:.73rem;font-weight:700;
-  cursor:pointer;transition:.15s;background:var(--sur);
-  color:var(--t3);text-align:center;
-}
-.sp-ft-btn:hover{border-color:var(--ac);color:var(--ac);background:var(--acl);}
-.sp-ft-btn.primary{
-  background:linear-gradient(135deg,var(--ac),#2d5225);
-  color:white;border-color:transparent;
-}
-.sp-ft-btn.primary:hover{opacity:.88;}
-@keyframes popIn{
-  from{opacity:0;transform:scale(.93) translateY(8px);}
-  to{opacity:1;transform:scale(1) translateY(0);}
-}
-.sel-popup.on{
-  display:block;
-  animation:popIn .2s cubic-bezier(.34,1.56,.64,1);
-}
 
-
-
-.sp-close{
-  width:22px;height:22px;border-radius:5px;border:none;
-  background:rgba(255,255,255,.18);cursor:pointer;color:white;
-  display:flex;align-items:center;justify-content:center;
-  font-size:.75rem;transition:.15s;flex-shrink:0;font-family:var(--uf);
-}
-.sp-close:hover{background:rgba(255,255,255,.3);}
-
-.sp-body{padding:13px 14px;}
-.sp-loading{
-  display:flex;align-items:center;gap:10px;
-  font-size:.82rem;color:var(--t3);font-family:var(--uf);
-}
-.sp-dots{display:flex;gap:4px;}
-.sp-dot{
-  width:6px;height:6px;border-radius:50%;background:var(--ac);
-  animation:dot-bounce .8s ease-in-out infinite;
-}
-.sp-dot:nth-child(2){animation-delay:.15s;}
-.sp-dot:nth-child(3){animation-delay:.3s;}
-@keyframes dot-bounce{0%,80%,100%{transform:scale(.6);opacity:.4;}40%{transform:scale(1);opacity:1;}}
-.sp-content{display:none;}
-.sp-content.on{display:block;}
-.sp-phonetic{
-  font-family:var(--mf);font-size:.78rem;color:var(--t4);
-  margin-bottom:8px;
-}
-.sp-part{
-  font-family:var(--uf);font-size:.68rem;font-weight:800;
-  text-transform:uppercase;letter-spacing:.08em;
-  color:var(--ac);margin-bottom:5px;margin-top:10px;
-}
-.sp-part:first-child{margin-top:0;}
-.sp-def{
-  font-family:var(--rf);font-size:.88rem;color:var(--t1);
-  line-height:1.7;margin-bottom:6px;
-}
-.sp-eg{
-  font-family:var(--rf);font-size:.8rem;color:var(--t3);
-  font-style:italic;line-height:1.6;margin-bottom:5px;
-}
-.sp-syn{
-  font-family:var(--uf);font-size:.74rem;color:var(--t4);
-  margin-top:3px;
-}
-.sp-footer{
-  display:flex;gap:6px;padding:9px 13px;
-  border-top:1px solid var(--bd);background:var(--bg);
-}
 .sp-ft-btn{
   flex:1;padding:6px 8px;border-radius:7px;
   border:1.5px solid var(--bd);
@@ -1318,7 +1215,12 @@ async function processUpload(){
       const b64 = await fileToBase64(uploadedFile);
       const mediaType = uploadedFile.type||'image/jpeg';
       const imgRes = await fetch('https://api.anthropic.com/v1/messages',{
-        method:'POST', headers:{'Content-Type':'application/json'},
+        method:'POST', headers:{
+        'Content-Type':'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
         body:JSON.stringify({model:'claude-sonnet-4-6', max_tokens:4000,
           messages:[{role:'user', content:[
             {type:'image', source:{type:'base64', media_type:mediaType, data:b64}},
@@ -1360,7 +1262,12 @@ async function processUpload(){
     + '\n\nPreserve ALL original content. Format with the highest quality. Structure headings as h2/h3. Wrap formulas in fb boxes with LaTeX. Highlight key terms with strong. Format lists and tables properly. Return ONLY the HTML content.';
 
     const fmtRes = await fetch('https://api.anthropic.com/v1/messages',{
-      method:'POST', headers:{'Content-Type':'application/json'},
+      method:'POST', headers:{
+        'Content-Type':'application/json',
+        'x-api-key': ANTHROPIC_KEY,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
       body:JSON.stringify({model:'claude-sonnet-4-6', max_tokens:8000, system:sys,
         messages:[{role:'user', content:'Format these notes into beautiful HTML:\n\n'+content.slice(0,12000)}]})
     });
@@ -1398,117 +1305,103 @@ function readFileAsText(file){
 }
 
 
-// ══ SELECTION EXPLAIN FEATURE ══
-let popupLocked = false;
+// ══ WORD TOOLTIP (Free Dictionary API) ══
 let lastWord = '';
 
-function positionPopup(x, y){
-  const popup = document.getElementById('sel-popup');
-  popup.classList.add('on');
-  const pw = popup.offsetWidth || 320;
-  const ph = popup.offsetHeight || 200;
-  const ww = window.innerWidth;
-  let left = Math.min(x - pw/2, ww - pw - 12);
+function closeTip(){
+  const t = document.getElementById('word-tip');
+  if(t) t.remove();
+}
+
+function createTip(){
+  closeTip(); // remove any existing
+  const el = document.createElement('div');
+  el.id = 'word-tip';
+  el.style.cssText = 'position:fixed;z-index:900;display:block;background:#1a2618;color:white;border-radius:10px;padding:12px 16px;max-width:280px;width:88vw;box-shadow:0 8px 32px rgba(0,0,0,.25);font-family:Outfit,sans-serif;left:-9999px;top:-9999px;';
+  el.innerHTML = '<div style="display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:8px;">'
+    +'<div id="tip-word" style="font-size:.95rem;font-weight:800;color:white;line-height:1.3;flex:1;"></div>'
+    +'<button onclick="closeTip()" style="background:rgba(255,255,255,.15);border:none;color:white;width:20px;height:20px;border-radius:50%;cursor:pointer;font-size:.7rem;flex-shrink:0;display:flex;align-items:center;justify-content:center;">✕</button>'
+    +'</div>'
+    +'<div id="tip-phonetic" style="font-size:.72rem;color:rgba(255,255,255,.55);margin-bottom:6px;font-family:IBM Plex Mono,monospace;"></div>'
+    +'<div id="tip-part" style="font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#7aaa6c;margin-bottom:5px;"></div>'
+    +'<div id="tip-def" style="font-size:.84rem;color:rgba(255,255,255,.88);line-height:1.65;"></div>'
+    +'<div id="tip-eg" style="font-size:.76rem;color:rgba(255,255,255,.5);font-style:italic;margin-top:6px;line-height:1.5;display:none;"></div>'
+    +'<div id="tip-loading" style="font-size:.82rem;color:rgba(255,255,255,.6);">Looking up...</div>'
+    +'<div style="margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.12);display:flex;gap:6px;">'
+    +'<button onclick="openFullDict()" style="flex:1;padding:5px 8px;border-radius:6px;background:rgba(255,255,255,.12);border:none;color:rgba(255,255,255,.8);font-family:Outfit,sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;">Full definition ↗</button>'
+    +'<button onclick="closeTip()" style="flex:1;padding:5px 8px;border-radius:6px;background:linear-gradient(135deg,#6b8f5e,#3a6830);border:none;color:white;font-family:Outfit,sans-serif;font-size:.72rem;font-weight:700;cursor:pointer;">Got it</button>'
+    +'</div>';
+  document.body.appendChild(el);
+  return el;
+}
+
+function openFullDict(){
+  if(lastWord) window.open('https://www.merriam-webster.com/dictionary/'+encodeURIComponent(lastWord),'_blank');
+}
+
+function posTip(x, y){
+  const el = document.getElementById('word-tip');
+  el.style.display = 'block';
+  const w = el.offsetWidth || 280;
+  const h = el.offsetHeight || 160;
+  let left = Math.min(x - w/2, window.innerWidth - w - 12);
   left = Math.max(12, left);
-  let top = y - ph - 16;
-  if(top < 70) top = y + 20;
-  popup.style.left = left + 'px';
-  popup.style.top  = top  + 'px';
+  let top = y - h - 14;
+  if(top < 70) top = y + 18;
+  el.style.left = left + 'px';
+  el.style.top  = top  + 'px';
 }
 
-function closePopup(){
-  const p = document.getElementById('sel-popup');
-  p.classList.remove('on');
-  popupLocked = false;
-}
-
-// ── FREE DICTIONARY API (no key, instant) ──
-async function explainSelection(text, x, y){
-  const word = text.trim();
-  if(!word || word.length < 2 || word.split(' ').length > 4) return;
+async function lookupWord(word, x, y){
+  const single = word.trim().split(/\s+/).length <= 3;
+  if(!single || word.length < 2) return;
   lastWord = word;
-  popupLocked = true;
 
-  const popup   = document.getElementById('sel-popup');
-  const selEl   = document.getElementById('sp-selected');
-  const loadEl  = document.getElementById('sp-loading');
-  const contEl  = document.getElementById('sp-content');
-  const footEl  = document.getElementById('sp-footer');
-
-  selEl.textContent = word;
-  loadEl.style.display = 'flex';
-  contEl.classList.remove('on');
-  contEl.innerHTML = '';
-  footEl.style.display = 'none';
-  popup.style.left = '-9999px';
-  popup.classList.add('on');
+  const el = createTip();
+  document.getElementById('tip-word').textContent = word;
+  const tipPhone = document.getElementById('tip-phonetic');
+  const tipPart  = document.getElementById('tip-part');
+  const tipDef   = document.getElementById('tip-def');
+  const tipEg    = document.getElementById('tip-eg');
+  const tipLoad  = document.getElementById('tip-loading');
 
   try{
-    // Try Free Dictionary API first
-    const res = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/' + encodeURIComponent(word));
-
+    const res = await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(word));
+    tipLoad.style.display = 'none';
     if(res.ok){
       const data = await res.json();
       const entry = data[0];
-      const phonetic = entry.phonetics?.find(p=>p.text)?.text || '';
-      
-      // Collect all meanings
-      let html = '';
-      entry.meanings?.slice(0,2).forEach(m => {
-        const def = m.definitions[0];
-        html += `<div class="sp-part">${m.partOfSpeech}</div>`;
-        html += `<div class="sp-def">${def.definition}</div>`;
-        if(def.example) html += `<div class="sp-eg">"${def.example}"</div>`;
-        if(def.synonyms?.length) html += `<div class="sp-syn">Also: ${def.synonyms.slice(0,4).join(', ')}</div>`;
-      });
-
-      loadEl.style.display = 'none';
-      contEl.innerHTML = phonetic
-        ? `<div class="sp-phonetic">${phonetic}</div>${html}`
-        : html;
-      contEl.classList.add('on');
-      footEl.style.display = 'flex';
-
+      const ph = entry.phonetics?.find(p=>p.text)?.text||'';
+      const meaning = entry.meanings?.[0];
+      const def = meaning?.definitions?.[0];
+      tipPhone.textContent = ph;
+      tipPart.textContent  = meaning?.partOfSpeech||'';
+      tipDef.textContent   = def?.definition||'Not found';
+      if(def?.example){ tipEg.textContent='"'+def.example+'"'; tipEg.style.display='block'; }
+      else { tipEg.style.display='none'; }
     } else {
-      // Word not in dictionary — try to explain as a concept/abbreviation
-      contEl.innerHTML = `<div class="sp-def" style="color:var(--t3);font-style:italic;">
-        "${word}" — not found in dictionary.<br>
-        <span style="font-size:.78rem;">This may be a subject-specific term or formula. Try selecting a single word.</span>
-      </div>`;
-      loadEl.style.display = 'none';
-      contEl.classList.add('on');
-      footEl.style.display = 'flex';
+      tipPart.textContent = '';
+      tipDef.textContent  = 'Word not found in dictionary';
     }
-  }catch(err){
-    loadEl.style.display = 'none';
-    contEl.innerHTML = `<div class="sp-def" style="color:var(--rd);">Connection error. Check internet.</div>`;
-    contEl.classList.add('on');
+  }catch(e){
+    tipLoad.style.display = 'none';
+    tipDef.textContent = 'Check your internet connection';
   }
 
-  setTimeout(() => positionPopup(x, y), 30);
+  setTimeout(()=>posTip(x,y), 20);
 }
 
-// ── OPEN FULL DEFINITION IN NEW TAB ──
-function openFullDict(){
-  if(lastWord) window.open('https://www.merriam-webster.com/dictionary/'+encodeURIComponent(lastWord), '_blank');
-}
-
-// Listen for text selection
+// Mouse selection
 document.addEventListener('mouseup', function(e){
-  if(popupLocked) return;
-  if(e.target.closest('.sel-popup')) return;
+  if(e.target.closest('#word-tip')) return;
   setTimeout(()=>{
     const sel = window.getSelection();
-    const text = sel?.toString().trim();
-    if(text && text.length >= 2 && text.length <= 500){
-      // Only trigger inside notes body
+    const txt = sel?.toString().trim();
+    if(txt && txt.length >= 2 && txt.length <= 60){
       const nb = document.getElementById('nb');
-      if(nb && nb.contains(sel.anchorNode)){
-        const range = sel.getRangeAt(0);
-        const rect = range.getBoundingClientRect();
-        const x = rect.left + rect.width/2 + window.scrollX;
-        const y = rect.top + window.scrollY;
-        explainSelection(text, x, y);
+      if(nb && sel.anchorNode && nb.contains(sel.anchorNode)){
+        const rect = sel.getRangeAt(0).getBoundingClientRect();
+        lookupWord(txt, rect.left + rect.width/2 + window.scrollX, rect.top + window.scrollY);
       }
     }
   }, 100);
@@ -1516,31 +1409,26 @@ document.addEventListener('mouseup', function(e){
 
 // Touch support
 document.addEventListener('touchend', function(e){
-  if(popupLocked) return;
-  if(e.target.closest('.sel-popup')) return;
+  if(e.target.closest('#word-tip')) return;
   setTimeout(()=>{
     const sel = window.getSelection();
-    const text = sel?.toString().trim();
-    if(text && text.length >= 2){
+    const txt = sel?.toString().trim();
+    if(txt && txt.length >= 2 && txt.length <= 60){
       const nb = document.getElementById('nb');
-      if(nb && nb.contains(sel.anchorNode)){
+      if(nb && sel.anchorNode && nb.contains(sel.anchorNode)){
         const t = e.changedTouches[0];
-        explainSelection(text, t.clientX + window.scrollX, t.clientY + window.scrollY - 60);
+        lookupWord(txt, t.clientX + window.scrollX, t.clientY + window.scrollY - 80);
       }
     }
   }, 200);
 });
 
-// Close popup on click outside
+// Close on outside click
 document.addEventListener('mousedown', function(e){
-  if(!e.target.closest('.sel-popup') && !e.target.closest('.nb')){
-    if(document.getElementById('sel-popup').classList.contains('on')){
-      closePopup();
-    }
+  if(!e.target.closest('#word-tip') && !e.target.closest('.nb')){
+    closeTip();
   }
 });
-
-// Show hint when notes are loaded
 
 // ══ INIT ══
 buildNav();
