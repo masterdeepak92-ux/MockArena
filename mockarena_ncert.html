@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0,user-scalable=yes"/>
+<title>NCERT Solutions — Class 9 to 12 | MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#f7f6f1;--bg2:#eeebe0;--bg3:#e5e1d3;--sur:#fefdfb;
+  --t1:#18170f;--t2:#2a2820;--t3:#6a6758;--t4:#a09d8e;
+  --bd:rgba(24,23,15,.06);--bd2:rgba(24,23,15,.12);
+  --ac:#1e4d0f;--ac2:#2d6b1a;--acl:rgba(30,77,15,.07);--ach:rgba(30,77,15,.16);
+  --go:#8a6000;--rd:#9e2020;
+  --rf:'Crimson Pro',Georgia,serif;--uf:'Outfit',sans-serif;--mf:'JetBrains Mono',monospace;
+  --sh:0 1px 3px rgba(0,0,0,.04),0 4px 12px rgba(0,0,0,.04);
+  --shm:0 2px 8px rgba(0,0,0,.06),0 8px 28px rgba(0,0,0,.05);
+  --tf:.22s cubic-bezier(.4,0,.2,1);
+  --top:68px;--sbw:290px;
+}
+html{font-size:17px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--uf);background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;}
+
+
+/* HERO */
+.ncert-hero{background:var(--sur);border-bottom:1.5px solid var(--bd2);padding:44px 48px 38px;position:relative;overflow:hidden;}
+.ncert-hero::after{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,var(--acl),transparent 70%);pointer-events:none;}
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:rgba(247,246,241,.95);backdrop-filter:blur(20px);border-bottom:1px solid var(--bd2);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:1000;transition:box-shadow var(--tf);}
+.topbar.scrolled{box-shadow:0 1px 0 var(--bd2),0 4px 20px rgba(0,0,0,.07);}
+.ham{display:none;width:38px;height:38px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--bg2);font-size:17px;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;}
+.logo-mark{display:none;}
+.logo-name{font-size:22px;font-weight:800;color:var(--t1);letter-spacing:-.03em;}
+.logo-name em{color:var(--ac2);font-style:normal;}
+.tb-badge{background:var(--acl);border:1px solid var(--ach);color:var(--ac);padding:4px 12px;border-radius:100px;font-size:.82rem;font-weight:700;}
+.tb-sep{width:1px;height:22px;background:var(--bd2);}
+.tb-search{flex:1;max-width:320px;display:flex;align-items:center;gap:8px;background:var(--bg2);border:1.5px solid var(--bd2);border-radius:9px;padding:0 12px;height:36px;transition:all var(--tf);}
+.tb-search:focus-within{border-color:var(--ac2);box-shadow:0 0 0 3px var(--acl);}
+.tb-search input{border:none;background:transparent;outline:none;font-family:var(--uf);font-size:.85rem;color:var(--t1);width:100%;}
+.tb-search input::placeholder{color:var(--t4);}
+.tb-r{display:flex;align-items:center;gap:8px;margin-left:auto;}
+.tb-btn{padding:6px 14px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--sur);color:var(--t2);font-family:var(--uf);font-size:.8rem;font-weight:600;cursor:pointer;transition:all var(--tf);text-decoration:none;display:flex;align-items:center;gap:5px;}
+.tb-btn:hover{border-color:var(--ac2);color:var(--ac);}
+.tb-btn.pri{background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:transparent;color:#fff;}
+.free-counter{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:100px;background:rgba(138,96,0,.08);border:1px solid rgba(138,96,0,.2);font-size:.84rem;font-weight:700;color:var(--go);}
+.free-counter.used{background:rgba(158,32,32,.07);border-color:rgba(158,32,32,.2);color:var(--rd);}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:var(--sbw) 1fr;min-height:100vh;padding-top:var(--top);}
+
+/* SIDEBAR */
+.sb{position:fixed;top:var(--top);left:0;bottom:0;width:var(--sbw);background:var(--sur);border-right:1.5px solid var(--bd2);overflow-y:auto;z-index:100;padding:0 0 60px;}
+.sb::-webkit-scrollbar{width:3px;}
+.sb::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px;}
+
+/* Sidebar header */
+.sb-header{padding:16px 18px 12px;border-bottom:1px solid var(--bd);}
+.sb-header-t{font-size:1rem;font-weight:800;color:var(--t1);letter-spacing:-.02em;}
+.sb-header-s{font-size:.82rem;color:var(--t4);margin-top:2px;}
+
+/* Type tabs */
+.sb-type-tabs{display:flex;gap:6px;padding:12px 12px 10px;}
+.sb-type-tab{
+  flex:1;
+  padding:8px 10px;
+  border-radius:9px;
+  border:1.5px solid var(--bd2);
+  background:var(--bg2);
+  font-family:var(--uf);
+  font-size:.86rem;
+  font-weight:600;
+  color:var(--t3);
+  cursor:pointer;
+  transition:all var(--tf);
+  text-align:center;
+}
+.sb-type-tab.on{
+  background:var(--acl);
+  border-color:var(--ach);
+  color:var(--ac);
+  font-weight:700;
+}
+.sb-type-tab:hover:not(.on){background:var(--bg3);}
+
+/* Divider */
+.sb-divider{height:1px;background:var(--bd2);margin:4px 14px 8px;}
+
+/* Class section */
+.sb-sec{margin:1px 8px;}
+.sb-sec-hd{
+  display:flex;
+  align-items:center;
+  gap:11px;
+  padding:11px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  transition:all var(--tf);
+  border:1.5px solid transparent;
+}
+.sb-sec-hd:hover{background:var(--bg2);border-color:var(--bd2);}
+.sb-sec-hd.on{background:var(--acl);border-color:var(--ach);}
+.sb-sec-hd-ic{font-size:22px;flex-shrink:0;width:28px;text-align:center;line-height:1;}
+
+.sb-sec-name{
+  font-size:1.04rem;
+  font-weight:700;
+  color:var(--t1);
+  line-height:1.3;
+}
+.sb-sec-sub{display:none;}
+.sb-sec-hd.on .sb-sec-name{color:var(--ac);}
+.sb-sec-badge{
+  font-size:0.82rem;
+  font-weight:700;
+  padding:2px 8px;
+  border-radius:100px;
+  background:var(--bg3);
+  color:var(--t4);
+  flex-shrink:0;
+  margin-left:auto;
+}
+.sb-sec-hd.on .sb-sec-badge{background:var(--ach);color:var(--ac);}
+.sb-sec-arr{font-size:10px;color:var(--t4);transition:transform var(--tf);flex-shrink:0;}
+.sb-sec.open .sb-sec-arr{transform:rotate(90deg);}
+
+/* Children */
+.sb-sec-children{display:none;padding:3px 0 6px;}
+.sb-sec.open .sb-sec-children{display:block;}
+
+.sb-subj{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 14px 8px 50px;
+  font-size:.88rem;
+  font-weight:500;
+  color:var(--t3);
+  cursor:pointer;
+  transition:all var(--tf);
+  border-radius:8px;
+  margin:1px 8px;
+}
+.sb-subj:hover{background:var(--bg2);color:var(--t2);}
+.sb-subj.on{background:var(--acl);color:var(--ac);font-weight:600;}
+.sb-subj-dot{width:5px;height:5px;border-radius:50%;background:var(--bd2);flex-shrink:0;}
+.sb-subj.on .sb-subj-dot{background:var(--ac);}
+
+/* MAIN */
+.main{grid-column:2;padding:28px 36px 80px;min-width:0;margin-left:var(--sbw);}
+
+/* BREADCRUMB */
+.breadcrumb{display:flex;align-items:center;gap:6px;margin-bottom:18px;flex-wrap:wrap;}
+.bc-item{font-size:.84rem;color:var(--t4);font-weight:500;cursor:pointer;transition:color var(--tf);}
+.bc-item:hover{color:var(--ac);}
+.bc-sep{font-size:.86rem;color:var(--bd2);}
+.bc-item.on{color:var(--t2);font-weight:700;cursor:default;}
+
+/* CHAPTER HEADER */
+.chap-hd{background:var(--sur);border:1.5px solid var(--bd2);border-radius:16px;padding:20px 24px;margin-bottom:20px;box-shadow:var(--sh);}
+.chap-hd-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:12px;}
+.chap-badge{font-size:.82rem;font-weight:700;letter-spacing:0;padding:5px 13px;border-radius:100px;margin-top:2px;}
+.c9{background:#e8f5e9;color:#1b5e20;}
+.c10{background:#e3f2fd;color:#0d47a1;}
+.c11{background:#ede7f6;color:#4527a0;}
+.c12{background:#fff3e0;color:#e65100;}
+.cx{background:#f1f8e9;color:#33691e;}
+.chap-title{font-family:var(--rf);font-size:1.9rem;font-weight:700;color:var(--t1);letter-spacing:-.03em;margin-bottom:3px;}
+.chap-sub{font-size:.82rem;color:var(--t3);}
+.chap-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.chap-stat{font-size:.84rem;color:var(--t3);}
+.chap-stat strong{color:var(--t2);}
+
+/* CHAPTER GRID (chapter selection) */
+.chap-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-bottom:28px;}
+.chap-card{background:var(--sur);border:1.5px solid var(--bd);border-radius:12px;padding:14px 16px;cursor:pointer;transition:all var(--tf);}
+.chap-card:hover{border-color:var(--ach);background:var(--acl);transform:translateY(-1px);}
+.chap-card.on{border-color:var(--ach);background:var(--acl);}
+.chap-card-n{font-family:var(--mf);font-size:.86rem;color:var(--t4);margin-bottom:5px;}
+.chap-card-t{font-size:.86rem;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.chap-card-s{font-size:.8rem;color:var(--t3);}
+.chap-card-prog{height:3px;background:var(--bg3);border-radius:100px;margin-top:8px;overflow:hidden;}
+.chap-card-fill{height:100%;background:linear-gradient(90deg,var(--ac2),var(--ac));border-radius:100px;transition:width .3s;}
+
+/* QUESTION GRID */
+.q-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;}
+.q-card{background:var(--sur);border:1.5px solid var(--bd);border-radius:13px;overflow:hidden;cursor:pointer;transition:all var(--tf);}
+.q-card:hover{border-color:var(--ach);box-shadow:var(--shm);transform:translateY(-1px);}
+.q-card.watched{border-color:rgba(30,77,15,.18);}
+.q-thumb{position:relative;padding-top:56.25%;background:#111;overflow:hidden;}
+.q-thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.q-card:hover .q-thumb img{transform:scale(1.05);}
+.q-thumb-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.6) 100%);}
+.q-play{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:42px;height:42px;background:rgba(255,255,255,.94);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 4px 14px rgba(0,0,0,.3);transition:all var(--tf);}
+.q-card:hover .q-play{transform:translate(-50%,-50%) scale(1.1);}
+.q-duration{position:absolute;bottom:7px;right:7px;background:rgba(0,0,0,.82);color:#fff;font-family:var(--mf);font-size:.8rem;padding:2px 6px;border-radius:4px;}
+.q-num-badge{position:absolute;top:7px;left:7px;background:rgba(0,0,0,.75);color:#fff;font-family:var(--mf);font-size:.8rem;font-weight:600;padding:2px 7px;border-radius:5px;}
+.w-badge{position:absolute;top:7px;right:7px;background:rgba(30,77,15,.9);color:#fff;font-size:.8rem;font-weight:800;padding:2px 7px;border-radius:100px;}
+.q-body{padding:11px 13px;}
+.q-type{font-size:.82rem;font-weight:700;color:var(--go);margin-bottom:5px;}
+.q-text{font-family:var(--rf);font-size:.98rem;line-height:1.55;color:var(--t1);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.q-foot{display:flex;gap:5px;padding:9px 13px;border-top:1px solid var(--bd);background:var(--bg);}
+.q-foot-btn{flex:1;padding:6px 8px;border-radius:7px;border:1.5px solid var(--bd2);background:transparent;font-family:var(--uf);font-size:.8rem;font-weight:700;color:var(--t3);cursor:pointer;transition:all var(--tf);display:flex;align-items:center;justify-content:center;gap:4px;}
+.q-foot-btn:hover{border-color:var(--ac2);color:var(--ac);}
+.q-foot-btn.watch{background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:transparent;color:#fff;flex:2;}
+
+/* WELCOME */
+.welcome{text-align:left;padding:24px 0 0;}
+.welcome-ic{font-size:3rem;margin-bottom:14px;display:none;}
+.welcome-t{font-family:var(--rf);font-size:1.4rem;font-weight:700;color:var(--t1);margin-bottom:12px;}
+.welcome-s{font-size:.9rem;color:var(--t3);line-height:1.7;max-width:460px;margin:0 0 18px;}
+.class-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.class-card{background:var(--sur);border:1.5px solid var(--bd2);border-radius:12px;overflow:hidden;cursor:pointer;transition:all var(--tf);}
+.class-card:hover{border-color:var(--ach);box-shadow:0 4px 20px rgba(0,0,0,.08);transform:translateY(-2px);}
+.class-card:hover{
+  border-color:var(--ach);
+  box-shadow:var(--shm);
+  transform:translateY(-3px);
+}
+.class-card:hover{border-color:var(--ach);box-shadow:var(--shm);transform:translateY(-3px);}
+.cc-bar{height:4px;width:100%;}
+.cc-body{padding:16px;}
+
+.class-ic{font-size:1.5rem;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.class-t{font-size:.98rem;font-weight:700;color:var(--t1);margin-bottom:3px;}
+.class-s{font-size:.78rem;color:var(--t3);line-height:1.5;margin-bottom:10px;}
+.class-tag{display:inline-flex;align-items:center;font-size:0.8rem;font-weight:700;padding:3px 9px;border-radius:100px;}
+.ct-9{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7;}
+.c9-ic{background:#e8f5e9;}
+.ct-10{background:#e3f2fd;color:#0d47a1;border:1px solid #90caf9;}
+.c10-ic{background:#e3f2fd;}
+.ct-11{background:#ede7f6;color:#4527a0;border:1px solid #b39ddb;}
+.c11-ic{background:#ede7f6;}
+.ct-12{background:#fff3e0;color:#e65100;border:1px solid #ffcc80;}
+.c12-ic{background:#fff3e0;}
+
+/* VIDEO MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(10px);z-index:2000;align-items:center;justify-content:center;padding:16px;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--sur);border-radius:18px;width:100%;max-width:880px;max-height:92vh;overflow-y:auto;position:relative;animation:mIn .22s ease;}
+@keyframes mIn{from{opacity:0;transform:scale(.96)translateY(8px)}to{opacity:1;transform:none}}
+.modal-close{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:14px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;}
+.vid-wrap{position:relative;width:100%;padding-top:56.25%;background:#000;}
+.vid-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
+.vid-shield{position:absolute;inset:0;z-index:5;background:transparent;}
+.vid-wm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-28deg);font-family:var(--uf);font-size:18px;font-weight:900;color:rgba(255,255,255,.05);white-space:nowrap;pointer-events:none;z-index:6;letter-spacing:.1em;text-transform:uppercase;user-select:none;}
+.modal-body{padding:18px 22px;}
+.modal-eyebrow{font-family:var(--mf);font-size:.8rem;color:var(--t4);margin-bottom:5px;}
+.modal-qtxt{font-family:var(--rf);font-size:1.08rem;line-height:1.65;color:var(--t1);font-weight:500;margin-bottom:14px;}
+.sol-box{background:var(--bg2);border-radius:10px;padding:13px 15px;margin-bottom:12px;}
+.sol-lbl{font-size:.84rem;font-weight:700;color:var(--ac2);margin-bottom:9px;}
+.sol-txt{font-family:var(--rf);font-size:.96rem;line-height:1.7;color:var(--t2);}
+.modal-acts{display:flex;gap:8px;flex-wrap:wrap;}
+.modal-act{flex:1;padding:9px 12px;border-radius:9px;border:1.5px solid var(--bd2);background:var(--bg2);font-family:var(--uf);font-size:.86rem;font-weight:700;color:var(--t2);cursor:pointer;transition:all var(--tf);text-align:center;}
+.modal-act:hover{border-color:var(--ac2);color:var(--ac);background:var(--acl);}
+.modal-act.pri{background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:transparent;color:#fff;flex:2;}
+
+/* PAYWALL */
+.paywall{display:none;position:fixed;inset:0;background:rgba(247,246,241,.97);backdrop-filter:blur(20px);z-index:3000;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:32px 20px;}
+.pw-ic{font-size:2.8rem;margin-bottom:14px;}
+.pw-t{font-family:var(--rf);font-size:1.8rem;font-weight:700;color:var(--t1);margin-bottom:8px;}
+.pw-s{font-size:.88rem;color:var(--t3);line-height:1.7;max-width:360px;margin-bottom:22px;}
+.pw-card{background:var(--sur);border:2px solid var(--ach);border-radius:16px;padding:22px 28px;margin-bottom:14px;width:100%;max-width:320px;}
+.pw-plan{font-size:.86rem;font-weight:700;color:var(--ac2);margin-bottom:8px;}
+.pw-price{font-family:var(--rf);font-size:2.6rem;font-weight:700;color:var(--t1);line-height:1;margin-bottom:14px;}
+.pw-price span{font-size:.95rem;color:var(--t3);}
+.pw-feats{list-style:none;text-align:left;margin-bottom:16px;}
+.pw-feats li{font-size:.84rem;color:var(--t2);padding:3px 0;display:flex;align-items:center;gap:7px;}
+.pw-feats li::before{content:'✓';color:var(--ac);font-weight:900;}
+.pw-btn{width:100%;padding:12px;border-radius:10px;border:none;background:linear-gradient(135deg,var(--ac2),var(--ac));color:#fff;font-family:var(--uf);font-size:.92rem;font-weight:800;cursor:pointer;transition:all var(--tf);}
+.pw-btn:hover{opacity:.9;}
+.pw-close{background:none;border:none;font-size:.84rem;color:var(--t4);cursor:pointer;font-family:var(--uf);margin-top:8px;}
+
+#prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--ac2),var(--ac));z-index:9999;width:0%;transition:width .2s;}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--t1);color:var(--bg);font-family:var(--uf);font-size:.8rem;font-weight:600;padding:10px 20px;border-radius:100px;opacity:0;transition:all .22s;z-index:9000;white-space:nowrap;pointer-events:none;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.mob-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90;}
+.mob-ov.on{display:block;}
+
+@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+@media(max-width:900px){
+  .main{margin-left:0 !important;}
+  #ncert-hero{padding:26px 18px 22px !important;}
+  #welcome-state-wrap{padding:0 !important;}
+  .class-grid{grid-template-columns:1fr 1fr;gap:12px;}
+  .cc-body{padding:16px 16px 14px;}
+  .class-t{font-size:1.15rem;}
+  .class-ic{font-size:2.2rem;margin-bottom:10px;}
+  .class-s{font-size:.84rem;}
+  .class-tag{font-size:.78rem;padding:4px 10px;}
+  .layout{grid-template-columns:1fr;}
+  .sb{transform:translateX(-300px);transition:transform var(--tf);}
+  .sb.on{transform:translateX(0);}
+  .main{grid-column:1;padding:18px 14px 60px;}
+  .ham{display:flex;}
+  .tb-search{display:none;}
+  .q-grid{grid-template-columns:1fr 1fr;}
+  .class-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 24px;}
+  .chap-grid{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:480px){
+  .q-grid{grid-template-columns:1fr;}
+}
+  .class-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:0 0 24px;}
+}
+
+@media(max-width:600px){
+  /* Saved panel full width on mobile */
+  #saved-panel{
+    width:100% !important;
+    border-radius:16px 16px 0 0 !important;
+    left:0 !important;
+    right:0 !important;
+  }
+  /* Modal full screen on small phones */
+  .modal{
+    border-radius:14px !important;
+    max-height:95vh !important;
+  }
+  /* Topbar adjustments */
+  .tb-r .tb-btn:not(.pri){display:none !important;}
+  .free-badge{font-size:.8rem !important;padding:5px 10px !important;}
+  /* Hero stats tighter */
+  #ncert-hero div[style*="gap:28px"]{gap:16px !important;}
+}
+</style>
+</head>
+<body>
+<div id="prog"></div>
+<div class="mob-ov" id="mob-ov" onclick="closeSb()"></div>
+
+<!-- TOPBAR -->
+<header class="topbar" id="topbar">
+  <button class="ham" id="ham" onclick="toggleSb()">☰</button>
+  <a href="index.html" class="logo">
+    <span class="logo-name">Mock<em>Arena</em></span>
+  </a>
+  <span class="tb-badge">📚 NCERT Solutions</span>
+  <div class="tb-sep"></div>
+  <div class="tb-search">
+    <span style="font-size:13px;color:var(--t4)">🔍</span>
+    <input type="text" id="search-inp" placeholder="Search chapter, question..." oninput="onSearch(this.value)"/>
+  </div>
+  <div class="tb-r">
+    <div class="free-counter" id="free-counter"><span>🎬</span><span id="free-text">5 free left</span></div>
+    <button class="tb-btn" onclick="toggleSavedPanel()">📥 Saved <span id="ncert-saved-n"></span></button>
+    <a href="mockarena_solutions.html" class="tb-btn">📹 PYQ Solutions</a>
+    <a href="mockarena_student_dashboard.html" class="tb-btn pri">Go Pro ₹149</a>
+  </div>
+</header>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+<!-- SIDEBAR -->
+<aside class="sb" id="sb">
+  <div class="sb-header">
+    <div class="sb-header-t">📚 NCERT Solutions</div>
+    <div class="sb-header-s">Textbook + Exemplar · Class 9–12</div>
+  </div>
+
+  <!-- Type tabs -->
+  <div class="sb-type-tabs">
+    <button class="sb-type-tab on" onclick="setType('textbook',this)">📖 Textbook</button>
+    <button class="sb-type-tab" onclick="setType('exemplar',this)">⭐ Exemplar</button>
+  </div>
+
+  <div class="sb-divider"></div>
+
+  <!-- Class 9 -->
+  <div class="sb-sec" id="sec-9">
+    <div class="sb-sec-hd" onclick="toggleSec('9')">
+      <span class="sb-sec-hd-ic">📗</span>
+      <div style="flex:1;min-width:0;">
+        <div class="sb-sec-name">Class 9</div>
+        <div class="sb-sec-sub">Science · Maths · SST · English</div>
+      </div>
+      <span class="sb-sec-badge">300+</span>
+      <span class="sb-sec-arr">▶</span>
+    </div>
+    <div class="sb-sec-children" id="ch-9"></div>
+  </div>
+
+  <!-- Class 10 -->
+  <div class="sb-sec" id="sec-10">
+    <div class="sb-sec-hd" onclick="toggleSec('10')">
+      <span class="sb-sec-hd-ic">📘</span>
+      <div style="flex:1;min-width:0;">
+        <div class="sb-sec-name">Class 10</div>
+        <div class="sb-sec-sub">Science · Maths · SST · English</div>
+      </div>
+      <span class="sb-sec-badge">300+</span>
+      <span class="sb-sec-arr">▶</span>
+    </div>
+    <div class="sb-sec-children" id="ch-10"></div>
+  </div>
+
+  <!-- Class 11 -->
+  <div class="sb-sec" id="sec-11">
+    <div class="sb-sec-hd" onclick="toggleSec('11')">
+      <span class="sb-sec-hd-ic">📙</span>
+      <div style="flex:1;min-width:0;">
+        <div class="sb-sec-name">Class 11</div>
+        <div class="sb-sec-sub">Physics · Chemistry · Maths · Biology</div>
+      </div>
+      <span class="sb-sec-badge">400+</span>
+      <span class="sb-sec-arr">▶</span>
+    </div>
+    <div class="sb-sec-children" id="ch-11"></div>
+  </div>
+
+  <!-- Class 12 -->
+  <div class="sb-sec" id="sec-12">
+    <div class="sb-sec-hd" onclick="toggleSec('12')">
+      <span class="sb-sec-hd-ic">📕</span>
+      <div style="flex:1;min-width:0;">
+        <div class="sb-sec-name">Class 12</div>
+        <div class="sb-sec-sub">Physics · Chemistry · Maths · Biology</div>
+      </div>
+      <span class="sb-sec-badge">400+</span>
+      <span class="sb-sec-arr">▶</span>
+    </div>
+    <div class="sb-sec-children" id="ch-12"></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<main class="main" id="main">
+  <div id="content-area">
+
+    <!-- HERO BANNER -->
+    <div id="ncert-hero" class="ncert-hero">
+    <div style="position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,var(--acl),transparent 70%);pointer-events:none;"></div>
+    <div style="display:inline-flex;align-items:center;gap:8px;background:var(--acl);border:1.5px solid var(--ach);color:var(--ac2);font-size:.84rem;font-weight:700;padding:6px 14px;border-radius:100px;margin-bottom:16px;">📚 NCERT Video Solutions</div>
+    <div style="margin-bottom:14px;">
+      <div style="font-family:'Crimson Pro',Georgia,serif;font-size:2rem;font-weight:700;color:var(--t1);letter-spacing:-.03em;line-height:1.15;">NCERT <span style="color:var(--ac2);">Solutions</span></div>
+      <div style="font-family:'Crimson Pro',Georgia,serif;font-size:1.3rem;font-weight:600;color:var(--t3);letter-spacing:-.01em;margin-top:4px;">Class 9, 10, 11 & 12 — Textbook + Exemplar</div>
+    </div>
+    <div style="font-size:1.05rem;color:var(--t2);line-height:1.8;max-width:560px;margin-bottom:32px;">Every question from NCERT Textbook and Exemplar — Class 9 to 12 — solved step by step in short 3–4 minute videos.</div>
+    <div style="display:flex;gap:32px;flex-wrap:wrap;">
+      <div>
+        <div style="font-family:'Crimson Pro',Georgia,serif;font-size:2.4rem;font-weight:700;color:var(--t1);line-height:1;">4,000<span style="font-size:1.1rem;color:var(--ac2);font-family:'Outfit',sans-serif;font-weight:700;margin-left:3px;">+</span></div>
+        <div style="font-size:.9rem;font-weight:500;color:var(--t3);margin-top:7px;">Video Solutions</div>
+      </div>
+      <div>
+        <div style="font-family:'Crimson Pro',Georgia,serif;font-size:2.4rem;font-weight:700;color:var(--t1);line-height:1;">4<span style="font-size:1.1rem;color:var(--ac2);font-family:'Outfit',sans-serif;font-weight:700;margin-left:3px;">Classes</span></div>
+        <div style="font-size:.9rem;font-weight:500;color:var(--t3);margin-top:7px;">Class 9 – 12</div>
+      </div>
+      <div>
+        <div style="font-family:'Crimson Pro',Georgia,serif;font-size:2.4rem;font-weight:700;color:var(--t1);line-height:1;">2<span style="font-size:1.1rem;color:var(--ac2);font-family:'Outfit',sans-serif;font-weight:700;margin-left:3px;">Types</span></div>
+        <div style="font-size:.9rem;font-weight:500;color:var(--t3);margin-top:7px;">Textbook + Exemplar</div>
+      </div>
+      <div>
+        <div style="font-family:'Crimson Pro',Georgia,serif;font-size:2.4rem;font-weight:700;color:var(--t1);line-height:1;">3–4<span style="font-size:1.1rem;color:var(--ac2);font-family:'Outfit',sans-serif;font-weight:700;margin-left:3px;">Min</span></div>
+        <div style="font-size:.9rem;font-weight:500;color:var(--t3);margin-top:7px;">Per Video</div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Welcome -->
+    <div id="welcome-state-wrap">
+    <div id="welcome-state" style="padding:24px 32px 48px;">
+      <div style="font-size:1.15rem;font-weight:700;color:var(--t1);margin-bottom:4px;letter-spacing:-.02em;">Select Your Class</div>
+      <div style="font-size:.84rem;color:var(--t3);margin-bottom:22px;line-height:1.6;">Choose a class · Textbook + Exemplar solutions · Short videos</div>
+
+      <div style="font-size:.78rem;font-weight:700;color:var(--t3);letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;">🏫 Secondary</div>
+      <div class="class-grid">
+
+        <div class="class-card" onclick="quickSelect('9','Science')">
+          <div class="cc-bar" style="background:linear-gradient(90deg,#1b5e20,#4caf50);"></div>
+          <div class="cc-body">
+            <div class="class-ic" style="background:#e8f5e9;">📗</div>
+            <div class="class-t">Class 9</div>
+            <div class="class-s">Science · Maths · SST · English</div>
+            <span class="class-tag ct-9">Textbook + Exemplar</span>
+          </div>
+        </div>
+
+        <div class="class-card" onclick="quickSelect('10','Science')">
+          <div class="cc-bar" style="background:linear-gradient(90deg,#0d47a1,#42a5f5);"></div>
+          <div class="cc-body">
+            <div class="class-ic" style="background:#e3f2fd;">📘</div>
+            <div class="class-t">Class 10</div>
+            <div class="class-s">Science · Maths · SST · English</div>
+            <span class="class-tag ct-10">Textbook + Exemplar</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div style="font-size:.78rem;font-weight:700;color:var(--t3);letter-spacing:.04em;text-transform:uppercase;margin-bottom:10px;">🎓 Senior Secondary</div>
+      <div class="class-grid">
+
+        <div class="class-card" onclick="quickSelect('11','Physics')">
+          <div class="cc-bar" style="background:linear-gradient(90deg,#4527a0,#9575cd);"></div>
+          <div class="cc-body">
+            <div class="class-ic" style="background:#ede7f6;">📙</div>
+            <div class="class-t">Class 11</div>
+            <div class="class-s">Physics · Chemistry · Maths · Biology</div>
+            <span class="class-tag ct-11">Textbook + Exemplar</span>
+          </div>
+        </div>
+
+        <div class="class-card" onclick="quickSelect('12','Physics')">
+          <div class="cc-bar" style="background:linear-gradient(90deg,#e65100,#ff9800);"></div>
+          <div class="cc-body">
+            <div class="class-ic" style="background:#fff3e0;">📕</div>
+            <div class="class-t">Class 12</div>
+            <div class="class-s">Physics · Chemistry · Maths · Biology</div>
+            <span class="class-tag ct-12">Textbook + Exemplar</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Chapter / Question View -->
+    <div id="content-view" style="display:none;">
+      <div class="breadcrumb" id="breadcrumb"></div>
+
+      <!-- Chapter Header -->
+      <div class="chap-hd" id="chap-hd">
+        <div class="chap-hd-top">
+          <span class="chap-badge c9" id="ch-badge">Class 9</span>
+          <div>
+            <div class="chap-title" id="ch-title">Science</div>
+            <div class="chap-sub" id="ch-sub">NCERT Textbook · Select a chapter below</div>
+          </div>
+        </div>
+        <div class="chap-meta">
+          <span class="chap-stat">📹 <strong id="ch-total">0</strong> solutions</span>
+          <span class="chap-stat">✓ <strong id="ch-watched">0</strong> watched</span>
+        </div>
+      </div>
+
+      <!-- Chapter Grid -->
+      <div id="chap-grid-wrap">
+        <div style="font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--t4);margin-bottom:10px;">Select Chapter</div>
+        <div class="chap-grid" id="chap-grid"></div>
+      </div>
+
+      <!-- Question Grid -->
+      <div id="q-grid-wrap" style="display:none;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;">
+          <div>
+            <div style="font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--t4);margin-bottom:3px;" id="q-grid-label">All Questions</div>
+            <div style="font-size:.82rem;color:var(--t3);" id="q-count-label"></div>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+            <div style="display:flex;gap:6px;flex-wrap:wrap;" id="ncert-filters">
+              <div class="ncert-fc on" onclick="nFilt('all',this)" style="padding:6px 14px;border-radius:100px;border:1.5px solid var(--ach);background:var(--acl);font-size:.8rem;font-weight:700;color:var(--ac);cursor:pointer;">All Types</div>
+              <div class="ncert-fc" onclick="nFilt('Exercise Q',this)" style="padding:6px 14px;border-radius:100px;border:1.5px solid var(--bd2);background:var(--bg2);font-size:.8rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all .2s;">Exercise Q</div>
+              <div class="ncert-fc" onclick="nFilt('In-text Q',this)" style="padding:6px 14px;border-radius:100px;border:1.5px solid var(--bd2);background:var(--bg2);font-size:.8rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all .2s;">In-text Q</div>
+              <div class="ncert-fc" onclick="nFilt('MCQ',this)" style="padding:6px 14px;border-radius:100px;border:1.5px solid var(--bd2);background:var(--bg2);font-size:.8rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all .2s;">MCQ</div>
+              <div class="ncert-fc" onclick="nFilt('Not Watched',this)" style="padding:6px 14px;border-radius:100px;border:1.5px solid var(--bd2);background:var(--bg2);font-size:.8rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all .2s;">👁 Not Watched</div>
+              <div class="ncert-fc" onclick="nFilt('Easy',this)" style="padding:6px 14px;border-radius:100px;border:1.5px solid var(--bd2);background:var(--bg2);font-size:.8rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all .2s;">Easy</div>
+              <div class="ncert-fc" onclick="nFilt('Medium',this)" style="padding:6px 14px;border-radius:100px;border:1.5px solid var(--bd2);background:var(--bg2);font-size:.8rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all .2s;">Medium</div>
+              <div class="ncert-fc" onclick="nFilt('Hard',this)" style="padding:6px 14px;border-radius:100px;border:1.5px solid var(--bd2);background:var(--bg2);font-size:.8rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all .2s;">Hard</div>
+            </div>
+            <select onchange="nSort(this.value)" style="padding:6px 12px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--bg2);font-family:var(--uf);font-size:.8rem;color:var(--t2);outline:none;cursor:pointer;">
+              <option value="">Sort: Default</option>
+              <option value="watched">Watched First</option>
+              <option value="unwatched">Unwatched First</option>
+            </select>
+            <div style="display:flex;border:1.5px solid var(--bd2);border-radius:8px;overflow:hidden;">
+              <button onclick="nView('grid',this)" style="padding:5px 10px;font-size:15px;background:var(--acl);color:var(--ac);border:none;cursor:pointer;" title="Grid">⊞</button>
+              <button onclick="nView('list',this)" style="padding:5px 10px;font-size:15px;background:transparent;color:var(--t4);border:none;cursor:pointer;" title="List">☰</button>
+            </div>
+            <button style="padding:7px 14px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--bg2);font-family:var(--uf);font-size:.8rem;font-weight:700;color:var(--t3);cursor:pointer;" onclick="backToChapters()">← Chapters</button>
+          </div>
+        </div>
+        <div class="q-grid" id="q-grid"></div>
+      </div>
+    </div>
+  </div>
+</main>
+</div>
+
+<!-- VIDEO MODAL -->
+<div class="modal-bg" id="modal-bg" onclick="closeModalBg(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="vid-wrap">
+      <iframe id="vid-frame" src="" allowfullscreen allow="autoplay;encrypted-media"></iframe>
+      <div class="vid-shield" oncontextmenu="return false;"></div>
+      <div class="vid-wm" id="vid-wm">MockArena</div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-eyebrow" id="m-eyebrow"></div>
+      <div class="modal-qtxt" id="m-qtxt"></div>
+      <div id="m-opts"></div>
+      <div class="sol-box">
+        <div class="sol-lbl">📝 Solution</div>
+        <div class="sol-txt" id="m-sol"></div>
+      </div>
+      <div class="modal-acts">
+        <button class="modal-act" onclick="markWatched()">✓ Watched</button>
+        <button class="modal-act" onclick="saveOffline()">📥 Save</button>
+        <button class="modal-act pri" onclick="goToNotes()">📖 Read Notes →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SAVED PANEL -->
+<div style="position:fixed;bottom:0;right:0;width:320px;background:var(--sur);border:1.5px solid var(--bd2);border-radius:16px 16px 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.08);z-index:1500;transform:translateY(100%);transition:transform .3s ease;padding:16px;" id="saved-panel">
+  <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
+    <div style="font-size:.9rem;font-weight:800;color:var(--t1);">📥 Saved Offline <span id="sp-count" style="color:var(--t4);font-weight:500;font-size:.8rem;">(0/10)</span></div>
+    <button onclick="toggleSavedPanel()" style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--t3);">✕</button>
+  </div>
+  <div id="sp-list" style="display:flex;flex-direction:column;gap:7px;max-height:280px;overflow-y:auto;"></div>
+  <div style="font-size:.72rem;color:var(--t4);text-align:center;margin-top:10px;">Save up to 10 videos to watch anytime offline</div>
+</div>
+
+<!-- PAYWALL -->
+<div class="paywall" id="paywall">
+  <div class="pw-ic">🎬</div>
+  <div class="pw-t">5 Free Videos Used</div>
+  <div class="pw-s">Subscribe to MockArena Pro for unlimited access to all NCERT and Previous Year solutions.</div>
+  <div class="pw-card">
+    <div class="pw-plan">MockArena Pro</div>
+    <div class="pw-price">₹149<span>/month</span></div>
+    <ul class="pw-feats">
+      <li>Unlimited NCERT solutions</li>
+      <li>All previous year papers 2016–2026</li>
+      <li>NCERT Exemplar solutions</li>
+      <li>Save 10 videos offline</li>
+      <li>Complete chapter notes + Tests</li>
+    </ul>
+    <button class="pw-btn" onclick="window.location.href='mockarena_student_dashboard.html#subscribe'">Subscribe — ₹149/month</button>
+  </div>
+  <button class="pw-close" onclick="document.getElementById('paywall').style.display='none'">← Go back</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ════════════════════════
+// NCERT SOLUTIONS
+// ════════════════════════
+
+// Anti-screenshot
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.addEventListener('keydown',e=>{
+  if(e.key==='PrintScreen'){e.preventDefault();toast('Screenshots not allowed');}
+  if((e.ctrlKey||e.metaKey)&&['s','p','u'].includes(e.key.toLowerCase()))e.preventDefault();
+  if(e.key==='F12')e.preventDefault();
+  if(e.key==='Escape')closeModal();
+});
+document.addEventListener('dragstart',e=>e.preventDefault());
+
+// DATA
+const NCERT_DATA = {
+  textbook:{
+    '9':{
+      subjects:['Science','Mathematics','Social Science','English'],
+      chapters:{
+        Science:[
+          'Matter in Our Surroundings',
+          'Is Matter Around Us Pure',
+          'Atoms and Molecules',
+          'Structure of the Atom',
+          'The Fundamental Unit of Life',
+          'Tissues',
+          'Motion',
+          'Force and Laws of Motion',
+          'Gravitation',
+          'Work and Energy',
+          'Sound',
+          'Why Do We Fall Ill',
+          'Natural Resources'
+        ],
+        Mathematics:[
+          'Number Systems',
+          'Polynomials',
+          'Coordinate Geometry',
+          'Linear Equations in Two Variables',
+          'Lines and Angles',
+          'Triangles',
+          'Quadrilaterals',
+          'Circles',
+          'Herons Formula',
+          'Surface Areas and Volumes',
+          'Statistics',
+          'Probability'
+        ],
+        'Social Science':[
+          'The French Revolution',
+          'Socialism in Europe and Russian Revolution',
+          'Nazism and Rise of Hitler',
+          'Forest Society and Colonialism',
+          'Pastoralists in the Modern World',
+          'What is Democracy',
+          'Constitutional Design',
+          'Electoral Politics',
+          'Working of Institutions',
+          'Democratic Rights',
+          'The Story of Village Palampur',
+          'People as Resource',
+          'Poverty as a Challenge',
+          'Food Security in India'
+        ],
+        English:[
+          'The Fun They Had',
+          'The Sound of Music',
+          'The Little Girl',
+          'A Truly Beautiful Mind',
+          'The Snake and the Mirror',
+          'My Childhood',
+          'Packing',
+          'The Bond of Love',
+          'Kathmandu',
+          'If I Were You'
+        ]
+      }
+    },
+    '10':{
+      subjects:['Science','Mathematics','Social Science','English'],
+      chapters:{
+        Science:[
+          'Chemical Reactions and Equations',
+          'Acids Bases and Salts',
+          'Metals and Non-metals',
+          'Carbon and its Compounds',
+          'Life Processes',
+          'Control and Coordination',
+          'How do Organisms Reproduce',
+          'Heredity',
+          'Light Reflection and Refraction',
+          'Human Eye and Colourful World',
+          'Electricity',
+          'Magnetic Effects of Electric Current',
+          'Our Environment'
+        ],
+        Mathematics:[
+          'Real Numbers',
+          'Polynomials',
+          'Pair of Linear Equations',
+          'Quadratic Equations',
+          'Arithmetic Progressions',
+          'Triangles',
+          'Coordinate Geometry',
+          'Introduction to Trigonometry',
+          'Some Applications of Trigonometry',
+          'Circles',
+          'Areas Related to Circles',
+          'Surface Areas and Volumes',
+          'Statistics',
+          'Probability'
+        ],
+        'Social Science':[
+          'Rise of Nationalism in Europe',
+          'Nationalism in India',
+          'The Making of a Global World',
+          'The Age of Industrialisation',
+          'Resources and Development',
+          'Forest and Wildlife Resources',
+          'Water Resources',
+          'Agriculture',
+          'Minerals and Energy Resources',
+          'Manufacturing Industries',
+          'Power Sharing',
+          'Federalism',
+          'Political Parties',
+          'Outcomes of Democracy',
+          'Money and Credit',
+          'Globalisation and Indian Economy',
+          'Consumer Rights'
+        ],
+        English:[
+          'A Letter to God',
+          'Nelson Mandela',
+          'Two Stories About Flying',
+          'From the Diary of Anne Frank',
+          'Glimpses of India',
+          'Mijbil the Otter',
+          'Madam Rides the Bus',
+          'The Sermon at Benares',
+          'The Proposal',
+          'Dust of Snow',
+          'Fire and Ice',
+          'A Tiger in the Zoo',
+          'How to Tell Wild Animals'
+        ]
+      }
+    },
+    '11':{
+      subjects:['Physics','Chemistry','Mathematics','Biology','English'],
+      chapters:{
+        Physics:[
+          'Physical World',
+          'Units and Measurements',
+          'Motion in a Straight Line',
+          'Motion in a Plane',
+          'Laws of Motion',
+          'Work Energy and Power',
+          'System of Particles and Rotational Motion',
+          'Gravitation',
+          'Mechanical Properties of Solids',
+          'Mechanical Properties of Fluids',
+          'Thermal Properties of Matter',
+          'Thermodynamics',
+          'Kinetic Theory',
+          'Oscillations',
+          'Waves'
+        ],
+        Chemistry:[
+          'Some Basic Concepts of Chemistry',
+          'Structure of Atom',
+          'Classification of Elements and Periodicity',
+          'Chemical Bonding and Molecular Structure',
+          'States of Matter',
+          'Thermodynamics',
+          'Equilibrium',
+          'Redox Reactions',
+          'Hydrogen',
+          'The s-Block Elements',
+          'The p-Block Elements',
+          'Organic Chemistry — Basic Principles',
+          'Hydrocarbons'
+        ],
+        Mathematics:[
+          'Sets',
+          'Relations and Functions',
+          'Trigonometric Functions',
+          'Complex Numbers and Quadratic Equations',
+          'Linear Inequalities',
+          'Permutations and Combinations',
+          'Binomial Theorem',
+          'Sequences and Series',
+          'Straight Lines',
+          'Conic Sections',
+          'Introduction to 3D Geometry',
+          'Limits and Derivatives',
+          'Statistics',
+          'Probability'
+        ],
+        Biology:[
+          'The Living World',
+          'Biological Classification',
+          'Plant Kingdom',
+          'Animal Kingdom',
+          'Morphology of Flowering Plants',
+          'Anatomy of Flowering Plants',
+          'Structural Organisation in Animals',
+          'Cell: The Unit of Life',
+          'Biomolecules',
+          'Cell Cycle and Cell Division',
+          'Photosynthesis in Higher Plants',
+          'Respiration in Plants',
+          'Plant Growth and Development',
+          'Digestion and Absorption',
+          'Breathing and Exchange of Gases',
+          'Body Fluids and Circulation',
+          'Excretory Products and Elimination',
+          'Locomotion and Movement',
+          'Neural Control and Coordination',
+          'Chemical Coordination and Integration'
+        ],
+        English:[
+          'The Portrait of a Lady',
+          'We are not Afraid to Die',
+          'Discovering Tut',
+          'The Ailing Planet',
+          'The Browning Version',
+          'The Adventure',
+          'Silk Road',
+          'A Photograph',
+          'The Laburnum Top',
+          'The Voice of the Rain',
+          'Childhood',
+          'Father to Son'
+        ]
+      }
+    },
+    '12':{
+      subjects:['Physics','Chemistry','Mathematics','Biology','English'],
+      chapters:{
+        Physics:[
+          'Electric Charges and Fields',
+          'Electrostatic Potential and Capacitance',
+          'Current Electricity',
+          'Moving Charges and Magnetism',
+          'Magnetism and Matter',
+          'Electromagnetic Induction',
+          'Alternating Current',
+          'Electromagnetic Waves',
+          'Ray Optics and Optical Instruments',
+          'Wave Optics',
+          'Dual Nature of Radiation and Matter',
+          'Atoms',
+          'Nuclei',
+          'Semiconductor Electronics'
+        ],
+        Chemistry:[
+          'The Solid State',
+          'Solutions',
+          'Electrochemistry',
+          'Chemical Kinetics',
+          'd and f Block Elements',
+          'Coordination Compounds',
+          'Haloalkanes and Haloarenes',
+          'Alcohols Phenols and Ethers',
+          'Aldehydes Ketones and Carboxylic Acids',
+          'Amines',
+          'Biomolecules',
+          'Polymers',
+          'Chemistry in Everyday Life'
+        ],
+        Mathematics:[
+          'Relations and Functions',
+          'Inverse Trigonometric Functions',
+          'Matrices',
+          'Determinants',
+          'Continuity and Differentiability',
+          'Application of Derivatives',
+          'Integrals',
+          'Application of Integrals',
+          'Differential Equations',
+          'Vector Algebra',
+          'Three Dimensional Geometry',
+          'Linear Programming',
+          'Probability'
+        ],
+        Biology:[
+          'Reproduction in Organisms',
+          'Sexual Reproduction in Flowering Plants',
+          'Human Reproduction',
+          'Reproductive Health',
+          'Principles of Inheritance and Variation',
+          'Molecular Basis of Inheritance',
+          'Evolution',
+          'Human Health and Disease',
+          'Microbes in Human Welfare',
+          'Biotechnology — Principles and Processes',
+          'Biotechnology and its Applications',
+          'Organisms and Populations',
+          'Ecosystem',
+          'Biodiversity and Conservation'
+        ],
+        English:[
+          'The Last Lesson',
+          'Lost Spring',
+          'Deep Water',
+          'The Rattrap',
+          'Indigo',
+          'Poets and Pancakes',
+          'The Interview',
+          'Going Places',
+          'My Mother at Sixty-six',
+          'An Elementary School Classroom in a Slum',
+          'Keeping Quiet',
+          'A Thing of Beauty',
+          'A Roadside Stand',
+          'Aunt Jennifers Tigers'
+        ]
+      }
+    }
+  },
+  exemplar:{
+    '9':{subjects:['Science','Mathematics'],chapters:{}},
+    '10':{subjects:['Science','Mathematics'],chapters:{}},
+    '11':{subjects:['Physics','Chemistry','Mathematics','Biology'],chapters:{}},
+    '12':{subjects:['Physics','Chemistry','Mathematics','Biology'],chapters:{}}
+  }
+};
+
+// Copy chapters to exemplar
+['9','10'].forEach(cls=>{
+  ['Science','Mathematics'].forEach(subj=>{
+    NCERT_DATA.exemplar[cls].chapters[subj]=NCERT_DATA.textbook[cls].chapters[subj]||[];
+  });
+});
+['11','12'].forEach(cls=>{
+  ['Physics','Chemistry','Mathematics','Biology'].forEach(subj=>{
+    NCERT_DATA.exemplar[cls].chapters[subj]=NCERT_DATA.textbook[cls].chapters[subj]||[];
+  });
+});
+['11','12'].forEach(cls=>{
+  ['Physics','Chemistry','Mathematics','Biology'].forEach(subj=>{
+    NCERT_DATA.exemplar[cls].chapters[subj] = NCERT_DATA.textbook[cls].chapters[subj]||[];
+  });
+});
+
+// STATE
+let curType='textbook', curClass='', curSubj='', curChap='';
+let allQs=[], filteredQs=[];
+let watched = JSON.parse(localStorage.getItem('ma_watched_ncert')||'[]');
+let savedOffline = JSON.parse(localStorage.getItem('ma_saved_ncert')||'[]');
+let freeWatched = parseInt(localStorage.getItem('ma_free_ncert_'+getMonthKey())||'0');
+let FREE_LIMIT=5, currentQ=null;
+
+function getMonthKey(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1);}
+
+// BUILD SIDEBAR
+function buildSidebar(){
+  ['9','10','11','12'].forEach(cls=>{
+    const container=document.getElementById('ch-'+cls);
+    if(!container)return;
+    const data=NCERT_DATA[curType][cls];
+    if(!data)return;
+    container.innerHTML=data.subjects.map(s=>`
+      <div class="sb-subj ${curClass===cls&&curSubj===s?'on':''}" onclick="selectSubject('${cls}','${s}')">
+        <span class="sb-subj-dot"></span>${s}
+      </div>`).join('');
+  });
+}
+
+function toggleSec(cls){
+  const sec=document.getElementById('sec-'+cls);
+  const wasOpen=sec.classList.contains('open');
+  document.querySelectorAll('.sb-sec').forEach(s=>s.classList.remove('open'));
+  document.querySelectorAll('.sb-sec-hd').forEach(s=>s.classList.remove('on'));
+  if(!wasOpen){
+    sec.classList.add('open');
+    sec.querySelector('.sb-sec-hd').classList.add('on');
+  }
+}
+
+function setType(type,el){
+  curType=type;
+  document.querySelectorAll('.sb-type-tab').forEach(t=>t.classList.remove('on'));
+  el.classList.add('on');
+  buildSidebar();
+  if(curClass&&curSubj) selectSubject(curClass,curSubj);
+}
+
+// SELECT SUBJECT
+function selectSubject(cls,subj){
+  curClass=cls; curSubj=subj; curChap='';
+  document.querySelectorAll('.sb-subj').forEach(s=>s.classList.remove('on'));
+  event?.target?.classList.add('on');
+
+  const sec=document.getElementById('sec-'+cls);
+  document.querySelectorAll('.sb-sec').forEach(s=>s.classList.remove('open'));
+  document.querySelectorAll('.sb-sec-hd').forEach(s=>s.classList.remove('on'));
+  if(sec){sec.classList.add('open');sec.querySelector('.sb-sec-hd').classList.add('on');}
+
+  showContentView();
+  buildChapHd(cls,subj);
+  buildChapGrid(cls,subj);
+  document.getElementById('chap-grid-wrap').style.display='block';
+  document.getElementById('q-grid-wrap').style.display='none';
+}
+
+function quickSelect(cls,subj){
+  const sec=document.getElementById('sec-'+cls);
+  if(sec){sec.classList.add('open');sec.querySelector('.sb-sec-hd').classList.add('on');}
+  selectSubject(cls,subj);
+  closeSb();
+}
+
+function showContentView(){
+  document.getElementById('welcome-state').style.display='none';
+  document.getElementById('content-view').style.display='block';
+  updateBreadcrumb();
+}
+
+function goHome(){
+  document.getElementById('welcome-state').style.display='block';
+  document.getElementById('content-view').style.display='none';
+  curClass='';curSubj='';curChap='';
+  document.querySelectorAll('.sb-subj').forEach(s=>s.classList.remove('on'));
+}
+
+function backToChapters(){
+  curChap='';
+  document.getElementById('chap-grid-wrap').style.display='block';
+  document.getElementById('q-grid-wrap').style.display='none';
+  updateBreadcrumb();
+  buildChapGrid(curClass,curSubj);
+}
+
+// BREADCRUMB
+function updateBreadcrumb(){
+  let html=`<span class="bc-item" onclick="goHome()">Home</span><span class="bc-sep">›</span>
+    <span class="bc-item" onclick="goHome()">NCERT ${curType==='exemplar'?'Exemplar':'Textbook'}</span><span class="bc-sep">›</span>
+    <span class="bc-item" onclick="selectSubject('${curClass}','${curSubj}')">Class ${curClass}</span><span class="bc-sep">›</span>
+    <span class="bc-item ${curChap?'':'on'}" onclick="${curChap?`selectSubject('${curClass}','${curSubj}')`:''}">${curSubj}</span>`;
+  if(curChap) html+=`<span class="bc-sep">›</span><span class="bc-item on">${curChap}</span>`;
+  document.getElementById('breadcrumb').innerHTML=html;
+}
+
+// CHAPTER HEADER
+function buildChapHd(cls,subj){
+  const badgeClass={'9':'c9','10':'c10','11':'c11','12':'c12'}[cls]||'cx';
+  document.getElementById('ch-badge').textContent=`Class ${cls}`;
+  document.getElementById('ch-badge').className='chap-badge '+badgeClass;
+  document.getElementById('ch-title').textContent=subj;
+  document.getElementById('ch-sub').textContent=`NCERT ${curType==='exemplar'?'Exemplar':'Textbook'} · Class ${cls} · Select a chapter`;
+  const data=NCERT_DATA[curType][cls];
+  const chaps=data?.chapters[subj]||[];
+  const totalQ=chaps.length*15;
+  const watchedQ=watched.filter(id=>id.startsWith(`ncert-${curType}-${cls}-${subj}`)).length;
+  document.getElementById('ch-total').textContent=totalQ;
+  document.getElementById('ch-watched').textContent=watchedQ;
+}
+
+// CHAPTER GRID
+function buildChapGrid(cls,subj){
+  const data=NCERT_DATA[curType][cls];
+  const chaps=data?.chapters[subj]||[];
+  const grid=document.getElementById('chap-grid');
+  if(!chaps.length){grid.innerHTML='<div style="color:var(--t4);font-size:.9rem;">Chapters coming soon...</div>';return;}
+  grid.innerHTML=chaps.map((chap,i)=>{
+    const chapWatched=watched.filter(id=>id.startsWith(`ncert-${curType}-${cls}-${subj}-${i+1}-`)).length;
+    const total=15;
+    const pct=Math.round(chapWatched/total*100);
+    return `<div class="chap-card ${curChap===chap?'on':''}" onclick="selectChapter('${chap.replace(/'/g,"\\'")}',${i+1})">
+      <div class="chap-card-n">Chapter ${i+1}</div>
+      <div class="chap-card-t">${chap}</div>
+      <div class="chap-card-s">${total} questions · ${chapWatched} watched</div>
+      <div class="chap-card-prog"><div class="chap-card-fill" style="width:${pct}%"></div></div>
+    </div>`;
+  }).join('');
+}
+
+// SELECT CHAPTER → SHOW QUESTIONS
+function selectChapter(chap,chapNum){
+  curChap=chap;
+  updateBreadcrumb();
+  document.getElementById('chap-grid-wrap').style.display='none';
+  document.getElementById('q-grid-wrap').style.display='block';
+  document.getElementById('q-grid-label').textContent=`Chapter ${chapNum} — ${chap}`;
+  showSkeleton();
+  setTimeout(()=>{
+    allQs=generateQs(curClass,curSubj,chap,chapNum);
+    filteredQs=[...allQs];
+    nActiveFilter='all';
+    document.getElementById('q-count-label').textContent=`${allQs.length} questions`;
+    nRender();
+  },300);
+}
+
+// GENERATE QUESTIONS
+const Q_TYPES_TB=['In-text Q','Exercise Q','Additional Q'];
+const Q_TYPES_EX=['MCQ','VSA','SA','LA'];
+
+function generateQs(cls,subj,chap,chapNum){
+  const count=curType==='exemplar'?20:15;
+  return Array.from({length:count},(_, i)=>{
+    const qn=i+1;
+    const qtype=curType==='exemplar'?Q_TYPES_EX[Math.floor(i/5)%4]:Q_TYPES_TB[Math.floor(i/5)%3];
+    return {
+      id:`ncert-${curType}-${cls}-${subj}-${chapNum}-Q${qn}`,
+      class:cls,subject:subj,chapter:chap,chapNum,qnum:qn,type:qtype,
+      question:`${chap} — Question ${qn}: ${getQText(subj,chap,qn)}`,
+      solution:`Step 1: Read the question carefully. Step 2: Recall the key concept from ${chap}. Step 3: Apply the relevant formula or principle. Step 4: Solve and verify. Apply the concepts of ${subj} to solve this problem systematically.`,
+      videoId:'dQw4w9WgXcQ',
+      duration:`${Math.floor(Math.random()*2)+2}:${String(Math.floor(Math.random()*60)).padStart(2,'0')}`,
+    };
+  });
+}
+
+function getQText(subj,chap,n){
+  const qmap={
+    // Science/Physics chapters
+    'Matter in Our Surroundings':['Define matter. Give examples of solid, liquid and gas.','What happens to matter when heated? Explain with examples.','Define evaporation. List four factors affecting rate of evaporation.','Latent heat of vaporization is higher than latent heat of fusion. Why?'],
+    'Atoms and Molecules':['State the law of conservation of mass with example.','What is atomicity? Find atomicity of O₃, P₄, S₈.','Calculate molar mass of H₂SO₄.','Write chemical formula for calcium oxide and magnesium hydroxide.'],
+    'Motion':['Define uniform and non-uniform motion with examples.','A car travels 150 km in 3 hours. Find its average speed.','Draw v-t graph for uniform acceleration and find displacement from it.','Derive equation v = u + at from velocity-time graph.'],
+    'Laws of Motion':['State Newton\'s first law of motion. Define inertia.','A force of 20 N acts on a 4 kg body. Calculate acceleration.','Explain why a passenger lurches forward when a bus stops suddenly.','State Newton\'s third law. Give two examples from daily life.'],
+    'Gravitation':['State the universal law of gravitation. Write formula.','What is the difference between mass and weight?','Calculate weight of 10 kg object on moon (g_moon = 1.6 m/s²).','Define free fall. What is the value of g on earth?'],
+    'Chemical Reactions and Equations':['Balance the equation: Fe + HCl → FeCl₂ + H₂.','Identify type of reaction: CaCO₃ → CaO + CO₂.','What is a combination reaction? Give one example.','Write word equation for burning of magnesium in air.'],
+    'Acids Bases and Salts':['What happens when acid reacts with metal? Write equation for Zn+H₂SO₄.','Define pH. What is pH of pure water?','How is baking soda different from washing soda?','Explain neutralization reaction with example.'],
+    'Metals and Non-metals':['List physical properties that distinguish metals from non-metals.','What is corrosion? Write equation for rusting of iron.','Why are sodium and potassium stored in kerosene oil?','Define reactivity series. Arrange Na, Fe, Cu, Al in order.'],
+    'Life Processes':['What are the essential life processes? Name any four.','Explain the process of photosynthesis with equation.','Describe the path of blood in double circulation.','How is glucose broken down in aerobic respiration?'],
+    'Heredity':['What is Mendel\'s law of dominance?','Define genotype and phenotype with example.','What are sex chromosomes? How is sex determined in humans?','Explain monohybrid cross with Punnett square.'],
+    'Electricity':['State Ohm\'s law. Write formula.','Three resistors of 2Ω, 3Ω, 6Ω are in parallel. Find equivalent resistance.','Define electric power. A bulb works at 220V and draws 2A. Find power.','What is the difference between AC and DC?'],
+    'Photosynthesis in Higher Plants':['Write overall equation for photosynthesis.','What are the raw materials required for photosynthesis?','Distinguish between C3 and C4 plants.','Explain the role of chlorophyll in light reaction.'],
+    'Chemical Bonding and Molecular Structure':['Define ionic bond and covalent bond with examples.','Draw Lewis structure of CO₂ and H₂O.','What is the shape of NH₃ molecule? Explain using VSEPR theory.','Define electronegativity. How does it vary across a period?'],
+    'Electrochemistry':['Define electrolysis. Give one industrial application.','State Faraday\'s first law of electrolysis.','What is standard electrode potential? Write for hydrogen electrode.','Calculate EMF of cell: Zn|Zn²⁺||Cu²⁺|Cu given E° values.'],
+    'Reproduction in Organisms':['Distinguish between sexual and asexual reproduction.','What is pollination? Distinguish between self and cross pollination.','Describe the process of fertilization in flowering plants.','What are the advantages of sexual reproduction over asexual?'],
+    'Principles of Inheritance and Variation':['State Mendel\'s law of segregation.','What is co-dominance? Explain with ABO blood groups.','Define mutation. Give one example.','What is the ratio in a dihybrid cross AaBb × AaBb?'],
+    'Relations and Functions':['Define one-one and onto functions. Give examples.','Find domain and range of f(x) = 1/(x-2).','If f(x) = 2x+1, find f(3) and f⁻¹(x).','What is a bijective function? Give example.'],
+    'Integrals':['Evaluate ∫(3x²+2x+1)dx.','Find ∫sinx dx and ∫cosx dx.','Evaluate ∫₀^π/2 sinx dx.','Use integration by parts to find ∫xeˣ dx.'],
+    'Determinants':['Find the determinant of [[1,2],[3,4]].','If |A| = 0, what can you say about matrix A?','Find the cofactor of element a₁₂ in given 3×3 matrix.','Solve system of equations using Cramer\'s rule.'],
+    'Continuity and Differentiability':['Define continuity at a point. Check for f(x)=|x| at x=0.','Differentiate y = x³ + sin x with respect to x.','Find dy/dx if y = eˣ·cos x using product rule.','What is the derivative of log(sinx)?'],
+  };
+  const defaultQs=[
+    `Define the key concept in ${chap} and give two examples.`,
+    `Explain the main principle of ${chap} with a diagram.`,
+    `State the important formula related to ${chap} and apply it to solve a problem.`,
+    `Compare and contrast the two main aspects of ${chap}.`,
+    `What are the real-life applications of ${chap}? Give three examples.`,
+    `Solve the following problem based on ${chap}: A student observes that...`,
+    `Write a short note on the significance of ${chap} in ${subj}.`,
+  ];
+  const qs=qmap[chap]||defaultQs;
+  return qs[(n-1)%qs.length];
+}
+function renderQs(qs){
+  const grid=document.getElementById('q-grid');
+  if(!qs.length){grid.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:40px;color:var(--t4);">No questions found</div>';return;}
+  grid.innerHTML=qs.map(q=>{
+    const isW=watched.includes(q.id);
+    const isSaved=savedOffline.find(s=>s.id===q.id);
+    return `<div class="q-card ${isW?'watched':''}" onclick="openQ('${q.id}')">
+      ${isW?'<div class="w-badge">✓ Watched</div>':''}
+      <div class="q-thumb">
+        <img src="https://img.youtube.com/vi/${q.videoId}/mqdefault.jpg" alt="" loading="lazy" onerror="this.style.display='none'"/>
+        <div class="q-thumb-ov"></div>
+        <div class="q-play">▶</div>
+        <span class="q-duration">${q.duration}</span>
+        <span class="q-num-badge">Q${q.qnum}</span>
+      </div>
+      <div class="q-body">
+        <div class="q-type">${q.type}</div>
+        <div class="q-text">${q.question}</div>
+      <div style="margin-top:6px;display:flex;gap:5px;">${getDiffTag(q.difficulty)}</div>
+      </div>
+      <div class="q-foot">
+        <button class="q-foot-btn ${isSaved?'saved':''}" onclick="event.stopPropagation();toggleSave('${q.id}')" title="${isPremium?'Save for offline':'Pro feature — Subscribe to save'}">
+          ${isSaved?'📥':isPremium?'💾':'🔒'} ${isSaved?'Saved':isPremium?'Save':'Save'}
+        </button>
+        <button class="q-foot-btn watch" onclick="event.stopPropagation();openQ('${q.id}')">▶ Watch</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// OPEN QUESTION VIDEO
+function openQ(id){
+  const q=allQs.find(v=>v.id===id)||savedOffline.find(v=>v.id===id);
+  if(!q)return;
+  if(!window.isPremium&&!watched.includes(id)){
+    if(freeWatched>=FREE_LIMIT){document.getElementById('paywall').style.display='flex';return;}
+    freeWatched++;
+    localStorage.setItem('ma_free_ncert_'+getMonthKey(),freeWatched);
+    updateFreeCounter();
+  }
+  currentQ=q;
+  document.getElementById('vid-frame').src=`https://www.youtube-nocookie.com/embed/${q.videoId}?rel=0&modestbranding=1&fs=0`;
+  document.getElementById('vid-wm').textContent='MockArena · Protected';
+  document.getElementById('m-eyebrow').textContent=`Class ${q.class} · ${q.subject} · Chapter ${q.chapNum} · Q${q.qnum} · ${q.type}`;
+  document.getElementById('m-qtxt').textContent=q.question;
+  // Show MCQ options for MCQ type questions
+  const optsEl=document.getElementById('m-opts');
+  if(optsEl){
+    if(q.type==='MCQ'&&q.opts){
+      const OPTS=['A','B','C','D'];
+      optsEl.innerHTML=q.opts.map((o,i)=>`
+        <div style="display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border-radius:9px;border:1.5px solid ${i===q.correct?'rgba(30,77,15,.25)':'var(--bd)'};background:${i===q.correct?'rgba(30,77,15,.06)':'transparent'};margin-bottom:5px;font-family:var(--rf);font-size:.95rem;color:var(--t2);line-height:1.5;">
+          <div style="font-family:var(--mf);font-size:.72rem;font-weight:700;width:20px;height:20px;border-radius:5px;background:${i===q.correct?'var(--ac)':'var(--bg2)'};display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;color:${i===q.correct?'#fff':'var(--t3)'};">${OPTS[i]}</div>
+          <div>${o}</div>
+        </div>`).join('');
+    } else {
+      optsEl.innerHTML='';
+    }
+  }
+  document.getElementById('m-sol').textContent=q.solution;
+  document.getElementById('modal-bg').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function closeModal(){
+  document.getElementById('modal-bg').classList.remove('open');
+  document.getElementById('vid-frame').src='';
+  document.body.style.overflow='';
+}
+function closeModalBg(e){if(e.target===document.getElementById('modal-bg'))closeModal();}
+
+function markWatched(){
+  if(!currentQ)return;
+  if(!watched.includes(currentQ.id))watched.push(currentQ.id);
+  localStorage.setItem('ma_watched_ncert',JSON.stringify(watched));
+  renderQs(filteredQs);
+  buildChapGrid(curClass,curSubj);
+  toast('Marked as watched ✓');
+  closeModal();
+}
+
+function saveOffline(){
+  if(!currentQ)return;
+  if(!isPremium){
+    closeModal();
+    document.getElementById('paywall').style.display='flex';
+    return;
+  }
+  toggleSave(currentQ.id);
+  closeModal();
+}
+
+function toggleSave(id){
+  const q=allQs.find(v=>v.id===id);
+  if(!q)return;
+  const idx=savedOffline.findIndex(s=>s.id===id);
+  if(idx>=0){savedOffline.splice(idx,1);toast('Removed from saved');}
+  else{
+    if(savedOffline.length>=10){toast('Maximum 10 videos can be saved');return;}
+    savedOffline.push(q);toast('Saved for offline ✓');
+  }
+  localStorage.setItem('ma_saved_ncert',JSON.stringify(savedOffline));
+  renderQs(filteredQs);
+}
+
+function goToNotes(){
+  if(currentQ) window.location.href=`mockarena_notes.html?chapter=${currentQ.chapter.toLowerCase().replace(/\s+/g,'-')}`;
+}
+
+// NCERT filters
+let nActiveFilter='all';
+let nActiveSort='';
+let nActiveView='grid';
+
+function nFilt(type, el){
+  nActiveFilter=type;
+  document.querySelectorAll('.ncert-fc').forEach(f=>{
+    f.style.background=f===el?'var(--acl)':'var(--bg2)';
+    f.style.borderColor=f===el?'var(--ach)':'var(--bd2)';
+    f.style.color=f===el?'var(--ac)':'var(--t3)';
+    f.style.fontWeight=f===el?'700':'600';
+  });
+  nRender();
+}
+
+// Also add difficulty tags to NCERT card rendering
+function getDiffTag(diff){
+  if(!diff)return'';
+  const dc=diff==='Easy'?'rgba(30,77,15,.09);color:var(--ac)':diff==='Hard'?'rgba(158,32,32,.09);color:var(--rd)':'rgba(138,96,0,.09);color:var(--go)';
+  return `<span style="font-size:.62rem;font-weight:700;padding:2px 8px;border-radius:100px;background:${dc};">${diff}</span>`;
+}
+
+function nSort(val){
+  nActiveSort=val;
+  nRender();
+}
+
+function nView(type, el){
+  nActiveView=type;
+  const btns=el.parentElement.querySelectorAll('button');
+  btns.forEach(b=>{b.style.background='transparent';b.style.color='var(--t4)';});
+  el.style.background='var(--acl)';el.style.color='var(--ac)';
+  document.getElementById('q-grid').className=type==='list'?'q-grid list':'q-grid';
+}
+
+function nRender(){
+  let qs=[...allQs];
+  if(nActiveFilter==='Not Watched') qs=qs.filter(q=>!watched.includes(q.id));
+  else if(['Easy','Medium','Hard'].includes(nActiveFilter)) qs=qs.filter(q=>q.difficulty===nActiveFilter);
+  else if(nActiveFilter!=='all') qs=qs.filter(q=>q.type===nActiveFilter);
+  if(nActiveSort==='watched') qs.sort((a,b)=>watched.includes(b.id)-watched.includes(a.id));
+  else if(nActiveSort==='unwatched') qs.sort((a,b)=>watched.includes(a.id)-watched.includes(b.id));
+  renderQs(qs);
+}
+
+function onSearch(val){
+  val=val.toLowerCase().trim();
+  if(!val){renderQs(allQs);return;}
+  renderQs(allQs.filter(q=>q.question.toLowerCase().includes(val)||q.chapter.toLowerCase().includes(val)||q.type.toLowerCase().includes(val)));
+}
+
+function updateFreeCounter(){
+  const left=Math.max(0,FREE_LIMIT-freeWatched);
+  const el=document.getElementById('free-counter');
+  document.getElementById('free-text').textContent=left>0?`${left} free left`:'Upgrade to Pro';
+  el.className='free-counter'+(left===0?' used':'');
+}
+
+function toggleSb(){
+  const sb=document.getElementById('sb'),ov=document.getElementById('mob-ov'),h=document.getElementById('ham');
+  sb.classList.toggle('on');ov.classList.toggle('on');
+  h.textContent=sb.classList.contains('on')?'✕':'☰';
+}
+function closeSb(){
+  document.getElementById('sb').classList.remove('on');
+  document.getElementById('mob-ov').classList.remove('on');
+  document.getElementById('ham').textContent='☰';
+}
+function toggleSavedPanel(){
+  const p=document.getElementById('saved-panel');
+  p.style.transform=p.style.transform==='translateY(0px)'||p.style.transform==='none'||p.style.transform===''?'translateY(100%)':'translateY(0)';
+  updateSP();
+}
+function updateSP(){
+  document.getElementById('sp-count').textContent=`(${savedOffline.length}/10)`;
+  const l=document.getElementById('sp-list');
+  if(!savedOffline.length){l.innerHTML='<div style="text-align:center;padding:20px;font-size:.86rem;color:var(--t4);">No saved videos yet</div>';return;}
+  l.innerHTML=savedOffline.map(v=>`
+    <div onclick="openQ('${v.id}')" style="display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:9px;background:var(--bg2);cursor:pointer;transition:background .2s;">
+      <img class="svthumb" src="https://img.youtube.com/vi/${v.videoId}/mqdefault.jpg" style="width:62px;height:38px;border-radius:6px;object-fit:cover;flex-shrink:0;background:#111;" alt=""/>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:.84rem;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${v.subject} Q${v.qnum} — ${v.chapter}</div>
+        <div style="font-size:.78rem;color:var(--t3);margin-top:2px;">Class ${v.class} · ${v.duration}</div>
+      </div>
+      <button onclick="event.stopPropagation();toggleSave('${v.id}')" style="background:none;border:none;font-size:14px;color:var(--t4);cursor:pointer;padding:4px;flex-shrink:0;">✕</button>
+    </div>`).join('');
+}
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'),2500);
+}
+// Skeleton loading
+function showSkeleton(){
+  const g=document.getElementById('q-grid');
+  if(!g)return;
+  g.innerHTML=`<div style="background:var(--sur);border:1.5px solid var(--bd);border-radius:13px;overflow:hidden;">
+    <div style="height:170px;background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200%;animation:shimmer 1.4s infinite;"></div>
+    <div style="padding:12px 14px;"><div style="height:10px;width:80%;background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200%;animation:shimmer 1.4s infinite;border-radius:6px;margin-bottom:8px;"></div><div style="height:10px;width:60%;background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200%;animation:shimmer 1.4s infinite;border-radius:6px;"></div></div>
+  </div>`.repeat(6);
+}
+window.addEventListener('scroll',()=>{
+  document.getElementById('topbar').classList.toggle('scrolled',window.scrollY>10);
+  const d=document.documentElement;
+  document.getElementById('prog').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100||0)+'%';
+});
+window.addEventListener('DOMContentLoaded',()=>{buildSidebar();updateFreeCounter();});
+</script>
+
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+import{getAuth,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+import{getFirestore,doc,getDoc}from'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4"});
+const auth=getAuth(app);const db=getFirestore(app);
+onAuthStateChanged(auth,async user=>{
+  if(!user)return;window._user=user;
+  const wm=document.getElementById('vid-wm');if(wm&&user.email)wm.textContent=`MockArena · ${user.email}`;
+  try{
+    const snap=await getDoc(doc(db,'users',user.uid));
+    const data=snap.data()||{};
+    window.isPremium=data.premium===true||data.plan==='pro';
+  }catch(e){}
+});
+</script>
+</body>
+</html>

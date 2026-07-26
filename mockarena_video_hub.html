@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0,user-scalable=yes"/>
+<title>Video Solutions | MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#f7f6f1;--bg2:#eeebe0;--bg3:#e5e1d3;--sur:#fefdfb;
+  --t1:#18170f;--t2:#2a2820;--t3:#6a6758;--t4:#a09d8e;
+  --bd:rgba(24,23,15,.07);--bd2:rgba(24,23,15,.13);
+  --ac:#1e4d0f;--ac2:#2d6b1a;--acl:rgba(30,77,15,.08);--ach:rgba(30,77,15,.22);
+  --rf:'Crimson Pro',Georgia,serif;
+  --uf:'Outfit',sans-serif;
+  --shm:0 8px 32px rgba(0,0,0,.10),0 16px 48px rgba(0,0,0,.07);
+  --tf:.22s cubic-bezier(.4,0,.2,1);
+  --top:64px;
+}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--uf);background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased;}
+
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:rgba(247,246,241,.96);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1.5px solid var(--bd2);display:flex;align-items:center;padding:0 24px;gap:12px;z-index:200;transition:box-shadow var(--tf);}
+.topbar.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.07);}
+.logo{display:flex;align-items:center;text-decoration:none;}
+.logo-name{font-size:20px;font-weight:800;color:var(--t1);letter-spacing:-.03em;}
+.logo-name em{color:var(--ac2);font-style:normal;}
+.tb-r{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.tb-btn{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--sur);font-family:var(--uf);font-size:.86rem;font-weight:600;color:var(--t3);cursor:pointer;text-decoration:none;transition:all var(--tf);}
+.tb-btn:hover{border-color:var(--ac2);color:var(--ac);}
+.tb-btn.pri{background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:transparent;color:#fff;font-weight:700;}
+
+/* PAGE */
+.page{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:calc(var(--top) + 48px) 40px 60px;
+}
+
+/* HEADING */
+.hub-label{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:var(--acl);
+  border:1.5px solid var(--ach);
+  color:var(--ac2);
+  font-size:.9rem;
+  font-weight:700;
+  padding:7px 18px;
+  border-radius:100px;
+  margin-bottom:16px;
+}
+.hub-title{
+  font-family:var(--rf);
+  font-size:3rem;
+  font-weight:700;
+  color:var(--t1);
+  letter-spacing:-.04em;
+  line-height:1.1;
+  margin-bottom:48px;
+  text-align:center;
+}
+.hub-title span{color:var(--ac2);}
+
+/* CARDS GRID */
+.cards{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:20px;
+  width:100%;
+  max-width:860px;
+}
+
+/* CARD */
+.hub-card{
+  background:var(--sur);
+  border:1.5px solid var(--bd2);
+  border-radius:16px;
+  overflow:hidden;
+  cursor:pointer;
+  transition:all var(--tf);
+  text-decoration:none;
+  display:flex;
+  flex-direction:column;
+}
+.hub-card:hover{
+  border-color:var(--ach);
+  box-shadow:var(--shm);
+  transform:translateY(-4px);
+}
+
+/* Color bar */
+.hc-bar{height:6px;width:100%;flex-shrink:0;}
+.hc-pyq .hc-bar{background:linear-gradient(90deg,#1b5e20,#4caf50);}
+.hc-ncert .hc-bar{background:linear-gradient(90deg,#4e342e,#8d6e63);}
+
+/* Body */
+.hc-body{padding:30px 28px 28px;flex:1;display:flex;flex-direction:column;}
+
+/* Icon */
+.hc-ic{
+  font-size:2.6rem;
+  width:64px;
+  height:64px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:20px;
+  flex-shrink:0;
+}
+.hc-pyq .hc-ic{background:#e8f5e9;}
+.hc-ncert .hc-ic{background:#efebe9;}
+
+/* Title */
+.hc-title{
+  font-family:var(--rf);
+  font-size:1.8rem;
+  font-weight:700;
+  color:var(--t1);
+  letter-spacing:-.02em;
+  line-height:1.2;
+  margin-bottom:10px;
+}
+
+/* Subtitle */
+.hc-sub{
+  font-size:.96rem;
+  color:var(--t3);
+  line-height:1.75;
+  margin-bottom:20px;
+  flex:1;
+}
+
+/* Tags */
+.hc-tags{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:24px;}
+.hc-tag{
+  font-size:.8rem;
+  font-weight:700;
+  padding:5px 13px;
+  border-radius:100px;
+}
+.hc-pyq .hc-tag{background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7;}
+.hc-ncert .hc-tag{background:#efebe9;color:#4e342e;border:1px solid #bcaaa4;}
+
+/* CTA Button — proper button not just text */
+.hc-btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:8px;
+  padding:13px 24px;
+  border-radius:10px;
+  font-family:var(--uf);
+  font-size:1rem;
+  font-weight:700;
+  transition:all var(--tf);
+  border:none;
+  cursor:pointer;
+  margin-top:auto;
+}
+.hc-pyq .hc-btn{background:#1b5e20;color:#fff;}
+.hc-ncert .hc-btn{background:#4e342e;color:#fff;}
+.hub-card:hover .hc-btn{gap:12px;opacity:.92;}
+
+/* MOBILE — 700px */
+@media(max-width:700px){
+  .page{padding:calc(var(--top) + 32px) 20px 48px;justify-content:flex-start;}
+  .hub-title{font-size:2.2rem;margin-bottom:32px;}
+  .cards{grid-template-columns:1fr 1fr;gap:14px;}
+  .hc-body{padding:22px 18px 20px;}
+  .hc-ic{width:52px;height:52px;font-size:2rem;margin-bottom:14px;}
+  .hc-title{font-size:1.4rem;}
+  .hc-sub{font-size:.88rem;}
+  .hc-btn{padding:11px 18px;font-size:.9rem;}
+}
+/* MOBILE — 420px */
+@media(max-width:420px){
+  .hub-title{font-size:1.8rem;}
+  .cards{grid-template-columns:1fr;}
+  .hc-title{font-size:1.5rem;}
+  .hc-sub{font-size:.92rem;}
+  .tb-btn:not(.pri){display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<header class="topbar" id="topbar">
+  <a href="index.html" class="logo">
+    <span class="logo-name">Mock<em>Arena</em></span>
+  </a>
+  <div class="tb-r">
+    <a href="mockarena_student_dashboard.html" class="tb-btn">← Dashboard</a>
+    <a href="mockarena_student_dashboard.html" class="tb-btn pri">My Dashboard</a>
+  </div>
+</header>
+
+<div class="page">
+
+  <div class="hub-label">📹 Video Solutions</div>
+  <div class="hub-title">Choose Your <span>Solutions</span></div>
+
+  <div class="cards">
+
+    <!-- PYQ -->
+    <a href="mockarena_solutions.html" class="hub-card hc-pyq">
+      <div class="hc-bar"></div>
+      <div class="hc-body">
+        <div class="hc-ic">📹</div>
+        <div class="hc-title">Previous Year Question Solutions</div>
+        <div class="hc-sub">NEET · JEE Mains · JEE Advanced · CBSE · ICSE · UP Board · Rajasthan Board · 2016–2026</div>
+        <div class="hc-tags">
+          <span class="hc-tag">NEET UG</span>
+          <span class="hc-tag">JEE Mains</span>
+          <span class="hc-tag">JEE Advanced</span>
+          <span class="hc-tag">CBSE</span>
+          <span class="hc-tag">ICSE</span>
+          <span class="hc-tag">UP Board</span>
+          <span class="hc-tag">Rajasthan</span>
+        </div>
+        <div class="hc-btn">Browse PYQ Solutions →</div>
+      </div>
+    </a>
+
+    <!-- NCERT -->
+    <a href="mockarena_ncert.html" class="hub-card hc-ncert">
+      <div class="hc-bar"></div>
+      <div class="hc-body">
+        <div class="hc-ic">📚</div>
+        <div class="hc-title">NCERT Solutions</div>
+        <div class="hc-sub">Class 9, 10, 11 & 12 · Textbook + Exemplar · Every chapter and every question solved step by step</div>
+        <div class="hc-tags">
+          <span class="hc-tag">Class 9</span>
+          <span class="hc-tag">Class 10</span>
+          <span class="hc-tag">Class 11</span>
+          <span class="hc-tag">Class 12</span>
+          <span class="hc-tag">Textbook</span>
+          <span class="hc-tag">Exemplar</span>
+          <span class="hc-tag">All Subjects</span>
+        </div>
+        <div class="hc-btn">Browse NCERT Solutions →</div>
+      </div>
+    </a>
+
+  </div>
+
+</div>
+
+<script>
+window.addEventListener('scroll',()=>{
+  document.getElementById('topbar').classList.toggle('scrolled',window.scrollY>10);
+});
+</script>
+<script type="module">
+import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
+import{getAuth,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
+initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4"});
+</script>
+</body>
+</html>
