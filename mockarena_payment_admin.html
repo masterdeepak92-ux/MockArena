@@ -2,342 +2,368 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
-<meta name="theme-color" content="#1a2618"/>
-<title>Payment Dashboard — MockArena Admin</title>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=IBM+Plex+Mono:wght@500;600;700&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes"/>
+<title>Payment Dashboard — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
 <style>
+*{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --forest:#1a2618;--sage:#6b8f5e;--sage-d:#3a6830;
-  --sage-l:rgba(107,143,94,.11);--sage-g:rgba(107,143,94,.22);
-  --gold:#c8962a;--gold-l:rgba(200,150,42,.10);--gold-g:rgba(200,150,42,.22);
-  --rose:#c84b4b;--rose-l:rgba(200,75,75,.09);
-  --sky:#2563eb;--sky-l:rgba(37,99,235,.09);
-  --violet:#7c3aed;--violet-l:rgba(124,58,237,.09);
-  --green:#059669;--green-l:rgba(5,150,105,.09);
-  --cream:#faf9f5;--cw:#f5f3ec;--white:#fff;
-  --border:rgba(26,38,24,.08);
-  --txt:#1a2618;--txt-m:rgba(26,38,24,.62);--txt-lo:rgba(26,38,24,.38);
-  --fd:'Outfit',sans-serif;--fm:'IBM Plex Mono',monospace;
-  --sh:0 2px 12px rgba(26,38,24,.07);
-  --sh-lg:0 6px 24px rgba(26,38,24,.11);
-  --r:16px;--sbw:258px;--tbh:56px;
+  --bg:#f5f4ef;--sur:#faf9f6;--bg2:#edeae0;--bg3:#e3ded0;
+  --t1:#16150d;--t2:#2a2820;--t3:#5c5a4f;--t4:#9a9788;
+  --bd:rgba(22,21,13,.07);--bd2:rgba(22,21,13,.13);
+  --sage:#5a7d50;--sage-d:#3a6830;--sage-l:rgba(90,125,80,.10);--sage-g:rgba(90,125,80,.22);
+  --gold:#b8861a;--gold-l:rgba(184,134,26,.10);
+  --rose:#b83232;--rose-l:rgba(184,50,50,.09);
+  --sky:#1a6eb8;--sky-l:rgba(26,110,184,.09);
+  --viol:#6b3ab8;--viol-l:rgba(107,58,184,.09);
+  --rf:'Crimson Pro',Georgia,serif;
+  --uf:'Outfit',sans-serif;
+  --mf:'JetBrains Mono',monospace;
+  --sh:0 2px 8px rgba(0,0,0,.06);
+  --shm:0 4px 20px rgba(0,0,0,.08);
+  --tf:.2s cubic-bezier(.4,0,.2,1);
+  --r:12px;--sbw:240px;--tbh:56px;
 }
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html,body{overflow-x:hidden;}
-body{font-family:var(--fd);background:var(--cream);color:var(--txt);
-  -webkit-font-smoothing:antialiased;line-height:1.6;font-size:15px;}
-a{color:inherit;text-decoration:none;}
-button{font-family:var(--fd);cursor:pointer;}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--uf);background:var(--bg);color:var(--t1);min-height:100vh;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
 
-/* ── SIDEBAR ── */
-.sidebar{width:var(--sbw);background:var(--forest);display:flex;flex-direction:column;position:fixed;inset:0 auto 0 0;z-index:200;overflow-y:auto;box-shadow:4px 0 24px rgba(26,38,24,.18);transition:transform .26s cubic-bezier(.4,0,.2,1);}
-.sidebar::-webkit-scrollbar{display:none;}
-.sb-brand{height:var(--tbh);display:flex;align-items:center;gap:10px;padding:0 20px;border-bottom:1px solid rgba(255,255,255,.07);flex-shrink:0;}
-.sb-logo{font-size:1.15rem;font-weight:900;color:white;letter-spacing:-.02em;}
-.sb-logo span{color:var(--sage);}
-.sb-close{margin-left:auto;background:none;border:none;color:rgba(255,255,255,.4);width:28px;height:28px;border-radius:7px;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:.14s;}
-.sb-close:hover{background:rgba(255,255,255,.08);color:white;}
-@media(min-width:980px){.sb-close{display:none;}}
-.sb-nav{flex:1;padding:12px 10px;}
-.sb-grp{font-size:.62rem;font-weight:800;color:rgba(255,255,255,.25);text-transform:uppercase;letter-spacing:.14em;padding:14px 12px 6px;}
-.sb-link{display:flex;align-items:center;gap:11px;padding:10px 12px;border-radius:11px;cursor:pointer;border:none;background:transparent;width:100%;text-align:left;transition:all .14s;position:relative;margin-bottom:2px;text-decoration:none;}
-.sb-link:hover{background:rgba(255,255,255,.06);}
-.sb-link.on{background:rgba(107,143,94,.18);border:1px solid rgba(107,143,94,.25);}
-.sb-ic{width:32px;height:32px;border-radius:9px;flex-shrink:0;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;font-size:.92rem;}
-.sb-link.on .sb-ic{background:rgba(107,143,94,.2);border-color:rgba(107,143,94,.3);}
-.sb-lbl{font-size:.92rem;font-weight:600;color:rgba(255,255,255,.55);}
-.sb-link.on .sb-lbl{color:white;font-weight:700;}
-.sb-divider{height:1px;background:rgba(255,255,255,.06);margin:8px 8px;}
-.sb-foot{padding:12px 10px;border-top:1px solid rgba(255,255,255,.07);}
-.sb-back{display:flex;align-items:center;gap:11px;background:none;border:none;color:rgba(255,255,255,.4);font-size:.9rem;font-weight:700;padding:10px 12px;border-radius:11px;width:100%;transition:.14s;text-decoration:none;}
-.sb-back:hover{background:rgba(255,255,255,.06);color:white;}
-.sb-overlay{display:none;position:fixed;inset:0;background:rgba(26,38,24,.6);z-index:190;}
+/* LAYOUT */
+.layout{display:flex;min-height:100vh;}
+.main{flex:1;margin-left:var(--sbw);min-width:0;}
 
-/* ── TOPBAR ── */
-.topbar{height:var(--tbh);display:flex;align-items:center;gap:12px;padding:0 20px;background:var(--forest);position:sticky;top:0;z-index:100;border-bottom:1px solid rgba(107,143,94,.18);}
-@media(min-width:980px){.topbar{padding:0 28px;}}
-.tb-burger{width:34px;height:34px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center;color:rgba(255,255,255,.85);font-size:.9rem;}
-@media(min-width:980px){.tb-burger{display:none;}}
-.tb-title{font-size:1rem;font-weight:800;color:white;letter-spacing:-.01em;}
-.tb-badge{font-size:.78rem;font-weight:800;padding:4px 11px;border-radius:100px;background:rgba(200,150,42,.15);color:var(--gold);border:1px solid var(--gold-g);margin-left:4px;}
-.tb-right{margin-left:auto;display:flex;align-items:center;gap:10px;}
-.tb-export{font-size:.86rem;font-weight:700;padding:6px 16px;border-radius:9px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);color:rgba(255,255,255,.85);transition:.15s;}
-.tb-export:hover{background:rgba(255,255,255,.18);}
+/* SIDEBAR */
+.sidebar{width:var(--sbw);background:var(--sur);border-right:1.5px solid var(--bd2);position:fixed;inset:0 auto 0 0;z-index:200;display:flex;flex-direction:column;overflow-y:auto;transition:transform var(--tf);}
+.sidebar::-webkit-scrollbar{width:3px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--bd2);}
+.sb-brand{padding:20px 18px 16px;border-bottom:1px solid var(--bd2);display:flex;align-items:center;justify-content:space-between;}
+.sb-logo{font-family:var(--uf);font-size:1.2rem;font-weight:800;color:var(--t1);text-decoration:none;letter-spacing:-.03em;display:flex;align-items:center;gap:2px;}
+.sb-logo em{color:var(--sage-d);font-style:normal;}
+.sb-close{display:none;background:var(--bg2);border:none;color:var(--t3);width:28px;height:28px;border-radius:7px;cursor:pointer;align-items:center;justify-content:center;font-size:.9rem;}
+.sb-nav{flex:1;padding:8px 10px;}
+.sb-grp{font-size:.78rem;font-weight:700;color:var(--t4);text-transform:uppercase;letter-spacing:.08em;padding:14px 8px 5px;}
+.sb-link{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;cursor:pointer;border:none;background:transparent;width:100%;text-align:left;transition:all var(--tf);margin-bottom:1px;text-decoration:none;color:var(--t3);font-family:var(--uf);font-size:.9rem;font-weight:600;}
+.sb-link:hover{background:var(--bg2);color:var(--t1);}
+.sb-link.on{background:var(--sage-l);color:var(--sage-d);}
+.sb-ic{width:30px;height:30px;border-radius:8px;background:var(--bg2);border:1px solid var(--bd2);display:flex;align-items:center;justify-content:center;font-size:.88rem;flex-shrink:0;}
+.sb-lbl{flex:1;font-size:.9rem;}
+.sb-divider{height:1px;background:var(--bd2);margin:6px 0;}
+.sb-foot{padding:12px 10px;border-top:1px solid var(--bd2);}
+.sb-back{display:flex;align-items:center;gap:6px;padding:9px 12px;border-radius:9px;border:1.5px solid var(--bd2);background:transparent;color:var(--t3);font-family:var(--uf);font-size:.88rem;font-weight:600;cursor:pointer;width:100%;text-align:left;transition:all var(--tf);text-decoration:none;}
+.sb-back:hover{background:var(--bg2);color:var(--t1);}
 
-/* ── LAYOUT ── */
-.app-main{min-width:0;}
-@media(min-width:980px){.app-main{margin-left:var(--sbw);}}
+/* OVERLAY */
+#sb-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:199;}
 
-/* ── PAGE HERO ── */
-.page-hero{
-  background:linear-gradient(128deg,var(--forest),#1e3a1a);
-  padding:36px 22px 32px;border-bottom:1.5px solid rgba(107,143,94,.18);
-  position:relative;overflow:hidden;
-}
-@media(min-width:980px){.page-hero{padding:48px 44px 42px;}}
-.page-hero::before{content:'';position:absolute;width:400px;height:400px;border-radius:50%;background:radial-gradient(circle,rgba(107,143,94,.15) 0%,transparent 65%);top:-100px;right:-80px;pointer-events:none;}
-.hero-inner{max-width:1080px;margin:0 auto;position:relative;z-index:1;}
-.hero-ey{font-size:.82rem;font-weight:800;padding:5px 13px;border-radius:100px;display:inline-block;margin-bottom:14px;background:rgba(200,150,42,.15);color:var(--gold);border:1px solid var(--gold-g);}
-.hero-t{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;color:white;letter-spacing:-.03em;line-height:1.08;margin-bottom:6px;}
-.hero-t span{color:var(--sage);}
-.hero-s{font-size:.98rem;color:rgba(255,255,255,.6);margin-bottom:28px;font-weight:500;}
-.hero-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
-@media(min-width:600px){.hero-kpis{grid-template-columns:repeat(4,1fr);}}
-.kpi{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:14px;padding:18px 16px;backdrop-filter:blur(8px);transition:.18s;}
-.kpi:hover{background:rgba(255,255,255,.1);}
-@media(min-width:980px){.kpi{padding:22px 20px;}}
-.kpi-n{font-family:var(--fm);font-size:1.6rem;font-weight:900;line-height:1;margin-bottom:6px;}
-.kpi-l{font-size:.74rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;}
-.kpi-trend{font-size:.74rem;font-weight:700;margin-top:6px;}
-.kpi.k1 .kpi-n{color:#4ade80;}
-.kpi.k2 .kpi-n{color:var(--gold);}
-.kpi.k3 .kpi-n{color:#60a5fa;}
-.kpi.k4 .kpi-n{color:#f87171;}
+/* TOPBAR */
+.topbar{height:var(--tbh);display:flex;align-items:center;gap:12px;padding:0 28px;background:rgba(250,249,246,.96);backdrop-filter:blur(20px);border-bottom:1.5px solid var(--bd2);position:sticky;top:0;z-index:100;}
+.tb-burger{width:34px;height:34px;border-radius:9px;border:1.5px solid var(--bd2);background:var(--bg2);color:var(--t1);display:none;align-items:center;justify-content:center;cursor:pointer;font-size:1rem;flex-shrink:0;}
+.tb-title{font-size:1rem;font-weight:700;color:var(--t1);}
+.tb-pill{font-size:.78rem;font-weight:700;padding:4px 12px;border-radius:100px;background:var(--rose-l);color:var(--rose);margin-left:8px;}
+.tb-r{margin-left:auto;display:flex;align-items:center;gap:8px;}
+.tb-btn{padding:7px 14px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--sur);color:var(--t3);font-family:var(--uf);font-size:.84rem;font-weight:600;cursor:pointer;text-decoration:none;transition:all var(--tf);}
+.tb-btn:hover{border-color:var(--sage-g);color:var(--sage-d);}
+.tb-btn.pri{background:var(--sage);border-color:var(--sage);color:#fff;}
+.tb-btn.pri:hover{background:var(--sage-d);}
 
-/* ── CONTENT ── */
-.content{padding-bottom:60px;}
-.pw{max-width:1080px;margin:0 auto;padding:28px 18px 0;}
-@media(min-width:700px){.pw{padding:32px 28px 0;}}
-@media(min-width:980px){.pw{padding:38px 44px 0;}}
+/* PAGE */
+.page{padding:28px 32px 60px;max-width:1400px;}
 
-/* ── CARD ── */
-.card{background:white;border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:22px;overflow:hidden;}
-.card-hd{display:flex;align-items:center;justify-content:space-between;padding:18px 22px;border-bottom:1.5px solid var(--border);flex-wrap:wrap;gap:8px;}
-@media(min-width:980px){.card-hd{padding:20px 28px;}}
-.card-title{font-size:1.08rem;font-weight:900;color:var(--forest);display:flex;align-items:center;gap:9px;}
-.card-title::before{content:'';width:4px;height:16px;flex-shrink:0;background:linear-gradient(180deg,var(--sage),var(--sage-d));border-radius:3px;}
-.card-body{padding:22px;}
-@media(min-width:980px){.card-body{padding:28px;}}
-.card-action{font-size:.86rem;font-weight:700;color:var(--sage);background:none;border:none;cursor:pointer;}
+/* HEADING */
+.page-hd{margin-bottom:24px;}
+.page-hd h1{font-family:var(--rf);font-size:1.8rem;font-weight:700;color:var(--t1);letter-spacing:-.02em;margin-bottom:4px;}
+.page-hd p{font-size:.9rem;color:var(--t3);}
 
-/* ── REVENUE CHART ── */
-.rev-chart{display:flex;align-items:flex-end;gap:8px;height:120px;padding:0 4px;}
-@media(min-width:980px){.rev-chart{height:160px;gap:12px;}}
-.rev-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;}
-.rev-bar{width:100%;border-radius:6px 6px 0 0;background:linear-gradient(180deg,var(--sage),var(--sage-d));min-height:4px;transition:height .6s ease;cursor:pointer;position:relative;}
-.rev-bar:hover{filter:brightness(1.15);}
-.rev-bar-tip{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--forest);color:white;font-size:.7rem;font-weight:800;padding:4px 9px;border-radius:7px;white-space:nowrap;opacity:0;transition:.18s;pointer-events:none;}
-.rev-bar:hover .rev-bar-tip{opacity:1;}
-.rev-bar-lbl{font-size:.68rem;font-weight:700;color:var(--txt-lo);text-align:center;}
-.rev-bar-amt{font-family:var(--fm);font-size:.66rem;font-weight:700;color:var(--sage);}
+/* KPI CARDS */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.kpi-card{background:var(--sur);border:1.5px solid var(--bd2);border-radius:var(--r);padding:20px 22px;position:relative;overflow:hidden;}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0;}
+.kpi-green::before{background:linear-gradient(90deg,var(--sage),var(--sage-d));}
+.kpi-blue::before{background:linear-gradient(90deg,var(--sky),#1558a0);}
+.kpi-gold::before{background:linear-gradient(90deg,var(--gold),#9a6e18);}
+.kpi-rose::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
+.kpi-ic{font-size:1.4rem;margin-bottom:10px;display:block;}
+.kpi-n{font-family:var(--rf);font-size:2rem;font-weight:700;color:var(--t1);line-height:1;margin-bottom:6px;}
+.kpi-l{font-size:.86rem;font-weight:600;color:var(--t2);margin-bottom:5px;}
+.kpi-s{font-size:.80rem;color:var(--t3);}
 
-/* ── STATS GRID ── */
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px;}
-@media(min-width:700px){.stats-grid{grid-template-columns:repeat(4,1fr);gap:18px;}}
-.stat-card{background:white;border:1.5px solid var(--border);border-radius:var(--r);padding:20px 18px;box-shadow:var(--sh);position:relative;overflow:hidden;}
-.stat-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
-.stat-card.s1::before{background:linear-gradient(90deg,var(--green),#065f46);}
-.stat-card.s2::before{background:linear-gradient(90deg,var(--gold),#92400e);}
-.stat-card.s3::before{background:linear-gradient(90deg,var(--sky),#1d4ed8);}
-.stat-card.s4::before{background:linear-gradient(90deg,var(--rose),#9b1c1c);}
-.stat-n{font-family:var(--fm);font-size:1.5rem;font-weight:900;color:var(--forest);line-height:1;margin-bottom:6px;}
-@media(min-width:980px){.stat-n{font-size:1.75rem;}}
-.stat-l{font-size:.76rem;font-weight:700;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.07em;}
-.stat-sub{font-size:.78rem;color:var(--txt-m);margin-top:5px;font-weight:500;}
+/* GRID 2-COL */
+.grid2{display:grid;grid-template-columns:1fr 320px;gap:18px;margin-bottom:18px;}
 
-/* ── TABLE ── */
-.tbl{width:100%;border-collapse:collapse;}
-.tbl th{font-size:.72rem;font-weight:800;color:var(--txt-lo);text-transform:uppercase;letter-spacing:.08em;padding:10px 14px;border-bottom:1.5px solid var(--border);text-align:left;background:var(--cw);}
-@media(min-width:980px){.tbl th{padding:12px 18px;font-size:.74rem;}}
-.tbl td{padding:14px 14px;border-bottom:1.5px solid var(--border);font-size:.9rem;vertical-align:middle;}
-@media(min-width:980px){.tbl td{padding:15px 18px;}}
-.tbl tr:last-child td{border-bottom:none;}
-.tbl tr:hover td{background:var(--cw);}
-.tbl-av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--sage),var(--sage-d));display:flex;align-items:center;justify-content:center;font-size:.74rem;font-weight:800;color:white;flex-shrink:0;overflow:hidden;}
-.tbl-av img{width:100%;height:100%;object-fit:cover;}
-.badge{font-size:.72rem;font-weight:800;padding:3px 10px;border-radius:100px;}
-.badge-pro{background:var(--gold-l);color:var(--gold);border:1px solid var(--gold-g);}
-.badge-free{background:var(--cw);color:var(--txt-lo);border:1px solid var(--border);}
-.badge-exp{background:var(--rose-l);color:var(--rose);}
-.badge-active{background:var(--green-l);color:var(--green);}
+/* CARD */
+.card{background:var(--sur);border:1.5px solid var(--bd2);border-radius:var(--r);overflow:hidden;margin-bottom:18px;}
+.card-hd{display:flex;align-items:center;justify-content:space-between;padding:14px 18px;border-bottom:1px solid var(--bd);}
+.card-title{font-size:.96rem;font-weight:700;color:var(--t1);}
+.card-body{padding:16px 18px;}
+.card-btn{padding:6px 14px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--bg2);color:var(--t3);font-family:var(--uf);font-size:.80rem;font-weight:700;cursor:pointer;transition:all var(--tf);}
+.card-btn:hover{border-color:var(--sage-g);color:var(--sage-d);}
 
-/* ── FILTER BAR ── */
-.filter-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
-.filter-btn{font-size:.84rem;font-weight:700;padding:7px 16px;border-radius:100px;border:1.5px solid var(--border);background:white;color:var(--txt-m);cursor:pointer;transition:.14s;}
-.filter-btn:hover{border-color:var(--sage);color:var(--sage);}
-.filter-btn.on{background:var(--sage-l);border-color:var(--sage-g);color:var(--sage-d);}
-.search-box{flex:1;min-width:200px;padding:9px 16px;border:1.5px solid var(--border);border-radius:100px;font-family:var(--fd);font-size:.9rem;background:var(--cw);outline:none;color:var(--txt);transition:.16s;}
-.search-box:focus{border-color:var(--sage);background:white;box-shadow:0 0 0 3px var(--sage-l);}
+/* REVENUE CHART */
+.rev-chart-wrap{display:flex;align-items:flex-end;gap:6px;height:150px;padding:0 4px;}
+.rev-bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;position:relative;}
+.rev-bar{background:linear-gradient(180deg,var(--sage),var(--sage-d));border-radius:6px 6px 0 0;width:100%;cursor:pointer;transition:opacity var(--tf);position:relative;}
+.rev-bar:hover .rev-bar-tip{display:block;}
+.rev-bar-tip{display:none;position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--t1);color:#fff;font-size:.78rem;font-family:var(--mf);padding:4px 8px;border-radius:6px;white-space:nowrap;z-index:10;}
+.rev-labels{display:flex;gap:6px;padding:0 4px;margin-top:6px;}
+.rev-bar-lbl{font-size:.78rem;font-weight:600;color:var(--t3);text-align:center;display:block;}
+.rev-bar-amt{font-size:.78rem;color:var(--t4);font-family:var(--mf);text-align:center;display:block;}
 
-/* ── EXPIRY ALERT ── */
-.expiry-item{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1.5px solid var(--border);}
-@media(min-width:980px){.expiry-item{padding:16px 0;}}
+/* STATS ROW */
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:0;}
+.stat-box{background:var(--bg);border:1.5px solid var(--bd2);border-radius:10px;padding:14px 16px;}
+.stat-n{font-family:var(--rf);font-size:1.5rem;font-weight:700;color:var(--t1);line-height:1;margin-bottom:3px;}
+.stat-l{font-size:.82rem;font-weight:600;color:var(--t3);margin-bottom:3px;}
+.stat-s{font-size:.80rem;color:var(--t4);}
+
+/* EXPIRY LIST */
+.expiry-item{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--bd);}
 .expiry-item:last-child{border-bottom:none;}
-.expiry-days{font-family:var(--fm);font-size:1.1rem;font-weight:900;width:44px;text-align:center;flex-shrink:0;}
-.expiry-days.urgent{color:var(--rose);}
-.expiry-days.warn{color:var(--gold);}
-.expiry-days.ok{color:var(--green);}
-.expiry-name{font-size:.92rem;font-weight:700;color:var(--forest);flex:1;}
-.expiry-date{font-family:var(--fm);font-size:.74rem;color:var(--txt-lo);}
+.expiry-days{font-family:var(--mf);font-size:.82rem;font-weight:700;padding:4px 10px;border-radius:8px;flex-shrink:0;}
+.expiry-days.urgent{background:var(--rose-l);color:var(--rose);}
+.expiry-days.warn{background:var(--gold-l);color:var(--gold);}
+.expiry-days.ok{background:var(--sage-l);color:var(--sage-d);}
+.expiry-name{font-size:.88rem;font-weight:600;color:var(--t1);}
+.expiry-date{font-size:.80rem;color:var(--t3);margin-top:1px;}
 
-/* ── LOADING ── */
-.loading{padding:48px;text-align:center;color:var(--txt-lo);}
-.spin{width:28px;height:28px;border:2.5px solid var(--border);border-top-color:var(--sage);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px;}
+/* SEARCH & FILTER */
+.tbl-toolbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;}
+.search-inp{flex:1;min-width:200px;padding:9px 14px;border-radius:9px;border:1.5px solid var(--bd2);background:var(--sur);font-family:var(--uf);font-size:.9rem;color:var(--t1);outline:none;transition:border-color var(--tf);}
+.search-inp:focus{border-color:var(--sage-g);}
+.filter-btn{padding:7px 14px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--bg2);color:var(--t3);font-family:var(--uf);font-size:.82rem;font-weight:600;cursor:pointer;transition:all var(--tf);}
+.filter-btn:hover{border-color:var(--sage-g);color:var(--sage-d);}
+.filter-btn.on{background:var(--sage-l);border-color:var(--sage-g);color:var(--sage-d);}
+
+/* TABLE */
+.tbl-wrap{overflow-x:auto;border-radius:var(--r);border:1.5px solid var(--bd2);}
+table{width:100%;border-collapse:collapse;font-size:.86rem;}
+thead th{background:var(--bg2);padding:12px 14px;text-align:left;font-size:.78rem;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.04em;border-bottom:1.5px solid var(--bd2);white-space:nowrap;}
+tbody tr{border-bottom:1px solid var(--bd);transition:background var(--tf);}
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{background:var(--bg);}
+tbody td{padding:12px 14px;vertical-align:middle;}
+.tbl-av{width:32px;height:32px;border-radius:50%;background:var(--bg3);color:var(--t2);font-size:.78rem;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.tbl-av img{width:100%;height:100%;object-fit:cover;}
+
+/* BADGES */
+.badge{font-size:.78rem;font-weight:700;padding:3px 9px;border-radius:100px;white-space:nowrap;}
+.badge-pro{background:rgba(90,125,80,.12);color:var(--sage-d);}
+.badge-free{background:var(--bg3);color:var(--t4);}
+.badge-exp{background:var(--rose-l);color:var(--rose);}
+.badge-active{background:var(--sage-l);color:var(--sage-d);}
+
+/* EMPTY */
+.empty{text-align:center;padding:28px 16px;}
+.empty-ic{font-size:1.8rem;display:block;margin-bottom:8px;}
+.empty-h{font-size:.9rem;font-weight:700;color:var(--t2);margin-bottom:4px;}
+.empty-s{font-size:.82rem;color:var(--t3);}
+
+/* TOAST */
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--t1);color:#fff;padding:10px 20px;border-radius:100px;font-size:.86rem;font-weight:600;z-index:9999;transition:transform .25s;pointer-events:none;white-space:nowrap;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* AUTH LOADER */
+#auth-loader{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:9999;}
+.ld-logo{font-family:var(--uf);font-size:1.6rem;font-weight:800;color:var(--t1);letter-spacing:-.03em;}
+.ld-logo em{color:var(--sage-d);font-style:normal;}
+.ld-spin{width:28px;height:28px;border:3px solid var(--bd2);border-top-color:var(--sage);border-radius:50%;animation:spin .8s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg);}}
-.empty{padding:40px;text-align:center;}
-.empty-ic{font-size:2.2rem;margin-bottom:10px;}
-.empty-h{font-size:.96rem;font-weight:800;color:var(--forest);margin-bottom:5px;}
-.empty-s{font-size:.86rem;color:var(--txt-lo);}
 
-/* ── TOAST ── */
-.toast{position:fixed;bottom:24px;right:24px;background:var(--forest);color:white;font-size:.88rem;font-weight:700;padding:12px 20px;border-radius:13px;box-shadow:var(--sh-lg);transform:translateY(80px);transition:.3s;z-index:999;}
-.toast.show{transform:translateY(0);}
+/* MOBILE */
+@media(max-width:980px){
+  .sidebar{transform:translateX(-100%);}
+  .main{margin-left:0;}
+  .tb-burger{display:flex;}
+  .topbar{padding:0 14px;}
+  .page{padding:20px 16px 48px;}
+  .kpi-grid{grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+  .kpi-card{padding:16px 16px;}
+  .kpi-n{font-size:1.6rem;}
+  .grid2{grid-template-columns:1fr;}
+  .sb-close{display:flex;}
+  .tb-title{font-size:.92rem;}
+  .stat-row{grid-template-columns:1fr 1fr 1fr;}
+}
+@media(max-width:500px){
+  .kpi-grid{grid-template-columns:1fr 1fr;gap:10px;}
+  .kpi-n{font-size:1.4rem;}
+  .kpi-ic{font-size:1.2rem;margin-bottom:6px;}
+  .stat-row{grid-template-columns:1fr;}
+  .tbl-toolbar{flex-direction:column;align-items:stretch;}
+  .search-inp{min-width:unset;}
+  .page{padding:16px 12px 48px;}
+  .tb-btn{display:none;}
+  .tb-title{font-size:.88rem;}
+}
 </style>
 </head>
 <body>
-<div id="auth-loader" style="position:fixed;inset:0;background:#faf9f5;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;">
-  <div style="font-size:2.2rem;font-weight:900;color:#1a2618;letter-spacing:-.03em;">Mock<span style="color:#6b8f5e;">Arena</span></div>
-  <div style="width:34px;height:34px;border:3px solid rgba(26,38,24,.1);border-top-color:#6b8f5e;border-radius:50%;animation:spin .7s linear infinite;"></div>
-  <div style="font-size:.88rem;color:rgba(26,38,24,.45);font-weight:600;">Loading payment dashboard…</div>
+
+<div id="auth-loader">
+  <div class="ld-logo">Mock<em style="color:var(--sage-d);font-style:normal;">Arena</em></div>
+  <div class="ld-spin"></div>
 </div>
 
+<div id="sb-overlay" onclick="closeSB()"></div>
+<div id="toast"></div>
 
+<div class="layout">
 
-<!-- SIDEBAR -->
-<aside class="sidebar" id="sidebar">
-  <div class="sb-brand">
-    <a href="mockarena_student_dashboard.html" class="sb-logo">Mock<span>Arena</span></a>
-    <button class="sb-close" onclick="closeSB()">✕</button>
-  </div>
-  <nav class="sb-nav">
-    <div class="sb-grp">Admin Tools</div>
-    <a href="mockarena_admin.html" class="sb-link"><span class="sb-ic">🛠️</span><span class="sb-lbl">Admin Panel</span></a>
-    <a href="mockarena_payment_admin.html" class="sb-link on"><span class="sb-ic">💰</span><span class="sb-lbl">Payments</span></a>
-    <a href="mockarena_support.html" class="sb-link"><span class="sb-ic">🎫</span><span class="sb-lbl">Support Panel</span></a>
-    <a href="mockarena_teacher.html" class="sb-link"><span class="sb-ic">👨‍🏫</span><span class="sb-lbl">Teacher Portal</span></a>
-    <div class="sb-divider"></div>
-    <div class="sb-grp">Platform</div>
-    <a href="mockarena_student_dashboard.html" class="sb-link"><span class="sb-ic">🏠</span><span class="sb-lbl">Student Dashboard</span></a>
-    <a href="mockarena_leaderboard.html" class="sb-link"><span class="sb-ic">🏆</span><span class="sb-lbl">Leaderboard</span></a>
-    <a href="jee_main.html" class="sb-link"><span class="sb-ic">📝</span><span class="sb-lbl">JEE Main</span></a>
-  </nav>
-  <div class="sb-foot">
-    <a href="mockarena_student_dashboard.html" class="sb-back">← Back to Dashboard</a>
-  </div>
-</aside>
-<div class="sb-overlay" id="sb-overlay" onclick="closeSB()"></div>
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <a href="index.html" class="sb-logo">Mock<em>Arena</em></a>
+      <button class="sb-close" onclick="closeSB()">✕</button>
+    </div>
+    <nav class="sb-nav">
+      <div class="sb-grp">Admin Tools</div>
+      <a href="mockarena_admin.html" class="sb-link"><span class="sb-ic">🛠️</span><span class="sb-lbl">Admin Panel</span></a>
+      <a href="mockarena_payment_admin.html" class="sb-link on"><span class="sb-ic">💰</span><span class="sb-lbl">Payments</span></a>
+      <a href="mockarena_support.html" class="sb-link"><span class="sb-ic">🎫</span><span class="sb-lbl">Support</span></a>
+      <a href="mockarena_teacher.html" class="sb-link"><span class="sb-ic">👨‍🏫</span><span class="sb-lbl">Teacher Portal</span></a>
+      <div class="sb-divider"></div>
+      <div class="sb-grp">Navigation</div>
+      <a href="mockarena_student_dashboard.html" class="sb-link"><span class="sb-ic">🏠</span><span class="sb-lbl">Student Dashboard</span></a>
+      <a href="index.html" class="sb-link"><span class="sb-ic">🌐</span><span class="sb-lbl">Home Page</span></a>
+    </nav>
+    <div class="sb-foot">
+      <a href="mockarena_student_dashboard.html" class="sb-back">← Back to Dashboard</a>
+    </div>
+  </aside>
 
-<!-- MAIN -->
-<div class="app-main">
-<nav class="topbar">
-  <button class="tb-burger" onclick="openSB()">☰</button>
-  <div class="tb-title">💰 Payment Dashboard</div>
-  <span class="tb-badge">Admin Only</span>
-  <div class="tb-right">
-    <button class="tb-export" onclick="exportCSV()">⬇ Export CSV</button>
-  </div>
-</nav>
+  <!-- MAIN -->
+  <div class="main">
 
-<!-- HERO -->
-<div class="page-hero">
-  <div class="hero-inner">
-    <div class="hero-ey">💰 Revenue & Subscriptions</div>
-    <div class="hero-t">MockArena <span>Payments</span></div>
-    <div class="hero-s">Real-time revenue, Pro subscriptions and student payment analytics</div>
-    <div class="hero-kpis">
-      <div class="kpi k1"><div class="kpi-n" id="kpi-rev">₹0</div><div class="kpi-l">Total Revenue</div><div class="kpi-trend" style="color:#4ade80;" id="kpi-rev-s">Loading…</div></div>
-      <div class="kpi k2"><div class="kpi-n" id="kpi-pro">0</div><div class="kpi-l">Active Pro Members</div><div class="kpi-trend" style="color:var(--gold);" id="kpi-pro-s">Loading…</div></div>
-      <div class="kpi k3"><div class="kpi-n" id="kpi-free">0</div><div class="kpi-l">Free Users</div><div class="kpi-trend" style="color:#60a5fa;" id="kpi-free-s">Loading…</div></div>
-      <div class="kpi k4"><div class="kpi-n" id="kpi-exp">0</div><div class="kpi-l">Expiring Soon</div><div class="kpi-trend" style="color:#f87171;">Within 7 days</div></div>
-    </div>
-  </div>
-</div>
-
-<div class="content"><div class="pw">
-
-  <!-- STATS ROW -->
-  <div class="stats-grid">
-    <div class="stat-card s1">
-      <div class="stat-n" id="st-month">₹0</div>
-      <div class="stat-l">This Month</div>
-      <div class="stat-sub" id="st-month-s">0 new subscribers</div>
-    </div>
-    <div class="stat-card s2">
-      <div class="stat-n" id="st-avg">₹149</div>
-      <div class="stat-l">Avg Revenue/User</div>
-      <div class="stat-sub">Per subscription cycle</div>
-    </div>
-    <div class="stat-card s3">
-      <div class="stat-n" id="st-conv">0%</div>
-      <div class="stat-l">Conversion Rate</div>
-      <div class="stat-sub" id="st-conv-s">Free → Pro</div>
-    </div>
-    <div class="stat-card s4">
-      <div class="stat-n" id="st-churn">0</div>
-      <div class="stat-l">Expired This Month</div>
-      <div class="stat-sub">Need renewal</div>
-    </div>
-  </div>
-
-  <!-- REVENUE CHART -->
-  <div class="card">
-    <div class="card-hd">
-      <div class="card-title">Monthly Revenue</div>
-      <span style="font-family:var(--fm);font-size:.76rem;color:var(--txt-lo);">Last 6 months · ₹149/subscription</span>
-    </div>
-    <div class="card-body">
-      <div class="rev-chart" id="rev-chart"></div>
-      <div style="display:flex;gap:8px;margin-top:8px;" id="rev-labels"></div>
-    </div>
-  </div>
-
-  <!-- EXPIRING SOON -->
-  <div class="card">
-    <div class="card-hd">
-      <div class="card-title">⚠️ Expiring Soon</div>
-      <span style="font-size:.84rem;color:var(--txt-lo);font-weight:600;">Next 30 days</span>
-    </div>
-    <div class="card-body" style="padding:10px 22px;">
-      <div id="expiry-list"><div class="loading"><div class="spin"></div>Loading…</div></div>
-    </div>
-  </div>
-
-  <!-- ALL PRO MEMBERS TABLE -->
-  <div class="card">
-    <div class="card-hd">
-      <div class="card-title">All Students</div>
-      <div class="filter-bar">
-        <input class="search-box" id="search-box" placeholder="Search name or email…" oninput="filterTable()"/>
-        <button class="filter-btn on" onclick="setFilter('all',this)">All</button>
-        <button class="filter-btn" onclick="setFilter('pro',this)">Pro</button>
-        <button class="filter-btn" onclick="setFilter('free',this)">Free</button>
-        <button class="filter-btn" onclick="setFilter('expired',this)">Expired</button>
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <button class="tb-burger" onclick="openSB()">☰</button>
+      <div class="tb-title">💰 Payment Dashboard</div>
+      <span class="tb-pill">Admin Only</span>
+      <div class="tb-r">
+        <button class="tb-btn" onclick="exportCSV()">⬇ Export CSV</button>
+        <a href="mockarena_student_dashboard.html" class="tb-btn">← Dashboard</a>
       </div>
-    </div>
-    <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
-      <table class="tbl" id="students-table">
-        <thead>
-          <tr>
-            <th>Student</th>
-            <th>Email</th>
-            <th>Plan</th>
-            <th>Joined</th>
-            <th>Pro Expiry</th>
-            <th>Tests</th>
-            <th>Points</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody id="students-tbody">
-          <tr><td colspan="8"><div class="loading"><div class="spin"></div>Loading students…</div></td></tr>
-        </tbody>
-      </table>
+    </header>
+
+    <div class="page">
+
+      <div class="page-hd">
+        <h1>Payment Dashboard</h1>
+        <p>Revenue analytics, Pro subscribers and expiry tracking.</p>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="kpi-grid">
+        <div class="kpi-card kpi-green">
+          <span class="kpi-ic">💰</span>
+          <div class="kpi-n" id="kpi-rev">₹0</div>
+          <div class="kpi-l">Total Revenue</div>
+          <div class="kpi-s" id="kpi-rev-s">₹0 this month</div>
+        </div>
+        <div class="kpi-card kpi-blue">
+          <span class="kpi-ic">⚡</span>
+          <div class="kpi-n" id="kpi-pro">0</div>
+          <div class="kpi-l">Pro Subscribers</div>
+          <div class="kpi-s" id="kpi-pro-s">0 new this month</div>
+        </div>
+        <div class="kpi-card kpi-gold">
+          <span class="kpi-ic">👥</span>
+          <div class="kpi-n" id="kpi-free">0</div>
+          <div class="kpi-l">Free Users</div>
+          <div class="kpi-s" id="kpi-free-s">0 total students</div>
+        </div>
+        <div class="kpi-card kpi-rose">
+          <span class="kpi-ic">⏰</span>
+          <div class="kpi-n" id="kpi-exp">0</div>
+          <div class="kpi-l">Expiring Soon</div>
+          <div class="kpi-s">Within 7 days</div>
+        </div>
+      </div>
+
+      <!-- CHART + EXPIRY -->
+      <div class="grid2">
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-hd"><div class="card-title">Revenue — Last 6 Months</div></div>
+          <div class="card-body">
+            <div class="rev-chart-wrap" id="rev-chart"></div>
+            <div class="rev-labels" id="rev-labels"></div>
+          </div>
+        </div>
+        <div class="card" style="margin-bottom:0;">
+          <div class="card-hd"><div class="card-title">Expiring Soon</div></div>
+          <div class="card-body" style="max-height:240px;overflow-y:auto;">
+            <div id="expiry-list"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STATS -->
+      <div class="card" style="margin-top:18px;">
+        <div class="card-hd"><div class="card-title">Key Metrics</div></div>
+        <div class="card-body">
+          <div class="stat-row">
+            <div class="stat-box">
+              <div class="stat-n" id="st-month">₹0</div>
+              <div class="stat-l">This Month Revenue</div>
+              <div class="stat-s" id="st-month-s">0 new subscribers</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-n" id="st-conv">0%</div>
+              <div class="stat-l">Conversion Rate</div>
+              <div class="stat-s" id="st-conv-s">Free → Pro</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-n" id="st-churn">0</div>
+              <div class="stat-l">Churned Users</div>
+              <div class="stat-s">Expired Pro plans</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STUDENTS TABLE -->
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-title">All Students</div>
+          <button class="card-btn" onclick="exportCSV()">⬇ Export CSV</button>
+        </div>
+        <div class="card-body">
+          <div class="tbl-toolbar">
+            <input type="text" id="search-box" class="search-inp" placeholder="Search by name or email…" oninput="filterTable()"/>
+            <button class="filter-btn on" onclick="setFilter('all',this)">All</button>
+            <button class="filter-btn" onclick="setFilter('pro',this)">⚡ Pro</button>
+            <button class="filter-btn" onclick="setFilter('free',this)">Free</button>
+            <button class="filter-btn" onclick="setFilter('expired',this)">Expired</button>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Email</th>
+                  <th>Plan</th>
+                  <th>Joined</th>
+                  <th>Pro Expiry</th>
+                  <th>Tests</th>
+                  <th>Points</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="students-tbody">
+                <tr><td colspan="8"><div class="empty"><div class="empty-ic">⏳</div><div class="empty-h">Loading students…</div></div></td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
-
-</div></div>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script>
 function openSB(){document.getElementById('sidebar').style.transform='translateX(0)';document.getElementById('sb-overlay').style.display='block';}
 function closeSB(){if(window.innerWidth<980)document.getElementById('sidebar').style.transform='translateX(-100%)';document.getElementById('sb-overlay').style.display='none';}
 document.getElementById('sidebar').style.transform=window.innerWidth<980?'translateX(-100%)':'';
 window.addEventListener('resize',()=>{if(window.innerWidth>=980){document.getElementById('sidebar').style.transform='';document.getElementById('sb-overlay').style.display='none';}else document.getElementById('sidebar').style.transform='translateX(-100%)';});
-if(window.innerWidth<980)document.getElementById('sidebar').style.transform='translateX(-100%)';
-window.addEventListener('resize',()=>{if(window.innerWidth>=980){document.getElementById('sidebar').style.transform='';document.getElementById('sb-overlay').style.display='none';}else if(!document.getElementById('sidebar').classList.contains('open'))document.getElementById('sidebar').style.transform='translateX(-100%)';});
 function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2800);}
 function ini(n){return(n||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();}
 
@@ -369,17 +395,11 @@ function buildRevenueChart(students){
   var now=new Date();
   for(var i=5;i>=0;i--){
     var d=new Date(now.getFullYear(),now.getMonth()-i,1);
-    months.push({
-      key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),
-      label:d.toLocaleDateString('en-IN',{month:'short'}),
-      count:0,rev:0
-    });
+    months.push({key:d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'),label:d.toLocaleDateString('en-IN',{month:'short'}),count:0,rev:0});
   }
   students.forEach(s=>{
     if(!s.isPro||!s.proExpiry)return;
-    // estimate when they subscribed (expiry - 30 days)
-    var expTs=s.proExpiry.seconds*1000;
-    var subDate=new Date(expTs-30*24*60*60*1000);
+    var subDate=new Date(s.proExpiry.seconds*1000-30*24*60*60*1000);
     var mk=subDate.getFullYear()+'-'+String(subDate.getMonth()+1).padStart(2,'0');
     var m=months.find(m=>m.key===mk);
     if(m){m.count++;m.rev+=149;}
@@ -388,46 +408,33 @@ function buildRevenueChart(students){
   var chartEl=document.getElementById('rev-chart');
   var labelsEl=document.getElementById('rev-labels');
   chartEl.innerHTML=months.map(m=>{
-    var h=Math.max(4,Math.round((m.rev/maxRev)*(window.innerWidth>=980?148:108)));
-    return`<div class="rev-bar-wrap">
-      <div class="rev-bar" style="height:${h}px;">
-        <div class="rev-bar-tip">₹${m.rev.toLocaleString('en-IN')}<br>${m.count} subs</div>
-      </div>
-    </div>`;
+    var h=Math.max(4,Math.round((m.rev/maxRev)*140));
+    return`<div class="rev-bar-wrap"><div class="rev-bar" style="height:${h}px;"><div class="rev-bar-tip">₹${m.rev.toLocaleString('en-IN')}<br>${m.count} subs</div></div></div>`;
   }).join('');
-  labelsEl.innerHTML=months.map(m=>`<div style="flex:1;text-align:center;"><div class="rev-bar-lbl">${m.label}</div><div class="rev-bar-amt">${m.rev>0?'₹'+m.rev.toLocaleString('en-IN'):'-'}</div></div>`).join('');
+  labelsEl.innerHTML=months.map(m=>`<div style="flex:1;text-align:center;"><span class="rev-bar-lbl">${m.label}</span><span class="rev-bar-amt">${m.rev>0?'₹'+m.rev.toLocaleString('en-IN'):'-'}</span></div>`).join('');
 }
 
 function buildExpiryList(students){
   var now=Date.now();
   var soon=students.filter(s=>{
     if(!s.isPro||!s.proExpiry)return false;
-    var exp=s.proExpiry.seconds*1000;
-    var days=(exp-now)/(1000*60*60*24);
+    var days=(s.proExpiry.seconds*1000-now)/(1000*60*60*24);
     return days>0&&days<=30;
   }).sort((a,b)=>a.proExpiry.seconds-b.proExpiry.seconds);
   var el=document.getElementById('expiry-list');
-  if(!soon.length){el.innerHTML='<div class="empty"><div class="empty-ic">✅</div><div class="empty-h">No expiries soon</div><div class="empty-s">No Pro subscriptions expiring in the next 30 days.</div></div>';return;}
+  if(!soon.length){el.innerHTML='<div class="empty"><div class="empty-ic">✅</div><div class="empty-h">No expiries soon</div><div class="empty-s">No Pro subscriptions expiring in 30 days.</div></div>';return;}
   document.getElementById('kpi-exp').textContent=soon.filter(s=>(s.proExpiry.seconds*1000-now)/(1000*60*60*24)<=7).length;
   el.innerHTML=soon.map(s=>{
     var days=Math.ceil((s.proExpiry.seconds*1000-now)/(1000*60*60*24));
     var cls=days<=3?'urgent':days<=7?'warn':'ok';
     var expDate=new Date(s.proExpiry.seconds*1000).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
-    return`<div class="expiry-item">
-      <div class="expiry-days ${cls}">${days}d</div>
-      <div style="flex:1;min-width:0;">
-        <div class="expiry-name">${s.displayName||s.name||'Student'}</div>
-        <div class="expiry-date">Expires ${expDate}</div>
-      </div>
-      <span class="badge badge-exp">Expiring</span>
-    </div>`;
+    return`<div class="expiry-item"><div class="expiry-days ${cls}">${days}d</div><div style="flex:1;min-width:0;"><div class="expiry-name">${s.displayName||s.name||'Student'}</div><div class="expiry-date">Expires ${expDate}</div></div><span class="badge badge-exp">Expiring</span></div>`;
   }).join('');
 }
 
 function buildTable(students){
   allStudents=students;
   var now=Date.now();
-  var nowMk=new Date().getFullYear()+'-'+String(new Date().getMonth()+1).padStart(2,'0');
   var tbody=document.getElementById('students-tbody');
   if(!students.length){tbody.innerHTML='<tr><td colspan="8"><div class="empty"><div class="empty-ic">👥</div><div class="empty-h">No students yet</div></div></td></tr>';return;}
   tbody.innerHTML=students.map(s=>{
@@ -440,17 +447,7 @@ function buildTable(students){
     var expDate=s.proExpiry?new Date(s.proExpiry.seconds*1000).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'}):'—';
     var ph=s.photo||s.photoURL||null;
     var av=ph?`<div class="tbl-av"><img src="${ph}"/></div>`:`<div class="tbl-av">${ini(nm)}</div>`;
-    // estimate join date from UID (Firebase UID timestamps are not available, show — )
-    return`<tr class="data-row" data-name="${nm.toLowerCase()}" data-email="${(s.email||'').toLowerCase()}" data-plan="${plan}">
-      <td><div style="display:flex;align-items:center;gap:10px;">${av}<div><div style="font-weight:700;font-size:.92rem;">${nm}</div><div style="font-size:.74rem;color:var(--txt-lo);font-family:var(--fm);">${s.state||''}${s.district?' · '+s.district:''}</div></div></div></td>
-      <td style="font-size:.84rem;color:var(--txt-m);">${s.email||'—'}</td>
-      <td>${planBadge}</td>
-      <td style="font-family:var(--fm);font-size:.78rem;color:var(--txt-lo);">—</td>
-      <td style="font-family:var(--fm);font-size:.8rem;color:${isPro?'var(--sage)':isExp?'var(--rose)':'var(--txt-lo)'};">${expDate}</td>
-      <td style="font-family:var(--fm);font-size:.88rem;font-weight:700;">${s.totalTests||0}</td>
-      <td style="font-family:var(--fm);font-size:.88rem;font-weight:700;">${(s.totalPoints||0).toLocaleString('en-IN')}</td>
-      <td>${statusBadge}</td>
-    </tr>`;
+    return`<tr class="data-row" data-name="${nm.toLowerCase()}" data-email="${(s.email||'').toLowerCase()}" data-plan="${plan}"><td><div style="display:flex;align-items:center;gap:10px;">${av}<div><div style="font-weight:700;font-size:.9rem;">${nm}</div><div style="font-size:.78rem;color:var(--t4);font-family:var(--mf);">${s.state||''}${s.district?' · '+s.district:''}</div></div></div></td><td style="font-size:.86rem;color:var(--t3);">${s.email||'—'}</td><td>${planBadge}</td><td style="font-family:var(--mf);font-size:.80rem;color:var(--t4);">—</td><td style="font-family:var(--mf);font-size:.82rem;color:${isPro?'var(--sage-d)':isExp?'var(--rose)':'var(--t4)'};">${expDate}</td><td style="font-family:var(--mf);font-size:.88rem;font-weight:700;">${s.totalTests||0}</td><td style="font-family:var(--mf);font-size:.88rem;font-weight:700;">${(s.totalPoints||0).toLocaleString('en-IN')}</td><td>${statusBadge}</td></tr>`;
   }).join('');
 }
 
@@ -461,14 +458,11 @@ function buildKPIs(students){
   var freeList=students.filter(s=>!s.isPro||(s.proExpiry&&s.proExpiry.seconds*1000<=now));
   var expList=students.filter(s=>s.isPro&&s.proExpiry&&s.proExpiry.seconds*1000<=now);
   var totalRev=proList.length*149;
-
-  // month subs
   var monthSubs=proList.filter(s=>{
     if(!s.proExpiry)return false;
     var sub=new Date(s.proExpiry.seconds*1000-30*24*60*60*1000);
     return sub.getFullYear()+'-'+String(sub.getMonth()+1).padStart(2,'0')===nowMk;
   });
-
   document.getElementById('kpi-rev').textContent='₹'+totalRev.toLocaleString('en-IN');
   document.getElementById('kpi-rev-s').textContent='₹'+(monthSubs.length*149).toLocaleString('en-IN')+' this month';
   document.getElementById('kpi-pro').textContent=proList.length;
@@ -476,7 +470,6 @@ function buildKPIs(students){
   document.getElementById('kpi-free').textContent=freeList.length;
   document.getElementById('kpi-free-s').textContent=students.length+' total students';
   document.getElementById('kpi-exp').textContent=students.filter(s=>{if(!s.isPro||!s.proExpiry)return false;var d=(s.proExpiry.seconds*1000-now)/(1000*60*60*24);return d>0&&d<=7;}).length;
-
   document.getElementById('st-month').textContent='₹'+(monthSubs.length*149).toLocaleString('en-IN');
   document.getElementById('st-month-s').textContent=monthSubs.length+' new subscribers';
   document.getElementById('st-conv').textContent=students.length>0?Math.round((proList.length/students.length)*100)+'%':'0%';
@@ -495,9 +488,9 @@ window.exportCSV=function(){
   var csv=rows.map(r=>r.map(v=>'"'+String(v).replace(/"/g,'""')+'"').join(',')).join('\n');
   var a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download='mockarena_students_'+new Date().toISOString().split('T')[0]+'.csv';
+  a.download='mockarena_payments_'+new Date().toISOString().split('T')[0]+'.csv';
   a.click();
-  toast('CSV exported successfully!');
+  toast('CSV exported!');
 };
 </script>
 
@@ -507,7 +500,6 @@ import{getAuth,onAuthStateChanged}from"https://www.gstatic.com/firebasejs/10.12.
 import{getFirestore,collection,getDocs,doc,getDoc}from"https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",storageBucket:"mockarena-c18c4.firebasestorage.app",messagingSenderId:"861067164791",appId:"1:861067164791:web:28df5244e34361dd9d5a72"});
 const auth=getAuth(app),db=getFirestore(app);
-
 onAuthStateChanged(auth,async user=>{
   if(!user){window.location.href='index.html';return;}
   try{
@@ -517,12 +509,10 @@ onAuthStateChanged(auth,async user=>{
     document.getElementById('auth-loader').style.display='none';
     loadData();
   }catch(e){
-    console.error(e);
     document.getElementById('auth-loader').style.display='none';
     toast('Error: '+e.message);
   }
 });
-
 async function loadData(){
   try{
     const snap=await getDocs(collection(db,'users'));
@@ -532,8 +522,7 @@ async function loadData(){
     buildExpiryList(students);
     buildTable(students);
   }catch(e){
-    console.error(e);
-    toast('Failed to load data: '+e.message);
+    toast('Failed to load: '+e.message);
   }
 }
 </script>
