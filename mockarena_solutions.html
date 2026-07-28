@@ -2,1210 +2,771 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=5.0,user-scalable=yes"/>
-<title>Video Solutions — Previous Year Papers | MockArena</title>
-<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;600;700&family=Outfit:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=yes"/>
+<title>PYQ Video Solutions — MockArena</title>
+<link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet"/>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 :root{
-  --bg:#f7f6f1;--bg2:#eeebe0;--bg3:#e5e1d3;--sur:#fefdfb;
-  --t1:#18170f;--t2:#2a2820;--t3:#6a6758;--t4:#a09d8e;
-  --bd:rgba(24,23,15,.07);--bd2:rgba(24,23,15,.13);
-  --ac:#1e4d0f;--ac2:#2d6b1a;--acl:rgba(30,77,15,.08);--ach:rgba(30,77,15,.22);
-  --go:#8a6000;--rd:#9e2020;
+  --bg:#f5f4ef;--sur:#faf9f6;--bg2:#edeae0;--bg3:#e3ded0;
+  --t1:#16150d;--t2:#2a2820;--t3:#5c5a4f;--t4:#9a9788;
+  --bd:rgba(22,21,13,.07);--bd2:rgba(22,21,13,.13);--bd3:rgba(22,21,13,.20);
+  --ac:#3a6830;--ac2:#5a7d50;--acl:rgba(90,125,80,.10);--ach:rgba(90,125,80,.25);
+  --gold:#b8861a;--goldl:rgba(184,134,26,.10);
+  --rose:#b83232;--rosel:rgba(184,50,50,.09);
+  --sky:#1a6eb8;--skyl:rgba(26,110,184,.09);
   --rf:'Crimson Pro',Georgia,serif;
   --uf:'Outfit',sans-serif;
   --mf:'JetBrains Mono',monospace;
-  --sh:0 2px 8px rgba(0,0,0,.06),0 4px 16px rgba(0,0,0,.04);
-  --shm:0 4px 20px rgba(0,0,0,.09),0 12px 40px rgba(0,0,0,.06);
+  --sh:0 2px 8px rgba(0,0,0,.06);
+  --shm:0 4px 20px rgba(0,0,0,.10);
   --tf:.2s cubic-bezier(.4,0,.2,1);
-  --top:64px;
-  --sbw:288px;
+  --r:12px;--sbw:282px;--top:60px;
 }
-html{font-size:16.5px;-webkit-text-size-adjust:100%;}
-body{font-family:var(--uf);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;}
+html{font-size:16px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--uf);background:var(--bg);color:var(--t1);-webkit-font-smoothing:antialiased;overflow-x:hidden;}
 
 /* TOPBAR */
-.topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:rgba(247,246,241,.96);backdrop-filter:blur(20px);border-bottom:1.5px solid var(--bd2);display:flex;align-items:center;padding:0 20px;gap:12px;z-index:1000;}
-.topbar.scrolled{box-shadow:0 2px 20px rgba(0,0,0,.07);}
-.ham{display:none;width:40px;height:40px;border-radius:9px;border:1.5px solid var(--bd2);background:var(--bg2);font-size:18px;cursor:pointer;align-items:center;justify-content:center;flex-shrink:0;}
-.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0;}
-.logo-mark{display:none;}
-.logo-name{font-size:22px;font-weight:800;color:var(--t1);letter-spacing:-.03em;}
-.logo-name em{color:var(--ac2);font-style:normal;}
-.tb-div{width:1px;height:24px;background:var(--bd2);flex-shrink:0;}
-.tb-search{flex:1;max-width:340px;display:flex;align-items:center;gap:8px;background:var(--bg2);border:1.5px solid var(--bd2);border-radius:9px;padding:0 13px;height:38px;transition:border-color var(--tf);}
-.tb-search:focus-within{border-color:var(--ac2);}
-.tb-search input{border:none;background:transparent;outline:none;font-family:var(--uf);font-size:.88rem;color:var(--t1);width:100%;}
-.tb-search input::placeholder{color:var(--t4);}
-.tb-r{display:flex;align-items:center;gap:8px;margin-left:auto;}
-.free-pill{display:flex;align-items:center;gap:6px;padding:7px 14px;border-radius:100px;background:rgba(138,96,0,.09);border:1.5px solid rgba(138,96,0,.22);font-size:.84rem;font-weight:700;color:var(--go);white-space:nowrap;}
-.free-pill.used{background:rgba(158,32,32,.07);border-color:rgba(158,32,32,.22);color:var(--rd);}
-.tb-btn{padding:8px 15px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--sur);color:var(--t2);font-family:var(--uf);font-size:.86rem;font-weight:600;cursor:pointer;transition:all var(--tf);text-decoration:none;display:flex;align-items:center;gap:6px;white-space:nowrap;}
-.tb-btn:hover{border-color:var(--ac2);color:var(--ac);}
-.tb-btn.pri{background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:transparent;color:#fff;font-weight:700;}
-.tb-btn.pri:hover{opacity:.9;}
+.topbar{position:fixed;top:0;left:0;right:0;height:var(--top);background:rgba(247,246,241,.96);backdrop-filter:blur(20px);border-bottom:1.5px solid var(--bd2);display:flex;align-items:center;gap:12px;padding:0 20px;z-index:200;}
+.ham{background:var(--bg2);border:1.5px solid var(--bd2);color:var(--t1);width:36px;height:36px;border-radius:9px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.logo{display:flex;align-items:center;gap:6px;text-decoration:none;}
+.logo-name{font-family:var(--uf);font-size:1.1rem;font-weight:800;color:var(--t1);letter-spacing:-.02em;}
+.logo-name em{color:var(--ac);font-style:normal;}
+.tb-badge{font-size:.78rem;font-weight:700;color:var(--ac);background:var(--acl);border:1.5px solid var(--ach);padding:4px 10px;border-radius:100px;}
+.tb-sep{flex:1;}
+.tb-search{display:flex;align-items:center;gap:8px;background:var(--sur);border:1.5px solid var(--bd2);border-radius:10px;padding:7px 14px;min-width:200px;}
+.tb-search input{border:none;background:none;font-family:var(--uf);font-size:.88rem;color:var(--t1);outline:none;width:160px;}
+.tb-r{display:flex;align-items:center;gap:8px;}
+.free-counter{display:flex;align-items:center;gap:5px;font-size:.78rem;font-weight:700;color:var(--ac);background:var(--acl);border:1.5px solid var(--ach);padding:5px 10px;border-radius:8px;}
+.tb-btn{padding:7px 14px;border-radius:9px;border:1.5px solid var(--bd2);background:var(--sur);font-family:var(--uf);font-size:.82rem;font-weight:600;color:var(--t3);cursor:pointer;text-decoration:none;transition:all var(--tf);}
+.tb-btn:hover{border-color:var(--ach);color:var(--ac);}
+.tb-btn.pri{background:var(--ac);border-color:var(--ac);color:#fff;}
+.tb-btn.pri:hover{background:var(--ac2);}
 
 /* LAYOUT */
-.wrap{display:flex;min-height:100vh;padding-top:var(--top);}
-
-/* SIDEBAR */
-.sb{position:fixed;top:var(--top);left:0;bottom:0;width:var(--sbw);background:var(--sur);border-right:1.5px solid var(--bd2);overflow-y:auto;z-index:100;padding:0 0 60px;}
+.layout{display:flex;padding-top:var(--top);}
+.sb{position:fixed;top:var(--top);left:0;bottom:0;width:var(--sbw);background:var(--sur);border-right:1.5px solid var(--bd2);overflow-y:auto;z-index:100;transition:transform var(--tf);}
 .sb::-webkit-scrollbar{width:3px;}
-.sb::-webkit-scrollbar-thumb{background:var(--bd2);border-radius:3px;}
+.sb::-webkit-scrollbar-thumb{background:var(--bd2);}
+.main{flex:1;margin-left:var(--sbw);min-width:0;padding:28px 32px 60px;}
+.mob-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:99;}
 
-/* Sidebar header */
-.sb-header{padding:16px 18px 12px;border-bottom:1px solid var(--bd);}
-.sb-header-t{font-size:1rem;font-weight:800;color:var(--t1);letter-spacing:-.02em;}
-.sb-header-s{font-size:.82rem;color:var(--t4);margin-top:2px;}
-
-/* Section label */
-.sb-sec-lbl{
-  font-size:0.84rem;
-  font-weight:800;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  color:var(--t4);
-  padding:18px 18px 7px;
-  display:block;
-}
-
-/* Exam item */
-.sb-item{margin:1px 8px;}
-.sb-item-hd{
-  display:flex;
-  align-items:center;
-  gap:11px;
-  padding:11px 12px;
-  border-radius:10px;
-  cursor:pointer;
-  transition:all var(--tf);
-  border:1.5px solid transparent;
-}
-.sb-item-hd:hover{background:var(--bg2);border-color:var(--bd2);}
-.sb-item-hd.on{background:var(--acl);border-color:var(--ach);}
-
-/* Icon */
-.sb-ic{
-  font-size:22px;
-  flex-shrink:0;
-  width:28px;
-  text-align:center;
-  line-height:1;
-}
-
-/* Info block */
-.sb-info{flex:1;min-width:0;}
-.sb-name{
-  font-size:1.02rem;
-  font-weight:700;
-  color:var(--t1);
-  line-height:1.3;
-  white-space:nowrap;
-  overflow:hidden;
-  text-overflow:ellipsis;
-}
-.sb-sub{display:none;}
-.sb-item-hd.on .sb-name{color:var(--ac);}
-.sb-item-hd.on .sb-sub{color:var(--ac2);opacity:.7;}
-
-/* Badge */
-.sb-badge{
-  font-size:0.82rem;
-  font-weight:700;
-  padding:2px 8px;
-  border-radius:100px;
-  background:var(--bg3);
-  color:var(--t4);
-  flex-shrink:0;
-  white-space:nowrap;
-}
-.sb-item-hd.on .sb-badge{background:var(--ach);color:var(--ac);}
-
-/* Arrow */
-.sb-arr{
-  font-size:10px;
-  color:var(--t4);
-  transition:transform var(--tf);
-  flex-shrink:0;
-  margin-left:2px;
-}
-.sb-item.open .sb-arr{transform:rotate(90deg);}
-
-/* Children (year list) */
-.sb-children{display:none;padding:3px 0 6px;}
-.sb-item.open .sb-children{display:block;}
-
-.sb-child{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  padding:8px 14px 8px 52px;
-  font-size:.88rem;
-  font-weight:500;
-  color:var(--t3);
-  cursor:pointer;
-  transition:all var(--tf);
-  border-radius:8px;
-  margin:1px 8px;
-  line-height:1.3;
-}
-.sb-child:hover{background:var(--bg2);color:var(--t2);}
-.sb-child.on{
-  background:var(--acl);
-  color:var(--ac);
-  font-weight:600;
-}
-.sb-dot{
-  width:5px;
-  height:5px;
-  border-radius:50%;
-  background:var(--bd2);
-  flex-shrink:0;
-}
-.sb-child.on .sb-dot{background:var(--ac);}
-
-/* Divider */
-.sb-div{height:1px;background:var(--bd2);margin:8px 14px;}
-
-/* MAIN */
-.main{flex:1;margin-left:var(--sbw);min-width:0;}
-
-/* HERO */
-.hero{background:var(--sur);border-bottom:1.5px solid var(--bd2);padding:44px 48px 38px;position:relative;overflow:hidden;}
-.hero::after{content:'';position:absolute;top:-60px;right:-60px;width:240px;height:240px;background:radial-gradient(circle,var(--acl),transparent 70%);pointer-events:none;}
-.hero-badge{display:inline-flex;align-items:center;gap:8px;background:var(--acl);border:1px solid var(--ach);color:var(--ac2);font-size:.86rem;font-weight:700;padding:7px 16px;border-radius:100px;margin-bottom:18px;}
-.hero-t{margin-bottom:0;}
-.hero-t .line1{font-family:var(--uf);font-size:1.1rem;font-weight:600;color:var(--t3);display:block;margin-bottom:6px;}
-.hero-t .line2{font-family:var(--rf);font-size:3.2rem;font-weight:700;color:var(--t1);letter-spacing:-.03em;line-height:1.1;display:block;margin-bottom:16px;}
-.hero-t .line2 span{color:var(--ac2);}
-.hero-s{font-size:1.05rem;color:var(--t2);line-height:1.8;max-width:560px;margin-bottom:32px;}
-.hero-stats{display:flex;gap:28px;flex-wrap:wrap;}
-.hero-stat-n{font-family:var(--rf);font-size:2.4rem;font-weight:700;color:var(--t1);line-height:1;}
-.hero-stat-n sup{font-size:.9rem;color:var(--ac2);font-family:var(--uf);}
-.stat-unit{font-size:1.1rem;color:var(--ac2);font-family:var(--uf);font-weight:700;margin-left:3px;}
-.hero-stat-l{font-size:.9rem;font-weight:500;color:var(--t3);margin-top:7px;}
-
-/* COURSE SELECTION */
-.courses{padding:28px 44px 40px;}
-.crs-title{font-family:var(--rf);font-size:1.8rem;font-weight:700;color:var(--t1);letter-spacing:-.02em;margin-bottom:8px;}
-.crs-sub{font-size:.94rem;color:var(--t3);margin-bottom:28px;line-height:1.7;}
-.crs-group{margin-bottom:30px;}
-.crs-group-lbl{font-size:.88rem;font-weight:700;color:var(--t2);margin-bottom:14px;display:flex;align-items:center;gap:10px;}
-.crs-group-lbl::after{content:'';flex:1;height:1px;background:var(--bd2);display:block;}
-
-/* THE KEY: Simple inline-block or explicit grid */
-.crs-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
-
-/* COURSE CARD */
-.crs-card{background:var(--sur);border:1.5px solid var(--bd2);border-radius:14px;overflow:hidden;cursor:pointer;transition:all var(--tf);}
-.crs-card:hover{border-color:var(--ach);box-shadow:var(--shm);transform:translateY(-2px);}
-.crs-bar{height:4px;width:100%;}
-.crs-body{padding:16px 18px 14px;}
-.crs-ic{font-size:2.1rem;display:block;margin-bottom:10px;line-height:1;}
-.crs-name{font-size:1.08rem;font-weight:800;color:var(--t1);margin-bottom:5px;letter-spacing:-.02em;}
-.crs-desc{font-size:.86rem;color:var(--t3);line-height:1.65;margin-bottom:12px;}
-.crs-foot{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
-.crs-tag{font-size:.8rem;font-weight:600;padding:4px 10px;border-radius:100px;}
-.crs-arrow{margin-left:auto;font-size:15px;color:var(--t4);transition:all var(--tf);}
-.crs-card:hover .crs-arrow{color:var(--ac);transform:translateX(3px);}
-
-/* PAPER VIEW */
-.paper-view{padding:28px 44px 80px;display:none;}
-.bc{display:flex;align-items:center;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
-.bc-it{font-size:.86rem;color:var(--t4);font-weight:500;cursor:pointer;}
-.bc-it:hover{color:var(--ac);}
-.bc-sep{font-size:.8rem;color:var(--bd2);}
-.bc-it.on{color:var(--t2);font-weight:700;cursor:default;}
-.paper-banner{border-radius:16px;padding:24px 28px;margin-bottom:22px;}
-.pb-head{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px;}
-.pb-ic{font-size:2.4rem;flex-shrink:0;}
-.pb-title{font-family:var(--rf);font-size:1.8rem;font-weight:700;color:#fff;letter-spacing:-.03em;line-height:1.15;margin-bottom:4px;}
-.pb-sub{font-size:.9rem;color:rgba(255,255,255,.7);margin-top:3px;}
-.pb-stats{display:flex;gap:20px;flex-wrap:wrap;}
-.pb-stat{font-size:.86rem;color:rgba(255,255,255,.72);}
-.pb-stat strong{color:#fff;}
-.pb-acts{display:flex;gap:8px;flex-shrink:0;}
-.pb-btn{padding:7px 13px;border-radius:8px;border:1.5px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-family:var(--uf);font-size:.84rem;font-weight:700;cursor:pointer;transition:all var(--tf);}
-.pb-btn:hover{background:rgba(255,255,255,.22);}
-
-/* ANSWER KEY */
-.ak{background:var(--sur);border:1.5px solid var(--bd2);border-radius:12px;padding:16px 18px;margin-bottom:20px;box-shadow:var(--sh);}
-.ak-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.ak-lbl{font-size:.86rem;font-weight:700;color:var(--t2);}
-.ak-btn{background:none;border:none;font-size:.82rem;font-weight:700;color:var(--ac2);cursor:pointer;font-family:var(--uf);}
-.ak-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(54px,1fr));gap:5px;}
-.ak-it{display:flex;flex-direction:column;align-items:center;padding:6px 4px;border-radius:7px;background:var(--bg2);border:1.5px solid var(--bd);cursor:pointer;transition:all var(--tf);}
-.ak-it:hover{border-color:var(--ach);background:var(--acl);}
-.ak-it.w{background:rgba(30,77,15,.07);border-color:rgba(30,77,15,.2);}
-.ak-q{font-family:var(--mf);font-size:.82rem;color:var(--t4);}
-.ak-a{font-family:var(--mf);font-size:.88rem;font-weight:800;color:var(--t1);}
-.ak-it.w .ak-a{color:var(--ac);}
-
-/* SUBJECT TABS */
-.stabs{display:flex;gap:7px;margin-bottom:18px;flex-wrap:wrap;}
-.stab{padding:9px 20px;border-radius:100px;border:1.5px solid var(--bd2);background:var(--bg2);font-family:var(--uf);font-size:.9rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all var(--tf);}
-.stab:hover{border-color:var(--ac2);color:var(--ac);}
-.stab.on{background:var(--acl);border-color:var(--ach);color:var(--ac);font-weight:700;}
+/* SIDEBAR CONTENT */
+.sb-hd{padding:14px 16px;border-bottom:1.5px solid var(--bd2);}
+.sb-hd-title{font-size:.78rem;font-weight:800;color:var(--t4);text-transform:uppercase;letter-spacing:.06em;}
+.sb-years{padding:10px 10px;}
+.yr-btn{display:flex;align-items:center;justify-content:space-between;width:100%;padding:8px 10px;border-radius:9px;border:none;background:none;font-family:var(--uf);font-size:.9rem;font-weight:600;color:var(--t2);cursor:pointer;transition:all var(--tf);}
+.yr-btn:hover{background:var(--bg2);}
+.yr-btn.on{background:var(--acl);color:var(--ac);}
+.yr-ic{font-size:.78rem;color:var(--t4);}
+.yr-children{display:none;padding-left:10px;}
+.yr-children.open{display:block;}
+.shift-btn{display:block;width:100%;padding:7px 10px;border-radius:8px;border:none;background:none;font-family:var(--uf);font-size:.84rem;font-weight:500;color:var(--t3);cursor:pointer;text-align:left;transition:all var(--tf);}
+.shift-btn:hover{background:var(--bg2);color:var(--t2);}
+.shift-btn.on{background:var(--acl);color:var(--ac);font-weight:700;}
 
 /* FILTERS */
-.frow{display:flex;align-items:center;gap:7px;margin-bottom:20px;flex-wrap:wrap;}
-.fc{padding:7px 15px;border-radius:100px;border:1.5px solid var(--bd2);background:var(--bg2);font-size:.84rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all var(--tf);}
-.fc:hover{border-color:var(--ac2);color:var(--ac);}
+.filters{display:flex;align-items:center;gap:8px;margin-bottom:20px;flex-wrap:wrap;}
+.fc{padding:6px 14px;border-radius:100px;border:1.5px solid var(--bd2);background:var(--sur);font-family:var(--uf);font-size:.82rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all var(--tf);}
+.fc:hover{border-color:var(--ach);color:var(--ac);}
 .fc.on{background:var(--acl);border-color:var(--ach);color:var(--ac);font-weight:700;}
-.fright{margin-left:auto;display:flex;gap:7px;align-items:center;}
-.sort-sel{padding:7px 11px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--bg2);font-family:var(--uf);font-size:.86rem;color:var(--t2);outline:none;cursor:pointer;}
-.view-tog{display:flex;border:1.5px solid var(--bd2);border-radius:8px;overflow:hidden;}
-.vbtn{padding:5px 10px;font-size:15px;background:transparent;border:none;cursor:pointer;color:var(--t4);transition:all var(--tf);}
-.vbtn.on{background:var(--acl);color:var(--ac);}
+.sort-wrap{margin-left:auto;}
+select.sort-sel{padding:6px 12px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--sur);font-family:var(--uf);font-size:.82rem;color:var(--t2);cursor:pointer;outline:none;}
+
+/* HERO */
+.hero{background:var(--sur);border:1.5px solid var(--bd2);border-top:4px solid var(--ac);border-radius:var(--r);padding:24px 28px;margin-bottom:24px;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--acl),transparent 70%);pointer-events:none;}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--acl);border:1.5px solid var(--ach);color:var(--ac);font-size:.78rem;font-weight:700;padding:4px 12px;border-radius:100px;margin-bottom:12px;}
+.hero-t{margin-bottom:8px;}
+.hero-t .line1{font-family:var(--rf);font-size:1.6rem;font-weight:700;color:var(--t1);display:block;}
+.hero-t .line2{font-family:var(--rf);font-size:2.4rem;font-weight:700;color:var(--ac);display:block;line-height:1.1;}
+.hero-sub{font-size:.92rem;color:var(--t3);line-height:1.7;max-width:540px;margin-bottom:20px;}
+.hero-stats{display:flex;gap:28px;flex-wrap:wrap;}
+.hero-stat-n{font-family:var(--rf);font-size:1.8rem;font-weight:700;color:var(--t1);display:block;line-height:1;}
+.hero-stat-l{font-size:.78rem;color:var(--t3);font-weight:600;margin-top:3px;}
+
+/* SUBJECT TABS */
+.stabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;}
+.stab{padding:7px 16px;border-radius:100px;border:1.5px solid var(--bd2);background:var(--sur);font-family:var(--uf);font-size:.84rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all var(--tf);}
+.stab:hover{border-color:var(--ach);color:var(--ac);}
+.stab.on{background:var(--ac);border-color:var(--ac);color:#fff;}
 
 /* VIDEO GRID */
-.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px;}
-.vgrid.list{grid-template-columns:1fr;}
-
-/* VIDEO CARD */
-.vcard{background:var(--sur);border:1.5px solid var(--bd);border-radius:14px;overflow:hidden;cursor:pointer;transition:all var(--tf);position:relative;}
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-bottom:24px;}
+.vcard{background:var(--sur);border:1.5px solid var(--bd2);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:all var(--tf);}
 .vcard:hover{border-color:var(--ach);box-shadow:var(--shm);transform:translateY(-2px);}
-.vcard.watched{border-color:rgba(30,77,15,.2);}
-.vbadge{position:absolute;z-index:3;font-size:.8rem;font-weight:700;padding:4px 10px;border-radius:100px;}
-.vb-watched{top:10px;right:10px;background:rgba(30,77,15,.92);color:#fff;}
-.vb-saved{top:10px;left:10px;background:rgba(138,96,0,.92);color:#fff;}
-.vb-hot{bottom:48px;left:10px;background:rgba(158,32,32,.92);color:#fff;}
-.vthumb{position:relative;padding-top:56%;background:#111;overflow:hidden;}
-.vthumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s;}
-.vcard:hover .vthumb img{transform:scale(1.05);}
-.vthumb-ov{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 40%,rgba(0,0,0,.65));}
-.vplay{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:48px;height:48px;background:rgba(255,255,255,.95);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 4px 16px rgba(0,0,0,.3);transition:all var(--tf);}
-.vcard:hover .vplay{transform:translate(-50%,-50%) scale(1.1);}
-.vdur{position:absolute;bottom:8px;right:8px;background:rgba(0,0,0,.82);color:#fff;font-family:var(--mf);font-size:.8rem;padding:3px 8px;border-radius:5px;}
-.vqnum{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.75);color:#fff;font-family:var(--mf);font-size:.8rem;font-weight:700;padding:3px 9px;border-radius:5px;}
-.vbody{padding:12px 14px;}
-.vtopic{font-size:.82rem;font-weight:700;color:var(--ac2);margin-bottom:5px;}
-.vq{font-family:var(--rf);font-size:1.02rem;line-height:1.6;color:var(--t1);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:9px;}
-.vtags{display:flex;gap:5px;flex-wrap:wrap;}
-.vtag{font-size:.8rem;font-weight:600;padding:3px 9px;border-radius:100px;background:var(--bg2);color:var(--t3);}
-.vtag.e{background:rgba(30,77,15,.09);color:var(--ac);}
-.vtag.m{background:rgba(138,96,0,.09);color:var(--go);}
-.vtag.h{background:rgba(158,32,32,.09);color:var(--rd);}
-.vtag.hot{background:rgba(158,32,32,.09);color:var(--rd);}
-.vfoot{display:flex;gap:6px;padding:10px 14px;border-top:1px solid var(--bd);background:var(--bg);}
-.vfbtn{flex:1;padding:9px 8px;border-radius:8px;border:1.5px solid var(--bd2);background:transparent;font-family:var(--uf);font-size:.82rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all var(--tf);display:flex;align-items:center;justify-content:center;gap:5px;}
-.vfbtn:hover{border-color:var(--ac2);color:var(--ac);}
-.vfbtn.save.saved{background:rgba(138,96,0,.09);border-color:rgba(138,96,0,.3);color:var(--go);}
-.vfbtn.watch{background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:transparent;color:#fff;flex:2;}
+.vcard-thumb{aspect-ratio:16/9;background:linear-gradient(160deg,#0d1117,#161b22);position:relative;display:flex;align-items:center;justify-content:center;}
+.vcard-play{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.15);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff;transition:all var(--tf);}
+.vcard:hover .vcard-play{background:rgba(255,255,255,.25);transform:scale(1.1);}
+.vcard-watched{position:absolute;top:8px;right:8px;background:var(--ac);color:#fff;font-size:.78rem;font-weight:700;padding:3px 8px;border-radius:100px;}
+.vcard-body{padding:12px 14px;}
+.vcard-q{font-size:.88rem;font-weight:600;color:var(--t1);line-height:1.5;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.vcard-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.vtag{font-size:.78rem;font-weight:700;padding:2px 8px;border-radius:100px;}
+.vtag-ph{background:var(--skyl);color:var(--sky);}
+.vtag-ch{background:var(--acl);color:var(--ac);}
+.vtag-bio{background:rgba(134,184,26,.10);color:#3a6a00;}
+.vtag-diff{background:var(--bg2);color:var(--t3);}
 
-/* LIST VIEW */
-.vgrid.list .vcard{display:grid;grid-template-columns:200px 1fr auto;}
-.vgrid.list .vthumb{padding-top:0;height:100%;}
-.vgrid.list .vbody{padding:14px 16px;}
-.vgrid.list .vfoot{flex-direction:column;border-top:none;border-left:1px solid var(--bd);background:transparent;justify-content:center;min-width:120px;padding:14px 10px;}
-
-/* MODAL */
-.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);z-index:2000;align-items:center;justify-content:center;padding:20px;}
-.modal-bg.open{display:flex;}
-.modal{background:var(--sur);border-radius:18px;width:100%;max-width:880px;max-height:92vh;overflow-y:auto;position:relative;animation:mIn .22s ease;}
-@keyframes mIn{from{opacity:0;transform:scale(.96) translateY(10px)}to{opacity:1;transform:none}}
-.mcls{position:absolute;top:12px;right:12px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.55);border:none;color:#fff;font-size:14px;cursor:pointer;z-index:10;display:flex;align-items:center;justify-content:center;}
-.vwrap{position:relative;width:100%;padding-top:56.25%;background:#000;}
-.vwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
-.vshield{position:absolute;inset:0;z-index:5;}
-.vwm{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-30deg);font-family:var(--uf);font-size:18px;font-weight:900;color:rgba(255,255,255,.05);white-space:nowrap;pointer-events:none;z-index:6;user-select:none;letter-spacing:.1em;}
-.mbody{padding:22px 26px;}
-.mey{font-family:var(--mf);font-size:.84rem;color:var(--t4);margin-bottom:7px;letter-spacing:.02em;}
-.mq{font-family:var(--rf);font-size:1.15rem;line-height:1.68;color:var(--t1);margin-bottom:14px;}
-.mopts{margin-bottom:14px;}
-.mopt{display:flex;align-items:flex-start;gap:10px;padding:9px 13px;border-radius:9px;border:1.5px solid var(--bd);margin-bottom:5px;font-family:var(--rf);font-size:.96rem;color:var(--t2);line-height:1.5;transition:all var(--tf);}
-.mopt.cor{background:rgba(30,77,15,.07);border-color:rgba(30,77,15,.25);}
-.mopt-k{font-family:var(--mf);font-size:.8rem;font-weight:700;width:20px;height:20px;border-radius:5px;background:var(--bg2);display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;color:var(--t3);}
-.mopt.cor .mopt-k{background:var(--ac);color:#fff;}
-.solbox{background:var(--bg2);border-radius:10px;padding:14px 16px;margin-bottom:14px;}
-.sollbl{font-size:.84rem;font-weight:700;color:var(--ac2);margin-bottom:9px;}
-.soltxt{font-family:var(--rf);font-size:1.02rem;line-height:1.75;color:var(--t2);}
-.macts{display:flex;gap:8px;flex-wrap:wrap;}
-.mact{flex:1;padding:10px 12px;border-radius:9px;border:1.5px solid var(--bd2);background:var(--bg2);font-family:var(--uf);font-size:.8rem;font-weight:700;color:var(--t2);cursor:pointer;transition:all var(--tf);text-align:center;display:flex;align-items:center;justify-content:center;gap:5px;}
-.mact:hover{border-color:var(--ac2);color:var(--ac);background:var(--acl);}
-.mact.pri{background:linear-gradient(135deg,var(--ac2),var(--ac));border-color:transparent;color:#fff;flex:2;}
-
-/* TIMER */
-.timerbar{display:none;background:var(--t1);color:#fff;padding:9px 24px;align-items:center;gap:14px;font-family:var(--uf);font-size:.86rem;}
-.timerbar.on{display:flex;}
-.timerdisp{font-family:var(--mf);font-size:1.15rem;font-weight:700;background:rgba(255,255,255,.14);padding:4px 12px;border-radius:6px;}
-.timerbtn{padding:5px 12px;border-radius:6px;border:1.5px solid rgba(255,255,255,.3);background:transparent;color:#fff;font-family:var(--uf);font-size:.84rem;font-weight:700;cursor:pointer;}
-.timerbtn.end{background:rgba(158,32,32,.8);border-color:transparent;}
+/* EMPTY */
+.empty{text-align:center;padding:48px 24px;}
+.empty-ic{font-size:2.5rem;display:block;margin-bottom:12px;}
+.empty-h{font-family:var(--rf);font-size:1.3rem;font-weight:700;color:var(--t2);margin-bottom:6px;}
+.empty-s{font-size:.88rem;color:var(--t3);}
 
 /* SAVED PANEL */
-.svpanel{position:fixed;bottom:0;right:0;width:330px;background:var(--sur);border:1.5px solid var(--bd2);border-radius:16px 16px 0 0;box-shadow:var(--shm);z-index:1500;transform:translateY(100%);transition:transform .3s ease;padding:16px;}
-.svpanel.open{transform:none;}
-.svph{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.svpt{font-size:.88rem;font-weight:800;color:var(--t1);}
-.svpc{background:none;border:none;font-size:20px;cursor:pointer;color:var(--t3);}
-.svlist{display:flex;flex-direction:column;gap:6px;max-height:280px;overflow-y:auto;}
-.svitem{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:9px;background:var(--bg2);cursor:pointer;transition:all var(--tf);}
-.svitem:hover{background:var(--bg3);}
-.svthumb{width:62px;height:38px;border-radius:6px;object-fit:cover;flex-shrink:0;background:#111;}
-.svinfo{flex:1;min-width:0;}
-.svt{font-size:.84rem;font-weight:600;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.svs{font-size:.82rem;color:var(--t3);margin-top:2px;}
-.svdel{background:none;border:none;font-size:14px;color:var(--t4);cursor:pointer;padding:4px;flex-shrink:0;}
-.svdel:hover{color:var(--rd);}
-.svlim{font-size:.84rem;color:var(--t4);text-align:center;margin-top:10px;}
+.svpanel{position:fixed;bottom:20px;right:20px;width:300px;background:var(--sur);border:1.5px solid var(--bd2);border-radius:var(--r);box-shadow:var(--shm);z-index:150;display:none;}
+.svpanel.open{display:block;}
+.svp-hd{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--bd);}
+.svp-title{font-size:.92rem;font-weight:700;color:var(--t1);}
+.svp-body{padding:12px 16px;max-height:260px;overflow-y:auto;}
+.sv-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bd);}
+.sv-row:last-child{border-bottom:none;}
+.sv-q{flex:1;font-size:.82rem;color:var(--t2);line-height:1.4;}
+.sv-del{background:none;border:none;color:var(--t4);cursor:pointer;font-size:1rem;padding:2px 6px;}
 
 /* PAYWALL */
-.pw{display:none;position:fixed;inset:0;background:rgba(247,246,241,.97);backdrop-filter:blur(20px);z-index:3000;align-items:center;justify-content:center;flex-direction:column;text-align:center;padding:32px 20px;}
-.pwic{font-size:3rem;margin-bottom:16px;}
-.pwt{font-family:var(--rf);font-size:2.2rem;font-weight:700;color:var(--t1);margin-bottom:8px;letter-spacing:-.03em;}
-.pws{font-size:.94rem;color:var(--t3);line-height:1.72;max-width:400px;margin:0 auto 24px;}
-.pwcard{background:var(--sur);border:2px solid var(--ach);border-radius:18px;padding:26px 32px;margin-bottom:16px;width:100%;max-width:340px;}
-.pwplan{font-size:.86rem;font-weight:700;color:var(--ac2);margin-bottom:8px;}
-.pwprice{font-family:var(--rf);font-size:3rem;font-weight:700;color:var(--t1);line-height:1;margin-bottom:3px;}
-.pwprice span{font-size:1rem;color:var(--t3);}
-.pwfeats{list-style:none;text-align:left;margin:14px 0 18px;}
-.pwfeats li{font-size:.92rem;color:var(--t2);padding:5px 0;display:flex;align-items:center;gap:9px;}
-.pwfeats li::before{content:'✓';color:var(--ac);font-weight:900;flex-shrink:0;}
-.pwbtn{width:100%;padding:14px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--ac2),var(--ac));color:#fff;font-family:var(--uf);font-size:1rem;font-weight:800;cursor:pointer;}
-.pwbtn:hover{opacity:.9;}
-.pwclose{background:none;border:none;font-size:.86rem;color:var(--t4);cursor:pointer;font-family:var(--uf);margin-top:8px;}
+#paywall{display:none;background:var(--sur);border:1.5px solid var(--bd2);border-top:3px solid var(--gold);border-radius:var(--r);padding:28px;text-align:center;margin-bottom:20px;}
+.pw-ic{font-size:2rem;margin-bottom:10px;}
+.pw-t{font-family:var(--rf);font-size:1.3rem;font-weight:700;color:var(--t1);margin-bottom:6px;}
+.pw-s{font-size:.88rem;color:var(--t3);margin-bottom:16px;line-height:1.6;}
+.pw-btn{display:inline-flex;align-items:center;gap:8px;padding:11px 24px;border-radius:10px;background:var(--ac);border:none;color:#fff;font-family:var(--uf);font-size:.92rem;font-weight:700;cursor:pointer;text-decoration:none;transition:all var(--tf);}
+.pw-btn:hover{background:var(--ac2);}
 
-/* MISC */
-#prog{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--ac2),var(--ac));z-index:9999;width:0%;transition:width .2s;}
-.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--t1);color:var(--bg);font-family:var(--uf);font-size:.84rem;font-weight:600;padding:10px 22px;border-radius:100px;opacity:0;transition:all .22s;z-index:9000;pointer-events:none;white-space:nowrap;}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
-.mob-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:90;}
-.mob-ov.on{display:block;}
-@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
-.skel{background:linear-gradient(90deg,var(--bg2) 25%,var(--bg3) 50%,var(--bg2) 75%);background-size:200%;animation:shimmer 1.4s infinite;border-radius:10px;}
+/* MODAL */
+.modal-bg{display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(12px);z-index:300;align-items:center;justify-content:center;padding:20px;}
+.modal-bg.open{display:flex;}
+.modal{background:var(--sur);border-radius:18px;width:100%;max-width:860px;max-height:92vh;overflow-y:auto;position:relative;animation:mIn .22s ease;}
+@keyframes mIn{from{opacity:0;transform:scale(.96)}to{opacity:1;transform:scale(1)}}
+.mcls{position:absolute;top:12px;right:14px;background:var(--bg2);border:1.5px solid var(--bd2);color:var(--t3);width:32px;height:32px;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;font-size:1rem;}
 
-/* MOBILE */
+/* VIDEO PLAYER */
+.vwrap{position:relative;width:100%;padding-top:56.25%;background:linear-gradient(160deg,#0d1117 0%,#161b22 40%,#0d1117 100%);}
+.vwrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none;}
+.vshield{position:absolute;inset:0;z-index:2;background:transparent;}
+.vwm{position:absolute;pointer-events:none;user-select:none;z-index:3;display:flex;flex-direction:column;gap:3px;animation:wmFloat 40s ease-in-out infinite;}
+@keyframes wmFloat{0%{top:12%;left:8%;}25%{top:62%;left:68%;}50%{top:18%;left:72%;}75%{top:68%;left:6%;}100%{top:12%;left:8%;}}
+.vwm-name{display:none;}
+.vwm-name em{color:rgba(76,175,80,.2);font-style:normal;}
+.vwm-mail{font-size:13px;font-weight:700;color:rgba(255,255,255,.14);letter-spacing:.01em;}
 
+/* CTRL BAR */
+.ctrl-bar{display:flex;align-items:center;gap:10px;padding:10px 16px;background:var(--bg2);border-top:1px solid var(--bd);}
+.speed-wrap{position:relative;display:inline-block;}
+.speed-btn{display:flex;align-items:center;gap:5px;padding:6px 12px;border-radius:8px;border:1.5px solid var(--bd2);background:var(--sur);font-family:var(--uf);font-size:.82rem;font-weight:700;color:var(--ac);cursor:pointer;}
+.speed-ic{font-size:.78rem;color:var(--t4);}
+.speed-drop{position:absolute;bottom:calc(100% + 8px);left:0;background:var(--sur);border:1.5px solid var(--bd2);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);display:none;flex-direction:column;min-width:90px;z-index:10;}
+.speed-drop.open{display:flex;}
+.speed-opt{padding:9px 16px;font-size:.86rem;font-weight:600;color:var(--t2);cursor:pointer;text-align:center;transition:background var(--tf);}
+.speed-opt:hover{background:var(--acl);}
+.speed-opt.on{background:var(--acl);color:var(--ac);font-weight:800;}
+.speed-opt.on::after{content:" ✓";font-size:.78rem;}
+.protect-badge{margin-left:auto;font-size:.78rem;font-weight:600;color:var(--t4);}
 
+/* MODAL INFO */
+.minfo{padding:20px 24px;}
+.mq{font-family:var(--rf);font-size:1.1rem;font-weight:700;color:var(--t1);line-height:1.6;margin-bottom:14px;}
+.mopts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.mopt{padding:10px 14px;border-radius:9px;border:1.5px solid var(--bd2);font-size:.88rem;color:var(--t2);line-height:1.5;}
+.mopt.correct{background:rgba(58,104,48,.08);border-color:var(--ac);color:var(--ac);font-weight:700;}
+.mopt.wrong{background:var(--rosel);border-color:var(--rose);color:var(--rose);}
+.msol{background:var(--bg2);border-radius:9px;padding:14px 16px;font-size:.88rem;color:var(--t2);line-height:1.75;margin-bottom:14px;display:none;}
+.msol-lbl{font-size:.78rem;font-weight:800;color:var(--t4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px;}
+.mfoot{display:flex;gap:8px;flex-wrap:wrap;}
+.vfbtn{padding:9px 18px;border-radius:9px;border:1.5px solid var(--bd2);background:var(--sur);font-family:var(--uf);font-size:.84rem;font-weight:600;color:var(--t3);cursor:pointer;transition:all var(--tf);}
+.vfbtn:hover{border-color:var(--ach);color:var(--ac);}
+.vfbtn.active{background:var(--acl);border-color:var(--ach);color:var(--ac);}
+
+/* TIMER */
+.timer-wrap{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:var(--t1);color:#fff;border-radius:100px;padding:10px 24px;display:none;align-items:center;gap:12px;box-shadow:var(--shm);z-index:200;}
+.timer-wrap.show{display:flex;}
+.timer-t{font-family:var(--mf);font-size:1rem;font-weight:700;}
+.timer-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:5px 12px;border-radius:6px;cursor:pointer;font-size:.82rem;font-weight:600;}
+#toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%) translateY(60px);background:var(--t1);color:#fff;padding:10px 22px;border-radius:100px;font-size:.88rem;font-weight:600;z-index:9999;transition:transform .25s;pointer-events:none;white-space:nowrap;}
+#toast.show{transform:translateX(-50%) translateY(0);}
+
+/* PROGRESS BAR */
+#prog{position:fixed;top:0;left:0;height:2px;background:var(--ac);z-index:999;transition:width .3s;width:0%;}
+
+/* RESPONSIVE */
 @media(max-width:900px){
-  /* Touch-friendly tap targets */
-  .sb-child{min-height:42px;}
-  .stab{min-height:40px;}
-  .fc{min-height:38px;}
-  .vfbtn{min-height:42px;}
-  .crs-card{min-height:120px;}
-  .wrap{display:block;}
-  .sb{transform:translateX(-310px);transition:transform var(--tf);}
-  .sb.on{transform:none;}
+  .sb{transform:translateX(calc(-1 * var(--sbw)));transition:transform var(--tf);}
+  .sb.open{transform:translateX(0);}
   .main{margin-left:0;}
-  .ham{display:flex;}
+  .mob-ov.show{display:block;}
   .tb-search{display:none;}
-  .hero{padding:28px 20px 24px;}
-  .hero-t{font-size:1.8rem;}
-  .courses{padding:22px 20px 32px;}
-  .paper-view{padding:20px 16px 60px;}
+  .hero-t .line2{font-size:1.8rem;}
   .vgrid{grid-template-columns:1fr 1fr;}
-  .crs-grid{grid-template-columns:1fr 1fr;}
-  .svpanel{width:100%;border-radius:16px 16px 0 0;left:0;}
-  .pb-acts{display:none;}
 }
 @media(max-width:600px){
+  .main{padding:20px 16px 48px;}
   .modal{border-radius:12px;max-height:95vh;}
-  .mbody{padding:16px;}
-  .svpanel{width:100%;left:0;right:0;border-radius:16px 16px 0 0;}
-}
-@media(max-width:520px){
-  .crs-grid{grid-template-columns:1fr 1fr;}
+  .minfo{padding:16px;}
+  .mopts{grid-template-columns:1fr;}
   .vgrid{grid-template-columns:1fr;}
-  .hero-t .line1{font-size:1.2rem;}
-  .hero-t .line2{font-size:2.2rem;}
-  .hero-stats{gap:14px;}
-  .hero-stats{gap:14px;}
-  .hero-stat-n{font-size:1.5rem;}
+  .hero{padding:18px 16px;}
+  .ctrl-bar{padding:8px 12px;gap:8px;}
+  .speed-btn{padding:5px 10px;font-size:.78rem;}
 }
 </style>
 </head>
 <body>
 <div id="prog"></div>
 <div class="mob-ov" id="mob-ov" onclick="closeSb()"></div>
+<div id="toast"></div>
 
 <!-- TOPBAR -->
 <header class="topbar" id="topbar">
-  <button class="ham" id="ham" onclick="toggleSb()">☰</button>
-  <a href="index.html" class="logo">
-    <span class="logo-name">Mock<em>Arena</em></span>
-  </a>
-  <div class="tb-div"></div>
+  <button class="ham" onclick="toggleSb()">☰</button>
+  <a href="index.html" class="logo"><span class="logo-name">Mock<em>Arena</em></span></a>
+  <span class="tb-badge">📹 PYQ Solutions</span>
+  <div class="tb-sep"></div>
   <div class="tb-search">
-    <span style="color:var(--t4);font-size:14px;">🔍</span>
-    <input type="text" id="sinp" placeholder="Search topic, year, question..." oninput="onSearch(this.value)"/>
+    <span style="font-size:13px;color:var(--t4)">🔍</span>
+    <input type="text" id="search-inp" placeholder="Search question, topic..." oninput="onSearch(this.value)"/>
   </div>
   <div class="tb-r">
-    <div class="free-pill" id="fpill">🎬 <span id="ftxt">5 free left</span></div>
+    <div class="free-counter" id="free-counter"><span>🎬</span><span id="free-text">5 free left</span></div>
     <button class="tb-btn" onclick="toggleSvPanel()">📥 Saved <span id="svn"></span></button>
     <a href="mockarena_ncert.html" class="tb-btn">📚 NCERT</a>
-    <a href="mockarena_student_dashboard.html" class="tb-btn pri">Go Pro ₹149</a>
+    <a href="mockarena_student_dashboard.html" class="tb-btn pri">Dashboard</a>
   </div>
 </header>
 
-<div class="wrap">
-<!-- SIDEBAR -->
-<aside class="sb" id="sb">
-  <div class="sb-header">
-    <div class="sb-header-t">📹 Video Solutions</div>
-    <div class="sb-header-s">Previous Year Papers · 2016–2026</div>
-  </div>
-  <span class="sb-sec-lbl">Competitive Exams</span>
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sb" id="sb">
+    <div class="sb-hd"><div class="sb-hd-title">📅 Select Year & Shift</div></div>
+    <div class="sb-years" id="sb-years"></div>
+  </aside>
 
-  <div class="sb-item" id="si-neet">
-    <div class="sb-item-hd" onclick="toggleSbItem('neet')">
-      <span class="sb-ic">🩺</span>
-      <div class="sb-info"><div class="sb-name">NEET UG</div><div class="sb-sub">Physics · Chemistry · Biology</div></div>
-      <span class="sb-badge">3,600</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-neet"></div>
-  </div>
-
-  <div class="sb-item" id="si-jeem-jan">
-    <div class="sb-item-hd" onclick="toggleSbItem('jeem-jan')">
-      <span class="sb-ic">⚛️</span>
-      <div class="sb-info"><div class="sb-name">JEE Mains — January</div><div class="sb-sub">Physics · Chemistry · Maths</div></div>
-      <span class="sb-badge">900</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-jeem-jan"></div>
-  </div>
-
-  <div class="sb-item" id="si-jeem-apr">
-    <div class="sb-item-hd" onclick="toggleSbItem('jeem-apr')">
-      <span class="sb-ic">⚛️</span>
-      <div class="sb-info"><div class="sb-name">JEE Mains — April</div><div class="sb-sub">Physics · Chemistry · Maths</div></div>
-      <span class="sb-badge">900</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-jeem-apr"></div>
-  </div>
-
-  <div class="sb-item" id="si-jeea">
-    <div class="sb-item-hd" onclick="toggleSbItem('jeea')">
-      <span class="sb-ic">🏆</span>
-      <div class="sb-info"><div class="sb-name">JEE Advanced</div><div class="sb-sub">Paper 1 + Paper 2</div></div>
-      <span class="sb-badge">1,080</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-jeea"></div>
-  </div>
-
-  <div class="sb-div"></div>
-  <span class="sb-sec-lbl">Board Exams</span>
-
-  <div class="sb-item" id="si-cbse10">
-    <div class="sb-item-hd" onclick="toggleSbItem('cbse10')">
-      <span class="sb-ic">📗</span>
-      <div class="sb-info"><div class="sb-name">CBSE Class 10</div><div class="sb-sub">All Subjects · 2016–2026</div></div>
-      <span class="sb-badge">300</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-cbse10"></div>
-  </div>
-
-  <div class="sb-item" id="si-cbse12">
-    <div class="sb-item-hd" onclick="toggleSbItem('cbse12')">
-      <span class="sb-ic">📘</span>
-      <div class="sb-info"><div class="sb-name">CBSE Class 12</div><div class="sb-sub">All Subjects · 2016–2026</div></div>
-      <span class="sb-badge">300</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-cbse12"></div>
-  </div>
-
-  <div class="sb-item" id="si-icse10">
-    <div class="sb-item-hd" onclick="toggleSbItem('icse10')">
-      <span class="sb-ic">📙</span>
-      <div class="sb-info"><div class="sb-name">ICSE Class 10</div><div class="sb-sub">All Subjects · 2016–2026</div></div>
-      <span class="sb-badge">300</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-icse10"></div>
-  </div>
-
-  <div class="sb-item" id="si-icse12">
-    <div class="sb-item-hd" onclick="toggleSbItem('icse12')">
-      <span class="sb-ic">📒</span>
-      <div class="sb-info"><div class="sb-name">ICSE Class 12</div><div class="sb-sub">All Subjects · 2016–2026</div></div>
-      <span class="sb-badge">300</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-icse12"></div>
-  </div>
-
-  <div class="sb-div"></div>
-  <span class="sb-sec-lbl">State Boards</span>
-
-  <div class="sb-item" id="si-up10">
-    <div class="sb-item-hd" onclick="toggleSbItem('up10')">
-      <span class="sb-ic">📔</span>
-      <div class="sb-info"><div class="sb-name">UP Board Class 10</div><div class="sb-sub">Uttar Pradesh · 2016–2026</div></div>
-      <span class="sb-badge">300</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-up10"></div>
-  </div>
-
-  <div class="sb-item" id="si-up12">
-    <div class="sb-item-hd" onclick="toggleSbItem('up12')">
-      <span class="sb-ic">📕</span>
-      <div class="sb-info"><div class="sb-name">UP Board Class 12</div><div class="sb-sub">Uttar Pradesh · 2016–2026</div></div>
-      <span class="sb-badge">300</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-up12"></div>
-  </div>
-
-  <div class="sb-item" id="si-raj10">
-    <div class="sb-item-hd" onclick="toggleSbItem('raj10')">
-      <span class="sb-ic">📓</span>
-      <div class="sb-info"><div class="sb-name">Rajasthan Board 10</div><div class="sb-sub">RBSE · 2016–2026</div></div>
-      <span class="sb-badge">300</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-raj10"></div>
-  </div>
-
-  <div class="sb-item" id="si-raj12">
-    <div class="sb-item-hd" onclick="toggleSbItem('raj12')">
-      <span class="sb-ic">📑</span>
-      <div class="sb-info"><div class="sb-name">Rajasthan Board 12</div><div class="sb-sub">RBSE · 2016–2026</div></div>
-      <span class="sb-badge">300</span><span class="sb-arr">▶</span>
-    </div>
-    <div class="sb-children" id="sc-raj12"></div>
-  </div>
-</aside>
-
-<!-- MAIN -->
-<main class="main" id="main">
-  <div class="timerbar" id="timerbar">
-    <span>⏱ Timed Practice</span>
-    <div class="timerdisp" id="tdisp">3:20:00</div>
-    <div style="flex:1"></div>
-    <button class="timerbtn" onclick="pauseTimer()" id="pausebtn">⏸ Pause</button>
-    <button class="timerbtn end" onclick="endTimer()">■ End</button>
-  </div>
-
-  <!-- HERO -->
-  <div class="hero" id="hero">
-    <div class="hero-badge">📹 Video Solutions Library</div>
-    <div class="hero-t">
-      <span class="line1">Previous Year Papers</span>
-      <span class="line2">Video <span>Solutions</span></span>
-    </div>
-    <div class="hero-s">Every question from the last 10 years — NEET, JEE, CBSE, ICSE, UP & Rajasthan Board — solved step by step in short 3–4 minute videos.</div>
-    <div class="hero-stats">
-      <div><div class="hero-stat-n">12,000<span class="stat-unit">+</span></div><div class="hero-stat-l">Solutions</div></div>
-      <div><div class="hero-stat-n">10 <span class="stat-unit">Years</span></div><div class="hero-stat-l">2016 – 2026</div></div>
-      <div><div class="hero-stat-n">12<span class="stat-unit">+</span></div><div class="hero-stat-l">Exams Covered</div></div>
-      <div><div class="hero-stat-n">3–4 <span class="stat-unit">Min</span></div><div class="hero-stat-l">Per Video</div></div>
-    </div>
-  </div>
-
-  <!-- COURSE SELECTION -->
-  <div class="courses" id="courses">
-    <div class="crs-title">Select Your Exam</div>
-    <div class="crs-sub">Choose an exam to browse 10 years of solved papers — every question explained in a short video.</div>
-
-    <!-- Group 1: Competitive -->
-    <div class="crs-group">
-      <div class="crs-group-lbl">🎯 Competitive Exams</div>
-      <div class="crs-grid">
-        <div class="crs-card" onclick="quickSel('neet','2025','Shift 1')">
-          <div class="crs-bar" style="background:linear-gradient(90deg,#1b5e20,#4caf50)"></div>
-          <div class="crs-body">
-            <span class="crs-ic">🩺</span>
-            <div class="crs-name">NEET UG</div>
-            <div class="crs-desc">Physics · Chemistry · Biology</div>
-            <div class="crs-foot">
-              <span class="crs-tag" style="background:#e8f5e9;color:#1b5e20;border:1px solid #a5d6a7;">3,600 Videos</span>
-              
-              <span class="crs-arrow">→</span>
-            </div>
-          </div>
-        </div>
-        <div class="crs-card" onclick="quickSel('jeem-jan','2025','')">
-          <div class="crs-bar" style="background:linear-gradient(90deg,#0d47a1,#42a5f5)"></div>
-          <div class="crs-body">
-            <span class="crs-ic">⚛️</span>
-            <div class="crs-name">JEE Mains</div>
-            <div class="crs-desc">Physics · Chemistry · Mathematics</div>
-            <div class="crs-foot">
-              <span class="crs-tag" style="background:#e3f2fd;color:#0d47a1;border:1px solid #90caf9;">1,800 Videos</span>
-              
-              <span class="crs-arrow">→</span>
-            </div>
-          </div>
-        </div>
-        <div class="crs-card" onclick="quickSel('jeea','2025','Paper 1')">
-          <div class="crs-bar" style="background:linear-gradient(90deg,#4527a0,#9575cd)"></div>
-          <div class="crs-body">
-            <span class="crs-ic">🏆</span>
-            <div class="crs-name">JEE Advanced</div>
-            <div class="crs-desc">Physics · Chemistry · Mathematics</div>
-            <div class="crs-foot">
-              <span class="crs-tag" style="background:#ede7f6;color:#4527a0;border:1px solid #b39ddb;">1,080 Videos</span>
-              
-              <span class="crs-arrow">→</span>
-            </div>
-          </div>
-        </div>
+  <!-- MAIN -->
+  <main class="main">
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-tag">🎯 Previous Year Questions</div>
+      <div class="hero-t">
+        <span class="line1">NEET & JEE</span>
+        <span class="line2">PYQ Solutions</span>
+      </div>
+      <div class="hero-sub">Every question from NEET, JEE Mains & Advanced — solved step by step in short 3–4 minute videos. Select a year and shift to get started.</div>
+      <div class="hero-stats">
+        <div><span class="hero-stat-n">16,000+</span><div class="hero-stat-l">Video Solutions</div></div>
+        <div><span class="hero-stat-n">10 Years</span><div class="hero-stat-l">2015 – 2025</div></div>
+        <div><span class="hero-stat-n">3 Subjects</span><div class="hero-stat-l">Phy · Chem · Bio/Maths</div></div>
       </div>
     </div>
 
-    <!-- Group 2: CBSE & ICSE -->
-    <div class="crs-group">
-      <div class="crs-group-lbl">📋 CBSE & ICSE Board Exams</div>
-      <div class="crs-grid">
-        <div class="crs-card" onclick="quickSel('cbse10','2025','')">
-          <div class="crs-bar" style="background:linear-gradient(90deg,#bf360c,#ff7043)"></div>
-          <div class="crs-body">
-            <span class="crs-ic">📗</span>
-            <div class="crs-name">CBSE Class 10</div>
-            <div class="crs-desc">Science · Mathematics · Social Science · English</div>
-            <div class="crs-foot">
-              <span class="crs-tag" style="background:#fff3e0;color:#bf360c;border:1px solid #ffcc80;">300 Videos</span>
-              
-              <span class="crs-arrow">→</span>
-            </div>
-          </div>
-        </div>
-        <div class="crs-card" onclick="quickSel('cbse12','2025','')">
-          <div class="crs-bar" style="background:linear-gradient(90deg,#bf360c,#ff7043)"></div>
-          <div class="crs-body">
-            <span class="crs-ic">📘</span>
-            <div class="crs-name">CBSE Class 12</div>
-            <div class="crs-desc">Physics · Chemistry · Maths · Biology · English</div>
-            <div class="crs-foot">
-              <span class="crs-tag" style="background:#fff3e0;color:#bf360c;border:1px solid #ffcc80;">300 Videos</span>
-              
-              <span class="crs-arrow">→</span>
-            </div>
-          </div>
-        </div>
-        <div class="crs-card" onclick="quickSel('icse10','2025','')">
-          <div class="crs-bar" style="background:linear-gradient(90deg,#880e4f,#e91e63)"></div>
-          <div class="crs-body">
-            <span class="crs-ic">📙</span>
-            <div class="crs-name">ICSE Class 10</div>
-            <div class="crs-desc">Physics · Chemistry · Mathematics · Biology</div>
-            <div class="crs-foot">
-              <span class="crs-tag" style="background:#fce4ec;color:#880e4f;border:1px solid #f48fb1;">300 Videos</span>
-              
-              <span class="crs-arrow">→</span>
-            </div>
-          </div>
-        </div>
-        <div class="crs-card" onclick="quickSel('icse12','2025','')">
-          <div class="crs-bar" style="background:linear-gradient(90deg,#880e4f,#e91e63)"></div>
-          <div class="crs-body">
-            <span class="crs-ic">📒</span>
-            <div class="crs-name">ICSE Class 12</div>
-            <div class="crs-desc">Physics · Chemistry · Mathematics · Biology</div>
-            <div class="crs-foot">
-              <span class="crs-tag" style="background:#fce4ec;color:#880e4f;border:1px solid #f48fb1;">300 Videos</span>
-              
-              <span class="crs-arrow">→</span>
-            </div>
-          </div>
-        </div>
-      </div>
+    <!-- PAYWALL -->
+    <div id="paywall">
+      <div class="pw-ic">🔒</div>
+      <div class="pw-t">Upgrade to Pro for Unlimited Videos</div>
+      <div class="pw-s">You've used your 5 free videos this month. Upgrade to Pro for just ₹149/month and get unlimited access to all 16,000+ video solutions.</div>
+      <a href="mockarena_upgrade.html" class="pw-btn">⚡ Upgrade to Pro — ₹149/month</a>
+      <div style="margin-top:10px;"><button onclick="document.getElementById('paywall').style.display='none'" style="background:none;border:none;color:var(--t4);font-size:.82rem;cursor:pointer;">Maybe later</button></div>
     </div>
 
-    <!-- Group 3: State Boards -->
-    <div class="crs-group">
-      <div class="crs-group-lbl">🏛 State Boards</div>
-      <div class="crs-grid">
-        <div class="crs-card" onclick="quickSel('up10','2025','')">
-          <div class="crs-bar" style="background:linear-gradient(90deg,#4a148c,#9c27b0)"></div>
-          <div class="crs-body">
-            <span class="crs-ic">📔</span>
-            <div class="crs-name">UP Board Class 10</div>
-            <div class="crs-desc">Science · Maths · SST · Hindi · English</div>
-            <div class="crs-foot">
-              <span class="crs-tag" style="background:#f3e5f5;color:#4a148c;border:1px solid #ce93d8;">300 Videos</span>
-              
-              <span class="crs-arrow">→</span>
-            </div>
-          </div>
-        </div>
-        <div class="crs-card" onclick="quickSel('up12','2025','')">
-          <div class="crs-bar" style="background:linear-gradient(90deg,#4a148c,#9c27b0)"></div>
-          <div class="crs-body">
-            <span class="crs-ic">📕</span>
-            <div class="crs-name">UP Board Class 12</div>
-            <div class="crs-desc">Physics · Chemistry · Maths · Biology · Hindi</div>
-            <div class="crs-foot">
-              <span class="crs-tag" style="background:#f3e5f5;color:#4a148c;border:1px solid #ce93d8;">300 Videos</span>
-              
-              <span class="crs-arrow">→</span>
-            </div>
-          </div>
-        </div>
-        <div class="crs-card" onclick="quickSel('raj10','2025','')">
-          <div class="crs-bar" style="background:linear-gradient(90deg,#006064,#26c6da)"></div>
-          <div class="crs-body">
-            <span class="crs-ic">📓</span>
-            <div class="crs-name">Rajasthan Board 10</div>
-            <div class="crs-desc">Science · Maths · SST · Hindi · English</div>
-            <div class="crs-foot">
-              <span class="crs-tag" style="background:#e0f7fa;color:#006064;border:1px solid #80deea;">300 Videos</span>
-              
-              <span class="crs-arrow">→</span>
-            </div>
-          </div>
-        </div>
-        <div class="crs-card" onclick="quickSel('raj12','2025','')">
-          <div class="crs-bar" style="background:linear-gradient(90deg,#006064,#26c6da)"></div>
-          <div class="crs-body">
-            <span class="crs-ic">📑</span>
-            <div class="crs-name">Rajasthan Board 12</div>
-            <div class="crs-desc">Physics · Chemistry · Maths · Biology · Hindi</div>
-            <div class="crs-foot">
-              <span class="crs-tag" style="background:#e0f7fa;color:#006064;border:1px solid #80deea;">300 Videos</span>
-              
-              <span class="crs-arrow">→</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- PAPER VIEW -->
-  <div class="paper-view" id="pview">
-    <div class="bc" id="bc"></div>
-
-    <div class="paper-banner" id="pbanner">
-      <div class="pb-head">
-        <div class="pb-ic" id="pbic">🩺</div>
-        <div style="flex:1">
-          <div class="pb-title" id="pbtitle">NEET UG 2025 — Shift 1</div>
-          <div class="pb-sub" id="pbsub">Physics · Chemistry · Biology</div>
-        </div>
-        <div class="pb-acts">
-          <button class="pb-btn" onclick="startTimer()">⏱ Timed Practice</button>
-        </div>
-      </div>
-      <div class="pb-stats">
-        <span class="pb-stat">📹 <strong id="pbTotal">0</strong> Videos</span>
-        <span class="pb-stat">✓ <strong id="pbWatched">0</strong> Watched</span>
-        <span class="pb-stat">📥 <strong id="pbSaved">0</strong> Saved</span>
-        <span class="pb-stat">⏱ <strong id="pbDur">3h 20m</strong></span>
-      </div>
+    <!-- SUBJECT TABS -->
+    <div class="stabs" id="stabs">
+      <button class="stab on" onclick="fSubj('all',this)">All</button>
+      <button class="stab" onclick="fSubj('Physics',this)">⚛️ Physics</button>
+      <button class="stab" onclick="fSubj('Chemistry',this)">🧪 Chemistry</button>
+      <button class="stab" onclick="fSubj('Biology',this)">🧬 Biology</button>
+      <button class="stab" onclick="fSubj('Mathematics',this)">📐 Mathematics</button>
     </div>
 
-    <div class="stabs" id="stabs"></div>
-
-    <div class="frow">
-      <div class="fc on" onclick="fDiff('all',this)">All</div>
-      <div class="fc" onclick="fDiff('Easy',this)">Easy</div>
-      <div class="fc" onclick="fDiff('Medium',this)">Medium</div>
-      <div class="fc" onclick="fDiff('Hard',this)">Hard</div>
-      <div class="fc" onclick="fFreq(this)">🔥 Frequently Asked</div>
-      <div class="fc" onclick="fUnwatch(this)">👁 Not Watched</div>
-      <div class="fright">
+    <!-- FILTERS -->
+    <div class="filters">
+      <button class="fc on" onclick="fDiff('all',this)">All Difficulty</button>
+      <button class="fc" onclick="fDiff('Easy',this)">Easy</button>
+      <button class="fc" onclick="fDiff('Medium',this)">Medium</button>
+      <button class="fc" onclick="fDiff('Hard',this)">Hard</button>
+      <button class="fc" onclick="fUnwatch(this)">Unwatched Only</button>
+      <div class="sort-wrap">
         <select class="sort-sel" onchange="sortV(this.value)">
-          <option value="">Default</option>
-          <option value="hard">Hard First</option>
-          <option value="easy">Easy First</option>
-          <option value="freq">Most Asked</option>
+          <option value="qno">Q. Number</option>
+          <option value="diff">Difficulty</option>
+          <option value="subj">Subject</option>
         </select>
-        <div class="view-tog">
-          <button class="vbtn on" onclick="setView('grid',this)">⊞</button>
-          <button class="vbtn" onclick="setView('list',this)">☰</button>
-        </div>
       </div>
     </div>
 
-    <div class="vgrid" id="vgrid"></div></div>
-</main>
-</div>
-
-<!-- MODAL -->
-<div class="modal-bg" id="mbg" onclick="bgClk(event)">
-  <div class="modal">
-    <button class="mcls" onclick="closeModal()">✕</button>
-    <div class="vwrap">
-      <iframe id="vframe" src="" allowfullscreen allow="autoplay;encrypted-media"></iframe>
-      <div class="vshield" oncontextmenu="return false;"></div>
-      <div class="vwm" id="vwm">MockArena</div>
+    <!-- VIDEO GRID -->
+    <div class="vgrid" id="vgrid">
+      <div class="empty"><span class="empty-ic">📅</span><div class="empty-h">Select a Year & Shift</div><div class="empty-s">Choose from the sidebar to load videos.</div></div>
     </div>
-    <div class="mbody">
-      <div class="mey" id="mey"></div>
-      <div class="mq" id="mq"></div>
-      <div class="mopts" id="mopts"></div>
-      <div class="solbox"><div class="sollbl">📝 Written Solution</div><div class="soltxt" id="msol"></div></div>
-      <div class="macts">
-        <button class="mact" onclick="saveOffline()">📥 Save Offline</button>
-        <button class="mact" onclick="markWatched()">✓ Watched</button>
-        <button class="mact pri" onclick="goNotes()">📖 Chapter Notes →</button>
-      </div>
-    </div>
-  </div>
+  </main>
 </div>
 
 <!-- SAVED PANEL -->
 <div class="svpanel" id="svpanel">
-  <div class="svph">
-    <div class="svpt">📥 Saved Offline <span id="svcnt" style="font-size:.78rem;font-weight:500;color:var(--t4)">(0/10)</span></div>
-    <button class="svpc" onclick="toggleSvPanel()">✕</button>
-  </div>
-  <div class="svlist" id="svlist"></div>
-  <div class="svlim">Pro subscribers can save up to 10 videos offline</div>
+  <div class="svp-hd"><div class="svp-title">📥 Saved Videos</div><button onclick="toggleSvPanel()" style="background:none;border:none;cursor:pointer;color:var(--t4);font-size:1.1rem;">✕</button></div>
+  <div class="svp-body" id="svp-body"><div style="font-size:.86rem;color:var(--t3);text-align:center;padding:16px;">No saved videos yet.</div></div>
 </div>
 
-<!-- PAYWALL -->
-<div class="pw" id="pw">
-  <div class="pwic">🎬</div>
-  <div class="pwt" id="pwt">5 Free Videos Used</div>
-  <div class="pws" id="pws">Subscribe to MockArena Pro for unlimited access to all 12,000+ video solutions.</div>
-  <div class="pwcard">
-    <div class="pwplan">MockArena Pro</div>
-    <div class="pwprice">₹149<span>/month</span></div>
-    <ul class="pwfeats">
-      <li>Unlimited video solutions</li>
-      <li>NEET · JEE · CBSE · ICSE · UP · Rajasthan</li>
-      <li>2016 to 2026 — 10 years complete</li>
-      <li>NCERT + Exemplar solutions</li>
-      <li>Save 10 videos offline</li>
-    </ul>
-    <button class="pwbtn" onclick="location.href='mockarena_student_dashboard.html#subscribe'">Subscribe Now — ₹149/month</button>
-  </div>
-  <button class="pwclose" onclick="document.getElementById('pw').style.display='none'">← Continue browsing</button>
-</div>
-
-<div class="toast" id="toast"></div>
-
-<script>
-// Anti-screenshot
-document.addEventListener('contextmenu',e=>e.preventDefault());
-document.addEventListener('keydown',e=>{
-  if(e.key==='PrintScreen'){e.preventDefault();toast('Screenshots not allowed');}
-  if((e.ctrlKey||e.metaKey)&&['s','p','u','a'].includes(e.key.toLowerCase()))e.preventDefault();
-  if(e.key==='F12'||((e.ctrlKey||e.metaKey)&&e.shiftKey&&'ijc'.includes(e.key.toLowerCase())))e.preventDefault();
-  if(e.key==='Escape')closeModal();
-});
-document.addEventListener('dragstart',e=>e.preventDefault());
-
-// Config
-const YEARS=[2026,2025,2024,2023,2022,2021,2020,2019,2018,2017,2016];
-const EX={
-  'neet':{label:'NEET UG',ic:'🩺',bg:'linear-gradient(135deg,#1b5e20,#2e7d32)',sessions:['Shift 1','Shift 2'],subjs:['Physics','Chemistry','Biology'],qps:45,dur:'3h 20m'},
-  'jeem-jan':{label:'JEE Mains',ic:'⚛️',bg:'linear-gradient(135deg,#0d47a1,#1565c0)',session:'January',subjs:['Physics','Chemistry','Mathematics'],qps:30,dur:'3h'},
-  'jeem-apr':{label:'JEE Mains',ic:'⚛️',bg:'linear-gradient(135deg,#0d47a1,#1565c0)',session:'April',subjs:['Physics','Chemistry','Mathematics'],qps:30,dur:'3h'},
-  'jeea':{label:'JEE Advanced',ic:'🏆',bg:'linear-gradient(135deg,#4527a0,#6a1b9a)',sessions:['Paper 1','Paper 2'],subjs:['Physics','Chemistry','Mathematics'],qps:18,dur:'3h'},
-  'cbse10':{label:'CBSE Class 10',ic:'📗',bg:'linear-gradient(135deg,#bf360c,#d84315)',subjs:['Science','Mathematics','Social Science','English'],qps:30,dur:'3h'},
-  'cbse12':{label:'CBSE Class 12',ic:'📘',bg:'linear-gradient(135deg,#bf360c,#d84315)',subjs:['Physics','Chemistry','Mathematics','Biology','English'],qps:30,dur:'3h'},
-  'icse10':{label:'ICSE Class 10',ic:'📙',bg:'linear-gradient(135deg,#880e4f,#ad1457)',subjs:['Physics','Chemistry','Mathematics','Biology'],qps:30,dur:'3h'},
-  'icse12':{label:'ICSE Class 12',ic:'📒',bg:'linear-gradient(135deg,#880e4f,#ad1457)',subjs:['Physics','Chemistry','Mathematics','Biology'],qps:30,dur:'3h'},
-  'up10':{label:'UP Board Class 10',ic:'📔',bg:'linear-gradient(135deg,#4a148c,#6a1b9a)',subjs:['Science','Mathematics','Social Science','Hindi','English'],qps:30,dur:'3h 15m'},
-  'up12':{label:'UP Board Class 12',ic:'📕',bg:'linear-gradient(135deg,#4a148c,#6a1b9a)',subjs:['Physics','Chemistry','Mathematics','Biology','Hindi'],qps:30,dur:'3h 15m'},
-  'raj10':{label:'Rajasthan Board 10',ic:'📓',bg:'linear-gradient(135deg,#006064,#00838f)',subjs:['Science','Mathematics','Social Science','Hindi','English'],qps:30,dur:'3h 15m'},
-  'raj12':{label:'Rajasthan Board 12',ic:'📑',bg:'linear-gradient(135deg,#006064,#00838f)',subjs:['Physics','Chemistry','Mathematics','Biology','Hindi'],qps:30,dur:'3h 15m'},
-};
-const TOPS={
-  Physics:[
-    'Physical World & Measurement','Kinematics','Laws of Motion','Work Energy and Power',
-    'Motion of System of Particles','Gravitation','Properties of Bulk Matter','Thermodynamics',
-    'Kinetic Theory of Gases','Oscillations','Waves','Electric Charges and Fields',
-    'Electrostatic Potential','Current Electricity','Moving Charges and Magnetism',
-    'Magnetism and Matter','Electromagnetic Induction','Alternating Current',
-    'Ray Optics','Wave Optics','Dual Nature of Radiation','Atoms','Nuclei','Semiconductor Electronics'
-  ],
-  Chemistry:[
-    'Basic Concepts of Chemistry','Structure of Atom','Classification of Elements','Chemical Bonding',
-    'States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Hydrogen',
-    's-Block Elements','p-Block Elements','Organic Chemistry Basics','Hydrocarbons',
-    'Solid State','Solutions','Electrochemistry','Chemical Kinetics',
-    'd and f Block Elements','Coordination Compounds','Haloalkanes and Haloarenes',
-    'Alcohols Phenols and Ethers','Aldehydes Ketones and Acids','Amines',
-    'Biomolecules','Polymers','Chemistry in Everyday Life'
-  ],
-  Biology:[
-    'The Living World','Biological Classification','Plant Kingdom','Animal Kingdom',
-    'Morphology of Flowering Plants','Anatomy of Flowering Plants','Structural Organisation in Animals',
-    'Cell the Unit of Life','Biomolecules','Cell Cycle and Division','Photosynthesis',
-    'Respiration in Plants','Plant Growth and Development','Digestion and Absorption',
-    'Breathing and Exchange of Gases','Body Fluids and Circulation','Excretory Products',
-    'Locomotion and Movement','Neural Control and Coordination','Chemical Coordination',
-    'Reproduction in Organisms','Sexual Reproduction in Plants','Human Reproduction',
-    'Reproductive Health','Principles of Inheritance','Molecular Basis of Inheritance',
-    'Evolution','Human Health and Disease','Microbes in Human Welfare',
-    'Biotechnology Principles','Biotechnology Applications','Organisms and Populations',
-    'Ecosystem','Biodiversity and Conservation'
-  ],
-  Mathematics:[
-    'Sets Relations and Functions','Complex Numbers','Quadratic Equations',
-    'Matrices and Determinants','Permutations and Combinations','Binomial Theorem',
-    'Sequences and Series','Limits Continuity and Differentiability','Integral Calculus',
-    'Differential Equations','Coordinate Geometry - Straight Lines','Coordinate Geometry - Circles',
-    'Coordinate Geometry - Conics','Three Dimensional Geometry','Vector Algebra',
-    'Statistics and Probability','Trigonometry','Mathematical Reasoning'
-  ],
-  Science:[
-    'Chemical Reactions and Equations','Acids Bases and Salts','Metals and Non-metals',
-    'Carbon and its Compounds','Life Processes','Control and Coordination',
-    'Reproduction in Organisms','Heredity','Light Reflection and Refraction',
-    'Human Eye','Electricity','Magnetic Effects of Current','Our Environment'
-  ],
-  'Social Science':[
-    'Rise of Nationalism in Europe','Nationalism in India','Making of a Global World',
-    'Print Culture and Modern World','Resources and Development','Forest and Wildlife',
-    'Water Resources','Agriculture','Minerals and Energy Resources','Manufacturing Industries',
-    'Power Sharing','Federalism','Political Parties','Outcomes of Democracy',
-    'Consumer Rights','Money and Credit','Globalisation'
-  ],
-  Hindi:['Gadya Khand','Padya Khand','Grammar','Rachna'],
-  English:['Reading Comprehension','Grammar','Writing Skills','Literature']
-};
-const DIFFS=['Easy','Easy','Medium','Medium','Medium','Hard'];
-const HOT=['Laws of Motion','Electrostatics','Optics','Chemical Bonding','Genetics','Integration','Thermodynamics'];
-
-let curEx='',curYr='',curSess='',curSubj='all';
-let allV=[],filtV=[];
-let aDiff='all',freqOnly=false,unwOnly=false;
-let watched=JSON.parse(localStorage.getItem('ma_w')||'[]');
-let saved=JSON.parse(localStorage.getItem('ma_sv')||'[]');
-let freeN=parseInt(localStorage.getItem('ma_f_'+mk())||'0');
-const FREE=5;
-let isPremium=false,curV=null;
-let tsec=0,tOn=false,tInt=null;
-function mk(){const d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1);}
-
-function buildSb(){
-  Object.keys(EX).forEach(ek=>{
-    const el=document.getElementById('sc-'+ek);if(!el)return;
-    const ex=EX[ek];
-    if(ex.sessions && ex.sessions.length>1){
-      // Show year → expand to sessions
-      el.innerHTML=YEARS.map(yr=>`
-        <div class="sb-yr-item" id="syi-${ek}-${yr}">
-          <div class="sb-child sb-yr-hd" onclick="toggleYr('${ek}','${yr}')">
-            <span class="sb-dot"></span>${yr}
-            <span class="sb-yr-arr" id="sya-${ek}-${yr}" style="margin-left:auto;font-size:9px;color:var(--t4);transition:transform .2s;">▶</span>
-          </div>
-          <div class="sb-yr-sess" id="sys-${ek}-${yr}" style="display:none;">
-            ${ex.sessions.map(sess=>`<div class="sb-child sb-sess-item" style="padding-left:68px;font-size:.84rem;" onclick="selPaper('${ek}','${yr}','${sess}')">${sess}</div>`).join('')}
-          </div>
-        </div>`).join('');
-    } else {
-      el.innerHTML=YEARS.map(yr=>`<div class="sb-child" onclick="selPaper('${ek}','${yr}','${ex.session||''}')"><span class="sb-dot"></span>${yr}</div>`).join('');
-    }
-  });
-}
-
-function toggleYr(ek,yr){
-  const sess=document.getElementById('sys-'+ek+'-'+yr);
-  const arr=document.getElementById('sya-'+ek+'-'+yr);
-  if(!sess)return;
-  const open=sess.style.display!=='none';
-  sess.style.display=open?'none':'block';
-  if(arr)arr.style.transform=open?'':'rotate(90deg)';
-}
-
-function toggleSbItem(ek){
-  const el=document.getElementById('si-'+ek);
-  const was=el.classList.contains('open');
-  document.querySelectorAll('.sb-item').forEach(e=>e.classList.remove('open'));
-  document.querySelectorAll('.sb-item-hd').forEach(e=>e.classList.remove('on'));
-  if(!was){el.classList.add('open');el.querySelector('.sb-item-hd').classList.add('on');}
-}
-
-function selPaper(ek,yr,sess){
-  curEx=ek;curYr=yr;curSess=sess;curSubj='all';aDiff='all';freqOnly=false;unwOnly=false;
-  document.querySelectorAll('.sb-child').forEach(e=>e.classList.remove('on'));
-  event?.target?.classList.add('on');
-  const ex=EX[ek];if(!ex)return;
-  document.getElementById('hero').style.display='none';
-  document.getElementById('courses').style.display='none';
-  document.getElementById('pview').style.display='block';
-  const sl=sess?` — ${sess}`:'';
-  document.getElementById('pbic').textContent=ex.ic;
-  document.getElementById('pbtitle').textContent=`${ex.label} ${yr}${sl}`;
-  document.getElementById('pbsub').textContent=ex.subjs.join(' · ');
-  document.getElementById('pbDur').textContent=ex.dur;
-  document.getElementById('pbanner').style.background=ex.bg;
-  document.getElementById('bc').innerHTML=`<span class="bc-it" onclick="goHome()">Home</span><span class="bc-sep">›</span><span class="bc-it" onclick="goHome()">${ex.label}</span><span class="bc-sep">›</span><span class="bc-it on">${yr}${sl}</span>`;
-  document.getElementById('stabs').innerHTML=`<div class="stab on" onclick="fSubj('all',this)">All Subjects</div>`+ex.subjs.map(s=>`<div class="stab" onclick="fSubj('${s}',this)">${s}</div>`).join('');
-  allV=genV(ek,yr,sess,ex.subjs,ex.qps);filtV=[...allV];
-  renderV(filtV);updStats();
-  document.querySelectorAll('.fc').forEach(f=>f.classList.remove('on'));
-  document.querySelector('.fc').classList.add('on');
-  closeSb();
-}
-
-function quickSel(ek,yr,sess){
-  const el=document.getElementById('si-'+ek);
-  if(el){el.classList.add('open');el.querySelector('.sb-item-hd').classList.add('on');}
-  selPaper(ek,yr,sess);
-}
-
-function goHome(){
-  document.getElementById('hero').style.display='block';
-  document.getElementById('courses').style.display='block';
-  document.getElementById('pview').style.display='none';
-  document.querySelectorAll('.sb-child').forEach(e=>e.classList.remove('on'));
-}
-
-function getOpt(topic, idx){
-  const opts={
-    'Kinematics':['5 m/s','10 m/s','15 m/s','20 m/s'],
-    'Laws of Motion':['2 m/s²','4 m/s²','6 m/s²','8 m/s²'],
-    'Work Energy and Power':['100 J','200 J','300 J','400 J'],
-    'Thermodynamics':['100 J','200 J','300 J','400 J'],
-    'Current Electricity':['1 Ω','2 Ω','3 Ω','6 Ω'],
-    'Electrostatics':['1.6 N','0.8 N','3.2 N','0.4 N'],
-    'Ray Optics':['60 cm','40 cm','30 cm','20 cm'],
-    'Atoms':['0.529 Å','1.058 Å','4.761 Å','2.116 Å'],
-    'Chemical Bonding':['Tetrahedral','Trigonal planar','Linear','Bent'],
-    'Electrochemistry':['0.34 g','0.63 g','1.18 g','2.36 g'],
-    'Integral Calculus':['0','1','2','π/2'],
-    'Matrices and Determinants':['0','1','-1','2'],
-    'Principles of Inheritance':['3:1','1:2:1','9:3:3:1','1:1'],
-    'Photosynthesis':['ATP only','NADPH only','ATP and NADPH','O₂ only'],
-  };
-  const def=['Option A','Option B','Option C','Option D'];
-  return (opts[topic]||def)[idx]||def[idx];
-}
-
-function genV(ek,yr,sess,subjs,qps){
-  const QT={
-    'Kinematics':['A particle starts from rest, accelerates at 4 m/s² for 5 s. Find final velocity.','A ball thrown vertically upward at 20 m/s. Find maximum height.','A car travels 150 km in 3 hours. Calculate average speed.','Two bodies projected at 30° and 60°. Compare their horizontal ranges.'],
-    'Laws of Motion':['A 5 kg block pulled by 20 N on rough surface µ=0.3. Find acceleration.','Explain why a passenger lurches forward when a bus suddenly stops.','A force of 50 N acts on 10 kg body for 5 s from rest. Find distance covered.','State and explain Newton\'s third law with two examples.'],
-    'Work Energy and Power':['A 2 kg ball falls from 10 m height. Find KE just before hitting ground.','A motor lifts 500 kg water to 20 m in 10 min. Find power in kW.','Spring of k=200 N/m compressed 0.1 m. Find PE stored.','Work done by friction: 5 kg block slides 3 m on µ=0.3 surface.'],
-    'Thermodynamics':['Carnot engine between 500 K and 300 K. Find efficiency.','System absorbs 400 J heat and does 150 J work. Find change in internal energy.','1 mole ideal gas expands isothermally at 300 K. Find work done.','In adiabatic process, work done on gas = 200 J. Find ΔU.'],
-    'Current Electricity':['Three resistors 2Ω, 3Ω, 6Ω in parallel. Find equivalent resistance.','Cell of EMF 6V, internal resistance 1Ω, drives 2A. Find terminal voltage.','Power dissipated in 5Ω resistor when 3A flows through it.','Wheatstone bridge: P=10Ω, Q=5Ω, R=20Ω. Find S for balance.'],
-    'Electrostatics':['Two charges +4μC and -4μC separated 0.3 m. Find force between them.','Electric potential due to Q=2μC at distance r=0.2 m.','Work done to move 2μC charge through potential difference of 100 V.','Electric field at midpoint between two equal opposite charges 0.4 m apart.'],
-    'Ray Optics':['Concave mirror f=20 cm, object at 30 cm. Find image position.','Object at 40 cm from convex lens f=20 cm. Find image and magnification.','Critical angle for glass (n=1.5) to air interface.','Refraction through glass slab t=3 cm, n=1.5. Find lateral shift.'],
-    'Atoms':['Radius of nth Bohr orbit: r = 0.529n² Å. Find r for n=3 in H atom.','Energy in 2nd orbit of H = -3.4 eV. Find energy for 3rd orbit.','Calculate wavelength of Hα line using Rydberg formula.','De Broglie wavelength of electron at v=10⁶ m/s.'],
-    'Nuclei':['Half life = 10 days. Find fraction of radioactive sample remaining after 30 days.','Binding energy per nucleon of Fe-56 is maximum. Explain why iron is most stable.','Nuclear fission of U-235 releases 200 MeV. Energy from 1 kg of U-235?','Mass defect of He-4 if actual mass = 4.0026 u. Find binding energy.'],
-    'Chemical Bonding':['Draw Lewis structure of SO₃. Identify geometry and bond angle.','Hybridisation of carbon in ethylene C₂H₄. Draw the structure.','Why is dipole moment of H₂O greater than H₂S?','Arrange NaCl, HCl, H₂ in decreasing order of ionic character.'],
-    'Electrochemistry':['Zn/Zn²⁺ E°=-0.76V, Cu/Cu²⁺ E°=+0.34V. Calculate EMF of Daniell cell.','Using Faraday law, find mass of Cu deposited by 2A current for 1 hour.','Predict: will Zn react with CuSO₄ solution? Give reason.','Define conductance. How does it vary with temperature for electrolytes?'],
-    'Chemical Kinetics':['Rate doubles for 10°C rise. Find temperature coefficient.','First order reaction: 75% complete in 20 min. Find rate constant k.','For first order: t½=0.693/k. Calculate t½ if k=0.0347 min⁻¹.','Using Arrhenius equation, find ratio of rate constants at 300K and 310K (Ea=50 kJ/mol).'],
-    'Principles of Inheritance':['Monohybrid cross Tt×Tt: find genotypic and phenotypic ratio.','ABO blood groups: cross IA IB × ii. Find blood groups of offspring.','Incomplete dominance in Snapdragon: cross Rr×Rr. Find ratio.','Dihybrid cross AaBb×AaBb. Explain 9:3:3:1 phenotypic ratio.'],
-    'Photosynthesis in Higher Plants':['Write overall equation for photosynthesis with reactants and products.','Distinguish C3 and C4 plants. Give two examples of each.','What is photorespiration? Why does it not occur in C4 plants?','Explain Z-scheme of electron transport in light reaction.'],
-    'Sets Relations and Functions':['Find domain and range of f(x) = sqrt(4-x²).','If f(x)=2x+3 and g(x)=x²-1, find f(g(2)) and g(f(2)).','Prove: A∪(B∩C) = (A∪B)∩(A∪C).','If n(A)=20, n(B)=30, n(A∪B)=40, find n(A∩B).'],
-    'Matrices and Determinants':['Find determinant of matrix [[1,2,3],[0,1,4],[5,6,0]].','If A=[[2,k],[k,2]] is singular, find value of k.','Solve: 2x+y=5, x+3y=5 using Cramer\'s rule.','Verify AB ≠ BA for A=[[1,2],[3,4]] and B=[[0,1],[1,0]].'],
-    'Integrals':['Evaluate ∫(3x²+2x+1)dx.','Find area bounded by y=x² and y=x from x=0 to x=1.','Evaluate definite integral ∫₀^π sinx dx.','Find ∫x·eˣ dx using integration by parts.'],
-    'Vector Algebra':['Find unit vector in direction of a=2i+3j-6k.','If |a|=3, |b|=4, angle=60°. Find a·b (dot product).','Find area of parallelogram with sides a=i+2j and b=3i+4j.','If a×b=0, what is the relation between vectors a and b?'],
-  };
-  const defQ=['In the context of {T}, which of the following statements is CORRECT?','Apply the principle of {T} to find the correct answer:','Which option correctly describes {T} as per {Y} paper?','The value of the quantity in this {T} problem is:'];
-  return subjs.flatMap(subj=>{
-    const tops=TOPS[subj]||TOPS.Physics;
-    return Array.from({length:qps},(_,i)=>{
-      const top=tops[i%tops.length];
-      const hot=HOT.includes(top);
-      const qs=QT[top]||defQ.map(q=>q.replace('{T}',top).replace('{Y}',yr));
-      return{
-        id:`${ek}-${yr}-${sess.replace(/\s/g,'_')}-${subj}-Q${i+1}`,
-        ex:ek,yr:parseInt(yr),sess,subj,qnum:i+1,topic:top,
-        diff:DIFFS[Math.floor(Math.random()*DIFFS.length)],
-        dur:`${Math.floor(Math.random()*2)+2}:${String(Math.floor(Math.random()*60)).padStart(2,'0')}`,
-        question:qs[i%qs.length],
-        opts:[`A) ${getOpt(top,0)}`,`B) ${getOpt(top,1)}`,`C) ${getOpt(top,2)}`,`D) ${getOpt(top,3)}`],
-        correct:Math.floor(Math.random()*4),
-        solution:`Step 1: Identify concept — ${top}. Step 2: Apply relevant formula/principle. Step 3: Substitute given values. Step 4: Calculate and verify. Asked ${hot?Math.floor(Math.random()*3)+3:1} time(s) in last 10 years.`,
-        videoId:'dQw4w9WgXcQ',
-        chapter:top.toLowerCase().replace(/[\s&]/g,'-'),
-        times:hot?Math.floor(Math.random()*3)+3:Math.floor(Math.random()*2)+1,
-        isHot:hot
-      };
-    });
-  });
-}
-
-function fSubj(s,el){curSubj=s;document.querySelectorAll('.stab').forEach(t=>t.classList.remove('on'));el.classList.add('on');applyF();}
-function fDiff(d,el){aDiff=d;document.querySelectorAll('.fc').forEach(f=>{if(['All','Easy','Medium','Hard'].includes(f.textContent))f.classList.remove('on');});el.classList.add('on');applyF();}
-function fFreq(el){freqOnly=!freqOnly;el.classList.toggle('on',freqOnly);applyF();}
-function fUnwatch(el){unwOnly=!unwOnly;el.classList.toggle('on',unwOnly);applyF();}
-function applyF(){filtV=allV.filter(v=>(curSubj==='all'||v.subj===curSubj)&&(aDiff==='all'||v.diff===aDiff)&&(!freqOnly||v.isHot)&&(!unwOnly||!watched.includes(v.id)));renderV(filtV);}
-function sortV(val){let d=[...filtV];if(val==='hard')d.sort((a,b)=>['Hard','Medium','Easy'].indexOf(a.diff)-['Hard','Medium','Easy'].indexOf(b.diff));else if(val==='easy')d.sort((a,b)=>['Easy','Medium','Hard'].indexOf(a.diff)-['Easy','Medium','Hard'].indexOf(b.diff));else if(val==='freq')d.sort((a,b)=>b.times-a.times);renderV(d);}
-function onSearch(val){val=val.toLowerCase().trim();if(!val){applyF();return;}renderV(allV.filter(v=>v.question.toLowerCase().includes(val)||v.topic.toLowerCase().includes(val)||String(v.qnum).includes(val)));}
-
-function renderV(v){
-  const g=document.getElementById('vgrid');
-  if(!v.length){g.innerHTML='<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--t4)">No videos match your filters</div>';return;}
-  const dc={Easy:'e',Medium:'m',Hard:'h'};
-  g.innerHTML=v.map(q=>{
-    const isW=watched.includes(q.id),isSv=saved.find(s=>s.id===q.id);
-    return`<div class="vcard ${isW?'watched':''}" onclick="openV('${q.id}')">
-      ${isW?'<span class="vbadge vb-watched">✓ Watched</span>':''}
-      ${isSv?'<span class="vbadge vb-saved">📥 Saved</span>':''}
-      ${q.isHot?`<span class="vbadge vb-hot">🔥 ${q.times}×</span>`:''}
-      <div class="vthumb">
-        <img src="https://img.youtube.com/vi/${q.videoId}/mqdefault.jpg" alt="" loading="lazy" onerror="this.style.display='none'"/>
-        <div class="vthumb-ov"></div>
-        <div class="vplay">▶</div>
-        <span class="vdur">${q.dur}</span>
-        <span class="vqnum">Q${q.qnum}</span>
+<!-- VIDEO MODAL -->
+<div class="modal-bg" id="mbg" onclick="bgClk(event)">
+  <div class="modal" id="modal">
+    <button class="mcls" onclick="closeModal()">✕</button>
+    <div class="vwrap">
+      <iframe id="vframe" src="" allowfullscreen allow="autoplay;encrypted-media;fullscreen"></iframe>
+      <div class="vshield" oncontextmenu="return false;"></div>
+      <div class="vwm" id="vwm">
+        <span class="vwm-name">Mock<em>Arena</em></span>
+        <span class="vwm-mail" id="vwm-mail">mockarena.co.in</span>
       </div>
-      <div class="vbody">
-        <div class="vtopic">${q.subj} · ${q.topic}</div>
-        <div class="vq">${q.question}</div>
-        <div class="vtags">
-          <span class="vtag ${dc[q.diff]||'m'}">${q.diff}</span>
-          ${q.isHot?`<span class="vtag hot">🔥 ${q.times}× asked</span>`:''}
+    </div>
+    <div class="ctrl-bar">
+      <div class="speed-wrap">
+        <div class="speed-btn" onclick="toggleSpeedDrop()">
+          <span id="cur-speed">1x</span>
+          <span class="speed-ic">▾</span>
+        </div>
+        <div class="speed-drop" id="speed-drop">
+          <div class="speed-opt" onclick="pickSpeed(0.5)">0.5x</div>
+          <div class="speed-opt" onclick="pickSpeed(0.75)">0.75x</div>
+          <div class="speed-opt on" onclick="pickSpeed(1)">1x</div>
+          <div class="speed-opt" onclick="pickSpeed(1.25)">1.25x</div>
+          <div class="speed-opt" onclick="pickSpeed(1.5)">1.5x</div>
+          <div class="speed-opt" onclick="pickSpeed(1.75)">1.75x</div>
+          <div class="speed-opt" onclick="pickSpeed(2)">2x</div>
         </div>
       </div>
-      <div class="vfoot">
-        <button class="vfbtn save ${isSv?'saved':''}" onclick="event.stopPropagation();toggleSave('${q.id}')">${isSv?'📥 Saved':isPremium?'💾 Save':'🔒 Save'}</button>
-        <button class="vfbtn watch" onclick="event.stopPropagation();openV('${q.id}')">▶ Watch Solution</button>
+      <div class="protect-badge">🔒 Recording Blocked</div>
+    </div>
+    <div class="minfo">
+      <div class="mq" id="mq"></div>
+      <div class="mopts" id="mopts"></div>
+      <div class="msol" id="msol"><div class="msol-lbl">📝 Solution</div><span id="msol-txt"></span></div>
+      <div class="mfoot">
+        <button class="vfbtn" id="watch-btn" onclick="markWatched()">✓ Mark Watched</button>
+        <button class="vfbtn" id="save-btn" onclick="toggleSave()">🔖 Save</button>
+        <button class="vfbtn" onclick="goNotes()">📖 Notes</button>
+        <button class="vfbtn" onclick="startTimer()">⏱ Timer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TIMER -->
+<div class="timer-wrap" id="timer-wrap">
+  <span class="timer-t" id="timer-t">00:00</span>
+  <button class="timer-btn" onclick="pauseTimer()" id="timer-pause">Pause</button>
+  <button class="timer-btn" onclick="endTimer()">End</button>
+</div>
+
+<script>
+// ── DATA ──
+var EX = {
+  // ── NEET UG (Single day, 2 shifts from 2021 onwards) ──
+  'neet-2026':['Shift 1','Shift 2'],
+  'neet-2025':['Shift 1','Shift 2'],
+  'neet-2024':['Shift 1','Shift 2'],
+  'neet-2023':['Shift 1','Shift 2'],
+  'neet-2022':['Shift 1','Shift 2'],
+  'neet-2021':['Shift 1','Shift 2'],
+  'neet-2020':['Shift 1'],
+  'neet-2019':['Shift 1'],
+  'neet-2018':['Shift 1'],
+  'neet-2017':['Shift 1'],
+  'neet-2016':['Phase 1','Phase 2'],
+  // ── JEE MAINS (2 sessions/yr, 5-6 days each, 2 shifts/day) ──
+  'jeem-2026':['Jan S1 D1','Jan S1 D2','Jan S1 D3','Jan S1 D4','Jan S1 D5','Apr S2 D1','Apr S2 D2','Apr S2 D3','Apr S2 D4','Apr S2 D5'],
+  'jeem-2025':['Jan S1 D1','Jan S1 D2','Jan S1 D3','Jan S1 D4','Jan S1 D5','Apr S2 D1','Apr S2 D2','Apr S2 D3','Apr S2 D4','Apr S2 D5'],
+  'jeem-2024':['Jan S1 D1','Jan S1 D2','Jan S1 D3','Jan S1 D4','Jan S1 D5','Apr S2 D1','Apr S2 D2','Apr S2 D3','Apr S2 D4','Apr S2 D5'],
+  'jeem-2023':['Jan S1 D1','Jan S1 D2','Jan S1 D3','Jan S1 D4','Jan S1 D5','Apr S2 D1','Apr S2 D2','Apr S2 D3','Apr S2 D4','Apr S2 D5'],
+  'jeem-2022':['Jun S1 D1','Jun S1 D2','Jun S1 D3','Jun S1 D4','Jun S1 D5','Jul S2 D1','Jul S2 D2','Jul S2 D3','Jul S2 D4','Jul S2 D5'],
+  'jeem-2021':['Feb S1 D1','Feb S1 D2','Feb S1 D3','Feb S1 D4','Feb S1 D5','Mar S2 D1','Mar S2 D2','Mar S2 D3','Mar S2 D4','Mar S2 D5'],
+  'jeem-2020':['Jan S1 D1','Jan S1 D2','Jan S1 D3','Jan S1 D4','Sep S2 D1','Sep S2 D2','Sep S2 D3','Sep S2 D4','Sep S2 D5'],
+  'jeem-2019':['Jan S1 D1','Jan S1 D2','Jan S1 D3','Apr S2 D1','Apr S2 D2','Apr S2 D3'],
+  'jeem-2018':['Jan S1 D1','Jan S1 D2','Apr S2 D1','Apr S2 D2'],
+  'jeem-2017':['Apr D1','Apr D2','Apr D3'],
+  'jeem-2016':['Apr D1','Apr D2','Apr D3'],
+  // ── JEE ADVANCED (1 paper/yr, Paper 1 + Paper 2) ──
+  'jeea-2026':['Paper 1','Paper 2'],
+  'jeea-2025':['Paper 1','Paper 2'],
+  'jeea-2024':['Paper 1','Paper 2'],
+  'jeea-2023':['Paper 1','Paper 2'],
+  'jeea-2022':['Paper 1','Paper 2'],
+  'jeea-2021':['Paper 1','Paper 2'],
+  'jeea-2020':['Paper 1','Paper 2'],
+  'jeea-2019':['Paper 1','Paper 2'],
+  'jeea-2018':['Paper 1','Paper 2'],
+  'jeea-2017':['Paper 1','Paper 2'],
+  'jeea-2016':['Paper 1','Paper 2'],
+};
+
+var DEMO_QS = [
+  {id:'q1',qno:1,question:'A particle starts from rest and moves with constant acceleration of 4 m/s². What is its velocity after 5 seconds?',optA:'10 m/s',optB:'20 m/s',optC:'15 m/s',optD:'25 m/s',correct:1,solution:'Using v = u + at = 0 + 4×5 = 20 m/s',subject:'Physics',topic:'Kinematics',difficulty:'Easy',videoId:'dQw4w9WgXcQ'},
+  {id:'q2',qno:2,question:'Which of the following is NOT a property of ionic compounds?',optA:'High melting point',optB:'Conduct electricity in solid state',optC:'Soluble in water',optD:'Brittle nature',correct:1,solution:'Ionic compounds do NOT conduct electricity in solid state as ions are fixed. They only conduct when melted or dissolved.',subject:'Chemistry',topic:'Chemical Bonding',difficulty:'Medium',videoId:'dQw4w9WgXcQ'},
+  {id:'q3',qno:3,question:'Which cell organelle is called the "powerhouse of the cell"?',optA:'Nucleus',optB:'Mitochondria',optC:'Ribosome',optD:'Golgi apparatus',correct:1,solution:'Mitochondria produce ATP through cellular respiration and are called the powerhouse of the cell.',subject:'Biology',topic:'Cell Biology',difficulty:'Easy',videoId:'dQw4w9WgXcQ'},
+];
+
+var watched = JSON.parse(localStorage.getItem('ma_watched')||'{}');
+var saved = JSON.parse(localStorage.getItem('ma_saved')||'[]');
+var freeUsed = parseInt(localStorage.getItem('ma_free')||'0');
+var currentQ = null;
+var filterSubj = 'all', filterDiff = 'all', filterUnwatch = false, sortBy = 'qno';
+var searchQ = '';
+var timerInt = null, timerSec = 0, timerRunning = false;
+var allVids = [];
+var currentPaper = '';
+
+function mk(){var d=new Date();return d.getFullYear()+'-'+(d.getMonth()+1);}
+
+// ── SIDEBAR ──
+function buildSb(){
+  var html='';
+  Object.keys(EX).forEach(ek=>{
+    var parts = ek.split('-');
+    var exam = parts[0], yr = parts[1];
+    var label = exam==='neet'?'🩺 NEET '+yr:exam==='jeem'?'⚛️ JEE Main '+yr:'🏆 JEE Adv '+yr;
+    html+=`<div>
+      <button class="yr-btn" id="yrb-${ek}" onclick="toggleYr('${ek}')">
+        <span>${label}</span><span class="yr-ic">▾</span>
+      </button>
+      <div class="yr-children" id="yrc-${ek}">
+        ${EX[ek].map(sh=>`<button class="shift-btn" onclick="selPaper('${ek}','${sh}')">${sh}</button>`).join('')}
       </div>
     </div>`;
-  }).join('');
+  });
+  document.getElementById('sb-years').innerHTML=html;
 }
 
+function toggleYr(ek){
+  var el=document.getElementById('yrc-'+ek);
+  el.classList.toggle('open');
+  var btn=document.getElementById('yrb-'+ek);
+  btn.classList.toggle('on');
+}
+
+function selPaper(ek,shift){
+  currentPaper=ek+'-'+shift;
+  document.querySelectorAll('.shift-btn').forEach(b=>b.classList.remove('on'));
+  event.target.classList.add('on');
+  closeSb();
+  loadVids();
+}
+
+function toggleSb(){
+  document.getElementById('sb').classList.toggle('open');
+  document.getElementById('mob-ov').classList.toggle('show');
+}
+function closeSb(){
+  document.getElementById('sb').classList.remove('open');
+  document.getElementById('mob-ov').classList.remove('show');
+}
+
+// ── LOAD VIDEOS ──
+async function loadVids(){
+  if(!currentPaper){return;}
+  document.getElementById('vgrid').innerHTML='<div class="empty"><span class="empty-ic">⏳</span><div class="empty-h">Loading videos...</div></div>';
+  // Try Firestore first
+  if(window._loadVideos){
+    var fireVids=await window._loadVideos(currentPaper);
+    if(fireVids&&fireVids.length){
+      allVids=fireVids;
+      updFree();
+      renderV();
+      return;
+    }
+  }
+  // Fall back to demo
+  allVids=DEMO_QS;
+  updFree();
+  renderV();
+}
+
+function updFree(){
+  var mk2=mk();
+  var used=parseInt(localStorage.getItem('ma_free_'+mk2)||'0');
+  var left=Math.max(0,5-used);
+  var el=document.getElementById('free-text');
+  if(el) el.textContent=left+' free left';
+  var pw=document.getElementById('paywall');
+  if(pw) pw.style.display=(left===0&&!window.isPremium)?'block':'none';
+}
+
+function isPremium(){return window._isPremium===true;}
+
+// ── RENDER ──
+function renderV(){
+  var list=allVids.filter(v=>{
+    if(filterSubj!=='all'&&v.subject!==filterSubj)return false;
+    if(filterDiff!=='all'&&v.difficulty!==filterDiff)return false;
+    if(filterUnwatch&&watched[v.id])return false;
+    if(searchQ&&!v.question.toLowerCase().includes(searchQ)&&!(v.topic||'').toLowerCase().includes(searchQ))return false;
+    return true;
+  });
+  list.sort((a,b)=>sortBy==='diff'?a.difficulty.localeCompare(b.difficulty):sortBy==='subj'?a.subject.localeCompare(b.subject):(a.qno-b.qno));
+  var el=document.getElementById('vgrid');
+  if(!list.length){el.innerHTML='<div class="empty"><span class="empty-ic">🔍</span><div class="empty-h">No videos found</div><div class="empty-s">Try adjusting your filters.</div></div>';return;}
+  var subjColor={'Physics':'vtag-ph','Chemistry':'vtag-ch','Biology':'vtag-bio','Mathematics':'vtag-ph'};
+  el.innerHTML=list.map(v=>`
+    <div class="vcard" onclick="openV('${v.id}')">
+      <div class="vcard-thumb">
+        <div class="vcard-play">▶</div>
+        ${watched[v.id]?'<span class="vcard-watched">✓ Watched</span>':''}
+      </div>
+      <div class="vcard-body">
+        <div class="vcard-q">Q${v.qno}. ${v.question}</div>
+        <div class="vcard-meta">
+          <span class="vtag ${subjColor[v.subject]||'vtag-ph'}">${v.subject}</span>
+          <span class="vtag vtag-diff">${v.difficulty}</span>
+          ${v.topic?`<span class="vtag vtag-diff">${v.topic}</span>`:''}
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+// ── OPEN VIDEO ──
 function openV(id){
-  const v=allV.find(x=>x.id===id)||saved.find(x=>x.id===id);if(!v)return;
-  if(!isPremium&&!watched.includes(id)){if(freeN>=FREE){document.getElementById('pw').style.display='flex';return;}freeN++;localStorage.setItem('ma_f_'+mk(),freeN);updFree();}
-  curV=v;
-  document.getElementById('vframe').src=`https://www.youtube-nocookie.com/embed/${v.videoId}?rel=0&modestbranding=1&fs=0`;
-  document.getElementById('vwm').textContent='MockArena · Protected';
-  document.getElementById('mey').textContent=`${v.yr} · ${v.subj} · Q${v.qnum} · ${v.topic}`;
-  document.getElementById('mq').textContent=v.question;
-  const OPTS=['A','B','C','D'];
-  document.getElementById('mopts').innerHTML=v.opts.map((o,i)=>`<div class="mopt ${i===v.correct?'cor':''}"><div class="mopt-k">${OPTS[i]}</div><div>${o.replace(/^[A-D]\)\s*/,'')}</div></div>`).join('');
-  document.getElementById('msol').textContent=v.solution;
+  if(!isPremium()){
+    var mk2=mk();
+    var used=parseInt(localStorage.getItem('ma_free_'+mk2)||'0');
+    if(used>=5){document.getElementById('paywall').style.display='block';window.scrollTo({top:0,behavior:'smooth'});return;}
+    localStorage.setItem('ma_free_'+mk2,used+1);
+    updFree();
+  }
+  var v=allVids.find(x=>x.id===id);
+  if(!v)return;
+  currentQ=v;
+  var src='https://www.youtube-nocookie.com/embed/'+v.videoId+'?rel=0&modestbranding=1&fs=1&playsinline=1&enablejsapi=1&origin=https://mockarena.co.in';
+  document.getElementById('vframe').src=src;
+  document.getElementById('mq').textContent='Q'+v.qno+'. '+v.question;
+  var opts=['A','B','C','D'];
+  var optVals=[v.optA,v.optB,v.optC,v.optD];
+  document.getElementById('mopts').innerHTML=opts.map((o,i)=>`<div class="mopt ${i===v.correct?'correct':''}">${o}. ${optVals[i]||''}</div>`).join('');
+  document.getElementById('msol-txt').textContent=v.solution||'';
+  document.getElementById('msol').style.display=v.solution?'block':'none';
+  var wb=document.getElementById('watch-btn');
+  if(wb) wb.className='vfbtn'+(watched[id]?' active':'');
+  var sb=document.getElementById('save-btn');
+  if(sb) sb.className='vfbtn'+(saved.includes(id)?' active':'');
   document.getElementById('mbg').classList.add('open');
+  document.getElementById('cur-speed').textContent='1x';
+  document.querySelectorAll('.speed-opt').forEach(o=>o.classList.toggle('on',o.textContent.trim()==='1x'));
   document.body.style.overflow='hidden';
 }
-function closeModal(){document.getElementById('mbg').classList.remove('open');document.getElementById('vframe').src='';document.body.style.overflow='';}
-function bgClk(e){if(e.target===document.getElementById('mbg'))closeModal();}
-function markWatched(){if(!curV)return;if(!watched.includes(curV.id))watched.push(curV.id);localStorage.setItem('ma_w',JSON.stringify(watched));renderV(filtV);buildAK(allV);updStats();toast('Marked as watched ✓');closeModal();}
-function goNotes(){if(curV)location.href=`mockarena_notes.html?chapter=${curV.chapter}`;}
 
-function toggleSave(id){
-  if(!isPremium){document.getElementById('pwt').textContent='Save Offline — Pro Feature';document.getElementById('pws').textContent='Saving videos for offline viewing is available for Pro subscribers.';document.getElementById('pw').style.display='flex';return;}
-  const v=allV.find(x=>x.id===id);if(!v)return;
-  const idx=saved.findIndex(s=>s.id===id);
-  if(idx>=0){saved.splice(idx,1);toast('Removed from saved');}
-  else{if(saved.length>=10){toast('Pro limit: 10 videos saved');return;}saved.push(v);toast('Saved for offline ✓');}
-  localStorage.setItem('ma_sv',JSON.stringify(saved));
-  renderV(filtV);updSvPanel();
+function closeModal(){
+  document.getElementById('mbg').classList.remove('open');
+  document.getElementById('vframe').src='';
+  document.body.style.overflow='';
+  unblurVideo();
+}
+
+function bgClk(e){if(e.target===document.getElementById('mbg'))closeModal();}
+
+function markWatched(){
+  if(!currentQ)return;
+  watched[currentQ.id]=!watched[currentQ.id];
+  if(!watched[currentQ.id])delete watched[currentQ.id];
+  localStorage.setItem('ma_watched',JSON.stringify(watched));
+  var wb=document.getElementById('watch-btn');
+  if(wb)wb.className='vfbtn'+(watched[currentQ.id]?' active':'');
+  renderV();
+  toast(watched[currentQ.id]?'Marked as watched!':'Marked as unwatched');
+}
+
+function toggleSave(){
+  if(!currentQ)return;
+  var idx=saved.indexOf(currentQ.id);
+  if(idx>=0)saved.splice(idx,1);else saved.push(currentQ.id);
+  localStorage.setItem('ma_saved',JSON.stringify(saved));
+  var sb=document.getElementById('save-btn');
+  if(sb)sb.className='vfbtn'+(saved.includes(currentQ.id)?' active':'');
+  document.getElementById('svn').textContent=saved.length||'';
+  toast(idx>=0?'Removed from saved':'Saved!');
+}
+
+function toggleSvPanel(){
+  var p=document.getElementById('svpanel');
+  p.classList.toggle('open');
+  if(p.classList.contains('open'))updSvPanel();
+}
+
+function updSvPanel(){
+  var el=document.getElementById('svp-body');
+  if(!saved.length){el.innerHTML='<div style="font-size:.86rem;color:var(--t3);text-align:center;padding:16px;">No saved videos yet.</div>';return;}
+  var all=allVids.length?allVids:DEMO_QS;
+  el.innerHTML=saved.map(id=>{
+    var v=all.find(x=>x.id===id);
+    if(!v)return'';
+    return`<div class="sv-row"><div class="sv-q" onclick="openV('${id}')" style="cursor:pointer;">Q${v.qno}. ${v.question.slice(0,60)}...</div><button class="sv-del" onclick="removeSaved('${id}')">✕</button></div>`;
+  }).join('');
   document.getElementById('svn').textContent=saved.length||'';
 }
-function saveOffline(){if(curV)toggleSave(curV.id);closeModal();}
-function toggleSvPanel(){document.getElementById('svpanel').classList.toggle('open');updSvPanel();}
-function updSvPanel(){
-  document.getElementById('svcnt').textContent=`(${saved.length}/10)`;
-  const l=document.getElementById('svlist');
-  if(!saved.length){l.innerHTML='<div style="text-align:center;padding:20px;font-size:.86rem;color:var(--t4)">No saved videos yet</div>';return;}
-  l.innerHTML=saved.map(v=>`<div class="svitem" onclick="openV('${v.id}')"><img class="svthumb" src="https://img.youtube.com/vi/${v.videoId}/mqdefault.jpg" alt=""/><div class="svinfo"><div class="svt">${v.subj} Q${v.qnum} — ${v.topic}</div><div class="svs">${v.yr} · ${v.dur}</div></div><button class="svdel" onclick="event.stopPropagation();toggleSave('${v.id}')">✕</button></div>`).join('');
+
+function removeSaved(id){
+  saved=saved.filter(x=>x!==id);
+  localStorage.setItem('ma_saved',JSON.stringify(saved));
+  updSvPanel();
 }
 
-function updFree(){const left=Math.max(0,FREE-freeN);const el=document.getElementById('fpill');document.getElementById('ftxt').textContent=left?`${left} free left`:'Upgrade for more';el.className='free-pill'+(left===0?' used':'');}
-function updStats(){document.getElementById('pbTotal').textContent=allV.length;document.getElementById('pbWatched').textContent=allV.filter(v=>watched.includes(v.id)).length;document.getElementById('pbSaved').textContent=saved.filter(v=>allV.find(a=>a.id===v.id)).length;}
+function goNotes(){closeModal();window.location.href='mockarena_notes.html';}
 
-function startTimer(){const ex=EX[curEx];if(!ex)return;const p=ex.dur.replace('h ','h').replace('m','').split('h').map(Number);tsec=(p[0]||0)*3600+(p[1]||0)*60;tOn=true;document.getElementById('timerbar').classList.add('on');tInt=setInterval(tickT,1000);toast('⏱ Timed practice started!');}
-function tickT(){if(!tOn)return;tsec--;if(tsec<=0){endTimer();return;}const h=Math.floor(tsec/3600),m=Math.floor((tsec%3600)/60),s=tsec%60;document.getElementById('tdisp').textContent=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;}
-function pauseTimer(){tOn=!tOn;document.getElementById('pausebtn').textContent=tOn?'⏸ Pause':'▶ Resume';}
-function endTimer(){clearInterval(tInt);tOn=false;document.getElementById('timerbar').classList.remove('on');toast('Practice ended!');}
+// ── FILTERS ──
+function fSubj(s,el){filterSubj=s;document.querySelectorAll('.stab').forEach(b=>b.classList.remove('on'));el.classList.add('on');renderV();}
+function fDiff(d,el){filterDiff=d;document.querySelectorAll('.fc').forEach(b=>b.classList.remove('on'));el.classList.add('on');renderV();}
+function fUnwatch(el){filterUnwatch=!filterUnwatch;el.classList.toggle('on');renderV();}
+function sortV(val){sortBy=val;renderV();}
+function onSearch(val){searchQ=val.toLowerCase();renderV();}
 
-function setView(t,el){document.querySelectorAll('.vbtn').forEach(b=>b.classList.remove('on'));el.classList.add('on');document.getElementById('vgrid').className=t==='list'?'vgrid list':'vgrid';}
-function toggleSb(){const sb=document.getElementById('sb'),ov=document.getElementById('mob-ov'),h=document.getElementById('ham');sb.classList.toggle('on');ov.classList.toggle('on');h.textContent=sb.classList.contains('on')?'✕':'☰';}
-function closeSb(){document.getElementById('sb').classList.remove('on');document.getElementById('mob-ov').classList.remove('on');document.getElementById('ham').textContent='☰';}
-function toast(m){const el=document.getElementById('toast');el.textContent=m;el.classList.add('show');setTimeout(()=>el.classList.remove('show'),2600);}
-window.addEventListener('scroll',()=>{document.getElementById('topbar').classList.toggle('scrolled',window.scrollY>10);const d=document.documentElement;document.getElementById('prog').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100||0)+'%';});
-window.addEventListener('DOMContentLoaded',()=>{buildSb();updFree();updSvPanel();document.getElementById('svn').textContent=saved.length||'';});
+// ── SPEED ──
+function toggleSpeedDrop(){
+  var d=document.getElementById('speed-drop');
+  if(d)d.classList.toggle('open');
+}
+function pickSpeed(s){
+  var el=document.getElementById('cur-speed');
+  if(el)el.textContent=s+'x';
+  document.querySelectorAll('.speed-opt').forEach(function(o){
+    o.classList.toggle('on',parseFloat(o.textContent)===s);
+  });
+  var d=document.getElementById('speed-drop');
+  if(d)d.classList.remove('open');
+  var frame=document.getElementById('vframe');
+  if(frame){
+    frame.contentWindow.postMessage(JSON.stringify({event:'command',func:'setPlaybackRate',args:[s]}),'*');
+  }
+  toast('Speed: '+s+'x');
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('.speed-wrap')){
+    var d=document.getElementById('speed-drop');
+    if(d)d.classList.remove('open');
+  }
+});
+
+// ── TIMER ──
+function startTimer(){
+  timerSec=0;timerRunning=true;
+  document.getElementById('timer-wrap').classList.add('show');
+  document.getElementById('timer-pause').textContent='Pause';
+  clearInterval(timerInt);
+  timerInt=setInterval(tickT,1000);
+  toast('Study timer started!');
+}
+function tickT(){
+  if(!timerRunning)return;
+  timerSec++;
+  var m=Math.floor(timerSec/60),s=timerSec%60;
+  document.getElementById('timer-t').textContent=String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+}
+function pauseTimer(){
+  timerRunning=!timerRunning;
+  document.getElementById('timer-pause').textContent=timerRunning?'Pause':'Resume';
+}
+function endTimer(){
+  clearInterval(timerInt);timerRunning=false;
+  document.getElementById('timer-wrap').classList.remove('show');
+  toast('Session: '+Math.floor(timerSec/60)+'m '+timerSec%60+'s');
+}
+
+// ── ANTI-PIRACY ──
+var _isBlurred=false;
+function blurVideo(reason){
+  _isBlurred=true;
+  var vw=document.querySelector('.vwrap');
+  if(!vw)return;
+  vw.style.filter='blur(20px)';
+  var warn=document.getElementById('piracy-warn');
+  if(!warn){
+    warn=document.createElement('div');
+    warn.id='piracy-warn';
+    warn.style.cssText='position:absolute;inset:0;background:rgba(0,0,0,.88);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;color:#fff;text-align:center;padding:20px;border-radius:12px;';
+    warn.innerHTML='<div style="font-size:2rem;margin-bottom:12px;">⚠️</div><div style="font-size:1rem;font-weight:700;margin-bottom:8px;">Video Protected</div><div style="font-size:.84rem;opacity:.7;margin-bottom:16px;">Recording detected. Tap to continue.</div><button onclick="unblurVideo()" style="padding:10px 24px;border-radius:8px;border:none;background:#fff;color:#000;font-weight:700;cursor:pointer;">Continue Watching</button>';
+    vw.style.position='relative';
+    vw.appendChild(warn);
+  }
+  warn.style.display='flex';
+}
+function unblurVideo(){
+  _isBlurred=false;
+  var vw=document.querySelector('.vwrap');
+  if(vw)vw.style.filter='none';
+  var warn=document.getElementById('piracy-warn');
+  if(warn)warn.style.display='none';
+}
+if(navigator.mediaDevices&&navigator.mediaDevices.getDisplayMedia){
+  navigator.mediaDevices.getDisplayMedia=function(){blurVideo('screen');return Promise.reject(new Error('Not allowed'));};
+}
+document.addEventListener('visibilitychange',function(){if(document.hidden)blurVideo('tab');else setTimeout(unblurVideo,1500);});
+window.addEventListener('blur',function(){blurVideo('blur');});
+window.addEventListener('focus',function(){setTimeout(unblurVideo,1500);});
+document.addEventListener('keydown',function(e){
+  if(e.key==='PrintScreen'){blurVideo('print');e.preventDefault();}
+  if(e.key==='F12'||(e.ctrlKey&&e.shiftKey&&'IJC'.includes(e.key))){blurVideo('dev');e.preventDefault();}
+  if(e.ctrlKey&&'supSUP'.includes(e.key))e.preventDefault();
+});
+document.addEventListener('contextmenu',function(e){
+  var vw=document.querySelector('.vwrap');
+  if(vw&&vw.contains(e.target)){e.preventDefault();blurVideo('ctx');setTimeout(unblurVideo,2000);}
+});
+setInterval(function(){
+  if(window.outerWidth-window.innerWidth>160||window.outerHeight-window.innerHeight>160)blurVideo('devtools');
+},2000);
+
+// ── TOAST ──
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');setTimeout(function(){t.classList.remove('show');},2600);}
+
+// ── SCROLL PROGRESS ──
+window.addEventListener('scroll',function(){
+  var d=document.documentElement;
+  document.getElementById('prog').style.width=(d.scrollTop/(d.scrollHeight-d.clientHeight)*100||0)+'%';
+});
+
+// ── INIT ──
+window.addEventListener('DOMContentLoaded',function(){
+  buildSb();
+  updFree();
+  updSvPanel();
+  document.getElementById('svn').textContent=saved.length||'';
+});
 </script>
+
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
 import{getAuth,onAuthStateChanged}from'https://www.gstatic.com/firebasejs/10.7.0/firebase-auth.js';
-import{getFirestore,doc,getDoc}from'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
-const app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4"});
-const auth=getAuth(app);const db=getFirestore(app);
+import{getFirestore,doc,getDoc,collection,query,where,getDocs}from'https://www.gstatic.com/firebasejs/10.7.0/firebase-firestore.js';
+
+const app=initializeApp({apiKey:'AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c',authDomain:'mockarena-c18c4.firebaseapp.com',projectId:'mockarena-c18c4'});
+const auth=getAuth(app);
+const db=getFirestore(app);
+
 onAuthStateChanged(auth,async user=>{
-  if(!user)return;window._user=user;
-  const wm=document.getElementById('vwm');if(wm&&user.email)wm.textContent=`MockArena · ${user.email}`;
-  try{const s=await getDoc(doc(db,'users',user.uid));const d=s.data()||{};window.isPremium=d.premium===true||d.plan==='pro';}catch(e){}
+  if(!user){window.location.href='index.html';return;}
+  window._user=user;
+
+  // Set watermark email
+  var mailEl=document.getElementById('vwm-mail');
+  if(mailEl)mailEl.textContent=user.email||'mockarena.co.in';
+
+  // Check premium
+  try{
+    var snap=await getDoc(doc(db,'users',user.uid));
+    var data=snap.data()||{};
+    window._isPremium=data.isPro===true||data.plan==='pro';
+    if(window._isPremium){
+      var fc=document.getElementById('free-text');
+      if(fc)fc.textContent='Pro ✓';
+    }
+  }catch(e){}
+
+  // Make loadFromFirestore available globally
+  window._db=db;
+  window._loadVideos=async function(examKey){
+    try{
+      var q=query(collection(db,'videos'),where('examKey','==',examKey));
+      var snap2=await getDocs(q);
+      if(snap2.empty)return null; // fall back to demo
+      var vids=[];
+      snap2.forEach(d=>{vids.push({id:d.id,...d.data()});});
+      vids.sort((a,b)=>a.qno-b.qno);
+      return vids;
+    }catch(e){return null;}
+  };
 });
 </script>
 </body>
