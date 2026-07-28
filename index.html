@@ -34,7 +34,7 @@ a{text-decoration:none;color:inherit;}
 /* ── NAV ── */
 .nav{position:fixed;top:0;left:0;right:0;z-index:200;transition:all var(--tf);}
 .nav.scrolled{background:rgba(250,249,245,.96);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);box-shadow:0 1px 0 var(--border);}
-.nav-inner{display:flex;align-items:center;height:68px;max-width:1140px;margin:0 auto;padding:0 28px;gap:8px;}
+.nav-inner{display:flex;align-items:center;height:68px;max-width:1140px;margin:0 auto;padding:0 28px;gap:8px;overflow:hidden;}
 .nav-logo{display:flex;align-items:center;margin-right:32px;}
 .nav-brand{font-family:var(--ff);font-size:1.45rem;font-weight:900;color:var(--forest);letter-spacing:-.03em;}
 .nav-brand em{color:var(--sage-d);font-style:normal;}
@@ -200,14 +200,14 @@ a{text-decoration:none;color:inherit;}
 .btp-sage:hover{background:var(--forest);}
 
 /* ── CTA SECTION ── */
-.cta-section{background:linear-gradient(135deg,var(--forest) 0%,var(--forest-s) 60%,var(--forest-m) 100%);padding:90px 0;text-align:center;position:relative;overflow:hidden;}
-.cta-section::before{content:'';position:absolute;top:-100px;left:50%;transform:translateX(-50%);width:600px;height:600px;background:radial-gradient(circle,rgba(107,143,94,.15) 0%,transparent 70%);pointer-events:none;}
-.cta-title{font-family:var(--fs);font-size:clamp(2.2rem,3.5vw,3.1rem);font-weight:700;color:#fff;line-height:1.18;letter-spacing:-.02em;margin-bottom:18px;position:relative;}
-.cta-title em{color:var(--sage);font-style:italic;}
-.cta-sub{font-size:1.1rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:40px;position:relative;}
+.cta-section{background:linear-gradient(180deg,var(--cw) 0%,rgba(107,143,94,.08) 100%);border-top:1.5px solid rgba(107,143,94,.15);padding:90px 0;text-align:center;position:relative;overflow:hidden;}
+.cta-section::before{display:none;}
+.cta-title{font-family:var(--fs);font-size:clamp(2.2rem,3.5vw,3.1rem);font-weight:700;color:var(--forest);line-height:1.18;letter-spacing:-.02em;margin-bottom:18px;position:relative;}
+.cta-title em{color:var(--sage-d);font-style:italic;}
+.cta-sub{font-size:1.1rem;color:var(--t3);line-height:1.7;margin-bottom:40px;position:relative;}
 .cta-btns{display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;position:relative;}
-.btn-cta-sec{font-size:1rem;font-weight:700;color:rgba(255,255,255,.7);padding:14px 24px;border-radius:13px;border:1.5px solid rgba(255,255,255,.18);transition:all var(--tf);}
-.btn-cta-sec:hover{color:#fff;border-color:rgba(255,255,255,.4);background:rgba(255,255,255,.06);}
+.btn-cta-sec{font-size:1rem;font-weight:700;color:var(--t2);padding:14px 24px;border-radius:13px;border:1.5px solid var(--bm);transition:all var(--tf);}
+.btn-cta-sec:hover{color:var(--forest);border-color:var(--forest);background:rgba(26,38,24,.04);}
 
 /* ── FOOTER ── */
 .footer{background:var(--forest);padding:64px 0 32px;}
@@ -217,7 +217,7 @@ a{text-decoration:none;color:inherit;}
 .footer-links{list-style:none;display:flex;flex-direction:column;gap:11px;}
 .footer-links a{font-size:1.06rem;color:rgba(255,255,255,.5);transition:color var(--tf);}
 .footer-links a:hover{color:#fff;}
-.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.07);padding-top:26px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
 .footer-copy{font-size:1.02rem;color:rgba(255,255,255,.28);}
 .footer-tag{font-size:.96rem;color:rgba(255,255,255,.28);}
 
@@ -287,7 +287,7 @@ a{text-decoration:none;color:inherit;}
   .hero-sub{font-size:1.05rem;line-height:1.65;}
   .hero-btns{flex-direction:column;gap:10px;}
   .btn-primary-lg,.btn-outline-lg{width:100%;justify-content:center;padding:15px 24px;}
-  .hero-note{font-size:.96rem;justify-content:center;text-align:center;}
+  .hero-note{font-size:.96rem;justify-content:center;text-align:center;flex-wrap:wrap;gap:4px;}
   .hero-badge{font-size:.96rem;}
   .section{padding:52px 0;}
   .section-title{font-size:1.9rem;}
@@ -305,8 +305,6 @@ a{text-decoration:none;color:inherit;}
   .cta-btns{flex-direction:column;align-items:stretch;gap:12px;}
   .btn-primary-lg,.btn-cta-sec{width:100%;justify-content:center;text-align:center;}
   .mob-menu a{font-size:1.05rem;}
-  .achieve-inner{flex-direction:column;}
-  .achieve-div{width:80%;height:1px;}
   .price-card{padding:28px 22px;}
   .price-amt{font-size:3rem;}
   .ec-name{font-size:1.04rem;}
@@ -314,6 +312,20 @@ a{text-decoration:none;color:inherit;}
   .step-num{width:54px;height:54px;font-size:1.2rem;}
   .testi-quote{font-size:1.06rem;}
   .lb-card{border-radius:16px;}
+  .cta-section{padding:60px 0;}
+  .section-tag{font-size:.92rem;padding:6px 12px;}
+  .nav-mob-btn{font-size:1.2rem;}
+  .footer-col-title{font-size:.92rem;}
+  .footer-links a{font-size:.98rem;}
+  .price-plan{font-size:.92rem;}
+  .lb-row{padding:10px 14px;gap:10px;}
+  .lb-av{width:30px;height:30px;font-size:.92rem;}
+  .ec-top{padding:14px 16px 12px;}
+  .ec-bottom{padding:10px 16px;}
+  .ec-foot{padding:10px 16px;}
+  .ec-foot-txt{font-size:.96rem;}
+  .feat-card{padding:22px 18px;}
+  .testi-card{padding:22px 18px;}
 }
 
 /* ── VERY SMALL (≤380px) ── */
@@ -323,6 +335,13 @@ a{text-decoration:none;color:inherit;}
   .section-title{font-size:1.75rem;}
   .container{padding:0 14px;}
   .price-card{padding:24px 18px;}
+  .hero-badge{font-size:.94rem;padding:6px 12px;}
+  .btn-primary-lg,.btn-outline-lg{font-size:.98rem;padding:14px 20px;}
+  .ec-name{font-size:1rem;}
+  .ec-desc{font-size:.94rem;}
+  .pricing-grid{gap:14px;}
+  .footer-links a{font-size:.94rem;}
+  .cta-title{font-size:1.75rem;}
 }
 </style>
 </head>
@@ -400,7 +419,7 @@ a{text-decoration:none;color:inherit;}
     <h2 class="section-title reveal">One Platform. Every Exam.</h2>
     <p class="section-sub reveal">From Class 9 &amp; 11 Boards to JEE Advanced — dedicated content, chapter-wise tests &amp; full mocks for every exam.</p>
     <div class="exam-grid">
-      <a href="mockarena_onboarding.html" class="exam-card ec-adv reveal">
+      <a href="jee_advanced.html" class="exam-card ec-adv reveal">
         <div class="ec-head"></div>
         <div class="ec-top"><div class="ec-icon-box">⚡</div><span class="ec-name">JEE Advanced</span><span class="ec-badge eb-pu">Toughest</span></div>
         <div class="ec-bottom"><div class="ec-body"><div class="ec-desc">IIT entrance · Physics, Chemistry &amp; Maths · 3 hours</div><div class="ec-meta">12,400+ students</div></div></div>
@@ -412,25 +431,25 @@ a{text-decoration:none;color:inherit;}
         <div class="ec-bottom"><div class="ec-body"><div class="ec-desc">NIT &amp; IIIT entrance · CBT · 90 questions · 3 hours</div><div class="ec-meta">18,200+ students</div></div></div>
         <div class="ec-foot"><span class="ec-foot-txt">Attempt →</span></div>
       </a>
-      <a href="mockarena_onboarding.html" class="exam-card ec-neet reveal reveal-d2">
+      <a href="neet_ug.html" class="exam-card ec-neet reveal reveal-d2">
         <div class="ec-head"></div>
         <div class="ec-top"><div class="ec-icon-box">🩺</div><span class="ec-name">NEET UG</span><span class="ec-badge eb-sg">Medical</span></div>
         <div class="ec-bottom"><div class="ec-body"><div class="ec-desc">MBBS &amp; BDS entrance · 200 questions · Biology focus</div><div class="ec-meta">15,600+ students</div></div></div>
         <div class="ec-foot"><span class="ec-foot-txt">Attempt →</span></div>
       </a>
-      <a href="mockarena_onboarding.html" class="exam-card ec-jf reveal">
+      <a href="jee_foundation.html" class="exam-card ec-jf reveal">
         <div class="ec-head"></div>
         <div class="ec-top"><div class="ec-icon-box">🌱</div><span class="ec-name">JEE Foundation</span><span class="ec-badge eb-gd">Class 9–10</span></div>
         <div class="ec-bottom"><div class="ec-body"><div class="ec-desc">Build a strong JEE base · Concept-wise tests for Class 9 &amp; 10</div><div class="ec-meta">8,900+ students</div></div></div>
         <div class="ec-foot"><span class="ec-foot-txt">Attempt →</span></div>
       </a>
-      <a href="mockarena_onboarding.html" class="exam-card ec-nf reveal reveal-d1">
+      <a href="neet_foundation.html" class="exam-card ec-nf reveal reveal-d1">
         <div class="ec-head"></div>
         <div class="ec-top"><div class="ec-icon-box">🔬</div><span class="ec-name">NEET Foundation</span><span class="ec-badge eb-am">Class 9–10</span></div>
         <div class="ec-bottom"><div class="ec-body"><div class="ec-desc">Early start for medical aspirants · Biology &amp; Chemistry basics</div><div class="ec-meta">6,200+ students</div></div></div>
         <div class="ec-foot"><span class="ec-foot-txt">Attempt →</span></div>
       </a>
-      <a href="mockarena_onboarding.html" class="exam-card ec-boards reveal reveal-d2">
+      <a href="boards_12.html" class="exam-card ec-boards reveal reveal-d2">
         <div class="ec-head"></div>
         <div class="ec-top"><div class="ec-icon-box">📖</div><span class="ec-name">CBSE / ISC / State Boards</span><span class="ec-badge eb-ro">Class 9–12</span></div>
         <div class="ec-bottom"><div class="ec-body"><div class="ec-desc">Score 95%+ in Boards · Chapter-wise &amp; full paper tests</div><div class="ec-meta">9,800+ students</div></div></div>
@@ -605,7 +624,7 @@ a{text-decoration:none;color:inherit;}
 <!-- CTA -->
 <section class="cta-section">
   <div class="container">
-    <div class="section-tag reveal" style="justify-content:center;background:rgba(107,143,94,.18);border-color:rgba(107,143,94,.3);color:var(--sage);">🚀 Join 50,000+ Students</div>
+    <div class="section-tag reveal" style="justify-content:center;">🚀 Join 50,000+ Students</div>
     <h2 class="cta-title reveal">Your <em>Dream IIT or AIIMS</em><br/>Starts Here.</h2>
     <p class="cta-sub reveal">5 tests free every month. No credit card. No commitment. Start today.</p>
     <div class="cta-btns reveal">
