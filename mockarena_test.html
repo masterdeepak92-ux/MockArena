@@ -1146,19 +1146,22 @@ const DEMO_QUESTIONS=[
 ];
 async function init(){
   document.getElementById('loading').style.display='flex';
-  // If Firebase unavailable, use demo immediately
+  setLoad(20,'Starting...');
+  await new Promise(r=>setTimeout(r,300));
+
+  // Check if Firebase is available
   if(typeof getDocs!=="function"||!db||!collection){
-    setLoad(90,'Loading demo questions...');
-    await new Promise(r=>setTimeout(r,600));
-    questions=DEMO_QUESTIONS.sort(()=>Math.random()-.5).slice(0,Q_COUNT);
-    setLoad(100,'Ready!');
-    await new Promise(r=>setTimeout(r,400));
-    startTest();
+    loadDemo();
     return;
   }
-  setLoad(20,'Loading questions from bank...');
+
+  // Try loading from Firebase with timeout
+  setLoad(40,'Connecting to question bank...');
   try{
-    const snap=await getDocs(collection(db,'questions'));
+    const snap=await Promise.race([
+      getDocs(collection(db,'questions')),
+      new Promise((_,rej)=>setTimeout(()=>rej(new Error('timeout')),6000))
+    ]);
     let pool=[];
     snap.forEach(d=>{
       const q=d.data();
@@ -1168,18 +1171,32 @@ async function init(){
       if(DIFF_FILTER&&q.difficulty!==DIFF_FILTER)return;
       pool.push(q);
     });
-    setLoad(60,'Preparing test...');
-    // Shuffle and slice
     pool=pool.sort(()=>Math.random()-.5).slice(0,Q_COUNT);
+    // If no questions found in bank — use demo
+    if(pool.length===0){
+      loadDemo();
+      return;
+    }
     questions=pool;
-    setLoad(80,'Setting up interface...');
+    setLoad(90,'Setting up...');
     await new Promise(r=>setTimeout(r,300));
+    setLoad(100,'Ready!');
+    await new Promise(r=>setTimeout(r,300));
+    startTest();
+  }catch(e){
+    // Firebase failed — use demo
+    loadDemo();
+  }
+}
+
+function loadDemo(){
+  setLoad(70,'Loading demo questions...');
+  setTimeout(async function(){
+    questions=DEMO_QUESTIONS.sort(()=>Math.random()-.5).slice(0,Math.min(Q_COUNT,DEMO_QUESTIONS.length));
     setLoad(100,'Ready!');
     await new Promise(r=>setTimeout(r,400));
     startTest();
-  }catch(e){
-    document.getElementById('load-txt').textContent='Error: '+e.message+'. Check internet.';
-  }
+  },400);
 }
 
 function startTest(){
