@@ -35,8 +35,8 @@ html,body{font-family:var(--ff);background:var(--cream);color:var(--t1);line-hei
 body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-smoothing:antialiased;}
 
 /* ── LOADING SCREEN ── */
-#loading{position:fixed;inset:0;background:var(--cream);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;}
-#loading.hide{display:none;}
+#loading{position:fixed;inset:0;background:var(--cream);display:none;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:20px;}
+#loading.show{display:flex;}
 .load-logo{font-size:2rem;font-weight:900;color:var(--forest);letter-spacing:-.03em;}
 .load-logo span{color:var(--sage);}
 .load-bar-wrap{width:240px;height:4px;background:rgba(26,38,24,.1);border-radius:100px;overflow:hidden;}
@@ -403,8 +403,11 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
 /* Face capture step */
 #ufm-capture{
   position:fixed;inset:0;background:var(--cream);
-  display:none;flex-direction:column;align-items:center;
-  justify-content:center;z-index:10000;padding:24px;
+  display:none;
+  z-index:10000;padding:24px;
+}
+#ufm-capture.on{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
 }
 #ufm-capture.on{display:flex;}
 .ufm-cap-card{background:#fff;border:1.5px solid var(--border);
@@ -589,7 +592,7 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
 </div>
 
 <!-- LOADING -->
-<div id="loading" style="display:none;">
+<div id="loading">
   <div class="load-logo">Mock<span>Arena</span></div>
   <div class="load-bar-wrap"><div class="load-bar" id="load-bar"></div></div>
   <div class="load-txt" id="load-txt">Loading questions...</div>
@@ -872,8 +875,10 @@ window.captureAndProceed = function captureAndProceed(){
   snap.getContext('2d').drawImage(vid, 0, 0);
   UFM.capturedFace = snap.toDataURL('image/jpeg', 0.8);
 
-  // Hide capture screen
-  document.getElementById('ufm-capture').classList.remove('on');
+  // Hide capture screen completely
+  var capScreen = document.getElementById('ufm-capture');
+  capScreen.classList.remove('on');
+  capScreen.style.display = 'none';
 
   // Show camera overlay during test
   var overlayVid = document.getElementById('ufm-overlay-video');
@@ -1108,7 +1113,7 @@ const cfg=EXAM_CONFIG[EXAM]||EXAM_CONFIG.JM;
 let questions=[],currentQ=0,answers={},marked={},startTime=Date.now(),timerSec=Math.round((Q_COUNT>=60?cfg.time:Math.min(Q_COUNT*(cfg.perQ||1.5),cfg.time))*60),timerInterval=null,currentUser=null,visitedQ={};
 
 // ── LOADING ──
-function setLoad(pct,txt){
+window.setLoad = window.setLoad = function setLoad(pct,txt){
   document.getElementById('load-bar').style.width=pct+'%';
   document.getElementById('load-txt').textContent=txt;
 }
@@ -1145,7 +1150,7 @@ const DEMO_QUESTIONS=[
    explanation:'Mitochondria produce ATP through cellular respiration, earning the name powerhouse of the cell.'},
 ];
 async function init(){
-  document.getElementById('loading').style.display='flex';
+  document.getElementById('loading').classList.add('show');
   setLoad(20,'Starting...');
   await new Promise(r=>setTimeout(r,300));
 
@@ -1189,7 +1194,7 @@ async function init(){
   }
 }
 
-function loadDemo(){
+window.loadDemo = function loadDemo(){
   setLoad(70,'Loading demo questions...');
   setTimeout(async function(){
     questions=DEMO_QUESTIONS.sort(()=>Math.random()-.5).slice(0,Math.min(Q_COUNT,DEMO_QUESTIONS.length));
@@ -1199,8 +1204,10 @@ function loadDemo(){
   },400);
 }
 
-function startTest(){
-  document.getElementById('loading').classList.add('hide');
+window.startTest = window.startTest = function startTest(){
+  var ld = document.getElementById('loading');
+  ld.setAttribute('style','display:none!important;visibility:hidden;opacity:0;pointer-events:none;z-index:-999;');
+  ld.classList.add('hide');
   document.getElementById('top-nav').style.display='flex';
   document.getElementById('test-shell').style.display='flex';
   document.getElementById('tn-title').textContent=TEST_NAME||cfg.name+' — '+TYPE.charAt(0).toUpperCase()+TYPE.slice(1);
@@ -1212,7 +1219,7 @@ function startTest(){
 }
 
 // ── TIMER ──
-function startTimer(){
+window.startTimer = function startTimer(){
   timerInterval=setInterval(()=>{
     timerSec--;
     if(timerSec<=0){clearInterval(timerInterval);submitTest();return;}
@@ -1234,7 +1241,7 @@ function updateTimerDisplay(){
 function pad(n){return String(n).padStart(2,'0');}
 
 // ── SUBJECT TABS ──
-function buildSubjectTabs(){
+window.buildSubjectTabs = function buildSubjectTabs(){
   const lp=document.getElementById('left-panel');
   lp.innerHTML='';
   const subjects=[...new Set(questions.map(q=>q.subject))];
@@ -1263,7 +1270,7 @@ function filterSubject(subj){
 }
 
 // ── PALETTE ──
-function buildPalette(){
+window.buildPalette = function buildPalette(){
   ['palette-grid','mob-palette-grid'].forEach(id=>{
     const grid=document.getElementById(id);
     if(!grid)return;
@@ -1292,7 +1299,7 @@ function updatePaletteBtn(i){
 }
 
 // ── RENDER QUESTION ──
-function renderQ(idx){
+window.renderQ = function renderQ(idx){
   const prev=currentQ;
   currentQ=idx;
   visitedQ[idx]=true;
