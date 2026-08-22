@@ -472,7 +472,30 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
   .ufm-overlay-bar{padding:3px 6px;}
   #ufm-counter-badge{font-size:.62rem;}
 }
-.q-content{padding:16px 18px;flex:1;overflow-y:auto;}</style>
+.q-content{padding:16px 18px;flex:1;overflow-y:auto;}
+@media(max-width:900px){
+  .q-header{padding:8px 14px;gap:6px;flex-wrap:nowrap;overflow:hidden;background:#fff;border-bottom:1px solid var(--border);}
+  .q-status-bar{display:none;}
+  .q-marks-chip{margin-left:auto;}
+  /* Pin footer to bottom on mobile */
+  .q-footer{
+    position:fixed;bottom:0;left:0;right:0;
+    padding:8px 12px;gap:6px;
+    background:#fff;
+    border-top:1.5px solid var(--border);
+    z-index:50;
+    display:flex;align-items:center;
+    flex-wrap:nowrap;
+    box-shadow:0 -2px 12px rgba(0,0,0,.08);
+  }
+  .q-nav-btn{padding:8px 12px;font-size:.8rem;flex:1;justify-content:center;}
+  .q-nav-btn.primary{flex:1.5;}
+  /* Add bottom padding to q-content so last option not hidden behind footer */
+  .q-content{padding:14px 16px 80px;overflow-y:auto;}
+  .opt-item{padding:10px 14px;}
+  .options-grid{gap:7px;margin-top:10px;}
+  .q-text{font-size:1rem;}
+}</style>
 </head>
 <body>
 
@@ -1535,8 +1558,18 @@ function applyMobileLayout(){
   var lp=document.querySelector('.left-panel');
   var rp=document.querySelector('.right-panel');
   var btn=document.querySelector('.mob-palette-btn');
-  if(w<=900){if(lp)lp.style.display='none';if(rp)rp.style.display='none';if(btn)btn.style.display='flex';}
-  else{if(lp)lp.style.display='';if(rp)rp.style.display='';if(btn)btn.style.display='none';}
+  var mid=document.querySelector('.mid-panel');
+  if(w<=900){
+    if(lp)lp.style.display='none';
+    if(rp)rp.style.display='none';
+    if(btn)btn.style.display='flex';
+    if(mid){mid.style.width='100%';mid.style.flex='1';}
+  }else{
+    if(lp)lp.style.display='';
+    if(rp)rp.style.display='';
+    if(btn)btn.style.display='none';
+    if(mid){mid.style.width='';mid.style.flex='';}
+  }
 }
 window.addEventListener('resize',applyMobileLayout);
 applyMobileLayout();
