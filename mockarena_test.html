@@ -100,7 +100,7 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
 .subj-tab.on .subj-count{color:var(--sage);}
 
 /* ── MID PANEL — Question ── */
-.mid-panel{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;}
+.mid-panel{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;padding:0;}
 .q-header{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:#f8fafc;}
 @media(min-width:1300px){.q-header{padding:14px 32px;}}
 .q-num-badge{
@@ -124,17 +124,17 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
   flex-shrink:0;
 }
 
-.q-body{font-family:var(--ff);background:var(--cream);color:var(--t1);line-height:1.6;min-height:100vh;overflow-x:hidden;}
+.q-body{padding:14px 18px;flex:1;overflow-y:auto;}
 @media(min-width:1300px){
-  .q-body{padding:24px 32px;}
-  .q-text{font-size:1.0625rem;max-width:800px;line-height:1.85;word-break:break-word;overflow-wrap:break-word;color:#0f172a;font-weight:600;padding:0 2px;}
-  .options-grid{display:flex;flex-direction:column;gap:9px;margin-top:16px;padding:0 2px;}
+  .q-body{padding:14px 18px;flex:1;overflow-y:auto;}
+  .q-text{font-size:1.0625rem;max-width:100%;line-height:1.85;word-break:break-word;overflow-wrap:break-word;color:#0f172a;font-weight:600;padding:0;margin:0 0 16px 0;}
+  .options-grid{display:flex;flex-direction:column;gap:9px;margin-top:16px;}
 }
-.q-text{font-size:1.0625rem;max-width:800px;line-height:1.85;word-break:break-word;overflow-wrap:break-word;color:#0f172a;font-weight:600;padding:0 2px;}
+.q-text{font-size:1.0625rem;max-width:100%;line-height:1.85;word-break:break-word;overflow-wrap:break-word;color:#0f172a;font-weight:600;padding:0;margin:0 0 16px 0;}
 .q-img{max-width:100%;border-radius:var(--r);margin-bottom:16px;border:1.5px solid var(--border);}
 
-.options-grid{display:flex;flex-direction:column;gap:9px;margin-top:16px;padding:0 2px;}
-.opt-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;background:var(--cw);}
+.options-grid{display:flex;flex-direction:column;gap:9px;margin-top:16px;}
+.opt-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;background:var(--cw);}
 .opt-item:hover{border-color:var(--sage-g);background:var(--sage-l);color:var(--txt);}
 .opt-item.selected{border-color:var(--sky);background:var(--sky-l);color:var(--txt);}
 .opt-item.multi-selected{border-color:var(--sage);background:var(--sage-l);color:var(--txt);}
@@ -329,8 +329,8 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
   .tn-title{font-size:.88rem;}
   .tn-timer{font-size:.96rem;padding:4px 10px;}
   .tn-submit{font-size:.9rem;padding:6px 12px;}
-  .q-text{font-size:1.0625rem;max-width:800px;line-height:1.85;word-break:break-word;overflow-wrap:break-word;color:#0f172a;font-weight:600;padding:0 2px;}
-  .opt-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;background:var(--cw);}
+  .q-text{font-size:1.0625rem;max-width:100%;line-height:1.85;word-break:break-word;overflow-wrap:break-word;color:#0f172a;font-weight:600;padding:0;margin:0 0 16px 0;}
+  .opt-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;background:var(--cw);}
 }
 
 /* ══════════════════════════════════════════════
@@ -499,9 +499,9 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
   .q-nav-btn.primary{flex:1.5;}
   /* Add bottom padding to q-content so last option not hidden behind footer */
   .q-content{padding:14px 16px 80px;overflow-y:auto;}
-  .opt-item{padding:10px 14px;}
-  .options-grid{gap:7px;margin-top:10px;}
-  .q-text{font-size:1rem;}
+  .opt-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;background:var(--cw);}
+  .options-grid{display:flex;flex-direction:column;gap:9px;margin-top:16px;}
+  .q-text{font-size:1.0625rem;max-width:100%;line-height:1.85;word-break:break-word;overflow-wrap:break-word;color:#0f172a;font-weight:600;padding:0;margin:0 0 16px 0;}
 }</style>
 </head>
 <body>
