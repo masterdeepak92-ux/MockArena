@@ -694,6 +694,7 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
 
   <!-- MID — Question -->
   <div class="mid-panel">
+    <div class="mob-subj-bar" id="mob-subj-bar"></div>
     <div class="q-header">
       <span class="q-num-badge" id="q-num-badge">Q1</span>
       <div class="q-status-bar" id="q-status-bar"></div>
@@ -1159,7 +1160,7 @@ try{
   getDocs=_b.getDocs;doc=_b.doc;getDoc=_b.getDoc;addDoc=_b.addDoc;setDoc=_b.setDoc;
   query=_b.query;where=_b.where;serverTimestamp=_b.serverTimestamp;increment=_b.increment;
   getAuth=_d.getAuth;onAuthStateChanged=_d.onAuthStateChanged;
-}catch(e){console.warn('Firebase unavailable — demo mode.',e.message);}
+}catch(e){/* Firebase unavailable — demo mode */}
 
 let app,db,auth;
 if(typeof initializeApp!=="undefined"){app=initializeApp({apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",authDomain:"mockarena-c18c4.firebaseapp.com",projectId:"mockarena-c18c4",appId:"1:861067164791:web:28df5244e34361dd9d5a72"});
@@ -1310,7 +1311,13 @@ window.startTimer = function startTimer(){
   updateTimerDisplay();
 }
 function updateTimerDisplay(){
-  updateTimerColor(timeLeft);
+  // Timer colour update inline
+  var timerEl=document.querySelector('.tn-timer');
+  if(timerEl){
+    timerEl.classList.remove('warning','danger');
+    if(timeLeft<=300) timerEl.classList.add('danger');
+    else if(timeLeft<=600) timerEl.classList.add('warning');
+  }
   const h=Math.floor(timerSec/3600);
   const m=Math.floor((timerSec%3600)/60);
   const s=timerSec%60;
@@ -1343,7 +1350,7 @@ window.buildSubjectTabs = function buildSubjectTabs(){
     lp.appendChild(btn);
   });
 }
-function filterSubject(subj){
+window.filterSubject=function filterSubject(subj){
   // Just jump to first question of that subject
   const idx=subj?questions.findIndex(q=>q.subject===subj):0;
   if(idx>-1){renderQ(idx);}
@@ -1482,13 +1489,21 @@ window.closeMobPalette=function(){document.getElementById('mob-overlay').classLi
 
 // ── SUBMIT CONFIRM ──
 window.confirmSubmit=function(){
-  const answered=Object.keys(answers).length;
-  const markedCount=Object.keys(marked).filter(k=>marked[k]).length;
-  const skipped=questions.length-answered;
-  document.getElementById('ms-ans').textContent=answered;
-  document.getElementById('ms-mrk').textContent=markedCount;
-  document.getElementById('ms-skip').textContent=skipped;
-  document.getElementById('submit-modal').classList.add('on');
+  var answeredCount=Object.keys(answers||{}).length;
+  var markedCount=Object.keys(marked||{}).filter(function(k){return marked[k];}).length;
+  var skipped=questions.length-answeredCount;
+  // Update modal stats
+  var sa=document.getElementById('sc-answered');
+  var ss=document.getElementById('sc-skipped');
+  var sm=document.getElementById('sc-marked');
+  var sw=document.getElementById('sc-warn-text');
+  if(sa) sa.textContent=answeredCount;
+  if(ss) ss.textContent=skipped;
+  if(sm) sm.textContent=markedCount;
+  if(sw) sw.textContent=skipped>0
+    ? skipped+' question'+(skipped>1?'s':'')+' unanswered. Once submitted you cannot go back.'
+    : 'All questions answered! Once submitted you cannot go back.';
+  document.getElementById('submit-confirm').classList.add('on');
 };
 window.closeModal=function(){document.getElementById('submit-modal').classList.remove('on');};
 
@@ -1639,24 +1654,7 @@ function showResults(score,maxScore,pct,correct,wrong,skipped,timeTaken,subjScor
 // Make sure selectOption updates label properly
 var _origSelectOption = window.selectOption;
 
-// ════════════════════════════════════════════════
-// FEATURE 2 — TIMER COLOUR CHANGE
-// ════════════════════════════════════════════════
-function updateTimerColor(secondsLeft){
-  var timerEl = document.querySelector('.tn-timer');
-  if(!timerEl) return;
-  timerEl.classList.remove('warning','danger');
-  if(secondsLeft <= 300) timerEl.classList.add('danger');       // last 5 min
-  else if(secondsLeft <= 600) timerEl.classList.add('warning'); // last 10 min
-}
-
-// Patch startTimer to call updateTimerColor
-var _origStartTimer = window.startTimer;
-window.startTimer = function startTimer(){
-  if(_origStartTimer) _origStartTimer();
-  // Override tick to add colour update
-  var origTick = window._timerTick;
-};
+// Timer colour handled inline in updateTimerDisplay
 
 // ════════════════════════════════════════════════
 // FEATURE 3 — MOBILE SUBJECT BAR
@@ -1776,8 +1774,8 @@ init();
         Once submitted, you cannot go back to the test.
       </div>
       <div class="sc-btns">
-        <button class="sc-btn cancel" onclick="closeSubmitConfirm()">← Go Back</button>
-        <button class="sc-btn confirm" onclick="confirmSubmit()">Submit Test →</button>
+        <button class="sc-btn cancel" onclick="window.closeSubmitConfirm()">← Go Back</button>
+        <button class="sc-btn confirm" onclick="document.getElementById('submit-confirm').classList.remove('on');window.submitTest();">Submit Test →</button>
       </div>
     </div>
   </div>
