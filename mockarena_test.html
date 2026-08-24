@@ -100,7 +100,7 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
 .subj-tab.on .subj-count{color:var(--sage);}
 
 /* ── MID PANEL — Question ── */
-.mid-panel{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;padding:0;}
+.mid-panel{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden;min-height:0;}
 .q-header{display:flex;align-items:center;flex-wrap:wrap;gap:8px;padding:10px 16px;border-bottom:1px solid var(--border);background:#f8fafc;}
 @media(min-width:1300px){.q-header{padding:14px 32px;}}
 .q-num-badge{
@@ -124,9 +124,9 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
   flex-shrink:0;
 }
 
-.q-body{padding:14px 18px;flex:1;overflow-y:auto;}
+.q-body{padding:14px 18px;flex:1;overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch;}
 @media(min-width:1300px){
-  .q-body{padding:14px 18px;flex:1;overflow-y:auto;}
+  .q-body{padding:14px 18px;flex:1;overflow-y:auto;min-height:0;-webkit-overflow-scrolling:touch;}
   .q-text{font-size:1.0625rem;max-width:100%;line-height:1.85;word-break:break-word;overflow-wrap:break-word;color:#0f172a;font-weight:600;padding:0;margin:0 0 16px 0;}
   .options-grid{display:flex;flex-direction:column;gap:9px;margin-top:16px;}
 }
@@ -136,7 +136,7 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
 .options-grid{display:flex;flex-direction:column;gap:9px;margin-top:16px;}
 .opt-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;background:var(--cw);}
 .opt-item:hover{border-color:var(--sage-g);background:var(--sage-l);color:var(--txt);}
-.opt-item.selected{border-color:var(--sky);background:var(--sky-l);color:var(--txt);}
+.opt-item.selected{border-color:var(--sage-d);background:rgba(58,104,48,.08);}
 .opt-item.multi-selected{border-color:var(--sage);background:var(--sage-l);color:var(--txt);}
 .opt-label{width:28px;height:28px;min-width:28px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:var(--txt-m);flex-shrink:0;}
 .opt-item.selected .opt-label{width:28px;height:28px;min-width:28px;border-radius:50%;border:1.5px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:.82rem;font-weight:700;color:var(--txt-m);flex-shrink:0;}
@@ -502,7 +502,77 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
   .opt-item{display:flex;align-items:center;gap:12px;padding:12px 16px;border:1.5px solid var(--border);border-radius:10px;cursor:pointer;transition:all .2s;background:var(--cw);}
   .options-grid{display:flex;flex-direction:column;gap:9px;margin-top:16px;}
   .q-text{font-size:1.0625rem;max-width:100%;line-height:1.85;word-break:break-word;overflow-wrap:break-word;color:#0f172a;font-weight:600;padding:0;margin:0 0 16px 0;}
-}</style>
+}
+.opt-item.selected .opt-label{background:var(--sage-d);color:#fff;border-color:var(--sage-d);}
+.opt-item.selected .opt-text{color:var(--forest);font-weight:600;}
+.opt-item:hover:not(.selected){border-color:var(--bm);background:var(--cw);}
+
+/* ── 2. TIMER COLOUR CHANGE ── */
+.tn-timer.warning{background:rgba(251,191,36,.15);color:#d97706;border-color:#f59e0b;}
+.tn-timer.danger{background:rgba(239,68,68,.15);color:#dc2626;border-color:#ef4444;animation:timerPulse 1s infinite;}
+@keyframes timerPulse{0%,100%{opacity:1;}50%{opacity:.6;}}
+
+/* ── 3. MOBILE SUBJECT TABS ── */
+.mob-subj-bar{
+  display:none;
+  flex-direction:row;
+  overflow-x:auto;
+  overflow-y:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  background:#fff;
+  border-bottom:1px solid var(--border);
+  padding:7px 12px;
+  gap:7px;
+  flex-shrink:0;
+  height:42px;
+  align-items:center;
+}
+.mob-subj-bar::-webkit-scrollbar{display:none;}
+.mob-subj-tab{
+  white-space:nowrap;flex-shrink:0;
+  font-size:.8rem;font-weight:700;
+  padding:5px 14px;border-radius:100px;
+  border:1.5px solid var(--border);
+  background:var(--cw);color:var(--t3);
+  cursor:pointer;transition:all .18s;
+  font-family:var(--ff);
+}
+.mob-subj-tab.active{background:var(--forest);color:#fff;border-color:var(--forest);}
+@media(max-width:900px){
+  .mob-subj-bar{display:flex;}
+}
+
+/* ── 5. SUBMIT CONFIRM MODAL ── */
+#submit-confirm{
+  position:fixed;inset:0;background:rgba(26,38,24,.6);
+  backdrop-filter:blur(8px);z-index:600;
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+#submit-confirm.on{display:flex;}
+.sc-card{
+  background:#fff;border-radius:16px;max-width:380px;width:100%;
+  overflow:hidden;box-shadow:0 16px 48px rgba(26,38,24,.2);
+}
+.sc-head{background:var(--forest);padding:18px 22px;}
+.sc-head-title{font-size:1.05rem;font-weight:800;color:#fff;margin-bottom:2px;}
+.sc-head-sub{font-size:.85rem;color:rgba(255,255,255,.5);}
+.sc-body{padding:20px 22px;}
+.sc-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:18px;}
+.sc-stat{text-align:center;padding:12px 8px;border-radius:10px;border:1.5px solid var(--border);}
+.sc-stat-n{font-size:1.4rem;font-weight:800;display:block;margin-bottom:3px;}
+.sc-stat-n.green{color:var(--sage-d);}
+.sc-stat-n.red{color:#dc2626;}
+.sc-stat-n.gold{color:var(--gold);}
+.sc-stat-l{font-size:.75rem;color:var(--t4);font-weight:600;}
+.sc-warn{background:rgba(200,150,42,.08);border:1px solid var(--gold-g);border-radius:10px;padding:11px 14px;font-size:.88rem;color:var(--gold-d);margin-bottom:16px;line-height:1.55;}
+.sc-btns{display:flex;gap:10px;}
+.sc-btn{flex:1;padding:12px;border-radius:10px;font-family:var(--ff);font-size:.92rem;font-weight:700;border:none;cursor:pointer;transition:all .18s;}
+.sc-btn.cancel{background:var(--cw);color:var(--t2);border:1.5px solid var(--border);}
+.sc-btn.cancel:hover{border-color:var(--forest);}
+.sc-btn.confirm{background:var(--forest);color:#fff;}
+.sc-btn.confirm:hover{background:var(--sage-d);}
+</style>
 </head>
 <body>
 
@@ -718,7 +788,7 @@ body{font-family:var(--fd);background:var(--cw);color:var(--txt);-webkit-font-sm
 
 var UFM = {
   count: 0,
-  maxWarnings: 5,
+  maxWarnings: 7,
   camStream: null,
   audioCtx: null,
   analyser: null,
@@ -728,11 +798,11 @@ var UFM = {
   faceDetected: false,
   testStarted: false,
   capturedFace: null,
-  voiceThreshold: 20,       // audio level 0-100 to trigger warning
-  voiceWarningDelay: 2000,  // ms of sustained voice before warning
+  voiceThreshold: 45,       // audio level 0-100 to trigger warning
+  voiceWarningDelay: 4000,  // ms of sustained voice before warning
   voiceTimer: null,
   lastViolation: 0,
-  violationCooldown: 8000,  // ms between same-type warnings
+  violationCooldown: 15000,  // ms between same-type warnings
 };
 
 // ── STEP 1: Permission screen ────────────────────────────────
@@ -980,7 +1050,7 @@ function startVoiceMonitoring(){
     if(level > UFM.voiceThreshold){
       sustained += 200;
       if(sustained >= UFM.voiceWarningDelay){
-        triggerUfm('Sound Detected', 'Speaking or external audio detected near your device.');
+        triggerUfm('Sound Detected', 'Please maintain silence. Loud or sustained audio is not allowed during the test.');
         sustained = 0;
       }
     } else {
@@ -1220,6 +1290,8 @@ window.startTest = window.startTest = function startTest(){
   ld.classList.add('hide');
   document.getElementById('top-nav').style.display='flex';
   document.getElementById('test-shell').style.display='flex';
+  // Build mobile subject bar
+  setTimeout(buildMobSubjBar, 200);
   document.getElementById('tn-title').textContent=TEST_NAME||cfg.name+' — '+TYPE.charAt(0).toUpperCase()+TYPE.slice(1);
   buildSubjectTabs();
   buildPalette();
@@ -1238,6 +1310,7 @@ window.startTimer = function startTimer(){
   updateTimerDisplay();
 }
 function updateTimerDisplay(){
+  updateTimerColor(timeLeft);
   const h=Math.floor(timerSec/3600);
   const m=Math.floor((timerSec%3600)/60);
   const s=timerSec%60;
@@ -1557,6 +1630,95 @@ function showResults(score,maxScore,pct,correct,wrong,skipped,timeTaken,subjScor
   try{renderMathInElement(rs,{delimiters:[{left:'$$',right:'$$',display:true},{left:'$',right:'$',display:false}],throwOnError:false});}catch(_){}
 }
 
+
+
+// ════════════════════════════════════════════════
+// FEATURE 1 — OPTION SELECTED VISUAL FEEDBACK
+// ════════════════════════════════════════════════
+// Already handled by existing opt-item.selected CSS + selectOption fn
+// Make sure selectOption updates label properly
+var _origSelectOption = window.selectOption;
+
+// ════════════════════════════════════════════════
+// FEATURE 2 — TIMER COLOUR CHANGE
+// ════════════════════════════════════════════════
+function updateTimerColor(secondsLeft){
+  var timerEl = document.querySelector('.tn-timer');
+  if(!timerEl) return;
+  timerEl.classList.remove('warning','danger');
+  if(secondsLeft <= 300) timerEl.classList.add('danger');       // last 5 min
+  else if(secondsLeft <= 600) timerEl.classList.add('warning'); // last 10 min
+}
+
+// Patch startTimer to call updateTimerColor
+var _origStartTimer = window.startTimer;
+window.startTimer = function startTimer(){
+  if(_origStartTimer) _origStartTimer();
+  // Override tick to add colour update
+  var origTick = window._timerTick;
+};
+
+// ════════════════════════════════════════════════
+// FEATURE 3 — MOBILE SUBJECT BAR
+// ════════════════════════════════════════════════
+function buildMobSubjBar(){
+  var bar = document.getElementById('mob-subj-bar');
+  if(!bar || !questions || !questions.length) return;
+  var subjects = [...new Set(questions.map(q=>q.subject))];
+  bar.innerHTML = '';
+  // All tab
+  var allTab = document.createElement('button');
+  allTab.className = 'mob-subj-tab active';
+  allTab.textContent = 'All';
+  allTab.setAttribute('data-subj','');
+  allTab.onclick = function(){ filterSubject(''); updateMobSubjActive(''); };
+  bar.appendChild(allTab);
+  subjects.forEach(function(subj){
+    var tab = document.createElement('button');
+    tab.className = 'mob-subj-tab';
+    tab.textContent = subj;
+    tab.setAttribute('data-subj', subj);
+    tab.onclick = function(){ filterSubject(subj); updateMobSubjActive(subj); };
+    bar.appendChild(tab);
+  });
+}
+
+function updateMobSubjActive(subj){
+  document.querySelectorAll('.mob-subj-tab').forEach(function(t){
+    t.classList.toggle('active', t.getAttribute('data-subj') === subj);
+  });
+}
+
+// ════════════════════════════════════════════════
+// FEATURE 5 — SUBMIT CONFIRMATION MODAL
+// ════════════════════════════════════════════════
+window.showSubmitConfirm = function(){
+  var answered = 0, marked = 0, skipped = 0;
+  questions.forEach(function(q,i){
+    if(marked && marked[i]) markedCount++;
+    if(answers && answers[i] !== undefined && answers[i] !== null) answered++;
+    else skipped++;
+  });
+  document.getElementById('sc-answered').textContent = answered;
+  document.getElementById('sc-skipped').textContent = skipped;
+  document.getElementById('sc-marked').textContent = marked;
+  var warn = skipped > 0
+    ? skipped + ' question' + (skipped>1?'s':'') + ' unanswered. Once submitted you cannot go back.'
+    : 'All questions answered. Once submitted you cannot go back.';
+  document.getElementById('sc-warn-text').textContent = warn;
+  document.getElementById('submit-confirm').classList.add('on');
+};
+
+window.closeSubmitConfirm = function(){
+  document.getElementById('submit-confirm').classList.remove('on');
+};
+
+window.confirmSubmit = function(){
+  document.getElementById('submit-confirm').classList.remove('on');
+  window.submitTest();
+};
+
+
 window.retakeTest=function(){window.location.reload();};
 
 // ── START ──
@@ -1587,5 +1749,39 @@ init();
 
 
 </script>
+
+<!-- ══ SUBMIT CONFIRMATION MODAL ══ -->
+<div id="submit-confirm">
+  <div class="sc-card">
+    <div class="sc-head">
+      <div class="sc-head-title">Submit Test?</div>
+      <div class="sc-head-sub">Review your attempt before submitting</div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-stats">
+        <div class="sc-stat">
+          <span class="sc-stat-n green" id="sc-answered">0</span>
+          <span class="sc-stat-l">Answered</span>
+        </div>
+        <div class="sc-stat">
+          <span class="sc-stat-n red" id="sc-skipped">0</span>
+          <span class="sc-stat-l">Skipped</span>
+        </div>
+        <div class="sc-stat">
+          <span class="sc-stat-n gold" id="sc-marked">0</span>
+          <span class="sc-stat-l">Marked</span>
+        </div>
+      </div>
+      <div class="sc-warn" id="sc-warn-text">
+        Once submitted, you cannot go back to the test.
+      </div>
+      <div class="sc-btns">
+        <button class="sc-btn cancel" onclick="closeSubmitConfirm()">← Go Back</button>
+        <button class="sc-btn confirm" onclick="confirmSubmit()">Submit Test →</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 </body>
 </html>
