@@ -1311,13 +1311,6 @@ window.startTimer = function startTimer(){
   updateTimerDisplay();
 }
 function updateTimerDisplay(){
-  // Timer colour update inline
-  var timerEl=document.querySelector('.tn-timer');
-  if(timerEl){
-    timerEl.classList.remove('warning','danger');
-    if(timeLeft<=300) timerEl.classList.add('danger');
-    else if(timeLeft<=600) timerEl.classList.add('warning');
-  }
   const h=Math.floor(timerSec/3600);
   const m=Math.floor((timerSec%3600)/60);
   const s=timerSec%60;
@@ -1660,6 +1653,12 @@ var _origSelectOption = window.selectOption;
 // FEATURE 3 — MOBILE SUBJECT BAR
 // ════════════════════════════════════════════════
 function buildMobSubjBar(){
+  // Don't show subject switcher if test is for specific subject/chapter
+  if(SUBJ_FILTER||CHAP_FILTER){
+    var bar=document.getElementById('mob-subj-bar');
+    if(bar) bar.style.display='none';
+    return;
+  }
   var bar = document.getElementById('mob-subj-bar');
   if(!bar || !questions || !questions.length) return;
   var subjects = [...new Set(questions.map(q=>q.subject))];
@@ -1711,10 +1710,7 @@ window.closeSubmitConfirm = function(){
   document.getElementById('submit-confirm').classList.remove('on');
 };
 
-window.confirmSubmit = function(){
-  document.getElementById('submit-confirm').classList.remove('on');
-  window.submitTest();
-};
+// confirmSubmit handled above
 
 
 window.retakeTest=function(){window.location.reload();};
