@@ -894,10 +894,9 @@ function startFaceDetection(){
     for(var i = 0; i < data.length; i += 4){
       var r = data[i], g = data[i+1], b = data[i+2];
       // Skin tone detection — works for all skin tones
-      if(r > 60 && g > 30 && b > 20 &&
+      if(r > 55 && g > 25 && b > 15 &&
          r > g && r > b &&
-         Math.abs(r-g) > 10 &&
-         r - b > 15 && r < 250){
+         r - b > 10 && r < 255){
         skinPixels++;
       }
     }
@@ -1088,9 +1087,9 @@ function startTestFaceMonitoring(){
     }
 
     var ratio = skinPixels / total;
-    if(ratio < 0.08){
+    if(ratio < 0.05){
       noFaceTimer += 3000;
-      if(noFaceTimer >= 9000){
+      if(noFaceTimer >= 15000){
         triggerUfm('Face Not Visible', 'Your face is not visible. Please face the camera.');
         noFaceTimer = 0;
       }
@@ -1098,10 +1097,8 @@ function startTestFaceMonitoring(){
       noFaceTimer = 0;
     }
 
-    // Detect multiple faces (high skin ratio across wide area)
-    if(ratio > 0.55){
-      triggerUfm('Multiple Persons Detected', 'Another person was detected in the frame.');
-    }
+    // Multiple face detection disabled — unreliable with skin-tone algorithm
+    // Only track if face is present or not
 
   }, 3000);
 }
