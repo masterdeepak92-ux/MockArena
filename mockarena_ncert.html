@@ -518,7 +518,8 @@ body{font-family:var(--uf);background:var(--bg);color:var(--t1);min-height:100vh
     <div class="free-counter" id="free-counter"><span>🎬</span><span id="free-text">5 free left</span></div>
     <button class="tb-btn" onclick="toggleSavedPanel()">📥 Saved <span id="ncert-saved-n"></span></button>
     <a href="mockarena_solutions.html" class="tb-btn">📹 PYQ Solutions</a>
-    <a href="mockarena_student_dashboard.html" class="tb-btn pri">Go Pro ₹149</a>
+    <a href="mockarena_notes.html" class="tb-btn">📖 Notes</a>
+    <a href="mockarena_student_dashboard.html" class="tb-btn pri">Dashboard</a>
   </div>
 </header>
 
@@ -1014,8 +1015,16 @@ async function selectChapter(chap,chapNum){
   document.getElementById('q-grid-wrap').style.display='block';
   document.getElementById('q-grid-label').textContent=`Chapter ${chapNum} — ${chap}`;
   showSkeleton();
-  // Try Firestore first
-  var fireQs=window._loadNcertQs?await window._loadNcertQs(curType,curClass,curSubj,chap,chapNum):null;
+  // Check real data first — no network needed
+  const realQsCheck = getRealQs(curType, curClass, curSubj, chap);
+  var fireQs = null;
+  if(!realQsCheck || realQsCheck.length === 0){
+    // Only try Firestore if no real local data
+    try{
+      const p = window._loadNcertQs?window._loadNcertQs(curType,curClass,curSubj,chap,chapNum):null;
+      if(p) fireQs = await Promise.race([p, new Promise(r=>setTimeout(()=>r(null),3000))]);
+    }catch(e){ fireQs = null; }
+  }
   allQs=fireQs&&fireQs.length?fireQs:generateQs(curClass,curSubj,chap,chapNum);
   filteredQs=[...allQs];
   nActiveFilter='all';
@@ -1028,17 +1037,36 @@ const Q_TYPES_TB=['In-text Q','Exercise Q','Additional Q'];
 const Q_TYPES_EX=['MCQ','VSA','SA','LA'];
 
 function generateQs(cls,subj,chap,chapNum){
-  const count=curType==='exemplar'?20:15;
-  return Array.from({length:count},(_, i)=>{
-    const qn=i+1;
-    const qtype=curType==='exemplar'?Q_TYPES_EX[Math.floor(i/5)%4]:Q_TYPES_TB[Math.floor(i/5)%3];
+  // Use real questions if available
+  var realQs = typeof getRealQs === 'function' ? getRealQs(curType, cls, subj, chap) : null;
+  if(realQs && realQs.length > 0){
+    // Mix: real questions first, then generated placeholders
+    var count = curType==='exemplar' ? 20 : 15;
+    var placeholders = Array.from({length: Math.max(0, count - realQs.length)}, function(_, i){
+      var qn = realQs.length + i + 1;
+      var qtype = curType==='exemplar' ? Q_TYPES_EX[Math.floor(i/5)%4] : Q_TYPES_TB[Math.floor(i/5)%3];
+      return {
+        id:'ncert-'+curType+'-'+cls+'-'+subj+'-'+chapNum+'-Q'+qn,
+        class:cls, subject:subj, chapter:chap, chapNum:chapNum, qnum:qn, type:qtype,
+        question:chap+' — Question '+qn+' (Video solution coming soon)',
+        solution:'Solution will be uploaded soon.',
+        videoId:'', duration:'--:--', difficulty:'medium', watched:false
+      };
+    });
+    return realQs.concat(placeholders);
+  }
+  // Fully generated (no real data yet)
+  var count = curType==='exemplar' ? 20 : 15;
+  return Array.from({length:count}, function(_, i){
+    var qn = i+1;
+    var qtype = curType==='exemplar' ? Q_TYPES_EX[Math.floor(i/5)%4] : Q_TYPES_TB[Math.floor(i/5)%3];
     return {
-      id:`ncert-${curType}-${cls}-${subj}-${chapNum}-Q${qn}`,
-      class:cls,subject:subj,chapter:chap,chapNum,qnum:qn,type:qtype,
-      question:`${chap} — Question ${qn}: ${getQText(subj,chap,qn)}`,
-      solution:`Step 1: Read the question carefully. Step 2: Recall the key concept from ${chap}. Step 3: Apply the relevant formula or principle. Step 4: Solve and verify. Apply the concepts of ${subj} to solve this problem systematically.`,
-      videoId:'dQw4w9WgXcQ',
-      duration:`${Math.floor(Math.random()*2)+2}:${String(Math.floor(Math.random()*60)).padStart(2,'0')}`,
+      id:'ncert-'+curType+'-'+cls+'-'+subj+'-'+chapNum+'-Q'+qn,
+      class:cls, subject:subj, chapter:chap, chapNum:chapNum, qnum:qn, type:qtype,
+      question:chap+' — Question '+qn+': '+getQText(subj,chap,qn),
+      solution:'Step 1: Read the question carefully. Step 2: Recall the key concept from '+chap+'. Step 3: Apply the relevant formula or principle. Step 4: Solve and verify.',
+      videoId:'dQw4w9WgXcQ', duration:(Math.floor(Math.random()*2)+2)+':'+(Math.random()<0.5?'0':'')+Math.floor(Math.random()*59),
+      difficulty:['easy','medium','hard'][Math.floor(Math.random()*3)], watched:false
     };
   });
 }
@@ -1369,6 +1397,47 @@ setInterval(function(){
   if(window.outerWidth-window.innerWidth>160||window.outerHeight-window.innerHeight>160)blurVideo('devtools');
 },2000);
 
+</script>
+<script>
+// ── GLOBAL FALLBACKS ─────────────────────────────────────────
+// These are normally set by Firebase auth — fallback to demo mode
+if(typeof isPremium === 'undefined') var isPremium = false;
+if(typeof currentUser === 'undefined') var currentUser = null;
+if(typeof freeWatched === 'undefined') var freeWatched = [];
+if(typeof watched === 'undefined') var watched = [];
+if(typeof savedOffline === 'undefined') var savedOffline = [];
+
+// ── REAL QUESTIONS DATA — Class 9 Science ──────────────────
+var REAL_Q_DATA = {
+  textbook: {
+    '9': {
+      'Science': {
+        'Describing Motion Around Us': [
+          {
+            id: 'tb-9-sci-ch4-q1',
+            qnum: 1,
+            type: 'Exercise Q',
+            question: 'My father went to a shop from home which is located at a distance of 250 m on a straight road. On reaching there, he discovered that he forgot to carry a cloth bag. He came home to take it, went to the shop again, bought provisions and came back home.\n\n(i) How much was the total distance travelled by him?\n(ii) What was his displacement from home?',
+            videoId: '',
+            duration: '4:20',
+            difficulty: 'easy',
+            chapter: 'Describing Motion Around Us',
+            chapNum: 4,
+            subject: 'Science',
+            class: '9',
+            hasRealVideo: true
+          }
+        ]
+      }
+    }
+  }
+};
+
+function getRealQs(type, cls, subj, chap) {
+  try {
+    return (REAL_Q_DATA[type] && REAL_Q_DATA[type][cls] && REAL_Q_DATA[type][cls][subj] && REAL_Q_DATA[type][cls][subj][chap]) ? REAL_Q_DATA[type][cls][subj][chap] : null;
+  } catch(e) { return null; }
+}
 </script>
 <script type="module">
 import{initializeApp}from'https://www.gstatic.com/firebasejs/10.7.0/firebase-app.js';
