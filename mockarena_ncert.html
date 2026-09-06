@@ -802,7 +802,21 @@ var NCERT_DATA = {
     '9': {
       subjects: ['Science','Mathematics','Social Science','English','Hindi'],
       chapters: {
-        'Science': ['Matter in Our Surroundings','Is Matter Around Us Pure','Atoms and Molecules','Structure of the Atom','The Fundamental Unit of Life','Tissues','Motion','Force and Laws of Motion','Gravitation','Work and Energy','Sound','Why Do We Fall Ill','Natural Resources'],
+        'Science': [
+          'Exploration: Entering the World of Secondary Science',
+          'Cell: The Building Block of Life',
+          'Tissues in Action',
+          'Describing Motion Around Us',
+          'Exploring Mixtures and their Separation',
+          'How Forces Affect Motion',
+          'Work, Energy, and Simple Machines',
+          'Journey Inside the Atom',
+          'Atomic Foundations of Matter',
+          'Sound Waves: Characteristics and Applications',
+          'Reproduction: How Life Continues',
+          'Patterns in Life: Diversity and Classification',
+          'Earth as a System: Energy, Matter, and Life'
+        ],
         'Mathematics': ['Number Systems','Polynomials','Coordinate Geometry','Linear Equations in Two Variables','Introduction to Euclid Geometry','Lines and Angles','Triangles','Quadrilaterals','Circles','Heron Formula','Surface Areas and Volumes','Statistics'],
         'Social Science': ['India Size and Location','Physical Features of India','Drainage','Climate','Natural Vegetation and Wildlife','Population'],
         'English': ['The Fun They Had','The Sound of Music','The Little Girl','A Truly Beautiful Mind','The Snake and the Mirror'],
@@ -841,7 +855,21 @@ var NCERT_DATA = {
     }
   },
   exemplar: {
-    '9':  { subjects: ['Science','Mathematics'], chapters: { 'Science': ['Matter in Our Surroundings','Is Matter Around Us Pure','Atoms and Molecules','Structure of the Atom','The Fundamental Unit of Life','Tissues','Motion','Force and Laws of Motion','Gravitation','Work and Energy','Sound','Why Do We Fall Ill','Natural Resources'], 'Mathematics': ['Number Systems','Polynomials','Coordinate Geometry','Linear Equations','Lines and Angles','Triangles','Quadrilaterals','Circles','Surface Areas and Volumes','Statistics'] } },
+    '9':  { subjects: ['Science','Mathematics'], chapters: { 'Science': [
+          'Exploration: Entering the World of Secondary Science',
+          'Cell: The Building Block of Life',
+          'Tissues in Action',
+          'Describing Motion Around Us',
+          'Exploring Mixtures and their Separation',
+          'How Forces Affect Motion',
+          'Work, Energy, and Simple Machines',
+          'Journey Inside the Atom',
+          'Atomic Foundations of Matter',
+          'Sound Waves: Characteristics and Applications',
+          'Reproduction: How Life Continues',
+          'Patterns in Life: Diversity and Classification',
+          'Earth as a System: Energy, Matter, and Life'
+        ], 'Mathematics': ['Number Systems','Polynomials','Coordinate Geometry','Linear Equations','Lines and Angles','Triangles','Quadrilaterals','Circles','Surface Areas and Volumes','Statistics'] } },
     '10': { subjects: ['Science','Mathematics'], chapters: { 'Science': ['Chemical Reactions','Acids Bases and Salts','Metals and Non-Metals','Carbon Compounds','Life Processes','Control and Coordination','Reproduction','Heredity','Light','Human Eye','Electricity','Magnetic Effects','Environment'], 'Mathematics': ['Real Numbers','Polynomials','Linear Equations','Quadratic Equations','Arithmetic Progressions','Triangles','Coordinate Geometry','Trigonometry','Applications of Trigonometry','Circles','Areas Related to Circles','Surface Areas and Volumes','Statistics','Probability'] } },
     '11': { subjects: ['Physics','Chemistry','Biology','Mathematics'], chapters: { 'Physics': ['Physical World','Units and Measurements','Motion in Straight Line','Motion in a Plane','Laws of Motion','Work Energy Power','Rotational Motion','Gravitation','Mechanical Properties of Solids','Mechanical Properties of Fluids','Thermal Properties','Thermodynamics','Kinetic Theory','Oscillations','Waves'], 'Chemistry': ['Some Basic Concepts','Structure of Atom','Classification of Elements','Chemical Bonding','States of Matter','Thermodynamics','Equilibrium','Redox Reactions','Hydrogen','s Block Elements','p Block Elements','Organic Chemistry','Hydrocarbons','Environmental Chemistry'], 'Biology': ['The Living World','Biological Classification','Plant Kingdom','Animal Kingdom','Morphology of Plants','Anatomy of Plants','Structural Organisation','Cell The Unit of Life','Biomolecules','Cell Cycle'], 'Mathematics': ['Sets','Relations and Functions','Trigonometric Functions','Complex Numbers','Quadratic Equations','Linear Inequalities','Permutations','Binomial Theorem','Sequences and Series','Straight Lines','Conic Sections','3D Geometry','Limits and Derivatives','Statistics','Probability'] } },
     '12': { subjects: ['Physics','Chemistry','Biology','Mathematics'], chapters: { 'Physics': ['Electric Charges','Electrostatic Potential','Current Electricity','Moving Charges','Magnetism','Electromagnetic Induction','Alternating Current','Electromagnetic Waves','Ray Optics','Wave Optics','Dual Nature','Atoms','Nuclei','Semiconductor Electronics'], 'Chemistry': ['The Solid State','Solutions','Electrochemistry','Chemical Kinetics','Surface Chemistry','General Principles','p Block Elements','d and f Block','Coordination Compounds','Haloalkanes','Alcohols Phenols Ethers','Aldehydes Ketones','Amines','Biomolecules','Polymers','Chemistry in Everyday Life'], 'Biology': ['Reproduction in Organisms','Sexual Reproduction','Human Reproduction','Reproductive Health','Inheritance and Variation','Molecular Basis of Inheritance','Evolution','Human Health and Disease','Food Production','Microbes','Biotechnology Principles','Biotechnology Applications','Organisms and Populations','Ecosystem','Biodiversity','Environmental Issues'], 'Mathematics': ['Relations and Functions','Inverse Trigonometric Functions','Matrices','Determinants','Continuity and Differentiability','Application of Derivatives','Integrals','Application of Integrals','Differential Equations','Vector Algebra','3D Geometry','Linear Programming','Probability'] } }
@@ -1073,27 +1101,22 @@ function generateQs(cls,subj,chap,chapNum){
 
 function getQText(subj,chap,n){
   const qmap={
-    // Science/Physics chapters
-    'Matter in Our Surroundings':['Define matter. Give examples of solid, liquid and gas.','What happens to matter when heated? Explain with examples.','Define evaporation. List four factors affecting rate of evaporation.','Latent heat of vaporization is higher than latent heat of fusion. Why?'],
-    'Atoms and Molecules':['State the law of conservation of mass with example.','What is atomicity? Find atomicity of O₃, P₄, S₈.','Calculate molar mass of H₂SO₄.','Write chemical formula for calcium oxide and magnesium hydroxide.'],
-    'Motion':['Define uniform and non-uniform motion with examples.','A car travels 150 km in 3 hours. Find its average speed.','Draw v-t graph for uniform acceleration and find displacement from it.','Derive equation v = u + at from velocity-time graph.'],
-    'Laws of Motion':['State Newton\'s first law of motion. Define inertia.','A force of 20 N acts on a 4 kg body. Calculate acceleration.','Explain why a passenger lurches forward when a bus stops suddenly.','State Newton\'s third law. Give two examples from daily life.'],
-    'Gravitation':['State the universal law of gravitation. Write formula.','What is the difference between mass and weight?','Calculate weight of 10 kg object on moon (g_moon = 1.6 m/s²).','Define free fall. What is the value of g on earth?'],
-    'Chemical Reactions and Equations':['Balance the equation: Fe + HCl → FeCl₂ + H₂.','Identify type of reaction: CaCO₃ → CaO + CO₂.','What is a combination reaction? Give one example.','Write word equation for burning of magnesium in air.'],
-    'Acids Bases and Salts':['What happens when acid reacts with metal? Write equation for Zn+H₂SO₄.','Define pH. What is pH of pure water?','How is baking soda different from washing soda?','Explain neutralization reaction with example.'],
-    'Metals and Non-metals':['List physical properties that distinguish metals from non-metals.','What is corrosion? Write equation for rusting of iron.','Why are sodium and potassium stored in kerosene oil?','Define reactivity series. Arrange Na, Fe, Cu, Al in order.'],
-    'Life Processes':['What are the essential life processes? Name any four.','Explain the process of photosynthesis with equation.','Describe the path of blood in double circulation.','How is glucose broken down in aerobic respiration?'],
-    'Heredity':['What is Mendel\'s law of dominance?','Define genotype and phenotype with example.','What are sex chromosomes? How is sex determined in humans?','Explain monohybrid cross with Punnett square.'],
-    'Electricity':['State Ohm\'s law. Write formula.','Three resistors of 2Ω, 3Ω, 6Ω are in parallel. Find equivalent resistance.','Define electric power. A bulb works at 220V and draws 2A. Find power.','What is the difference between AC and DC?'],
-    'Photosynthesis in Higher Plants':['Write overall equation for photosynthesis.','What are the raw materials required for photosynthesis?','Distinguish between C3 and C4 plants.','Explain the role of chlorophyll in light reaction.'],
-    'Chemical Bonding and Molecular Structure':['Define ionic bond and covalent bond with examples.','Draw Lewis structure of CO₂ and H₂O.','What is the shape of NH₃ molecule? Explain using VSEPR theory.','Define electronegativity. How does it vary across a period?'],
-    'Electrochemistry':['Define electrolysis. Give one industrial application.','State Faraday\'s first law of electrolysis.','What is standard electrode potential? Write for hydrogen electrode.','Calculate EMF of cell: Zn|Zn²⁺||Cu²⁺|Cu given E° values.'],
-    'Reproduction in Organisms':['Distinguish between sexual and asexual reproduction.','What is pollination? Distinguish between self and cross pollination.','Describe the process of fertilization in flowering plants.','What are the advantages of sexual reproduction over asexual?'],
-    'Principles of Inheritance and Variation':['State Mendel\'s law of segregation.','What is co-dominance? Explain with ABO blood groups.','Define mutation. Give one example.','What is the ratio in a dihybrid cross AaBb × AaBb?'],
-    'Relations and Functions':['Define one-one and onto functions. Give examples.','Find domain and range of f(x) = 1/(x-2).','If f(x) = 2x+1, find f(3) and f⁻¹(x).','What is a bijective function? Give example.'],
-    'Integrals':['Evaluate ∫(3x²+2x+1)dx.','Find ∫sinx dx and ∫cosx dx.','Evaluate ∫₀^π/2 sinx dx.','Use integration by parts to find ∫xeˣ dx.'],
-    'Determinants':['Find the determinant of [[1,2],[3,4]].','If |A| = 0, what can you say about matrix A?','Find the cofactor of element a₁₂ in given 3×3 matrix.','Solve system of equations using Cramer\'s rule.'],
-    'Continuity and Differentiability':['Define continuity at a point. Check for f(x)=|x| at x=0.','Differentiate y = x³ + sin x with respect to x.','Find dy/dx if y = eˣ·cos x using product rule.','What is the derivative of log(sinx)?'],
+    'Exploration: Entering the World of Secondary Science':['What is science? How does it help us understand the world?','Define hypothesis and experiment.','What is the scientific method? Explain with steps.'],
+    'Cell: The Building Block of Life':['Who discovered the cell? Name the instrument used.','What is cell theory? Who proposed it?','Differentiate between plant cell and animal cell.'],
+    'Tissues in Action':['What is a tissue? Give examples.','Differentiate between meristematic and permanent tissue.','What are the types of muscular tissue?'],
+    'Describing Motion Around Us':['Define distance and displacement. How are they different?','What is uniform motion? Give an example.','Define acceleration. What are its SI units?','Draw a distance-time graph for uniform motion.','What does the slope of a velocity-time graph represent?'],
+    'Exploring Mixtures and their Separation':['What is a mixture? Give two examples.','How does evaporation differ from boiling?','Explain the process of chromatography.'],
+    'How Forces Affect Motion':['State the first law of motion.','State the second law. Give its mathematical form.','State the third law with an example.','Define inertia. How does mass relate to inertia?','What is momentum? State its SI unit.'],
+    'Work, Energy, and Simple Machines':['Define work. When is work said to be done?','State the law of conservation of energy.','Differentiate between kinetic and potential energy.','What is power? State its SI unit.'],
+    'Journey Inside the Atom':['Who discovered the electron? Name the experiment.','Describe the alpha particle scattering experiment.','State the postulates for atomic model.'],
+    'Atomic Foundations of Matter':['Define atomic number and mass number.','What are isotopes? Give two examples.','What is valency? How is it determined?'],
+    'Sound Waves: Characteristics and Applications':['What is sound? How is it produced?','Define frequency, amplitude and time period.','What is the speed of sound in air at 25 degree C?','What is SONAR? How does it work?'],
+    'Reproduction: How Life Continues':['What is reproduction? Name its two types.','Define pollination. What are its types?','What is fertilization? Explain in plants.'],
+    'Patterns in Life: Diversity and Classification':['Why is classification of living organisms important?','What are the five kingdoms of classification?','What is binomial nomenclature?'],
+    'Earth as a System: Energy, Matter, and Life':['What is a biogeochemical cycle? Give examples.','Explain the carbon cycle.','What is ozone layer and why is it important?'],
+    'Number Systems':['Define rational and irrational numbers.','Represent root 2 on number line.'],
+    'Polynomials':['What is a polynomial? Define degree.','State the remainder theorem.'],
+    'default':['Define the key concept from this chapter.','Explain with an example from daily life.','State the formula and its derivation.','Solve a numerical problem based on this concept.','What are the applications of this concept?']
   };
   const defaultQs=[
     `Define the key concept in ${chap} and give two examples.`,
