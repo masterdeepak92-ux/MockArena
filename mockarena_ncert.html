@@ -1165,10 +1165,14 @@ function openQ(id){
   const q=allQs.find(v=>v.id===id)||savedOffline.find(v=>v.id===id);
   if(!q)return;
   if(!window.isPremium&&!watched.includes(id)){
-    if(freeWatched>=FREE_LIMIT){document.getElementById('paywall').style.display='flex';return;}
-    freeWatched++;
-    localStorage.setItem('ma_free_ncert_'+getMonthKey(),freeWatched);
-    updateFreeCounter();
+    // Allow real videos (with actual videoId) to play freely
+    var isRealVideo = q.videoId && q.videoId !== 'dQw4w9WgXcQ' && q.videoId.length > 5;
+    if(!isRealVideo){
+      if(freeWatched>=FREE_LIMIT){document.getElementById('paywall').style.display='flex';return;}
+      freeWatched++;
+      localStorage.setItem('ma_free_ncert_'+getMonthKey(),freeWatched);
+      updateFreeCounter();
+    }
   }
   currentQ=q;
   document.getElementById('vid-frame').src=`https://www.youtube-nocookie.com/embed/${q.videoId}?rel=0&modestbranding=1&fs=1&playsinline=1&enablejsapi=1&origin=https://mockarena.co.in`;
