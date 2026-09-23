@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Lecture Studio — MockArena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:'Outfit',sans-serif;background:#0c1410;color:#fff;display:flex;flex-direction:column;}
+
+/* TOPBAR */
+.topbar{height:56px;flex-shrink:0;display:flex;align-items:center;gap:14px;padding:0 16px;background:#0f1712;border-bottom:1px solid rgba(255,255,255,.08);z-index:20;}
+.brand{font-weight:800;font-size:1.1rem;letter-spacing:-.02em;white-space:nowrap;}
+.brand em{color:#8fbf7d;font-style:normal;}
+.back-link{color:rgba(255,255,255,.6);font-size:.9rem;font-weight:600;text-decoration:none;padding:6px 10px;border-radius:8px;transition:background .2s;white-space:nowrap;}
+.back-link:hover{background:rgba(255,255,255,.08);}
+.rec-status{display:none;align-items:center;gap:8px;background:rgba(200,60,60,.15);border:1px solid rgba(200,60,60,.4);color:#ff8080;padding:6px 12px;border-radius:100px;font-size:.88rem;font-weight:700;margin-left:auto;}
+.rec-status.show{display:flex;}
+.rec-dot{width:8px;height:8px;border-radius:50%;background:#ff4d4d;animation:blink 1s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.25;}}
+.rec-timer{font-variant-numeric:tabular-nums;}
+
+/* STAGE */
+.stage{flex:1;position:relative;overflow:hidden;background:#12261c;}
+#board{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:crosshair;}
+
+/* CAMERA BUBBLE */
+.cam-wrap{position:absolute;border-radius:50%;overflow:hidden;border:3px solid rgba(255,255,255,.85);box-shadow:0 6px 20px rgba(0,0,0,.4);cursor:grab;touch-action:none;background:#000;display:none;}
+.cam-wrap.show{display:block;}
+.cam-wrap:active{cursor:grabbing;}
+.cam-wrap video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1);}
+
+/* SETUP OVERLAY */
+.setup{position:absolute;inset:0;background:rgba(6,12,8,.92);display:flex;align-items:center;justify-content:center;z-index:30;padding:24px;text-align:center;}
+.setup.hide{display:none;}
+.setup-card{max-width:380px;}
+.setup-card h2{font-size:1.5rem;margin-bottom:10px;}
+.setup-card p{color:rgba(255,255,255,.65);font-size:.96rem;line-height:1.6;margin-bottom:22px;}
+.setup-btn{background:#3a6830;color:#fff;border:none;padding:13px 26px;border-radius:12px;font-weight:700;font-size:1rem;cursor:pointer;font-family:inherit;width:100%;margin-bottom:10px;}
+.setup-btn:hover{background:#4a7d3e;}
+.setup-btn.ghost{background:transparent;border:1.5px solid rgba(255,255,255,.25);color:rgba(255,255,255,.85);}
+.setup-err{color:#ff8080;font-size:.88rem;margin-top:10px;display:none;}
+.setup-err.show{display:block;}
+
+/* QUESTION PANEL */
+.qpanel{position:fixed;inset:0;background:rgba(0,0,0,.65);display:none;align-items:center;justify-content:center;z-index:40;padding:20px;}
+.qpanel.show{display:flex;}
+.qpanel-card{background:#14201a;border-radius:16px;padding:22px;max-width:460px;width:100%;}
+.qpanel-card h3{font-size:1.15rem;margin-bottom:8px;}
+.qpanel-card p{color:rgba(255,255,255,.6);font-size:.9rem;line-height:1.5;margin-bottom:14px;}
+.qpanel-card textarea{width:100%;min-height:120px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:12px;color:#fff;font-family:inherit;font-size:.96rem;resize:vertical;margin-bottom:16px;}
+.qpanel-card textarea:focus{outline:none;border-color:#3a6830;}
+.qpanel-actions{display:flex;gap:10px;}
+.qbtn{flex:1;padding:11px;border-radius:10px;font-weight:700;font-family:inherit;cursor:pointer;border:none;font-size:.92rem;}
+.qbtn.primary{background:#3a6830;color:#fff;}
+.qbtn.secondary{background:rgba(255,255,255,.1);color:#fff;}
+
+/* TOOLBAR */
+.toolbar{flex-shrink:0;display:flex;align-items:center;gap:10px;padding:10px 14px;background:#0f1712;border-top:1px solid rgba(255,255,255,.08);overflow-x:auto;z-index:20;}
+.tool-group{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.divider{width:1px;height:26px;background:rgba(255,255,255,.12);flex-shrink:0;}
+.swatch{width:26px;height:26px;border-radius:50%;border:2px solid rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;padding:0;}
+.swatch.active{border-color:#fff;transform:scale(1.15);}
+.bg-swatch{width:26px;height:26px;border-radius:7px;border:2px solid rgba(255,255,255,.15);cursor:pointer;flex-shrink:0;padding:0;}
+.bg-swatch.active{border-color:#8fbf7d;box-shadow:0 0 0 2px rgba(143,191,125,.3);}
+.tool-btn{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:#fff;width:38px;height:38px;border-radius:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;font-size:1.1rem;transition:background .15s;}
+.tool-btn:hover{background:rgba(255,255,255,.14);}
+.tool-btn.active{background:#3a6830;border-color:#3a6830;}
+.tool-btn svg{width:19px;height:19px;stroke-width:2;}
+.size-slider{width:70px;flex-shrink:0;accent-color:#8fbf7d;}
+.slide-label{font-size:.9rem;font-weight:700;color:rgba(255,255,255,.8);white-space:nowrap;padding:0 4px;min-width:56px;text-align:center;}
+.rec-controls{display:flex;align-items:center;gap:8px;margin-left:auto;flex-shrink:0;}
+.btn-record{background:#c83c3c;color:#fff;border:none;padding:10px 20px;border-radius:10px;font-weight:700;font-size:.95rem;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:8px;white-space:nowrap;}
+.btn-record:hover{background:#e04545;}
+.btn-record .dot{width:9px;height:9px;border-radius:50%;background:#fff;}
+.btn-stop{background:#fff;color:#111;}
+.btn-pause{background:rgba(255,255,255,.12);color:#fff;border:1px solid rgba(255,255,255,.2);padding:10px 16px;border-radius:10px;font-weight:700;font-size:.95rem;cursor:pointer;font-family:inherit;display:none;}
+.btn-pause.show{display:inline-flex;}
+
+/* DOWNLOAD MODAL */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:none;align-items:center;justify-content:center;z-index:50;padding:20px;}
+.modal.show{display:flex;}
+.modal-card{background:#14201a;border-radius:16px;padding:24px;max-width:480px;width:100%;}
+.modal-card h3{margin-bottom:14px;font-size:1.2rem;}
+.modal-card video{width:100%;border-radius:10px;background:#000;margin-bottom:16px;}
+.modal-actions{display:flex;gap:10px;}
+.modal-btn{flex:1;padding:12px;border-radius:10px;font-weight:700;font-family:inherit;cursor:pointer;border:none;font-size:.95rem;}
+.modal-btn.primary{background:#3a6830;color:#fff;}
+.modal-btn.secondary{background:rgba(255,255,255,.1);color:#fff;}
+
+@media(max-width:640px){
+  .brand{font-size:1rem;}
+  .back-link{font-size:.82rem;}
+  .btn-record,.btn-pause{padding:9px 14px;font-size:.86rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <span class="brand">Mock<em>Arena</em> Lecture Studio</span>
+  <a href="index.html" class="back-link">← Exit</a>
+  <div class="rec-status" id="recStatus"><span class="rec-dot"></span><span id="recLabel">REC</span> <span class="rec-timer" id="recTimer">00:00</span></div>
+</div>
+
+<div class="stage">
+  <canvas id="board"></canvas>
+  <div class="cam-wrap" id="camWrap" style="width:150px;height:150px;right:24px;bottom:24px;">
+    <video id="camVideo" autoplay muted playsinline></video>
+  </div>
+
+  <div class="setup" id="setup">
+    <div class="setup-card">
+      <h2>🎥 Set Up Your Lecture</h2>
+      <p>We'll ask for camera and microphone access. You can turn the camera bubble off anytime and still record your voice with the board.</p>
+      <button class="setup-btn" id="btnWithCam">Start with Camera + Mic</button>
+      <button class="setup-btn ghost" id="btnAudioOnly">Start with Mic Only (no camera)</button>
+      <button class="setup-btn ghost" id="btnSkip">Skip — Just Draw (no recording yet)</button>
+      <div class="setup-err" id="setupErr"></div>
+    </div>
+  </div>
+
+  <div class="qpanel" id="qpanel">
+    <div class="qpanel-card">
+      <h3>Add a Question</h3>
+      <p>Paste or type the question here — it'll be written onto the board so you can explain and solve it below.</p>
+      <textarea id="qInput" placeholder="Paste or type the question..."></textarea>
+      <div class="qpanel-actions">
+        <button class="qbtn secondary" id="btnQCancel">Cancel</button>
+        <button class="qbtn primary" id="btnQInsert">Insert on Board</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toolbar">
+  <div class="tool-group">
+    <button class="bg-swatch active" data-bg="#1f3d2c" title="Green board (clears current drawing)" style="background:#1f3d2c;"></button>
+    <button class="bg-swatch" data-bg="#181818" title="Black board (clears current drawing)" style="background:#181818;"></button>
+    <button class="bg-swatch" data-bg="#f4f1e8" title="White board (clears current drawing)" style="background:#f4f1e8;"></button>
+  </div>
+  <div class="divider"></div>
+  <div class="tool-group">
+    <button class="swatch active" data-color="#ffffff" title="White" style="background:#ffffff;"></button>
+    <button class="swatch" data-color="#ffe066" title="Yellow" style="background:#ffe066;"></button>
+    <button class="swatch" data-color="#7fd8f0" title="Sky Blue" style="background:#7fd8f0;"></button>
+    <button class="swatch" data-color="#ff8a8a" title="Coral" style="background:#ff8a8a;"></button>
+    <button class="swatch" data-color="#ffa552" title="Orange" style="background:#ffa552;"></button>
+    <button class="swatch" data-color="#c9a0ff" title="Lavender" style="background:#c9a0ff;"></button>
+    <button class="swatch" data-color="#111111" title="Black" style="background:#111111;"></button>
+    <button class="swatch" data-color="#1e3a5f" title="Navy" style="background:#1e3a5f;"></button>
+  </div>
+  <div class="divider"></div>
+  <div class="tool-group">
+    <input type="range" class="size-slider" id="sizeSlider" min="2" max="24" value="5"/>
+  </div>
+  <div class="divider"></div>
+  <div class="tool-group">
+    <button class="tool-btn active" id="btnPen" title="Pen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19 7-7 3 3-7 7-3-3z"/><path d="m18 13-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg></button>
+    <button class="tool-btn" id="btnEraser" title="Eraser"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l5.6 5.6c1 1 1 2.5 0 3.4L13 21"/><path d="M22 21H7"/><path d="m5 11 9 9"/></svg></button>
+    <button class="tool-btn" id="btnUndo" title="Undo"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg></button>
+    <button class="tool-btn" id="btnClear" title="Clear board"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>
+    <button class="tool-btn" id="btnCamToggle" title="Toggle camera bubble"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m22 8-6 4 6 4V8Z"/><rect x="2" y="6" width="14" height="12" rx="2"/></svg></button>
+    <button class="tool-btn" id="btnQuestion" title="Add Question"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/><circle cx="12" cy="12" r="10"/></svg></button>
+  </div>
+  <div class="divider"></div>
+  <div class="tool-group">
+    <button class="tool-btn" id="btnPrevSlide" title="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+    <span class="slide-label" id="slideLabel">Slide 1</span>
+    <button class="tool-btn" id="btnNextSlide" title="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+    <button class="tool-btn" id="btnNewSlide" title="Add new slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M12 18v-6"/><path d="M9 15h6"/></svg></button>
+  </div>
+  <div class="rec-controls">
+    <button class="btn-pause" id="btnPause">Pause</button>
+    <button class="btn-record" id="btnRecord"><span class="dot"></span> Start Recording</button>
+  </div>
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-card">
+    <h3>Your lecture is ready 🎉</h3>
+    <video id="previewVideo" controls></video>
+    <div class="modal-actions">
+      <button class="modal-btn secondary" id="btnDiscard">Discard</button>
+      <button class="modal-btn primary" id="btnDownload">Download Video</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const board = document.getElementById('board');
+const bctx = board.getContext('2d');
+const camVideo = document.getElementById('camVideo');
+const camWrap = document.getElementById('camWrap');
+const setup = document.getElementById('setup');
+const setupErr = document.getElementById('setupErr');
+
+let dpr = Math.max(window.devicePixelRatio || 1, 1);
+let drawing = false, lastX = 0, lastY = 0;
+let currentColor = '#ffffff';
+let currentSize = 5;
+let isEraser = false;
+let boardBgColor = '#1f3d2c';
+let cameraOn = false;
+let camStream = null, micStream = null;
+let undoStack = [];
+let slides = [null];
+let currentSlideIndex = 0;
+
+// ---------- Canvas sizing ----------
+function resizeBoard(){
+  const rect = board.getBoundingClientRect();
+  const img = board.width && board.height ? bctx.getImageData(0,0,board.width,board.height) : null;
+  dpr = Math.max(window.devicePixelRatio || 1, 1);
+  board.width = rect.width * dpr;
+  board.height = rect.height * dpr;
+  bctx.setTransform(dpr,0,0,dpr,0,0);
+  fillBoardBackground();
+  if(img){ try{ bctx.putImageData(img,0,0); }catch(e){} }
+}
+function fillBoardBackground(){
+  bctx.save();
+  bctx.setTransform(1,0,0,1,0,0);
+  bctx.fillStyle = boardBgColor;
+  bctx.fillRect(0,0,board.width,board.height);
+  bctx.restore();
+}
+window.addEventListener('resize', resizeBoard);
+
+// ---------- Drawing ----------
+function pointerPos(e){
+  const rect = board.getBoundingClientRect();
+  const x = (e.touches ? e.touches[0].clientX : e.clientX) - rect.left;
+  const y = (e.touches ? e.touches[0].clientY : e.clientY) - rect.top;
+  return {x, y};
+}
+function pushUndo(){
+  try{
+    undoStack.push(bctx.getImageData(0,0,board.width,board.height));
+    if(undoStack.length > 25) undoStack.shift();
+  }catch(e){}
+}
+function startDraw(e){
+  drawing = true;
+  pushUndo();
+  const p = pointerPos(e);
+  lastX = p.x; lastY = p.y;
+  bctx.beginPath();
+  bctx.arc(p.x, p.y, currentSize/2, 0, Math.PI*2);
+  bctx.fillStyle = isEraser ? boardBgColor : currentColor;
+  bctx.fill();
+}
+function moveDraw(e){
+  if(!drawing) return;
+  e.preventDefault();
+  const p = pointerPos(e);
+  bctx.strokeStyle = isEraser ? boardBgColor : currentColor;
+  bctx.lineWidth = currentSize;
+  bctx.lineCap = 'round';
+  bctx.lineJoin = 'round';
+  bctx.beginPath();
+  bctx.moveTo(lastX, lastY);
+  bctx.lineTo(p.x, p.y);
+  bctx.stroke();
+  lastX = p.x; lastY = p.y;
+}
+function endDraw(){ drawing = false; }
+
+board.addEventListener('pointerdown', startDraw);
+board.addEventListener('pointermove', moveDraw);
+window.addEventListener('pointerup', endDraw);
+board.addEventListener('touchstart', startDraw, {passive:false});
+board.addEventListener('touchmove', moveDraw, {passive:false});
+window.addEventListener('touchend', endDraw);
+
+// ---------- Toolbar ----------
+document.querySelectorAll('.bg-swatch').forEach(sw => {
+  sw.addEventListener('click', () => {
+    document.querySelectorAll('.bg-swatch').forEach(s => s.classList.remove('active'));
+    sw.classList.add('active');
+    boardBgColor = sw.dataset.bg;
+    pushUndo();
+    fillBoardBackground();
+
+    // Auto-switch pen color if the current pen would be near-invisible on the new background
+    const isLightBoard = boardBgColor === '#f4f1e8';
+    const lightPenColors = ['#ffffff', '#ffe066'];
+    const darkPenColors = ['#111111', '#1e3a5f'];
+    const penIsTooLight = lightPenColors.includes(currentColor);
+    const penIsTooDark = darkPenColors.includes(currentColor);
+    if(isLightBoard && penIsTooLight){
+      selectPenColor('#111111');
+    } else if(!isLightBoard && penIsTooDark){
+      selectPenColor('#ffffff');
+    }
+  });
+});
+function selectPenColor(hex){
+  const target = document.querySelector('.swatch[data-color="' + hex + '"]');
+  if(target) target.click();
+}
+document.querySelectorAll('.swatch').forEach(sw => {
+  sw.addEventListener('click', () => {
+    document.querySelectorAll('.swatch').forEach(s => s.classList.remove('active'));
+    sw.classList.add('active');
+    currentColor = sw.dataset.color;
+    isEraser = false;
+    document.getElementById('btnEraser').classList.remove('active');
+    document.getElementById('btnPen').classList.add('active');
+  });
+});
+document.getElementById('sizeSlider').addEventListener('input', e => { currentSize = +e.target.value; });
+document.getElementById('btnPen').addEventListener('click', () => {
+  isEraser = false;
+  document.getElementById('btnPen').classList.add('active');
+  document.getElementById('btnEraser').classList.remove('active');
+});
+document.getElementById('btnEraser').addEventListener('click', () => {
+  isEraser = true;
+  document.getElementById('btnEraser').classList.add('active');
+  document.getElementById('btnPen').classList.remove('active');
+});
+document.getElementById('btnUndo').addEventListener('click', () => {
+  if(undoStack.length){
+    const img = undoStack.pop();
+    bctx.putImageData(img,0,0);
+  }
+});
+document.getElementById('btnClear').addEventListener('click', () => {
+  pushUndo();
+  fillBoardBackground();
+});
+
+// ---------- Slides (multiple boards within one continuous recording) ----------
+function saveCurrentSlide(){
+  try{
+    slides[currentSlideIndex] = bctx.getImageData(0, 0, board.width, board.height);
+  }catch(e){}
+}
+function loadSlide(index){
+  const data = slides[index];
+  if(data){
+    try{ bctx.putImageData(data, 0, 0); }
+    catch(e){ fillBoardBackground(); }
+  } else {
+    fillBoardBackground();
+  }
+  undoStack = [];
+  updateSlideLabel();
+}
+function updateSlideLabel(){
+  document.getElementById('slideLabel').textContent = 'Slide ' + (currentSlideIndex + 1) + ' / ' + slides.length;
+  document.getElementById('btnPrevSlide').disabled = currentSlideIndex === 0;
+  document.getElementById('btnPrevSlide').style.opacity = currentSlideIndex === 0 ? '.4' : '1';
+}
+document.getElementById('btnNewSlide').addEventListener('click', () => {
+  saveCurrentSlide();
+  slides.push(null);
+  currentSlideIndex = slides.length - 1;
+  loadSlide(currentSlideIndex);
+});
+document.getElementById('btnPrevSlide').addEventListener('click', () => {
+  if(currentSlideIndex === 0) return;
+  saveCurrentSlide();
+  currentSlideIndex--;
+  loadSlide(currentSlideIndex);
+});
+document.getElementById('btnNextSlide').addEventListener('click', () => {
+  saveCurrentSlide();
+  if(currentSlideIndex < slides.length - 1){
+    currentSlideIndex++;
+    loadSlide(currentSlideIndex);
+  } else {
+    slides.push(null);
+    currentSlideIndex = slides.length - 1;
+    loadSlide(currentSlideIndex);
+  }
+});
+document.getElementById('btnCamToggle').addEventListener('click', () => {
+  if(!camStream){ alert('Camera was not enabled at setup. Reload and choose "Start with Camera + Mic" to use the bubble.'); return; }
+  cameraOn = !cameraOn;
+  camWrap.classList.toggle('show', cameraOn);
+  document.getElementById('btnCamToggle').classList.toggle('active', cameraOn);
+});
+
+// ---------- Question panel ----------
+const qpanel = document.getElementById('qpanel');
+const qInput = document.getElementById('qInput');
+document.getElementById('btnQuestion').addEventListener('click', () => {
+  qpanel.classList.add('show');
+  qInput.focus();
+});
+document.getElementById('btnQCancel').addEventListener('click', () => {
+  qpanel.classList.remove('show');
+});
+document.getElementById('btnQInsert').addEventListener('click', () => {
+  const text = qInput.value.trim();
+  if(!text) return;
+  insertQuestionOnBoard(text);
+  qpanel.classList.remove('show');
+  qInput.value = '';
+});
+
+function wrapText(ctx, text, maxWidth){
+  const words = text.split(/\s+/);
+  const lines = [];
+  let line = '';
+  words.forEach(word => {
+    const test = line ? line + ' ' + word : word;
+    if(ctx.measureText(test).width > maxWidth && line){
+      lines.push(line);
+      line = word;
+    } else {
+      line = test;
+    }
+  });
+  if(line) lines.push(line);
+  return lines;
+}
+
+function insertQuestionOnBoard(text){
+  pushUndo();
+  const cssWidth = board.width / dpr;
+  const padding = 24;
+  const labelIndent = 34;
+  const maxTextWidth = cssWidth - padding * 2 - labelIndent - 10;
+  const fontSize = 20;
+  const lineHeight = 28;
+
+  bctx.font = '700 ' + fontSize + 'px Outfit, sans-serif';
+  const lines = wrapText(bctx, text, maxTextWidth);
+  const boxHeight = lines.length * lineHeight + padding * 2;
+
+  // Backdrop — always dark translucent so text stays readable regardless of board color
+  bctx.fillStyle = 'rgba(10,10,10,0.55)';
+  bctx.fillRect(10, 10, cssWidth - 20, boxHeight);
+
+  // "Q." label accent
+  bctx.fillStyle = '#ffe066';
+  bctx.font = '800 ' + fontSize + 'px Outfit, sans-serif';
+  bctx.fillText('Q.', 24, 10 + padding + fontSize - 4);
+
+  // Question text, white for guaranteed contrast on the dark backdrop
+  bctx.fillStyle = '#ffffff';
+  bctx.font = '700 ' + fontSize + 'px Outfit, sans-serif';
+  lines.forEach((line, i) => {
+    bctx.fillText(line, 24 + labelIndent, 10 + padding + fontSize - 4 + i * lineHeight);
+  });
+}
+
+// ---------- Camera bubble dragging ----------
+(function(){
+  let dragging = false, offX = 0, offY = 0;
+  camWrap.addEventListener('pointerdown', e => {
+    dragging = true;
+    const r = camWrap.getBoundingClientRect();
+    offX = e.clientX - r.left;
+    offY = e.clientY - r.top;
+    camWrap.setPointerCapture(e.pointerId);
+  });
+  camWrap.addEventListener('pointermove', e => {
+    if(!dragging) return;
+    const stage = document.querySelector('.stage').getBoundingClientRect();
+    let left = e.clientX - stage.left - offX;
+    let top = e.clientY - stage.top - offY;
+    left = Math.max(0, Math.min(left, stage.width - camWrap.offsetWidth));
+    top = Math.max(0, Math.min(top, stage.height - camWrap.offsetHeight));
+    camWrap.style.left = left + 'px';
+    camWrap.style.top = top + 'px';
+    camWrap.style.right = 'auto';
+    camWrap.style.bottom = 'auto';
+  });
+  camWrap.addEventListener('pointerup', e => {
+    dragging = false;
+    try{ camWrap.releasePointerCapture(e.pointerId); }catch(err){}
+  });
+})();
+
+// ---------- Setup / permissions ----------
+const HQ_AUDIO_CONSTRAINTS = {
+  echoCancellation: true,
+  noiseSuppression: true,
+  autoGainControl: true,
+  sampleRate: { ideal: 48000 },
+  channelCount: { ideal: 1 }
+};
+
+async function initMedia(withCamera){
+  setupErr.classList.remove('show');
+  try{
+    if(withCamera){
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: 'user',
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
+          frameRate: { ideal: 30 }
+        },
+        audio: HQ_AUDIO_CONSTRAINTS
+      });
+      camStream = stream;
+      micStream = stream;
+      camVideo.srcObject = stream;
+      cameraOn = true;
+      camWrap.classList.add('show');
+      document.getElementById('btnCamToggle').classList.add('active');
+    } else {
+      micStream = await navigator.mediaDevices.getUserMedia({ audio: HQ_AUDIO_CONSTRAINTS });
+    }
+    setup.classList.add('hide');
+    resizeBoard();
+  }catch(err){
+    setupErr.textContent = 'Could not access camera/microphone: ' + (err.message || err.name) + '. Check your browser permissions and try again.';
+    setupErr.classList.add('show');
+  }
+}
+document.getElementById('btnWithCam').addEventListener('click', () => initMedia(true));
+document.getElementById('btnAudioOnly').addEventListener('click', () => initMedia(false));
+document.getElementById('btnSkip').addEventListener('click', () => {
+  setup.classList.add('hide');
+  resizeBoard();
+});
+
+// ---------- Compose canvas for recording (board + camera bubble) ----------
+const composeCanvas = document.createElement('canvas');
+const cctx = composeCanvas.getContext('2d');
+let composing = false;
+
+function composeLoop(){
+  if(!composing) return;
+  composeCanvas.width = board.width;
+  composeCanvas.height = board.height;
+  cctx.drawImage(board, 0, 0);
+  if(cameraOn && camVideo.readyState >= 2){
+    const rect = camWrap.getBoundingClientRect();
+    const stageRect = document.querySelector('.stage').getBoundingClientRect();
+    const bx = (rect.left - stageRect.left) * dpr;
+    const by = (rect.top - stageRect.top) * dpr;
+    const bw = rect.width * dpr;
+    const bh = rect.height * dpr;
+    cctx.save();
+    cctx.beginPath();
+    cctx.arc(bx + bw/2, by + bh/2, bw/2, 0, Math.PI*2);
+    cctx.closePath();
+    cctx.clip();
+    cctx.translate(bx + bw, by);
+    cctx.scale(-1, 1);
+    // Center-crop the source video to a square before drawing, so the
+    // recording matches the live preview's object-fit:cover behavior
+    // instead of stretching/squishing the face.
+    const vw = camVideo.videoWidth || bw;
+    const vh = camVideo.videoHeight || bh;
+    const srcSize = Math.min(vw, vh);
+    const srcX = (vw - srcSize) / 2;
+    const srcY = (vh - srcSize) / 2;
+    cctx.drawImage(camVideo, srcX, srcY, srcSize, srcSize, 0, 0, bw, bh);
+    cctx.restore();
+    cctx.lineWidth = 4;
+    cctx.strokeStyle = '#ffffff';
+    cctx.beginPath();
+    cctx.arc(bx + bw/2, by + bh/2, bw/2 - 2, 0, Math.PI*2);
+    cctx.stroke();
+  }
+  requestAnimationFrame(composeLoop);
+}
+
+// ---------- Recording ----------
+let mediaRecorder, chunks = [], recTimerInterval, recSeconds = 0, recordedBlob = null, recordedUrl = null;
+
+function fmtTime(s){
+  const m = Math.floor(s/60).toString().padStart(2,'0');
+  const sec = (s%60).toString().padStart(2,'0');
+  return m + ':' + sec;
+}
+
+document.getElementById('btnRecord').addEventListener('click', () => {
+  const state = mediaRecorder && mediaRecorder.state;
+  if(!state || state === 'inactive') startRecording();
+  else stopRecording();
+});
+document.getElementById('btnPause').addEventListener('click', () => {
+  if(!mediaRecorder) return;
+  if(mediaRecorder.state === 'recording'){
+    mediaRecorder.pause();
+    document.getElementById('btnPause').textContent = 'Resume';
+    clearInterval(recTimerInterval);
+  } else if(mediaRecorder.state === 'paused'){
+    mediaRecorder.resume();
+    document.getElementById('btnPause').textContent = 'Pause';
+    startTimer();
+  }
+});
+
+function startTimer(){
+  recTimerInterval = setInterval(() => {
+    recSeconds++;
+    document.getElementById('recTimer').textContent = fmtTime(recSeconds);
+  }, 1000);
+}
+
+function startRecording(){
+  composing = true;
+  composeLoop();
+
+  const videoStream = composeCanvas.captureStream(30);
+  const combined = new MediaStream();
+  videoStream.getVideoTracks().forEach(t => combined.addTrack(t));
+  if(micStream){
+    micStream.getAudioTracks().forEach(t => combined.addTrack(t));
+  }
+
+  let mimeType = 'video/webm;codecs=vp9,opus';
+  if(!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm;codecs=vp8,opus';
+  if(!MediaRecorder.isTypeSupported(mimeType)) mimeType = 'video/webm';
+
+  chunks = [];
+  mediaRecorder = new MediaRecorder(combined, {
+    mimeType,
+    videoBitsPerSecond: 3000000,
+    audioBitsPerSecond: 160000
+  });
+  mediaRecorder.ondataavailable = e => { if(e.data.size > 0) chunks.push(e.data); };
+  mediaRecorder.onstop = () => {
+    composing = false;
+    if(recordedUrl) URL.revokeObjectURL(recordedUrl);
+    recordedBlob = new Blob(chunks, { type: 'video/webm' });
+    recordedUrl = URL.createObjectURL(recordedBlob);
+    document.getElementById('previewVideo').src = recordedUrl;
+    document.getElementById('modal').classList.add('show');
+  };
+  mediaRecorder.start(500);
+
+  recSeconds = 0;
+  document.getElementById('recTimer').textContent = '00:00';
+  startTimer();
+  document.getElementById('recStatus').classList.add('show');
+  const btn = document.getElementById('btnRecord');
+  btn.innerHTML = '<span class="dot"></span> Stop';
+  btn.classList.add('btn-stop');
+  document.getElementById('btnPause').classList.add('show');
+  document.getElementById('btnPause').textContent = 'Pause';
+}
+
+function stopRecording(){
+  if(mediaRecorder && mediaRecorder.state !== 'inactive'){
+    mediaRecorder.stop();
+  }
+  clearInterval(recTimerInterval);
+  document.getElementById('recStatus').classList.remove('show');
+  const btn = document.getElementById('btnRecord');
+  btn.innerHTML = '<span class="dot"></span> Start Recording';
+  btn.classList.remove('btn-stop');
+  document.getElementById('btnPause').classList.remove('show');
+}
+
+document.getElementById('btnDiscard').addEventListener('click', () => {
+  document.getElementById('modal').classList.remove('show');
+  recordedBlob = null;
+});
+document.getElementById('btnDownload').addEventListener('click', () => {
+  if(!recordedBlob || !recordedUrl) return;
+  const a = document.createElement('a');
+  a.href = recordedUrl;
+  a.download = 'mockarena-lecture-' + Date.now() + '.webm';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+});
+
+// ---------- Init ----------
+window.addEventListener('load', () => {
+  board.width = board.clientWidth;
+  board.height = board.clientHeight;
+  fillBoardBackground();
+  updateSlideLabel();
+});
+</script>
+
+</body>
+</html>
