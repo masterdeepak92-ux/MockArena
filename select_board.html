@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Choose Your Board — MockArena</title>
+<meta name="description" content="Select CBSE, ICSE or State Board to get tests, notes and mock papers tailored to your class."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500;1,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --cream:#faf9f5;--white:#fff;
+  --forest:#1a2618;
+  --sage:#6b8f5e;--sage-d:#3a6830;--sage-l:rgba(107,143,94,.13);--sage-g:rgba(107,143,94,.24);
+  --gold-d:#8a5f14;
+  --border:rgba(26,38,24,.09);--bm:rgba(26,38,24,.16);
+  --t1:#1a2618;--t3:#4f5d4c;--t4:#84977c;
+  --ff:'Work Sans',sans-serif;--fs:'Fraunces',serif;
+  --sh-lg:0 14px 36px rgba(26,38,24,.1);
+  --r:16px;--tf:.2s ease;
+}
+html{font-size:18px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--ff);background:var(--cream);color:var(--t1);line-height:1.65;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;}
+a{text-decoration:none;color:inherit;-webkit-tap-highlight-color:transparent;}
+.container{max-width:980px;margin:0 auto;padding:0 28px;width:100%;position:relative;z-index:1;}
+
+.nav{height:60px;display:flex;align-items:center;border-bottom:1px solid var(--border);background:#fff;}
+.nav-inner{display:flex;align-items:center;height:60px;max-width:980px;margin:0 auto;padding:0 28px;width:100%;}
+.nav-brand{font-size:1.32rem;font-weight:700;color:var(--forest);letter-spacing:-.01em;}
+.nav-brand em{color:var(--sage-d);font-style:normal;}
+.nav-back{margin-left:auto;font-size:.94rem;font-weight:600;color:var(--t3);padding:11px 14px;border-radius:9px;transition:all var(--tf);}
+.nav-back:hover{background:var(--sage-l);color:var(--sage-d);}
+
+main{flex:1;padding:38px 0 56px;position:relative;overflow:hidden;}
+main::before{content:'';position:absolute;top:-50px;right:-60px;width:260px;height:260px;background:rgba(107,143,94,.13);border-radius:26px;transform:rotate(11deg);z-index:0;pointer-events:none;}
+main::after{content:'';position:absolute;top:180px;left:-70px;width:200px;height:200px;background:rgba(200,150,42,.1);border-radius:26px;transform:rotate(-9deg);z-index:0;pointer-events:none;}
+.page-title{font-family:var(--fs);font-size:2.05rem;font-weight:600;font-style:italic;color:var(--forest);line-height:1.28;letter-spacing:-.01em;margin-bottom:10px;}
+.page-title em{color:var(--gold-d);font-style:italic;}
+.page-sub{font-size:1.04rem;color:var(--t3);line-height:1.65;margin-bottom:28px;max-width:520px;}
+
+.board-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+.board-card{display:flex;flex-direction:column;background:#fff;border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all var(--tf);}
+.board-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--sage-g);}
+.board-card:focus-visible{outline:2px solid var(--sage-d);outline-offset:2px;}
+.board-card:active{transform:translateY(-1px);}
+.board-card:hover .bc-foot{background:var(--sage-d);}
+.board-card:hover .arrow{transform:translateX(3px);}
+
+.bc-body{display:flex;align-items:flex-start;gap:15px;padding:20px 20px;flex:1;}
+.bc-icon{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--sage-l);color:var(--sage-d);flex-shrink:0;}
+.bc-icon svg{width:22px;height:22px;stroke-width:1.8;}
+.bc-text{flex:1;min-width:0;}
+.bc-name{font-family:var(--fs);font-size:1.2rem;font-weight:600;color:var(--forest);letter-spacing:-.005em;margin-bottom:5px;}
+.bc-desc{font-size:.96rem;color:var(--t3);line-height:1.55;}
+
+.bc-foot{background:var(--forest);display:flex;align-items:center;justify-content:center;gap:6px;padding:13px 16px;transition:background var(--tf);}
+.bc-foot-txt{font-size:.97rem;font-weight:600;color:#fff;display:inline-flex;align-items:center;gap:6px;}
+.arrow{display:inline-block;transition:transform var(--tf);}
+
+footer{text-align:center;padding:20px 0;color:var(--t4);font-size:.9rem;border-top:1px solid var(--border);background:#fff;}
+
+@media(max-width:768px){
+  .board-grid{grid-template-columns:1fr;}
+  main{padding:28px 0 44px;}
+}
+@media(max-width:480px){
+  html{font-size:16px;}
+  .page-title{font-size:1.75rem;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">Mock<em>Arena</em></a>
+    <a href="index.html" class="nav-back">← Back</a>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+    <h1 class="page-title">Choose Your Board</h1>
+    <p class="page-sub">Pick your board and we'll set up tests, notes and mock papers that match your exact syllabus and pattern.</p>
+
+    <div class="board-grid">
+      <a href="#" class="board-card" id="link-cbse">
+        <div class="bc-body">
+          <div class="bc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          </div>
+          <div class="bc-text"><div class="bc-name">CBSE</div>
+          <div class="bc-desc">NCERT-based syllabus, followed across most schools in India.</div></div>
+        </div>
+        <div class="bc-foot"><span class="bc-foot-txt">Select CBSE <span class="arrow">→</span></span></div>
+      </a>
+
+      <a href="#" class="board-card" id="link-icse">
+        <div class="bc-body">
+          <div class="bc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="bc-text"><div class="bc-name">ICSE</div>
+          <div class="bc-desc">Council-based syllabus with a strong focus on English &amp; Science.</div></div>
+        </div>
+        <div class="bc-foot"><span class="bc-foot-txt">Select ICSE <span class="arrow">→</span></span></div>
+      </a>
+
+      <a href="select_state.html" class="board-card" id="link-state">
+        <div class="bc-body">
+          <div class="bc-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M9 20l-6-3V4l6 3 6-3 6 3v13l-6-3-6 3z"/><path d="M9 7v13"/><path d="M15 4v13"/></svg>
+          </div>
+          <div class="bc-text"><div class="bc-name">State Board</div>
+          <div class="bc-desc">UP, Rajasthan, MP, Bihar &amp; more — pick your state next.</div></div>
+        </div>
+        <div class="bc-foot"><span class="bc-foot-txt">Select State <span class="arrow">→</span></span></div>
+      </a>
+    </div>
+  </div>
+</main>
+
+<footer>© 2025 MockArena · mockarena.co.in</footer>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const cls = params.get('class') || '10';
+  document.title = 'Class ' + cls + ' — Choose Your Board — MockArena';
+  document.getElementById('link-cbse').href = 'mockarena_onboarding.html?class=' + encodeURIComponent(cls) + '&board=CBSE';
+  document.getElementById('link-icse').href = 'mockarena_onboarding.html?class=' + encodeURIComponent(cls) + '&board=ICSE';
+  document.getElementById('link-state').href = 'select_state.html?class=' + encodeURIComponent(cls);
+</script>
+
+</body>
+</html>

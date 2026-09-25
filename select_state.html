@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Choose Your State Board — MockArena</title>
+<meta name="description" content="Select your State Board — UP, Rajasthan, MP or Bihar — to get tests and notes matched to your syllabus."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,600;0,700;1,500;1,600&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+:root{
+  --cream:#faf9f5;--white:#fff;
+  --forest:#1a2618;
+  --sage:#6b8f5e;--sage-d:#3a6830;--sage-l:rgba(107,143,94,.13);--sage-g:rgba(107,143,94,.24);
+  --gold-d:#8a5f14;
+  --border:rgba(26,38,24,.09);--bm:rgba(26,38,24,.16);
+  --t1:#1a2618;--t3:#4f5d4c;--t4:#84977c;
+  --ff:'Work Sans',sans-serif;--fs:'Fraunces',serif;
+  --sh-lg:0 14px 36px rgba(26,38,24,.1);
+  --r:16px;--tf:.2s ease;
+}
+html{font-size:18px;-webkit-text-size-adjust:100%;}
+body{font-family:var(--ff);background:var(--cream);color:var(--t1);line-height:1.65;min-height:100vh;overflow-x:hidden;display:flex;flex-direction:column;}
+a{text-decoration:none;color:inherit;-webkit-tap-highlight-color:transparent;}
+.container{max-width:980px;margin:0 auto;padding:0 28px;width:100%;position:relative;z-index:1;}
+
+.nav{height:60px;display:flex;align-items:center;border-bottom:1px solid var(--border);background:#fff;}
+.nav-inner{display:flex;align-items:center;height:60px;max-width:980px;margin:0 auto;padding:0 28px;width:100%;}
+.nav-brand{font-size:1.32rem;font-weight:700;color:var(--forest);letter-spacing:-.01em;}
+.nav-brand em{color:var(--sage-d);font-style:normal;}
+.nav-back{margin-left:auto;font-size:.94rem;font-weight:600;color:var(--t3);padding:11px 14px;border-radius:9px;transition:all var(--tf);}
+.nav-back:hover{background:var(--sage-l);color:var(--sage-d);}
+
+main{flex:1;padding:38px 0 56px;position:relative;overflow:hidden;}
+main::before{content:'';position:absolute;top:-50px;right:-60px;width:260px;height:260px;background:rgba(107,143,94,.13);border-radius:26px;transform:rotate(11deg);z-index:0;pointer-events:none;}
+main::after{content:'';position:absolute;top:200px;left:-70px;width:200px;height:200px;background:rgba(200,150,42,.1);border-radius:26px;transform:rotate(-9deg);z-index:0;pointer-events:none;}
+.page-title{font-family:var(--fs);font-size:2.05rem;font-weight:600;font-style:italic;color:var(--forest);line-height:1.28;letter-spacing:-.01em;margin-bottom:10px;}
+.page-title em{color:var(--gold-d);font-style:italic;}
+.page-sub{font-size:1.04rem;color:var(--t3);line-height:1.65;margin-bottom:28px;max-width:520px;}
+
+.state-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.state-card{display:flex;flex-direction:column;background:#fff;border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;transition:all var(--tf);}
+.state-card:hover{transform:translateY(-4px);box-shadow:var(--sh-lg);border-color:var(--sage-g);}
+.state-card:focus-visible{outline:2px solid var(--sage-d);outline-offset:2px;}
+.state-card:active{transform:translateY(-1px);}
+.state-card:hover .sc-foot{background:var(--sage-d);}
+.state-card:hover .arrow{transform:translateX(3px);}
+
+.sc-body{display:flex;align-items:flex-start;gap:13px;padding:18px 18px;flex:1;}
+.sc-icon{width:40px;height:40px;border-radius:11px;display:flex;align-items:center;justify-content:center;background:var(--sage-l);color:var(--sage-d);flex-shrink:0;}
+.sc-icon svg{width:19px;height:19px;stroke-width:1.8;}
+.sc-text{flex:1;min-width:0;}
+.sc-name{font-family:var(--fs);font-size:1.06rem;font-weight:600;color:var(--forest);letter-spacing:-.005em;margin-bottom:5px;}
+.sc-desc{font-size:.88rem;color:var(--t3);line-height:1.48;}
+
+.sc-foot{background:var(--forest);display:flex;align-items:center;justify-content:center;gap:6px;padding:12px 14px;transition:background var(--tf);}
+.sc-foot-txt{font-size:.93rem;font-weight:600;color:#fff;display:inline-flex;align-items:center;gap:6px;}
+.arrow{display:inline-block;transition:transform var(--tf);}
+
+.back-link{display:inline-flex;align-items:center;gap:6px;margin-top:24px;font-size:.96rem;font-weight:600;color:var(--t3);transition:color var(--tf);}
+.back-link:hover{color:var(--sage-d);}
+
+footer{text-align:center;padding:20px 0;color:var(--t4);font-size:.9rem;border-top:1px solid var(--border);background:#fff;}
+
+@media(max-width:480px){
+  html{font-size:16px;}
+  .page-title{font-size:1.75rem;}
+  .state-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">Mock<em>Arena</em></a>
+    <a href="index.html" class="nav-back">← Back</a>
+  </div>
+</nav>
+
+<main>
+  <div class="container">
+    <h1 class="page-title">Choose Your <em>State Board</em></h1>
+    <p class="page-sub">Select your state and we'll tailor tests, notes and mock papers to your exact state syllabus.</p>
+
+    <div class="state-grid">
+      <a href="#" class="state-card" data-state="UP">
+        <div class="sc-body">
+          <div class="sc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg></div>
+          <div class="sc-text"><div class="sc-name">UP Board</div>
+          <div class="sc-desc">Uttar Pradesh Madhyamik Shiksha Parishad</div></div>
+        </div>
+        <div class="sc-foot"><span class="sc-foot-txt">Select <span class="arrow">→</span></span></div>
+      </a>
+      <a href="#" class="state-card" data-state="Rajasthan">
+        <div class="sc-body">
+          <div class="sc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg></div>
+          <div class="sc-text"><div class="sc-name">Rajasthan Board</div>
+          <div class="sc-desc">Board of Secondary Education, Rajasthan (RBSE)</div></div>
+        </div>
+        <div class="sc-foot"><span class="sc-foot-txt">Select <span class="arrow">→</span></span></div>
+      </a>
+      <a href="#" class="state-card" data-state="MP">
+        <div class="sc-body">
+          <div class="sc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg></div>
+          <div class="sc-text"><div class="sc-name">MP Board</div>
+          <div class="sc-desc">Madhya Pradesh Board of Secondary Education (MPBSE)</div></div>
+        </div>
+        <div class="sc-foot"><span class="sc-foot-txt">Select <span class="arrow">→</span></span></div>
+      </a>
+      <a href="#" class="state-card" data-state="Bihar">
+        <div class="sc-body">
+          <div class="sc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.4"/></svg></div>
+          <div class="sc-text"><div class="sc-name">Bihar Board</div>
+          <div class="sc-desc">Bihar School Examination Board (BSEB)</div></div>
+        </div>
+        <div class="sc-foot"><span class="sc-foot-txt">Select <span class="arrow">→</span></span></div>
+      </a>
+    </div>
+
+    <a href="#" class="back-link" id="back-to-board">← Change board</a>
+  </div>
+</main>
+
+<footer>© 2025 MockArena · mockarena.co.in</footer>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const cls = params.get('class') || '10';
+  document.title = 'Class ' + cls + ' — Choose Your State Board — MockArena';
+  document.getElementById('back-to-board').href = 'select_board.html?class=' + encodeURIComponent(cls);
+  document.querySelectorAll('.state-card').forEach(function(card){
+    const state = card.getAttribute('data-state');
+    card.href = 'mockarena_onboarding.html?class=' + encodeURIComponent(cls) + '&board=STATE&state=' + encodeURIComponent(state);
+  });
+</script>
+
+</body>
+</html>
