@@ -16,9 +16,6 @@
   --gold:#c8962a;--gold-l:rgba(200,150,42,.1);--gold-d:#9a6e18;
   --clay:#b06a3f;--clay-l:rgba(176,106,63,.1);--clay-d:#8a5230;
   --olive:#6b6d2f;--olive-l:rgba(107,109,47,.1);--olive-d:#525424;
-  --rose:#c84b4b;--rose-l:rgba(200,75,75,.1);
-  --sky:#2563eb;--sky-l:rgba(37,99,235,.1);
-  --am:#7c3aed;--am-l:rgba(124,58,237,.1);
   --amber:#b87333;
   --border:rgba(26,38,24,.08);--bm:rgba(26,38,24,.14);
   --t1:#1a2618;--t2:#2e3a2a;--t3:#556353;--t4:#889b81;
@@ -82,26 +79,6 @@ a{text-decoration:none;color:inherit;}
 .btn-outline-lg:hover{border-color:var(--sage-d);color:var(--sage-d);background:var(--sage-l);}
 
 /* ── LEADERBOARD PANEL ── */
-.lb-card{background:#fff;border-radius:20px;border:1.5px solid var(--border);box-shadow:var(--sh-lg);overflow:hidden;}
-.lb-head{display:flex;align-items:center;gap:12px;padding:18px 20px;background:linear-gradient(135deg,var(--forest) 0%,var(--forest-s) 100%);}
-.lb-head-icon{font-size:1.4rem;}
-.lb-head-title{font-size:1.12rem;font-weight:800;color:#fff;letter-spacing:-.01em;}
-.lb-head-sub{font-size:.96rem;color:rgba(255,255,255,.5);margin-top:2px;}
-.lb-live{margin-left:auto;font-size:.94rem;font-weight:800;color:#4ade80;display:flex;align-items:center;gap:5px;}
-.lb-live::before{content:'';width:7px;height:7px;background:#4ade80;border-radius:50%;animation:pulse 2s infinite;}
-.lb-row{display:flex;align-items:center;gap:12px;padding:12px 20px;border-bottom:1px solid var(--border);transition:background var(--tf);}
-.lb-row:last-child{border-bottom:none;}
-.lb-row:hover{background:var(--cream);}
-.lb-row.lb-you{background:linear-gradient(90deg,var(--sage-l),transparent);}
-.lb-rank{font-size:1.05rem;width:28px;flex-shrink:0;}
-.lb-av{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.96rem;font-weight:800;color:#fff;flex-shrink:0;}
-.lb-name{flex:1;font-size:1.06rem;font-weight:700;color:var(--t1);}
-.lb-pts{font-size:1.04rem;font-weight:800;color:var(--sage-d);}
-.lb-foot{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;background:var(--cw);border-top:1px solid var(--border);}
-.lb-count{font-size:1.02rem;color:var(--t4);font-weight:500;}
-.lb-link{font-size:1.04rem;font-weight:800;color:var(--sage-d);}
-.lb-link:hover{text-decoration:underline;}
-.lb-loading{padding:24px;text-align:center;color:var(--t4);font-size:1rem;}
 
 
 
@@ -140,10 +117,7 @@ a{text-decoration:none;color:inherit;}
 .feat-card:hover{border-color:var(--sage-g);box-shadow:var(--sh-lg);transform:translateY(-3px);}
 .feat-icon{font-size:2rem;width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:18px;}
 .fi-sg{background:var(--sage-l);}
-.fi-sk{background:var(--sky-l);}
 .fi-gd{background:var(--gold-l);}
-.fi-ro{background:var(--rose-l);}
-.fi-am{background:var(--am-l);}
 .fi-pr{background:rgba(0,0,0,.05);}
 .feat-title{font-size:1.1rem;font-weight:700;color:var(--forest);margin-bottom:10px;letter-spacing:normal;}
 .feat-desc{font-size:1.04rem;color:var(--t3);line-height:1.75;}
@@ -178,7 +152,7 @@ a{text-decoration:none;color:inherit;}
 .plan-toggle{display:inline-flex;flex-wrap:wrap;justify-content:center;background:#fff;border:1.5px solid var(--border);border-radius:100px;padding:5px;gap:4px;margin-bottom:40px;box-shadow:var(--sh);}
 .plan-toggle-btn{border:none;background:transparent;font-family:var(--ff);font-size:.98rem;font-weight:700;color:var(--t3);padding:10px 20px;border-radius:100px;cursor:pointer;transition:all var(--tf);display:inline-flex;align-items:center;gap:8px;}
 .plan-toggle-btn.active{background:var(--forest);color:#fff;}
-.save-badge{background:var(--gold-l);color:var(--gold-d);font-size:.74rem;font-weight:800;padding:3px 9px;border-radius:100px;}
+.save-badge{background:var(--gold-l);color:var(--gold-d);font-size:.84rem;font-weight:800;padding:4px 10px;border-radius:100px;}
 .plan-toggle-btn.active .save-badge{background:var(--gold);color:#fff;}
 .price-card.featured{background:linear-gradient(150deg,var(--forest) 0%,var(--forest-s) 100%);border:none;box-shadow:0 20px 60px rgba(26,38,24,.28);}
 .price-popular{position:absolute;top:22px;right:22px;background:var(--gold);color:#fff;font-size:.94rem;font-weight:800;padding:5px 14px;border-radius:100px;letter-spacing:.01em;}
@@ -365,7 +339,6 @@ a{text-decoration:none;color:inherit;}
 .ic{width:1.05em;height:1.05em;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.15em;}
 .nav-link.hl{display:inline-flex;align-items:center;gap:7px;}
 .mob-menu a .ic{margin-right:8px;}
-.lb-head-icon{display:flex;align-items:center;color:#e8b94f;}
 .hero-highlight-icon{display:flex;align-items:center;color:var(--gold-d);}
 .price-popular{display:inline-flex;align-items:center;gap:6px;}
 .footer-tag .ic{color:#e8b94f;vertical-align:-.18em;margin:0 2px;}
@@ -377,8 +350,6 @@ a{text-decoration:none;color:inherit;}
 .fi-ro{background:rgba(176,106,63,.12);color:#8a5230;}
 .fi-am{background:rgba(58,104,48,.12);color:#2f5a27;}
 .fi-pr{background:rgba(200,150,42,.14);color:#8a5f14;}
-.rk{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#eceee7;color:#4f5d4c;font-size:.8rem;font-weight:800;}
-.rk1{background:#f3d98a;color:#7a5510;} .rk2{background:#dfe3e6;color:#4a5158;} .rk3{background:#ebc7a8;color:#7a4a25;}
 
 .btn-primary-lg{background:linear-gradient(135deg,#e8b94f,#c8962a);color:var(--forest);box-shadow:0 6px 22px rgba(200,150,42,.45);}
 .btn-primary-lg:hover{background:linear-gradient(135deg,#f0c866,#d6a232);color:var(--forest);transform:translateY(-2px);box-shadow:0 10px 30px rgba(200,150,42,.55);}
@@ -434,8 +405,6 @@ a{text-decoration:none;color:inherit;}
 .nav-link.hl .ic{display:none;}
 .t-sage{white-space:nowrap;}
 .hero-title,.section-title,.cta-title{text-wrap:balance;}
-.lb-link{white-space:nowrap;padding:9px 0;}
-.lb-foot{gap:12px;}
 .footer-legal a{display:inline-block;padding:6px 0;}
 @media(max-width:768px){
   .footer-legal{gap:6px 18px;}
@@ -511,6 +480,7 @@ a{text-decoration:none;color:inherit;}
   <a href="#features" onclick="closeMob()">Features</a>
   <a href="#how" onclick="closeMob()">How it works</a>
   <a href="#pricing" onclick="closeMob()">Pricing</a>
+  <a href="mockarena_onboarding.html" onclick="closeMob()">Log In</a>
   <a href="mockarena_onboarding.html" class="mob-menu-cta" onclick="closeMob()">Start Free →</a>
 </div>
 
@@ -795,7 +765,6 @@ a{text-decoration:none;color:inherit;}
           <li><a href="mockarena_ncert.html">NCERT Solutions</a></li>
           <li><a href="mockarena_notes.html">Study Notes</a></li>
           <li><a href="mockarena_analytics.html">Analytics</a></li>
-          <li><a href="#pricing">Pricing</a></li>
         </ul>
       </div>
       <div>
@@ -804,13 +773,12 @@ a{text-decoration:none;color:inherit;}
           <li><a href="mockarena_onboarding.html">Sign Up Free</a></li>
           <li><a href="mockarena_onboarding.html">Log In</a></li>
           <li><a href="mockarena_leaderboard.html">Leaderboard</a></li>
-          <li><a href="#pricing">Plans &amp; Pricing</a></li>
           <li><a href="mailto:support@mockarena.co.in">Contact Us</a></li>
         </ul>
       </div>
     </div>
     <div class="footer-bottom">
-      <span class="footer-copy">© 2025 MockArena · mockarena.co.in</span>
+      <span class="footer-copy">© 2026 MockArena · mockarena.co.in</span>
       <div class="footer-legal">
         <a href="terms-of-use.html">Terms of Use</a>
         <a href="privacy-policy.html">Privacy Policy</a>
@@ -872,61 +840,7 @@ var obs = new IntersectionObserver(function(entries){
 document.querySelectorAll('.reveal').forEach(function(el){ obs.observe(el); });
 </script>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getFirestore, collection, getDocs, query, orderBy, limit }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged }
-  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
-const firebaseConfig = {
-  apiKey:"AIzaSyB1SsYn1f1v5jfPhrYuj7w_AuuGwYdJH1c",
-  authDomain:"mockarena-c18c4.firebaseapp.com",
-  projectId:"mockarena-c18c4",
-  storageBucket:"mockarena-c18c4.firebasestorage.app",
-  messagingSenderId:"861067164791",
-  appId:"1:861067164791:web:28df5244e34361dd9d5a72",
-  measurementId:"G-TES4FGZMJF"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
-
-async function loadLeaderboard(){
-  if(!document.getElementById('lb-rows')) return; // leaderboard card not on this page
-  try {
-    const snap = await getDocs(query(collection(db,'users'), orderBy('totalPoints','desc'), limit(5)));
-    const users = snap.docs.map(d => ({id:d.id,...d.data()}));
-    const me = auth.currentUser;
-    const allSnap = await getDocs(collection(db,'users'));
-    document.getElementById('lb-count').textContent = allSnap.size.toLocaleString('en-IN') + ' students competing';
-    if(!users.length){
-      document.getElementById('lb-rows').innerHTML = '<div class="lb-loading">Be the first on the leaderboard!</div>';
-      return;
-    }
-    
-    const colors = ['linear-gradient(135deg,#6b8f5e,#3a6830)','linear-gradient(135deg,#e2b24c,#b28226)','linear-gradient(135deg,#c98456,#9c5a33)','linear-gradient(135deg,#8f914a,#5c5e26)','linear-gradient(135deg,#2e4a2a,#1a2618)'];
-    function initials(n){ return (n||'?').split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase(); }
-    let html = '';
-    users.forEach((u,i) => {
-      const name = u.displayName||u.name||'Student';
-      const pts = u.totalPoints||0;
-      const isYou = me && me.uid === u.id;
-      html += `<div class="lb-row${isYou?' lb-you':''}">
-        <span class="lb-rank"><span class="rk rk${i+1}">${i+1}</span></span>
-        <div class="lb-av" style="background:${colors[i]}">${initials(name)}</div>
-        <span class="lb-name">${isYou?'You':name}</span>
-        <span class="lb-pts">${pts.toLocaleString('en-IN')} pts</span>
-      </div>`;
-    });
-    document.getElementById('lb-rows').innerHTML = html;
-  } catch(e){
-    document.getElementById('lb-rows').innerHTML = '<div class="lb-loading" style="padding:28px;text-align:center;color:var(--t4);">Be the first on the leaderboard!</div>';
-  }
-}
-loadLeaderboard();
-</script>
 
 
 <script>
